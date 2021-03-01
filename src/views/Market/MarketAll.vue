@@ -21,7 +21,7 @@
 		</div>
 
 		<div style="margin-top: 50px" >
-			<Page :defaultPage="1" :totalPage="10" :onChange="onPageChange" />
+			<Page :defaultPage="1" :totalPage="Math.ceil(marketPets.total / onePageCount)" :onChange="onPageChange" />
 		</div>
 	</div>
 </template>
@@ -37,6 +37,11 @@ let timer = null;
 export default {
 	mixins: [CommonMethod],
 	components: {  Page, PetItem},
+	data(){
+		return({
+			onePageCount: 15,
+		});
+	},
 	computed: {
 		...mapState({
 			marketPets: (state) => state.globalState.data.marketPets,

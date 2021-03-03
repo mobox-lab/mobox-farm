@@ -903,6 +903,11 @@ svg {
 	100% {
 		transform: rotate(360deg);
 	}
+	.pet_item {
+		width:48% !important;
+		zoom: 0.5;
+		margin: 1%!important;
+	}
 }
 
 .rule-table {

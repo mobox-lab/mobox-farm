@@ -8,7 +8,7 @@
 			</span>
 		</div>
 		<div :class="marketPetsMy.total < 6 ? 'tal' : ''"  class="mgt-20 vertical-children">
-			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ JSON.stringify(item)):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.uptime">
+			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ JSON.stringify(item)):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx">
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
 						<img src="../../assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
@@ -16,8 +16,8 @@
 					</div>
 					<div class="vertical-children mgt-10" v-if="item.index < 0" style="font-size: 18px;">
 						<img  src="../../assets/icon/loading.png" class="rotate" height="20" alt=""  /> &nbsp;
-						<small v-if="item.index == -1">上架中...</small>
-						<small v-if="item.index == -2">下架中...</small>
+						<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
+						<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
 					</div>
 				</PetItem>
 				<PetItemScroll v-bind:data="{item: item}" class="market" v-if="item.tokenId == 0 ">
@@ -27,8 +27,8 @@
 					</div>
 					<div class="vertical-children mgt-10" v-if="item.index < 0" style="font-size: 18px;">
 						<img  src="../../assets/icon/loading.png" class="rotate" height="20" alt=""  /> &nbsp;
-						<small v-if="item.index == -1">上架中...</small>
-						<small v-if="item.index == -2">下架中...</small>
+						<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
+						<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
 					</div>
 				</PetItemScroll>
 			</router-link>
@@ -77,9 +77,13 @@ export default {
 		await Wallet.ETH.init();
 		this.myAccount = await Wallet.ETH.getAccount();
 
-		this.getAuctionPetsMy();
-		timer = setInterval(()=>{
+		if(this.marketPetsMy.list.length == 0){
 			this.getAuctionPetsMy();
+		}
+		timer = setInterval(()=>{
+			if(this.tempSells.length != 0 || this.tempMarketCancelTx.length != 0){
+				this.getAuctionPetsMy();
+			}
 		}, 10000);
 	},
 	beforeDestroy(){
@@ -88,7 +92,9 @@ export default {
 	methods: {
 		//获取市场上的宠物
 		async getAuctionPetsMy(){
+			this.$store.commit("globalState/setData", {marketLoading: true});
 			let data = await Http.getMyAuctionList("eth", this.myAccount);
+			this.$store.commit("globalState/setData", {marketLoading: false});
 			console.log("getAuctionPetsMy",data);
 			let hashArr = [];
 			data.list.map(item=>{

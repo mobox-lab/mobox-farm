@@ -7,8 +7,8 @@
 				<img :src="require('@/assets/icon/search.png')" alt="" />
 			</span>
 		</div>
-		<div :class="marketPets.total < 6 ? 'tal' : ''"  class="mgt-20 vertical-children">
-			<router-link :to="'/auctionView/'+ JSON.stringify(item)"  v-for="item in marketPets.list" :key="item.uptime">
+		<div :class="marketPets.total < 6 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
+			<router-link :to="'/auctionView/'+ JSON.stringify(item)"  v-for="item in marketPets.list" :key="item.tx">
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
@@ -25,7 +25,7 @@
 		</div>
 
 		<div style="margin-top: 30px" >
-			<Page :defaultPage="1" :totalPage="Math.ceil(marketPets.total / onePageCount)" :onChange="onPageChange" v-if="Math.ceil(marketPets.total / onePageCount) > 1" />
+			<Page :defaultPage="this.marketPage" :totalPage="Math.ceil(marketPets.total / onePageCount)" :onChange="onPageChange" v-if="Math.ceil(marketPets.total / onePageCount) > 1" />
 		</div>
 	</div>
 </template>
@@ -49,12 +49,14 @@ export default {
 	computed: {
 		...mapState({
 			marketPets: (state) => state.globalState.data.marketPets,
+			marketPage: (state) => state.globalState.data.marketPage,
+			marketSearch: (state) => state.globalState.data.marketSearch,
 		}),
 	},
 	created(){
-		this.getAuctionPets();
+		this.getAuctionPets(this.marketPage, true);
 		timer = setInterval(()=>{
-			this.getAuctionPets();
+			this.getAuctionPets(this.marketPage);
 		}, 10000);
 	},
 	beforeDestroy(){
@@ -62,8 +64,12 @@ export default {
 	},
 	methods: {
 		//获取市场上的宠物
-		async getAuctionPets(){
-			let data = await Http.getAuctionList("eth");
+		async getAuctionPets(page, needLoading = false){
+			if(needLoading){
+				this.$store.commit("globalState/setData", {marketLoading: true});
+			}
+			let data = await Http.getAuctionList("eth", page, 15, this.marketSearch);
+			this.$store.commit("globalState/setData", {marketLoading: false});
 			data.list.map(item=>{
 				if( item.tokenId != 0){
 					let {tokenName} = BaseConfig.NftCfg[item.prototype];
@@ -82,8 +88,13 @@ export default {
 			});
 			this.$store.commit("globalState/setData", {marketPets:data});
 		},
-		onPageChange(){
-
+		onPageChange(page){
+			if(page == this.marketPage) return;
+			this.marketPets.list = [];
+			this.$store.commit("globalState/setData", {marketPage:page, marketPets: this.marketPets});
+			this.$nextTick(()=>{
+				this.getAuctionPets(this.marketPage, true);
+			});
 		}
 	}
 }

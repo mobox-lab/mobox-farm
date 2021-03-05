@@ -7,14 +7,20 @@
 				<img :src="require('@/assets/icon/search.png')" alt="" />
 			</span>
 		</div>
-		<div :class="marketPets.total < 6 ? 'tal' : ''"  class="mgt-20">
+		<div :class="marketPets.total < 6 ? 'tal' : ''"  class="mgt-20 vertical-children">
 			<router-link :to="'/auctionView/'+ JSON.stringify(item)"  v-for="item in marketPets.list" :key="item.uptime">
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 10000)}}</span>
+						<span>{{numFloor(item.nowPrice/1e9, 100)}}</span>
 					</div>
 				</PetItem>
+				<PetItemScroll v-bind:data="{item: item}" class="market" v-if="item.tokenId == 0 ">
+					<div class="vertical-children mgt-10" style="font-size: 18px">
+						<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
+						<span>{{numFloor(item.nowPrice/1e9, 100)}}</span>
+					</div>
+				</PetItemScroll>
 			</router-link>
 		</div>
 
@@ -25,7 +31,7 @@
 </template>
 
 <script>
-import {  Page, PetItem, } from "@/components";
+import {  Page, PetItem, PetItemScroll } from "@/components";
 import { CommonMethod } from "@/mixin";
 import { Http } from '@/utils';
 import { BaseConfig } from "@/config";
@@ -34,7 +40,7 @@ import { mapState } from "vuex";
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {  Page, PetItem},
+	components: {  Page, PetItem, PetItemScroll},
 	data(){
 		return({
 			onePageCount: 15,
@@ -70,7 +76,7 @@ export default {
 				let nowPrice = item.endPrice;
 				let diffPrice = item.endPrice - item.startPrice;
 				if(endTime > nowTime){
-					nowPrice = item.startPrice + (diffPrice / (item.durationDays * 86400) * (nowTime-item.uptime))
+					nowPrice = item.startPrice + (diffPrice / item.durationDays * Math.floor((nowTime-item.uptime)/ 86400))
 				}
 				item.nowPrice = nowPrice;
 			});

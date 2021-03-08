@@ -83,6 +83,10 @@ const InitEth = {
 		EventBus.$on(EventConfig.HttpError,  async () => {
 			this.$store.commit("globalState/setData", {marketLoading: false});
 		});
+		//HTTP请求错误
+		EventBus.$on(EventConfig.HttpError,  async () => {
+			this.$store.commit("globalState/setData", {marketLoading: false});
+		});
 
 		//兑换成功
 		EventBus.$on(EventConfig.SwapSuccess, () => {

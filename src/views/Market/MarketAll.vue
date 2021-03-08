@@ -6,8 +6,12 @@
 				<input class="ly-input mgl-20" type="text/" />&nbsp;
 				<img :src="require('@/assets/icon/search.png')" alt="" />
 			</span>
+			<div id="market-pet-fitter">
+				<Dropdown :list="selectCategory" :defaultSelectPos="marketSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
+				<Dropdown :list="selectVType" :defaultSelectPos="marketSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
+			</div>
 		</div>
-		<div :class="marketPets.total < 6 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
+		<div :class="marketPets.list.length < 6 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
 			<router-link :to="'/auctionView/'+ JSON.stringify(item)"  v-for="item in marketPets.list" :key="item.tx">
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
@@ -31,7 +35,7 @@
 </template>
 
 <script>
-import {  Page, PetItem, PetItemScroll } from "@/components";
+import {  Page, PetItem, PetItemScroll, Dropdown } from "@/components";
 import { CommonMethod } from "@/mixin";
 import { Http } from '@/utils';
 import { BaseConfig } from "@/config";
@@ -40,10 +44,12 @@ import { mapState } from "vuex";
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {  Page, PetItem, PetItemScroll},
+	components: {  Page, PetItem, PetItemScroll, Dropdown},
 	data(){
 		return({
 			onePageCount: 15,
+			selectCategory:[],
+			selectVType: []
 		});
 	},
 	computed: {
@@ -54,7 +60,9 @@ export default {
 		}),
 	},
 	created(){
-		this.getAuctionPets(this.marketPage, true);
+		if(this.marketPets.list.length == 0){
+			this.getAuctionPets(this.marketPage, true);
+		}
 		timer = setInterval(()=>{
 			this.getAuctionPets(this.marketPage);
 		}, 10000);
@@ -65,9 +73,7 @@ export default {
 	methods: {
 		//获取市场上的宠物
 		async getAuctionPets(page, needLoading = false){
-			if(needLoading){
-				this.$store.commit("globalState/setData", {marketLoading: true});
-			}
+			if(needLoading) this.$store.commit("globalState/setData", {marketLoading: true});
 			let data = await Http.getAuctionList("eth", page, 15, this.marketSearch);
 			this.$store.commit("globalState/setData", {marketLoading: false});
 			data.list.map(item=>{
@@ -95,6 +101,12 @@ export default {
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketPage, true);
 			});
+		},
+		onSelectCategoryChange(pos){
+			this.$store.commit("globalState/marketSearch", {type: "category", value: pos});
+		},
+		onSelectVTypeChange(pos){
+			this.$store.commit("globalState/marketSearch", {type: "vType", value: pos});
 		}
 	}
 }

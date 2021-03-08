@@ -7,7 +7,7 @@
 				<img :src="require('@/assets/icon/search.png')" alt="" />
 			</span>
 		</div>
-		<div :class="marketPetsMy.total < 6 ? 'tal' : ''"  class="mgt-20 vertical-children">
+		<div :class="getShowList.length < 6 ? 'tal' : ''"  class="mgt-20 vertical-children">
 			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ JSON.stringify(item)):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx">
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
@@ -35,7 +35,7 @@
 		</div>
 
 		<div style="margin-top: 30px" >
-			<Page :defaultPage="1" :totalPage="Math.ceil(marketPetsMy.total / onePageCount)" :onChange="onPageChange" v-if="Math.ceil(marketPetsMy.total / onePageCount) > 1" />
+			<Page :defaultPage="marketMySellPage" :totalPage="Math.ceil(marketPetsMy.total / onePageCount)" :onChange="onPageChange" v-if="Math.ceil(marketPetsMy.total / onePageCount) > 1" />
 		</div>
 	</div>
 </template>
@@ -62,6 +62,7 @@ export default {
 			marketPetsMy: (state) => state.globalState.data.marketPetsMy,
 			tempSells: (state) => state.globalState.data.tempSells,
 			tempMarketCancelTx: (state) => state.globalState.data.tempMarketCancelTx,
+			marketMySellPage: (state) => state.globalState.data.marketMySellPage,
 		}),
 		getShowList(){
 			let list = this.marketPetsMy.list;
@@ -70,7 +71,10 @@ export default {
 			list.map(item=>{
 				if(cancelTx.indexOf(item.tx) != -1) item.index = -2;
 			})
-			return   [...this.tempSells,...list];
+			return   [...this.tempSells,...list].slice(
+				this.onePageCount * (this.marketMySellPage - 1),
+				this.onePageCount * this.marketMySellPage
+			);
 		}
 	},
 	async created(){
@@ -131,8 +135,8 @@ export default {
 			this.$store.commit("globalState/setData", {tempSells: this.tempSells, marketPetsMy:data, tempMarketCancelTx: this.tempMarketCancelTx});
 
 		},
-		onPageChange(){
-
+		onPageChange(page){
+			this.$store.commit("globalState/setData", {marketMySellPage: page});
 		}
 	}
 }

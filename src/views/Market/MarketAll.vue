@@ -7,8 +7,9 @@
 				<img :src="require('@/assets/icon/search.png')" alt="" />
 			</span>
 			<div id="market-pet-fitter">
-				<Dropdown :list="selectCategory" :defaultSelectPos="marketSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
-				<Dropdown :list="selectVType" :defaultSelectPos="marketSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
+				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="marketSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
+				<Dropdown :list="$parent.selectVType" :defaultSelectPos="marketSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
+				<Dropdown :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
 			</div>
 		</div>
 		<div :class="marketPets.list.length < 6 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
@@ -49,7 +50,8 @@ export default {
 		return({
 			onePageCount: 15,
 			selectCategory:[],
-			selectVType: []
+			selectVType: [],
+			sortArr: [this.$t("Market_04"), this.$t("Market_05"), this.$t("Market_06"), this.$t("Market_07")],
 		});
 	},
 	computed: {
@@ -63,6 +65,8 @@ export default {
 		if(this.marketPets.list.length == 0){
 			this.getAuctionPets(this.marketPage, true);
 		}
+
+		if(timer) clearInterval(timer);
 		timer = setInterval(()=>{
 			this.getAuctionPets(this.marketPage);
 		}, 10000);
@@ -103,11 +107,37 @@ export default {
 			});
 		},
 		onSelectCategoryChange(pos){
+			this.marketPets.list = [];
+			this.$store.commit("globalState/setData", {marketPage:1, marketPets: this.marketPets});
 			this.$store.commit("globalState/marketSearch", {type: "category", value: pos});
+			this.$nextTick(()=>{
+				this.getAuctionPets(this.marketPage, true);
+			});
 		},
 		onSelectVTypeChange(pos){
+			this.marketPets.list = [];
+			this.$store.commit("globalState/setData", {marketPage:1, marketPets: this.marketPets});
 			this.$store.commit("globalState/marketSearch", {type: "vType", value: pos});
+			this.$nextTick(()=>{
+				this.getAuctionPets(this.marketPage, true);
+			});
+		},
+		onSortChange(pos){
+			this.marketPets.list = [];
+			this.$store.commit("globalState/setData", {marketPage:1, marketPets: this.marketPets});
+			this.$store.commit("globalState/marketSearch", {type: "sort", value: pos});
+			this.$nextTick(()=>{
+				this.getAuctionPets(this.marketPage, true);
+			});
 		}
 	}
 }
 </script>
+
+<style scoped>
+	#market-pet-fitter {
+		position: absolute;
+		right: 0px;
+		top: 0px;
+	}
+</style>

@@ -59,10 +59,10 @@ export default {
 	},
 	computed: {
 		...mapState({
-			marketPetsMy: (state) => state.globalState.data.marketPetsMy,
-			tempSells: (state) => state.globalState.data.tempSells,
-			tempMarketCancelTx: (state) => state.globalState.data.tempMarketCancelTx,
-			marketMySellPage: (state) => state.globalState.data.marketMySellPage,
+			marketPetsMy: (state) => state.marketState.data.marketPetsMy,
+			tempSells: (state) => state.marketState.data.tempSells,
+			tempMarketCancelTx: (state) => state.marketState.data.tempMarketCancelTx,
+			marketMySellPage: (state) => state.marketState.data.marketMySellPage,
 		}),
 		getShowList(){
 			let list = this.marketPetsMy.list;
@@ -96,9 +96,9 @@ export default {
 	methods: {
 		//获取市场上的宠物
 		async getAuctionPetsMy(){
-			this.$store.commit("globalState/setData", {marketLoading: true});
+			this.$store.commit("marketState/setData", {marketLoading: true});
 			let data = await Http.getMyAuctionList("eth", this.myAccount);
-			this.$store.commit("globalState/setData", {marketLoading: false});
+			this.$store.commit("marketState/setData", {marketLoading: false});
 			console.log("getAuctionPetsMy",data);
 			let hashArr = [];
 			data.list.map(item=>{
@@ -132,11 +132,11 @@ export default {
 					this.tempMarketCancelTx.splice(index, 1);
 				}
 			})
-			this.$store.commit("globalState/setData", {tempSells: this.tempSells, marketPetsMy:data, tempMarketCancelTx: this.tempMarketCancelTx});
+			this.$store.commit("marketState/setData", {tempSells: this.tempSells, marketPetsMy:data, tempMarketCancelTx: this.tempMarketCancelTx});
 
 		},
 		onPageChange(page){
-			this.$store.commit("globalState/setData", {marketMySellPage: page});
+			this.$store.commit("marketState/setData", {marketMySellPage: page});
 		}
 	}
 }

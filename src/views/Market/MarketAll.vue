@@ -56,9 +56,9 @@ export default {
 	},
 	computed: {
 		...mapState({
-			marketPets: (state) => state.globalState.data.marketPets,
-			marketPage: (state) => state.globalState.data.marketPage,
-			marketSearch: (state) => state.globalState.data.marketSearch,
+			marketPets: (state) => state.marketState.data.marketPets,
+			marketPage: (state) => state.marketState.data.marketPage,
+			marketSearch: (state) => state.marketState.data.marketSearch,
 		}),
 	},
 	created(){
@@ -77,9 +77,9 @@ export default {
 	methods: {
 		//获取市场上的宠物
 		async getAuctionPets(page, needLoading = false){
-			if(needLoading) this.$store.commit("globalState/setData", {marketLoading: true});
+			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
 			let data = await Http.getAuctionList("eth", page, 15, this.marketSearch);
-			this.$store.commit("globalState/setData", {marketLoading: false});
+			this.$store.commit("marketState/setData", {marketLoading: false});
 			data.list.map(item=>{
 				if( item.tokenId != 0){
 					let {tokenName} = BaseConfig.NftCfg[item.prototype];
@@ -96,36 +96,36 @@ export default {
 				}
 				item.nowPrice = nowPrice;
 			});
-			this.$store.commit("globalState/setData", {marketPets:data});
+			this.$store.commit("marketState/setData", {marketPets:data});
 		},
 		onPageChange(page){
 			if(page == this.marketPage) return;
 			this.marketPets.list = [];
-			this.$store.commit("globalState/setData", {marketPage:page, marketPets: this.marketPets});
+			this.$store.commit("marketState/setData", {marketPage:page, marketPets: this.marketPets});
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketPage, true);
 			});
 		},
 		onSelectCategoryChange(pos){
 			this.marketPets.list = [];
-			this.$store.commit("globalState/setData", {marketPage:1, marketPets: this.marketPets});
-			this.$store.commit("globalState/marketSearch", {type: "category", value: pos});
+			this.$store.commit("marketState/setData", {marketPage:1, marketPets: this.marketPets});
+			this.$store.commit("marketState/marketSearch", {type: "category", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketPage, true);
 			});
 		},
 		onSelectVTypeChange(pos){
 			this.marketPets.list = [];
-			this.$store.commit("globalState/setData", {marketPage:1, marketPets: this.marketPets});
-			this.$store.commit("globalState/marketSearch", {type: "vType", value: pos});
+			this.$store.commit("marketState/setData", {marketPage:1, marketPets: this.marketPets});
+			this.$store.commit("marketState/marketSearch", {type: "vType", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketPage, true);
 			});
 		},
 		onSortChange(pos){
 			this.marketPets.list = [];
-			this.$store.commit("globalState/setData", {marketPage:1, marketPets: this.marketPets});
-			this.$store.commit("globalState/marketSearch", {type: "sort", value: pos});
+			this.$store.commit("marketState/setData", {marketPage:1, marketPets: this.marketPets});
+			this.$store.commit("marketState/marketSearch", {type: "sort", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketPage, true);
 			});

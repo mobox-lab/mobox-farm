@@ -1,12 +1,17 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
-			<span>Total pet: {{ marketPets.total }}</span>&nbsp;
+			<span class="vertical-children">{{$t("Market_33")}}: {{ marketPets.total }} </span>&nbsp;
 			<span class="search-box hide" >
 				<input class="ly-input mgl-20" type="text/" />&nbsp;
 				<img :src="require('@/assets/icon/search.png')" alt="" />
 			</span>
+			
 			<div id="market-pet-fitter">
+				<div class="dib por" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+					<span class="notice" v-if="historyNotice"></span>
+					<img src="../../assets/icon/tradeRecord.png" alt="" />
+				</div>
 				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="marketSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
 				<Dropdown :list="$parent.selectVType" :defaultSelectPos="marketSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
 				<Dropdown :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
@@ -38,7 +43,7 @@
 <script>
 import {  Page, PetItem, PetItemScroll, Dropdown } from "@/components";
 import { CommonMethod } from "@/mixin";
-import { Http } from '@/utils';
+import { Http, Wallet } from '@/utils';
 import { BaseConfig } from "@/config";
 import { mapState } from "vuex";
 
@@ -59,13 +64,13 @@ export default {
 			marketPets: (state) => state.marketState.data.marketPets,
 			marketPage: (state) => state.marketState.data.marketPage,
 			marketSearch: (state) => state.marketState.data.marketSearch,
+			momoNameObjs: (state) => state.marketState.data.momoNameObjs,
+			marketLoading: (state) => state.marketState.data.marketLoading,
+			historyNotice: (state) => state.marketState.data.historyNotice,
 		}),
 	},
 	created(){
-		if(this.marketPets.list.length == 0){
-			this.getAuctionPets(this.marketPage, true);
-		}
-
+		this.getAuctionPets(this.marketPage, true);
 		if(timer) clearInterval(timer);
 		timer = setInterval(()=>{
 			this.getAuctionPets(this.marketPage);
@@ -80,11 +85,15 @@ export default {
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
 			let data = await Http.getAuctionList("eth", page, 15, this.marketSearch);
 			this.$store.commit("marketState/setData", {marketLoading: false});
+			let needGetNameArr = [];
 			data.list.map(item=>{
 				if( item.tokenId != 0){
 					let {tokenName} = BaseConfig.NftCfg[item.prototype];
 					item.tokenName = tokenName;
 					item.vType = parseInt(item.prototype/1e4);
+					if(item.specialty == 1 || item.specialty == 3){
+						needGetNameArr.push(item.tokenId);
+					}
 				}
 				//计算当前价格
 				let endTime = Number(item.uptime) + item.durationDays * 86400;
@@ -97,6 +106,32 @@ export default {
 				item.nowPrice = nowPrice;
 			});
 			this.$store.commit("marketState/setData", {marketPets:data});
+			
+			this.$nextTick(()=>{
+				this.getMomoName(needGetNameArr);
+			})
+		},
+		async getMomoName(needGetNameArr){
+			let fitterArr = [];
+			//去除重复的名字
+			needGetNameArr.map(item=>{
+				if(!Object.prototype.hasOwnProperty.call(this.momoNameObjs, item)){
+					fitterArr.push(item);
+				}
+			});
+			if(fitterArr.length != 0){
+				//请求name
+				let names = await Wallet.ETH.getMomoNamesByTokenIds(fitterArr);
+				if(names != ""){
+					fitterArr.map((item, index)=>{
+						this.momoNameObjs[item] = names[index];
+					});
+				}
+			}
+			this.marketPets.list.map(item=>{
+				item.tokenName = this.momoNameObjs[item.tokenId] || item.tokenName;
+			});
+			this.$store.commit("marketState/setData", {marketPets: this.marketPets, momoNameObjs : this.momoNameObjs});
 		},
 		onPageChange(page){
 			if(page == this.marketPage) return;
@@ -135,9 +170,21 @@ export default {
 </script>
 
 <style scoped>
+	#shop-history {
+		margin-right: 15px;
+		cursor: pointer;
+		position: relative;
+		user-select: none;
+	}
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;
 		top: 0px;
+	}
+	@media (max-width: 768px) {
+
+		#market-pet-fitter{
+			zoom: 0.8;
+		}
 	}
 </style>

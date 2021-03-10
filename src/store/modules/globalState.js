@@ -17,7 +17,9 @@ const state = () => ({
 			bnb: 0
 		},
 		lockBtn:{
-			getKeyLock: 0
+			getKeyLock: 0,
+			changePriceLock: 0,
+			buyMomoLock: 0,
 		},
 	},
 })

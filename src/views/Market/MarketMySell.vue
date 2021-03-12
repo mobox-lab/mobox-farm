@@ -3,6 +3,10 @@
 		<div class="tal search vertical-children por mgt-20">
 			<span>{{$t("Market_33")}}: {{ getShowList.length }}</span>&nbsp;
 			<div id="market-pet-fitter">
+				<div class="dib por" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+					<span class="notice" v-if="historyNotice"></span>
+					<img src="../../assets/icon/tradeRecord.png" alt="" />
+				</div>
 				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="myMarketSellFilter.category" :onChange="onSelectTypeChange" />&nbsp;
 				<Dropdown :list="$parent.selectVType" :defaultSelectPos="myMarketSellFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
 			</div>
@@ -66,6 +70,7 @@ export default {
 			marketMySellPage: (state) => state.marketState.data.marketMySellPage,
 			momoNameObjs: (state) => state.marketState.data.momoNameObjs,
 			myMarketSellFilter: (state) => state.marketState.data.myMarketSellFilter,
+			historyNotice: (state) => state.marketState.data.historyNotice,
 		}),
 		getSellList() {
 			let totalPet = [];
@@ -203,3 +208,23 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+	#shop-history {
+		margin-right: 15px;
+		cursor: pointer;
+		position: relative;
+		user-select: none;
+	}
+	#market-pet-fitter {
+		position: absolute;
+		right: 0px;
+		top: 0px;
+	}
+	@media (max-width: 768px) {
+
+		#market-pet-fitter{
+			zoom: 0.8;
+		}
+	}
+</style>

@@ -21,6 +21,11 @@ const state = () => ({
 			changePriceLock: 0,
 			buyMomoLock: 0,
 		},
+		walletStatus: {
+			status: 1, //1,等待中，2，reject，3，success
+			msg: "",
+			hash: ""
+		},  
 	},
 })
 
@@ -69,6 +74,11 @@ const mutations = {
 	unLockBtn(state, type){
 		state.data.lockBtn[type] = 0;
 	},
+	setwalletStatus(state, {status, hash, msg}){
+		state.data.walletStatus.status = status || 1;
+		state.data.walletStatus.msg = msg || "";
+		state.data.walletStatus.hash = hash || "";
+	}
 };
 
 export default {

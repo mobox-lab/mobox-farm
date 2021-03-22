@@ -83,7 +83,7 @@ export default {
 		//获取市场上的宠物
 		async getAuctionPets(page, needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
-			let data = await Http.getAuctionList("eth", page, 15, this.marketSearch);
+			let data = await Http.getAuctionList("BNB", page, 15, this.marketSearch);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let needGetNameArr = [];
 			data.list.map(item=>{

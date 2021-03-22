@@ -3,7 +3,7 @@ import {ConstantConfig} from "@/config";
 const state = () => ({
 	data: {
 		selectChain: "trx",
-		addressArr: ["ETH: ", "TRX: ", "BNB: "],
+		addressArr: ["BNB: "],
 		notifications: [],
 		myPetPage: 1,
 		myPetFilter: {
@@ -30,9 +30,7 @@ const state = () => ({
 })
 
 const chainPos = {
-	"ETH": 0,
-	"TRX": 1,
-	"BNB": 2,
+	"BNB": 0,
 }
 
 const mutations = {

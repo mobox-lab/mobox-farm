@@ -17,9 +17,12 @@ const state = () => ({
 			bnb: 0
 		},
 		lockBtn:{
-			getKeyLock: 0,
-			changePriceLock: 0,
-			buyMomoLock: 0,
+			getKeyLock: 0, //领取KEY锁定
+			changePriceLock: 0, //修改价格锁定
+			buyMomoLock: 0, //购买按钮锁定
+			approveLock: 0, //授权锁定
+			stakeLock: 0, //质押锁定
+			unStakeLock: 0, //取消质押锁定
 		},
 		walletStatus: {
 			status: 1, //1,等待中，2，reject，3，success

@@ -23,6 +23,7 @@ const state = () => ({
 			approveLock: 0, //授权锁定
 			stakeLock: 0, //质押锁定
 			unStakeLock: 0, //取消质押锁定
+			getMboxLock: 0, //领取mbox锁
 		},
 		walletStatus: {
 			status: 1, //1,等待中，2，reject，3，success

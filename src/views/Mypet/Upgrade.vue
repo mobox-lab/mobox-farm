@@ -4,27 +4,25 @@
 			<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;
 			{{ $t("MOMO_19") }}
 		</span>
-		<div class="tac row ">
-			<div class="col-md-6 mgt-10">
+		<div class="tac row mgt-10">
+			<div class="col-md-6">
 				<div class="panel">
 					<div id="upgrade-lv" class="vertical-children">
-						<img :src=" require(`@/assets/icon/${ category_img[this.getNowPetItem.category] }.png`)" alt="" width="20" height="20" />&nbsp;
+						<img :src=" require(`../assets/icon/${ category_img[this.getNowPetItem.category] }.png`)" alt="" width="20" height="20" />&nbsp;
 						<span>LV {{ this.getNowPetItem.level }}</span>
 					</div>
-					<img v-if="isLock" class="upgrade-lock" src="@/assets/icon/lock.png" alt="">
+					<img v-if="isLock" class="upgrade-lock" src="../assets/icon/lock.png" alt="">
 					<div id="upgrade-power" class="vertical-children">
-						<img src="@/assets/icon/warning-icon.png" class="tip-icon" v-if="!isMeetStandards && getNowPetItem.level <= 1" @click="standardsHashrateTip" />
 						<div class="gka-harmer por  dib" style="top: -8px;right:-10px" :class="this.getNowPetItem.location == 'wallet'?'': 'animation-harmer'">
-							<img src="@/assets/anime/sleep.gif" class="sleep-harmer" v-if="this.getNowPetItem.location == 'wallet'" alt="" />
+							<img src="../assets/anime/sleep.gif" class="sleep-harmer" v-if="this.getNowPetItem.location == 'wallet'" alt="" />
 						</div>
-						<span :class="getHashrateColor( this.getNowPetItem)">
+						<span  :class="getHashrateColor( this.getNowPetItem)">
 							{{ this.getNowPetItem.lvHashrate }}
 						</span>
 					</div>
 					<div id="upgrade-power-lv1" class="vertical-children" v-if="this.getNowPetItem.level > 1">
-						<img src="@/assets/icon/warning-icon.png" class="tip-icon" v-if="!isMeetStandards" @click="standardsHashrateTip" />
 						Lv. 1
-						<img src="@/assets/icon/airdrop.png" alt="" height="15" />&nbsp;
+						<img src="../assets/icon/airdrop.png" alt="" height="15" />&nbsp;
 						<span :class="getHashrateColor( this.getNowPetItem)">
 							{{ this.getNowPetItem.hashrate }}
 						</span>
@@ -32,25 +30,21 @@
 
 					<div class="por" id="show-pet-view" style="margin-top: 100px" >
 						<PetView v-bind:prototype="this.getNowPetItem.prototype" />
-						<div class=" vertical-children chanzi" v-if="this.getNowPetItem.location == 'verse'">
-							<img src="@/assets/icon/chanzi.gif" alt="" width="50" style="margin-bottom:-5px">
-							<span  class="bold" style="font-size: 25px;color: #fff">{{getSCL}}</span>
-						</div>
 						<div class="vertical-children" id="upgrade-name">
-							<img :src=" require(`@/assets/icon/${this.getNowPetItem.chain}.png`) " height="25" alt="" />&nbsp;
+							<img :src=" require(`../assets/icon/${this.getNowPetItem.chain}.png`) " height="25" alt="" />&nbsp;
 							<span>{{ hasSetName ? shortStr(this.getNowPetItem.tokenName) : $t(this.getNowPetItem.tokenName) }}</span>
-							<img v-if="this.hasEditNameSkill && getNowPetItem.location=='stake'" src="@/assets/icon/edit.png" class="edit-btn" alt="" @click="oprDialog('setName-dialog', 'block')" />
+							<img v-if="this.hasEditNameSkill && getNowPetItem.location=='stake'" src="../assets/icon/edit.png" class="edit-btn" alt="" @click="oprDialog('setName-dialog', 'block')" />
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6 tal mgt-10">
+			<div class="col-md-6 tal">
 				<div class="panel vertical-children">
 					<!-- momo升级 -->
-					<div class="mgb-20" v-if="getNowPetItem.tokenId != 0 && getNowPetItem.location  != 'wallet'">
+					<div v-if="getNowPetItem.tokenId != 1 && getNowPetItem.location=='stake'">
 						<h3 >
 							{{ $t("MOMO_22") }}
-							<img class="mgl-5 cur-point" @click="getRootRefs().ruleDialog.show('MOMO_35','MOMO_36')" src="@/assets/icon/help.png" alt="" height="20"/>
+							<img class="mgl-5 cur-point" @click="oprDialog('upgrade-des-dialog','block')" src="../assets/icon/help.png" alt="" height="20"/>
 						</h3>
 						<div class="tac" style="margin-bottom:20px">
 							<div v-if="getUpgradeInfo.length == 0" class="mgt-20">
@@ -58,7 +52,7 @@
 							</div>
 							<div v-if="getUpgradeInfo.length != 0">
 								<div style="margin-top: 30px">
-									<span @click="showSelectNftDialog(item, handPos)" v-for="(item, handPos) in this.getUpgradeInfo" :key="JSON.stringify(item)" class="dib mgt-10">
+									<span @click="showSelectNftDialog(item, handPos)" v-for="(item, handPos) in this.getUpgradeInfo" :key="JSON.stringify(item)" >
 										<PetAddItem
 											v-bind:vType="item.type"
 											v-bind:needNum="item.needNum"
@@ -68,45 +62,33 @@
 											v-bind:selectProtoTypes=" selectProtoTypes[item.type] "
 										/>
 									</span>
-									<span class="mec-item dib mgt-10" v-if="isNeedMec">
-										<div class="icon">
-											<img src="@/assets/coin/CRYSTAL.png" />
-										</div>
-										<p class="count">{{upgradeConfig.mecNum}}</p>
-									</span>
 								</div>
+								<!-- <div class="mgt-10">
+									<button @click="onStepRemoveFood" class="btn-primary" style=" min-width: 120px; background: #384a7a !important; " >
+										{{ $t("MOMO_20") }}
+									</button>
+									<button @click="onStepAddFood" class="btn-primary mgl-20" style=" min-width: 120px; background: #384a7a !important; " >
+										{{ $t("MOMO_21") }}
+									</button>
+								</div> -->
 								<div class="vertical-children mgt-20" style="font-size: 18px" >
-									<img src="@/assets/icon/airdrop.png" height="25" alt="" />&nbsp;
+									<img src="../assets/icon/airdrop.png" height="25" alt="" />&nbsp;
 									<span>{{ this.getNowPetItem.lvHashrate }}</span>
-									<img src="@/assets/icon/upgradejt.png" alt="" class="mgl-10" />
-									<img src="@/assets/icon/airdrop.png" alt="" class="mgl-10" height="25" />&nbsp;
+									<img src="../assets/icon/upgradejt.png" alt="" class="mgl-10" />
+									<img src="../assets/icon/airdrop.png" alt="" class="mgl-10" height="25" />&nbsp;
 									<span style="color: #85f34a">{{ this.getNowPetItemNextLvHashRate }}</span>
 								</div>
 								<div>
-									<div class="mgt-20" >
-										<!-- <button @click="upgrade" :class="lockUpgradeTime > 0?'disable-btn':''" class="btn-primary vertical-children por" style="min-width: 160px; margin: 5px" >
-											<Loading v-if="lockUpgradeTime > 0"  class="btn-loading" />
+									<div class="mgt-10">
+										<!-- <button v-if="allowance_1155_to_721 == 0" @click="approved1155To721" class="btn-advanced vertical-children" style="width: 180px; margin: 5px" >授权</button> -->
+										<button @click="upgrade" :class="lockUpgradeTime > 0?'disable-btn':''" class="btn-advanced vertical-children por" style="min-width: 160px; margin: 5px" >
+											<img v-if="lockUpgradeTime > 0" src="../assets/icon/loading.png" class="rotate" height="20" alt="" style="position:absolute;left:10px" />
 											<svg  viewBox="0 0 1024 1024" width="15" height="15" style=" transform: rotate(270deg); margin-top: -2px; " >
 												<path fill="#ffffff" d="M583.586909 555.473455a62.091636 62.091636 0 0 0 0-86.94691L151.970909 30.138182a60.113455 60.113455 0 0 0-85.783273 0 62.045091 62.045091 0 0 0 0 86.946909L454.981818 512 66.210909 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.043636 60.043636 0 0 0 85.783273 0l431.592727-438.388363zM440.459636 117.061818L829.160727 512 440.413091 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.090182 60.090182 0 0 0 85.806545 0l431.569455-438.388363a62.091636 62.091636 0 0 0 0-86.94691L526.196364 30.138182a60.136727 60.136727 0 0 0-85.806546 0 62.045091 62.045091 0 0 0 0.023273 86.923636z"></path>
 											</svg >&nbsp;
 											{{ $t("MOMO_22") }}
-										</button> -->
-										<div :class="{'btn-group': needApproveMec}">
-											<div v-if="needApproveMec">
-												<StatuButton data-step="1" style="width:150px" :isLoading="lockBtn.approveLock > 0" :onClick="approveMEC">{{$t("Air-drop_16")}} MEC</StatuButton>
-											</div>
-											<div class="mgt-10">
-												<StatuButton :onClick="upgrade" data-step="2" style="min-width:150px" :isDisable="needApproveMec || lockUpgradeTime > 0" :isLoading="lockBtn.enhanceLock > 0">
-													<Loading v-if="lockUpgradeTime > 0"  class="btn-loading" />
-													<svg  viewBox="0 0 1024 1024" width="15" height="15" style=" transform: rotate(270deg); margin-top: -2px; " >
-														<path fill="#ffffff" d="M583.586909 555.473455a62.091636 62.091636 0 0 0 0-86.94691L151.970909 30.138182a60.113455 60.113455 0 0 0-85.783273 0 62.045091 62.045091 0 0 0 0 86.946909L454.981818 512 66.210909 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.043636 60.043636 0 0 0 85.783273 0l431.592727-438.388363zM440.459636 117.061818L829.160727 512 440.413091 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.090182 60.090182 0 0 0 85.806545 0l431.569455-438.388363a62.091636 62.091636 0 0 0 0-86.94691L526.196364 30.138182a60.136727 60.136727 0 0 0-85.806546 0 62.045091 62.045091 0 0 0 0.023273 86.923636z"></path>
-													</svg >&nbsp;
-													{{ $t("MOMO_22") }}
-												</StatuButton>
-											</div>
-										</div>
+										</button>
 									</div>
-							
 								</div>
 							</div>
 						</div>
@@ -123,7 +105,7 @@
 					<p class="small tal">{{ $t("BOX_16") }} ({{nowLen}}/32)</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="@/assets/icon/bnb.png" alt="" />
+							<img  src="../assets/icon/eth.png" alt="" />
 						</div>
 						<input v-model="inputName" class="ly-input" type="text" style=" background: #0f172a; text-align: center; width: 100%; border-radius: 5px; padding-left:40px" :placeholder="$t('BOX_17')" />
 					</div>
@@ -137,8 +119,8 @@
 
 		<Dialog id="selectNft-dialog" :top="30" :width="540">
 			<h2 class="mgt-10">{{ $t("BOX_18") }}</h2>
-			<div class="mgt-20 items">
-				<span @click="showSelectNftDialog(item, handPos, true)" v-for="(item, handPos) in this.getUpgradeInfo" :key="JSON.stringify(item)"  >
+			<div class="mgt-20">
+				<span @click="showSelectNftDialog(item, handPos, true)" v-for="(item, handPos) in this.getUpgradeInfo" :key="JSON.stringify(item)" >
 					<PetAddItem
 						class="need-notice"
 						v-bind:vType="item.type"
@@ -152,11 +134,11 @@
 				</span>
 			</div>
 			<p class="mgt-20 small tal por ">
-				<span class="type_change vertical-children" v-if="needHandleData.type != 'v5' ">
+				<span class="type_change vertical-children">
 					<Tab :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" v-if="hackReload" :notice="[]" />
 					<div class="dib sort-btn" @click="bookSortTurn = !bookSortTurn" :class="tab_pos == 0?'opa-6 gray':''">
 						<svg viewBox="0 0 1024 1024" version="1.1" width="20" height="20">
-							<path d="M600.436364 60.509091v907.636364c0 27.927273 18.618182 46.545455 46.545454 46.545454s46.545455-18.618182 46.545455-46.545454V158.254545l116.363636 93.09091c18.618182 18.618182 51.2 13.963636 65.163636-4.654546 18.618182-18.618182 13.963636-51.2-4.654545-65.163636L679.563636 23.272727c-32.581818-27.927273-79.127273-4.654545-79.127272 37.236364zM377.018182 9.309091c-27.927273 0-46.545455 18.618182-46.545455 46.545454v809.89091l-116.363636-93.09091c-18.618182-18.618182-51.2-13.963636-65.163636 4.654546-18.618182 18.618182-13.963636 51.2 4.654545 65.163636l190.836364 158.254546c32.581818 23.272727 74.472727 4.654545 74.472727-37.236364V55.854545c4.654545-23.272727-18.618182-46.545455-41.890909-46.545454z" fill="#838689">
+							<path d="M600.436364 60.509091v907.636364c0 27.927273 18.618182 46.545455 46.545454 46.545454s46.545455-18.618182 46.545455-46.545454V158.254545l116.363636 93.09091c18.618182 18.618182 51.2 13.963636 65.163636-4.654546 18.618182-18.618182 13.963636-51.2-4.654545-65.163636L679.563636 23.272727c-32.581818-27.927273-79.127273-4.654545-79.127272 37.236364zM377.018182 9.309091c-27.927273 0-46.545455 18.618182-46.545455 46.545454v809.89091l-116.363636-93.09091c-18.618182-18.618182-51.2-13.963636-65.163636 4.654546-18.618182 18.618182-13.963636 51.2 4.654545 65.163636l190.836364 158.254546c32.581818 23.272727 74.472727 4.654545 74.472727-37.236364V55.854545c4.654545-23.272727-18.618182-46.545455-41.890909-46.545454z" fill="#94BBFF">
 							</path>
 						</svg>
 					</div>
@@ -186,10 +168,16 @@
 			</div>
 			<p class="mgt-10 small tal" style="margin-bottom: 30px"></p>
 		</Dialog>
+		<Dialog id="upgrade-des-dialog" :width="350" :top="100">
+			<h3 class="mgt-10">{{$t("MOMO_35")}}</h3>
+			<div class="dialog-content mgt-20 tal">
+				<span v-html="$t('MOMO_36')" class="small tal" style="font-weight:200"></span>
+			</div>
+		</Dialog>
 	</div>
 </template>
 <script>
-import { PetView, PetAddItem, Dialog, PetItemSmall, Tab, BookSelectItem, MomoInfo, Loading, StatuButton } from '@/components';
+import { PetView, PetAddItem, Dialog, PetItemSmall, Tab, BookSelectItem, MomoInfo } from '@/components';
 import { mapState } from "vuex";
 import { Wallet, EventBus } from "@/utils";
 import { BaseConfig, WalletConfig, EventConfig, ConstantConfig } from "@/config";
@@ -198,10 +186,9 @@ import { CommonMethod } from "@/mixin";
 let upgradeLockTimer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { PetView, PetAddItem, Dialog, PetItemSmall, Tab, BookSelectItem, MomoInfo, Loading, StatuButton },
+	components: { PetView, PetAddItem, Dialog, PetItemSmall, Tab, BookSelectItem, MomoInfo },
 	data() {
 		return {
-			isMECApproved: -1,
 			inputName: "",
 			nowLen: 0,
 			selectProtoTypes: {
@@ -220,17 +207,15 @@ export default {
 				needNum: 2,
 				needPrototype: false,
 				type: "v1",
-				needLv: 1,
 			},
-			// showCanSelectArr: [],
+			showCanSelectArr: [],
 			selectAddPetPos: 0,
 			tab: [this.$t("MOMO_31"), this.$t("MOMO_32")],
 			tab_pos: 0,
 			hasLoadBook: false,
 			bookSortTurn: true,//正序排列
 			lockUpgradeTime: 0,
-			hackReload: true,
-			hasClick: false,
+			hackReload: true
 		};
 	},
 	watch: {
@@ -245,63 +230,14 @@ export default {
 	},
 	computed: {
 		...mapState({
-			hashrateInfo: (state) => state.globalState.hashrateInfo,
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,
 			myNFT_wallet: (state) => state.ethState.data.myNFT_wallet,
-			myNFT_verse: (state) => state.ethState.data.myNFT_verse,
 			lockList: (state) => state.ethState.data.lockList,
-			lockBtn: (state) => state.globalState.data.lockBtn,
 			allowance_1155_to_721: (state) =>state.ethState.data.allowance_1155_to_721,
 			allowance_1155_to_stake: (state) =>state.ethState.data.allowance_1155_to_stake,
 			allowance_721_to_stake: (state) =>state.ethState.data.allowance_721_to_stake,
 			upgradeLocks: (state) =>state.ethState.data.upgradeLocks,
 		}),
-		// 是否不满足标准算力
-		isMeetStandards() {
-			const { vType, lvHashrate, hashrate, level } = this.getNowPetItem;
-
-			if (vType < 4) {
-				return true;
-			}
-
-			if (level > 1) {
-				return hashrate >= this.standardsHashrate;
-			}
-
-			return lvHashrate >= this.standardsHashrate;
-		},
-		// 标砖算力
-		standardsHashrate() {
-			const { vType } = this.getNowPetItem;
-			return this.hashrateInfo[`v${vType}StandardHashrate`];
-		},
-		// 获取momo的生产力
-		getSCL(){
-			let {lvHashrate, hashrate, gems} = this.getNowPetItem;
-			let gemAdd = 0;
-			let gemCfg = BaseConfig.GemProductivityCfg;
-			gems.map(item => {
-				if(item != 0){
-					gemAdd += gemCfg[item].productivityRate;
-				}
-			})
-			return hashrate * 10 + lvHashrate + gemAdd;
-		},
-	
-		showCanSelectArr(){
-			let { type, needPrototype, needLv } = this.needHandleData;
-			let needShowArr = [];
-			this.myNFT_stake.map((item) => {
-				//去掉自己
-				let isSelf = type >= 4 && item.tokenId == this.getNowPetItem.tokenId;
-				let bookType =  item.prototype % (item.vType * 10000)
-				item.isLock = this.getLockTypes.indexOf(bookType) != -1;
-				if ( "v" + item.vType == type && (!needPrototype || needPrototype == item.prototype) && !isSelf  && item.level >= needLv  ) {
-					needShowArr.push(item);
-				}
-			});
-			return needShowArr;
-		},
 		isLock(){
 			let {vType, prototype} = this.getNowPetItem;
 			let bookType =  prototype % (vType * 10000)
@@ -315,15 +251,15 @@ export default {
 			};
 			switch (vType) {
 				case 4:
-					obj.staticPower = 2000 + parseInt((hashrate - 10) * 50);
+					obj.staticPower = 20 + parseInt((hashrate - 10) / 2);
 					obj.staticPercent = 0.2;
 					break;
 				case 5:
-					obj.staticPower = 5000 + parseInt((hashrate - 50) * 50);
+					obj.staticPower = 50 + parseInt((hashrate - 50) / 2);
 					obj.staticPercent = 0.3;
 					break;
 				case 6:
-					obj.staticPower = 18000 + parseInt((hashrate - 180) * 50);
+					obj.staticPower = 180 + parseInt((hashrate - 180) / 2);
 					obj.staticPercent = 0.4;
 					break;
 				default:
@@ -331,24 +267,30 @@ export default {
 			}
 			return obj;
 		},
-
 		//获取宠物下一级的升级算力
 		getNowPetItemNextLvHashRate() {
 			let { hashrate, level } = this.getNowPetItem;
+
 			let growup = this.getGrowup;
 			level = level + 1;
-			return parseInt(hashrate + parseInt(growup.staticPower * (level - 1) /100) + parseInt(((parseInt(level / 5) * (1 + parseInt(level / 5)))) * growup.staticPower * growup.staticPercent / 200) );
+			return parseInt(
+				hashrate +
+					growup.staticPower * (level - 1) +
+					((parseInt(level / 5) * (1 + parseInt(level / 5))) / 2) *
+						growup.staticPower *
+						growup.staticPercent
+			);
 		},
 		getTotalNft(){
-			return [...this.myNFT_stake, ...this.myNFT_wallet,...this.myNFT_verse];
+			return [...this.myNFT_stake, ...this.myNFT_wallet];
 		},
 		//获取当前要显示的NFT的信息
 		getNowPetItem() {
-			let [prototype, tokenId, location] = this.$route.params.petId.split("-");
+			let [prototype, tokenId] = this.$route.params.petId.split("-");
 			let retObj = { prototype, tokenId, chain: "eth" };
 			for (let key in this.getTotalNft) {
 				let item = this.getTotalNft[key];
-				if (item.prototype == prototype && item.tokenId == tokenId && item.location == location) {
+				if (item.prototype == prototype && item.tokenId == tokenId) {
 					retObj = item;
 					break;
 				}
@@ -358,45 +300,38 @@ export default {
 			if (Object.keys(retObj).length == 3) {
 				this.$router.replace("/mypet");
 			}
-			// retObj.level = 19;
 			return retObj;
 		},
 		hasSelectPetPrototype() {
 			let prototype = 0;
-			["v1","v2","v3","v4"].map(item=>{
-				if (this.selectProtoTypes[item].length != 0) {
-					prototype = (this.selectProtoTypes[item][0] % 10000) + 40000;
+			for (let key in this.selectProtoTypes) {
+				if (this.selectProtoTypes[key].length != 0) {
+					prototype = (this.selectProtoTypes[key][0] % 10000) + 40000;
+					break;
 				}
-			})
-			// for (let key in this.selectProtoTypes) {
-			// 	if (this.selectProtoTypes[key].length != 0) {
-			// 		prototype = (this.selectProtoTypes[key][0] % 10000) + 40000;
-			// 		break;
-			// 	}
-			// }
-			return prototype;
-		},
-		// 升级配置
-		upgradeConfig() {
-			const { level, vType } = this.getNowPetItem;
-
-			switch (Number(vType)) {
-				case 4:
-					return BaseConfig.MomoLv4Cfg[level];
-				case 5:
-					return BaseConfig.MomoLv5Cfg[level];
-				case 6:
-					return BaseConfig.MomoLv6Cfg[level];
-				default:
-					return null;
 			}
+			return prototype;
 		},
 		//获取当前升级信息
 		getUpgradeInfo() {
 			let { level, category, prototype, vType } = this.getNowPetItem;
 			if (!vType) return [];
 			if (Number(vType) < 4) return [];
-			const lvUpgradeConfig = this.upgradeConfig;
+			let lvUpgradeConfig;
+			switch (Number(vType)) {
+				case 4:
+					lvUpgradeConfig = BaseConfig.MomoLv4Cfg[level];
+					break;
+				case 5:
+					lvUpgradeConfig = BaseConfig.MomoLv5Cfg[level];
+					break;
+				case 6:
+					lvUpgradeConfig = BaseConfig.MomoLv6Cfg[level];
+					break;
+				default:
+					console.log("quality not support");
+					break;
+			}
 			//卡五必难
 			let isHard = (Number(level) + 1) % 5 == 0 && Number(vType) <= 4;
 
@@ -410,7 +345,7 @@ export default {
 
 			let arr = [];
 			//处理其他材料
-			[1, 2, 3, 4].map((item) => {
+			[1, 2, 3, 4, 5].map((item) => {
 				let needNum = lvUpgradeConfig["v" + item];
 				if (needNum) {
 					//高级的将最高级的限制的类型给到他
@@ -436,17 +371,6 @@ export default {
 					});
 				}
 			});
-			//单独处理消耗v5的逻辑
-			if(lvUpgradeConfig["v5"] > 0){
-				arr.push({
-					category: 0,
-					needLv: 1,
-					needNum: lvUpgradeConfig["v5"],
-					needPrototype: false,
-					type: "v5"
-				})
-			}
-
 			//处理需要自己的材料
 			let selfNum = lvUpgradeConfig["self"];
 			if (selfNum > 0) {
@@ -463,7 +387,7 @@ export default {
 		//是否有编辑姓名的技能
 		hasEditNameSkill() {
 			let { tokenId, speciality } = this.getNowPetItem;
-			if (tokenId != 0 && (speciality == 3 || speciality == 1)) {
+			if (tokenId != 1 && (speciality == 3 || speciality == 1)) {
 				return true;
 			} else {
 				return false;
@@ -551,10 +475,9 @@ export default {
 				let targetItem = getMyPetObj[item.prototype];
 				if (targetItem) {
 					num = targetItem.num;
-					item.tokenId = targetItem.tokenId;
-					item.gems = targetItem.gems;
+					item.tokenId = targetItem.tokenId
 				}else{
-					item.tokenId = 0;
+					item.tokenId = 1;
 				}
 				item.num = num;
 			
@@ -611,13 +534,6 @@ export default {
 			
 			return showList;
 		},
-		// 是否需要mec
-		isNeedMec() {
-			return !!this.upgradeConfig?.mecNum;
-		},
-		needApproveMec(){
-			return this.isMECApproved == false;
-		},
 	},
 	created() {
 		this.inputName = this.hasSetName ? this.getNowPetItem.tokenName : "";
@@ -628,17 +544,12 @@ export default {
 			if(this.lockUpgradeTime > 0) this.lockUpgradeTime--;
 		}, 1000);
 		EventBus.$on(EventConfig.LevelUpConfirm,this.levelUpConfirm);
-		this.viewMECApproved();
 	},
 	beforeDestroy(){
 		clearInterval(upgradeLockTimer);
 		EventBus.$off(EventConfig.LevelUpConfirm,this.levelUpConfirm);
 	},
 	methods: {
-		// 标准算力提示
-		standardsHashrateTip() {
-			this.getConfirmDialog().show(`${this.$t('MOMO_98').replace('#0#', this.standardsHashrate).replace('#0#', this.standardsHashrate)}`);
-		},
 		levelUpConfirm({tokenId}){
 			if(tokenId == this.getNowPetItem.tokenId){
 				this.lockUpgradeTime = 0;
@@ -743,7 +654,7 @@ export default {
 		async upgrade() {
 			if(this.lockUpgradeTime > 0) return;
 
-			let { level, tokenId, location } = this.getNowPetItem;
+			let { level, tokenId } = this.getNowPetItem;
 			let { v1, v2, v3, v4_tokenId, v5_tokenId } = this.selectProtoTypes;
 			//TODO校验是否符合升级条件
 			let upgradeInfo = this.getUpgradeInfo;
@@ -777,8 +688,7 @@ export default {
 				tokenId,
 				Object.keys(protosV1V2V3Obj),
 				Object.values(protosV1V2V3Obj),
-				[...v4_tokenId, ...v5_tokenId],
-				location == ConstantConfig.NFT_LOCATION.VERSE
+				[...v4_tokenId, ...v5_tokenId]
 			);
 			if (hash) {
 				//锁定升级按钮
@@ -788,7 +698,7 @@ export default {
 				//从库中临时删除
 				let needRemove721TokenArr = [...v4_tokenId, ...v5_tokenId];
 				this.myNFT_stake.map((item, pos) => {
-					if (item.tokenId == 0) {
+					if (item.tokenId == 1) {
 						if (protosV1V2V3Obj[item.prototype]) {
 							item.num -= protosV1V2V3Obj[item.prototype];
 							if (item.num == 0) {
@@ -803,10 +713,6 @@ export default {
 				});
 				//删除选中
 				this.onStepRemoveFood();
-
-				setTimeout(() => {
-					EventBus.$emit('refreshCrystalNum');
-				}, 1000);
 			}
 		},
 		//授权1155给721
@@ -825,42 +731,32 @@ export default {
 		//提交设置名字
 		async confirmSetName() {
 			let { tokenId } = this.getNowPetItem;
-			if (this.inputName == "" || tokenId == 0 || this.hasClick) return;
-			this.hasClick = true;
-			this.$store.commit("globalState/setwalletStatus", {status:1});
+			if (this.inputName == "" || tokenId == 1) return;
 			let name = await Wallet.ETH.getMomoNameByTokenId(tokenId);
-			this.hasClick = false;
 			let res = await Wallet.ETH.setMomoNameByTokenId(tokenId,this.inputName,name == "");
 			if (res) {
-				this.hasClick = false;
 				this.oprDialog("setName-dialog", "none");
 			}
 		},
 		//打开选择面板
 		showSelectNftDialog(needHandleData, index, isTabChange = false) {
-			if(this.lockUpgradeTime > 0  ) return;
-
-			//如果是图鉴模式并且切换v5 变成单选模式
-			if(needHandleData.type == "v5"){
-				this.tab_pos = 0;
-			}
-
-			// let { type, needPrototype } = needHandleData;
-			// let needShowArr = [];
-			// this.myNFT_stake.map((item) => {
-			// 	//去掉自己
-			// 	let isSelf = type >= 4 && item.tokenId == this.getNowPetItem.tokenId;
-			// 	// item.level >= needLv &&
-			// 	let bookType =  item.prototype % (item.vType * 10000)
-			// 	item.isLock = this.getLockTypes.indexOf(bookType) != -1;
-			// 	if ( "v" + item.vType == type && (!needPrototype || needPrototype == item.prototype) && !isSelf ) {
-			// 		needShowArr.push(item);
-			// 	}
-			// });
-			// this.showCanSelectArr = needShowArr;
+			if(this.lockUpgradeTime > 0) return;
+			let { type, needPrototype } = needHandleData;
+			let needShowArr = [];
+			this.myNFT_stake.map((item) => {
+				//去掉自己
+				let isSelf = type >= 4 && item.tokenId == this.getNowPetItem.tokenId;
+				// item.level >= needLv &&
+				let bookType =  item.prototype % (item.vType * 10000)
+				item.isLock = this.getLockTypes.indexOf(bookType) != -1;
+				if ( "v" + item.vType == type && (!needPrototype || needPrototype == item.prototype) && !isSelf ) {
+					needShowArr.push(item);
+				}
+			});
+			this.showCanSelectArr = needShowArr;
 			this.needHandleData = needHandleData;
 			//momo每次升整5倍数等级的时候默认升级界面在图鉴模式
-			if(!isTabChange && (this.getNowPetItem.level +1) % 5 == 0 && needHandleData.type != "v5"){
+			if(!isTabChange && (this.getNowPetItem.level +1) % 5 == 0){
 				let t = setTimeout(()=>{
 					clearTimeout(t);
 					this.hasLoadBook = true;
@@ -922,28 +818,23 @@ export default {
 				}
 			});
 		},
-		// 查询MEC授权状态
-		async viewMECApproved(){
-			const isApprove = await Wallet.ETH.isApprovedForAll(WalletConfig.ETH.crystalToken, WalletConfig.ETH.moMoToken);
-
-			if(isApprove != null) {
-				this.isMECApproved = isApprove;
-			}
-		},
-		// 授权MEC
-		async approveMEC(){
-			const hash = await Wallet.ETH.approvedForAll(WalletConfig.ETH.crystalToken, WalletConfig.ETH.moMoToken, ()=>{
-				this.viewMECApproved();
-			});
-
-			if(hash){
-				this.lockBtnMethod("approveLock");
-			}
-		},
 	},
 };
 </script>
-<style lang="less" scoped>
+<style scoped>
+
+.sort-btn{
+	height: 40px;
+	background: #1d2b50;
+	border-radius: 40px;
+	width: 40px;
+	color: #fff;
+	line-height: 40px;
+	text-align: center;
+	font-size: 0px;
+	cursor: pointer;
+	margin-left: 5px;
+}
 @media (max-width: 768px){
 	.type_change{
 		position: static!important;
@@ -965,11 +856,6 @@ export default {
 	top: 65px;
 	z-index: 999;
 }
-.chanzi{
-	position: absolute;
-	bottom: 30px;
-	width: 100%;
-}
 #upgrade-name {
 	position: absolute;
 	bottom: 0px;
@@ -983,15 +869,6 @@ export default {
 	top: 20px;
 	font-size: 20px;
 }
-
-.tip-icon {
-	width: 25px;
-	cursor: pointer;
-	margin-right: 5px;
-	position: relative;
-	z-index: 999;
-}
-
 #upgrade-power-lv1 {
 	position: absolute;
 	right: 20px;
@@ -1050,57 +927,6 @@ export default {
 	margin: 0px auto;
 	overflow: hidden;
 	position: relative;
-	margin-top: 10px;
-}
-
-@media (max-width: 768px) {
-	.mec-item {
-    zoom: 0.6 !important;
-	}
-}
-
-.mec-item {
-	position: relative;
-
-	.icon {
-    cursor: pointer;
-    width: 86px;
-    height: 65px;
-    margin: 0 10px 25px 10px;
-		background-image: url("../../assets/nft_head_mec.png");
-		background-size: 100% 100%;
-		background-repeat: no-repeat;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		img {
-			width: 40%;
-		}
-	}
-
-	.count {
-		width: 100%;
-		text-align: center;
-		font-size: 13px;
-		position: absolute;
-		bottom: 0;
-	}
-}
-
-#selectNft-dialog {
-	.items {
-		& > span {
-			display: inline-block;
-			vertical-align: top;
-		}
-
-		.mec-item {
-			.count {
-				color: #e24c4c;
-			}
-		}
-	}
 }
 </style>
 

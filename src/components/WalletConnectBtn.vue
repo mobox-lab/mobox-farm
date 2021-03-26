@@ -21,22 +21,13 @@ export default {
 	},
 	methods: {
 		buttonClick(){
-			if(document.body.clientWidth < 1000){
-				return;
-			}
 			if(this.connectWalletAddr == ""){
 				this.oprDialog('connect-wallet-dialog','block');
 			}else{
 				if(this.chainNetwork == 56){
 					this.oprDialog("connected-wallet-info-dialog", "block");
 				}else{
-					if(window.ethereum){
-						window.ethereum.request({
-							method: 'wallet_switchEthereumChain',
-							params: [{ chainId: '0x38' }],
-						});
-					}
-					this.showNotify(this.$t("Common_23"), "error");
+					this.showNotify("请在钱包切换链", "error");
 				}
 			}
 		}
@@ -47,19 +38,13 @@ export default {
 <style  scoped>
 	.connect-btn{
 		padding: 0px 20px;
-		border-radius: 8px;
-		height: 35px;
-		background: #1751f6;
+		border-radius: 30px;
+		height: 40px;
+		background: #1d2b50;
 		border: none;
-		color: #fff;
+		color: #94BBFF;
 		cursor: pointer;
 		line-height: 100%;
-		font-size: 14px;
-	}
-	.connect-btn.btn-small{
-		min-width: auto !important;
-		font-size: 12px;
-		height: 28px;
-		padding: 0px 12px!important;
+		font-weight: 800;
 	}
 </style>

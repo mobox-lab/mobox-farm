@@ -2,6 +2,8 @@ import {ConstantConfig} from "@/config";
 
 const state = () => ({
 	data: {
+		connectWalletAddr: "",
+		chainNetwork: 0,
 		selectChain: "trx",
 		addressArr: ["BNB: "],
 		notifications: [],

@@ -5,8 +5,6 @@ import userState from './modules/userState'
 import ethState from './modules/ethState'
 import marketState from './modules/marketState'
 import bnbState from './modules/bnbState'
-import gemState from './modules/gemState'
-import momoMarketState from './modules/momoMarketState'
 
 export default class getNewStore {
 	static getNewStore(){
@@ -17,9 +15,7 @@ export default class getNewStore {
 				userState,
 				ethState,
 				marketState,
-				bnbState,
-				gemState,
-				momoMarketState
+				bnbState
 			}
 		});
 	}

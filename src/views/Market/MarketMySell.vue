@@ -102,7 +102,6 @@ export default {
 		}
 	},
 	async created(){
-		await Wallet.ETH.init();
 		this.myAccount = await Wallet.ETH.getAccount();
 		if(!this.hasLoad){
 			this.hasLoad = true;

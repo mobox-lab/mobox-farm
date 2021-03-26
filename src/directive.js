@@ -6,7 +6,7 @@ export default () => {
 				let max = input.getAttribute("data-max");
 				let min = input.getAttribute("data-min");
 				if (input.value.length === 1) {
-					input.value = input.value.replace(/[^0-9]/g, '')
+					input.value = input.value.replace(/[^1-9]/g, '')
 				} else {
 					input.value = input.value.replace(/[^\d]/g, '')
 				}
@@ -22,7 +22,7 @@ export default () => {
 				let max = input.getAttribute("data-max");
 				let min = input.getAttribute("data-min");
 				if (input.value.length === 1) {
-					input.value = input.value.replace(/[^0-9]/g, '')
+					input.value = input.value.replace(/[^1-9]/g, '')
 				} else {
 					input.value = input.value.replace(/[^\d]/g, '')
 				}
@@ -68,23 +68,18 @@ export default () => {
 	Vue.directive("popMsg", {
 		bind: function (ele) {
 			let popMsgNode = ele.querySelector('.popMsg');
-			popMsgNode.setAttribute("tabindex", 1);
 			ele.onmouseenter = function(){
 				popMsgNode.style.display="block";
-				popMsgNode.focus();
 			}
 			ele.onmouseleave = function(){
 				popMsgNode.style.display="none";
 			}
-			ele.addEventListener("click", (e)=>{
-				e.stopPropagation();
+			ele.touchstart = function(){
 				popMsgNode.style.display="block";
-			},true);
-
-			ele.addEventListener("touchstart", (e)=>{
-				e.stopPropagation();
-				popMsgNode.style.display="block";
-			},true);
+			}
+			ele.touchend = function(){
+				popMsgNode.style.display="none";
+			}
 		}
 	})
 
@@ -113,6 +108,7 @@ const numberCheck = (num)=>{
 	str = str.replace(/[^\d^\\.]+/g,'');
 	//如果需要保留小数点后两位，则用下面公式
 	// str = str.replace(/\\.\d\d$/,'');
+	console.log(str);
 	return str;
 }
 

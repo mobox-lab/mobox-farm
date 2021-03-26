@@ -1,132 +1,73 @@
 <template>
-	<div id="market-content" style="padding:40px 0px 10px 0px">
-		<div class="center-content">
-			<section id="market-type" class="type-select">
-				<span class="type-select-notice" style="right:5px">&gt;</span>
-				<div class="type-select-item vertical-children " :class="{active: marketTypePos == 0}" ref="menu0" @click="$store.commit('marketState/setData', {marketTypePos: 0, marketTabPos: 0})">
-					<img src="../../assets/icon/momo_icon.png" alt="" height="30">
-					<span class="mgl-5">MOMO</span>
-				</div>
-				<div  class="type-select-item vertical-children" :class="{active: marketTypePos == 4}" ref="menu4"
-					@click="gemMarketKey = 'box'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2,marketTypePos: 4});$store.commit('marketState/setData', {marketTypePos: 4, marketTabPos: 0, marketGemFilter: 2});">
-					<img src="../../assets/icon/box_icon.png" alt="" width="30">
-					<span class="mgl-5">BOX</span>
-				</div>
-				<div  class="type-select-item vertical-children" :class="{active: marketTypePos == 3}"  ref="menu3"
-					@click="gemMarketKey = 'mecbox'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2,marketTypePos: 3});$store.commit('marketState/setData', {marketTypePos: 3, marketTabPos: 0, marketGemFilter: 3});">
-					<img src="../../assets/box/mecbox.png" alt="" height="20">
-					<span class="mgl-5">MEC BOX</span>
-				</div>
-				<div  class="type-select-item vertical-children" :class="{active: marketTypePos == 5}"  ref="menu5"
-					@click="gemMarketKey = 'mec'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2,marketTypePos: 5});$store.commit('marketState/setData', {marketTypePos: 5, marketTabPos: 0, marketGemFilter: 4});">
-					<img src="../../assets/coin/CRYSTAL.png" alt="" height="30">
-					<span class="mgl-5">MEC</span>
-				</div>
-				<div  class="type-select-item vertical-children" :class="{active: marketTypePos == 2}" ref="menu2"
-					@click="gemMarketKey = 'gem'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 0,marketTypePos: 2});$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0, marketGemFilter: 1});">
-					<img src="../../assets/icon/yellow_icon.png" alt="" height="30">
-					<span class="mgl-5">{{$t("Gemstone_44")}}</span>
-				</div>
-				<div  class="type-select-item vertical-children" :class="{active: marketTypePos == 1} " ref="menu1" @click="$store.commit('marketState/setData', {marketTypePos: 1, marketTabPos: 0})">
-					<img src="../../assets/icon/rent_icon.png" alt="" height="30">
-					<span class="mgl-5">{{$t("Hire_01")}}</span>
-				</div>
-			</section>
+	<div id="market">
+		<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempSells.length + tempMarketCancelTx.length]"  />
+		<MarketAll v-show="marketTabPos == 0" />
+		<MarketMy v-show="marketTabPos == 1" />
+		<MarketMySell v-if="marketTabPos == 2" />
+		<div class="loading" v-show="marketLoading">
+			<Loading :width="30" :height="30"  />
+		</div>
 
-			<div>
-				<!-- MOMO市场 -->
-				<MoMo v-if="marketTypePos==0" />
-
-				<!-- MOMO租赁市场 -->
-				<div v-else-if="marketTypePos==1" class="mgt-10">
-					<div class="tal">
-						<div class="hide-xs" style="border-bottom: 1px solid #141b24 !important;padding-bottom:10px">
-							<Tab :list="rentTabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,marketRentOrderList.total]"   />
-						</div>
-						<div class="m-tab dib visiable-xs" style="zoom: 0.8">
-							<Dropdown class="line" :list="rentTabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" />
-						</div>
+		<Dialog id="shop-history-dialog" :top="100" :width="500" :animation="viewHistory">
+			<h2>{{$t("Market_24")}}</h2>
+			<div style="max-height: 550px; overflow-y: auto">
+				<div class="history-item mgt-10 close" v-for="item in marketHistory.list" :key="item.tx" @click="toggleClass($event)">
+					<div class="row tal opa-6">
+						<div class="col-md-4 col-xs-4 ">{{$t("Market_25")}}</div>
+						<div class="col-md-4 col-xs-4 tac">{{$t("Market_26")}}</div>
+						<div class="col-md-4 col-xs-4 tar">{{$t("Market_17")}}</div>
 					</div>
-					<div style="padding:0px 10px">
-						<RentAll v-show="marketTabPos == 0" />
-						<RentMy v-if="marketTabPos == 1" />
-						<RentMySell ref="rentMySell" v-if="marketTabPos == 2" />
-						<RentStatistics v-if="marketTabPos == 3" />
-					</div>
-				</div>
-				<!-- 1155市场 -->
-				<div v-else-if="[2,3,4,5].indexOf(marketTypePos) != -1" class="mgt-10" :key="gemMarketKey">
-					<div class="tal">
-						<div class="hide-xs" style="border-bottom: 1px solid #141b24 !important;padding-bottom:10px">
-							<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,getGemTemNum]"   />
-						</div>
-						<div class="m-tab dib visiable-xs" style="zoom: 0.8">
-							<Dropdown class="line" :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" />
+					<div class="row tal cur-point por" style="background:#2E3F6B;border-radius:6px;padding:5px;padding-bottom:12px">
+						<table class="pj-table">
+							<tr style="color:#fff">
+								<td>{{shorAddress(item.bidder)}}</td>
+								<td class="tac">{{shorAddress(item.auctor)}}</td>
+								<td class="tar" :class="item.isBuy?'color-buy':'color-sell'">
+									{{item.isBuy?"-":"+"}}{{numFloor((item.bidPrice / 1e9) * (item.isBuy?1:0.95), 100)}} BUSD
+									<p style="color:#6481b0;zoom:0.8;" >{{dateFtt('yyyy-MM-dd hh:mm:ss', new Date(item.crtime * 1000))}}</p></td>
+							</tr>
+						</table>
+						<div class="arrow-down">
+							<svg viewBox="0 0 1024 1024" width="8" height="8"><path fill="#6481b0" d="M461.7 790.9c26.2 28 70 29.3 98 3.2 1.1-1.1 2.2-2.1 3.2-3.2L992 340.2c13.5-14.4 21-33.4 20.9-53.2 1-40.5-31-74-71.5-75.1-19 0.3-37.1 8.2-50.1 22L511.8 631.5 133.2 233.9c-13.1-13.9-31.5-21.9-50.7-22C42 213 10 246.5 11 287c-0.1 19.8 7.4 38.8 20.9 53.2l429.8 450.7z" p-id="3922"></path></svg>
 						</div>
 					</div>
-					<div style="padding:0px 10px">
-						<Swap v-show="marketTabPos == 0 && marketTypePos == 5 && !isShowMecMarket" />
-						<MarketGemAll v-show="marketTabPos == 0 && (marketTypePos == 5 ? isShowMecMarket : true)" :isShowSwapMec="marketTypePos === 5" />
-						<MarketGemMy v-show="marketTabPos == 1" />
-						<MarketGemMySell v-show="marketTabPos == 2" />
-						<MarketGemStatistics v-if="marketTabPos == 3" />
+					<div class="col-md-12 mgt-10" style="zoom: 0.6" @click="$event.stopPropagation()">
+						<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
+						<div class="vertical-children mgt-10" style="font-size: 18px">
+							<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
+							<span>{{numFloor(item.bidPrice/1e9, 100)}}</span>
+						</div>
+						</PetItem>
+						<PetItemScroll v-bind:data="{item: item}" class="market" v-if="item.tokenId == 0 && hackReload">
+							<div class="vertical-children mgt-10" style="font-size: 18px">
+								<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
+								<span>{{numFloor(item.bidPrice/1e9, 100)}}</span>
+							</div>
+						</PetItemScroll>
 					</div>
-				</div>
-
-				<div class="loading" v-show="marketLoading">
-					<Loading :width="30" :height="30"  />
 				</div>
 			</div>
-		</div>
-		
-		<MomoHistory ref="momoHistory" />
-		<GemHistory ref="gemHistory" />
-		<RentDeal ref="rentDeal" />
+		</Dialog>
 	</div>
 </template>
 
 <script>
-import {  Tab, Loading, Dropdown } from "@/components";
-// MOMO
-import MomoHistory from './Momo/MomoHistory.vue'
-import MoMo from "./Momo/MoMo.vue"
-
-// GEM
-import MarketGemAll from './Gem/MarketGemAll.vue'
-import MarketGemMy from './Gem/MarketGemMy.vue'
-import MarketGemMySell from './Gem/MarketGemMySell.vue'
-import GemHistory from './Gem/GemHistory.vue'
-import MarketGemStatistics from './Gem/MarketGemStatistics.vue'
-//Rent
-import RentAll from './Rent/RentAll.vue'
-import RentMy from './Rent/RentMy.vue'
-import RentMySell from './Rent/RentMySell.vue'
-import RentDeal from './Rent/RentDeal.vue'
-import RentStatistics from './Rent/RentStatistics.vue'
-import Swap from './Swap.vue';
-import axios from 'axios';
-
+import {  Tab,  PetItemScroll, PetItem, Dialog, Loading } from "@/components";
+import MarketAll from './MarketAll.vue'
+import MarketMy from './MarketMy.vue'
+import MarketMySell from './MarketMySell.vue'
 import { mapState } from "vuex";
-import { PancakeConfig } from '@/config';
-import { Wallet, Common, Http} from "@/utils";
+import { BaseConfig, PancakeConfig } from '@/config';
+import {Http, Wallet, Common} from "@/utils";
 import { CommonMethod } from "@/mixin";
 
+let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { 
-		Tab , Loading, Dropdown,
-		MoMo,
-		MomoHistory,
-		Swap,
-		MarketGemAll,MarketGemMy,MarketGemMySell, MarketGemStatistics,GemHistory,
-		RentAll,RentMy,RentMySell, RentDeal, RentStatistics,
-	},
+	components: { Tab, MarketAll, MarketMy, MarketMySell , PetItemScroll, PetItem, Dialog , Loading},
 	data() {
 		return {
-			isShowMecMarket: false,
-			gemMarketKey: "gem",
-			tabList: [this.$t('Market_01'), this.$t("Market_02"), this.$t("Market_03"), this.$t("Market_53")],
-			rentTabList:[this.$t('Market_01'), this.$t("Hire_02"),this.$t("Hire_03"),this.$t("Market_53")],
+			tabList: [this.$t('Market_01'), this.$t("Market_02"), this.$t("Market_03")],
 			tabPos: 0,
 			selectCategory: [
 				this.$t("MOMO_02"),
@@ -145,41 +86,9 @@ export default {
 				this.$t("MOMO_13"),
 				this.$t("MOMO_14"),
 			],
-			gemType:[this.$t("Market_60"),this.$t("Gemstone_45"), this.$t("Gemstone_46"), this.$t("Gemstone_47"),this.$t("Gemstone_48")],
-			gemLv:[this.$t("Gemstone_49"), "Lv.1", "Lv.2", "Lv.3","Lv.4","Lv.5","Lv.6","Lv.7","Lv.8","Lv.9"],
 			myAccount: "",
-			marketTypePosToAction: {
-				"0": 26101,
-				"1": 26301,
-				"2": 26401,
-				"3": 26201,
-				"4": 26201,
-				"5": 26201,
-			},
-			marketTypePosToMigrateType: {
-				0: 0,
-				2: 1,
-				4: 2,
-				3: 3,
-				5: 4,
-				1: 5,
-			},
-			// 已迁移
-			migrated: [],
+			hackReload: true,
 		};
-	},
-	watch: {
-		gemMarketKey: function (){
-			this.$refs.gemHistory &&  this.$refs.gemHistory.getMyHistory(this.myAccount);
-		},
-		marketTypePos: function(newVal){
-			this.setAction(this.marketTypePosToAction[newVal]);
-		},
-		nowTs: function(val){
-			if(val % 10 == 0){
-				this.getMyHistory();
-			}
-		}
 	},
 	computed: {
 		...mapState({
@@ -187,73 +96,97 @@ export default {
 			marketLoading: (state) => state.marketState.data.marketLoading,
 			tempSells: (state) => state.marketState.data.tempSells,
 			tempMarketCancelTx: (state) => state.marketState.data.tempMarketCancelTx,
-			tempGemSells: (state) => state.marketState.data.tempGemSells,
-			tempGemMarketCancelTx: (state) => state.marketState.data.tempGemMarketCancelTx,
-			marketTypePos: (state) => state.marketState.data.marketTypePos,
-			marketGemFilter: (state) => state.marketState.data.marketGemFilter,
-			marketRentOrderList: (state) => state.marketState.data.marketRentOrderList,
-			coinArr: (state) => state.bnbState.data.coinArr,
-			shopCar: (state) => state.marketState.data.shopCar,
-			nowTs: (state) => state.globalState.data.nowTs,
+			marketHistory: (state) => state.marketState.data.marketHistory,
 			historyNotice: (state) => state.marketState.data.historyNotice,
+			coinArr: (state) => state.bnbState.data.coinArr,
+			useCoinPos: (state) => state.bnbState.data.useCoinPos,
 		}),
 		getSelectCoinArr(){
 			let arr = [];
-			Object.keys(PancakeConfig.SelectCoin).map(coinKey=>{
-				if(coinKey == "USDT"){
-					arr.push(coinKey + ": " + this.numFloor(this.coinArr[coinKey].balance, 1e2));
-				}
+			Object.keys(PancakeConfig.SelectCoin).map(coinName=>{
+				arr.push(coinName + ": " + this.coinArr[coinName].balance);
 			})
 			return arr;
-		},
-		getGemTemNum(){
-			let num = 0;
-			this.tempGemSells.map(item=>{
-				if(item.erc1155_ == this.marketGemFilter) num++;
-			});
-			this.tempGemMarketCancelTx.map(item=>{
-				if(item.erc1155_ == this.marketGemFilter) num++;
-			});
-			return num;
 		}
 	},
-	async mounted(){
-		let marketTypePos = this.$route.query.tab || this.marketTypePos;
-		this.$refs["menu"+marketTypePos].click();
-
+	async created(){
 		this.myAccount = await Wallet.ETH.getAccount();
-		Common.app.getCoinValue();
-		this.getMyHistory();
-	},
 
+		this.getMyAuctionHistory();
+		if(timer) clearInterval(timer);
+		timer = setInterval(()=>{
+			this.getMyAuctionHistory();
+		}, 10000)
+
+		this.getCoinValue();
+	},
+	beforeDestroy(){
+		if(timer) clearInterval(timer);
+	},
 	methods: {
-		async getMyHistory(){
-			this.$refs.momoHistory && this.$refs.momoHistory.getMyHistory(this.myAccount);
-			this.$refs.gemHistory &&  this.$refs.gemHistory.getMyHistory(this.myAccount);
+		async getCoinValue(){
+			let balance = await Wallet.ETH.getBalance();
+			this.coinArr["BNB"].balance = balance;
+			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+
+			for (let key in PancakeConfig.SelectCoin) {
+				let {addr, decimals, omit} = PancakeConfig.SelectCoin[key];
+				if(addr != ""){
+					let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
+					this.coinArr[key].balance =  Common.numFloor((Number(value) / decimals), omit);
+					this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+					await Common.sleep(500);
+				}
+			}
+		},
+
+		viewHistory(){
+			this.$store.commit("marketState/setData", { historyNotice: false});
+		},
+		//获取交易记录
+		async getMyAuctionHistory(){
+			if(this.myAccount == "") return;
+			let data = await Http.getMyAuctionHistory(this.myAccount);
+			if(data){
+				data.list.map(item=>{
+					if(item.tokenId != 0){
+						item.tokenName = BaseConfig.NftCfg[item.prototype]["tokenName"];
+						item.vType = parseInt(item.prototype / 10000);
+					}
+					item.isBuy =  item.bidder.toLocaleLowerCase() == this.myAccount.toLocaleLowerCase();
+				});
+				data.uptime = new Date().valueOf();
+				let historyNotice = this.historyNotice;
+				if(!historyNotice){
+					historyNotice =  (data.total != this.marketHistory.total && this.marketHistory.uptime != 0);
+				}
+				this.$store.commit("marketState/setData", {marketHistory: data, historyNotice});
+			}
+		},
+		toggleClass(e){
+			e.currentTarget.classList.toggle("close");
+			this.hackReload = false;
+			this.$nextTick(()=>{
+				this.hackReload = true;
+			});
 		},
 		onTabChange(tabPos) {
 			this.$store.commit("marketState/setData", {marketTabPos:tabPos});
 		},
-		menuClick(){
-
-		},
+		onCoinChange(pos){
+			console.log("onCoinChange", pos);
+			// this.marketPets.list = [];
+			// this.$store.commit("marketState/setData", {marketPage:1, marketPets: this.marketPets});
+			// this.$store.commit("marketState/marketSearch", {type: "sort", value: pos});
+			// this.$nextTick(()=>{
+			// 	this.getAuctionPets(this.marketPage, true);
+			// });
+		}
 	},
-
 };
 </script>
 
 <style >
-.center-content{
-	max-width: 1460px;
-	margin: 0px auto;
-}
-.momo-content{
-	margin: 0px -20px !important;
-}
-#market-type{
-	border-bottom: 1px solid #141b24 !important;
-	padding-bottom: 10px;
-}
 .loading{
 	position: absolute;
 	left: 0px;
@@ -261,96 +194,20 @@ export default {
 	right: 0px;
 	bottom: 0px;
 	text-align: center;
-	z-index: 999
 }
 .loading svg{
 	margin-top: 300px;
 }
-
-
-#market-content {
-	text-align: center;
-	position: relative;
-	padding-bottom: 50px !important ;
-}
-#market-pet-fitter {
+#market #market-pet-fitter {
 	position: absolute;
 	right: 0px;
-	top: -69px !important;
+	top: 0px;
 }
 
-@media (max-width: 768px) {
-	#market-pet-fitter {
-		position: absolute;
-		right: 0px;
-		top: -65px !important;
-	}
-	.m-tab{
-		border-bottom: 1px solid #141b24 !important;
-        padding: 0px 10px;
-        padding-bottom: 10px;
-    }
-	.momo-content{
-		margin: 0px !important;
-		margin-top: 10px !important;
-	}
-	#market-type{
-		border-bottom: none !important;
-		padding: 0px 10px
-	}
-	.visiable-xs .dropdown-value{
-		min-width: 150px !important;
-	}
-	#market .dropdown{
-		margin-top: 0px !important;
-	}
-	#market-content {
-		margin-top: 0px;
-	}
-	#market-content .mgt-20{
-		margin-top: 10px !important;
-	}
-	
-	#market-type{
-		display: flex !important;
-		justify-content: left !important;
-		align-items: center !important;
-		word-break: keep-all !important;
-		overflow-x: auto !important;
-		overflow-y: hidden !important;
-		border-bottom: 1px solid #141b24 !important;
-	}
-	.type-select-item{
-		display: inline-flex !important;
-		height: 40px !important;
-		padding: 0px 12px !important;
-		margin-right: 0px !important;
-		text-align: center !important;
-		cursor: pointer !important;
-		user-select: none !important;
-		opacity: 0.5 !important;
-		justify-content: center !important;
-		align-items: center !important;
-		border-radius: 27px !important;
-		white-space: nowrap !important;
-	}
-	.type-select-item.active{
-		background: #42464c !important;
-		opacity: 1 !important;
-		border-bottom: none !important;
-	}
+#market {
+	text-align: center;
+	padding: 10px 10px;
+	position: relative;
 }
-
-	.pet_item .swiper-pagination-bullet-active{
-		background: #fff !important;
-		width: 6px;
-		height: 3px !important;
-	}
-	.pet_item .swiper-pagination-bullet{
-		background: #fff;
-		height: 4px;
-		width: 6px;
-		border-radius: 5px;
-	}
 
 </style>

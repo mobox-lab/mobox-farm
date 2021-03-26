@@ -1,44 +1,28 @@
 <template>
 	<Dialog id="pancake-setting" :top="100" :width="400">
-		<h2>{{$t("Air-drop_40")}}</h2>
+		<h2>Settings</h2>
 		<div class="ly-input-content mgt-10">
 			<div class="tal">
-				<p class="vertical-children">
-					<span>{{$t("Air-drop_39")}}</span>
-					<span class="cur-point por mgl-10" v-popMsg >
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E9DB8F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-						<span class="popMsg">{{$t("Air-drop_41")}}</span>
-					</span>
-				</p>
+				<p>Slippage tolerance</p>
 				<div class="aveage-box mgt-10">
-					<div style="flex:1 1 auto">
-						<input type="text" class="ly-input"  style="width:100%" v-model="setting.slippage"  v-number placeholder="0.5"> 
-					</div>
-					<p  class="tal" style="padding:0px 10px">%</p>
+					<input type="text" class="ly-input"  style="flex:1 1 auto" v-model="setting.slippage"  v-number placeholder="0.5"> 
+					<p  class="tac">%</p>
 				</div>
-				<div class="button-layout mgt-10">
+				<div class=" mgt-10">
 					<button :class="Number(setting.slippage) == 0.1?'btn-primary':'btn-default' " @click="setting.slippage = 0.1">0.1%</button>&nbsp;
 					<button :class="Number(setting.slippage) == 0.5?'btn-primary':'btn-default' " @click="setting.slippage = 0.5">0.5%</button>&nbsp;
 					<button :class="Number(setting.slippage) == 1?'btn-primary':'btn-default' " @click="setting.slippage = 1">1%</button>
 				</div>
-				<p class="color-danger small mgt-10" v-if="Number(setting.slippage) < 0.5 && Number(setting.slippage) > 0">{{$t("Air-drop_97")}}</p>
-				<p class="color-danger small mgt-10" v-if="Number(setting.slippage) == 0">{{$t("Air-drop_98")}}</p>
+				<p class="color-danger small mgt-10" v-if="Number(setting.slippage) < 0.5 && Number(setting.slippage) > 0">Your transaction may fail</p>
+				<p class="color-danger small mgt-10" v-if="Number(setting.slippage) == 0">Enter a valid slippage percentage</p>
 			</div>
 			<div class="mgt-20 tal">
-				<p class="vertical-children">
-					<span>{{$t("Air-drop_42")}}</span>
-					<span class="cur-point por mgl-10" v-popMsg >
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E9DB8F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-						<span class="popMsg">{{$t("Air-drop_43")}}</span>
-					</span>
-				</p>
+				<p>Transaction deadline</p>
 				<div class="aveage-box mgt-10">
-					<div style="flex:1 1 auto">
-						<input style="width:100%" type="text" class="ly-input"  v-model="setting.duration" v-int placeholder="20"> 
-					</div>
-					<p  class="tac" style="padding:0px 10px">{{$t("Air-drop_44")}}</p>
+					<input type="number" class="ly-input" style="flex:1 1 auto" v-model="setting.duration" v-int placeholder="20"> 
+					<p  class="tac" style="padding:0px 10px">Minutes</p>
 				</div>
-				<p class="color-danger small mgt-10" v-if="setting.duration == '' ">{{$t("Air-drop_99")}}</p>
+				<p class="color-danger small mgt-10" v-if="setting.duration == '' ">Enter a valid deadline</p>
 			</div>
 		</div>
 	</Dialog>
@@ -69,9 +53,3 @@ export default {
 	}
 }
 </script>
-
-<style lang="less" scoped>
-	.button-layout {
-		display: flex;
-	}
-</style>

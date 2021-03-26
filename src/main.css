@@ -627,6 +627,22 @@ svg {
 	background: #1751f6;
 }
 
+.btn-success {
+	border-radius: 20px;
+	height: 33px;
+	outline: none;
+	background-image: linear-gradient(90deg, #49c773, 50%, #2b924d);
+	color: #fff;
+	border: none;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 0px 30px;
+	min-width: 100px;
+	text-align: center;
+	user-select: none;
+	display: inline-block;
+}
 .btn-primary {
 	height: 35px;
 	outline: none;
@@ -710,6 +726,11 @@ svg {
 	font-size: 12px;
 	height: 28px;
 	padding: 0px 12px!important;
+}
+.btn-success.btn-small {
+	min-width: auto !important;
+	font-size: 12px;
+	height: 28px;
 }
 
 .btn-advanced {

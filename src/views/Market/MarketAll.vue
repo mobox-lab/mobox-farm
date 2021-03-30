@@ -23,13 +23,13 @@
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 100)}}</span>
+						<span>{{numFloor(item.nowPrice/1e9, 10000)}}</span>
 					</div>
 				</PetItem>
 				<PetItemScroll v-bind:data="{item: item}" class="market" v-if="item.tokenId == 0 ">
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 100)}}</span>
+						<span>{{numFloor(item.nowPrice/1e9, 10000)}}</span>
 					</div>
 				</PetItemScroll>
 			</router-link>

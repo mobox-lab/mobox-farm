@@ -108,7 +108,6 @@ const numberCheck = (num)=>{
 	str = str.replace(/[^\d^\\.]+/g,'');
 	//如果需要保留小数点后两位，则用下面公式
 	// str = str.replace(/\\.\d\d$/,'');
-	console.log(str);
 	return str;
 }
 

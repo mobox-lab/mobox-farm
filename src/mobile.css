@@ -25,10 +25,61 @@
 	#mobile-nav {
 		display: block !important;
 	}
+	#buy-back{
+		padding: 0px;
+		width: 100% !important;
+	}
     
  }
 
 @media (max-width: 768px) {
+	#buy-back{
+		padding: 0px;
+		width: 100% !important;
+	}
+	#buy-back .aveage-box{
+		display: block;
+	}
+	.statistics .list-item .addr{
+		padding-top: 25px;
+	}
+	.statistics-top-tab li{
+		font-size: 12px;
+		padding: 5px 10px !important;
+		padding-top: 0px !important;
+	}
+	#shop-history-dialog .addr{
+		margin-top: 10px;
+	}
+	.shop-history-pet{
+		position: absolute;
+		top: -8px;
+	}
+	.list-item-momo-mobile{
+		display: block !important;
+	}
+	.list-item {
+		font-size: 12px !important;
+	}
+	.list-item td:nth-child(2){
+		border-top-left-radius: 20px;
+		border-bottom-left-radius: 20px;
+	}
+	.list-item-momo{
+		display: none;
+	}
+	.statistics-top .aveage-box img{
+		height: 30px;
+	}
+	.statistics-top .aveage-box{
+		padding: 15px !important;
+		font-size: 12px;
+	}
+	.statistics-value{
+		display: block;
+		margin-left: 0px;	
+		margin-top: 5px;
+	}
 	#airdrop-cont .col-md-4{
 		padding: 0px !important;
 	}
@@ -41,9 +92,7 @@
 	.yf-dialog-bg{
 		padding: 10px !important;
 	}
-	* {
-		font-size: 14px;
-	}
+
 	.tab-menu{
 		padding: 5px 20px;
 		margin-right:2px;

@@ -1,18 +1,18 @@
 <template>
 	<div>
-		<div v-if="!showAddLiquidityPanel" class="tab-body tal">
+		<div v-if="!showAddLiquidityPanel && !showRemoveLiquidityPanel" class="tab-body tal">
 			<div class="tab-content"  v-if="oprData.isLP">
-				<h2>Liquidity</h2>
-				<p class="small opa-6">Add liquidity to receive LP tokens</p>
+				<h2>{{$t("Air-drop_30")}}</h2>
+				<p class="small opa-6">{{$t("Air-drop_58")}}</p>
 				<div class="mgt-10">
-					<button class="btn-primary " @click="showAddLiquidityPanel =  true" style="background: #384A7C">Add LP</button>&nbsp;
+					<button class="btn-primary " @click="showAddLiquidityPanel =  true" style="background: #384A7C">{{$t("Air-drop_57")}}</button>&nbsp;
 					<button v-if="Number(oprData.balance) > 0" class="btn-primary mgt-10"  style="background: #384A7C">Remove LP</button>
 				</div>
 			</div>
 			<div class="tab-split"  v-if="oprData.isLP"></div>
 			<div class="tab-content">
 				<div class="aveage-box">
-					<p class="tal small">存款数量:</p>
+					<p class="tal small">{{$t("Air-drop_10")}}</p>
 					<p class="tar small">
 						<span class="cur-point por" v-popMsg >
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E9DB8F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
@@ -44,17 +44,99 @@
 					<div v-if="depositNeedApprove">
 						<button @click="approveToPool(oprData.coinName)" class="btn-primary por" style="width:70%;" :class="oprData.coinName != '' && coinArr[oprData.coinName].allowanceToPool > 1e8 || coinArr[oprData.coinName].isApproving?'disable-btn':''">
 							<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
-							Approve {{oprData.coinName}}
+							{{$t("Air-drop_16")}} {{oprData.coinName}}
 						</button>
 					</div>
 					<button class="btn-primary mgt-10 por" style="width:70%" :class="!isCanDeposit?'disable-btn':''" @click="deposit">
 						<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinName].isDeposing"  style="position:absolute;left:8px;top:9px"/>
-						存款
+						{{$t("Air-drop_07")}}
 					</button>
 				</div>
 			</div>
 		</div>
 		<div v-if="showAddLiquidityPanel" class="tab-body" style="position:relative; z-index:998">
+			<div class="tab-content">
+				<div class="aveage-box">
+					<div class="tal cur-point" @click="showAddLiquidityPanel = false">
+						<svg style="transform:rotate(90deg)" viewBox="0 0 24 24"  width="24px" ><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
+					</div>
+					<div class="tac">{{$t("Air-drop_57")}}</div>
+					<div class="tar">
+						<span class="cur-point por" v-popMsg >
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E9DB8F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+							<span class="popMsg left">{{$t("Air-drop_61")}}</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="tab-split"></div>
+			<div class="tab-content">
+				<div class="tab-panel">
+					<div class="aveage-box">
+						<p class="tal small vertical-children">
+							<span>{{$t("Air-drop_62")}}</span>&nbsp;
+							<Loading  v-if="from.loading" />
+						</p>
+						<p class="tar small">{{$t("Mine_05")}}: {{from.coinName==""?"-":coinArr[from.coinName].balance}}</p>
+					</div>
+					<div class="aveage-box vertical-children mgt-10">
+						<input style="flex:1 1 auto" type="text" placeholder="0.0" v-model="from.inputValue" v-number @keyup="inputValueChange('from')">
+						<p class="text-btn" v-if="from.coinName != ''" @click="from.inputValue = coinArr[from.coinName].balance;inputValueChange('from')">Max</p>
+						<p class="tar cur-point text-btn vertical-children" >
+							<span  v-if="from.coinName != '' ">
+								<img :src="require(`../../assets/coin/${from.coinName}.png`)" alt="" height="20" />&nbsp;
+								<span>{{from.coinName}}</span>
+							</span>
+							<span v-else>{{$t("Air-drop_38")}}</span>
+						</p>
+					</div>
+				</div>
+				<div class="mgt-10 tac">
+					<span style="font-size: 28px">+</span>
+				</div>
+				<!-- To -->
+				<div class="tab-panel mgt-10">
+					<div class="aveage-box">
+						<p class="tal small vertical-children">
+							<span>{{$t("Air-drop_62")}}</span>&nbsp;
+							<Loading  v-if="to.loading" />
+						</p>
+						<p class="tar small">{{$t("Mine_05")}}: {{to.coinName==""?"-":coinArr[to.coinName].balance}}</p>
+					</div>
+					<div class="aveage-box vertical-children mgt-10">
+						<input style="flex:1 1 auto" type="text" placeholder="0.0" v-model="to.inputValue" v-number @keyup="inputValueChange('to')">
+						<p class="text-btn" v-if="from.coinName != ''" @click="to.inputValue = coinArr[to.coinName].balance;inputValueChange('to')">Max</p>
+						<p class="tar text-btn vertical-children" >
+							<span  v-if="to.coinName != '' ">
+								<img :src="require(`../../assets/coin/${to.coinName}.png`)" alt="" height="20" />&nbsp;
+								<span>{{to.coinName}}</span>
+							</span>
+							<span v-else>Select a currency</span>
+						</p>
+					</div>
+				</div>
+				<!-- Des -->
+				<div class="mgt-20 tac" style="margin-bottom:10px">
+					<div v-if="fromNeedApprove">
+						<button @click="approve(from.coinName)" class="btn-primary por" style="width:90%;" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
+							<Loading v-if="coinArr[from.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
+							{{$t("Air-drop_16")}} {{from.coinName}}
+						</button>
+					</div>
+					<div v-if="toNeedApprove">
+						<button @click="approve(to.coinName)" class="btn-primary por" style="width:90%;" :class="coinArr[to.coinName].allowanceToSwap > 1e8 || coinArr[to.coinName].isApproving?'disable-btn':''">
+							<Loading v-if="coinArr[to.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
+							{{$t("Air-drop_16")}} {{to.coinName}}
+						</button>
+					</div>
+					<div>
+						<button class="btn-primary mgt-10" style="width:90%" :class="canSupply?'':'disable-btn'" @click="goSupply">{{$t("Air-drop_57")}}</button>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		<div v-if="showRemoveLiquidityPanel" class="tab-body" style="position:relative; z-index:998">
 			<div class="tab-content">
 				<div class="aveage-box">
 					<div class="tal cur-point" @click="showAddLiquidityPanel = false">
@@ -189,6 +271,7 @@ export default {
 	data(){
 		return({
 			showAddLiquidityPanel: false,
+			showRemoveLiquidityPanel: false,
 			inputPercent: 0,
 			inputDepositValue: "",
 
@@ -282,6 +365,9 @@ export default {
 
 			this.from.coinName = coinName.split("-")[0] || "";
 			this.to.coinName = coinName.split("-")[1] || "";
+
+			this.from.reserve = 0;
+			this.to.reserve = 0;
 
 			await this.setCoinAllowanceToPool(coinName);
 			await this.setCoinAllowance(this.from.coinName);

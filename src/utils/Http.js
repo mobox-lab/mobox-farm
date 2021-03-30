@@ -102,6 +102,16 @@ export default class HTTP {
 		let { data } = await this.get(`/auction/logs/token/${tokenId}?&page=1&limit=50`);
 		return data;
 	}
+	//获取momo交易历史记录
+	static async getMomoAuctionHistoryAll() {
+		let { data } = await this.get(`/auction/logs?&page=1&limit=50`);
+		return data;
+	}
+	//拍卖统计
+	static async getMomoAuctionStatistics(time) {
+		let { data } = await this.get(`/auction/transactions?&ago=${time}`);
+		return data;
+	}
 	//获取总共开启box的数量
 	static async getTotalOpenBox() {
 		let { data } = await this.get("/box/amounts");

@@ -1,21 +1,14 @@
 <template>
-	<div class="dib pet-min por" :class="'pet-min-type'+petData.vType" ref="petMin"  > 
+	<div class="dib pet-min pet-min-type1 por" :class="'pet-min-type'+data.vType" ref="petMin"> 
 		<div class="pet-min-img">
-			<img  :src="require(`../assets/pet/${petData.prototype}.png`)" alt="" />
+			<img  :src="require(`../assets/pet/${data.prototype}.png`)" alt="" />
 		</div>
-		<p class="pet-min-lv" v-if="petData.vType < 4 && !petData.noHover">{{petData.num}}</p>
+		<p class="pet-min-lv" v-if="data.vType < 4">{{data.num}}</p>
 		<p class="pet-min-catogry">
-			<img :src=" require(`../assets/icon/${ category_img[petData.category] }.png`) " alt="" width="10" height="10" />
+			<img :src=" require(`../assets/icon/${ category_img[data.category] }.png`) " alt="" width="10" height="10" />
 		</p>
-		<img v-if="petData.isGroup" src="@/assets/icon/isGroup.png" alt="" height="20" class="is-group"/>
-		<div class="pet-min-hover" ref="petMinHover" :class="{'left': isLeft, 'top': isTop}" v-if="!petData.noHover">
-			<PetItem :data="{item: petData}" :class="petData.vType >= 4 && !petData.noPrice?'market':'' " class="no-search">
-				<div class="vertical-children mgt-10" style="font-size: 18px" v-if="petData.vType >= 4 && !petData.noPrice">&nbsp;
-					<img v-if="petData.isRent" :src="require(`@/assets/coin/${Number(petData.orderId) >= 5e4?'BUSD':'MBOX'}.png`)" alt="" height="20"/>
-					<img v-else src="../assets/coin/BUSD.png" alt="" height="20"/>
-					<span>{{numFloor(petData.bidPrice/1e9, 10000)}}</span>
-				</div>
-			</PetItem>
+		<div class="pet-min-hover" ref="petMinHover">
+			<PetItem :data="{item: data}" />
 		</div>
 	</div>
 </template>
@@ -23,58 +16,23 @@
 <script>
 import { CommonMethod } from "@/mixin";
 import { PetItem } from '@/components';
-import { Wallet } from '@/utils';
-import { mapState } from 'vuex';
 const $ = window.$;
 export default {
 	mixins: [CommonMethod],
 	components: {PetItem},
-	props: ['data', "isLeft", "isTop"],
-	data(){
-		return({
-			petData: {...this.data, gems: [0,0,0,0], vType: this.getVType(this.data.prototype)},
-		})
-	},
-	computed: {
-		...mapState({
-			momoGemsObjs: (state) => state.marketState.data.momoGemsObjs,
-		}),
-	},
-	async created(){
-		let tokenId = this.petData.tokenId;
-		if(tokenId != 0){
-			if(!Object.prototype.hasOwnProperty.call(this.momoGemsObjs, tokenId)){
-				let res = await Wallet.ETH.getInlayInfo(tokenId);
-				this.momoGemsObjs[tokenId] = [...res];
-				this.petData.gems = [...res];
-			}else{
-				this.petData.gems = [...this.momoGemsObjs[tokenId]];
-			}
-		}
-	},
+	props: ["data"],
+
 	mounted(){
 		$(this.$refs.petMin).hover(()=>{
 			$(this.$refs.petMinHover).show();
 		},()=>{
 			$(this.$refs.petMinHover).hide();
-		});
-
-		$(this.$refs.petMin).click((e)=>{
-			e.stopPropagation();
-			$(this.$refs.petMinHover).show();
 		})
 	}
 }
 </script>
 
 <style  scoped>
-.is-group{
-	position: absolute;
-	top: -10px;
-	left: 50%;
-	transform: translateX(-50%);
-}
-
 @media (max-width: 768px){
 	.pet_item{
 		width:350px !important;
@@ -85,12 +43,6 @@ export default {
 	position: absolute;
 	display: none;
 	z-index: 998;
-}
-.pet-min-hover.left{
-	right: 0px;
-}
-.pet-min-hover.top{
-	bottom: 0px;
 }
 .pet-min-img img{
 	position: absolute;

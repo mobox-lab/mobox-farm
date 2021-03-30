@@ -5,8 +5,10 @@
 			{{ totalOpenBoxAmount.eth }}
 		</h1>
 		<br />
-		<div class="animation-box mgt-50" id="openbox-anime"></div>
-		<!-- <div id="openbox-anime-new"></div> -->
+		<div class="por" style="height:300px">
+			<div id="openbox-anime-new" class="hide"></div>
+			<div class="animation-box mgt-50" id="openbox-anime"></div>
+		</div>
 		<br />
 
 		<div>
@@ -230,15 +232,24 @@ export default {
 			}
 		}, 2000);
 
+
+		// document.getElementById("openbox-anime").classList.add("animation-box-start");
+
 		let a = lottie.loadAnimation({
 			container: document.getElementById("openbox-anime-new"), // the dom element that will contain the animation
 			renderer: 'svg',
-			loop: true,
+			loop: false,
 			autoplay: false,
-			path: './animation/boxAnime/data.json' // the path to the animation json
+			path: './animation/boxAnime/open.json' // the path to the animation json
 		});
+		console.log(a);
 
-		a.play();
+		// setTimeout(()=>{
+		// 	document.getElementById("openbox-anime").classList.remove("animation-box-start");
+		// 	window.$("#openbox-anime").hide();
+		// 	window.$("#openbox-anime-new").show();
+		// 	a.play();
+		// }, 3000)
 
 	},
 	beforeDestroy() {
@@ -375,7 +386,10 @@ export default {
 
 <style >
 #openbox-anime-new{
-	height: 100px;
+	height: 300px;
+	position: absolute;
+	left: 415px;
+	top: 33px;
 }
 #opr-btn button {
 	width: 200px;

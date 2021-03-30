@@ -1,56 +1,49 @@
 export default class WalletConfig {
 	static ETH = {
-		bidBatch: "0x819e97C7Da2C784403B790121304DB9E6a038dE9", // 批量购买
 		boxToken: "0x2072fe4E74c6ECcFe3f86071E255E0D5568c58B9", //箱子ERC20合约 // keyToken
 		moMoToken: "0x9350b1872F3f30FC71EB42Ed5662b1990E680dc9", //ERC721合约
 		moMoMToken: "0x8442FB6545Ec5B7D8490C324699620B3aCa2dBC0", //ERC1155合约
 		moMoMinter: "0xeCf8c1E91B929D3EeA4940ec8AAF27f60bAd9F80", // 开箱子合约
 		moMoHelper: "0x7049b1Ba0A28ea66395bb046F8b1158a8d373CFb", //工具合约
-		moMoHelper2: "0x1E36d6F9c3d037574305dc1f45003f0dA97c0D2b", //工具合约 - 正式合约
-		moMoHelper3: "0x2C388d5Ea0048dC68824610cf778fFBF2F0bBC73", //工具合约
 		moMoStake: "0x21353d254bF00E553F17B88b79c45712a886827C", //质押挖矿合约
-		moMoStakeAuction: "0xDbcF89e3B603b57A9f1DfDd7324957Cb8539DACd", //质押拍卖合约
-		common1155Auction: "0x4b1B5ed2BDcb4e34B5c5fBaDd0C07aC3d0bB6B0D", //1155普通拍卖
+		moMoStakeAuction: "0xc6b34BF7A7162dCAcc6A660043673C2F3a3BA3d4", //质押拍卖合约
 		mboxToken: "0xD32d0f8b13Bf084f3fBA2CAe0763a71eBa7e08EF", //mbox的合约地址
 		momoFarm: "0x6807782C95ab7289214Cf60F28103d5E7539b03B",
-		momoGemApply: "0x42C054F6641512cB7436F520C3A6E4e26c35C4A5",//宝石申购合约
-		momoGemToken: "0x8cF645c3F09ABCe86e80E0bd61668C1c96BF9242", //宝石token， ERC1155
-		momoGemOpr: "0xA302be104CA7A7c8F84cc6A21086D06497B85510", //宝石穿戴操作合约
-		momoRent: "0xF585bC2Df509c73d2A1F0868FCB64D198A2A2011", //momo出租
-		momoRentV2: "0x59481Ddf37802A22e1685e2D0E13934674a23a1F", //momo出租V2
-		momoVeMbox: "0x589e57E1140435990Bcc9B568BC6cE7415E82fb1", //veMbox合约
-		momoMoreMinter: "0x7dD89d832aa4C7BF8F093E066Fd79364540FdcA2", //多重挖矿合约
-		balanceAddr: {
-			"0X2072FE4E74C6ECCFE3F86071E255E0D5568C58B9": {
-				name: "BANANA",
-				decimals: 1e18,
-			},
-		},
-		momoBid: "0x0d7ABEd534a2Ddce9fd9B20ac0049F53721543eb",//v6竞拍
-		newBoxToken: "0x52d2dB74f8FC3836e94D7DC953C4eC91443d4D96", // 新的box合约
-		boxApply: "0x351AfcFafD306c65F395219d190008017EAcB800", //box申购
-		orderBookContract: "0xE0d764a7b0DF2404D5b531a23435100967feCc6A", //订单部交易
-		refundContract: "0xC167327A01626cAB0Fcb6f14462a88c979458860", //补偿合约
-		newGemApply: "0x6792A3E3D7A95eB07E56ebd25b828F7e52Fe389B", //新的宝石申购
-		mdxApply: "0xdfC5dda3bdE6ae05aA34469a22075a2380Eed3F4", //mdx箱子申购
-		openMdxBox: "0x96bDA29DeBdE1B5e5E58D8A965dcc0F063bA89b1", //mdx箱子打开
-		mdxToken: "0xD32d0f8b13Bf084f3fBA2CAe0763a71eBa7e08EF",
-		momoEnhancer: "0x88b459d3Aa740e22Ef37bc9ad9b672EF6A8AAd21", // momo进化
-		crystalToken: "0x6E378A6a2BA2bc25f6f09aCf0791ba5905D8f1Fb", // momo进化水晶token
-		mecBoxApply: "0x59b514FF2f8ccee595840CE1F1d4f3bE1C0a4D54", //水晶宝箱申购
-		mecBoxMinter: "0xe9b962FbEd34630c3Def91B34B982eB769135F5F", //水晶宝箱打开
-		binanceNFT: "0x58043A6AC692400197D59825bcb8Cec77C87C993", //binanceNFT
-		moMoSetting: "0xFDaA6B01F2a5Fe76F408A7464688c228BB12Accb", //MoMoSetting
-		bigSell: "0x2B61f7e13156BFA381a9E37AA6a4987E60fD3E09", //大宗交易
-		momoVerse: "0x2Afa465aA698702bd642B8783b035B57f1b693CC", //momoverse划转
-		bitsUtil: '0x9c7cbAfDc4ec09b25D3A0464fC4590A34a9026a7',
-		avatarHelper: '0x527e9cA8a10477a9D3bcb5C401Dc823Cd3c796a3',
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",
 		view_tx_url: "https://bscscan.com/tx/",
-		view_block_url: "https://bscscan.com/block/",
 
 		MAX_ORDER: 128, //质押拍卖最大上架数量
+
+		USDT: {
+			addr: "0xdac17f958d2ee523a2206206994597c13d831ec7",
+			poolAddr: "0x388a09786d2372c8e7385db846cedf38434f21a0",
+			dropAddr: "0x6b1798f8BE30ddf82cd769021b72Bc53a9bB5D7c",
+			mAddr: "0x0ccecb9097fdda44e637fd06a838865f7492c4a9",
+			decimals: 1e6,
+		},
+		USDC: {
+			addr: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+			poolAddr: "0x119ca1094e9E93b40707CEd2e0b8a5b90Dee4AF8",
+			dropAddr: "0x1Cf6C8d811277Dec2851528Eb66D24E7c06E664a",
+			mAddr: "0xc6178019f280a367838e1c7040e929de9bb54f9d",
+			decimals: 1e6,
+		},
+		DAI: {
+			addr: "0x6b175474e89094c44da98b954eedeac495271d0f",
+			poolAddr: "0xE3Fa477Ee3ae562A8C32b08AB5Eb53267e26C1b8",
+			dropAddr: "0x388a09786D2372C8e7385db846cedF38434F21A0",
+			mAddr: "0xb2d49eb7beE8Be4c2027735Ff80367311d0CC0Ee",
+			decimals: 1e18,
+		},
+	}
+
+	static TRON = {
+
+	}
+
+	static BNB = {
+
 	}
 
 }

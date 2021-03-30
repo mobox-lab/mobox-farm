@@ -9,11 +9,11 @@
 			<div class="mgt-10 aveage-box" id="airdrop-cont-info">
 				<div class="dib" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10 ">{{ $t("Air-drop_02") }}</h3>
-					<h3 class="mgt-10">${{(getTotalSupplyUSDT* 199999999).toLocaleString() }}</h3>
+					<h3 class="mgt-10">${{getTotalSupplyUSDT.toLocaleString() }}</h3>
 				</div>
 				<div class="dib" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10 ">{{ $t("Air-drop_21") }}</h3>
-					<h3 class="mgt-10">{{totalAirdropKey}}0 KEY</h3>
+					<h3 class="mgt-10">{{totalAirdropKey}} KEY</h3>
 				</div>
 				<div class="dib" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10">{{ $t("Air-drop_05") }}</h3>
@@ -74,6 +74,33 @@
 			</div>
 		</section>
 
+		<section id="buy-back" class="mgt-20 por">
+			<div class="info">
+				<span class="cur-point por" v-popMsg >
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#E9DB8F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+					<span class="popMsg left">Or, if you staked your LP tokens in a farm, unstake them to see them here.Or, if you staked your LP tokens in a farm, unstake them to see them here.Or, if you staked your LP tokens in a farm, unstake them to see them here.Or, if you staked your LP tokens in a farm, unstake them to see them here.</span>
+				</span>
+			</div>
+			<div class="aveage-box">
+				<div style="padding:10px">
+					<p class="small opa-6 tac" >累计回购资金</p>
+					<input type="text" readonly class="ly-input mgt-10 tac" value="50055500" />
+				</div>
+				<div style="padding:10px">
+					<p class="small opa-6 tac" >累计回购资金</p>
+					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
+				</div>
+				<div style="padding:10px">
+					<p class="small opa-6 tac" >累计回购资金</p>
+					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
+				</div>
+				<div style="padding:10px">
+					<p class="small opa-6 tac" >累计回购资金</p>
+					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
+				</div>
+			</div>
+		</section>
+
 		<Pancake ref="pancake" />
 		<KeyOpr ref="keyopr" />
 		<Withdraw ref="withdraw" />
@@ -81,7 +108,7 @@
 </template>
 <script>
 import CommonMethod from "@/mixin/CommonMethod";
-import {  Http } from '@/utils';
+import {  Http, Common } from '@/utils';
 import { mapState } from "vuex";
 import { PancakeConfig } from "@/config";
 import Pancake from "./Pancake";
@@ -133,10 +160,12 @@ export default {
 	methods: {
 		async  getTotalStakeUSDTAndAirdropKEY(){
 			let res = await Http.getKeyDrop();
+			console.log(res);
 			if(res){
-				let {strategyAmounts, keyAmount} = res.data;
+				let {strategyAmounts, keyAmount, apys} = res.data;
 				Object.keys(PancakeConfig.StakeLP).map(coinName=>{
 					this.coinArr[coinName].totalSupply = strategyAmounts[coinName] || 0;
+					this.coinArr[coinName].apy = Common.numFloor(apys[coinName] * 100 || 0, 100) + "%";
 				});
 				this.$store.commit("bnbState/setData", {coinArr: this.coinArr, totalAirdropKey: keyAmount});
 			}
@@ -168,6 +197,25 @@ export default {
 	padding: 20px;
 	position: relative;
 	margin: 20px 10px;
+}
+#buy-back .info{
+	position: absolute;
+	right: -20px;
+	top: -20px;
+}
+#buy-back .ly-input{
+	width: 100%;
+}
+#buy-back > div{
+	padding: 10px;
+}
+#buy-back {
+	padding: 20px 30px;
+	width: 80%;
+	background: #1d2b50;
+	border-radius: 20px;
+	margin: 0px auto;
+	margin-top: 20px;
 }
 #airdrop-cont {
 	padding: 20px 30px;

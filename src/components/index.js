@@ -19,6 +19,7 @@ import WalletOprStatus from "@/components/WalletOprStatus";
 import WalletConnectBtn from "@/components/WalletConnectBtn";
 import WalletConnectDialog from "@/components/WalletConnectDialog";
 import StatuButton from "@/components/StatuButton";
+import PetItemMin from "@/components/PetItemMin";
 
 export {
 	Dropdown,
@@ -41,5 +42,6 @@ export {
 	WalletOprStatus,
 	WalletConnectBtn,
 	WalletConnectDialog,
-	StatuButton
+	StatuButton,
+	PetItemMin
 }

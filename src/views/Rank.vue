@@ -1,97 +1,144 @@
 <template>
-	<div class="rank tac" style="padding:10px">
-		<div class="tal">
-			<router-link to="/">
-				<span  class="cur-point text-big">
-					<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;{{ $t("MOMO_19") }}
-				</span>
-			</router-link>
-		</div>
-		<div class="mgt-10">
+	<div class="rank tac">
+		<h3>{{ $t("Rank_01") }} {{ getLeftTime(countdown) }}</h3>
+		<div class="mgt-20">
 			<Tab :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" :notice="[]"/>
 		</div>
-		<section v-if="tab_pos == 0" class="mgt-20" style="padding:10px 15px;background:#13181F;border-radius:20px">
-			<table style="width: 100%" class="new-table">
-				<tr class="opa-6">
-					<th class="tal "> {{ $t("Rank_05") }}</th>
-					<th class="tar "> {{ $t("Rank_06") }}</th>
-				</tr>
-				<tr v-for="item in hashrateRankList.list.slice( 10 * (rewardPage - 1), 10 * rewardPage )" :key="item.rank" >
-					<td class="tal">
-						<span class="dib tac rank-icon" :class="{active: item.rank <= 3}">{{ item.rank }}</span >
+		<section v-if="tab_pos == 0">
+			<div class="mgt-20">
+				<table style="width: 100%">
+					<tr>
+						<td class="tal tac-xs" style="width: 33.3%; padding-left: 30px">{{ $t("Rank_05") }}</td>
+						<td class="tac tac-xs" style="width: 33.3%; padding-left: 50px">
+							<span style="min-width: 80px" class="dib tal"> {{ $t("Rank_06") }} </span>
+						</td>
+						<td class="tar tac-xs" style="width: 33.3%; padding-right: 30px" > {{ $t("Rank_09") }}</td>
+					</tr>
+				</table>
+				<hr class="split-hr mgt-10" />
+				<div :class="`rank-item tac-xs vertical-children ${item.rank == hashrateRankList.self.rank ? 'active' : '' }`" 
+				v-for="item in hashrateRankList.list.slice( 10 * (rewardPage - 1), 10 * rewardPage )" :key="item.rank" >
+					<div class="tal dib tac-xs" style="width: 33.3%">
+						<span v-if="item.rank > 3" class="dib tac" style="width: 44px" >{{ item.rank }}</span >
+						<img v-if="item.rank <= 3" :src="require(`../assets/rank${item.rank}.png`)" alt=""  />
 						<span style="margin-left: 20px">
 							{{ shorAddress(item.member) }}
 						</span>
-					</td>
-					<td class="tar vertical-children">
-						<span  class="dib tal" >{{ item.score }}</span>&nbsp;
-						<img src="../assets/icon/hash_icon.png" alt="" height="30" />
-					</td>
-				</tr>
-				<tr v-if="hashrateRankList.list.length > 10">
-					<td colspan="2" style="border:none">
-						<Page :defaultPage="1" :totalPage="Math.ceil(hashrateRankList.list.length / 10)" :onChange="onPageChange" />
-					</td>
-				</tr>
-				<tbody class="my-rank">
-					<tr >
-						<td class="tal" style="border-top-left-radius:20px;border-bottom-left-radius:20px">
-							<span class="dib tac rank-icon" :class="{active: hashrateRankList.self.rank <= 3}">{{ hashrateRankList.self.rank || "-" }}</span >
-							<span style="margin-left: 20px"> {{ shorAddress(hashrateRankList.self.address) }} </span>
+					</div>
+
+					<div  class="tac dib vertical-children hashrate-table" style="width: 33.3%; padding-left: 50px" >
+						<img src="../assets/icon/airdrop.png" alt="" height="30" />
+						<span style="min-width: 80px; margin-left: 10px" class="dib tal color-hashrate" >
+							{{ item.score }}
+						</span>
+					</div>
+					
+					<div class="tar dib vertical-children" style="width: 33.3%" >
+						<table style="width: 100%" class="tar">
+							<tr>
+								<td> 
+									<span> {{ rewardCfg[item.rank]["mbox"] }}</span >&nbsp; 
+									<img src="../assets/coin/MBOX.png" alt="" height="30" /> 
+								</td>
+								<td style="width: 30%"> 
+									<span>{{ rewardCfg[item.rank]["usdt"] }}</span >&nbsp;
+									<img src="../assets/coin/USDT.png" alt="" height="30" />
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<hr class="split-hr" />
+			<div style="margin-top: 20px" v-if="hashrateRankList.list.length > 10" :key="1">
+				<Page :defaultPage="1" :totalPage="Math.ceil(hashrateRankList.list.length / 10)" :onChange="onPageChange" />
+			</div>
+			<div class="mgt-20">
+				<div class="rank-item vertical-children active">
+					<div class="tal dib" style="width: 33.3%">
+						<span v-if=" hashrateRankList.self.rank > 3 || hashrateRankList.self.rank <= 0 " class="dib tac" style="width: 44px" >
+							{{ hashrateRankList.self.rank || "-" }}
+							</span>
+						<img v-if=" hashrateRankList.self.rank <= 3 && hashrateRankList.self.rank > 0 " :src=" require(`../assets/rank${hashrateRankList.self.rank}.png`)" alt="" />
+						<span style="margin-left: 20px"> {{ shorAddress(hashrateRankList.self.address) }} </span>
+					</div>
+
+					<div class="tac dib color-hashrate" style="width: 33.3%">
+						<img src="../assets/icon/airdrop.png" alt="" height="30" />&nbsp;
+						{{ hashrateRankList.self.score || "-" }}
+					</div>
+					<div class="tar dib vertical-children" style="width: 33.3%">
+						<div v-if=" hashrateRankList.self.rank > 0 && hashrateRankList.self.rank <= 100 " >
+							<table style="width: 100%" class="tar">
+								<tr>
+									<td>
+										<span> {{ rewardCfg[ hashrateRankList.self.rank ]["mbox"] }}</span >&nbsp;
+										<img src="../assets/coin/MBOX.png" alt="" height="30" />
+									</td>
+									<td style="width: 30%">
+										<span>{{ rewardCfg[ hashrateRankList.self.rank ]["usdt"] }}</span >&nbsp;
+										<img src="../assets/coin/USDT.png" alt="" height="30" />
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section v-if="tab_pos == 1">
+			<div class="mgt-20">
+				<table style="width: 100%">
+					<tr>
+						<td class="tal tac-xs"  style="padding-left:30px; width: 40%">
+							{{ $t("Rank_05") }}
 						</td>
-						<td class="tar vertical-children" style="border-top-right-radius:20px;border-bottom-right-radius:20px">
-							<span  class="dib tal" >
-								{{ hashrateRankList.self.score || "-" }}
-							</span>&nbsp;
-							<img src="../assets/icon/hash_icon.png" alt="" height="30" />
+						<td class="tar " style="width: 60%">
+							<span style="min-width: 80px;margin-right:20px"  class="dib tal">
+								{{ $t("Rank_08") }}
+							</span>
 						</td>
 					</tr>
-				</tbody>
-			</table>
-		</section>
+				</table>
+				<hr class="split-hr mgt-10" />
+				<div :class="`rank-item tac-xs vertical-children ${ myAddr.toLocaleUpperCase() == item.owner.toLocaleUpperCase() ? 'active' : '' }`"
+					v-for="item in momoRankList.list.slice( 10 * (rewardPage - 1), 10 * rewardPage )"
+					:key="item.rank" >
+					<div class="tal dib tac-xs" style="width: 30%">
+						<span v-if="item.rank > 3" class="dib tac" style="width: 44px" >{{ item.rank }}</span>
+						<img v-if="item.rank <= 3" :src="require(`../assets/rank${item.rank}.png`)" alt="" />
+						<span style="margin-left: 20px"> {{ shorAddress(item.owner) }} </span>
+					</div>
 
-		<section v-if="tab_pos == 1" class="mgt-20" style="padding:10px 15px;background:#13181F;border-radius:20px">
-			<table style="width: 100%" class="new-table">
-				<tr class="opa-6">
-					<th class="tal "> {{ $t("Rank_05") }}</th>
-					<th class="tal tac-xs"> </th>
-					<th class="tac "> </th>
-					<th class="tar "> {{ $t("Rank_08") }}</th>
-				</tr>
-				<tr v-for="item in momoRankList.list.slice( 10 * (rewardPage - 1), 10 * rewardPage )" :key="item.rank">
-					<td class="tal">
-						<span class="dib tac rank-icon" :class="{active: item.rank <= 3}">{{ item.rank }}</span >
-						<span style="margin-left: 20px">
-							{{ shorAddress(item.owner) }}
-						</span>
-					</td>
-					<td class="tal vertical-children tac-xs">
-						<img :src=" require(`../assets/pet/${item.prototype}.png`) " alt="" height="35" class="rank-pet" />&nbsp;
-						<div class="dib rank-pet-name">
-							<img :src=" require(`../assets/icon/${ category_img[ nftCfg[item.prototype][ 'category' ] ] }.png`) " alt="" height="16" />&nbsp;
-							<span class="dib tal">
-								{{ item.tokenName.indexOf( "Name_" ) != -1 ? $t(item.tokenName) : shortStr(item.tokenName) }}
-							</span>
-						</div>
-					</td>
-					<td class="tac vertical-children">
-						<img :src="require(`../assets/icon/bnb.png`)" alt="" height="20" />&nbsp;
-						<span class="dib tal"> LV.{{ item.level }} </span>
-					</td>
-					<td class="tar vertical-children">
-						<span  class="dib tal" >
-							{{item.lvHashrate}}
-						</span>&nbsp;
-						<img src="../assets/icon/hash_icon.png" alt="" height="30" />
-					</td>
-				</tr>
-				<tr v-if="momoRankList.list.length > 1">
-					<td colspan="4" style="border:none">
-						<div class="mgt-10"></div>
-						<Page :defaultPage="1" :totalPage="Math.ceil(momoRankList.list.length / 10)" :onChange="onPageChange"/>
-					</td>
-				</tr>
-			</table>
+					<div class="tal dib vertical-children tal" style="width: 70%" >
+						<table style="width: 100%; table-layout: fixed">
+							<tr>
+								<td class="por tac-xs">
+									<img :src=" require(`../assets/pet/${item.prototype}.png`) " alt="" height="35" class="rank-pet" />&nbsp;
+									<div class="dib rank-pet-name">
+										<img :src=" require(`../assets/icon/${ category_img[ nftCfg[item.prototype][ 'category' ] ] }.png`) " alt="" height="16" />&nbsp;
+										<span class="dib tal">
+											{{ item.tokenName.indexOf( "Name_" ) != -1 ? $t(item.tokenName) : shortStr(item.tokenName) }}
+										</span>
+									</div>
+								</td>
+								<td class="tac">
+									<img :src="require(`../assets/icon/eth.png`)" alt="" height="20" />&nbsp;
+									<span class="dib tal"> LV.{{ item.level }} </span>
+								</td>
+								<td class="tar">
+									<img :src=" require(`../assets/icon/airdrop.png`) " alt="" height="30" />&nbsp;
+									<span class="dib tal color-hashrate"> {{ item.lvHashrate }} </span>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<hr class="split-hr" />
+			<div style="margin-top: 20px" v-if="momoRankList.list.length > 10" :key="3">
+				<Page :defaultPage="1" :totalPage="Math.ceil(momoRankList.list.length / 10)" :onChange="onPageChange"/>
+			</div>
 		</section>
 	</div>
 </template>
@@ -125,8 +172,6 @@ export default {
 	},
 	components: { Page, Tab },
 	async created() {
-		this.tab_pos = this.$route.query.tab || 0;
-
 		let myAddr = await Wallet.ETH.getAccount();
 		this.getRankList(myAddr || "");
 		if (myAddr == undefined) {
@@ -143,10 +188,6 @@ export default {
 			}
 			this.countdown--;
 		}, 1000);
-
-		window.startCount = ()=>{
-			this.getV5Count(this.hashrateRankList.list)
-		}
 	},
 	destroyed() {
 		if (timer) clearInterval(timer);
@@ -157,9 +198,9 @@ export default {
 			hashrateRankList.self.address = myAddr;
 			this.hashrateRankList = hashrateRankList;
 
-			// let mboxRankList = await Http.getMboxRankList(myAddr);
-			// mboxRankList.self.address = myAddr;
-			// this.mboxRankList = mboxRankList;
+			let mboxRankList = await Http.getMboxRankList(myAddr);
+			mboxRankList.self.address = myAddr;
+			this.mboxRankList = mboxRankList;
 
 			let momoRankList = await Http.getMomoRankList();
 			let needGetNameArr = [];
@@ -177,34 +218,6 @@ export default {
 				}
 			});
 			this.momoRankList = momoRankList;
-		},
-		async getV5Count(list){
-			let count = 0;
-			let t = 0;
-			let lock = false;
-			let arr = [];
-			setInterval(async ()=>{
-				if(lock || t > list.length) return;
-				let addr = list[t].member;
-				lock = true;
-				let res = await Wallet.ETH.getAll721ByAddr(addr);
-				let addrAccount = 0;
-				res.map(item=>{
-					if(Number(item.prototype) > 50000){
-						addrAccount++
-					}
-				});
-				count+= addrAccount;
-				console.log(t,addr,'=>', addrAccount, count);
-				arr.push([{r: t, a:addr, n: addrAccount}]);
-				if(t == list.length){
-					window.localStorage.v6Arr = JSON.stringify(arr);
-					console.log("total=>",count);
-				}
-				lock = false;
-				t++;
-			}, 500);
-
 		},
 		onTabChange(pos) {
 			this.rewardPage = 1;

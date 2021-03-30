@@ -79,6 +79,7 @@ export default class ETH {
 			Contract.getMomosStake,
 			Contract.getMomosAuction,
 			Contract.getMomoNames,
+			Contract.getUserFarmInfos
 		], WalletConfig.ETH.moMoHelper);
 		this.momoStakeContract = new this.web3.eth.Contract([
 			Contract.stake,
@@ -198,12 +199,13 @@ export default class ETH {
 		let myAddr = await this.getAccount();
 		if (!myAddr) return null;
 
-		let contract = new this.web3.eth.Contract([
-			Contract.getUserFarmInfos
-		], "0xDB1D008E5F46D114e1E0E2560c70516c92AdD867");
+		// let contract = new this.web3.eth.Contract([
+		// 	Contract.getUserFarmInfos
+		// ], "0xDB1D008E5F46D114e1E0E2560c70516c92AdD867");
+		if (!this.momoHelperContract) return null;
 
 		return new Promise(resolve => {
-			contract.methods.getUserFarmInfos(pIndexArr, myAddr).call().then(res => {
+			this.momoHelperContract.methods.getUserFarmInfos(pIndexArr, myAddr).call().then(res => {
 				resolve(res);
 			});
 		});

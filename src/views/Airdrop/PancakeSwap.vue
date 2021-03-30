@@ -1,8 +1,8 @@
 <template>
 	<div  class="tab-body tal">
 		<div class="tab-content">
-			<h2>Exchange</h2>
-			<p class="small opa-6">Trade tokens in an instant</p>
+			<h2>{{$t("Air-drop_29")}}</h2>
+			<p class="small opa-6">{{$t("Air-drop_34")}}</p>
 		</div>
 		<div class="tab-split"></div>
 		<!-- From -->
@@ -10,8 +10,8 @@
 			<div class="tab-panel">
 				<div class="aveage-box">
 					<p class="tal small vertical-children">
-						<span>From</span>&nbsp;
-						<span v-if="from.isEstimated && Number(from.inputValue) > 0">(estimated)</span>&nbsp;
+						<span>{{$t("Air-drop_35")}}</span>&nbsp;
+						<span v-if="from.isEstimated && Number(from.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
 						<Loading  v-if="from.loading" />
 					</p>
 					<p class="tar small">Balance: {{from.coinName==""?"-":coinArr[from.coinName].balance}}</p>
@@ -24,7 +24,7 @@
 							<img :src="require(`../../assets/coin/${from.coinName}.png`)" alt="" height="20" />&nbsp;
 							<span>{{from.coinName}}</span>
 						</span>
-						<span v-else>Select a currency</span>
+						<span v-else>{{$t("Air-drop_38")}}</span>
 						<svg viewBox="0 0 24 24"  width="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
 					</p>
 				</div>
@@ -38,11 +38,11 @@
 			<div class="tab-panel mgt-10">
 				<div class="aveage-box">
 					<p class="tal small vertical-children">
-						<span>To</span>&nbsp;
-						<span v-if="to.isEstimated && Number(to.inputValue) > 0">(estimated)</span>&nbsp;
+						<span>{{$t("Air-drop_36")}}</span>&nbsp;
+						<span v-if="to.isEstimated && Number(to.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
 						<Loading  v-if="to.loading" />
 					</p>
-					<p class="tar small">Balance: {{to.coinName==""?"-":coinArr[to.coinName].balance}}</p>
+					<p class="tar small">{{$t("Mine_05")}}: {{to.coinName==""?"-":coinArr[to.coinName].balance}}</p>
 				</div>
 				<div class="aveage-box vertical-children mgt-10">
 					<input style="flex:1 1 auto" type="text" placeholder="0.0" v-model="to.inputValue" v-number @keyup="inputValueChange('to')">
@@ -51,29 +51,29 @@
 							<img :src="require(`../../assets/coin/${to.coinName}.png`)" alt="" height="20" />&nbsp;
 							<span>{{to.coinName}}</span>
 						</span>
-						<span v-else>Select a currency</span>
+						<span v-else>{{$t("Air-drop_38")}}</span>
 						<svg viewBox="0 0 24 24"  height="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
 					</p>
 				</div>
 			</div>
 			<!-- Des -->
 			<div class="aveage-box mgt-10 opa-6" v-if="canCalcPerPrice">
-				<p class="tal small">Price</p>
+				<p class="tal small">{{$t("Air-drop_51")}}</p>
 				<p class="tar small">{{numFloor(from.inputValue/ to.inputValue, 1e8)}} {{from.coinName}}/{{to.coinName}}</p>
 			</div>
 			<div class="aveage-box mgt-10 opa-6">
-				<p class="tal small">Slippage tolerance</p>
+				<p class="tal small">{{$t("Air-drop_39")}}</p>
 				<p class="tar small">{{getSlippage}}%</p>
 			</div>
 			<div class="mgt-20 tac aveage-box" style="margin-bottom:10px">
 				<div v-if="from.coinName != '' && from.coinName != 'BNB' && Number(coinArr[from.coinName].allowanceToSwap) >= 0 && Number(coinArr[from.coinName].allowanceToSwap) <  1e8">
 					<button @click="approve" class="btn-primary por" style="width:90%;" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
 						<Loading v-if="coinArr[from.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
-						Approve {{from.coinName}}
+						{{$t("Air-drop_16")}} {{from.coinName}}
 					</button>
 				</div>
 				<div>
-					<button class="btn-primary" style="width:90%" :class="canSwap?'':'disable-btn'" @click="goSwap">Swap</button>
+					<button class="btn-primary" style="width:90%" :class="canSwap?'':'disable-btn'" @click="goSwap">{{$t("Air-drop_29")}}</button>
 				</div>
 			</div>
 		</div>
@@ -97,11 +97,11 @@
 					<p class="tar ">{{to.coinName}}</p>
 				</div>
 				<div class="aveage-box opa-6 mgt-50" >
-					<p class="tal small">Price</p>
+					<p class="tal small">{{$t("Air-drop_51")}}</p>
 					<p class="tar small">{{numFloor(from.inputValue/ to.inputValue, 1e8)}} {{from.coinName}}/{{to.coinName}}</p>
 				</div>
 				<div class="aveage-box opa-6 mgt-10" v-if="to.isEstimated">
-					<p class="tal small">Minimum received</p>
+					<p class="tal small">{{$t("Air-drop_53")}}</p>
 					<p class="tar small">{{numFloor(to.inputValue * (1-getSlippage/100), 1e8)}} {{to.coinName}}</p>
 				</div>
 				<div class="aveage-box opa-6 mgt-10" v-if="from.isEstimated">
@@ -109,11 +109,11 @@
 					<p class="tar small">{{numFloor(from.inputValue * (1+getSlippage/100), 1e8)}} {{from.coinName}}</p>
 				</div>
 				<div class="aveage-box opa-6 mgt-10" >
-					<p class="tal small">Liquidity Provider Fee</p>
+					<p class="tal small">{{$t("Air-drop_54")}}</p>
 					<p class="tar small">{{numFloor(from.inputValue * 0.002, 1e8)}} {{from.coinName}}</p>
 				</div>
 				<div class="mgt-30" style="margin-bottom:10px">
-					<button class="btn-primary" style="width:70%" @click="confirmSwap">Confirm swap</button>
+					<button class="btn-primary" style="width:70%" @click="confirmSwap">{{$t("Common_03")}}</button>
 				</div>
 			</div>
 		</Dialog>

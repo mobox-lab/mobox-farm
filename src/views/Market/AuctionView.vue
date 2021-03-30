@@ -67,7 +67,7 @@
 						<div class="tac">
 							<div id="price" class="vertical-children">
 								<img src="../assets/coin/BUSD.png" height="25" alt="">&nbsp;
-								<span>{{numFloor( this.nowPrice/ 1e9, 100)}}</span>
+								<span>{{numFloor( this.nowPrice/ 1e9, 10000)}}</span>
 							</div>
 							<div v-if="this.getNowPetItem.startPrice != this.getNowPetItem.endPrice">
 								<div class="jdt">

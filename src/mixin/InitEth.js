@@ -136,7 +136,7 @@ const InitEth = {
 		//需要定时去取的数据
 		async needUpdate() {
 			//查询我质押的和key的收益
-			await this.getStakeValueAndEarndKey();
+			// await this.getStakeValueAndEarndKey();
 
 			//质押挖矿相关
 			// await this.eth_setTotalAirDrop();
@@ -431,8 +431,9 @@ const InitEth = {
 		//质押NFT确认
 		async eth_stakeNftConfirm({chain}) {
 			if (chain == "eth") {
-				this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
-				this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
+				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
+				await this.eth_setMyHashrate();
 				this.$store.commit("globalState/unLockBtn", "stekeLock");
 				this.$store.commit("globalState/unLockBtn", "unStekeLock");
 			}

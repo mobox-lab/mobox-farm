@@ -1,12 +1,12 @@
 <template>
 	<Dialog id="select-coin-dialog" :top="100" :width="400">
 		<h2>{{$t("Air-drop_38")}}</h2>
-		<div v-for="coinKey in selectCoinList" :key="coinKey" :class="hasSelectCoin.indexOf(coinKey) != -1?'disable':'' " class="aveage-box select-coin-item" @click="itemClick(coinKey)">
+		<div v-for="item in selectCoinList" :key="item" :class="hasSelectCoin.indexOf(item) != -1?'disable':'' " class="aveage-box select-coin-item" @click="itemClick(item)">
 			<div class="vertical-children tal">
-				<img :src="require(`../../assets/coin/${coinKey}.png`)" width="20" alt="">&nbsp;
-				<span class="mgl-5">{{coinKey}}</span>
+				<img :src="require(`../../assets/coin/${item}.png`)" width="20" alt="">&nbsp;
+				<span class="mgl-5">{{item}}</span>
 			</div>
-			<div class="tar" v-if="coinArr[coinKey].balance != '-'">{{coinArr[coinKey].balance}}</div>
+			<div class="tar" v-if="coinArr[item].balance != '-'">{{coinArr[item].balance}}</div>
 			<div class="tar" v-else>
 				<Loading />
 			</div>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { PancakeConfig, EventConfig, WalletConfig } from '@/config';
+import { PancakeConfig, EventConfig } from '@/config';
 import { Dialog, Loading } from '@/components';
 import {CommonMethod} from '@/mixin';
 import { mapState } from 'vuex'
@@ -27,7 +27,6 @@ export default {
 	data(){
 		return({
 			hasSelectCoin: [],
-			coins: null,
 			cb: ()=>{},
 			updataTime: 0,
 		});
@@ -37,7 +36,7 @@ export default {
 			coinArr: (state) => state.bnbState.data.coinArr,
 		}),
 		selectCoinList(){
-			return this.coins || Object.keys(PancakeConfig.SelectCoin);
+			return Object.keys(PancakeConfig.SelectCoin);
 		}
 	},
 	created(){
@@ -54,19 +53,9 @@ export default {
 
 			for (let key in PancakeConfig.SelectCoin) {
 				let {addr, decimals, omit} = PancakeConfig.SelectCoin[key];
-
-				if(addr != "") {
-					let value;
-
-					if (key === "MEC") {
-						const data = await Wallet.ETH.get1155Num(WalletConfig.ETH.crystalToken, [1]);
-						value = data['1'];
-					} else {
-						const data = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
-						value = Common.numFloor((Number(data) / decimals), omit);
-					}
-
-					this.coinArr[key].balance = value;
+				if(addr != ""){
+					let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
+					this.coinArr[key].balance =  Common.numFloor((Number(value) / decimals), omit);
 					this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 					await Common.sleep(500);
 				}
@@ -81,13 +70,11 @@ export default {
 			return this;
 		},
 		close(){
-			this.coins = null;
 			this.oprDialog("select-coin-dialog","none")
 			return this;
 		},
-		setOprData(hasSelectCoin, cb, coins){
+		setOprData(hasSelectCoin, cb){
 			this.hasSelectCoin = hasSelectCoin;
-			this.coins = coins;
 			this.cb = cb;
 			return this;
 		},
@@ -101,20 +88,20 @@ export default {
 
 <style scoped>
 	.select-coin-item.disable{
-		background: #202020;
+		background: #262833;
 	}
 	.select-coin-item{
 		height: 45px;
 		cursor: pointer;
 		padding: 10px;
-		background: #3f3f3f;
+		background: #1d2b50;
 		margin: 10px 0px;
 		border-radius: 10px;
 	}
 	.select-coin-item.disable:hover{
-		background: #202020;
+		background: #262833;
 	}
 	.select-coin-item:hover{
-		background: #3a3a3a;
+		background: #1c2641;
 	}
 </style>

@@ -18,7 +18,7 @@
 				<div class="dib" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10">{{ $t("Air-drop_05") }}</h3>
 					<div class="mgt-10">
-						<button class="btn-success btn-small por"   @click="$refs.keyopr.show()">
+						<button class="btn-success btn-small por"   @click="$refs.keyopr.showAll()">
 							{{getTotalKey}} KEY
 						</button>
 					</div>
@@ -33,23 +33,32 @@
 							</div>
 							<div style="margin-left: 15px">
 								<h3 class="color-w tal">{{ item.coinName }} {{item.isLP?"LP":"POOL"}}</h3>
-								<p class="vertical-children mgt-10 por">
-									<span class="small opa-6">{{ $t("Air-drop_02") }}:</span>
-									<span class="suffix">${{ numFloor(item.totalSupply, 100).toLocaleString() }}</span>
+								<p class=" tal mgt-5" >
+									<span style="display:inline-block;padding:2px 10px;border-radius:50px;background:#4383D7;color:#fff;font-size:16px" >{{item.allocPoint}}X</span>
+									<span class="mgl-5" style="font-size:18px">APY: {{ item.apy }}</span>
 								</p>
-								<p class="small tal" style="color: #8cfece">APY: {{ item.apy }}</p>
 							</div>
 						</div>
-						<div class="tal mgt-50">
+						<div class="tal mgt-30">
 							<p class="por mgt-10">
-								<span class="opa-6 small">{{ $t("Air-drop_03") }}</span>
-								<span class="suffix">{{ item.wantAmount }} {{ item.coinName }}</span>
+								<span class="opa-6 ">{{ $t("Air-drop_02") }}</span>
+								<span class="suffix">${{ numFloor(item.totalSupply, 100).toLocaleString() }}</span>
 							</p>
 						</div>
 
-						<div class="tal mgt-20 hide">
+						<div class="tal mgt-20">
 							<p class="por mgt-10">
-								<span class="opa-6 small">{{ $t("Air-drop_05") }}</span>
+								<span class="opa-6 ">{{ $t("Air-drop_03") }}</span>
+								<span class="suffix">
+									<span v-if=" item.wantAmount > 0" style="color: #8cfece">{{ item.wantAmount }}</span>
+									<span v-else>-</span>
+								</span>
+							</p>
+						</div>
+
+						<div class="tal mgt-20 ">
+							<p class="por mgt-10">
+								<span class="opa-6">{{ $t("Air-drop_05") }}</span>
 								<span class="suffix">
 									<button class="btn-success btn-small por"  :class="lockBtn.getKeyLock > 0 ||  item.earnedKey == 0?'disable-btn':''" @click="$refs.keyopr.setCheckCoin(item.coinName).show()">
 										<img v-if="lockBtn.getKeyLock > 0" src="../../assets/icon/loading.png" class="rotate" height="10" alt="" style="position:absolute;left:8px;top:10px" />
@@ -78,24 +87,24 @@
 			<div class="info">
 				<span class="cur-point por" v-popMsg >
 					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#E9DB8F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-					<span class="popMsg left">Or, if you staked your LP tokens in a farm, unstake them to see them here.Or, if you staked your LP tokens in a farm, unstake them to see them here.Or, if you staked your LP tokens in a farm, unstake them to see them here.Or, if you staked your LP tokens in a farm, unstake them to see them here.</span>
+					<span class="popMsg left">{{$t("Air-drop_91")}}</span>
 				</span>
 			</div>
 			<div class="aveage-box">
 				<div style="padding:10px">
-					<p class="small opa-6 tac" >累计回购资金</p>
-					<input type="text" readonly class="ly-input mgt-10 tac" value="50055500" />
+					<p class="small opa-6 tac" >{{$t("Air-drop_78")}}(BNB)</p>
+					<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.hasAmount" />
 				</div>
 				<div style="padding:10px">
-					<p class="small opa-6 tac" >累计回购资金</p>
+					<p class="small opa-6 tac" >{{$t("Air-drop_79")}}</p>
 					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
 				</div>
 				<div style="padding:10px">
-					<p class="small opa-6 tac" >累计回购资金</p>
+					<p class="small opa-6 tac" >{{$t("Air-drop_80")}}</p>
 					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
 				</div>
 				<div style="padding:10px">
-					<p class="small opa-6 tac" >累计回购资金</p>
+					<p class="small opa-6 tac" >{{$t("Air-drop_81")}}</p>
 					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
 				</div>
 			</div>
@@ -125,6 +134,7 @@ export default {
 			coinArr: (state) => state.bnbState.data.coinArr,
 			totalAirdropKey: (state) => state.bnbState.data.totalAirdropKey,
 			rewardStoreKey: (state) => state.bnbState.data.rewardStoreKey,
+			buyBack: (state) => state.bnbState.data.buyBack,
 		}),
 		//获取总质押USDT
 		getTotalSupplyUSDT() {

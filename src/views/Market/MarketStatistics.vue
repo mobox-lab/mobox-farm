@@ -3,9 +3,9 @@
 			<section class="statistics-top">
 				<div>
 					<ul class="statistics-top-tab">
-						<li @click="daySelect = 1;getMomoAuctionStatistics() " :class="daySelect == 1?'active':''" class="opa-6">24小时</li>
-						<li @click="daySelect = 7;getMomoAuctionStatistics() " :class="daySelect == 7?'active':''" class="opa-6">7天</li>
-						<li @click="daySelect = 30;getMomoAuctionStatistics() " :class="daySelect == 30?'active':''" class="opa-6">30天</li>
+						<li @click="daySelect = 1;getMomoAuctionStatistics() " :class="daySelect == 1?'active':''" class="opa-6">{{$t("Market_41")}}</li>
+						<li @click="daySelect = 7;getMomoAuctionStatistics() " :class="daySelect == 7?'active':''" class="opa-6">{{$t("Market_42")}}</li>
+						<li @click="daySelect = 30;getMomoAuctionStatistics() " :class="daySelect == 30?'active':''" class="opa-6">{{$t("Market_43")}}</li>
 					</ul>
 					<div class="tab-split"></div>
 				</div>
@@ -13,21 +13,21 @@
 					<div class="vertical-children tac">
 						<img src="../../assets/icon/awd.png" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
-							<p class="opa-6">Total Sale</p>
+							<p class="opa-6">{{$t("Market_44")}}</p>
 							<h1 class="color-w tac">{{statistics.sale}}</h1>
 						</div>
 					</div>
 					<div class="vertical-children tac">
 						<img src="../../assets/coin/BUSD.png" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
-							<p class="opa-6">Total Volume</p>
+							<p class="opa-6">{{$t("Market_45")}}</p>
 							<h1 class="color-w tac">{{numFloor(statistics.volume / 1e9, 100)}} </h1>
 						</div>
 					</div>
 					<div class="vertical-children tac">
 						<img src="../../assets/icon/evage-icon.png" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
-							<p class="opa-6">平均价格</p>
+							<p class="opa-6">{{$t("Market_46")}}</p>
 							<h1 class="color-w tac">{{numFloor(statistics.avgPrice / 1e9, 100)}}</h1>
 						</div>
 					</div>
@@ -37,10 +37,10 @@
 				<table style="width:100%; border-collapse:collapse;border: none;">
 					<tr class="opa-6 tal">
 						<th class="list-item-momo" style="padding-left:10px">MOMO</th>
-						<th>Buyer</th>
-						<th>Seller</th>
-						<th>Price</th>
-						<th class="tar" >Time</th>
+						<th>{{$t("Market_25")}}</th>
+						<th>{{$t("Market_26")}}</th>
+						<th>{{$t("Market_17")}}</th>
+						<th class="tar" >{{$t("BOX_12")}}</th>
 					</tr>
 					<tr>
 						<td colspan="5">
@@ -63,7 +63,7 @@
 							</td>
 							<td class="addr">{{getShortAddr(item.bidder)}}</td>
 							<td class="addr">{{getShortAddr(item.auctor)}}</td>
-							<td class="vertical-children"> <img class="hide-xs" src="../../assets/coin/BUSD.png" height="25" alt=""> {{item.bidPrice / 1e8}} BUSD</td>
+							<td class="vertical-children"> <img class="hide-xs" src="../../assets/coin/BUSD.png" height="25" alt=""> {{item.bidPrice / 1e9}} BUSD</td>
 							<td class="tar" >
 								<p>{{dateFtt("yyyy.MM.dd", new Date(item.crtime * 1000))}}</p>
 								<p>{{dateFtt("hh:mm:ss", new Date(item.crtime * 1000))}}</p>
@@ -109,11 +109,12 @@ export default {
 					let petList = [];
 					//1155
 					if(item.tokenId == 0){
-						let {ids, amounts} = item;
+						let {ids, amounts, bidPrice} = item;
 						ids.map((prototype, index)=>{
 							let obj = BaseConfig.NftCfg[prototype];
 							petList.push({
 								...obj,
+								bidPrice,
 								prototype,
 								level: 1,
 								num: amounts[index],
@@ -129,6 +130,7 @@ export default {
 						let obj = BaseConfig.NftCfg[item.prototype];
 						petList.push({
 							...obj,
+							bidPrice: item.bidPrice,
 							prototype: item.prototype,
 							level: item.level,
 							num: 1,

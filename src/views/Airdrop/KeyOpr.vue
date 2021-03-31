@@ -18,23 +18,29 @@
 				<div>
 					<div  class="aveage-box select-key-item" v-if="Number(rewardStoreKey) > 0 ">
 						<div class="tal vertical-children">
-							<div class="ly-checkbox active">
+							<div class="ly-checkbox active " style="background:none">
 								<svg  viewBox="0 0 1024 1024" width="20" height="20"><path fill="#92FFDA" d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z" ></path></svg>
 							</div> &nbsp;
 							<span class="mgl-10">{{rewardStoreKey}} KEY</span> 
 						</div>
-						<div class="tar">暂存区</div>
+						<div class="tar vertical-children">
+							<span class="cur-point por " v-popMsg >
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E9DB8F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+								<span class="popMsg left">{{$t("Air-drop_93")}}</span>
+							</span>
+							<span class="mgl-5">{{$t("Air-drop_92")}}</span>
+						</div>
 					</div>
 				</div>
 				<div v-for="item in getPledgeList" :key="item.coinName" >
-					<div  class="aveage-box select-key-item" v-if="item.earnedKey > 0">
+					<div  class="aveage-box select-key-item" v-if="item.earnedKey > 0 && (onlyCheck == '' || item.coinName == onlyCheck) ">
 						<div class="tal vertical-children">
 							<div class="ly-checkbox" @click="toggleSelect(item)" :class="selectKeyCoin.indexOf(item.coinName) != -1 ?'active':'' ">
 								<svg class="hide"  viewBox="0 0 1024 1024" width="20" height="20"><path fill="#92FFDA" d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z" ></path></svg>
 							</div> &nbsp;
 							<span class="mgl-10">{{item.earnedKey}} KEY</span> 
 						</div>
-						<div class="tar">{{item.coinName}} LP</div>
+						<div class="tar">{{item.coinName}} {{item.isLP?"LP":"POOL"}}</div>
 					</div>
 				</div>
 			</div>
@@ -65,6 +71,7 @@ export default {
 		return({
 			inputKey: 0,
 			selectKeyCoin: [],
+			onlyCheck: "",
 		})
 	},
 
@@ -101,7 +108,18 @@ export default {
 
 	methods:{
 		show(){
-			this.selectKeyCoin = Object.keys(this.getPledgeDic)
+			this.oprDialog("keyopr-dialog","block");
+			return this;
+		},
+		showAll(){
+			let selectArr = [];
+			this.getPledgeList.map(item=>{
+				if(item.earnedKey > 0){
+					selectArr.push(item.coinName);
+				}
+			});
+			this.selectKeyCoin = selectArr;
+			this.onlyCheck = "";
 			this.oprDialog("keyopr-dialog","block");
 			return this;
 		},
@@ -111,7 +129,7 @@ export default {
 		},
 		setCheckCoin(coinName){
 			this.selectKeyCoin = [coinName];
-			console.log({coinName});
+			this.onlyCheck = coinName;
 			return this;
 		},
 		toggleSelect(item){

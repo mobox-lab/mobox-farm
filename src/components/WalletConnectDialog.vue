@@ -30,15 +30,15 @@
 			</div>
 		</Dialog>
 		<Dialog id="connected-wallet-info-dialog" :top="100" :width="400">
-			<h2>Your wallet</h2>
+			<h2>{{$t("Common_24")}}</h2>
 			<div class="mgt-50">
 				<p>{{connectWalletAddr}}</p>
 				<p class="tac small opa-6 mgt-10">
-					<a :href="'https://bscscan.com/address/' + connectWalletAddr" target="_blank" style="text-decoration: underline">View on BscScan</a>
+					<a :href="'https://bscscan.com/address/' + connectWalletAddr" target="_blank" style="text-decoration: underline">{{$t("Common_17")}}</a>
 				</p>
 			</div>
 			<div class="mgt-50">
-				<button class="btn-primary" @click="logoutWallet">Logout</button>
+				<button class="btn-primary" @click="logoutWallet">{{$t("Common_25")}}</button>
 			</div>
 		</Dialog>
 	</div>
@@ -103,9 +103,13 @@ export default {
 			switch (type) {
 				case "metamask":
 						if (typeof window.ethereum !== 'undefined') {
-							//获取账户
-							let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-							account =  accounts[0];
+							try {
+								//获取账户
+								let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+								account =  accounts[0];
+							} catch (error) {
+								this.showNotify("请解锁钱包", "error");
+							}
 							//获取当前链
 							let network = await window.ethereum.request({method: 'net_version'});
 							chainNetwork = network;

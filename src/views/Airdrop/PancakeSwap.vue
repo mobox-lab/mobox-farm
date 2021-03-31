@@ -18,7 +18,7 @@
 				</div>
 				<div class="aveage-box vertical-children mgt-10">
 					<input style="flex:1 1 auto" type="text" placeholder="0.0" v-model="from.inputValue" v-number @keyup="inputValueChange('from')">
-					<p class="text-btn" v-if="from.coinName != ''" @click="from.inputValue = coinArr[from.coinName].balance;inputValueChange('from')">Max</p>
+					<p class="text-btn" v-if="from.coinName != ''" @click="maxInputFrom();inputValueChange('from')">Max</p>
 					<p class="tar cur-point text-btn vertical-children" @click="openSelectCoin('from')">
 						<span  v-if="from.coinName != '' ">
 							<img :src="require(`../../assets/coin/${from.coinName}.png`)" alt="" height="20" />&nbsp;
@@ -190,6 +190,14 @@ export default {
 		clearInterval(timerInterval);
 	},
 	methods:{
+		maxInputFrom(){
+			let value = this.coinArr[this.from.coinName].balance;
+			if(this.from.coinName == "BNB"){
+				value -= 0.01;
+			}
+			if(value < 0 ) value = 0;
+			this.from.inputValue = value;
+		},
 		async inputValueChange(type, stepTime = this.stepTime){
 			this.lastType = type;
 			let otherType = type == "from"?"to":"from";
@@ -209,10 +217,23 @@ export default {
 					let {data, code} = res.data;
 					if(code == 200){
 						this[otherType].isEstimated = true;
-						this[otherType].inputValue = this.numFloor(data.amountOut, 1e8);
+						let value;
+
+						//计算要扣除的手续费
+						if(otherType == "to"){
+							value = data.amountOut * 0.997;
+						}else{
+							value = data.amountOut / 0.997;
+						}
+
+						this[otherType].inputValue = this.numFloor(value, 1e10);
 
 						this[type].isEstimated = false;
 						this.path = data.path;
+						//要反转一下path路径。当路径>3的时候gg 要重新弄了 -- @王十三
+						if(otherType == "from"){
+							this.path.reverse();
+						}
 					}
 				}, stepTime);
 			}else{

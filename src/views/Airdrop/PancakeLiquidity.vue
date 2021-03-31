@@ -1,17 +1,9 @@
 <template>
 	<div>
-		<div v-if="!showAddLiquidityPanel && !showRemoveLiquidityPanel" class="tab-body tal">
-			<div class="tab-content"  v-if="oprData.isLP">
-				<h2>{{$t("Air-drop_30")}}</h2>
-				<p class="small opa-6">{{$t("Air-drop_58")}}</p>
-				<div class="mgt-10">
-					<button class="btn-primary " @click="showAddLiquidityPanel =  true" style="background: #384A7C">{{$t("Air-drop_57")}}</button>&nbsp;
-					<button v-if="Number(oprData.balance) > 0" class="btn-primary mgt-10"  style="background: #384A7C">Remove LP</button>
-				</div>
-			</div>
-			<div class="tab-split"  v-if="oprData.isLP"></div>
+		<div v-if="!showAddLiquidityPanel && !showRemoveLiquidityPanel" class="tab-body tal" style="padding-bottom:10px">
+			
 			<div class="tab-content">
-				<div class="aveage-box">
+				<!-- <div class="aveage-box hide">
 					<p class="tal small">{{$t("Air-drop_10")}}</p>
 					<p class="tar small">
 						<span class="cur-point por" v-popMsg >
@@ -19,24 +11,14 @@
 							<span class="popMsg left">Or, if you staked your LP tokens in a farm, unstake them to see them here.Or, if you staked your LP tokens in a farm, unstake them to see them here.Or, if you staked your LP tokens in a farm, unstake them to see them here.Or, if you staked your LP tokens in a farm, unstake them to see them here.</span>
 						</span>
 					</p>
-				</div>
+				</div> -->
 				<div class="mgt-10 por">
-					<div class="ly-input-pre-icon" :class="oprData.isLP?'double-img':'' " v-if="oprData.coinName != ''" style="zoom: 0.75">
+					<div  class="ly-input-pre-icon" :class="oprData.isLP?'double-img':'' " v-if="oprData.coinName != '' && !oprData.isLP" style="zoom: 0.75">
 						<img v-for="(name, key) in oprData.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="40" alt="" />
 					</div>
-					<input type="text" class="ly-input tac" style="width:100%;padding: 0px 50px"  v-model="inputDepositValue" v-number placeholder="请输入存款数量">
+					<input type="text" class="ly-input tac" style="width:100%;"  v-model="inputDepositValue" v-number placeholder="请输入存款数量">
 				</div>
-				<div class="aveage-box mgt-10">
-					<p class="tal small">{{$t("Air-drop_11")}}</p>
-					<div class="tar small">
-						<p class="vertical-children">
-							<span v-if="oprData.balance != '-' ">{{oprData.balance}}</span>
-							<Loading v-else />
-							<span> {{oprData.coinName}}</span>
-						</p>
-						<!-- <p class="tar small"> ≈ $2,435</p> -->
-					</div>
-				</div>
+			
 				<div class="mgt-10">
 					<PercentSelect :selectCB="percent => inputPercent = percent" />
 				</div>
@@ -51,6 +33,51 @@
 						<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinName].isDeposing"  style="position:absolute;left:8px;top:9px"/>
 						{{$t("Air-drop_07")}}
 					</button>
+				</div>
+			</div>
+			<div class="tab-split"  v-if="oprData.isLP"></div>
+			<div class="tab-content"  v-if="oprData.isLP">
+				<div   v-if="oprData.isLP && oprData.balance > 0" >
+					<!-- <h2>{{$t("Air-drop_30")}}</h2> -->
+					<!-- <p class="small opa-6">{{$t("Air-drop_58")}}</p> -->
+					<div class="mgt-10 cur-point"  style="border-radius:10px;padding:10px 10px;background:#182342;height: 50px;overflow: hidden">
+						<div class="aveage-box vertical-children por" >
+							<div class="dib">
+								<div class="dib por"  :class="oprData.isLP?'double-img':'' " v-if="oprData.coinName != ''" style="zoom: 0.75">
+									<img v-for="(name, key) in oprData.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="40" alt="" />
+								</div>
+								<span> {{oprData.coinName}}</span>
+							</div>
+							
+							<p class="dib tar">
+								<span class="mgl-10" v-if="oprData.balance != '-' ">{{oprData.balance}}</span>
+								<Loading v-else />
+								<svg viewBox="0 0 24 24" class="mgl-5"  height="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
+							</p>
+						</div>
+
+						<div class="aveage-box vertical-children por mgt-10"  v-for="(name, key) in oprData.coinName.split('-')" :key="name+key">
+							<div class="dib">
+								<span> {{name}}</span>
+							</div>
+							
+							<p class="dib tar" >
+								<span class="mgl-10" >10</span>
+								<img class="mgl-5"  :src=" require(`../../assets/coin/${name}.png`) " height="20" alt="" />
+							</p>
+						</div>
+						<!-- <div class="aveage-box mgt-10">
+							<p class="tal small">{{$t("Air-drop_11")}}</p>
+							<div class="tar small">
+							</div>
+						</div> -->
+
+					</div>
+
+				</div>
+				<div class="tac mgt-10" >
+					<button class="btn-primary " @click="showAddLiquidityPanel =  true" style="background: #384A7C">{{$t("Air-drop_57")}}</button>&nbsp;
+					<button v-if="Number(oprData.balance) > 0" class="btn-primary mgt-10"  style="background: #384A7C">Remove LP</button>
 				</div>
 			</div>
 		</div>
@@ -218,8 +245,8 @@
 		
 		</div>
 		<Dialog id="confirm-supply-dialog" :top="100" :width="400">
-			<div   class="mgt-10 ly-input-content tal" v-if="from.coinName != '' && to.coinName != ''">
-				<p class="small opa-6 ">You will receive</p>
+			<div   class="mgt-10 ly-input-content tal"   v-if="from.coinName != '' && to.coinName != ''">
+				<p class="small ">You will receive</p>
 				<div class="tac">
 					<div class="double-img mgt-20 por dib" >
 						<img v-for="(name, key) in oprData.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="40" alt="" />
@@ -229,21 +256,21 @@
 					<span>{{canGetLp}}</span>
 				</div>
 				<p class="mgt-10 tac small">{{from.coinName}}/{{to.coinName}} Pool Tokens</p>
-				<div class="aveage-box mgt-30 opa-6" >
+				<div class="aveage-box mgt-30 " >
 					<p class="tal small">{{from.coinName}} Deposited</p>
-					<p class="tar small vertical-children">
+					<p class="tar small vertical-children"  style="flex: 2">
 						<span class="mgl-5">{{from.inputValue}} {{from.coinName}}</span>
 					</p>
 				</div>
-				<div class="aveage-box mgt-10 opa-6">
+				<div class="aveage-box mgt-10 ">
 					<p class="tal small">{{to.coinName}} Deposited</p>
-					<p class="tar small vertical-children">
+					<p class="tar small vertical-children"  style="flex: 2">
 						<span class="mgl-5">{{to.inputValue}} {{to.coinName}}</span>
 					</p>
 				</div>
-				<div class="aveage-box mgt-10 opa-6" >
+				<div class="aveage-box mgt-10 " >
 					<p class="tal small">Rates</p>
-					<div class="tar small">
+					<div class="tar small" style="flex: 2">
 						<p>1 {{from.coinName}} = {{toValuePerFrom}} {{to.coinName}}</p>
 						<p>1 {{to.coinName}} = {{fromValuePerTo}} {{from.coinName}}</p>
 					</div>
@@ -345,15 +372,18 @@ export default {
 		toValuePerFrom(){
 			let {reserve, coinName} = this.to;
 			if(coinName =="" || reserve == 0) return 0;
-			return Common.numFloor(reserve / this.from.reserve, PancakeConfig.SelectCoin[coinName].omit);
+			return Common.numFloor(reserve / this.from.reserve, 1e8);
 		},
 		fromValuePerTo(){
 			let {reserve, coinName} = this.from;
 			if(coinName =="" || reserve == 0) return 0;
-			return Common.numFloor(reserve / this.to.reserve, PancakeConfig.SelectCoin[coinName].omit);
+			return Common.numFloor(reserve / this.to.reserve, 1e8);
 		}
 	},
 	watch: {
+		inputDepositValue: function(){
+			this.inputPercent = 0;
+		},
 		oprData: async function(newData){
 			let {addr , coinName} = newData;
 			if(addr != ""){
@@ -418,6 +448,7 @@ export default {
 			let hash = await Wallet.ETH.deposit(coinName, this.inputDepositValue);
 			if(hash){
 				this.coinArr[coinName].isDeposing = true;
+				this.inputDepositValue = ""
 			}
 		},
 		async getLPBalance(){
@@ -434,7 +465,7 @@ export default {
 			let {coinName} = this.oprData;
 
 			if(coinName == "BNB"){
-				returnBalacne -= 0.05
+				returnBalacne -= 0.01
 			}
 			if(returnBalacne < 0 ) returnBalacne = 0;
 			return returnBalacne;

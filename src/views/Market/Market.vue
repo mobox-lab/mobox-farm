@@ -96,7 +96,7 @@ export default {
 	components: { Tab, MarketAll, MarketMy, MarketMySell , Dialog , Loading, MarketStatistics, PetItemMin},
 	data() {
 		return {
-			tabList: [this.$t('Market_01'), this.$t("Market_02"), this.$t("Market_03"), "最近成交"],
+			tabList: [this.$t('Market_01'), this.$t("Market_02"), this.$t("Market_03"), this.$t("Market_40")],
 			tabPos: 0,
 			selectCategory: [
 				this.$t("MOMO_02"),
@@ -188,11 +188,12 @@ export default {
 					let petList = [];
 					//1155
 					if(item.tokenId == 0){
-						let {ids, amounts} = item;
+						let {ids, amounts, bidPrice} = item;
 						ids.map((prototype, index)=>{
 							let obj = BaseConfig.NftCfg[prototype];
 							petList.push({
 								...obj,
+								bidPrice,
 								prototype,
 								level: 1,
 								num: amounts[index],
@@ -208,6 +209,7 @@ export default {
 						let obj = BaseConfig.NftCfg[item.prototype];
 						petList.push({
 							...obj,
+							bidPrice: item.bidPrice,
 							prototype: item.prototype,
 							level: item.level,
 							num: 1,

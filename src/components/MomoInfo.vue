@@ -2,24 +2,24 @@
 	<div>
 		<!-- 质押状态 -->
 		<div v-if="!isMarket">
-			<h3 >状态</h3>
+			<h3 >{{$t("MOMO_41")}}</h3>
 			<p class="mgt-10 small opa-6">
-				momo 质押后才能进行升级操作,momo 质押后才能进行升级操作,
-				momo 取消质押后可以在钱包里面看到
+				<span v-if="getNowPetItem.location=='stake'">{{$t("MOMO_42")}}</span>
+				<span v-if="getNowPetItem.location=='wallet'">{{$t("MOMO_43")}}</span>
 			</p>
 			<div class="tac mgt-20">
 				<div v-if="getNowPetItem.location=='wallet'">
 					<button  :class="canShowApprove && lockBtn.approveLock <= 0?'':'disable-btn' " class="btn-primary por" @click="canShowApprove && lockBtn.approveLock <= 0 && approveNftToStake()" > 
-						<Loading class="btn-loading" :width="15" :height="15" v-if="lockBtn.approveLock > 0"  />授权 
+						<Loading class="btn-loading" :width="15" :height="15" v-if="lockBtn.approveLock > 0"  />{{$t("Air-drop_16")}} MOMO 
 					</button>
 					<button  :class="canShowStake && lockBtn.stakeLock <= 0?'':'disable-btn' " class="btn-primary por mgl-5" @click="canShowStake && lockBtn.stakeLock <= 0 && stakeNft()" > 
-						<Loading class="btn-loading" :width="15" :height="15" v-if="lockBtn.stakeLock > 0"  />质押 
+						<Loading class="btn-loading" :width="15" :height="15" v-if="lockBtn.stakeLock > 0"  />{{$t("MOMO_44")}} 
 					</button>
 				</div>
 		
 				<div v-if="getNowPetItem.location=='stake'">
 					<button  :class="lockBtn.unStakeLock <= 0?'':'disable-btn' " class="btn-primary por" @click="lockBtn.unStakeLock <= 0 && unStakeNft()" > 
-						<Loading class="btn-loading" :width="15" :height="15" v-if="lockBtn.unStakeLock > 0"  />取消质押 
+						<Loading class="btn-loading" :width="15" :height="15" v-if="lockBtn.unStakeLock > 0"  />{{$t("MOMO_45")}} 
 					</button>
 				</div>
 			</div>
@@ -27,9 +27,9 @@
 
 		<!-- 宝石相关功能 -->
 		<div v-if="getNowPetItem.vType >= 4 && !isMarket && getNowPetItem.location=='stake'">
-			<h3 class="mgt-10" >宝石镶嵌</h3>
+			<h3 class="mgt-10" >{{$t("MOMO_40")}}</h3>
 			<p class="mgt-10 small opa-6">
-				暂未开放
+				{{$t("Common_05")}}
 			</p>
 		</div>
 

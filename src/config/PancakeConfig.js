@@ -4,10 +4,11 @@ export default class PancakeConfig {
 		"MBOX": {
 			omit: 1e2,
 			decimals: 1e18,
-			addr: "0x96Ad5d569cDd69E9dc834d1fa50C4c6b3131D4dc",
+			addr: "0xD32d0f8b13Bf084f3fBA2CAe0763a71eBa7e08EF",
 		},
 		"BNB": {
 			decimals: 1e18,
+			omit: 1e4,
 			addr: "",
 		},
 		"BTCB": {
@@ -66,18 +67,18 @@ export default class PancakeConfig {
 		"BUSD-BNB":{
 			pIndex: 4,
 			addr: "0x1b96b92314c44b159149f7e0303511fb2fc4774f",
-			allocPoint: 1,
+			allocPoint: 2,
 			decimals: 1e18,
 			omit: 1e4,
 		},
 		"USDT-BNB":{
 			pIndex: 5,
 			addr: "0x20bCC3b8a0091dDac2d0BC30F68E6CBb97de59Cd",
-			allocPoint: 1,
+			allocPoint: 2,
 			decimals: 1e18,
 			omit: 1e4,
 		},
-		"BUSD-USDT":{
+		"USDT-BUSD":{
 			pIndex: 6,
 			addr: "0xc15fa3E22c912A276550F3E5FE3b0Deb87B55aCd",
 			allocPoint: 1,
@@ -99,28 +100,28 @@ export default class PancakeConfig {
 			omit: 1e4,
 		},
 		"BUSD":{
-			pIndex: 0,
+			pIndex: 9,
 			addr: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
 			allocPoint: 1,
 			decimals: 1e18,
 			omit: 1e4,
 		},
 		"USDT":{
-			pIndex: 0,
+			pIndex: 10,
 			addr: "0x55d398326f99059ff775485246999027b3197955",
 			allocPoint: 1,
 			decimals: 1e18,
 			omit: 1e4,
 		},
 		"USDC":{
-			pIndex: 0,
+			pIndex: 11,
 			addr: "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
 			allocPoint: 1,
 			decimals: 1e18,
 			omit: 1e4,
 		},
 		"BNB":{
-			pIndex: 0,
+			pIndex: 12,
 			addr: "",
 			allocPoint: 0.5,
 			decimals: 1e18,

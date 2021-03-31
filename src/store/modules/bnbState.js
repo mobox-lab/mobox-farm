@@ -34,7 +34,7 @@ const state = () => ({
 			"ETH-BNB": {...baseCoinAttr, isLP: true},
 			"BUSD-BNB": {...baseCoinAttr, isLP: true},
 			"USDT-BNB": {...baseCoinAttr, isLP: true},
-			"BUSD-USDT": {...baseCoinAttr, isLP: true},
+			"USDT-BUSD": {...baseCoinAttr, isLP: true},
 			"DAI-BUSD": {...baseCoinAttr, isLP: true},
 			"USDC-BUSD": {...baseCoinAttr, isLP: true},
 			"ts": 0,
@@ -46,6 +46,11 @@ const state = () => ({
 		useCoinPos: 4,
 		totalAirdropKey: 0,
 		rewardStoreKey: 0,//暂存区的key
+
+		//回购相关
+		buyBack:{
+			hasAmount: 0,
+		}
 	},
 })
 

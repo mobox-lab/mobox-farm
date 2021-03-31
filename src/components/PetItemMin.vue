@@ -8,7 +8,12 @@
 			<img :src=" require(`../assets/icon/${ category_img[data.category] }.png`) " alt="" width="10" height="10" />
 		</p>
 		<div class="pet-min-hover" ref="petMinHover">
-			<PetItem :data="{item: data}" />
+			<PetItem :data="{item: data}" :class="data.vType >= 4?'market':'' " >
+				<div class="vertical-children mgt-10" style="font-size: 18px" v-if="data.vType >= 4">
+					<img src="../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
+					<span>{{numFloor(data.bidPrice/1e9, 10000)}}</span>
+				</div>
+			</PetItem>
 		</div>
 	</div>
 </template>
@@ -21,7 +26,6 @@ export default {
 	mixins: [CommonMethod],
 	components: {PetItem},
 	props: ["data"],
-
 	mounted(){
 		$(this.$refs.petMin).hover(()=>{
 			$(this.$refs.petMinHover).show();

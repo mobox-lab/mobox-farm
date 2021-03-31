@@ -18,6 +18,7 @@ const InitEth = {
 			tempSells: (state) => state.marketState.data.tempSells,
 			tempMarketCancelTx: (state) => state.marketState.data.tempMarketCancelTx,
 			coinArr: (state) => state.bnbState.data.coinArr,
+			buyBack: (state) => state.bnbState.data.buyBack,
 		}),
 	},
 	async created() {
@@ -119,7 +120,7 @@ const InitEth = {
 					if(Wallet.ETH.myAddr != ""){
 						this.needUpdate();
 					}
-				}, 30000);
+				}, 10000);
 
 				this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
@@ -136,7 +137,7 @@ const InitEth = {
 		//需要定时去取的数据
 		async needUpdate() {
 			//查询我质押的和key的收益
-			// await this.getStakeValueAndEarndKey();
+			await this.getStakeValueAndEarndKey();
 
 			//质押挖矿相关
 			// await this.eth_setTotalAirDrop();
@@ -158,8 +159,22 @@ const InitEth = {
 				this.eth_setBoxAllowance();
 			}
 
+			//获取回购相关
+			await this.getBuyBack();
+
 			//获取总打开箱子数
 			await this.setTotalOpenBox();
+		},
+		async getBuyBack(){
+			let autoBuyback = "0x5C3B530FB20520F8E4d6875Eab2Fed43534BE908";
+			let wBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+
+			let res = await Wallet.ETH.getTargetBalancefromTokenAddr(autoBuyback, wBNB);
+			if(res){
+				let value = Common.numFloor(Number(res) / 1e18, 1e4);
+				this.buyBack.hasAmount = value;
+				this.$store.commit("bnbState/setData", {buyBack: this.buyBack});
+			}
 		},
 		//获取我质押的币和kEY的收益
 		async getStakeValueAndEarndKey(){

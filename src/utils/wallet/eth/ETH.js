@@ -381,6 +381,17 @@ export default class ETH {
 		});
 
 	}
+
+	//查询合约中一个币种的余额
+	static async getTargetBalancefromTokenAddr(targetAddr, tokenAddr) {
+		let contract = new this.web3.eth.Contract([Contract.balanceOf], tokenAddr);
+		return new Promise(resolve => {
+			contract.methods.balanceOf(targetAddr).call().then(res => {
+				resolve(BigNumber(res));
+			});
+		});
+	}
+
 	//添加box
 	static async addBox(amount) {
 		let myAddr = await this.getAccount();
@@ -1092,7 +1103,7 @@ export default class ETH {
 
 		let deadline = parseInt(new Date().valueOf() / 1000) + (60 *duration);
 		let tokenA = fromCoinCfg.addr;
-		let tokenB = fromCoinCfg.addr;
+		let tokenB = toCoinCfg.addr;
 		let amountADesired =  this.numToHex(BigNumber(Common.numFloor(from.inputValue , 1e8)).times(decimals_from));
 		let amountBDesired =  this.numToHex(BigNumber(Common.numFloor(to.inputValue , 1e8)).times(decimals_to));
 		let amountAMin = this.numToHex(BigNumber(Common.numFloor(from.inputValue * (1-slippage/100), 1e8)).times(decimals_from));

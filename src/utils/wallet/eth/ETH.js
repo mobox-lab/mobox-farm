@@ -1087,7 +1087,60 @@ export default class ETH {
 		});
 	}
 
+
+
 	//pancake相关
+	static async removeLiquidity(coinName, liquidity, targetLPPrice, setting){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let coinObj = coinName.split("-");
+		let selectCoinA = PancakeConfig.SelectCoin[coinObj[0]];
+		let selectCoinB = PancakeConfig.SelectCoin[coinObj[1]];
+		let LPObj = PancakeConfig.StakeLP[coinName];
+		let duration = Number(setting.duration) || 20;
+		let slippage = Number(setting.slippage) || 0.5;
+
+		let method;
+		let tokenA = selectCoinA.addr;
+		let tokenB =  selectCoinB.addr;
+		liquidity = this.numToHex(BigNumber(liquidity).times(LPObj.decimals));
+
+		let amountAMin = this.numToHex(BigNumber(Common.numFloor(targetLPPrice[0] * (1-slippage/100), 1e8)).times(selectCoinA.decimals));
+		let amountBMin = this.numToHex(BigNumber(Common.numFloor(targetLPPrice[1] * (1-slippage/100), 1e8)).times(selectCoinB.decimals));
+
+		let deadline = parseInt(new Date().valueOf() / 1000) + (60 *duration);
+
+		//包含BNB
+		if(coinName.indexOf("BNB") != -1){
+			let token = coinObj[0] == "BNB"? tokenB: tokenA;
+			let amountTokenMin = coinObj[0] == "BNB"? amountBMin: amountAMin;
+			let amountETHMin = coinObj[0] == "BNB"?amountAMin: amountBMin;
+
+			console.log({token,liquidity, amountTokenMin, amountETHMin});
+			method = this.pancakeSwapContract.methods.removeLiquidityETH(
+				token, liquidity, amountTokenMin, amountETHMin,
+				myAddr, deadline);
+		}else{
+			method = this.pancakeSwapContract.methods.removeLiquidity(
+				tokenA,tokenB, liquidity, amountAMin, amountBMin,
+				myAddr, deadline);
+		}
+
+		return new Promise(resolve => {
+			this.sendMethod(method, {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					console.log("removeLiquidity success!!!!!");
+					Common.store.commit("bnbState/clearLoading");
+					EventBus.$emit(EventConfig.AddLiquiditySuccess);
+					EventBus.$emit(EventConfig.SwapSuccess);
+				}
+			)
+		});
+
+	}
+
 	static async addLiquidity(from, to, setting){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
@@ -1129,6 +1182,7 @@ export default class ETH {
 				hash=>resolve(hash),
 				()=>{
 					console.log("addLiquidity success!!!!!");
+					Common.store.commit("bnbState/clearLoading");
 					EventBus.$emit(EventConfig.AddLiquiditySuccess);
 					EventBus.$emit(EventConfig.SwapSuccess);
 				}
@@ -1196,6 +1250,7 @@ export default class ETH {
 				hash=>resolve(hash),
 				()=>{
 					console.log("swap success!!!!!");
+					Common.store.commit("bnbState/clearLoading");
 					EventBus.$emit(EventConfig.SwapSuccess);
 				}
 			)

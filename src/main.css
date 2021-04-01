@@ -288,10 +288,9 @@ svg {
 	border-radius: 20px;
 	height: 33px;
 	outline: none;
-	/* background-image: linear-gradient(90deg, #aaaaaa, 50%, #757575); */
-	background: #cecece;
-	color: rgb(255, 255, 255);
-	opacity: 0.6;
+	background-image: linear-gradient(90deg, #ffffff, 50%, #d1d1d1);
+	/* background: #ffffff; */
+	color: rgb(51, 51, 51);
 	border: none;
 	cursor: pointer;
 	font-size: 14px;

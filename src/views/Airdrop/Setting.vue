@@ -19,8 +19,8 @@
 					<button :class="Number(setting.slippage) == 0.5?'btn-primary':'btn-default' " @click="setting.slippage = 0.5">0.5%</button>&nbsp;
 					<button :class="Number(setting.slippage) == 1?'btn-primary':'btn-default' " @click="setting.slippage = 1">1%</button>
 				</div>
-				<p class="color-danger small mgt-10" v-if="Number(setting.slippage) < 0.5 && Number(setting.slippage) > 0">Your transaction may fail</p>
-				<p class="color-danger small mgt-10" v-if="Number(setting.slippage) == 0">Enter a valid slippage percentage</p>
+				<p class="color-danger small mgt-10" v-if="Number(setting.slippage) < 0.5 && Number(setting.slippage) > 0">{{$t("Air-drop_97")}}</p>
+				<p class="color-danger small mgt-10" v-if="Number(setting.slippage) == 0">{{$t("Air-drop_98")}}</p>
 			</div>
 			<div class="mgt-20 tal">
 				<p class="vertical-children">
@@ -34,7 +34,7 @@
 					<input type="number" class="ly-input" style="flex:1 1 auto" v-model="setting.duration" v-int placeholder="20"> 
 					<p  class="tac" style="padding:0px 10px">{{$t("Air-drop_44")}}</p>
 				</div>
-				<p class="color-danger small mgt-10" v-if="setting.duration == '' ">Enter a valid deadline</p>
+				<p class="color-danger small mgt-10" v-if="setting.duration == '' ">{{$t("Air-drop_99")}}</p>
 			</div>
 		</div>
 	</Dialog>

@@ -1,5 +1,5 @@
 <template >
-	<button @click="btnClick"  class="btn-primary por" :class="isDisable?'disable-btn':'' " >
+	<button @click="btnClick"  class="btn-primary por" :class="isDisable || isLoading?'disable-btn':'' " >
 		<Loading v-if="isLoading" class="btn-loading" />
 		<slot></slot>
 	</button>
@@ -22,7 +22,7 @@ export default {
 	},
 	methods:{
 		btnClick(){
-			if(this.isDisable) return;
+			if(this.isDisable || this.isLoading) return;
 			this.onClick(); 
 		}
 	}

@@ -1,6 +1,7 @@
 const baseCoinAttr = {
 	apy: "-%",
 	balance: "-",
+	balanceTrue: 0,
 	stake: 0,
 	stakeLp: 0,
 	earnedKey: 0,
@@ -16,6 +17,8 @@ const baseCoinAttr = {
 	isApproving: false, //是否授权中
 	isDeposing: false, //是否充值中
 	isWithdrawing: false, //是否提现中
+	isRemoveLiqiditing: false, //是移除流动性中
+	isAddLiqiditing: false, //是增加流动性中
 }
 
 const state = () => ({
@@ -69,6 +72,8 @@ const mutations = {
 			state.data.coinArr[coinName].isApproving = false;
 			state.data.coinArr[coinName].isDeposing = false;
 			state.data.coinArr[coinName].isWithdrawing = false;
+			state.data.coinArr[coinName].isRemoveLiqiditing = false;
+			state.data.coinArr[coinName].isAddLiqiditing = false;
 		}
 		state.data.conArr["ts"] = new Date().valueOf();
 	},

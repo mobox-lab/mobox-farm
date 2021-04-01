@@ -1,7 +1,7 @@
 <template>
 	<Dialog id="keyopr-dialog" :top="100" :width="400">
 		<div class="tal">
-			<div class="tab-menu active ">提取KEY</div>
+			<div class="tab-menu active ">{{$t("Air-drop_108")}}</div>
 		</div>
 		<div class="ly-input-content">
 			<div class="por mgt-10 ">
@@ -53,7 +53,7 @@
 			{{ $t("Air-drop_15").replace("#0#", parseInt(getSelectAllKey)) }}
 		</StatuButton>
 		<StatuButton class="mgt-10" :onClick="getRewardKey" :isLoading="lockBtn.getKeyLock > 0" :isDisable="getSelectAllKey <= 0 || lockBtn.getKeyLock > 0" style="width: 70%;">
-			提取到钱包
+			{{$t("Air-drop_109")}}
 		</StatuButton>
 	</Dialog>
 </template>

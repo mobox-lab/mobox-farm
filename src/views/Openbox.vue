@@ -2,14 +2,57 @@
 	<div id="openbox" class="tac">
 		<h1>{{ $t("BOX_01") }}</h1>
 		<h1 class="gradientText dib mgt-20" style="font-size: 35px">
-			{{ totalOpenBoxAmount.eth }}
+			{{ totalOpenBoxAmount.bnb }}
 		</h1>
 		<br />
-		<div class="por" style="height:300px">
+		<div class="por box"  style="height:300px;width:300px; margin:0px auto; ">
 			<div id="openbox-anime-new" class="hide"></div>
 			<div class="animation-box mgt-50" id="openbox-anime"></div>
 		</div>
+		<div id="show-card" class="hide" @click="initCardAnime">
+			<div id="show-card-cont" class="animate__animated  animate__zoomIn">
+				<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
+				<div v-if="posArr[petDataArr.length].line1" class="card-cont-row"  id="show-card-cont-row1">
+					<div class="show-card-item dib" v-for="key in posArr[petDataArr.length].line1" :key="key+10">
+						<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
+						<div class="front">
+							<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
+						</div>
+						<div class="back">
+							<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key-1] }" />
+						</div>
+					</div>
+				</div>
+				<div v-if="posArr[petDataArr.length].line2" class="card-cont-row "   id="show-card-cont-row2">
+					<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line2" :key="key+20">
+						<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
+						<div class="front">
+							<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
+						</div>
+						<div class="back">
+							<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 - 1 ] }" />
+							<!-- <PetItem style="zoom:0.72" v-bind:data="{ item: {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'} }" /> -->
+						</div>
+					</div>
+				</div>
+				<div v-if="posArr[petDataArr.length].line3" class="card-cont-row"   id="show-card-cont-row3">
+					<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line3" :key="key+30">
+						<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
+						<div class="front">
+							<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
+						</div>
+						<div class="back">
+							<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 + posArr[petDataArr.length].line2 -1] }" />
+							<!-- <PetItem style="zoom:0.72" v-bind:data="{ item: {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'} }" /> -->
+						</div>
+					</div>
+				</div>
+				<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
+			</div>
+		</div>
 		<br />
+
+		<button class="btn-primary" @click="openAnime">测试动画</button>
 
 		<div>
 			<div class="dib mgt-20" style="margin: 30px">
@@ -31,7 +74,7 @@
 					{{ $t("BOX_04") }}
 				</button>
 				<button class="btn-primary mgt-20" style="width: 60%" v-if="needApprove" @click="approve" >
-					{{ $t("Air-drop_16") }}
+					{{ $t("Air-drop_16") }} KEY
 				</button>
 			</div>
 			<div class="dib mgt-20" style="margin: 30px">
@@ -143,9 +186,6 @@
 			<button @click="open(openBox, true)" class="btn-primary mgt-30" style="width: 70%;" >
 				{{ $t("BOX_11") }}
 			</button>
-			<button @click="open(openBox)" class="btn-primary mgt-10" style="width: 70%; margin-bottom: 20px" >
-				{{ $t("BOX_05") }}
-			</button>
 		</Dialog>
 	</div>
 </template>
@@ -153,7 +193,7 @@
 <script>
 import { mapState } from "vuex";
 import { Wallet, Common, EventBus } from "@/utils";
-import { Dialog, PetItemSmall } from "@/components";
+import { Dialog, PetItemSmall, PetItem } from "@/components";
 import CommonMethod from "@/mixin/CommonMethod";
 import { BaseConfig, WalletConfig, EventConfig } from "@/config";
 import lottie from "lottie-web";
@@ -161,7 +201,7 @@ import lottie from "lottie-web";
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { Dialog, PetItemSmall },
+	components: { Dialog, PetItemSmall, PetItem },
 	data() {
 		return {
 			showHistoryArr: [],
@@ -173,6 +213,24 @@ export default {
 				MintBox: "BOX_25",
 			},
 			maxOpenOne: 10,
+			openLottie: null,
+			showOpenBoxCard: [],
+
+			petDataArr:[],
+
+			posArr:[
+				{line1:0,line2:0,line3:0, flexNum:0},
+				{line1:0,line2:1,line3:0, flexNum:2},
+				{line1:1,line2:0,line3:1, flexNum:1},
+				{line1:1,line2:1,line3:1, flexNum:0},
+				{line1:2,line2:0,line3:2, flexNum:1},
+				{line1:2,line2:1,line3:2, flexNum:0},
+				{line1:2,line2:2,line3:2, flexNum:0},
+				{line1:2,line2:3,line3:2, flexNum:0},
+				{line1:2,line2:4,line3:2, flexNum:0},
+				{line1:3,line2:3,line3:3, flexNum:0},
+				{line1:3,line2:4,line3:3, flexNum:0},
+			]
 		};
 	},
 	computed: {
@@ -197,6 +255,7 @@ export default {
 		},
 		getOpenBoxHistory() {
 			let { openBoxTemp, openBoxHistory } = this.ethState;
+			
 			//去重
 			let historyObj = {};
 			openBoxHistory.map((item) => {
@@ -207,18 +266,116 @@ export default {
 					historyObj[item.tx] = item;
 				}else{
 					openBoxTemp.splice(index, 1);
+					//显示开箱子
+					console.log("start show");
+					// this.petDataArr = [];
+					let showArr = [];
+					let {tokenIds, ids, tokens, amounts} = historyObj[item.tx];
+
+					//先生成721的数据
+					tokenIds.map((item, key) => {
+						let {category,hashrate,prototype,quality,specialty} = tokens[(item, key)];
+						let {tokenName} = BaseConfig.NftCfg[prototype];
+						showArr.push({
+							prototype,
+							quality,
+							category,
+							level: 1,
+							specialty,
+							hashrate,
+							lvHashrate: hashrate,
+							vType: parseInt(prototype / 1e4),
+							num: 1,
+							tokenId: item,
+							tokenName,
+							chain: "bnb"
+						});
+					});
+					//再生成1155的数据
+					ids.map((item, key) => {
+						if (item == 0) return;
+						let { quality, category, tokenName } = BaseConfig.NftCfg[item];
+						//将1155拆开显示
+						new Array(Number(amounts[key])).fill(1).map(num=>{
+							showArr.push({
+								prototype: item,
+								quality,
+								category,
+								level: 1,
+								specialty: 0,
+								hashrate: quality,
+								lvHashrate: quality,
+								vType: parseInt(item / 1e4),
+								num,
+								tokenId: 1,
+								tokenName,
+								chain: "bnb"
+							});
+						})
+					});
+					
+					console.log("xaaaa", showArr);
+					this.petDataArr = showArr;
+					this.openAnime();
 				}
 			});
 
-			this.$store.commit("ethState/setData", {
-				openBoxTemp,
-			});
+			this.$store.commit("ethState/setData", {openBoxTemp,});
 
 			return Object.values(historyObj).sort((a,b)=>b.crtime - a.crtime);
+		},
+		getShowAnimeArr(){
+			if(this.ethState.openBoxHistory.length == 0) return [];
+			let {tokenIds, ids, tokens, amounts} = this.ethState.openBoxHistory[0];
+
+			let returnArr = [];
+
+			//先生成721的数据
+			tokenIds.map((item, key) => {
+				let {category,hashrate,prototype,quality,specialty} = tokens[(item, key)];
+				returnArr.push({
+					prototype,
+					quality,
+					category,
+					level: 1,
+					specialty,
+					hashrate,
+					lvHashrate: hashrate,
+					vType: parseInt(prototype / 1e4),
+					num: 1,
+					tokenId: item,
+				});
+			});
+			//再生成1155的数据
+			ids.map((item, key) => {
+				if (item == 0) return;
+				let { quality, category } = BaseConfig.NftCfg[item];
+				returnArr.push({
+					prototype: item,
+					quality,
+					category,
+					level: 1,
+					specialty: 0,
+					hashrate: quality,
+					lvHashrate: quality,
+					vType: parseInt(item / 1e4),
+					num: Number(amounts[key]),
+					tokenId: 1,
+				});
+			});
+
+			return returnArr;
 		},
 		needApprove() {
 			return (this.ethState.allowance_box_to_minter != -1 && Number(this.ethState.allowance_box_to_minter) < 100);
 		},
+		isOpening(){
+			let isOpening = false;
+			this.ethState.openBoxTemp.map(item=>{
+				if(item.state == 0) isOpening = true;
+			});
+			return isOpening;
+		}
 	},
 
 	mounted() {
@@ -233,23 +390,22 @@ export default {
 		}, 2000);
 
 
-		// document.getElementById("openbox-anime").classList.add("animation-box-start");
-
-		let a = lottie.loadAnimation({
+		this.openLottie = lottie.loadAnimation({
 			container: document.getElementById("openbox-anime-new"), // the dom element that will contain the animation
 			renderer: 'svg',
 			loop: false,
 			autoplay: false,
 			path: './animation/boxAnime/open.json' // the path to the animation json
 		});
-		console.log(a);
 
-		// setTimeout(()=>{
-		// 	document.getElementById("openbox-anime").classList.remove("animation-box-start");
-		// 	window.$("#openbox-anime").hide();
-		// 	window.$("#openbox-anime-new").show();
-		// 	a.play();
-		// }, 3000)
+		this.openLottie.onComplete = function(){
+			document.querySelector("#show-card").classList.remove("hide");
+		}
+
+		//如果有临时开箱子数据就让箱子继续晃动
+		if(this.isOpening){
+			document.getElementById("openbox-anime").classList.add("animation-box-start");
+		}
 
 	},
 	beforeDestroy() {
@@ -260,7 +416,7 @@ export default {
 	methods: {
 		//开箱子合约确认
 		async stopBoxAnime() {
-			document.getElementById("openbox-anime").classList.remove("animation-box-start");
+			// document.getElementById("openbox-anime").classList.remove("animation-box-start");
 		},
 
 		getTxUrl(tx) {
@@ -379,17 +535,154 @@ export default {
 				this.showNotify(this.$t("BOX_30"), "error")
 			}
 		},
+
+		//开箱子动画
+		openAnime(){
+			document.getElementById("openbox-anime").classList.remove("animation-box-start");
+			window.$("#openbox-anime").hide();
+			window.$("#openbox-anime-new").show();
+			if(this.openLottie) this.openLottie.goToAndPlay(0);
+		},
+
+		initCardAnime(){
+			document.querySelector("#show-card").classList.add("hide");
+			window.$("#openbox-anime").show();
+			window.$("#openbox-anime-new").hide();
+		}
 		
 	},
 };
 </script>
 
 <style >
+.card-cont-row{
+	display: flex;
+	flex: 2;
+	justify-content: center;
+	align-items: center;
+	flex-direction:column;
+}
+
+.animate__animated.animate__zoomIn {
+  --animate-duration: 0.5s;
+}
+
+.show-card-item{
+	width: 100%;
+	margin: 20px 0px;
+
+	animation: heartBeat-my, shakeX, flipX forwards;
+	animation-duration: 0.6s, 0.6s,0.6s;
+	animation-delay: 0.6s, 1.2s, 1.8s;
+
+	transition: 0.6s;
+	transform-style: preserve-3d;
+	position: relative;
+	transform: rotateX(0deg);
+}
+
+.front,
+.back {
+	backface-visibility: hidden;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+}
+
+.front {
+	z-index: 2;
+}
+
+.back {
+	transform: rotateX(180deg);
+}
+
+@keyframes flipX {
+  0% {
+    -webkit-transform: perspective(1000px) translateZ(0) rotateX(0) scale(1);
+    transform: perspective(1000px) translateZ(0) rotateX(0) scale(1);
+  }
+  100% {
+    -webkit-transform: perspective(1000px) translateZ(0) rotateX(180deg) scale(1);
+    transform: perspective(1000px) translateZ(0) rotateX(180deg) scale(1);
+  }
+}
+
+@keyframes heartBeat-my {
+	0%  { transform: scale(1)}
+	14%  { transform: scale(1.1)}
+	28%  { transform: scale(1)}
+	42%  { transform: scale(1.1)}
+	70%  { transform: scale(1)}
+}
+@keyframes bounceIn-my {
+	20%  { top:100px;transform: scale(1)}
+	40%  {top:100px; transform: scale(0.9)}
+	60%  {top:100px; transform: scale(1.05)}
+	80%  {top:100px; transform: scale(0.9)}
+	100%  {top:100px; transform: scale(1)}
+}
+@keyframes shake-my {
+	0%  {top:100px; transform: rotate(0deg)}
+	20%  {top:100px; transform: rotate(10deg)}
+	40%  {top:100px; transform: rotate(0deg)}
+	60%  { top:100px;transform: rotate(-10deg)}
+	80%  {top:100px; transform: rotate(0deg)}
+	90%  {top:100px; transform: rotate(10deg)}
+	100%  {top:100px; transform: rotate(0deg)}
+}
+
+/* @keyframes bounceIn-my {
+	15%  {transform: scale(1)}
+	19%  { transform: scale(0.6)}
+	23%  { transform: scale(1)}
+	26%  { transform: scale(0.8)}
+	29%  { transform: scale(1)}
+	40%  { transform: scale(1)}
+
+	42%  { transform: rotate(15deg)}
+	44%  { transform: rotate(0deg)}
+	46%  { transform: rotate(-15deg)}
+	48%  { transform: rotate(0deg)}
+	50%  { transform: rotate(-8deg)}
+
+	52%  { transform: rotate(0deg)}
+	/* 70%  { transform: rotate(0deg)} */
+	/* 100%  { transform: rotateX(90deg)}
+	/* 100%  { transform: rotateX(90deg)} */
+	/* 90%  { transform: rotateX(0)}
+	100% { } */
+/* }  */
+
+@keyframes flip-out {
+	from  { transform: rotateX(90deg)}
+	to  { transform: rotateX(0deg)}
+}
+
+#show-card-cont{
+	/* width: calc(90vh * 9 / 16); */
+	width: 1000px;
+	margin: 0px auto;
+	margin-top: 5vh;
+	height: 90vh;
+	display: flex;
+}
+#show-card{
+	position: fixed;
+	background: rgba(0,0,0,0.8);
+	width: 100%;
+	height: 100vh;
+	top: 0px;
+	left: 0px;
+	z-index: 999999;
+}
 #openbox-anime-new{
 	height: 300px;
 	position: absolute;
-	left: 415px;
-	top: 33px;
+	left: -5px;
+	top: 30px;
 }
 #opr-btn button {
 	width: 200px;
@@ -408,9 +701,33 @@ export default {
 	margin: 50px 0px;
 }
 
+@media (max-width:1000px) {
+	#show-card-cont{
+		width: 100% !important;
+	}
+
+	.show-card-item > img,.show-card-item > .front >img{
+		width: 105px;
+		height: 75px;
+	}
+
+	.show-card-item {
+		margin: 10px;
+	}
+
+	.show-card-item   .pet_item{
+		width: 350px !important;
+		zoom: 0.3 !important;
+	}
+
+
+}
+
 @media (max-width: 768px) {
-	#openbox-anime {
-		margin: 10px !important;
+	#show-card-cont{
+		width: 100% !important;
+	}
+	.box {
 		zoom: 0.5;
 	}
 	.table-his td{

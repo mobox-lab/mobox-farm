@@ -25,7 +25,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-4 col-xs-12 col-sm-6" v-for="item in getPledgeList" :key="item.coinName" >
+				<div class="col-md-4 col-xs-12 col-sm-6 mgt-20" v-for="item in getPledgeList" :key="item.coinName" >
 					<div class="airdrop-item tal">
 						<div class="vertical-children" style="padding-left: 56px" >
 							<div class="dib airdorp-item-coin-icon tac " :class="item.isLP?'double-img':'' ">
@@ -67,16 +67,30 @@
 								</span>
 							</p>
 						</div>
-
-						<div class="tac mgt-50"> 
-							<button class="btn-primary" style="width: 45%"  @click="$refs.pancake.setOprData(item).show()" >
-								{{ $t("Air-drop_07") }}
-							</button> &nbsp;
-							<StatuButton style="width: 45%; " :onClick="showWithdraw.bind(this, item)" :isLoading="item.isWithdrawing" :isDisable="item.isWithdrawing || Number(item.wantAmount) <= 0">
-								{{ $t("Air-drop_08") }}
-							</StatuButton>
+						<!-- 存款提现操作 -->
+						<div class="tac mgt-30"> 
+							<div class="dib por tac" style="width:50px" @click="$refs.deposit.setOprData(item).show();">
+								<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
+								<span style="width:100%;position:absolute;bottom:0px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_07")}}</span>
+							</div>
+							<div class="dib por" style="margin-left:50px;width:50px" @click="$refs.withdraw.setOprData(item).show();" >
+								<img class="cur-point "  width="40" src="../../assets/icon/withdraw_icon.png" alt="" >
+								<span style="width:100%;position:absolute;bottom:0px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_08")}}</span>
+							</div>
 						</div>
 
+					</div>
+					<!-- pancake -->
+					<div class="tac" v-if="item.isLP"> 
+						<button class="btn-primary" style="width: 40%"  @click="$refs.pancake.setOprData(item).show('swap')" >
+							{{$t("Air-drop_29")}}
+						</button> &nbsp;
+						<button class="btn-primary" style="width: 40%"  @click="$refs.pancake.setOprData(item).show('liquidity')" >
+							{{$t("Air-drop_30")}}
+						</button> &nbsp;
+						<!-- <StatuButton style="width: 40%; " :onClick="showWithdraw.bind(this, item)" :isLoading="item.isWithdrawing" :isDisable="item.isWithdrawing || Number(item.wantAmount) <= 0">
+							Liquidity
+						</StatuButton> -->
 					</div>
 					
 				</div>
@@ -113,6 +127,7 @@
 		<Pancake ref="pancake" />
 		<KeyOpr ref="keyopr" />
 		<Withdraw ref="withdraw" />
+		<Deposit ref="deposit" />
 	</div>
 </template>
 <script>
@@ -122,12 +137,12 @@ import { mapState } from "vuex";
 import { PancakeConfig } from "@/config";
 import Pancake from "./Pancake";
 import KeyOpr from "./KeyOpr";
-import Withdraw from './Withdraw'
-import {StatuButton} from "@/components";
+import Withdraw from './Withdraw';
+import Deposit from './Deposit';
 
 export default {
 	mixins: [CommonMethod],
-	components: { Pancake, KeyOpr, Withdraw, StatuButton},
+	components: { Pancake, KeyOpr, Withdraw, Deposit},
 	computed: {
 		...mapState({
 			lockBtn: (state) => state.globalState.data.lockBtn,
@@ -206,7 +221,7 @@ export default {
 	border-radius: 20px;
 	padding: 20px;
 	position: relative;
-	margin: 20px 10px;
+	margin:10px;
 }
 #buy-back .info{
 	position: absolute;

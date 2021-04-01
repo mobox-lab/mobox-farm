@@ -311,10 +311,10 @@ const InitEth = {
 		//获开过的盒子统计
 		async setTotalOpenBox() {
 			let res = await Http.getTotalOpenBox();
-			if (res && res["ETH"]) {
+			if (res && res["bnb"]) {
 				this.$store.commit("globalState/setChainTotalOpenBox", {
-					chain: "eth",
-					num: Number(res["ETH"]["MintBox"])
+					chain: "bnb",
+					num: Number(res["bnb"]["MintBox"])
 				});
 			}
 		},

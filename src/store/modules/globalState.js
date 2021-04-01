@@ -7,6 +7,7 @@ const state = () => ({
 		selectChain: "trx",
 		addressArr: ["BNB: "],
 		notifications: [],
+		notificationsTrans: [],
 		myPetPage: 1,
 		myPetFilter: {
 			category: 0,
@@ -62,6 +63,17 @@ const mutations = {
 		let notifications = [...state.data.notifications];
 		notifications.push(notify);
 		state.data.notifications = notifications;
+	},
+	removeNotifyTrans(state) {
+		let notificationsTrans = [...state.data.notificationsTrans];
+		notificationsTrans.shift();
+		state.data.notificationsTrans = notificationsTrans;
+	},
+	addNotifyTrans(state, notify) {
+		notify.hash = new Date().valueOf();
+		let notificationsTrans = [...state.data.notificationsTrans];
+		notificationsTrans.push(notify);
+		state.data.notificationsTrans = notificationsTrans;
 	},
 	setMyPetPage(state, page) {
 		state.data.myPetPage = page;

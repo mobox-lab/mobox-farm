@@ -1,6 +1,7 @@
 import Loading from "@/components/Loading";
 import Dropdown from "@/components/Dropdown";
 import Notification from "@/components/Notification";
+import NotificationTrans from "@/components/NotificationTrans";
 import Page from "@/components/Page";
 import PetAddItem from "@/components/PetAddItem";
 import PetItem from "@/components/PetItem";
@@ -24,6 +25,7 @@ import PetItemMin from "@/components/PetItemMin";
 export {
 	Dropdown,
 	Notification,
+	NotificationTrans,
 	Page,
 	PetAddItem,
 	PetItem,

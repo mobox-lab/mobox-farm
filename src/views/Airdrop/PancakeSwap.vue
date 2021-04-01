@@ -130,6 +130,7 @@ let timerInterval = null;
 export default {
 	components: {Dialog, Loading},
 	mixins: [CommonMethod],
+	props: ["oprData"],
 	data(){
 		return({
 			from: {
@@ -149,6 +150,11 @@ export default {
 			stepTime: 500,
 			lastType: "from",
 		})
+	},
+	watch: {
+		oprData: function(){
+			this.initData();
+		}
 	},
 	computed:{
 		...mapState({
@@ -275,14 +281,16 @@ export default {
 			}
 		},
 		initData(){
+			let {coinName} = this.oprData;
+			if(coinName == "") return
 			this.from = {
-				coinName: "BNB",
+				coinName: coinName.split("-")[1],
 				inputValue: "",
 				isEstimated: false, // 是否为预估的
 				loading: false,
 			};
 			this.to =  {
-				coinName: "",
+				coinName: coinName.split("-")[0],
 				inputValue: "",
 				isEstimated: false,// 是否为预估的
 				loading: false,

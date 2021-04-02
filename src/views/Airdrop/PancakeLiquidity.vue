@@ -44,7 +44,7 @@
 					</div>
 				</div>
 				<p class="small mgt-20 opa-6">
-					Or, if you staked your LP tokens in a farm, unstake them to see them here.
+					{{$t("Air-drop_110")}}
 				</p>
 			</div>
 		</div>

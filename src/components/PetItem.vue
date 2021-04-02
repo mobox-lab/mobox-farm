@@ -11,6 +11,10 @@
 			</div>
 		</div>
 
+		<div id="light-shadow" ref="lightShadow" v-if="data.item.vType >= 4"></div>
+		<div id="light-border-show" class="v5b" v-if="data.item.vType == 5"></div>
+		<div id="light-border-show" class="v6b" v-if="data.item.vType == 6"></div>
+
 		<img class="pet_img" :src="require(`../assets/pet/${data.item.prototype}.png`)" alt="" width="170" height="170" />
 		<div style="position: absolute; width: 100%; bottom: 95px; left: 0px">
 			<div class="vertical-children pet_num" v-if="data.item.vType < 4 && data.item.num > 1" >
@@ -45,6 +49,7 @@
 import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
 import { Common } from "@/utils";
+import lottie from "lottie-web";
 
 export default {
 	mixins: [CommonMethod],
@@ -64,11 +69,44 @@ export default {
 		if (this.$refs.anime && this.data.item.location == "stake") {
 			this.$refs.anime.classList.add("animation-harmer");
 		}
+
+		// console.log(lottie);
+
+		// setTimeout(()=>{
+		if(this.data.item.vType >= 4){
+			lottie.loadAnimation({
+				container: this.$refs.lightShadow, // the dom element that will contain the animation
+				renderer: 'svg',
+				loop: true,
+				autoplay: true,
+				path: `./animation/lightShadow/v${this.data.item.vType}.json` // the path to the animation json
+			});
+		}
+
+		// }, 3000)
+
+		// if
+
+		
 	},
 };
 </script>
 
 <style  scoped>
+#light-border-show{
+	position: absolute;
+	left:50%;
+	top:50%;
+	transform: translate(-50%, -50%) scale(1.07,0.96);
+}
+#light-shadow{
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	transform: scale(1.2,1.1);
+}
 .jewel{
 	position: absolute;
 	left: 20px;

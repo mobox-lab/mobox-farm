@@ -221,7 +221,18 @@ export default {
 			openLottie: null,
 			showOpenBoxCard: [],
 
-			petDataArr:[],
+			petDataArr:[
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '50080',quality: 5,specialty: 0,tokenId: 1,vType: 5, chain:'bnb', tokenName:'aaa'},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 4,specialty: 0,tokenId: 1,vType: 4, chain:'bnb', tokenName:'aaa'},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
+				],
 
 			posArr:[
 				{line1:0,line2:0,line3:0, flexNum:0},
@@ -318,8 +329,7 @@ export default {
 							});
 						})
 					});
-					
-					console.log("xaaaa", showArr);
+				
 					this.petDataArr = showArr;
 					this.openAnime();
 				}

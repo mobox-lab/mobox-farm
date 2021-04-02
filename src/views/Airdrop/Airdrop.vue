@@ -69,7 +69,11 @@
 						</div>
 						<!-- 存款提现操作 -->
 						<div class="tac mgt-30"> 
-							<div class="dib por tac" style="width:50px" @click="$refs.deposit.setOprData(item).show();">
+							<div class="dib por tac" style="width:50px" @click="needSetItem = item;oprDialog('deposit-notice-dialog','block')"  v-if="needShowNotice">
+								<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
+								<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_07")}}</span>
+							</div>
+							<div class="dib por tac" style="width:50px" @click="$refs.deposit.setOprData(item).show();" v-else>
 								<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
 								<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_07")}}</span>
 							</div>
@@ -124,6 +128,38 @@
 			</div>
 		</section>
 
+		<Dialog id="deposit-notice-dialog" :top="100" :width="400">
+			<h2>{{$t("Air-drop_23")}}</h2>
+			<div class="tab-body tal mgt-10 small" v-html="$t('Air-drop_24')" style=" padding:15px;"></div>
+			<div class="tab-body tal mgt-10" style="padding:15px">
+				<div class="vertical-children " style="display:flex">
+					<div class="ly-checkbox" :class="hasAgreeNotice?'active':''" @click="hasAgreeNotice = !hasAgreeNotice">
+						<div style="width:20px">
+							<svg class="hide"  viewBox="0 0 1024 1024" width="20" height="20"><path fill="#92FFDA" d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z" ></path></svg>
+						</div>
+					</div> &nbsp;
+					<span class="small mgl-10" style="flex:auto">{{$t("Air-drop_25")}}</span>
+				</div>
+				<div class="vertical-children mgt-10"  style="display:flex;justify-content:flex-start">
+					<div class="ly-checkbox " :class="hasSelectNotShow?'active':''" @click="hasSelectNotShow = !hasSelectNotShow">
+						<div style="width:20px">
+							<svg class="hide"  viewBox="0 0 1024 1024" width="20" height="20"><path fill="#92FFDA" d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z" ></path></svg>
+						</div>
+					</div> &nbsp;
+					<span class="small mgl-10" style="flex:1 auto"> {{$t("Air-drop_26")}} </span>
+				</div>
+
+				<div class="mgt-20 aveage-box">
+					<div class="tac">
+						<button class="btn-primary" style="width:80%" @click="oprDialog('deposit-notice-dialog', 'none')">{{$t("Air-drop_27")}}</button>
+					</div>
+					<div class="tac">
+						<button class="btn-primary" style="width:80%" :class="hasAgreeNotice?'':'disable-btn'" @click="agreeNotice">{{$t("Air-drop_28")}}</button>
+					</div>
+				</div>
+			</div>
+		</Dialog>
+
 		<Pancake ref="pancake" />
 		<KeyOpr ref="keyopr" />
 		<Withdraw ref="withdraw" />
@@ -139,10 +175,19 @@ import Pancake from "./Pancake";
 import KeyOpr from "./KeyOpr";
 import Withdraw from './Withdraw';
 import Deposit from './Deposit';
+import { Dialog } from '@/components';
 
 export default {
 	mixins: [CommonMethod],
-	components: { Pancake, KeyOpr, Withdraw, Deposit},
+	components: { Pancake, KeyOpr, Withdraw, Deposit, Dialog},
+	data(){
+		return({
+			hasAgreeNotice: false,
+			hasSelectNotShow: false,
+			needShowNotice: true,
+			needSetItem: {},
+		});
+	},
 	computed: {
 		...mapState({
 			lockBtn: (state) => state.globalState.data.lockBtn,
@@ -179,10 +224,22 @@ export default {
 		},
 	},
 	async created(){
+		let hasSelectNotShowNotice =  Common.getStorageItem("hasSelectNotShowNotice");
+		if(hasSelectNotShowNotice == 1){
+			this.needShowNotice = false;
+		}
+
 		this.getTotalStakeUSDTAndAirdropKEY();
 	},
-
 	methods: {
+		agreeNotice(){
+			if(!this.hasAgreeNotice) return;
+			if(this.hasSelectNotShow){
+				Common.setStorageItem("hasSelectNotShowNotice", 1);
+			}
+			this.oprDialog("deposit-notice-dialog","none");
+			this.$refs.deposit.setOprData(this.needSetItem).show();
+		},
 		async  getTotalStakeUSDTAndAirdropKEY(){
 			let res = await Http.getKeyDrop();
 			console.log(res);
@@ -227,7 +284,7 @@ export default {
 }
 #buy-back .info{
 	position: absolute;
-	right: -20px;
+	right: -10px;
 	top: -20px;
 }
 #buy-back .ly-input{

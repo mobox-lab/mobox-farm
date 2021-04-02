@@ -66,7 +66,7 @@
 				<p class="tar small">{{getSlippage}}%</p>
 			</div>
 			<div class="mgt-20 tac " :class="!hasApproved?'btn-group':'' " style="margin-bottom:10px">
-				<div v-if="!hasApproved">
+				<div v-if="!hasApproved && from.coinName != '' ">
 					<button data-step="1" @click="approve" class="btn-primary por" style="width:80%;" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
 						<Loading v-if="coinArr[from.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
 						{{$t("Air-drop_16")}} {{from.coinName}}

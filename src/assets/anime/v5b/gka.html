@@ -1,0 +1,36 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,maximum-scale=1">
+    <script name='gkaRibbon'>document.addEventListener('DOMContentLoaded',function(){var d=document.createElement('div');d.innerHTML='<div style="position: fixed; bottom: 10px;">Powered By <a target="_blank" href="https://github.com/gkajs/gka">gka 2.8.6</a></div>';document.body.appendChild(d)});</script>
+    <title>gka-preview</title>
+<link href="./gka.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+    <div class="gka-wrap">
+        <div id="gka"></div>
+    </div>
+    <script>
+    function preloadImage(names, cb, prefix){
+        window.gkaCache = window.gkaCache || [];
+        var n = 0,img,imgs = {};
+        names.forEach(function(name) {
+            img = new Image();
+            window.gkaCache.push(img);
+            img.onload = (function(name, img) {
+                return function() {
+                    imgs[name] = img;
+                    (++n === names.length) && cb && cb(imgs);
+                }
+            })(name, img);
+            img.src = (prefix || '') + name;
+        });
+    }
+
+    preloadImage(["orange_00000.png","orange_00001.png","orange_00002.png","orange_00003.png","orange_00004.png","orange_00005.png","orange_00006.png","orange_00007.png","orange_00008.png","orange_00009.png","orange_00010.png","orange_00011.png","orange_00012.png","orange_00013.png","orange_00014.png","orange_00015.png","orange_00016.png","orange_00017.png","orange_00018.png","orange_00019.png","orange_00020.png","orange_00021.png","orange_00022.png","orange_00023.png","orange_00024.png","orange_00025.png","orange_00026.png","orange_00027.png","orange_00028.png","orange_00029.png"], function() {
+        document.getElementById('gka').className += " animation"
+    }, "img/")
+    </script>
+</body>
+</html>

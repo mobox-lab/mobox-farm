@@ -64,9 +64,9 @@
 				</div>
 			</div>
 
-			<div class="mgt-20">
-				<StatuButton :onClick="approve.bind(this, oprData.coinName)" :isDisable="!needApprove || coinArr[oprData.coinName].isApproving" :isLoading="coinArr[oprData.coinName].isApproving" v-if="needApprove" style="width: 80%" >Approve {{oprData.coinName}}</StatuButton>
-				<StatuButton :onClick="removeLp.bind(this)" style="width: 80%" :isDisable="needApprove && oprData.balance > 0" :isLoading="coinArr[oprData.coinName].isRemoveLiqiditing" class="mgt-10">Remove</StatuButton>
+			<div class="mgt-20 " :class="needApprove?'btn-group':'' ">
+				<StatuButton data-step="1" v-if="needApprove" :onClick="approve.bind(this, oprData.coinName)" :isDisable="!needApprove || coinArr[oprData.coinName].isApproving" :isLoading="coinArr[oprData.coinName].isApproving"  style="width: 80%" >Approve {{oprData.coinName}}</StatuButton>
+				<StatuButton data-step="2" :onClick="removeLp.bind(this)" style="width: 80%" :isDisable="needApprove && oprData.balance > 0" :isLoading="coinArr[oprData.coinName].isRemoveLiqiditing" class="mgt-10">Remove</StatuButton>
 			</div>
 
 		</div>

@@ -70,12 +70,10 @@
 					</div>
 				</div>
 				<br />
-				<button class="btn-primary mgt-20" style="width: 80%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; " v-if="!needApprove">
+				<button class="btn-primary mgt-20" style="width: 80%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; ">
 					{{ $t("BOX_04") }}
 				</button>
-				<button class="btn-primary mgt-20" style="width: 80%" v-if="needApprove" @click="approve" >
-					{{ $t("Air-drop_16") }} KEY
-				</button>
+				
 			</div>
 			<div class="dib mgt-20" style="margin: 30px">
 				<div class="ly-input-content dib">
@@ -163,9 +161,16 @@
 			<div class="mgt-20 tal">
 				<p class="small opa-6" v-html="$t('BOX_08')"></p>
 			</div>
-			<button @click="addBox(addKey)" class="btn-primary mgt-30" style="width: 70%; margin-bottom: 20px" >
-				{{ $t("BOX_09") }}
-			</button>
+
+			<div  :class="needApprove?'btn-group':''" class="mgt-20">
+				<button data-step="1" class="btn-primary por" style="width: 80%" v-if="needApprove" @click="approve" >
+					{{ $t("Air-drop_16") }} KEY
+				</button>
+				<button data-step="2" @click="addBox(addKey)" class="btn-primary mgt-10 por" style="width: 80%; margin-bottom: 20px" :class="needApprove?'disable-btn':''">
+					{{ $t("BOX_09") }}
+				</button>
+			</div>
+			
 		</Dialog>
 		<Dialog id="open-box-dialog" :top="200" :width="400">
 			<h2 class="mgt-10">{{ $t("BOX_05") }}</h2>
@@ -474,6 +479,8 @@ export default {
 			}
 		},
 		async addBox(num) {
+			if(this.needApprove) return;
+
 			if (num > this.ethState.box) {
 				this.showNotify(this.$t("BOX_28"), "error")
 				return;

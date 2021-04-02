@@ -848,6 +848,52 @@ svg {
 	border-bottom: 1px solid #324374;
 }
 
+/* .btn-group{
+	position: relative;
+	border: 1px solid red;
+} */
+
+
+.btn-group button:not(button[data-step='1']):not(button[data-step='2'])::before{
+	content: "";
+	width: 3px;
+	height: 21.6px;
+	background: #4E7399;
+	position: absolute;
+	right: -24px;
+	top: -15.6px;
+}
+.btn-group button[data-step='2']::before{
+	content: "";
+	width: 3px;
+	height: 21.6px;
+	background: linear-gradient(0deg, #4E7399, 50%, #407DD1);
+	position: absolute;
+	right: -24px;
+	top: -15.6px;
+}
+
+.btn-group button::after{
+	content: attr(data-step);
+	position: absolute;
+	right: 0px;
+	top: 50%;
+	transform: translate(150%, -50%);
+	background: #407DD1;
+	border-radius: 22px;
+	width: 22px;
+	height: 22px;
+	font-size: 13px;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+	display: inline-flex;
+}
+
+.btn-group .disable-btn::after{
+	background: #4E7399;
+}
+
 
 
 

@@ -7,7 +7,7 @@
 					<p class="small opa-6">{{$t("Air-drop_58")}}</p>
 				</div>
 				<div class="mgt-10" >
-					<button class="btn-primary " @click="showAddLiquidityPanel =  true" style="background: #384A7C">{{$t("Air-drop_57")}}</button>&nbsp;
+					<button class="btn-primary  mgt-10" @click="showAddLiquidityPanel =  true" style="background: #384A7C">{{$t("Air-drop_57")}}</button>&nbsp;
 					<button class="btn-primary mgt-10" v-if="oprData.balance > 0" @click="showRemoveLiquidityPanel =  true"  style="background: #384A7C">{{$t("Air-drop_95")}}</button>
 				</div>
 			</div>
@@ -110,22 +110,21 @@
 					</div>
 				</div>
 				<!-- Des -->
-				<div class="mgt-20 tac" style="margin-bottom:10px">
+				<div class="mgt-20 tac" :class="(fromNeedApprove || toNeedApprove)?' btn-group':'' " style="margin-bottom:10px">
 					<div v-if="fromNeedApprove">
-						<button @click="approve(from.coinName)" class="btn-primary por mgt-10" style="width:90%;" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
+						<button data-step="1" @click="approve(from.coinName)" class="btn-primary por mgt-10" style="width:80%;" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
 							<Loading v-if="coinArr[from.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
 							{{$t("Air-drop_16")}} {{from.coinName}}
 						</button>
 					</div>
 					<div v-if="toNeedApprove">
-						<button @click="approve(to.coinName)" class="btn-primary por mgt-10" style="width:90%;" :class="coinArr[to.coinName].allowanceToSwap > 1e8 || coinArr[to.coinName].isApproving?'disable-btn':''">
+						<button :data-step="fromNeedApprove?2:1" @click="approve(to.coinName)" class="btn-primary por mgt-10" style="width:80%;" :class="coinArr[to.coinName].allowanceToSwap > 1e8 || coinArr[to.coinName].isApproving?'disable-btn':''">
 							<Loading v-if="coinArr[to.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
 							{{$t("Air-drop_16")}} {{to.coinName}}
 						</button>
 					</div>
 					<div class="mgt-10">
-						<!-- <button class="btn-primary mgt-10" style="width:90%" :class="canSupply?'':'disable-btn'" @click="goSupply">{{$t("Air-drop_57")}}</button> -->
-						<StatuButton style="width:90%" :onClick="goSupply.bind(this)" :isDisable="!canSupply" :isLoading="coinArr[this.oprData.coinName].isAddLiqiditing">{{$t("Air-drop_57")}}</StatuButton>
+						<StatuButton :data-step="toNeedApprove && fromNeedApprove ? 3: 2" style="width:80%" :onClick="goSupply.bind(this)" :isDisable="!canSupply" :isLoading="coinArr[this.oprData.coinName].isAddLiqiditing">{{$t("Air-drop_57")}}</StatuButton>
 					</div>
 				</div>
 			</div>

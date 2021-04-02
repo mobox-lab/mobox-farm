@@ -71,11 +71,11 @@
 						<div class="tac mgt-30"> 
 							<div class="dib por tac" style="width:50px" @click="$refs.deposit.setOprData(item).show();">
 								<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
-								<span style="width:100%;position:absolute;bottom:0px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_07")}}</span>
+								<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_07")}}</span>
 							</div>
 							<div class="dib por" style="margin-left:50px;width:50px" @click="$refs.withdraw.setOprData(item).show();" >
 								<img class="cur-point "  width="40" src="../../assets/icon/withdraw_icon.png" alt="" >
-								<span style="width:100%;position:absolute;bottom:0px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_08")}}</span>
+								<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_08")}}</span>
 							</div>
 						</div>
 

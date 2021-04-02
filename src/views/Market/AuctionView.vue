@@ -92,15 +92,21 @@
 									<span>{{numFloor( nextDayPrice/ 1e9, 100)}}</span>
 								</p>
 							</div>
-							<div v-if="!isMyPet" class="mgt-20">
-								<button v-if="coinArr['BUSD'].allowanceToAuction == 0" :class="(!coinArr['BUSD'].isApproving && coinArr['BUSD'].allowanceToAuction == 0)?'':'disable-btn' " class="btn-primary vertical-children por"  @click="approve">
-									<Loading class="btn-loading" v-if="coinArr['BUSD'].isApproving" />
-									{{$t("Air-drop_16")}} BUSD
-								</button>
-								<button :class="(coinArr['BUSD'].allowanceToAuction > 0 && lockBtn.buyMomoLock <= 0 )?'':'disable-btn' " class="btn-primary vertical-children por mgl-10"  @click="buyPet">
-									<Loading class="btn-loading" v-if="lockBtn.buyMomoLock > 0" />
-									{{$t("Market_22")}}
-								</button>
+							<div v-if="!isMyPet" class="mgt-30">
+								<div :class="coinArr['BUSD'].allowanceToAuction == 0 ?'btn-group':''">
+									<div v-if="coinArr['BUSD'].allowanceToAuction == 0">
+										<button data-step="1"  :class="(!coinArr['BUSD'].isApproving && coinArr['BUSD'].allowanceToAuction == 0)?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="approve">
+											<Loading class="btn-loading" v-if="coinArr['BUSD'].isApproving" />
+											{{$t("Air-drop_16")}} BUSD
+										</button>
+									</div>
+									<div class="mgt-10">
+										<button data-step="2" :class="(coinArr['BUSD'].allowanceToAuction > 0 && lockBtn.buyMomoLock <= 0 )?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="buyPet">
+											<Loading class="btn-loading" v-if="lockBtn.buyMomoLock > 0" />
+											{{$t("Market_22")}}
+										</button>
+									</div>
+								</div>
 							</div>
 							<div  v-if="isMyPet" class="mgt-20">
 								<button class="btn-primary vertical-children por" :class="lockBtn.changePriceLock > 0?'disable-btn':''"   @click="setChangePriceData();oprDialog('changePrice-dialog', 'block')">

@@ -50,14 +50,14 @@
 				<div class="mgt-10">
 					<PercentSelect :selectCB="percent => inputPercent = percent" />
 				</div>
-				<div class="mgt-10 tac " style="margin-bottom:10px">
+				<div class="mgt-10 tac" :class="depositNeedApprove?' btn-group':'' " style="margin-bottom:10px">
 					<div v-if="depositNeedApprove">
-						<button @click="approveToPool(oprData.coinName)" class="btn-primary por" style="width:70%;" :class="oprData.coinName != '' && coinArr[oprData.coinName].allowanceToPool > 1e8 || coinArr[oprData.coinName].isApproving?'disable-btn':''">
+						<button data-step="1" @click="approveToPool(oprData.coinName)" class="btn-primary por" style="width:70%;" :class="oprData.coinName != '' && coinArr[oprData.coinName].allowanceToPool > 1e8 || coinArr[oprData.coinName].isApproving?'disable-btn':''">
 							<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
 							{{$t("Air-drop_16")}} {{oprData.coinName}}
 						</button>
 					</div>
-					<button class="btn-primary mgt-10 por" style="width:70%" :class="!isCanDeposit?'disable-btn':''" @click="deposit">
+					<button data-step="2" class="btn-primary mgt-10 por" style="width:70%" :class="!isCanDeposit?'disable-btn':''" @click="deposit">
 						<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinName].isDeposing"  style="position:absolute;left:8px;top:9px"/>
 						{{$t("Air-drop_07")}}
 					</button>

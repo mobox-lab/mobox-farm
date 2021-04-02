@@ -65,15 +65,15 @@
 				<p class="tal small">{{$t("Air-drop_39")}}</p>
 				<p class="tar small">{{getSlippage}}%</p>
 			</div>
-			<div class="mgt-20 tac" style="margin-bottom:10px">
-				<div v-if="from.coinName != '' && from.coinName != 'BNB' && Number(coinArr[from.coinName].allowanceToSwap) >= 0 && Number(coinArr[from.coinName].allowanceToSwap) <  1e8">
-					<button @click="approve" class="btn-primary por" style="width:90%;" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
+			<div class="mgt-20 tac " :class="!hasApproved?'btn-group':'' " style="margin-bottom:10px">
+				<div v-if="!hasApproved">
+					<button data-step="1" @click="approve" class="btn-primary por" style="width:80%;" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
 						<Loading v-if="coinArr[from.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
 						{{$t("Air-drop_16")}} {{from.coinName}}
 					</button>
 				</div>
 				<div>
-					<button class="btn-primary mgt-10" style="width:90%" :class="canSwap?'':'disable-btn'" @click="goSwap">{{$t("Air-drop_29")}}</button>
+					<button data-step="2" class="btn-primary mgt-10 por" style="width:80%" :class="canSwap?'':'disable-btn'" @click="goSwap">{{$t("Air-drop_29")}}</button>
 				</div>
 			</div>
 		</div>
@@ -134,7 +134,7 @@ export default {
 	data(){
 		return({
 			from: {
-				coinName: "BNB",
+				coinName: "",
 				inputValue: "",
 				isEstimated: false, // 是否为预估的
 				loading: false,
@@ -152,8 +152,10 @@ export default {
 		})
 	},
 	watch: {
-		oprData: function(){
-			this.initData();
+		oprData: function(newData, oldData){
+			if(newData.coinName != oldData.coinName){
+				this.initData();
+			}
 		}
 	},
 	computed:{

@@ -8,13 +8,17 @@
 				<span v-if="getNowPetItem.location=='wallet'">{{$t("MOMO_43")}}</span>
 			</p>
 			<div class="tac mgt-20">
-				<div v-if="getNowPetItem.location=='wallet'">
-					<button  :class="canShowApprove && lockBtn.approveLock <= 0?'':'disable-btn' " class="btn-primary por" @click="canShowApprove && lockBtn.approveLock <= 0 && approveNftToStake()" > 
-						<Loading class="btn-loading" :width="15" :height="15" v-if="lockBtn.approveLock > 0"  />{{$t("Air-drop_16")}} MOMO 
-					</button>
-					<button  :class="canShowStake && lockBtn.stakeLock <= 0?'':'disable-btn' " class="btn-primary por mgl-5" @click="canShowStake && lockBtn.stakeLock <= 0 && stakeNft()" > 
-						<Loading class="btn-loading" :width="15" :height="15" v-if="lockBtn.stakeLock > 0"  />{{$t("MOMO_44")}} 
-					</button>
+				<div v-if="getNowPetItem.location=='wallet'" :class="needApprove?'btn-group':''">
+					<div v-if="needApprove">
+						<button data-step="1"  :class="needApprove && lockBtn.approveLock <= 0?'':'disable-btn' "  style="width:200px" class="btn-primary por" @click="needApprove && lockBtn.approveLock <= 0 && approveNftToStake()" > 
+							<Loading class="btn-loading" :width="15" :height="15" v-if="lockBtn.approveLock > 0"  />{{$t("Air-drop_16")}} MOMO 
+						</button>
+					</div>
+					<div class="mgt-10">
+						<button data-step="2"  :class="canShowStake && lockBtn.stakeLock <= 0?'':'disable-btn' " style="width:200px" class="btn-primary por" @click="canShowStake && lockBtn.stakeLock <= 0 && stakeNft()" > 
+							<Loading class="btn-loading" :width="15" :height="15" v-if="lockBtn.stakeLock > 0"  />{{$t("MOMO_44")}} 
+						</button>
+					</div>
 				</div>
 		
 				<div v-if="getNowPetItem.location=='stake'">
@@ -195,7 +199,7 @@ export default {
 		getNowPetItem(){
 			return this.data;
 		},
-		canShowApprove() {
+		needApprove() {
 			let vType = this.getNowPetItem.vType;
 			return (
 				(vType < 4 && this.allowance_1155_to_stake == 0) ||

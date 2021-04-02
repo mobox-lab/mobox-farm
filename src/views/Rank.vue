@@ -8,32 +8,31 @@
 			<div class="mgt-20">
 				<table style="width: 100%">
 					<tr>
-						<td class="tal tac-xs" style="width: 33.3%; padding-left: 30px">{{ $t("Rank_05") }}</td>
-						<td class="tac tac-xs" style="width: 33.3%; padding-left: 50px">
-							<span style="min-width: 80px" class="dib tal"> {{ $t("Rank_06") }} </span>
+						<td class="tal " style="padding-left: 30px">{{ $t("Rank_05") }}</td>
+						<td class="tar ">
+							<span style="margin-right:20px;" class="dib tal" > {{ $t("Rank_06") }} </span>
 						</td>
-						<td class="tar tac-xs" style="width: 33.3%; padding-right: 30px" > {{ $t("Rank_09") }}</td>
 					</tr>
 				</table>
 				<hr class="split-hr mgt-10" />
-				<div :class="`rank-item tac-xs vertical-children ${item.rank == hashrateRankList.self.rank ? 'active' : '' }`" 
+				<div :class="`rank-item vertical-children ${item.rank == hashrateRankList.self.rank ? 'active' : '' }`" 
 				v-for="item in hashrateRankList.list.slice( 10 * (rewardPage - 1), 10 * rewardPage )" :key="item.rank" >
-					<div class="tal dib tac-xs" style="width: 33.3%">
+					<div class="tal dib" style="width:50%">
 						<span v-if="item.rank > 3" class="dib tac" style="width: 44px" >{{ item.rank }}</span >
-						<img v-if="item.rank <= 3" :src="require(`../assets/rank${item.rank}.png`)" alt=""  />
+						<img v-if="item.rank <= 3" :src="require(`../assets/rank${item.rank}.png`)" alt="" height="18" />
 						<span style="margin-left: 20px">
 							{{ shorAddress(item.member) }}
 						</span>
 					</div>
 
-					<div  class="tac dib vertical-children hashrate-table" style="width: 33.3%; padding-left: 50px" >
-						<img src="../assets/icon/airdrop.png" alt="" height="30" />
-						<span style="min-width: 80px; margin-left: 10px" class="dib tal color-hashrate" >
-							{{ item.score }}
+					<div  class="tar dib vertical-children hashrate-table" style="width: 50%;" >
+						<img src="../assets/icon/airdrop.png" alt="" height="30" />&nbsp;
+						<span  class="dib tal color-hashrate" >
+							{{ item.score }}	
 						</span>
 					</div>
 					
-					<div class="tar dib vertical-children" style="width: 33.3%" >
+					<!-- <div class="tar dib vertical-children" style="width: 33.3%" >
 						<table style="width: 100%" class="tar">
 							<tr>
 								<td> 
@@ -46,7 +45,7 @@
 								</td>
 							</tr>
 						</table>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<hr class="split-hr" />
@@ -55,34 +54,21 @@
 			</div>
 			<div class="mgt-20">
 				<div class="rank-item vertical-children active">
-					<div class="tal dib" style="width: 33.3%">
+					<div class="tal dib" style="width: 50%">
 						<span v-if=" hashrateRankList.self.rank > 3 || hashrateRankList.self.rank <= 0 " class="dib tac" style="width: 44px" >
 							{{ hashrateRankList.self.rank || "-" }}
 							</span>
-						<img v-if=" hashrateRankList.self.rank <= 3 && hashrateRankList.self.rank > 0 " :src=" require(`../assets/rank${hashrateRankList.self.rank}.png`)" alt="" />
+						<img v-if=" hashrateRankList.self.rank <= 3 && hashrateRankList.self.rank > 0 " :src=" require(`../assets/rank${hashrateRankList.self.rank}.png`)" alt="" height="18" />
 						<span style="margin-left: 20px"> {{ shorAddress(hashrateRankList.self.address) }} </span>
 					</div>
 
-					<div class="tac dib color-hashrate" style="width: 33.3%">
+					<div class="tar dib color-hashrate" style="width: 50%">
 						<img src="../assets/icon/airdrop.png" alt="" height="30" />&nbsp;
-						{{ hashrateRankList.self.score || "-" }}
+						<span class="dib tal color-hashrate" >
+							{{ hashrateRankList.self.score || "-" }}
+						</span>
 					</div>
-					<div class="tar dib vertical-children" style="width: 33.3%">
-						<div v-if=" hashrateRankList.self.rank > 0 && hashrateRankList.self.rank <= 100 " >
-							<table style="width: 100%" class="tar">
-								<tr>
-									<td>
-										<span> {{ rewardCfg[ hashrateRankList.self.rank ]["mbox"] }}</span >&nbsp;
-										<img src="../assets/coin/MBOX.png" alt="" height="30" />
-									</td>
-									<td style="width: 30%">
-										<span>{{ rewardCfg[ hashrateRankList.self.rank ]["usdt"] }}</span >&nbsp;
-										<img src="../assets/coin/USDT.png" alt="" height="30" />
-									</td>
-								</tr>
-							</table>
-						</div>
-					</div>
+					
 				</div>
 			</div>
 		</section>

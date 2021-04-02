@@ -70,10 +70,10 @@
 					</div>
 				</div>
 				<br />
-				<button class="btn-primary mgt-20" style="width: 60%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; " v-if="!needApprove">
+				<button class="btn-primary mgt-20" style="width: 80%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; " v-if="!needApprove">
 					{{ $t("BOX_04") }}
 				</button>
-				<button class="btn-primary mgt-20" style="width: 60%" v-if="needApprove" @click="approve" >
+				<button class="btn-primary mgt-20" style="width: 80%" v-if="needApprove" @click="approve" >
 					{{ $t("Air-drop_16") }} KEY
 				</button>
 			</div>
@@ -92,7 +92,7 @@
 					</div>
 				</div>
 				<br />
-				<button class="btn-primary mgt-20" style="width: 60%"
+				<button class="btn-primary mgt-20" style="width: 80%"
 					@click=" oprDialog('open-box-dialog', 'block'); openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 1; ">
 					{{ $t("BOX_05") }}
 				</button>

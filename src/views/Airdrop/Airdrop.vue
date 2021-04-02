@@ -190,7 +190,9 @@ export default {
 				let {strategyAmounts, keyAmount, apys} = res.data;
 				Object.keys(PancakeConfig.StakeLP).map(coinName=>{
 					this.coinArr[coinName].totalSupply = strategyAmounts[coinName] || 0;
-					this.coinArr[coinName].apy = Common.numFloor(apys[coinName] * 100 || 0, 100) + "%";
+					let apy =  Common.numFloor(apys[coinName] * 100 || 0, 100);
+					if(apy == 0) apy = "?";
+					this.coinArr[coinName].apy = apy + "%";
 				});
 				this.$store.commit("bnbState/setData", {coinArr: this.coinArr, totalAirdropKey: keyAmount});
 			}

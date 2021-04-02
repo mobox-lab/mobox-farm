@@ -65,7 +65,7 @@
 				<p class="tal small">{{$t("Air-drop_39")}}</p>
 				<p class="tar small">{{getSlippage}}%</p>
 			</div>
-			<div class="mgt-20 tac aveage-box" style="margin-bottom:10px">
+			<div class="mgt-20 tac" style="margin-bottom:10px">
 				<div v-if="from.coinName != '' && from.coinName != 'BNB' && Number(coinArr[from.coinName].allowanceToSwap) >= 0 && Number(coinArr[from.coinName].allowanceToSwap) <  1e8">
 					<button @click="approve" class="btn-primary por" style="width:90%;" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
 						<Loading v-if="coinArr[from.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
@@ -73,7 +73,7 @@
 					</button>
 				</div>
 				<div>
-					<button class="btn-primary" style="width:90%" :class="canSwap?'':'disable-btn'" @click="goSwap">{{$t("Air-drop_29")}}</button>
+					<button class="btn-primary mgt-10" style="width:90%" :class="canSwap?'':'disable-btn'" @click="goSwap">{{$t("Air-drop_29")}}</button>
 				</div>
 			</div>
 		</div>

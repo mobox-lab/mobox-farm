@@ -28,7 +28,7 @@
 			</div>
 		</Dialog>
 		<Dialog id="pancake-history-dialog" :top="100" :width="420" style="min-height:100px">
-			<h2>Recent transactions</h2>
+			<h2>{{$t("Air-drop_45")}}</h2>
 			<div class="tab-body mgt-10" >
 				<div class="tab-panel" style="min-height:200px">
 					<table style="width:100%">
@@ -47,7 +47,7 @@
 							</td>
 						</tr>
 					</table>
-					<div class="tac mgt-20" v-if="pancakeHistory.length == 0">No recent transactions</div>
+					<div class="tac mgt-20" v-if="pancakeHistory.length == 0">{{$t("Air-drop_46")}}</div>
 				</div>
 			</div>
 		</Dialog>
@@ -109,6 +109,10 @@ export default {
 				this.hasGetCoinValue = true;
 				this.$refs.selectCoin.getCoinValue();
 			}
+			return this;
+		},
+		showAddLiquidityPanel(){
+			this.$refs.pancakeLiquidity.showAddLiquidityPanel = true;
 			return this;
 		},
 		close(){

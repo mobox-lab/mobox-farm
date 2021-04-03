@@ -13,7 +13,7 @@
 			<div id="show-card-cont" class="animate__animated  animate__zoomIn">
 				<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
 				<div v-if="posArr[petDataArr.length].line1" class="card-cont-row"  id="show-card-cont-row1">
-					<div class="show-card-item dib" v-for="key in posArr[petDataArr.length].line1" :key="key+10">
+					<div class="show-card-item dib" v-for="key in posArr[petDataArr.length].line1" :key="key+10" v-on:animationend="animationend">
 						<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
 						<div class="front">
 							<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
@@ -24,7 +24,7 @@
 					</div>
 				</div>
 				<div v-if="posArr[petDataArr.length].line2" class="card-cont-row "   id="show-card-cont-row2">
-					<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line2" :key="key+20">
+					<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line2" :key="key+20" v-on:animationend="animationend">
 						<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
 						<div class="front">
 							<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
@@ -35,8 +35,8 @@
 						</div>
 					</div>
 				</div>
-				<div v-if="posArr[petDataArr.length].line3" class="card-cont-row"   id="show-card-cont-row3">
-					<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line3" :key="key+30">
+				<div v-if="posArr[petDataArr.length].line3" class="card-cont-row"   id="show-card-cont-row3" >
+					<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line3" :key="key+30" v-on:animationend="animationend">
 						<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
 						<div class="front">
 							<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
@@ -52,7 +52,7 @@
 		</div>
 		<br />
 
-		<button class="btn-primary" @click="openAnime">测试动画</button>
+		<button class="btn-primary hide" @click="openAnime">test animation</button>
 
 		<div style="display:flex;justify-content:center;flex-wrap:wrap">
 			<div class="dib mgt-20" style="margin: 30px">
@@ -73,7 +73,7 @@
 				<button class="btn-primary mgt-20" style="width: 80%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; ">
 					{{ $t("BOX_04") }}
 				</button>
-				<button class="mgt-20" id="buy-key-btn" style="width:40%;" @click="$root.$children[0].$refs.pancake.setOprData({coinName: 'KEY-BNB'}).show('swap')">
+				<button class="mgt-20 buy-key-btn" style="width:40%;" @click="$root.$children[0].$refs.pancake.setOprData({coinName: 'KEY-BNB'}).show('swap')">
 					{{$t("BOX_33")}}
 				</button>
 				
@@ -438,6 +438,11 @@ export default {
 		if (timer != null) clearInterval(timer);
 	},
 	methods: {
+		animationend(e){
+			if(e.animationName == "flipX"){
+				this.isAnimation = false;
+			}
+		},
 		showOpenBox(){
 			this.oprDialog('open-box-dialog', 'block'); 
 			this.openBox = this.canOpenBox > this.maxOpenOne ? this.maxOpenOne : this.canOpenBox || 1;
@@ -572,6 +577,7 @@ export default {
 
 		//开箱子动画
 		openAnime(){
+			this.isAnimation = true;
 			document.getElementById("openbox-anime").classList.remove("animation-box-start");
 			window.$("#openbox-anime").hide();
 			window.$("#openbox-anime-new").show();
@@ -579,6 +585,7 @@ export default {
 		},
 
 		initCardAnime(){
+			if(this.isAnimation) return;
 			document.querySelector("#show-card").classList.add("hide");
 			window.$("#openbox-anime").show();
 			window.$("#openbox-anime-new").hide();
@@ -589,7 +596,7 @@ export default {
 </script>
 
 <style >
-#buy-key-btn{
+.buy-key-btn{
 	height: 25px;
 	background: #2f435f;
 	color: #94BBFF;
@@ -597,9 +604,10 @@ export default {
 	border-radius: 25px;
 	font-size: 12px;
 	cursor: pointer;
+	padding: 0px 10px;
 }
 
-#buy-key-btn:hover{
+.buy-key-btn:hover{
 	background: #385a88;
 	color: #b3cfff;
 }

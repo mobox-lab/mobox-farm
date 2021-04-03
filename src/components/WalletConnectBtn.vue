@@ -21,6 +21,9 @@ export default {
 	},
 	methods: {
 		buttonClick(){
+			if(document.body.clientWidth < 1000){
+				return;
+			}
 			if(this.connectWalletAddr == ""){
 				this.oprDialog('connect-wallet-dialog','block');
 			}else{

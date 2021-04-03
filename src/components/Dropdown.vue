@@ -1,8 +1,19 @@
 <template>
 	<div class="dropdown mgt-10" tabindex="2">
-		<div class="dropdown-value por"  @click="showDrop">{{ list[getNowPos] }}<span class="dropdown-ar">▼</span></div>
-		<ul class="dropdown-list hide" :style="direction == 'up' ? 'bottom: 40px' : ''" >
-			<li v-for="(item, index) in list" :key="item" @click="selectItem($event, index)" :class="getNowPos == index ? 'active' : ''" >
+		<div class="dropdown-value" @click="showDrop">
+			{{ list[getNowPos] }}
+			▼
+		</div>
+		<ul
+			class="dropdown-list hide"
+			:style="direction == 'up' ? 'bottom: 40px' : ''"
+		>
+			<li
+				v-for="(item, index) in list"
+				:key="item"
+				@click="selectItem($event, index)"
+				:class="getNowPos == index ? 'active' : ''"
+			>
 				{{ item }}
 			</li>
 		</ul>
@@ -68,11 +79,10 @@ export default {
 };
 </script>
 <style>
-
 .dropdown .dropdown-list {
 	position: absolute;
-	min-width: 60px;
-	background: #1C222C;
+	min-width: 80px;
+	background: #000912;
 	border-radius: 20px;
 	list-style: none;
 	right: 0px;
@@ -80,10 +90,10 @@ export default {
 	z-index: 999;
 }
 .dropdown .dropdown-list li.active {
-	background: #323841 !important;
+	background: #1d2b50 !important;
 }
 .dropdown .dropdown-list li:hover {
-	background: #323841;
+	background: #051830;
 }
 .dropdown .dropdown-list li {
 	height: 40px;
@@ -91,27 +101,17 @@ export default {
 	white-space: nowrap;
 	line-height: 40px;
 	padding: 0px 30px;
-	
-}
-.dropdown .dropdown-list li:first-child{
-	border-top-left-radius: 15px;
-	border-top-right-radius: 15px;
-}
-.dropdown .dropdown-list li:last-child{
-	border-bottom-left-radius: 15px;
-	border-bottom-right-radius: 15px;
+	border-radius: 20px;
 }
 .dropdown .dropdown-value {
-	min-width: 60px;
-	background: #323841;
+	min-width: 80px;
+	background: #1d2b50;
 	border-radius: 30px;
 	height: 40px;
 	display: inline-block;
 	padding: 0px 20px;
-	padding-right: 30px;
 	line-height: 40px;
 	text-align: center;
-	color:rgba(255, 255, 255,0.5);
 }
 .dropdown {
 	user-select: none;
@@ -121,18 +121,5 @@ export default {
 	font-size: 13px;
 	outline: none;
 	display: inline-block;
-}
-.dropdown.line .dropdown-value{
-	background: #070d14;
-	border: 1px solid #323841;
-	border-radius: 30px;
-	text-align: left;
-	color: #fff;
-	font-size: 15px;
-}
-.dropdown.line .dropdown-value .dropdown-ar{
-	position: absolute;
-	right: 10px;
-	top: 0px;
 }
 </style>

@@ -3,11 +3,11 @@
 		<div class="tal search vertical-children por mgt-20" >
 			<span>{{$t("Market_33")}}: {{ getTotalPetNum }}</span>&nbsp;
 			<div id="market-pet-fitter">
-				<div class="dib" id="shop-car" @click="oprDialog('shop-car-dialog', 'block')" >
+				<div class="dib mgt-10" id="shop-car" @click="oprDialog('shop-car-dialog', 'block')" >
 					<span id="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span>
 					<img src="../../assets/icon/shopcar.png" alt="" />
 				</div>
-				<div class="dib por" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="../../assets/icon/tradeRecord.png" alt="" />
 				</div>

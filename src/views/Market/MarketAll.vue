@@ -8,7 +8,7 @@
 			</span>
 			
 			<div id="market-pet-fitter">
-				<div class="dib por" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="../../assets/icon/tradeRecord.png" alt="" />
 				</div>
@@ -23,13 +23,13 @@
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 10000)}}</span>
+						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
 					</div>
 				</PetItem>
 				<PetItemScroll v-bind:data="{item: item}" class="market" v-if="item.tokenId == 0 ">
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 10000)}}</span>
+						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
 					</div>
 				</PetItemScroll>
 			</router-link>

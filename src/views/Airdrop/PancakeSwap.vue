@@ -1,7 +1,7 @@
 <template>
 	<div  class="tab-body tal">
 		<div class="tab-content">
-			<h2>{{$t("Air-drop_29")}}</h2>
+			<h2>{{$t("Air-drop_114")}}</h2>
 			<p class="small opa-6">{{$t("Air-drop_34")}}</p>
 		</div>
 		<div class="tab-split"></div>
@@ -105,7 +105,7 @@
 					<p class="tar small">{{numFloor(to.inputValue * (1-getSlippage/100), 1e8)}} {{to.coinName}}</p>
 				</div>
 				<div class="aveage-box opa-6 mgt-10" v-if="from.isEstimated">
-					<p class="tal small">Maximum sold</p>
+					<p class="tal small">{{$t("Air-drop_94")}}</p>
 					<p class="tar small">{{numFloor(from.inputValue * (1+getSlippage/100), 1e8)}} {{from.coinName}}</p>
 				</div>
 				<div class="aveage-box opa-6 mgt-10" >

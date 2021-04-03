@@ -50,7 +50,7 @@
 
 						<div class="tal mgt-20">
 							<p class="por mgt-10">
-								<span class="opa-6 ">可质押</span>
+								<span class="opa-6 ">{{$t("Air-drop_112")}}</span>
 								<span class="suffix">{{ numFloor(coinArr[item.coinName].balance, 1e6) || "0" }}</span>
 							</p>
 						</div>

@@ -215,7 +215,8 @@ export default {
 			hasLoadBook: false,
 			bookSortTurn: true,//正序排列
 			lockUpgradeTime: 0,
-			hackReload: true
+			hackReload: true,
+			hasClick: false,
 		};
 	},
 	watch: {
@@ -731,10 +732,14 @@ export default {
 		//提交设置名字
 		async confirmSetName() {
 			let { tokenId } = this.getNowPetItem;
-			if (this.inputName == "" || tokenId == 1) return;
+			if (this.inputName == "" || tokenId == 1 || this.hasClick) return;
+			this.hasClick = true;
+			this.$store.commit("globalState/setwalletStatus", {status:1});
 			let name = await Wallet.ETH.getMomoNameByTokenId(tokenId);
+			this.hasClick = false;
 			let res = await Wallet.ETH.setMomoNameByTokenId(tokenId,this.inputName,name == "");
 			if (res) {
+				this.hasClick = false;
 				this.oprDialog("setName-dialog", "none");
 			}
 		},

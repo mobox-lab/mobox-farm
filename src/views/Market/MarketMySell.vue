@@ -3,7 +3,7 @@
 		<div class="tal search vertical-children por mgt-20">
 			<span>{{$t("Market_33")}}: {{ getShowList.length }}</span>&nbsp;
 			<div id="market-pet-fitter">
-				<div class="dib por" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="../../assets/icon/tradeRecord.png" alt="" />
 				</div>
@@ -16,7 +16,7 @@
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
 						<img src="../../assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 10000)}}</span>
+						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
 					</div>
 					<div class="vertical-children mgt-10" v-if="item.index < 0" style="font-size: 18px;">
 						<img  src="../../assets/icon/loading.png" class="rotate" height="20" alt=""  /> &nbsp;
@@ -27,7 +27,7 @@
 				<PetItemScroll v-bind:data="{item: item}" class="market" v-if="item.tokenId == 0 ">
 					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
 						<img src="../../assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 10000)}}</span>
+						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
 					</div>
 					<div class="vertical-children mgt-10" v-if="item.index < 0" style="font-size: 18px;">
 						<img  src="../../assets/icon/loading.png" class="rotate" height="20" alt=""  /> &nbsp;

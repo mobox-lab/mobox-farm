@@ -42,15 +42,18 @@
 				</div>
 				<div class="aveage-box mgt-10">
 					<p class="tal small">{{$t("Air-drop_11")}}</p>
-					<div class="tar small">
-						<p>{{oprData.balance}} {{oprData.coinName}}</p>
+					<div class="tar small" style="flex:2">
+						<p>{{oprData.balance}} {{oprData.coinName}} <span v-if="oprData.isLP">(Pancake LP)</span></p>
 					</div>
 				</div>
+				<div class="mgt-10 tar">
+					<button class="buy-key-btn" style="background:#3a557b" @click="$root.$children[0].$refs.pancake.setOprData({coinName: oprData.coinName}).show('liquidity').showAddLiquidityPanel()">{{$t("Air-drop_57")}}</button>
+				</div>
 			
-				<div class="mgt-10">
+				<div>
 					<PercentSelect :selectCB="percent => inputPercent = percent" />
 				</div>
-				<div class="mgt-10 tac" :class="depositNeedApprove?' btn-group':'' " style="margin-bottom:10px">
+				<div class="mgt-30 tac" :class="depositNeedApprove?' btn-group':'' " style="margin-bottom:10px">
 					<div v-if="depositNeedApprove">
 						<button data-step="1" @click="approveToPool(oprData.coinName)" class="btn-primary por" style="width:70%;" :class="oprData.coinName != '' && coinArr[oprData.coinName].allowanceToPool > 1e8 || coinArr[oprData.coinName].isApproving?'disable-btn':''">
 							<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>

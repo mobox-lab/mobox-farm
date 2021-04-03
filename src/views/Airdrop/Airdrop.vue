@@ -86,10 +86,10 @@
 					</div>
 					<!-- pancake -->
 					<div class="tac" v-if="item.isLP"> 
-						<button class="btn-primary" style="width: 40%"  @click="$refs.pancake.setOprData(item).show('swap')" >
+						<button class="btn-primary" style="width: 40%"  @click="$root.$children[0].$refs.pancake.setOprData(item).show('swap')" >
 							{{$t("Air-drop_29")}}
 						</button> &nbsp;
-						<button class="btn-primary" style="width: 40%"  @click="$refs.pancake.setOprData(item).show('liquidity')" >
+						<button class="btn-primary" style="width: 40%"  @click="$root.$children[0].$refs.pancake.setOprData(item).show('liquidity')" >
 							{{$t("Air-drop_30")}}
 						</button> &nbsp;
 						<!-- <StatuButton style="width: 40%; " :onClick="showWithdraw.bind(this, item)" :isLoading="item.isWithdrawing" :isDisable="item.isWithdrawing || Number(item.wantAmount) <= 0">
@@ -160,7 +160,6 @@
 			</div>
 		</Dialog>
 
-		<Pancake ref="pancake" />
 		<KeyOpr ref="keyopr" />
 		<Withdraw ref="withdraw" />
 		<Deposit ref="deposit" />
@@ -171,7 +170,6 @@ import CommonMethod from "@/mixin/CommonMethod";
 import {  Http, Common } from '@/utils';
 import { mapState } from "vuex";
 import { PancakeConfig } from "@/config";
-import Pancake from "./Pancake";
 import KeyOpr from "./KeyOpr";
 import Withdraw from './Withdraw';
 import Deposit from './Deposit';
@@ -179,7 +177,7 @@ import { Dialog } from '@/components';
 
 export default {
 	mixins: [CommonMethod],
-	components: { Pancake, KeyOpr, Withdraw, Deposit, Dialog},
+	components: { KeyOpr, Withdraw, Deposit, Dialog},
 	data(){
 		return({
 			hasAgreeNotice: false,
@@ -209,7 +207,9 @@ export default {
 			let arr = [];
 			let stakeLP = PancakeConfig.StakeLP;
 			for (let key in stakeLP) {
-				arr.push({coinName: key, ...stakeLP[key], ...this.coinArr[key]})
+				if(stakeLP[key].pIndex != -1){
+					arr.push({coinName: key, ...stakeLP[key], ...this.coinArr[key]})
+				}
 			}
 			return arr;
 		},

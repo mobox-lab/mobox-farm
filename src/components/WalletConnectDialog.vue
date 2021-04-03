@@ -64,7 +64,14 @@ export default {
 	},
 	created(){
 		let type = Common.getStorageItem("connect-wallet");
-		this.connectWallet(type);
+		setTimeout(() => {
+			if(document.body.clientWidth < 1000){
+				type = "mboxWallet";
+			}
+			if(type != undefined){
+				this.connectWallet(type);
+			}
+		}, 500);
 
 		//监听事件---metamask
 		if(window.ethereum && window.ethereum.on){
@@ -102,18 +109,19 @@ export default {
 			window.hackReload();
 		},
 		async connectWallet(type){
+			console.log("connect", type);
 			let account = "";
 			let chainNetwork = 0;
 			let provider = null;
 			switch (type) {
 				case "metamask":
-						if (typeof window.ethereum !== 'undefined') {
+						if (typeof window.ethereum !== 'undefined' && window.ethereum.request) {
 							try {
 								//获取账户
 								let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 								account =  accounts[0];
 							} catch (error) {
-								this.showNotify("请解锁钱包", "error");
+								this.showNotify(this.$t("Air-drop_101"), "error");
 							}
 							//获取当前Network
 							let network = await window.ethereum.request({method: 'net_version'});
@@ -123,25 +131,54 @@ export default {
 						}
 					break;
 				case "binanceChain":
-						this.showNotify("not support now", "error");
+						// this.showNotify("not support now", "error");
+						if (typeof window.BinanceChain !== 'undefined') {
+							try {
+								//获取账户
+								let accounts = await window.BinanceChain.request({ method: 'eth_requestAccounts' });
+								account =  accounts[0];
+							} catch (error) {
+								console.log(error);
+								this.showNotify(this.$t("Air-drop_101"), "error");
+							}
+							//获取当前Network
+							let network = await window.BinanceChain.request({method: 'net_version'});
+							chainNetwork = network;
+							//获取当前provider
+							provider = window.BinanceChain;
+						}
 					break;
 				case "mboxWallet":
-						console.log("mboxWallet", window.bscWeb3);
-						if (typeof window.bscWeb3 !== 'undefined') {
-							//获取账户
-							let accounts = await window.BinanceChain.send({ method: 'eth_requestAccounts' });
-							account =  accounts.result[0];
-							//获取当前链
-							chainNetwork = 56;
-							//获取当前provider
-							provider = window.bscWeb3.currentProvider;
+					console.log("------",window.mbox);
+						if(window.mbox){
+							console.log("-BinanceChain-----",window.mbox.BinanceChain);
+							console.log("-enable-----",window.mbox.BinanceChain.enable);
+							let wallets = await window.mbox.BinanceChain.enable();
+							console.log("---123---",wallets);
+							if(wallets && wallets[0]){
+								account =  wallets[0];
+								chainNetwork = 56;
+								provider = window.mbox.bscWeb3.currentProvider;
+							} else {
+								this.showNotify(this.$t("Air-drop_101"), "error");
+							}
+						} else {
+							// download
 						}
+
 					break;
 				default:
 					break;
 			}
 
-			if(account == "") return;
+			if(account == "") {
+				if(type != "metamask"){
+					this.connectWallet("metamask");
+				}else{
+					this.showNotify("No provider was found", "error");
+				}
+				return;
+			}
 
 			Wallet.ETH.myAddr = account;
 			Wallet.ETH.changeWeb3(provider);

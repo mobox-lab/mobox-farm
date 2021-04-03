@@ -54,7 +54,7 @@
 
 		<button class="btn-primary" @click="openAnime">测试动画</button>
 
-		<div>
+		<div style="display:flex;justify-content:center;flex-wrap:wrap">
 			<div class="dib mgt-20" style="margin: 30px">
 				<div class="ly-input-content dib">
 					<p class="small tal opa-6">{{ $t("BOX_02") }}:</p>
@@ -73,6 +73,9 @@
 				<button class="btn-primary mgt-20" style="width: 80%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; ">
 					{{ $t("BOX_04") }}
 				</button>
+				<button class="mgt-20" id="buy-key-btn" style="width:40%;" @click="$root.$children[0].$refs.pancake.setOprData({coinName: 'KEY-BNB'}).show('swap')">
+					购买KEY
+				</button>
 				
 			</div>
 			<div class="dib mgt-20" style="margin: 30px">
@@ -90,14 +93,17 @@
 					</div>
 				</div>
 				<br />
-				<button class="btn-primary mgt-20" style="width: 80%"
+				<!-- <button class="btn-primary mgt-20" :class="lockBtn.openBoxLock > 0'disable-btn':''" style="width: 80%"
 					@click=" oprDialog('open-box-dialog', 'block'); openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 1; ">
 					{{ $t("BOX_05") }}
-				</button>
+				</button> -->
+				<StatuButton class="mgt-20" style="width: 80%" :isDisable="lockBtn.openBoxLock > 0" :isLoading="lockBtn.openBoxLock > 0" :onClick="showOpenBox.bind(this)">
+					{{ $t("BOX_05") }}
+				</StatuButton>
 			</div>
 		</div>
 		<!-- 记录 -->
-		<table class="mgt-50 small table-his" border="0" frame="void" rules="none" >
+		<table class="mgt-30 small table-his" border="0" frame="void" rules="none" >
 			<tr>
 				<th width="30%" class="tar">
 					<span class="dib tac" style="width: 120px">
@@ -162,11 +168,11 @@
 				<p class="small opa-6" v-html="$t('BOX_08')"></p>
 			</div>
 
-			<div  :class="needApprove?'btn-group':''" class="mgt-20">
-				<button data-step="1" class="btn-primary por" style="width: 80%" v-if="needApprove" @click="approve" >
+			<div  :class="!needApprove?'btn-group':''" class="mgt-20">
+				<StatuButton :onClick="approve.bind(this)"  data-step="1" style="width: 80%" v-if="!needApprove" :isLoading="lockBtn.approveLock > 0" :isDisable="lockBtn.approveLock > 0">
 					{{ $t("Air-drop_16") }} KEY
-				</button>
-				<button data-step="2" @click="addBox(addKey)" class="btn-primary mgt-10 por" style="width: 80%; margin-bottom: 20px" :class="needApprove?'disable-btn':''">
+				</StatuButton>
+				<button data-step="2" @click="addBox(addKey)" class="btn-primary mgt-10 por" style="width: 80%; margin-bottom: 20px" :class="!needApprove?'disable-btn':''">
 					{{ $t("BOX_09") }}
 				</button>
 			</div>
@@ -198,7 +204,7 @@
 <script>
 import { mapState } from "vuex";
 import { Wallet, Common, EventBus } from "@/utils";
-import { Dialog, PetItemSmall, PetItem } from "@/components";
+import { Dialog, PetItemSmall, PetItem, StatuButton } from "@/components";
 import CommonMethod from "@/mixin/CommonMethod";
 import { BaseConfig, WalletConfig, EventConfig } from "@/config";
 import lottie from "lottie-web";
@@ -206,7 +212,7 @@ import lottie from "lottie-web";
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { Dialog, PetItemSmall, PetItem },
+	components: { Dialog, PetItemSmall, PetItem, StatuButton },
 	data() {
 		return {
 			showHistoryArr: [],
@@ -222,7 +228,7 @@ export default {
 			showOpenBoxCard: [],
 
 			petDataArr:[
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '50080',quality: 5,specialty: 0,tokenId: 1,vType: 5, chain:'bnb', tokenName:'aaa'},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '50080',quality: 5,specialty: 0,tokenId: 1,vType: 5, chain:'bnb', tokenName:'aaa',},
 					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
 					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
 					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
@@ -253,6 +259,7 @@ export default {
 		...mapState({
 			ethState: (state) => state.ethState.data,
 			totalOpenBoxAmount: (state) => state.globalState.data.totalOpenBoxAmount,
+			lockBtn: (state) => state.globalState.data.lockBtn,
 		}),
 		canOpenBox() {
 			let { canOpenBox, orderBlockHash, openBoxTemp } = this.ethState;
@@ -304,7 +311,8 @@ export default {
 							num: 1,
 							tokenId: item,
 							tokenName,
-							chain: "bnb"
+							chain: "bnb",
+							isOpenCard: true,
 						});
 					});
 					//再生成1155的数据
@@ -325,7 +333,8 @@ export default {
 								num,
 								tokenId: 1,
 								tokenName,
-								chain: "bnb"
+								chain: "bnb",
+								isOpenCard: true,
 							});
 						})
 					});
@@ -429,8 +438,13 @@ export default {
 		if (timer != null) clearInterval(timer);
 	},
 	methods: {
+		showOpenBox(){
+			this.oprDialog('open-box-dialog', 'block'); 
+			this.openBox = this.canOpenBox > this.maxOpenOne ? this.maxOpenOne : this.canOpenBox || 1;
+		},
 		//开箱子合约确认
 		async stopBoxAnime() {
+			
 			// document.getElementById("openbox-anime").classList.remove("animation-box-start");
 		},
 
@@ -485,7 +499,8 @@ export default {
 		async approve() {
 			let res = await Wallet.ETH.approveBoxToMinter();
 			if (res) {
-				this.showNotify(this.$t("BOX_20"), "success")
+				this.$store.commit("globalState/lockBtn", "approveLock");
+				this.showNotify(this.$t("BOX_20"), "success");
 			}
 		},
 		async addBox(num) {
@@ -547,6 +562,8 @@ export default {
 					let { openBoxTemp } = this.ethState;
 					openBoxTemp.unshift(tempRecord);
 					this.$store.commit("ethState/setData", {openBoxTemp,});
+
+					this.$store.commit("globalState/lockBtn", "openBoxLock");
 				}
 			} else {
 				this.showNotify(this.$t("BOX_30"), "error")
@@ -572,6 +589,21 @@ export default {
 </script>
 
 <style >
+#buy-key-btn{
+	height: 25px;
+	background: #2f435f;
+	color: #94BBFF;
+	border: none;
+	border-radius: 25px;
+	font-size: 12px;
+	cursor: pointer;
+}
+
+#buy-key-btn:hover{
+	background: #385a88;
+	color: #b3cfff;
+}
+
 .card-cont-row{
 	display: flex;
 	flex: 2;

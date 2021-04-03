@@ -3,12 +3,13 @@ import Rpc from './Rpc';
 import Contract from './Contract'
 import PancakSwapContract from './PancakSwapContract'
 import {EventBus,Common,Http} from "@/utils";
-import {EventConfig,WalletConfig,BaseConfig,ConstantConfig} from '@/config';
+import {EventConfig,WalletConfig,BaseConfig,ConstantConfig, PancakeConfig} from '@/config';
 import BigNumber from "bignumber.js";
-import PancakeConfig from '../../../config/PancakeConfig';
 // import store from '@/store';
 
 // const store = Common.store;
+
+
 
 export default class ETH {
 	static web3;
@@ -31,6 +32,7 @@ export default class ETH {
 		this.web3MainNet = new Web3(new Web3.providers.HttpProvider(Rpc.apiNodeMainNet));
 
 		this.initContract();
+
 	}
 
 	static logoutWallet(){
@@ -115,8 +117,7 @@ export default class ETH {
 		Common.store.commit("globalState/setwalletStatus", {status:1});
 		Common.oprDialog("wallet-opr-dialog", "block");
 		method.value = sendAttr.value;
-		console.log(method);
-		console.log(method._method.name);
+		method.myAddr = sendAttr.from;
 		let saveHash;
 		method.send(sendAttr).on("transactionHash", hash => {
 			onHash(hash);
@@ -129,7 +130,7 @@ export default class ETH {
 
 			let type = Common.getStorageItem("connect-wallet");
 			if(type == "mboxWallet"){
-				Common.store.commit("globalState/setwalletStatus", {status:2})
+				Common.store.commit("globalState/setwalletStatus", {status:2});
 			}
 			//清空coin的各种loading状态
 			Common.store.commit("bnbState/clearLoading")
@@ -147,25 +148,137 @@ export default class ETH {
 			}
 
 			//交易失败了，暂时判断包含 reverted 字段
-			if(err.message.indexOf("reverted") != -1){
+			if(err.message && err.message.indexOf("reverted") != -1){
 				this.onReciptNotice(saveHash, method, "error");
 			}
-
+			
+			Common.app.showNotifyTrans(Common.app.$t("Common_19"), saveHash, "error");
+			Common.store.commit("globalState/setwalletStatus", {status:2});
 
 		}).on("receipt", data=>{
-			console.log(data);
-			this.onReciptNotice(saveHash, method, "success");
 			onRecipt(data);
+			this.onReciptNotice(saveHash, method, "success");
 		});
 	}
 
-	onReciptNotice(hash, method, type){
-		console.log({hash, method, type});
+	static onReciptNotice(hash, method, type){
+		// console.log({hash, method, type});
 		//当前只记录swap和流动性相关的记录
-		if(method._method.name == "swapExactETHForTokens"){
-			console.log("Sss");
-		}
+		let methodName = method._method.name;
+		let _arguments = method.arguments;
+		let myAddr = method.myAddr;
+		let msg = type=="success"?"transaction success":Common.app.$t("Common_19");
+		let needSave = false;
 
+		//Swap BNB to Token
+		if(["swapExactETHForTokens", "swapETHForExactTokens"].indexOf(methodName) != -1  ){
+			let fromName = "BNB";
+			let toName = ""
+			let fromValue =  BigNumber(method.value);
+			let toValue =  BigNumber(_arguments[0]);
+			
+			let path = _arguments[1];
+			for (let key in PancakeConfig.SelectCoin) {
+				if(PancakeConfig.SelectCoin[key].addr == path[path.length-1]){
+					toName = key;
+				}
+			}
+			fromValue =  Common.numFloor(BigNumber(fromValue).dividedBy(BigNumber(1e18)), 1e8);
+			toValue = Common.numFloor(BigNumber(toValue).dividedBy(BigNumber(1e18)), 1e8);
+			msg = `Swap ${fromValue} ${fromName} for ${toValue} ${toName}`;
+			needSave = true;
+		}
+		//Swap Token to BNB
+		if(["swapExactTokensForETH", "swapTokensForExactETH"].indexOf(methodName) != -1  ){
+			let fromName = "";
+			let toName = "BNB"
+			let fromValue =  BigNumber(_arguments[1]);
+			let toValue =  BigNumber(_arguments[0]);
+			
+			let path = _arguments[3];
+			for (let key in PancakeConfig.SelectCoin) {
+				if(PancakeConfig.SelectCoin[key].addr == path[0]){
+					fromName = key;
+				}
+			}
+			fromValue =  Common.numFloor(BigNumber(fromValue).dividedBy(BigNumber(1e18)), 1e8);
+			toValue = Common.numFloor(BigNumber(toValue).dividedBy(BigNumber(1e18)), 1e8);
+			msg = `Swap ${fromValue} ${fromName} for ${toValue} ${toName}`;
+			needSave = true;
+		}
+		//Swap Token to token
+		if(["swapExactTokensForTokens", "swapTokensForExactTokens"].indexOf(methodName) != -1  ){
+			let fromName = "";
+			let toName = ""
+			let fromValue =  BigNumber(_arguments[1]);
+			let toValue =  BigNumber(_arguments[0]);
+			
+			let path = _arguments[3];
+			for (let key in PancakeConfig.SelectCoin) {
+				if(PancakeConfig.SelectCoin[key].addr == path[0]){
+					fromName = key;
+				}
+				if(PancakeConfig.SelectCoin[key].addr == path[path.length-1]){
+					toName = key;
+				}
+			}
+			fromValue =  Common.numFloor(BigNumber(fromValue).dividedBy(BigNumber(1e18)), 1e8);
+			toValue = Common.numFloor(BigNumber(toValue).dividedBy(BigNumber(1e18)), 1e8);
+			msg = `Swap ${fromValue} ${fromName} for ${toValue} ${toName}`;
+			needSave = true;
+		}
+		//Add Token & BNB || Remove Token & Token
+		if(["addLiquidityETH", "removeLiquidityETH"].indexOf(methodName) != -1 ){
+			let fromName = "";
+			let toName = "BNB"
+			let fromValue =  BigNumber(_arguments[2]);
+			let toValue =  BigNumber(_arguments[3]);
+			
+			for (let key in PancakeConfig.SelectCoin) {
+				if(PancakeConfig.SelectCoin[key].addr ==_arguments[0]){
+					fromName = key;
+				}
+			}
+			fromValue =  Common.numFloor(BigNumber(fromValue).dividedBy(BigNumber(1e18)), 1e8);
+			toValue = Common.numFloor(BigNumber(toValue).dividedBy(BigNumber(1e18)), 1e8);
+			let action = methodName == "addLiquidityETH"?"Add":"Remove";
+			msg = `${action} ${fromValue} ${fromName} and ${toValue} ${toName}`;
+			needSave = true;
+		}
+		//Add Token & Token || Remove Token & Token
+		if(["addLiquidity", "removeLiquidity"].indexOf(methodName) != -1){
+			let fromName = "";
+			let toName = ""
+			let fromValue =  BigNumber(_arguments[4]);
+			let toValue =  BigNumber(_arguments[5]);
+			
+			for (let key in PancakeConfig.SelectCoin) {
+				if(PancakeConfig.SelectCoin[key].addr ==_arguments[0]){
+					fromName = key;
+				}
+				if(PancakeConfig.SelectCoin[key].addr ==_arguments[1]){
+					toValue = key;
+				}
+			}
+			fromValue =  Common.numFloor(BigNumber(fromValue).dividedBy(BigNumber(1e18)), 1e8);
+			toValue = Common.numFloor(BigNumber(toValue).dividedBy(BigNumber(1e18)), 1e8);
+			let action = methodName == "addLiquidity"?"Add":"Remove";
+			msg = `${action} ${fromValue} ${fromName} and ${toValue} ${toName}`;
+			needSave = true;
+		}
+		
+		Common.app.showNotifyTrans(msg, hash, type);
+		if(needSave){
+			let history = Common.getStorageItem("pancake-history-"+myAddr);
+			let histoyJSON = [];
+			if(history != undefined){
+				histoyJSON = JSON.parse(history);
+			}
+			histoyJSON.push({msg, hash, type});
+			Common.setStorageItem("pancake-history-"+myAddr, JSON.stringify(histoyJSON));
+			//设置store
+			Common.store.commit("bnbState/setData", {pancakeHistory: histoyJSON});
+		}
 	}
 
 	//获取当前账户
@@ -192,6 +305,10 @@ export default class ETH {
 			this.sendMethod(
 				this.boxTokenContract.methods.approve(WalletConfig.ETH.moMoMinter,"0x" + Common.repeat("f", 64)), {from: myAddr},
 				hash=>resolve(hash),
+				()=>{
+					Common.store.commit("globalState/unLockBtn", "approveLock");
+					Common.app.eth_setBoxAllowance();
+				}
 			)
 		});
 	}
@@ -281,6 +398,7 @@ export default class ETH {
 				hash=>resolve(hash),
 				()=>{
 					let {coinName, type} = approveInfo;
+					console.log("recipt",approveInfo);
 					if(coinName != ""){
 						Common.store.commit("bnbState/setCoinAllowance", {coinName, allowance: 1.157920892373162e77, type});
 					}

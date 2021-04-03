@@ -14,7 +14,7 @@
 						<span v-if="from.isEstimated && Number(from.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
 						<Loading  v-if="from.loading" />
 					</p>
-					<p class="tar small">Balance: {{from.coinName==""?"-":coinArr[from.coinName].balance}}</p>
+					<p class="tar small">{{$t("Mine_05")}}: {{from.coinName==""?"-":coinArr[from.coinName].balance}}</p>
 				</div>
 				<div class="aveage-box vertical-children mgt-10">
 					<input style="flex:1 1 auto" type="text" placeholder="0.0" v-model="from.inputValue" v-number @keyup="inputValueChange('from')">

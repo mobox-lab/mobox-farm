@@ -867,11 +867,13 @@ svg {
 	content: "";
 	width: 3px;
 	height: 21.6px;
-	background: linear-gradient(0deg, #4E7399, 50%, #407DD1);
+	background: #4E7399;
+	/* background: linear-gradient(0deg, #4E7399, 50%, #407DD1); */
 	position: absolute;
 	right: -24px;
 	top: -15.6px;
 }
+
 
 .btn-group button::after{
 	content: attr(data-step);

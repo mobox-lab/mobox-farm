@@ -32,6 +32,7 @@ const state = () => ({
 			"USDT": {...baseCoinAttr, isLP: false},
 			"DAI": {...baseCoinAttr, isLP: false},
 			"USDC": {...baseCoinAttr, isLP: false},
+			"KEY": {...baseCoinAttr, isLP: false},
 			"MBOX-BNB": {...baseCoinAttr, isLP: true},
 			"BTCB-BNB": {...baseCoinAttr, isLP: true},
 			"ETH-BNB": {...baseCoinAttr, isLP: true},
@@ -40,6 +41,7 @@ const state = () => ({
 			"USDT-BUSD": {...baseCoinAttr, isLP: true},
 			"DAI-BUSD": {...baseCoinAttr, isLP: true},
 			"USDC-BUSD": {...baseCoinAttr, isLP: true},
+			"KEY-BNB": {...baseCoinAttr, isLP: true},
 			"ts": 0,
 		},
 		setting: {
@@ -53,7 +55,9 @@ const state = () => ({
 		//回购相关
 		buyBack:{
 			hasAmount: 0,
-		}
+		},
+
+		pancakeHistory: [],
 	},
 })
 

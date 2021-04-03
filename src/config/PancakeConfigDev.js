@@ -1,7 +1,5 @@
 export default class PancakeConfig {
 	static SwapRouterAddr = "0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F";
-	static SwapRouterAddrV2 = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
-	static QuickSwapAddr = "0x50aEdfA05bbC474E53BB45B6Ed0aD3aE7Fb54B0f";
 	static SelectCoin = {
 		"MBOX": {
 			omit: 1e2,
@@ -50,96 +48,96 @@ export default class PancakeConfig {
 		},
 	}
 	static StakeLP = {
-		"MBOX-BNB-V2":{
+		"MBOX-BNB":{
 			pIndex: 1,
 			addr: "0xc2A3baBbe53d662C0a5D16513908aB53C6f1df24",
 			allocPoint: 10,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 		"BTCB-BNB":{
 			pIndex: 2,
 			addr: "0x7561EEe90e24F3b348E1087A005F78B4c8453524",
 			allocPoint: 2,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 		"ETH-BNB":{
 			pIndex: 3,
 			addr: "0x70D8929d04b60Af4fb9B58713eBcf18765aDE422",
 			allocPoint: 2,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 		"BUSD-BNB":{
 			pIndex: 4,
 			addr: "0x1b96b92314c44b159149f7e0303511fb2fc4774f",
 			allocPoint: 2,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 		"USDT-BNB":{
 			pIndex: 5,
 			addr: "0x20bCC3b8a0091dDac2d0BC30F68E6CBb97de59Cd",
 			allocPoint: 2,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 		"USDT-BUSD":{
 			pIndex: 6,
 			addr: "0xc15fa3E22c912A276550F3E5FE3b0Deb87B55aCd",
 			allocPoint: 1,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 		"DAI-BUSD":{
 			pIndex: 7,
 			addr: "0x3aB77e40340AB084c3e23Be8e5A6f7afed9D41DC",
 			allocPoint: 1,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 		"USDC-BUSD":{
 			pIndex: 8,
 			addr: "0x680dd100e4b394bda26a59dd5c119a391e747d18",
 			allocPoint: 1,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 		"BUSD":{
 			pIndex: 9,
 			addr: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
 			allocPoint: 1,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 		"USDT":{
 			pIndex: 10,
 			addr: "0x55d398326f99059ff775485246999027b3197955",
 			allocPoint: 1,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 		"USDC":{
 			pIndex: 11,
 			addr: "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
 			allocPoint: 1,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 		"BNB":{
 			pIndex: 12,
 			addr: "",
 			allocPoint: 0.5,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 		"KEY-BNB":{
 			pIndex: -1,
 			addr: "0x680dd100e4b394bda26a59dd5c119a391e747d18",
 			allocPoint: 1,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e10,
 		},
 	}
 }

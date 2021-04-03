@@ -21,14 +21,14 @@
 						<img src="../../assets/coin/BUSD.png" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
 							<p class="opa-6">{{$t("Market_45")}}</p>
-							<h1 class="color-w tac">{{numFloor(statistics.volume / 1e9, 100)}} </h1>
+							<h1 class="color-w tac">{{numFloor(statistics.volume / 1e9, 1e4)}} </h1>
 						</div>
 					</div>
 					<div class="vertical-children tac">
 						<img src="../../assets/icon/evage-icon.png" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
 							<p class="opa-6">{{$t("Market_46")}}</p>
-							<h1 class="color-w tac">{{numFloor(statistics.avgPrice / 1e9, 100)}}</h1>
+							<h1 class="color-w tac">{{numFloor(statistics.avgPrice / 1e9, 1e4)}}</h1>
 						</div>
 					</div>
 				</div>

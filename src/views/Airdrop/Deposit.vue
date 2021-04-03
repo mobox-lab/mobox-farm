@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { Dialog, PercentSelect,} from '@/components';
+import { Dialog, PercentSelect,Loading} from '@/components';
 import {CommonMethod} from '@/mixin';
 import { mapState } from 'vuex';
 import { Common, Wallet, EventBus } from '@/utils';
@@ -76,7 +76,7 @@ import { WalletConfig, PancakeConfig, EventConfig} from '@/config';
 
 export default {
 	mixins: [CommonMethod],
-	components: {Dialog, PercentSelect},
+	components: {Dialog, PercentSelect, Loading},
 	data(){
 		return({
 			inputPercent: 1,
@@ -176,6 +176,7 @@ export default {
 		async setCoinAllowanceToPool(coinName){
 			if(coinName != "" && coinName != "BNB" && this.coinArr[coinName].allowanceToPool == -1) {
 				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.StakeLP[coinName].addr , WalletConfig.ETH.momoFarm, false);
+				console.log("setCoinAllowanceToPool", Number(allowance));
 				this.coinArr[coinName].allowanceToPool = Number(allowance);
 				this.coinArr["ts"] = new Date().valueOf();
 			}

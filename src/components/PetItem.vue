@@ -11,9 +11,11 @@
 			</div>
 		</div>
 
-		<div id="light-shadow" ref="lightShadow" v-if="data.item.vType >= 4"></div>
-		<div id="light-border-show" class="v5b" v-if="data.item.vType == 5"></div>
-		<div id="light-border-show" class="v6b" v-if="data.item.vType == 6"></div>
+		<div v-if="data.item.isOpenCard">
+			<div id="light-shadow" ref="lightShadow" v-if="data.item.vType >= 4"></div>
+			<div id="light-border-show" class="v5b" v-if="data.item.vType == 5"></div>
+			<div id="light-border-show" class="v6b" v-if="data.item.vType == 6"></div>
+		</div>
 
 		<img class="pet_img" :src="require(`../assets/pet/${data.item.prototype}.png`)" alt="" width="170" height="170" />
 		<div style="position: absolute; width: 100%; bottom: 95px; left: 0px">
@@ -73,7 +75,7 @@ export default {
 		// console.log(lottie);
 
 		// setTimeout(()=>{
-		if(this.data.item.vType >= 4){
+		if(this.data.item.vType >= 4 && this.data.item.isOpenCard){
 			lottie.loadAnimation({
 				container: this.$refs.lightShadow, // the dom element that will contain the animation
 				renderer: 'svg',

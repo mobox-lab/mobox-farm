@@ -106,10 +106,14 @@ const InitEth = {
 			let account = await Wallet.ETH.getAccount();
 			clearInterval(this.timer);
 			if (account) {
-				// this.$store.commit("globalState/setChainAddr", {
-				// 	type: "BNB",
-				// 	addr: Common.getShortAddr(account),
-				// });
+				//加载pancake交易记录
+				let history = Common.getStorageItem("pancake-history-"+account);
+				if(history != undefined){
+					let histoyJSON = JSON.parse(history);
+					console.log({histoyJSON});
+					this.$store.commit("bnbState/setData", {pancakeHistory: histoyJSON});
+				}
+
 				this.setBalance();
 				//质押挖矿相关
 				// await this.eth_setMintErc20Stake();
@@ -181,7 +185,7 @@ const InitEth = {
 			let pIndexObj  = {};
 			for (let key in PancakeConfig.StakeLP) {
 				let {pIndex} = PancakeConfig.StakeLP[key];
-				if(pIndex != 0){
+				if(pIndex != 0 && pIndex != -1){
 					pIndexObj[key] = pIndex;
 				}
 			}
@@ -438,6 +442,7 @@ const InitEth = {
 					if (item.tx == hash) item.state = 10;
 				});
 				this.$store.commit("ethState/setData", {openBoxTemp});
+				this.$store.commit("globalState/unLockBtn", "openBoxLock");
 
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 				await this.eth_setMyHashrate();

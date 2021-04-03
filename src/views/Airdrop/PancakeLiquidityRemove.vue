@@ -57,7 +57,7 @@
 			</div>
 
 			<div class="aveage-box mgt-30 small" >
-				<p class="tal ">Price:</p>
+				<p class="tal ">{{$t("Air-drop_103")}}:</p>
 				<div class="tar vertical-children" style="flex:2">
 					<p>1 {{$parent.from.coinName}} = {{$parent.toValuePerFrom}} {{$parent.to.coinName}}</p>
 					<p>1 {{$parent.to.coinName}} = {{$parent.fromValuePerTo}} {{$parent.from.coinName}}</p>
@@ -65,8 +65,12 @@
 			</div>
 
 			<div class="mgt-20 " :class="needApprove?'btn-group':'' ">
-				<StatuButton data-step="1" v-if="needApprove" :onClick="approve.bind(this, oprData.coinName)" :isDisable="!needApprove || coinArr[oprData.coinName].isApproving" :isLoading="coinArr[oprData.coinName].isApproving"  style="width: 80%" >Approve {{oprData.coinName}}</StatuButton>
-				<StatuButton data-step="2" :onClick="removeLp.bind(this)" style="width: 80%" :isDisable="needApprove && oprData.balance > 0" :isLoading="coinArr[oprData.coinName].isRemoveLiqiditing" class="mgt-10">Remove</StatuButton>
+				<StatuButton data-step="1" v-if="needApprove" :onClick="approve.bind(this, oprData.coinName)" :isDisable="!needApprove || coinArr[oprData.coinName].isApproving" :isLoading="coinArr[oprData.coinName].isApproving"  style="width: 80%" >
+					{{$t("Air-drop_16")}} {{oprData.coinName}}
+				</StatuButton>
+				<StatuButton data-step="2" :onClick="removeLp.bind(this)" style="width: 80%" :isDisable="needApprove && oprData.balance > 0" :isLoading="coinArr[oprData.coinName].isRemoveLiqiditing" class="mgt-10">
+					{{$t("MOMO_20")}}
+				</StatuButton>
 			</div>
 
 		</div>

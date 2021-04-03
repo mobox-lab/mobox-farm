@@ -27,6 +27,7 @@ const state = () => ({
 			stakeLock: 0, //质押锁定
 			unStakeLock: 0, //取消质押锁定
 			getMboxLock: 0, //领取mbox锁
+			openBoxLock: 0,//开箱子锁
 		},
 		walletStatus: {
 			status: 1, //1,等待中，2，reject，3，success
@@ -64,13 +65,18 @@ const mutations = {
 		notifications.push(notify);
 		state.data.notifications = notifications;
 	},
-	removeNotifyTrans(state) {
+	removeNotifyTrans(state, needRemove) {
 		let notificationsTrans = [...state.data.notificationsTrans];
-		notificationsTrans.shift();
+		notificationsTrans.map((item, index)=>{
+			if(item.hash == needRemove.hash){
+				notificationsTrans.splice(index, 1);
+			}
+		})
+		// notificationsTrans.shift();
 		state.data.notificationsTrans = notificationsTrans;
 	},
 	addNotifyTrans(state, notify) {
-		notify.hash = new Date().valueOf();
+		notify.ts = new Date().valueOf();
 		let notificationsTrans = [...state.data.notificationsTrans];
 		notificationsTrans.push(notify);
 		state.data.notificationsTrans = notificationsTrans;

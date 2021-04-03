@@ -114,23 +114,58 @@ export default class ETH {
 	static sendMethod(method,  sendAttr,  onHash, onRecipt, onError = ()=>{}){
 		Common.store.commit("globalState/setwalletStatus", {status:1});
 		Common.oprDialog("wallet-opr-dialog", "block");
+		method.value = sendAttr.value;
+		console.log(method);
+		console.log(method._method.name);
+		let saveHash;
 		method.send(sendAttr).on("transactionHash", hash => {
 			onHash(hash);
+			saveHash = hash;
 			Common.store.commit("globalState/setwalletStatus", {status:3, hash});
-			Common.app.showNotify(Common.app.$t("BOX_20"), "success");
+			// Common.app.showNotify(Common.app.$t("BOX_20"), "success");
 		}).on("error", err => {
 			console.log(err);
-			if(err.code == 4001) Common.store.commit("globalState/setwalletStatus", {status:2});
+			onError();
+
 			let type = Common.getStorageItem("connect-wallet");
 			if(type == "mboxWallet"){
 				Common.store.commit("globalState/setwalletStatus", {status:2})
 			}
-			//情况coin的各种loading状态
+			//清空coin的各种loading状态
 			Common.store.commit("bnbState/clearLoading")
-			onError();
+
+			//拒绝交易
+			if(err.code == 4001) {
+				Common.store.commit("globalState/setwalletStatus", {status:2});
+				return;
+			}
+			//gas费用太低
+			if(err.code == -32603){
+				Common.app.showNotify("intrinsic gas too low", "error");
+				Common.store.commit("globalState/setwalletStatus", {status:2});
+				return;
+			}
+
+			//交易失败了，暂时判断包含 reverted 字段
+			if(err.message.indexOf("reverted") != -1){
+				this.onReciptNotice(saveHash, method, "error");
+			}
+
+
 		}).on("receipt", data=>{
+			console.log(data);
+			this.onReciptNotice(saveHash, method, "success");
 			onRecipt(data);
 		});
+	}
+
+	onReciptNotice(hash, method, type){
+		console.log({hash, method, type});
+		//当前只记录swap和流动性相关的记录
+		if(method._method.name == "swapExactETHForTokens"){
+			console.log("Sss");
+		}
+
 	}
 
 	//获取当前账户

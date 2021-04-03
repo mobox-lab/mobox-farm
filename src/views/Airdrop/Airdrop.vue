@@ -236,6 +236,7 @@ export default {
 			if(!this.hasAgreeNotice) return;
 			if(this.hasSelectNotShow){
 				Common.setStorageItem("hasSelectNotShowNotice", 1);
+				this.needShowNotice = false;
 			}
 			this.oprDialog("deposit-notice-dialog","none");
 			this.$refs.deposit.setOprData(this.needSetItem).show();

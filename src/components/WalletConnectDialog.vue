@@ -67,21 +67,26 @@ export default {
 		this.connectWallet(type);
 
 		//监听事件---metamask
-		window.ethereum.on('chainChanged', () => {
-			if(this.connectedWallet == "metamask"){
-				window.location.reload();
-			}
-		});
-		window.ethereum.on('accountsChanged', accounts => {
-			console.log("accountsChanged", accounts);
-			if(this.connectedWallet == "metamask"){
-				Wallet.ETH.myAddr = accounts[0];
-				this.$store.commit("globalState/setData", {
-					connectWalletAddr: accounts[0],
-				});
-				this.$root.$children[0].initBaseData();
-			}
-		});
+		if(window.ethereum && window.ethereum.on){
+			window.ethereum.on('chainChanged', () => {
+				if(this.connectedWallet == "metamask"){
+					window.location.reload();
+				}
+			});
+			window.ethereum.on('accountsChanged', accounts => {
+				console.log("accountsChanged", accounts);
+				if(this.connectedWallet == "metamask"){
+					Wallet.ETH.myAddr = accounts[0];
+					this.$store.commit("globalState/setData", {
+						connectWalletAddr: accounts[0],
+					});
+					this.$root.$children[0].initBaseData();
+				}
+			});
+		}
+
+		// todo---mobox listen
+		
 
 	},
 	methods:{
@@ -110,7 +115,7 @@ export default {
 							} catch (error) {
 								this.showNotify("请解锁钱包", "error");
 							}
-							//获取当前链
+							//获取当前Network
 							let network = await window.ethereum.request({method: 'net_version'});
 							chainNetwork = network;
 							//获取当前provider

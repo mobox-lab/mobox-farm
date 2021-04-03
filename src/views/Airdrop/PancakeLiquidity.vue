@@ -146,26 +146,26 @@
 				</div>
 				<p class="mgt-10 tac small">{{from.coinName}}/{{to.coinName}} Pool Tokens</p>
 				<div class="aveage-box mgt-30 " >
-					<p class="tal small">{{from.coinName}} Deposited</p>
+					<p class="tal small">{{$t("Air-drop_102").replace('#0#',from.coinName)}}</p>
 					<p class="tar small vertical-children"  style="flex: 2">
 						<span class="mgl-5">{{from.inputValue}} {{from.coinName}}</span>
 					</p>
 				</div>
 				<div class="aveage-box mgt-10 ">
-					<p class="tal small">{{to.coinName}} Deposited</p>
+					<p class="tal small">{{$t("Air-drop_102").replace('#0#',to.coinName)}}</p>
 					<p class="tar small vertical-children"  style="flex: 2">
 						<span class="mgl-5">{{to.inputValue}} {{to.coinName}}</span>
 					</p>
 				</div>
 				<div class="aveage-box mgt-10 " >
-					<p class="tal small">Rates</p>
+					<p class="tal small">{{$t("Air-drop_103")}}</p>
 					<div class="tar small" style="flex: 2">
 						<p>1 {{from.coinName}} = {{toValuePerFrom}} {{to.coinName}}</p>
 						<p>1 {{to.coinName}} = {{fromValuePerTo}} {{from.coinName}}</p>
 					</div>
 				</div>
 				<div class="mgt-30 tac" style="margin-bottom:10px">
-					<button class="btn-primary" style="width:70%" @click="confirmSuppy">Confirm supply</button>
+					<button class="btn-primary" style="width:70%" @click="confirmSuppy">{{$t("Common_03")}}</button>
 				</div>
 			</div>
 		</Dialog>

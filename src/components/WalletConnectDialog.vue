@@ -5,7 +5,7 @@
 			<div class="mgt-20">
 				<div class="connect-wallet-item aveage-box mgt-10" @click="connectWallet('mboxWallet')">
 					<div class="tal">
-						<span>MboxWallet</span>	
+						<span>MOBOX Wallet (recommended)</span>	
 					</div>
 					<div class="tar">
 						<img src="../assets/icon/mboxWallet.png" height="30" alt="">

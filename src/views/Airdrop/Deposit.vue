@@ -41,7 +41,7 @@
 					<input type="text" class="ly-input tac" style="width:100%;"  v-model="inputDepositValue" v-number :placeholder="$t('Air-drop_96')">
 				</div>
 				<div class="aveage-box mgt-10">
-					<p class="tal small">{{$t("Air-drop_19")}}</p>
+					<p class="tal small">{{$t("Air-drop_11")}}</p>
 					<div class="tar small">
 						<p>{{oprData.balance}} {{oprData.coinName}}</p>
 					</div>

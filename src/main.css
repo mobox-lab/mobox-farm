@@ -259,7 +259,12 @@ svg {
 	color: #fff;
 }
 .color-danger{
-	color: #e670ac
+	color: #f56c6c
+}
+
+.color-error{
+	text-decoration-color: #f56c6c !important;
+	color: #f56c6c !important;
 }
 
 .small {

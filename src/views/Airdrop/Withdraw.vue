@@ -35,7 +35,7 @@
 					{{$t("Air-drop_08")}}
 				</StatuButton>
 
-				<p v-if="feeRate > 0" class="mgt-20 small tal" v-html="getShowNotice"></p>
+				<p v-if="feeRate > 0 && getFee > 0" class="mgt-20 small tal" v-html="getShowNotice"></p>
 			</div>
 		</div>
 	</Dialog>
@@ -112,9 +112,12 @@ export default {
 		getShowNotice(){
 			return this.$t('Air-drop_90')
 							.replace('#0#', '<span>'+this.dateFtt('yyyy.MM.dd hh:mm:ss', new Date(this.stakeTime * 1000)) + '</span>')
-							.replace('#1#', '<span class="color-danger">'+this.numFloor(Number(this.inputValue) * this.feeRate + 0.00000000001, 1e8) + '</span>' )
+							.replace('#1#', '<span class="color-danger">'+this.getFee + '</span>' )
 							.replace('#2#', this.feeRate * 100 + '%')
 							.replace('#3#', this.dateFtt('yyyy.MM.dd hh:mm:ss', new Date(this.oprData.gracePeriod * 1000)));
+		},
+		getFee(){
+			return this.numFloor(Number(this.inputValue) * this.feeRate + 0.00000000001, 1e8);
 		}
 	},
 	created(){

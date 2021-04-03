@@ -148,11 +148,11 @@ export default class ETH {
 			}
 
 			//交易失败了，暂时判断包含 reverted 字段
-			if(err.message && err.message.indexOf("reverted") != -1){
-				this.onReciptNotice(saveHash, method, "error");
-			}
+			// if(err.message && err.message.indexOf("reverted") != -1){
+			// }
+			this.onReciptNotice(saveHash, method, "error");
 			
-			Common.app.showNotifyTrans(Common.app.$t("Common_19"), saveHash, "error");
+			// Common.app.showNotifyTrans(Common.app.$t("Common_19"), saveHash, "error");
 			Common.store.commit("globalState/setwalletStatus", {status:2});
 
 		}).on("receipt", data=>{
@@ -167,7 +167,7 @@ export default class ETH {
 		let methodName = method._method.name;
 		let _arguments = method.arguments;
 		let myAddr = method.myAddr;
-		let msg = type=="success"?"transaction success":Common.app.$t("Common_19");
+		let msg = type=="success"?Common.app.$t("Air-drop_111"):Common.app.$t("Common_19");
 		let needSave = false;
 
 		//Swap BNB to Token
@@ -696,7 +696,6 @@ export default class ETH {
 			switch (type) {
 				case ConstantConfig.NFT_LOCATION.WALLET:
 					this.momoHelperContract.methods.getMomosWallet(myAddr, prototype_1155_arr).call().then(momosObj => {
-						console.log("getMomosWallet", this.generateNftObj(momosObj, ConstantConfig.NFT_LOCATION.WALLET));
 						resolve(this.generateNftObj(momosObj, ConstantConfig.NFT_LOCATION.WALLET));
 					});
 					break;
@@ -816,7 +815,7 @@ export default class ETH {
 		console.log( this.web3.utils.utf8ToHex(name).length);
 		return new Promise(resolve => {
 			this.sendMethod(
-				this.momoStakeContract.methods.setMomoName(tokenId, this.web3.utils.utf8ToHex(name)), {from: myAddr,value: isFirst ? 0 : 0.001e18},
+				this.momoStakeContract.methods.setMomoName(tokenId, this.web3.utils.utf8ToHex(name)), {from: myAddr,value: isFirst ? 0 : 0.01e18},
 				hash=>resolve(hash),
 				()=>{
 					EventBus.$emit(EventConfig.SetNameConfirm, {chain: "eth",tokenId,name});
@@ -834,7 +833,7 @@ export default class ETH {
 		if (!this.momoStakeContract) return;
 		return new Promise(resolve => {
 			this.sendMethod(
-				this.momoStakeContract.methods.addMomoStory(tokenId, this.web3.utils.utf8ToHex(story)), {from: myAddr, value: isFirst ? 0 : 0.001e18},
+				this.momoStakeContract.methods.addMomoStory(tokenId, this.web3.utils.utf8ToHex(story)), {from: myAddr, value: isFirst ? 0 : 0.01e18},
 				hash=>resolve(hash),
 				()=>{
 					EventBus.$emit(EventConfig.SetStoryConfirm);

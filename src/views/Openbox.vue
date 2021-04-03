@@ -74,7 +74,7 @@
 					{{ $t("BOX_04") }}
 				</button>
 				<button class="mgt-20" id="buy-key-btn" style="width:40%;" @click="$root.$children[0].$refs.pancake.setOprData({coinName: 'KEY-BNB'}).show('swap')">
-					购买KEY
+					{{$t("BOX_33")}}
 				</button>
 				
 			</div>

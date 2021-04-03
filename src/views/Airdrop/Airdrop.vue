@@ -39,10 +39,19 @@
 								</p>
 							</div>
 						</div>
+						
+
 						<div class="tal mgt-30">
 							<p class="por mgt-10">
 								<span class="opa-6 ">{{ $t("Air-drop_02") }}</span>
 								<span class="suffix">${{ numFloor(item.totalSupply, 100).toLocaleString() }}</span>
+							</p>
+						</div>
+
+						<div class="tal mgt-20">
+							<p class="por mgt-10">
+								<span class="opa-6 ">可质押</span>
+								<span class="suffix">{{ numFloor(coinArr[item.coinName].balance, 1e6) || "0" }}</span>
 							</p>
 						</div>
 
@@ -167,7 +176,7 @@
 </template>
 <script>
 import CommonMethod from "@/mixin/CommonMethod";
-import {  Http, Common } from '@/utils';
+import {  Http, Common, Wallet } from '@/utils';
 import { mapState } from "vuex";
 import { PancakeConfig } from "@/config";
 import KeyOpr from "./KeyOpr";
@@ -229,9 +238,26 @@ export default {
 			this.needShowNotice = false;
 		}
 
-		this.getTotalStakeUSDTAndAirdropKEY();
+		await this.getTotalStakeUSDTAndAirdropKEY();
+
+		this.getCoinValue();
 	},
 	methods: {
+		async getCoinValue(){
+			let balance = await Wallet.ETH.getBalance();
+			this.coinArr["BNB"].balance = balance;
+			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+
+			for (let key in PancakeConfig.SelectCoin) {
+				let {addr, decimals, omit} = PancakeConfig.SelectCoin[key];
+				if(addr != ""){
+					let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
+					this.coinArr[key].balance =  Common.numFloor((Number(value) / decimals), omit);
+					this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+					await Common.sleep(500);
+				}
+			}
+		},
 		agreeNotice(){
 			if(!this.hasAgreeNotice) return;
 			if(this.hasSelectNotShow){

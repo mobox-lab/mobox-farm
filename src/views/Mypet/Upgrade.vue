@@ -105,7 +105,7 @@
 					<p class="small tal">{{ $t("BOX_16") }} ({{nowLen}}/32)</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="../assets/icon/eth.png" alt="" />
+							<img  src="../assets/icon/bnb.png" alt="" />
 						</div>
 						<input v-model="inputName" class="ly-input" type="text" style=" background: #0f172a; text-align: center; width: 100%; border-radius: 5px; padding-left:40px" :placeholder="$t('BOX_17')" />
 					</div>

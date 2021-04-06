@@ -64,14 +64,20 @@ export default {
 	},
 	created(){
 		let type = Common.getStorageItem("connect-wallet");
-		setTimeout(() => {
-			if(document.body.clientWidth < 1000){
-				type = "mboxWallet";
-			}
+		if(document.body.clientWidth < 1000){
+			type = "mboxWallet";
+		}
+		if(type == "mboxWallet"){
+			setTimeout(() => {
+				if(type != undefined){
+					this.connectWallet(type);
+				}
+			}, 500);
+		}else{
 			if(type != undefined){
 				this.connectWallet(type);
 			}
-		}, 500);
+		}
 
 		//监听事件---metamask
 		if(window.ethereum && window.ethereum.on){

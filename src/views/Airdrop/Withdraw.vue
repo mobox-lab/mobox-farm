@@ -120,9 +120,6 @@ export default {
 			return this.numFloor(Number(this.inputValue) * this.feeRate + 0.00000000001, 1e8);
 		}
 	},
-	created(){
-		console.log(BaseConfig.MomoLPCfg);
-	},
 	methods:{
 		async withdraw(){
 			console.log(this.inputValue);

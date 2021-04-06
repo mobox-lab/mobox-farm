@@ -19,13 +19,14 @@
 				<div class="aveage-box vertical-children mgt-10">
 					<input style="flex:1 1 auto" type="text" placeholder="0.0" v-model="from.inputValue" v-number @keyup="inputValueChange('from')">
 					<p class="text-btn" v-if="from.coinName != ''" @click="maxInputFrom();inputValueChange('from')">Max</p>
-					<p class="tar cur-point text-btn vertical-children" @click="openSelectCoin('from')">
+					<!-- <p class="tar cur-point text-btn vertical-children" @click="openSelectCoin('from')"> -->
+					<p class="tar cur-point text-btn vertical-children" >
 						<span  v-if="from.coinName != '' ">
 							<img :src="require(`../../assets/coin/${from.coinName}.png`)" alt="" height="20" />&nbsp;
 							<span>{{from.coinName}}</span>
 						</span>
 						<span v-else>{{$t("Air-drop_38")}}</span>
-						<svg viewBox="0 0 24 24"  width="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
+						<svg viewBox="0 0 24 24" class="hide"  width="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
 					</p>
 				</div>
 			</div>
@@ -46,13 +47,14 @@
 				</div>
 				<div class="aveage-box vertical-children mgt-10">
 					<input style="flex:1 1 auto" type="text" placeholder="0.0" v-model="to.inputValue" v-number @keyup="inputValueChange('to')">
-					<p class="tar text-btn vertical-children" @click="openSelectCoin('to')">
+					<!-- <p class="tar text-btn vertical-children" @click="openSelectCoin('to')"> -->
+					<p class="tar text-btn vertical-children" >
 						<span  v-if="to.coinName != '' ">
 							<img :src="require(`../../assets/coin/${to.coinName}.png`)" alt="" height="20" />&nbsp;
 							<span>{{to.coinName}}</span>
 						</span>
 						<span v-else>{{$t("Air-drop_38")}}</span>
-						<svg viewBox="0 0 24 24"  height="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
+						<svg viewBox="0 0 24 24" class="hide"  height="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
 					</p>
 				</div>
 			</div>
@@ -65,8 +67,8 @@
 				<p class="tal small">{{$t("Air-drop_39")}}</p>
 				<p class="tar small">{{getSlippage}}%</p>
 			</div>
-			<div class="mgt-20 tac " :class="!hasApproved?'btn-group':'' " style="margin-bottom:10px">
-				<div v-if="!hasApproved && from.coinName != '' ">
+			<div class="mgt-20 tac " :class="needApproved?'btn-group':'' " style="margin-bottom:10px">
+				<div v-if="needApproved && from.coinName != '' ">
 					<button data-step="1" @click="approve" class="btn-primary por" style="width:80%;" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
 						<Loading v-if="coinArr[from.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
 						{{$t("Air-drop_16")}} {{from.coinName}}
@@ -182,6 +184,14 @@ export default {
 		hasApproved(){
 			let coinName = this.from.coinName;
 			return coinName == "BNB" || (coinName != "" && coinName != "BNB" && this.coinArr[coinName].allowanceToSwap > 1e8);
+		},
+		needApproved(){
+			let coinName = this.from.coinName;
+			let needApprove =  false;
+			if(coinName != "" && coinName != "BNB" && this.coinArr[coinName].allowanceToSwap == 0){
+				needApprove = true;
+			}
+			return needApprove;
 		},
 		getSlippage(){
 			return Number(this.setting.slippage) || 0.5;

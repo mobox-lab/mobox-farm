@@ -34,6 +34,7 @@ const state = () => ({
 			msg: "",
 			hash: ""
 		},  
+		airdropCountDown: 0,
 	},
 })
 

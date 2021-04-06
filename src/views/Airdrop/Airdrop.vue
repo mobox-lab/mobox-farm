@@ -1,31 +1,35 @@
 <template>
 	<div id="aridorp" class="tac">
-		<section class="mgt-30">
+		<section class="mgt-0">
 			<div class="menu-btn active">
 				<img src="../../assets/icon/bnb.png" alt="" height="50" />
 			</div>
 		</section>
-		<section id="airdrop-cont" class="">
+		<section id="airdrop-cont" class="por">
+			<a id="recheck" href="https://www.certik.org/projects/mobox" style="position:absolute;right:0px;top: -70px" target="_blank">
+				<img src="../../assets/icon/check-icon.png" alt="" height="60" />
+			</a>
 			<div class="mgt-10 aveage-box" id="airdrop-cont-info">
 				<div class="dib" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10 ">{{ $t("Air-drop_02") }}</h3>
 					<h3 class="mgt-10">${{getTotalSupplyUSDT.toLocaleString() }}</h3>
 				</div>
-				<div class="dib" style="padding:0px 10px">
+				<div class="dib por" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10 ">{{ $t("Air-drop_21") }}</h3>
 					<h3 class="mgt-10">{{totalAirdropKey}} KEY</h3>
+					<small style="position:absolute;transform: translateX(-50%);width:200%" class="opa-6" v-if="airdropCountDown > 0">{{$t("Air-drop_119")}}: {{getLeftTime(airdropCountDown)}}</small>
 				</div>
 				<div class="dib" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10">{{ $t("Air-drop_05") }}</h3>
 					<div class="mgt-10">
-						<button class="btn-success btn-small por"   @click="$refs.keyopr.showAll()">
+						<button class="btn-success btn-small por"  @click="$refs.keyopr.showAll()">
 							{{getTotalKey}} KEY
 						</button>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-4 col-xs-12 col-sm-6 mgt-20" v-for="item in getPledgeList" :key="item.coinName" >
+				<div class="col-md-4 col-xs-12 col-sm-6 mgt-10" v-for="item in getPledgeList" :key="item.coinName" >
 					<div class="airdrop-item tal">
 						<div class="vertical-children" style="padding-left: 56px" >
 							<div class="dib airdorp-item-coin-icon tac " :class="item.isLP?'double-img':'' ">
@@ -37,10 +41,10 @@
 									<span style="display:inline-block;padding:2px 10px;border-radius:50px;background:#4383D7;color:#fff;font-size:16px" >{{item.allocPoint}}X</span>
 									<span class="mgl-5" style="font-size:18px">APY: {{ item.apy }}</span>
 								</p>
+								<p class="small opa-6" v-if="airdropCountDown > 0" style="margin-left:45px">{{$t("Air-drop_120")}}</p>
 							</div>
 						</div>
 						
-
 						<div class="tal mgt-30">
 							<p class="por mgt-10">
 								<span class="opa-6 ">{{ $t("Air-drop_02") }}</span>
@@ -176,7 +180,7 @@
 </template>
 <script>
 import CommonMethod from "@/mixin/CommonMethod";
-import {  Http, Common, Wallet } from '@/utils';
+import {  Common, Wallet } from '@/utils';
 import { mapState } from "vuex";
 import { PancakeConfig } from "@/config";
 import KeyOpr from "./KeyOpr";
@@ -202,6 +206,7 @@ export default {
 			totalAirdropKey: (state) => state.bnbState.data.totalAirdropKey,
 			rewardStoreKey: (state) => state.bnbState.data.rewardStoreKey,
 			buyBack: (state) => state.bnbState.data.buyBack,
+			airdropCountDown: (state) => state.globalState.data.airdropCountDown,
 		}),
 		//获取总质押USDT
 		getTotalSupplyUSDT() {
@@ -238,7 +243,6 @@ export default {
 			this.needShowNotice = false;
 		}
 
-		await this.getTotalStakeUSDTAndAirdropKEY();
 
 		this.getCoinValue();
 	},
@@ -267,20 +271,7 @@ export default {
 			this.oprDialog("deposit-notice-dialog","none");
 			this.$refs.deposit.setOprData(this.needSetItem).show();
 		},
-		async  getTotalStakeUSDTAndAirdropKEY(){
-			let res = await Http.getKeyDrop();
-			console.log(res);
-			if(res){
-				let {strategyAmounts, keyAmount, apys} = res.data;
-				Object.keys(PancakeConfig.StakeLP).map(coinName=>{
-					this.coinArr[coinName].totalSupply = strategyAmounts[coinName] || 0;
-					let apy =  Common.numFloor(apys[coinName] * 100 || 0, 100);
-					if(apy == 0) apy = "?";
-					this.coinArr[coinName].apy = apy + "%";
-				});
-				this.$store.commit("bnbState/setData", {coinArr: this.coinArr, totalAirdropKey: keyAmount});
-			}
-		},
+		
 		showWithdraw(item){
 			this.$refs.withdraw.setOprData(item).show();
 		}
@@ -323,6 +314,7 @@ export default {
 #buy-back {
 	padding: 20px 30px;
 	width: 80%;
+	max-width: 1400px;
 	background: #1d2b50;
 	border-radius: 20px;
 	margin: 0px auto;
@@ -332,6 +324,7 @@ export default {
 	padding: 20px 30px;
 	padding-top: 0px;
 	width: 80%;
+	max-width: 1400px;
 	background: #1d2b50;
 	border-radius: 20px;
 	display: inline-block;
@@ -353,11 +346,22 @@ export default {
 	box-shadow: none;
 	background: #1d2b50;
 }
+
+#aridorp .col-md-4{
+	padding: 10px 15px;
+}
 @media (max-width: 768px) {
 	#airdrop-cont {
 		width: 100%;
 		padding: 10px !important;
 		border-radius: 10px !important;
+	}
+	#airdrop-cont #recheck{
+		zoom: 0.65;
+	}
+	#aridorp .menu-btn{
+		padding: 0px;
+		padding-top: 10px;
 	}
 }
 @media (max-width: 1500px) {

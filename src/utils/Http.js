@@ -2,8 +2,8 @@ import axios from 'axios';
 import {EventBus} from "@/utils";
 import {EventConfig} from '@/config';
 export default class HTTP {
-	static serverNode = "https://nfttestapi.mobox.io"; //测试
-	// static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
+	// static serverNode = "https://nfttestapi.mobox.io"; //测试
+	static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
 
 	static async post(url, sendData) {
 		try {

@@ -110,7 +110,6 @@ const InitEth = {
 				let history = Common.getStorageItem("pancake-history-"+account);
 				if(history != undefined){
 					let histoyJSON = JSON.parse(history);
-					console.log({histoyJSON});
 					this.$store.commit("bnbState/setData", {pancakeHistory: histoyJSON});
 				}
 
@@ -206,7 +205,6 @@ const InitEth = {
 		//获取bnb的余额
 		async setBalance(){
 			let balance = await Wallet.ETH.getBalance();
-			console.log({balance});
 			this.coinArr["BNB"].balance = balance;
 			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 

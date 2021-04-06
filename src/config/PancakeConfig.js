@@ -1,11 +1,7 @@
 export default class PancakeConfig {
 	static SwapRouterAddr = "0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F";
 	static SelectCoin = {
-		"MBOX": {
-			omit: 1e2,
-			decimals: 1e18,
-			addr: "0xD32d0f8b13Bf084f3fBA2CAe0763a71eBa7e08EF",
-		},
+		
 		"BNB": {
 			decimals: 1e18,
 			omit: 1e4,
@@ -41,11 +37,29 @@ export default class PancakeConfig {
 			decimals: 1e18,
 			addr: "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d"
 		},
+		"MBOX": {
+			omit: 1e2,
+			decimals: 1e18,
+			addr: "0x3203c9E46cA618C8C1cE5dC67e7e9D75f5da2377",
+		},
+		"KEY": {
+			omit: 1e4,
+			decimals: 1e18,
+			addr: "0x85c128eE1feEb39A59490c720A9C563554B51D33"
+		},
 	}
 	static StakeLP = {
+		"KEY-BNB":{
+			pIndex: -1,
+			addr: "0xc3ED1ebF16c11e28c6477C78577aE455D21577CA",
+			allocPoint: 1,
+			decimals: 1e18,
+			omit: 1e6,
+		},
+
 		"MBOX-BNB":{
-			pIndex: 0,
-			addr: "0xc2A3baBbe53d662C0a5D16513908aB53C6f1df24",
+			pIndex: 12,
+			addr: "0x8D42EE6F423a5016792E6D0d4508c05F30cAc5BC",
 			allocPoint: 10,
 			decimals: 1e18,
 			omit: 1e6,
@@ -127,5 +141,6 @@ export default class PancakeConfig {
 			decimals: 1e18,
 			omit: 1e6,
 		},
+		
 	}
 }

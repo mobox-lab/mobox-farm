@@ -23,7 +23,7 @@
 	}
 	#top-res {
 		font-size: 12px !important;
-		position: static !important;
+		position: relative !important;
 		height: auto !important;
 		border: none !important;
 	}
@@ -141,7 +141,7 @@
 	}
 	#top-res {
 		font-size: 12px !important;
-		position: static !important;
+		position: relative !important;
 		height: auto !important;
 		border: none !important;
 		line-height: 30px !important;

@@ -75,7 +75,7 @@
 					</div>
 					<div class="aveage-box vertical-children mgt-10">
 						<input style="flex:1 1 auto" type="text" placeholder="0.0" v-model="from.inputValue" v-number @keyup="inputValueChange('from')">
-						<p class="text-btn" v-if="from.coinName != ''" @click="from.inputValue = coinArr[from.coinName].balance;inputValueChange('from')">Max</p>
+						<p class="text-btn" v-if="from.coinName != ''" @click="maxInput('from');inputValueChange('from')">Max</p>
 						<p class="tar cur-point text-btn vertical-children" >
 							<span  v-if="from.coinName != '' ">
 								<img :src="require(`../../assets/coin/${from.coinName}.png`)" alt="" height="20" />&nbsp;
@@ -99,7 +99,7 @@
 					</div>
 					<div class="aveage-box vertical-children mgt-10">
 						<input style="flex:1 1 auto" type="text" placeholder="0.0" v-model="to.inputValue" v-number @keyup="inputValueChange('to')">
-						<p class="text-btn" v-if="from.coinName != ''" @click="to.inputValue = coinArr[to.coinName].balance;inputValueChange('to')">Max</p>
+						<p class="text-btn" v-if="from.coinName != ''" @click="maxInput('to');inputValueChange('to')">Max</p>
 						<p class="tar text-btn vertical-children" >
 							<span  v-if="to.coinName != '' ">
 								<img :src="require(`../../assets/coin/${to.coinName}.png`)" alt="" height="20" />&nbsp;
@@ -296,6 +296,16 @@ export default {
 		EventBus.$off(EventConfig.AddLiquiditySuccess, this.updateBalance);
 	},
 	methods:{
+		maxInput(type){
+			let obj = this[type];
+			let value = this.coinArr[obj.coinName].balance;
+			if(obj.coinName == "BNB"){
+				value -= 0.01;
+			}
+			if(value < 0 ) value = 0;
+			obj.inputValue =value;
+		},
+
 		toggleClass(e){
 			e.currentTarget.classList.toggle("close");
 		},

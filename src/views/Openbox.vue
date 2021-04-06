@@ -60,7 +60,7 @@
 					<p class="small tal opa-6">{{ $t("BOX_02") }}:</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="../assets/icon/key.png" alt="" />
+							<img  src="../assets/coin/KEY.png" alt="" />
 						</div>
 						<input class="ly-input" type="number"
 							style=" background: #0f172a; text-align: center; width: 100%; "
@@ -149,7 +149,7 @@
 				<p class="small tal opa-6">{{ $t("BOX_06") }}:</p>
 				<div class="por mgt-5">
 					<div class="ly-input-pre-icon">
-						<img  src="../assets/icon/key.png" alt="" />
+						<img  src="../assets/coin/KEY.png" alt="" />
 					</div>
 					<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
 						v-int :data-max="parseInt(ethState.box) || 1" data-min="1" v-model="addKey" />
@@ -168,11 +168,11 @@
 				<p class="small opa-6" v-html="$t('BOX_08')"></p>
 			</div>
 
-			<div  :class="!needApprove?'btn-group':''" class="mgt-20">
-				<StatuButton :onClick="approve.bind(this)"  data-step="1" style="width: 80%" v-if="!needApprove" :isLoading="lockBtn.approveLock > 0" :isDisable="lockBtn.approveLock > 0">
+			<div  :class="needApprove?'btn-group':''" class="mgt-20">
+				<StatuButton :onClick="approve.bind(this)"  data-step="1" style="width: 80%" v-if="needApprove" :isLoading="lockBtn.approveLock > 0" :isDisable="lockBtn.approveLock > 0">
 					{{ $t("Air-drop_16") }} KEY
 				</StatuButton>
-				<button data-step="2" @click="addBox(addKey)" class="btn-primary mgt-10 por" style="width: 80%; margin-bottom: 20px" :class="!needApprove?'disable-btn':''">
+				<button data-step="2" @click="addBox(addKey)" class="btn-primary mgt-10 por" style="width: 80%; margin-bottom: 20px" :class="needApprove?'disable-btn':''">
 					{{ $t("BOX_09") }}
 				</button>
 			</div>

@@ -133,7 +133,17 @@ export default class ETH {
 				Common.store.commit("globalState/setwalletStatus", {status:2});
 			}
 			//清空coin的各种loading状态
-			Common.store.commit("bnbState/clearLoading")
+			Common.store.commit("bnbState/clearLoading");
+
+			//交易失败了，暂时判断包含 reverted 字段
+			if(err.message && err.message.indexOf("-32603") != -1){
+				return;
+			}
+
+			//追踪不到订单信息 不用处理
+			if(err.toString().indexOf("eth_getTransactionReceipt") != -1){
+				return;
+			}
 
 			//拒绝交易
 			if(err.code == 4001) {
@@ -146,11 +156,10 @@ export default class ETH {
 				Common.store.commit("globalState/setwalletStatus", {status:2});
 				return;
 			}
-
-			//交易失败了，暂时判断包含 reverted 字段
-			// if(err.message && err.message.indexOf("reverted") != -1){
-			// }
-			this.onReciptNotice(saveHash, method, "error");
+			
+			if(saveHash){
+				this.onReciptNotice(saveHash, method, "error");
+			}
 			
 			// Common.app.showNotifyTrans(Common.app.$t("Common_19"), saveHash, "error");
 			Common.store.commit("globalState/setwalletStatus", {status:2});
@@ -305,9 +314,9 @@ export default class ETH {
 			this.sendMethod(
 				this.boxTokenContract.methods.approve(WalletConfig.ETH.moMoMinter,"0x" + Common.repeat("f", 64)), {from: myAddr},
 				hash=>resolve(hash),
-				()=>{
+				async ()=>{
+					await Common.app.eth_setBoxAllowance();
 					Common.store.commit("globalState/unLockBtn", "approveLock");
-					Common.app.eth_setBoxAllowance();
 				}
 			)
 		});

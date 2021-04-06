@@ -6,7 +6,7 @@
 		<div class="ly-input-content">
 			<div class="por mgt-10 ">
 				<div class="ly-input-pre-icon">
-					<img  src="../../assets/icon/key.png" alt="" />
+					<img  src="../../assets/coin/KEY.png" alt="" />
 				</div>
 				<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; " v-model="getSelectAllKey" readonly/>
 				<div class="dib" style="width: 30%">

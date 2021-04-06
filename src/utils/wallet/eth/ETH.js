@@ -179,7 +179,7 @@ export default class ETH {
 			
 			let path = _arguments[1];
 			for (let key in PancakeConfig.SelectCoin) {
-				if(PancakeConfig.SelectCoin[key].addr == path[path.length-1]){
+				if(PancakeConfig.SelectCoin[key].addr.toLocaleUpperCase() == path[path.length-1].toLocaleUpperCase()){
 					toName = key;
 				}
 			}
@@ -192,12 +192,12 @@ export default class ETH {
 		if(["swapExactTokensForETH", "swapTokensForExactETH"].indexOf(methodName) != -1  ){
 			let fromName = "";
 			let toName = "BNB"
-			let fromValue =  BigNumber(_arguments[1]);
-			let toValue =  BigNumber(_arguments[0]);
+			let fromValue =  BigNumber(_arguments[0]);
+			let toValue =  BigNumber(_arguments[1]);
 			
-			let path = _arguments[3];
+			let path = _arguments[2];
 			for (let key in PancakeConfig.SelectCoin) {
-				if(PancakeConfig.SelectCoin[key].addr == path[0]){
+				if(PancakeConfig.SelectCoin[key].addr.toLocaleUpperCase() == path[0].toLocaleUpperCase()){
 					fromName = key;
 				}
 			}
@@ -210,15 +210,15 @@ export default class ETH {
 		if(["swapExactTokensForTokens", "swapTokensForExactTokens"].indexOf(methodName) != -1  ){
 			let fromName = "";
 			let toName = ""
-			let fromValue =  BigNumber(_arguments[1]);
-			let toValue =  BigNumber(_arguments[0]);
+			let fromValue =  BigNumber(_arguments[0]);
+			let toValue =  BigNumber(_arguments[1]);
 			
-			let path = _arguments[3];
+			let path = _arguments[2];
 			for (let key in PancakeConfig.SelectCoin) {
-				if(PancakeConfig.SelectCoin[key].addr == path[0]){
+				if(PancakeConfig.SelectCoin[key].addr.toLocaleUpperCase() == path[0].toLocaleUpperCase()){
 					fromName = key;
 				}
-				if(PancakeConfig.SelectCoin[key].addr == path[path.length-1]){
+				if(PancakeConfig.SelectCoin[key].addr.toLocaleUpperCase() == path[path.length-1].toLocaleUpperCase()){
 					toName = key;
 				}
 			}
@@ -235,7 +235,7 @@ export default class ETH {
 			let toValue =  BigNumber(_arguments[3]);
 			
 			for (let key in PancakeConfig.SelectCoin) {
-				if(PancakeConfig.SelectCoin[key].addr ==_arguments[0]){
+				if(PancakeConfig.SelectCoin[key].addr.toLocaleUpperCase() ==_arguments[0].toLocaleUpperCase()){
 					fromName = key;
 				}
 			}
@@ -253,10 +253,10 @@ export default class ETH {
 			let toValue =  BigNumber(_arguments[5]);
 			
 			for (let key in PancakeConfig.SelectCoin) {
-				if(PancakeConfig.SelectCoin[key].addr ==_arguments[0]){
+				if(PancakeConfig.SelectCoin[key].addr.toLocaleUpperCase() ==_arguments[0].toLocaleUpperCase()){
 					fromName = key;
 				}
-				if(PancakeConfig.SelectCoin[key].addr ==_arguments[1]){
+				if(PancakeConfig.SelectCoin[key].addr.toLocaleUpperCase() ==_arguments[1].toLocaleUpperCase()){
 					toValue = key;
 				}
 			}

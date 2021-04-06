@@ -1,7 +1,6 @@
 export default class PancakeConfig {
 	static SwapRouterAddr = "0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F";
 	static SelectCoin = {
-		
 		"BNB": {
 			decimals: 1e18,
 			omit: 1e4,
@@ -56,7 +55,6 @@ export default class PancakeConfig {
 			decimals: 1e18,
 			omit: 1e6,
 		},
-
 		"MBOX-BNB":{
 			pIndex: 12,
 			addr: "0x8D42EE6F423a5016792E6D0d4508c05F30cAc5BC",

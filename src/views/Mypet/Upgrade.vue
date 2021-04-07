@@ -252,15 +252,15 @@ export default {
 			};
 			switch (vType) {
 				case 4:
-					obj.staticPower = 20 + parseInt((hashrate - 10) / 2);
+					obj.staticPower = 2000 + parseInt((hashrate - 10) * 50);
 					obj.staticPercent = 0.2;
 					break;
 				case 5:
-					obj.staticPower = 50 + parseInt((hashrate - 50) / 2);
+					obj.staticPower = 5000 + parseInt((hashrate - 50) * 50);
 					obj.staticPercent = 0.3;
 					break;
 				case 6:
-					obj.staticPower = 180 + parseInt((hashrate - 180) / 2);
+					obj.staticPower = 18000 + parseInt((hashrate - 180) * 50);
 					obj.staticPercent = 0.4;
 					break;
 				default:
@@ -268,19 +268,13 @@ export default {
 			}
 			return obj;
 		},
+
 		//获取宠物下一级的升级算力
 		getNowPetItemNextLvHashRate() {
 			let { hashrate, level } = this.getNowPetItem;
-
 			let growup = this.getGrowup;
 			level = level + 1;
-			return parseInt(
-				hashrate +
-					growup.staticPower * (level - 1) +
-					((parseInt(level / 5) * (1 + parseInt(level / 5))) / 2) *
-						growup.staticPower *
-						growup.staticPercent
-			);
+			return parseInt(hashrate + parseInt(growup.staticPower * (level - 1) /100) + parseInt(((parseInt(level / 5) * (1 + parseInt(level / 5)))) * growup.staticPower * growup.staticPercent / 200) );
 		},
 		getTotalNft(){
 			return [...this.myNFT_stake, ...this.myNFT_wallet];

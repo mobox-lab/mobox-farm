@@ -1,4 +1,4 @@
-import {Common,EventBus,Wallet,Http} from "@/utils";
+import {Common,EventBus,Wallet,Http, SwapHttp} from "@/utils";
 import {EventConfig,StorageConfig,WalletConfig, ConstantConfig, PancakeConfig} from "@/config";
 import {mapState} from "vuex";
 import BigNumber from "bignumber.js";
@@ -47,7 +47,6 @@ const InitEth = {
 		EventBus.$on(EventConfig.StakeNftConfirm,this.eth_stakeNftConfirm.bind(this));
 		EventBus.$on(EventConfig.CreateAuctionConfirm,this.eth_createAuctionConfirm.bind(this));
 		EventBus.$on(EventConfig.OpenBoxHistory,this.eth_openBoxHistory.bind(this));
-		EventBus.$on(EventConfig.ApprovedToPoolConfirm,this.eth_setAllowanceMintCoinToPool.bind(this));
 	
 		//拍卖成功
 		EventBus.$on(EventConfig.BidPetSuccess,  async ({coinName}) => {
@@ -114,20 +113,16 @@ const InitEth = {
 				}
 
 				this.setBalance();
-				//质押挖矿相关
-				// await this.eth_setMintErc20Stake();
-				// await this.eth_setAllowanceMintCoinToPool();
 
 				this.needUpdate();
 				this.timer = setInterval(() => {
 					if(Wallet.ETH.myAddr != ""){
 						this.needUpdate();
 					}
-				}, 10000);
+				}, 20000);
 
 				this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
-				// await this.eth_set1155IsApprovedFor721();
 				await this.eth_set1155IsApprovedForStake();
 				await this.eth_set721IsApprovedForStake();
 
@@ -143,11 +138,9 @@ const InitEth = {
 			await this.getStakeValueAndEarndKey();
 
 			//质押挖矿相关
-			// await this.eth_setTotalAirDrop();
 			await this.eth_setTotalDropMbox();
-			//获取KEY收益
-			// await this.eth_setTotalSupply();
-			// await this.eth_getEarnedKey();
+
+			await this.getCoinValue();
 
 			await this.setOrder();
 			await this.eth_setBox();
@@ -167,6 +160,21 @@ const InitEth = {
 
 			//获取总打开箱子数
 			await this.setTotalOpenBox();
+		},
+		async getCoinValue(){
+			let balance = await Wallet.ETH.getBalance();
+			this.coinArr["BNB"].balance = balance;
+			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+
+			for (let key in PancakeConfig.SelectCoin) {
+				let {addr, decimals, omit} = PancakeConfig.SelectCoin[key];
+				if(addr != ""){
+					let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
+					this.coinArr[key].balance =  Common.numFloor((Number(value) / decimals), omit);
+					this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+					await Common.sleep(500);
+				}
+			}
 		},
 		async getBuyBack(){
 			let autoBuyback = "0x5C3B530FB20520F8E4d6875Eab2Fed43534BE908";
@@ -191,15 +199,57 @@ const InitEth = {
 			let res = await Wallet.ETH.getStakeValueAndEarndKey(Object.values(pIndexObj));
 			if(res){
 				let {gracePeriods, pkeys, wantAmounts, workingBalances, rewardStore} = res;
-				Object.keys(pIndexObj).map((coinName, index)=>{
+				let coinArr = Object.keys(pIndexObj);
+				coinArr.map((coinName, index)=>{
 					let {decimals, omit} = PancakeConfig.StakeLP[coinName];
-					this.coinArr[coinName].earnedKey = Common.numFloor(Number(pkeys[index]) / decimals, 1e2);
+					this.coinArr[coinName].earnedKey = Common.numFloor(Number(pkeys[index]) / decimals, 1e4);
 					this.coinArr[coinName].gracePeriod = gracePeriods[index];
 					this.coinArr[coinName].wantAmount = Common.numFloor(Number(wantAmounts[index]) / decimals, omit);
 					this.coinArr[coinName].workingBalance = workingBalances;
 					this.coinArr["ts"] = new Date().valueOf();
 					this.$store.commit("bnbState/setData", {coinArr: this.coinArr, rewardStoreKey: Common.numFloor(Number(rewardStore) / 1e18, 1e2)});
-				})
+				});
+
+				// for (let key in coinArr) {
+				// 	let coinName = coinArr[key];
+				// 	await this.getLPCoinValue(coinName);
+				// }
+			}
+		},
+
+		async getLPCoinValue(coinName){
+			let dtTime = new Date().valueOf() - this.coinArr[coinName].lpPriceUpTs;
+			if(coinName.indexOf("-") == -1 || dtTime < 5000) return;
+			let tokenA = coinName.split("-")[0];
+			let tokenB = coinName.split("-")[1];
+			if(tokenA == undefined || tokenB == undefined) return;
+			this.coinArr[coinName].lpPriceUpTs = new Date().valueOf();
+			let res = await SwapHttp.post("/pair/lpamount",{token0: tokenA, token1: tokenB});
+			let {data, code } = res.data;
+			if(code == 200){
+				let reserve0 = Number(0);
+				let reserve1 = Number(0);
+
+				let {token0, token1, totalSupply} = data;
+				if(token0.symbol.indexOf(tokenA) != -1){
+					reserve0 =  Number(token0.reserve);
+				}
+				if(token1.symbol.indexOf(tokenB) != -1){
+					reserve1 = Number(token1.reserve);
+				}
+
+				let retObj = ["-","-"];
+
+				let lp =  this.coinArr[coinName].wantAmount;
+				if(totalSupply == 0 || reserve0 == 0 || reserve1 == 0) return retObj;
+
+				retObj[0] = Common.numFloor(lp * reserve0 / totalSupply, PancakeConfig.SelectCoin[tokenA].omit);
+				retObj[1] = Common.numFloor(lp * reserve1 / totalSupply, PancakeConfig.SelectCoin[tokenB].omit);
+
+				this.coinArr[coinName].lpPrice = retObj;
+				this.coinArr["ts"] = new Date().valueOf();
+				this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+
 			}
 		},
 		//获取bnb的余额
@@ -233,81 +283,11 @@ const InitEth = {
 			}
 		},
 
-		//获取当前24小时空投数量Key
-		async eth_setTotalAirDrop() {
-			let keys = Object.keys(this.pledgeList);
-			keys.map(async item => {
-				let totalAirDrop = await Wallet.ETH.viewTotalAirdrop(WalletConfig.ETH[item].dropAddr);
-				this.pledgeList[item].totalAirdrop = Math.ceil((Number(totalAirDrop) / 1e10) * 86400);
-				// console.log("pledgeList-totalAirDrop", this.pledgeList);
-			});
-
-			this.$store.commit("ethState/setData", {
-				pledgeList: this.pledgeList
-			});
-		},
 		//获取24小时空投数量MBOX
 		async eth_setTotalDropMbox() {
 			let totalAirdropMbox = await Wallet.ETH.viewTotalAirdrop(WalletConfig.ETH.moMoStake);
 			totalAirdropMbox = Math.ceil((Number(totalAirdropMbox) / 1e18) * 86400);
 			this.$store.commit("ethState/setData", {totalAirdropMbox});
-		},
-		//查询全网总质押
-		async eth_setTotalSupply() {
-			let keys = Object.keys(this.pledgeList);
-			keys.map(async item => {
-				let totalSupply = await Wallet.ETH.viewTotalSupply(WalletConfig.ETH[item].poolAddr);
-				let lpPrice = await Wallet.ETH.getPricePerFullShare(WalletConfig.ETH[item].mAddr);
-				let total = (BigNumber(totalSupply) * BigNumber(lpPrice) / BigNumber(WalletConfig.ETH[item].decimals)) / BigNumber(1e18);
-				this.pledgeList[item].totalSupply = Common.numFloor(total + 0.0001, 100);
-				this.pledgeList[item].perFullShare = lpPrice;
-			});
-
-			this.$store.commit("ethState/setData", {
-				pledgeList: this.pledgeList
-			});
-		},
-		//查询收入KEY
-		async eth_getEarnedKey() {
-			let keys = Object.keys(this.pledgeList);
-			keys.map(async item => {
-				let earnedKey = await Wallet.ETH.viewEarned(WalletConfig.ETH[item].dropAddr);
-				this.pledgeList[item].earnedKey = Common.numFloor(BigNumber(earnedKey) / BigNumber(1e10), 100);
-			});
-
-			this.$store.commit("ethState/setData", {
-				pledgeList: this.pledgeList
-			});
-		},
-		//查询我质押的erc20
-		async eth_setMintErc20Stake() {
-			let keys = Object.keys(this.pledgeList);
-			keys.map(async item => {
-				let stakeLp = await Wallet.ETH.balanceOfToTarget(WalletConfig.ETH[item].poolAddr);
-				let lpPrice = await Wallet.ETH.getPricePerFullShare(WalletConfig.ETH[item].mAddr);
-				// console.log("stake", item, stakeLp.toString(), lpPrice.toString());
-				// console.log("stake-truen", item, Common.numFloor(Number(BigNumber(stakeLp) * BigNumber(lpPrice) / BigNumber(1e18)) / WalletConfig.ETH[item].decimals, 1e18).toString());
-				this.pledgeList[item].stake = Common.numFloor(Number(BigNumber(stakeLp) * BigNumber(lpPrice) / BigNumber(1e18)) / WalletConfig.ETH[item].decimals + 0.0001, 100);
-				this.pledgeList[item].stakeLp = stakeLp;
-			});
-
-			// console.log("pledgeList-stake", this.pledgeList);
-			this.$store.commit("ethState/setData", {
-				pledgeList: this.pledgeList
-			});
-		},
-		//设置查询挖矿币的授权
-		async eth_setAllowanceMintCoinToPool() {
-			let keys = Object.keys(this.pledgeList);
-			keys.map(async item => {
-				let allowanceToPool = await Wallet.ETH.viewErcAllowanceToTarget(WalletConfig.ETH[item].addr, WalletConfig.ETH[item].poolAddr);
-		
-				this.pledgeList[item].allowanceToPool = Number(allowanceToPool);
-				// console.log("pledgeList-allowance", this.pledgeList);
-			});
-			this.$store.commit("ethState/setData", {
-				pledgeList: this.pledgeList
-			});
 		},
 
 		//获开过的盒子统计

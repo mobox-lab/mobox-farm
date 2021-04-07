@@ -104,6 +104,7 @@ export default {
 	methods: {
 		async getMomoAuctionHistoryAll(){
 			let res = await Http.getMomoAuctionHistoryAll();
+			console.log("getMomoAuctionHistoryAll",res);
 			if(res){
 				res.list.map(item=>{
 					let petList = [];
@@ -122,6 +123,7 @@ export default {
 								tokenId: 1,
 								hashrate: obj.quality,
 								lvHashrate: obj.quality,
+								quality: obj.quality,
 								vType: parseInt(prototype / 1e4),
 							});
 						});
@@ -132,6 +134,7 @@ export default {
 							...obj,
 							bidPrice: item.bidPrice,
 							prototype: item.prototype,
+							quality: item.quality,
 							level: item.level,
 							num: 1,
 							chain: "bnb",

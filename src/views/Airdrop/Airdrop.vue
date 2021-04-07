@@ -59,14 +59,32 @@
 							</p>
 						</div>
 
-						<div class="tal mgt-20">
-							<p class="por mgt-10">
-								<span class="opa-6 ">{{ $t("Air-drop_03") }}</span>
-								<span class="suffix">
-									<span v-if=" item.wantAmount > 0" style="color: #8cfece">{{ item.wantAmount }}</span>
-									<span v-else>-</span>
-								</span>
-							</p>
+						<div class=" point-block mgt-20 close" @click="getLPPrice(item.coinName);toggleClass($event, item)">
+							<div class="aveage-box">
+								<div><span class="opa-6 " >{{ $t("Air-drop_03") }}</span></div>
+								<div class="tar "  style="flex:2">
+									<span v-if=" item.wantAmount > 0" style="color: #8cfece" class="vertical-children " :class="item.isLP?'show-point-block':''">
+										<span>{{ item.wantAmount }}</span>
+										<svg v-if="item.isLP" viewBox="0 0 24 24" class="rotate-arrow"  height="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
+									</span>
+									<span v-else style="padding: 5px;display:inline-block">-</span>
+								</div>
+							</div>
+
+							<div v-if="item.isLP" class="mgt-10 small" style="background:#202e53;padding:5px;border-radius:10px">
+								<div class="aveage-box vertical-children por" style="padding:2px"  v-for="(name, key) in item.coinName.split('-')" :key="item.coinName+key">
+								<div class="dib">
+									<span> {{name}}</span>
+								</div>
+								
+								<p class="dib tar" >
+									<span class="mgl-10" v-if="item.lpPrice[key] != '-' ">{{item.lpPrice[key]}}</span>
+									<Loading v-else />
+									<img class="mgl-5"  :src=" require(`../../assets/coin/${name}.png`) " height="20" alt="" />
+								</p>
+								</div>
+							</div>
+
 						</div>
 
 						<div class="tal mgt-20 ">
@@ -180,17 +198,17 @@
 </template>
 <script>
 import CommonMethod from "@/mixin/CommonMethod";
-import {  Common, Wallet } from '@/utils';
+import {  Common } from '@/utils';
 import { mapState } from "vuex";
 import { PancakeConfig } from "@/config";
 import KeyOpr from "./KeyOpr";
 import Withdraw from './Withdraw';
 import Deposit from './Deposit';
-import { Dialog } from '@/components';
+import { Dialog, Loading } from '@/components';
 
 export default {
 	mixins: [CommonMethod],
-	components: { KeyOpr, Withdraw, Deposit, Dialog},
+	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading},
 	data(){
 		return({
 			hasAgreeNotice: false,
@@ -243,25 +261,18 @@ export default {
 			this.needShowNotice = false;
 		}
 
-
-		this.getCoinValue();
 	},
 	methods: {
-		async getCoinValue(){
-			let balance = await Wallet.ETH.getBalance();
-			this.coinArr["BNB"].balance = balance;
-			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
-
-			for (let key in PancakeConfig.SelectCoin) {
-				let {addr, decimals, omit} = PancakeConfig.SelectCoin[key];
-				if(addr != ""){
-					let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
-					this.coinArr[key].balance =  Common.numFloor((Number(value) / decimals), omit);
-					this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
-					await Common.sleep(500);
-				}
+		toggleClass(e, item){
+			if(item.isLP){
+				e.currentTarget.classList.toggle("close");
 			}
 		},
+
+		getLPPrice(coinName){
+			Common.app.getLPCoinValue(coinName);
+		},
+
 		agreeNotice(){
 			if(!this.hasAgreeNotice) return;
 			if(this.hasSelectNotShow){

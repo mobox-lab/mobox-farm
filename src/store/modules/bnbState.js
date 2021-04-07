@@ -7,6 +7,8 @@ const baseCoinAttr = {
 	earnedKey: 0,
 	gracePeriod: 0,
 	wantAmount: 0,
+	lpPrice: ["-","-"],
+	lpPriceUpTs: 0,
 	workingBalance: 0,
 	totalSupply: 0,
 	allowanceToPool: -1,
@@ -48,7 +50,7 @@ const state = () => ({
 			slippage: 0.5,
 			duration: 20,
 		},
-		useCoinPos: 4,
+		useCoinPos: 0,
 		totalAirdropKey: 0,
 		rewardStoreKey: 0,//暂存区的key
 

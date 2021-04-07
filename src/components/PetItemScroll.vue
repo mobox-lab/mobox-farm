@@ -1,17 +1,15 @@
 <template>
-<div class="pet_item por" :class="'pet_hover_lv' + getNowVType">
-	<img class="quick-buy" src="@/assets/icon/search.png" alt="" @click.stop="quickBuy(getShowList[0].prototype)" v-if="getShowList.length == 1">
+<div class="pet_item por pet_hover_lv1" :class="'pet_hover_lv' + getNowVType">
 	<div ref="container" class="swiper-container dib " :id="data.item.tx">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide " v-for="item in getShowList" :key="item.prototype">
-
 				<div class="pet-lv vertical-children">
 					<img :src="require(`../assets/icon/${item.chain.toLocaleLowerCase()}.png`)" alt="" width="15" />&nbsp;
 					<span class="mgl-5">Lv. {{ item.level }}</span>
 				</div>
 
-				<img class="pet_img" :src="require(`../assets/pet/${item.prototype}.png`)" alt="" width="120" height="120" />
-				<div style="position: absolute; width: 100%; bottom: 100px; left: 0px">
+				<img class="pet_img" :src="require(`../assets/pet/${item.prototype}.png`)" alt="" width="170" height="170" />
+				<div style="position: absolute; width: 100%; bottom: 95px; left: 0px">
 					<div class="vertical-children pet_num"  >
 						x{{ item.num }}
 					</div>
@@ -60,27 +58,23 @@ export default {
 				let obj = BaseConfig.NftCfg[prototype];
 				obj.num = amounts[index];
 				obj.vType = parseInt(prototype / 1e4);
-				obj.tokenId = 0;
+				obj.tokenId = 1;
 				obj.level = 1;
 				obj.chain = "bnb";
 				obj.hashrate = obj.quality;
 				obj.lvHashrate = obj.quality;
 				arr.push(obj);
 			});
-
-			arr.sort((a,b)=>{
-				return b.vType - a.vType;
-			});
 			return arr;
 		},
 		getNowVType(){
-			return this.getShowList[this.nowIndex].vType;
+			let {ids} = this.data.item;
+			return  parseInt(ids[this.nowIndex]/1e4);
 		}
 
 	},
 	async mounted(){
 		let that = this;
-		if( this.data.item.ids.length == 1) return;
 		let direction = document.body.clientWidth < 1000?"horizontal":"vertical";
 		this.mySwiper = new window.Swiper(this.$refs.container, {
 			direction: direction,
@@ -110,22 +104,6 @@ export default {
 </script>
 
 <style  scoped>
-.rent .quick-buy{
-	display: none;
-}
-.quick-buy{
-		opacity: 0.6;
-		position: absolute;
-		top: 10px;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 30px;
-		cursor: pointer;
-		z-index: 99 !important;
-	}
-	.quick-buy:hover{
-		opacity: 1;
-	}
 @media (max-width:1000px) {
 	.swiper-pagination{
 		bottom: auto!important;
@@ -152,13 +130,11 @@ export default {
 }
 .slot{
 	position: absolute;
-	bottom: 10px;
+	bottom: 20px;
 	z-index: 9999;
 	text-align: center;
 	width: 100%;
 	height: 25px;
-	left: 0px;
-	padding: 0px 10px;
 }
 .slot .mgt-10{
 	margin-top: 0px;
@@ -172,7 +148,6 @@ export default {
 	top: 15px;
 	margin-top: 0px;
 	zoom: 0.9;
-	text-align: right;
 }
 .pet_item .pet-power {
 	line-height: 14px;
@@ -198,11 +173,11 @@ export default {
 .pet_item .pet-bottom {
 	width: 100%;
 	text-align: center;
-	margin-top: 30px;
+	margin-top: -20px;
 }
 .pet_item {
 	width: 350px;
-	border-radius: 16px;
+	border-radius: 20px;
 	text-align: center;
 	position: relative;
 	display: inline-block;
@@ -211,7 +186,7 @@ export default {
 	cursor: pointer;
 	padding: 15px;
 	user-select: none;
-	color: #fff;
+	color: #c9c9c9;
 	height: 250px;
 	transition: all 0.3s linear;
 }
@@ -220,7 +195,7 @@ export default {
 	vertical-align: middle;
 	user-select: none;
 	position: relative;
-	top: 15px;
+	top: -15px;
 }
 
 .pet_num {

@@ -255,7 +255,6 @@ export default {
 			let lp = this.oprData.balance;
 			if(_totalSupply == 0 || reserve0 == 0 || reserve1 == 0) return retObj;
 
-
 			retObj[0] = Common.numFloor(lp * reserve0 / _totalSupply, PancakeConfig.SelectCoin[this.from.coinName].omit);
 			retObj[1] = Common.numFloor(lp * reserve1 / _totalSupply, PancakeConfig.SelectCoin[this.to.coinName].omit);
 

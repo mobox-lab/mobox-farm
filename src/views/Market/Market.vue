@@ -133,7 +133,9 @@ export default {
 		getSelectCoinArr(){
 			let arr = [];
 			Object.keys(PancakeConfig.SelectCoin).map(coinName=>{
-				arr.push(coinName + ": " + this.coinArr[coinName].balance);
+				if(coinName == "BUSD"){
+					arr.push(coinName + ": " + this.coinArr[coinName].balance);
+				}
 			})
 			return arr;
 		}
@@ -202,6 +204,7 @@ export default {
 								hashrate: obj.quality,
 								lvHashrate: obj.quality,
 								vType: parseInt(prototype / 1e4),
+								quality: obj.quality,
 							});
 						});
 					}else{
@@ -218,7 +221,8 @@ export default {
 							hashrate: item.hashrate,
 							lvHashrate: item.lvHashrate,
 							vType: parseInt(item.prototype / 1e4),
-							category: item.category
+							category: item.category,
+							quality: item.quality,
 						})
 					}
 

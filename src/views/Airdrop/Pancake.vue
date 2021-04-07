@@ -27,7 +27,7 @@
 				</div>
 			</div>
 		</Dialog>
-		<Dialog id="pancake-history-dialog" :top="100" :width="420" style="min-height:100px">
+		<Dialog id="pancake-history-dialog" :top="100" :width="500" style="min-height:100px">
 			<h2>{{$t("Air-drop_45")}}</h2>
 			<div class="tab-body mgt-10" >
 				<div class="tab-panel" style="min-height:200px">

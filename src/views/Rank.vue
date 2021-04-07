@@ -18,7 +18,7 @@
 				<div :class="`rank-item vertical-children ${item.rank == hashrateRankList.self.rank ? 'active' : '' }`" 
 				v-for="item in hashrateRankList.list.slice( 10 * (rewardPage - 1), 10 * rewardPage )" :key="item.rank" >
 					<div class="tal dib" style="width:50%">
-						<span v-if="item.rank > 3" class="dib tac" style="width: 44px" >{{ item.rank }}</span >
+						<span v-if="item.rank > 3" class="dib tac" style="width: 33px" >{{ item.rank }}</span >
 						<img v-if="item.rank <= 3" :src="require(`../assets/rank${item.rank}.png`)" alt="" height="18" />
 						<span style="margin-left: 20px">
 							{{ shorAddress(item.member) }}
@@ -55,7 +55,7 @@
 			<div class="mgt-20">
 				<div class="rank-item vertical-children active">
 					<div class="tal dib" style="width: 50%">
-						<span v-if=" hashrateRankList.self.rank > 3 || hashrateRankList.self.rank <= 0 " class="dib tac" style="width: 44px" >
+						<span v-if=" hashrateRankList.self.rank > 3 || hashrateRankList.self.rank <= 0 " class="dib tac" style="width: 33px" >
 							{{ hashrateRankList.self.rank || "-" }}
 							</span>
 						<img v-if=" hashrateRankList.self.rank <= 3 && hashrateRankList.self.rank > 0 " :src=" require(`../assets/rank${hashrateRankList.self.rank}.png`)" alt="" height="18" />
@@ -91,8 +91,8 @@
 					v-for="item in momoRankList.list.slice( 10 * (rewardPage - 1), 10 * rewardPage )"
 					:key="item.rank" >
 					<div class="tal dib tac-xs" style="width: 30%">
-						<span v-if="item.rank > 3" class="dib tac" style="width: 44px" >{{ item.rank }}</span>
-						<img v-if="item.rank <= 3" :src="require(`../assets/rank${item.rank}.png`)" alt="" />
+						<span v-if="item.rank > 3" class="dib tac" style="width: 33px" >{{ item.rank }}</span>
+						<img v-if="item.rank <= 3" :src="require(`../assets/rank${item.rank}.png`)" alt="" height="18" />
 						<span style="margin-left: 20px"> {{ shorAddress(item.owner) }} </span>
 					</div>
 

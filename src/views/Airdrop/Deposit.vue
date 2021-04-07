@@ -67,6 +67,28 @@
 				</div>
 			</div>
 		</div>
+		<div class="tab-body tal mgt-10">
+			<div class="tab-content" >
+				<p class="small t">{{$t("Air-drop_121")}}</p>
+				<div class="aveage-box opa-6 mgt-10 small" style="border-bottom:1px solid #202c4a;height:30px">
+					<div class="tal">{{$t("Air-drop_122")}}</div>
+					<div class="tar">{{$t("Air-drop_123")}}</div>
+				</div>
+
+				<div class="aveage-box small" style="border-bottom:1px solid #202c4a;height:30px" v-for="item in [
+				{title: 'Air-drop_124',value:'0.5%'},
+				{title: 'Air-drop_125',value:'0.4%'},
+				{title: 'Air-drop_126',value:'0.3%'},
+				{title: 'Air-drop_127',value:'0.2%'},
+				{title: 'Air-drop_128',value:'0.1%'},
+				{title: 'Air-drop_129',value:'0%'},
+				]" :key="item.title">
+					<div class="tal" style="flex:2">{{$t(item.title)}}</div>
+					<div class="tar">{{item.value}}</div>
+				</div>
+
+			</div>
+		</div>
 	</Dialog>
 </template>
 

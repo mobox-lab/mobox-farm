@@ -224,6 +224,9 @@ export default {
 				obj.lvHashrate = obj.quality;
 				arr.push(obj);
 			});
+			arr.sort((a,b)=>{
+				return b.vType - a.vType;
+			});
 			return arr;
 		},
 	},

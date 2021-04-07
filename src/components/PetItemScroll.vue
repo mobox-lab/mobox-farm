@@ -65,16 +65,20 @@ export default {
 				obj.lvHashrate = obj.quality;
 				arr.push(obj);
 			});
+
+			arr.sort((a,b)=>{
+				return b.vType - a.vType;
+			});
 			return arr;
 		},
 		getNowVType(){
-			let {ids} = this.data.item;
-			return  parseInt(ids[this.nowIndex]/1e4);
+			return this.getShowList.[this.nowIndex].vType;
 		}
 
 	},
 	async mounted(){
 		let that = this;
+		if( this.data.item.ids.length == 1) return;
 		let direction = document.body.clientWidth < 1000?"horizontal":"vertical";
 		this.mySwiper = new window.Swiper(this.$refs.container, {
 			direction: direction,

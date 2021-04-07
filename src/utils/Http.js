@@ -22,6 +22,10 @@ export default class HTTP {
 			EventBus.$emit(EventConfig.HttpError);
 		}
 	}
+	static async buybackpool(){
+		let { data } = await this.get(`/buybackpool/amount`);
+		return data;
+	}
 	static async getKeyDrop(){
 		let { data } = await this.get(`/key_drop/infos`);
 		return data;
@@ -76,7 +80,7 @@ export default class HTTP {
 		return data;
 	}
 
-	static sortPosToName = ["-price","price","-hashrate","hashrate"];
+	static sortPosToName = ["-time","-price","price","-hashrate","hashrate"];
 	//获取交易市场上的NFT
 	static async getAuctionList(chain, page = 1, limit = 15, search = {}) {
 		let params = {...search};

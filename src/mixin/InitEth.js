@@ -115,11 +115,20 @@ const InitEth = {
 				this.setBalance();
 
 				this.needUpdate();
+				this.setOrder();
+
+				let t = 0;
 				this.timer = setInterval(() => {
-					if(Wallet.ETH.myAddr != ""){
-						this.needUpdate();
+					t++;
+					if(t%20 == 0){
+						if(Wallet.ETH.myAddr != ""){
+							this.needUpdate();
+						}
 					}
-				}, 20000);
+					if(t%5){
+						this.setOrder();
+					}
+				}, 1000);
 
 				this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
@@ -142,7 +151,6 @@ const InitEth = {
 
 			await this.getCoinValue();
 
-			await this.setOrder();
 			await this.eth_setBox();
 			await this.eth_setMbox();
 
@@ -176,14 +184,21 @@ const InitEth = {
 				}
 			}
 		},
-		async getBuyBack(){
-			let autoBuyback = "0x5C3B530FB20520F8E4d6875Eab2Fed43534BE908";
-			let wBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+		// async getBuyBack(){
+		// 	let autoBuyback = "0x5C3B530FB20520F8E4d6875Eab2Fed43534BE908";
+		// 	let wBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
 
-			let res = await Wallet.ETH.getTargetBalancefromTokenAddr(autoBuyback, wBNB);
+		// 	let res = await Wallet.ETH.getTargetBalancefromTokenAddr(autoBuyback, wBNB);
+		// 	if(res){
+		// 		let value = Common.numFloor(Number(res) / 1e18, 1e4);
+		// 		this.buyBack.hasAmount = value;
+		// 		this.$store.commit("bnbState/setData", {buyBack: this.buyBack});
+		// 	}
+		// },
+		async getBuyBack(){
+			let res = await Http.buybackpool();
 			if(res){
-				let value = Common.numFloor(Number(res) / 1e18, 1e4);
-				this.buyBack.hasAmount = value;
+				this.buyBack.hasAmount = Common.numFloor(res.amount, 1e2);
 				this.$store.commit("bnbState/setData", {buyBack: this.buyBack});
 			}
 		},

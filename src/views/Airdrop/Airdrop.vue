@@ -134,15 +134,15 @@
 
 		<section id="buy-back" class="mgt-20 por">
 			<div class="info">
-				<span class="cur-point por" v-popMsg >
+				<span class="cur-point por dib" v-popMsg  >
 					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#E9DB8F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
 					<span class="popMsg left">{{$t("Air-drop_91")}}</span>
 				</span>
 			</div>
 			<div class="aveage-box">
 				<div style="padding:10px">
-					<p class="small opa-6 tac" >{{$t("Air-drop_78")}}(BNB)</p>
-					<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.hasAmount" />
+					<p class="small opa-6 tac" >{{$t("Air-drop_78")}}</p>
+					<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.hasAmount" />
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_79")}}</p>

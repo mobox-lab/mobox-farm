@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
-			<span>{{$t("Market_33")}}: {{ getShowList.length }}</span>&nbsp;
+			<span>{{$t("Market_33")}}: {{ getSellList.length }}</span>&nbsp;
 			<div id="market-pet-fitter">
 				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
@@ -38,8 +38,8 @@
 			</router-link>
 		</div>
 
-		<div style="margin-top: 30px" v-if="Math.ceil(getShowList.length / onePageCount) > 1">
-			<Page :key="hackReload"  :defaultPage="marketMySellPage" :totalPage="Math.ceil(getShowList.length / onePageCount)" :onChange="onPageChange" v-if="Math.ceil(marketPetsMy.total / onePageCount) > 1" />
+		<div style="margin-top: 30px" v-if="Math.ceil(getSellList.length / onePageCount) > 1">
+			<Page :key="hackReload"  :defaultPage="marketMySellPage" :totalPage="Math.ceil(getSellList.length / onePageCount)" :onChange="onPageChange" v-if="Math.ceil(marketPetsMy.total / onePageCount) > 1" />
 		</div>
 	</div>
 </template>
@@ -119,7 +119,9 @@ export default {
 		//获取市场上的宠物
 		async getAuctionPetsMy(needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
-			let data = await Http.getMyAuctionList("BNB", this.myAccount);
+			let account = this.myAccount;
+			let data = await Http.getMyAuctionList("BNB", account);
+			console.log(data);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let hashArr = [];
 			let needGetNameArr = [];

@@ -109,7 +109,7 @@
 									</div>
 								</td>
 								<td class="tac">
-									<img :src="require(`../assets/icon/eth.png`)" alt="" height="20" />&nbsp;
+									<img :src="require(`../assets/icon/bnb.png`)" alt="" height="20" />&nbsp;
 									<span class="dib tal"> LV.{{ item.level }} </span>
 								</td>
 								<td class="tar">

@@ -22,7 +22,7 @@
 				</div>
 		
 				<div v-if="getNowPetItem.location=='stake'">
-					<button  :class="lockBtn.unStakeLock <= 0?'':'disable-btn' " class="btn-primary por" @click="lockBtn.unStakeLock <= 0 && unStakeNft()" > 
+					<button  :class="lockBtn.unStakeLock <= 0?'':'disable-btn' " class="btn-primary por" @click="lockBtn.unStakeLock <= 0 && oprDialog('unstake-confirm-dialog', 'block')" > 
 						<Loading class="btn-loading" :width="15" :height="15" v-if="lockBtn.unStakeLock > 0"  />{{$t("MOMO_45")}} 
 					</button>
 				</div>
@@ -133,18 +133,26 @@
 			</div>
 		</div>
 
+		<Dialog id="unstake-confirm-dialog" :top="180" :width="350">
+			<p class="mgt-30 tal">{{$t("MOMO_46")}}</p>
+			<div class="mgt-50">
+				<button class="btn-default" @click="oprDialog('unstake-confirm-dialog', 'none')">{{$t("Common_04")}}</button>
+				<button class="btn-primary mgl-10" @click="unStakeNftConfirm()">{{$t("Common_03")}}</button>
+			</div>
+		</Dialog>
+
 	</div>
 </template>
 <script>
 import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
-import { Loading } from '@/components';
+import { Loading, Dialog } from '@/components';
 import { WalletConfig } from "@/config";
 import { mapState } from 'vuex';
 
 let timer = null;
 export default {
-	components: {Loading},
+	components: {Loading, Dialog},
 	mixins: [CommonMethod],
 	data() {
 		return {
@@ -246,7 +254,8 @@ export default {
 			}
 		},
 		//取消质押
-		async unStakeNft(){
+		async unStakeNftConfirm(){
+			this.oprDialog('unstake-confirm-dialog', 'none');
 			let { prototype, tokenId, vType, num } = this.getNowPetItem;
 			let erc1155ids = [];
 			let erc1155Num = [];

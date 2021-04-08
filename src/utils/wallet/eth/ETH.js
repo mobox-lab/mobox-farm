@@ -827,7 +827,7 @@ export default class ETH {
 		console.log( this.web3.utils.utf8ToHex(name).length);
 		return new Promise(resolve => {
 			this.sendMethod(
-				this.momoStakeContract.methods.setMomoName(tokenId, this.web3.utils.utf8ToHex(name)), {from: myAddr,value: isFirst ? 0 : 0.01e18},
+				this.momoStakeContract.methods.setMomoName(tokenId, this.web3.utils.utf8ToHex(name)), {from: myAddr,value: isFirst ? 0 : 0.05e18},
 				hash=>resolve(hash),
 				()=>{
 					EventBus.$emit(EventConfig.SetNameConfirm, {chain: "eth",tokenId,name});
@@ -845,7 +845,7 @@ export default class ETH {
 		if (!this.momoStakeContract) return;
 		return new Promise(resolve => {
 			this.sendMethod(
-				this.momoStakeContract.methods.addMomoStory(tokenId, this.web3.utils.utf8ToHex(story)), {from: myAddr, value: isFirst ? 0 : 0.01e18},
+				this.momoStakeContract.methods.addMomoStory(tokenId, this.web3.utils.utf8ToHex(story)), {from: myAddr, value: isFirst ? 0 : 0.05e18},
 				hash=>resolve(hash),
 				()=>{
 					EventBus.$emit(EventConfig.SetStoryConfirm);
@@ -976,7 +976,7 @@ export default class ETH {
 		if (!this.momoStakeContract) return;
 		return new Promise(resolve => {
 			this.momoStakeContract.methods.earned(myAddr).call().then(mobox => {
-				resolve(Common.numFloor(mobox / 1e18, 100));
+				resolve(Common.numFloor(mobox / 1e18, 1000));
 			})
 		});
 	}

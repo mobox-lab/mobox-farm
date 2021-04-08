@@ -34,7 +34,7 @@
 				</div>
 			</div>
 			<div style="margin-top: 30px" v-if="Math.ceil(getTotalPet.length / onePageCount) > 1" >
-				<Page :defaultPage="myPetPage" :totalPage="Math.ceil(getTotalPet.length / onePageCount)" :onChange="onPageChange" :key="hackReload" />
+				<Page :defaultPage="myPetPage" :totalPage="Math.ceil(getTotalPet.length / onePageCount)" :onChange="onPageChange" />
 			</div>
 		</div>
 		<!-- momo图鉴 -->

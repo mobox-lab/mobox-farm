@@ -38,7 +38,7 @@
 		</div>
 
 		<div style="margin-top: 30px" v-if="Math.ceil(this.myNFT_stake.length / onePageCount) > 1" >
-			<Page :key="hackReload"  :defaultPage="pageNum" :totalPage="getTotalPage" :onChange="onPageChange" v-if="getTotalPage > 1" />
+			<Page   :defaultPage="pageNum" :totalPage="getTotalPage" :onChange="onPageChange" v-if="getTotalPage > 1" />
 		</div>
 
 		<Dialog id="shop-car-dialog" :top="20" :width="500">

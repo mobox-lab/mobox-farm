@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
-			<span>{{$t("Market_33")}}: {{ getSellList.length }}</span>&nbsp;
+			<span>{{$t("Market_33")}}: {{ marketPetsMy.total }}</span>&nbsp;
 			<div id="market-pet-fitter">
 				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
@@ -38,14 +38,14 @@
 			</router-link>
 		</div>
 
-		<div style="margin-top: 30px" v-if="Math.ceil(getSellList.length / onePageCount) > 1">
-			<Page :key="hackReload"  :defaultPage="marketMySellPage" :totalPage="Math.ceil(getSellList.length / onePageCount)" :onChange="onPageChange" v-if="Math.ceil(marketPetsMy.total / onePageCount) > 1" />
+		<div style="margin-top: 30px" v-if="Math.ceil(marketPetsMy.total / onePageCount) > 1">
+			<Page :defaultPage="marketMySellPage" :totalPage="Math.ceil(marketPetsMy.total / onePageCount)" :onChange="onPageChange" v-if="Math.ceil(marketPetsMy.total / onePageCount) > 1" />
 		</div>
 	</div>
 </template>
 
 <script>
-import {  Page, PetItem, PetItemScroll, Dropdown} from "@/components";
+import {Page, PetItem, PetItemScroll, Dropdown} from "@/components";
 import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
 import { BaseConfig } from "@/config";
@@ -54,7 +54,8 @@ import { mapState } from "vuex";
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {  Page, PetItem, PetItemScroll, Dropdown},
+	// components: {  Page, Dropdown},
+	components: {   PetItem, PetItemScroll, Dropdown, Page},
 	data(){
 		return({
 			onePageCount: 15,
@@ -120,11 +121,16 @@ export default {
 		async getAuctionPetsMy(needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
 			let account = this.myAccount;
+			// account = "0x464282e1B02A51A4F438516f444F2b8fF362368e";
 			let data = await Http.getMyAuctionList("BNB", account);
 			console.log(data);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let hashArr = [];
 			let needGetNameArr = [];
+			console.log(BaseConfig);
+
+			// data.list = data.list.splice(0, 15);
+
 			data.list.map(item=>{
 				if( item.tokenId != 0){
 					let {tokenName} = BaseConfig.NftCfg[item.prototype];
@@ -160,6 +166,8 @@ export default {
 					this.tempMarketCancelTx.splice(index, 1);
 				}
 			})
+
+			// return ;
 			this.$store.commit("marketState/setData", {tempSells: this.tempSells, marketPetsMy:data, tempMarketCancelTx: this.tempMarketCancelTx});
 
 			this.$nextTick(()=>{

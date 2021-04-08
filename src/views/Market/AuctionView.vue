@@ -359,12 +359,13 @@ export default {
 			}
 
 			let data = await this.getPetInfo();
-			if(data.status != 3){
+			let {auctor, index, uptime} = this.getNowPetItem;
+		
+			if(data.status != 3 || data.startTime != uptime){
 				this.showNotify(this.$t("Market_35"), "error");
 				return;
 			}
 
-			let {auctor, index} = this.getNowPetItem;
 			let hash = await Wallet.ETH.buyMarketPet(auctor, index, coinName);
 			if(hash){
 				await Common.sleep(1000);

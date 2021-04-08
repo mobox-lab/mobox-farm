@@ -626,7 +626,6 @@ export default class ETH {
 		if (!this.moMoMinterContract) return;
 
 		// myAddr = "0xa4219fA95C45C5fD2a20D08090e8636C8b0235Af";
-
 		return new Promise(resolve => {
 			this.moMoMinterContract.methods.getOrder(myAddr).call().then(getOrderRes => {
 				resolve(getOrderRes);
@@ -703,6 +702,7 @@ export default class ETH {
 					prototype);
 			}
 		}
+		// myAddr = "0x464282e1B02A51A4F438516f444F2b8fF362368e";
 		return new Promise(resolve => {
 			switch (type) {
 				case ConstantConfig.NFT_LOCATION.WALLET:

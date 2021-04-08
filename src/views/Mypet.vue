@@ -125,7 +125,7 @@ export default {
 			],
 			onePageCount: 15,
 			tab: [this.$t("MOMO_31"), this.$t("MOMO_32"), this.$t("MOMO_47")],
-			tab_pos: 2,
+			tab_pos: 0,
 			hasShowBook: false,
 			perviewVTypeSelectPos: 0,
 			inputLvHashRate: "",

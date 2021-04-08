@@ -130,7 +130,7 @@ export default {
 			perviewVTypeSelectPos: 0,
 			inputLvHashRate: "",
 			perviewLvHashRate: "",
-			inputRange: [{min: 20, max: 40}, {min: 50, max: 120}]
+			inputRange: [{min: 10, max: 40}, {min: 50, max: 120}]
 		};
 	},
 	components: { PetItem, Dropdown, Page, Tab, BookItem },
@@ -174,18 +174,26 @@ export default {
 			let report = [];
 			let upgradeCfg = this.vTypeToSelectPos == 0?BaseConfig.MomoLv4Cfg:  BaseConfig.MomoLv5Cfg;
 			let growup = this.getGrowup;
-			let lvHashRate = Number(this.perviewLvHashRate);
-			if(lvHashRate == 0) return report;
+			let hashRate = Number(this.perviewLvHashRate);
+			if(hashRate == 0) return report;
 
 			for (let index = 1; index <= 30; index++) {
 				let level = index;
+				let lvHashRate = hashRate;
 				//计算加成
 				if(index > 1){
-					lvHashRate = parseInt(Number(this.perviewLvHashRate) + parseInt(growup.staticPower * (level - 1) /100) + parseInt(((parseInt(level / 5) * (1 + parseInt(level / 5)))) * growup.staticPower * growup.staticPercent / 200) );
+					lvHashRate = parseInt(hashRate + parseInt(growup.staticPower * (level - 1) /100) + parseInt(((parseInt(level / 5) * (1 + parseInt(level / 5)))) * growup.staticPower * growup.staticPercent / 200) );
 				}
+				let quality;
+				if(hashRate < 20) quality = 4;
+				if(hashRate >= 80) quality = 6;
+				if(hashRate>= 20 && hashRate < 30) quality = 5;
+				if(hashRate>= 30 && hashRate <= 40) quality = 6;
+				if(hashRate >= 50 && hashRate < 80) quality = 5;
+
 				report.push({
 					level,
-					quality: 6,
+					quality,
 					lvHashRate,
 					upgradeCfg: upgradeCfg[level],
 				})
@@ -292,7 +300,7 @@ export default {
 			let value = Number(this.inputLvHashRate);
 			let range = this.inputRange[this.perviewVTypeSelectPos];
 			if(value < range.min || value > range.max){
-				if(range.min == 20){
+				if(range.min == 10){
 					this.showNotify(this.$t("MOMO_53"), "error");
 				}else{
 					this.showNotify(this.$t("MOMO_54"), "error");

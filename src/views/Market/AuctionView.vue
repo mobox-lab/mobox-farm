@@ -109,7 +109,7 @@
 								</div>
 							</div>
 							<div  v-if="isMyPet" class="mgt-20">
-								<button class="btn-primary vertical-children por" :class="lockBtn.changePriceLock > 0?'disable-btn':''"   @click="setChangePriceData()">
+								<button class="btn-primary vertical-children por" :class="lockBtn.changePriceLock > 0?'disable-btn':''"   @click="setChangePriceData(true)">
 									<img v-if="lockBtn.changePriceLock > 0" src="../assets/icon/loading.png" class="rotate" height="10" alt="" style="position:absolute;left:8px;top:10px" />
 									{{$t("Market_20")}}
 								</button>&nbsp;&nbsp;
@@ -317,21 +317,22 @@ export default {
 				this.setNowPrice();
 			}
 		},
-		setChangePriceData(){
+		setChangePriceData(isClick = false){
 			let {startPrice, endPrice, durationDays} = this.getNowPetItem;
 			this.sellObj.startPrice = startPrice / 1e9;
 			this.sellObj.endPrice = endPrice / 1e9;
 			this.sellObj.durationDays = durationDays;
 			this.priceTypePos = startPrice == endPrice ? 0: 1;
 
-			let { uptime } = this.getNowPetItem;
-			let dtTime = parseInt(new Date().valueOf() /1000) - Number(uptime);
-			if(dtTime < 600){
-				this.showNotify(this.$t("Market_48").replace("#0#", 600 - dtTime), "error");
-				return;
+			if(isClick){
+				let { uptime } = this.getNowPetItem;
+				let dtTime = parseInt(new Date().valueOf() /1000) - Number(uptime);
+				if(dtTime < 600 && this.isMyPet){
+					this.showNotify(this.$t("Market_48").replace("#0#", 600 - dtTime), "error");
+					return;
+				}
+				this.oprDialog('changePrice-dialog', 'block')
 			}
-
-			this.oprDialog('changePrice-dialog', 'block')
 
 		},
 		//获取BUSD的授权情况

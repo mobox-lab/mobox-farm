@@ -109,7 +109,7 @@
 								</div>
 							</div>
 							<div  v-if="isMyPet" class="mgt-20">
-								<button class="btn-primary vertical-children por" :class="lockBtn.changePriceLock > 0?'disable-btn':''"   @click="setChangePriceData();oprDialog('changePrice-dialog', 'block')">
+								<button class="btn-primary vertical-children por" :class="lockBtn.changePriceLock > 0?'disable-btn':''"   @click="setChangePriceData()">
 									<img v-if="lockBtn.changePriceLock > 0" src="../assets/icon/loading.png" class="rotate" height="10" alt="" style="position:absolute;left:8px;top:10px" />
 									{{$t("Market_20")}}
 								</button>&nbsp;&nbsp;
@@ -323,6 +323,16 @@ export default {
 			this.sellObj.endPrice = endPrice / 1e9;
 			this.sellObj.durationDays = durationDays;
 			this.priceTypePos = startPrice == endPrice ? 0: 1;
+
+			let { uptime } = this.getNowPetItem;
+			let dtTime = parseInt(new Date().valueOf() /1000) - Number(uptime);
+			if(dtTime < 600){
+				this.showNotify(this.$t("Market_48").replace("#0#", 600 - dtTime), "error");
+				return;
+			}
+
+			this.oprDialog('changePrice-dialog', 'block')
+
 		},
 		//获取BUSD的授权情况
 		async viewAllowance(){
@@ -359,10 +369,12 @@ export default {
 			}
 
 			let data = await this.getPetInfo();
-			let {auctor, index, uptime} = this.getNowPetItem;
+			let {auctor, index} = this.getNowPetItem;
+			let {uptime} = JSON.parse(this.$route.params.petInfo);
 		
 			if(data.status != 3 || data.startTime != uptime){
 				this.showNotify(this.$t("Market_35"), "error");
+				this.$router.replace("/market");
 				return;
 			}
 
@@ -391,6 +403,14 @@ export default {
 		},
 		//修改价格
 		async changePrice(){
+			let { uptime } = this.getNowPetItem;
+			let dtTime = parseInt(new Date().valueOf() /1000) - Number(uptime);
+
+			if(dtTime < 600){
+				this.showNotify(this.$t("Market_48").replace("#0#", 600 - dtTime), "error");
+				return;
+			}
+
 			let { startPrice, endPrice, durationDays } = this.sellObj;
 
 			//TODO:校验参数正确性

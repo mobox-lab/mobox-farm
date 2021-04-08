@@ -260,9 +260,11 @@ export default {
 		if(hasSelectNotShowNotice == 1){
 			this.needShowNotice = false;
 		}
-
 	},
 	methods: {
+		test(){
+
+		},
 		toggleClass(e, item){
 			if(item.isLP){
 				e.currentTarget.classList.toggle("close");

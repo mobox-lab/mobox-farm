@@ -694,19 +694,24 @@ svg {
 	background: #202e55;
 }
 .popMsg.left{
+	transform: translate(-100%, -20%);
+	top: 0px;
+	left: -10px;
+}
+.popMsg.left-top{
 	transform: translate(-100%, -50%);
 	top: 0px;
 	left: -10px;
 }
 .popMsg.left::after{
-	top: 50%;
+	top: 20%;
 	left: auto;
 	right: 3px;
 	transform: rotate(45deg) translate(50%, -50%);
 }
 .popMsg{
 	position: absolute;
-	min-width: 200px;
+	min-width: 240px;
 	background: #10172A;
 	border-radius: 5px;
 	padding: 10px;
@@ -717,6 +722,7 @@ svg {
 	top: 22px;
 	left: 7px;
 	display: none;
+	user-select: none;
 }
 .popMsg::after{
 	content: "";

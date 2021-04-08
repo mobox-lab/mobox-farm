@@ -30,3 +30,13 @@ window.hackReload = ()=>{
       render: h => h(App)
     }).$mount('#app')
 }
+
+window.document.addEventListener("touchstart",()=>{
+	window.$(".pet-min-hover").hide();
+	window.$(".popMsg").hide();
+}, false);
+
+window.document.addEventListener("click",()=>{
+	window.$(".popMsg").hide();
+	window.$(".pet-min-hover").hide();
+}, false);

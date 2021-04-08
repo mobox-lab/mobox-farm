@@ -68,18 +68,23 @@ export default () => {
 	Vue.directive("popMsg", {
 		bind: function (ele) {
 			let popMsgNode = ele.querySelector('.popMsg');
+			popMsgNode.setAttribute("tabindex", 1);
 			ele.onmouseenter = function(){
 				popMsgNode.style.display="block";
+				popMsgNode.focus();
 			}
 			ele.onmouseleave = function(){
 				popMsgNode.style.display="none";
 			}
-			ele.touchstart = function(){
+			ele.addEventListener("click", (e)=>{
+				e.stopPropagation();
 				popMsgNode.style.display="block";
-			}
-			ele.touchend = function(){
-				popMsgNode.style.display="none";
-			}
+			},true);
+
+			ele.addEventListener("touchstart", (e)=>{
+				e.stopPropagation();
+				popMsgNode.style.display="block";
+			},true);
 		}
 	})
 

@@ -19,7 +19,7 @@
 		<div :class="myNFT_stake.length < 6 ? 'tal' : ''" >
 			<div class="clear mgt-20">
 				<PetItem  v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()" v-bind:data="{item: item}" class="market" >
-					<div style="height:50px;position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
+					<div style="height:43px;position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
 						<div v-if="item.vType > 3" class=" tar">
 							<button class="btn-primary" @click="set721Price(item)">
 								<span>{{$t("Market_02")}}</span>

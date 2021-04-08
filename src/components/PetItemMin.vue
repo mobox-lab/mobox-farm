@@ -1,5 +1,5 @@
 <template>
-	<div class="dib pet-min pet-min-type1 por" :class="'pet-min-type'+data.vType" ref="petMin"> 
+	<div class="dib pet-min por" :class="'pet-min-type'+data.vType" ref="petMin"  > 
 		<div class="pet-min-img">
 			<img  :src="require(`../assets/pet/${data.prototype}.png`)" alt="" />
 		</div>
@@ -31,6 +31,11 @@ export default {
 			$(this.$refs.petMinHover).show();
 		},()=>{
 			$(this.$refs.petMinHover).hide();
+		});
+
+		$(this.$refs.petMin).click((e)=>{
+			e.stopPropagation();
+			$(this.$refs.petMinHover).show();
 		})
 	}
 }

@@ -152,6 +152,7 @@ export default {
 	top: 15px;
 	margin-top: 0px;
 	zoom: 0.9;
+	text-align: right;
 }
 .pet_item .pet-power {
 	line-height: 14px;

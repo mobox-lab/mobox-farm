@@ -47,7 +47,7 @@
 					</div>
 				</div>
 				<div class="mgt-10 tar">
-					<button class="buy-key-btn" style="background:#3a557b" @click="$root.$children[0].$refs.pancake.setOprData({coinName: oprData.coinName}).show('liquidity').showAddLiquidityPanel()">{{$t("Air-drop_57")}}</button>
+					<button class="buy-key-btn" v-if="oprData.isLP" style="background:#3a557b" @click="$root.$children[0].$refs.pancake.setOprData({coinName: oprData.coinName}).show('liquidity').showAddLiquidityPanel()">{{$t("Air-drop_57")}}</button>
 				</div>
 			
 				<div>
@@ -130,7 +130,8 @@ export default {
 			this.inputPercent = 0;
 		},
 		inputPercent: function(newData){
-			let {balance, omit} = this.oprData;
+			let {omit, coinName} = this.oprData;
+			let { balance } = this.coinArr[coinName];
 			let targetValue = Common.numFloor(Number(balance) * Number(newData), omit);
 			//留点手续费
 			if(newData == 1 ){
@@ -194,6 +195,7 @@ export default {
 			let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
 			this.oprData.balance =  Common.numFloor((Number(value) / decimals), omit);
 			this.coinArr[coinName].balance =  Common.numFloor((Number(value) / decimals), omit);
+			this.coinArr["ts"] = new Date().valueOf();
 			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 			// this.inputDepositValue = this.getTrueShowBalacne(this.oprData.balance);
 		},
@@ -233,6 +235,7 @@ export default {
 
 		show(){
 			this.oprDialog("deposit-dialog","block");
+			this.inputDepositValue = "";
 			this.updateBalance();
 			return this;
 		},

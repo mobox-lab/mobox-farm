@@ -168,12 +168,6 @@
 			</div>
 			<p class="mgt-10 small tal" style="margin-bottom: 30px"></p>
 		</Dialog>
-		<Dialog id="upgrade-des-dialog" :width="350" :top="100">
-			<h3 class="mgt-10">{{$t("MOMO_35")}}</h3>
-			<div class="dialog-content mgt-20 tal">
-				<span v-html="$t('MOMO_36')" class="small tal" style="font-weight:200"></span>
-			</div>
-		</Dialog>
 	</div>
 </template>
 <script>

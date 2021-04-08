@@ -4,14 +4,13 @@
 			@click="changePage('pre')"
 			src="../assets/icon/arrow.png"
 			:class="getNowPage == 1 ? 'cur-point opa-6' : 'cur-point'"
-			height="35"
 			alt=""
 		/>
 		<span class="mgl-20">{{ $t("Common_01") }}</span>
 		<input
 			type="text"
 			class="ly-input mgl-10"
-			style="width: 60px; text-align: center;background: #222;height: 35px;padding:0px 5px"
+			style="width: 90px; text-align: center"
 			v-int
 			:data-max="totalPage"
 			v-model="nowPage"
@@ -24,19 +23,16 @@
 			src="../assets/icon/arrow.png"
 			:class="getNowPage == totalPage ? 'cur-point opa-6' : 'cur-point'"
 			class="flip-x cur-point mgl-20"
-			height="35"
 			alt=""
 		/>
 	</div>
 </template>
 
 <script >
-import {Common} from "@/utils";
 export default {
 	data() {
 		return {
 			nowPage: 0,
-			ts: 0,
 		};
 	},
 	props: ["defaultPage", "totalPage", "onChange"],
@@ -46,17 +42,15 @@ export default {
 		},
 	},
 	watch: {
-		nowPage: Common.debounce(function (newVal, oldVal) {
-			if (newVal > this.totalPage || newVal == "" || isNaN(Number(newVal)) || newVal == oldVal) return;
+		nowPage: function (newVal) {
+			if (newVal > this.totalPage || newVal == "" || isNaN(Number(newVal))) return;
 			if (typeof this.onChange == "function") this.onChange(this.nowPage);
-		}, 800),
+		},
 	},
 	created() {
 		this.nowPage = this.defaultPage;
 	},
 	methods: {
-		
-
 		changePage(type) {
 			switch (type) {
 				case "next":
@@ -74,9 +68,6 @@ export default {
 					break;
 			}
 		},
-		initPage(){
-			this.nowPage = this.defaultPage;
-		}
 	},
 };
 </script>

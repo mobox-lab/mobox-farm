@@ -625,11 +625,10 @@ export default class ETH {
 		if (!myAddr) return;
 		if (!this.moMoMinterContract) return;
 
-		// myAddr = "0x3ec379b71f0377ea77acaeee81b0182b6d710ad5";
+		// myAddr = "0xa4219fA95C45C5fD2a20D08090e8636C8b0235Af";
 
 		return new Promise(resolve => {
 			this.moMoMinterContract.methods.getOrder(myAddr).call().then(getOrderRes => {
-				// console.log(myAddr, {getOrderRes});
 				resolve(getOrderRes);
 			});
 		});

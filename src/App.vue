@@ -606,11 +606,11 @@ export default {
 	/* background: #23305a9c; */
 	border-radius: 10px;
 }
-#our-parice-pc span{
+/* #our-parice-pc span{ */
 	/* background: rgb(34, 32, 32); */
 	/* padding:5px 10px;
 	border-radius: 5px; */
-}
+/* } */
 /* #nav-list-mobile{
 	position: fixed;
 	bottom:0px;

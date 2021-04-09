@@ -13,7 +13,7 @@
 			<div id="show-card-cont" class="animate__animated  animate__zoomIn">
 				<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
 				<div v-if="posArr[petDataArr.length].line1" class="card-cont-row"  id="show-card-cont-row1">
-					<div class="show-card-item dib" v-for="key in posArr[petDataArr.length].line1" :key="key+10" v-on:animationend="animationend">
+					<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line1" :key="key+10" v-on:animationend="animationend">
 						<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
 						<div class="front">
 							<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
@@ -31,7 +31,6 @@
 						</div>
 						<div class="back">
 							<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 - 1 ] }" />
-							<!-- <PetItem style="zoom:0.72" v-bind:data="{ item: {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'} }" /> -->
 						</div>
 					</div>
 				</div>
@@ -43,7 +42,6 @@
 						</div>
 						<div class="back">
 							<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 + posArr[petDataArr.length].line2 -1] }" />
-							<!-- <PetItem style="zoom:0.72" v-bind:data="{ item: {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'} }" /> -->
 						</div>
 					</div>
 				</div>
@@ -228,16 +226,16 @@ export default {
 			showOpenBoxCard: [],
 
 			petDataArr:[
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '50080',quality: 5,specialty: 0,tokenId: 1,vType: 5, chain:'bnb', tokenName:'aaa',},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 4,specialty: 0,tokenId: 1,vType: 4, chain:'bnb', tokenName:'aaa'},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa'},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '50080',quality: 5,specialty: 0,tokenId: 1,vType: 5, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 4,specialty: 0,tokenId: 1,vType: 4, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
 				],
 
 			posArr:[
@@ -581,6 +579,7 @@ export default {
 			document.getElementById("openbox-anime").classList.remove("animation-box-start");
 			window.$("#openbox-anime").hide();
 			window.$("#openbox-anime-new").show();
+			window.$(".show-card-item").addClass("animation");
 			if(this.openLottie) this.openLottie.goToAndPlay(0);
 		},
 
@@ -589,6 +588,8 @@ export default {
 			document.querySelector("#show-card").classList.add("hide");
 			window.$("#openbox-anime").show();
 			window.$("#openbox-anime-new").hide();
+			window.$(".show-card-item").removeClass("animation");
+
 		}
 		
 	},
@@ -627,15 +628,35 @@ export default {
 .show-card-item{
 	width: 100%;
 	margin: 20px 0px;
+	position: relative;
 
-	animation: heartBeat-my, shakeX, flipX forwards;
+	/* animation: heartBeatMy, shakeX, flipX forwards;
 	animation-duration: 0.6s, 0.6s,0.6s;
 	animation-delay: 0.6s, 1.2s, 1.8s;
 
+	-webkit-animation: heartBeatMy, shakeX, flipX forwards;
+	-webkit-animation-duration: 0.6s, 0.6s,0.6s;
+	-webkit-animation-delay: 0.6s, 1.2s, 1.8s; */
+
 	transition: 0.6s;
 	transform-style: preserve-3d;
-	position: relative;
 	transform: rotateX(0deg);
+	-webkit-transition: 0.6s;
+	-webkit-transform-style: preserve-3d;
+	-webkit-transform: rotateX(0deg);
+}
+
+.show-card-item.animation{
+	animation: heartBeatMy forwards, shakeX forwards, flipX forwards; ;
+	animation-duration: 0.6s, 0.6s,0.6s;
+	animation-delay: 0.6s, 1.2s, 1.8s;
+
+	-webkit-animation: heartBeatMy forwards, shakeX forwards, flipX forwards;
+	-webkit-animation-duration: 0.6s, 0.6s,0.6s;
+	-webkit-animation-delay: 0.6s, 1.2s, 1.8s;
+
+	transform: rotateX(0deg);
+	-webkit-transform: rotateX(0deg);
 }
 
 .front,
@@ -667,56 +688,36 @@ export default {
   }
 }
 
-@keyframes heartBeat-my {
-	0%  { transform: scale(1)}
-	14%  { transform: scale(1.1)}
-	28%  { transform: scale(1)}
-	42%  { transform: scale(1.1)}
-	70%  { transform: scale(1)}
+@keyframes heartBeatMy {
+	0%  { transform: scale(1);-webkit-transform: scale(1);}
+	14%  { transform: scale(1.1);-webkit-transform: scale(1.1);}
+	28%  { transform: scale(1);-webkit-transform: scale(1);}
+	42%  { transform: scale(1.1);-webkit-transform: scale(1.1);}
+	70%  { transform: scale(1);-webkit-transform: scale(1);}
 }
-@keyframes bounceIn-my {
-	20%  { top:100px;transform: scale(1)}
-	40%  {top:100px; transform: scale(0.9)}
-	60%  {top:100px; transform: scale(1.05)}
-	80%  {top:100px; transform: scale(0.9)}
-	100%  {top:100px; transform: scale(1)}
+@-webkit-keyframes heartBeatMy {
+	0%  { transform: scale(1);-webkit-transform: scale(1);}
+	14%  { transform: scale(1.1);-webkit-transform: scale(1.1);}
+	28%  { transform: scale(1);-webkit-transform: scale(1);}
+	42%  { transform: scale(1.1);-webkit-transform: scale(1.1);}
+	70%  { transform: scale(1);-webkit-transform: scale(1);}
+}
+/* @keyframes bounceIn-my {
+	20%  { top:100px;transform: scale(1);-webkit-transform: scale(1);}
+	40%  {top:100px; transform: scale(0.9);-webkit-transform: scale(0.9);}
+	60%  {top:100px; transform: scale(1.05);-webkit-transform: scale(1.05);}
+	80%  {top:100px; transform: scale(0.9);-webkit-transform: scale(0.9);}
+	100%  {top:100px; transform: scale(1);-webkit-transform: scale(1);}
 }
 @keyframes shake-my {
-	0%  {top:100px; transform: rotate(0deg)}
-	20%  {top:100px; transform: rotate(10deg)}
-	40%  {top:100px; transform: rotate(0deg)}
-	60%  { top:100px;transform: rotate(-10deg)}
-	80%  {top:100px; transform: rotate(0deg)}
-	90%  {top:100px; transform: rotate(10deg)}
-	100%  {top:100px; transform: rotate(0deg)}
-}
-
-/* @keyframes bounceIn-my {
-	15%  {transform: scale(1)}
-	19%  { transform: scale(0.6)}
-	23%  { transform: scale(1)}
-	26%  { transform: scale(0.8)}
-	29%  { transform: scale(1)}
-	40%  { transform: scale(1)}
-
-	42%  { transform: rotate(15deg)}
-	44%  { transform: rotate(0deg)}
-	46%  { transform: rotate(-15deg)}
-	48%  { transform: rotate(0deg)}
-	50%  { transform: rotate(-8deg)}
-
-	52%  { transform: rotate(0deg)}
-	/* 70%  { transform: rotate(0deg)} */
-	/* 100%  { transform: rotateX(90deg)}
-	/* 100%  { transform: rotateX(90deg)} */
-	/* 90%  { transform: rotateX(0)}
-	100% { } */
-/* }  */
-
-@keyframes flip-out {
-	from  { transform: rotateX(90deg)}
-	to  { transform: rotateX(0deg)}
-}
+	0%  {top:100px; transform: rotate(0deg);-webkit-transform: rotate(0deg);}
+	20%  {top:100px; transform: rotate(10deg);-webkit-transform: rotate(10deg);}
+	40%  {top:100px; transform: rotate(0deg);-webkit-transform: rotate(0deg);}
+	60%  { top:100px;transform: rotate(-10deg);-webkit-transform: rotate(-10deg);}
+	80%  {top:100px; transform: rotate(0deg);-webkit-transform: rotate(0deg);}
+	90%  {top:100px; transform: rotate(10deg);-webkit-transform: rotate(10deg);}
+	100%  {top:100px; transform: rotate(0deg);-webkit-transform: rotate(0deg);}
+} */
 
 #show-card-cont{
 	/* width: calc(90vh * 9 / 16); */
@@ -774,7 +775,10 @@ export default {
 
 	.show-card-item   .pet_item{
 		width: 350px !important;
-		zoom: 0.3 !important;
+		/* zoom: 0.5 !important; */
+		transform: scale(0.42);
+		-webkit-transform-origin: 4% 0%;
+		transform-origin: 4% 0%;
 	}
 
 

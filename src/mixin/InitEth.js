@@ -222,7 +222,7 @@ const InitEth = {
 					this.coinArr[coinName].wantAmount = Common.numFloor(Number(wantAmounts[index]) / decimals, omit);
 					this.coinArr[coinName].workingBalance = workingBalances;
 					this.coinArr["ts"] = new Date().valueOf();
-					this.$store.commit("bnbState/setData", {coinArr: this.coinArr, rewardStoreKey: Common.numFloor(Number(rewardStore) / 1e18, 1e2)});
+					this.$store.commit("bnbState/setData", {coinArr: this.coinArr, rewardStoreKey: Common.numFloor(Number(rewardStore) / 1e18, 1e4)});
 				});
 
 				// for (let key in coinArr) {

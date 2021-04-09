@@ -342,6 +342,8 @@ export default class ETH {
 			Contract.getRewardKey
 		], WalletConfig.ETH.momoFarm);
 
+		if(pIndexArr.length == 0) pIndexArr = [1];
+
 		return new Promise(resolve => {
 			this.sendMethod(
 				contract.methods.getReward(pIndexArr),{from: myAddr},

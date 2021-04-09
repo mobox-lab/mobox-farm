@@ -104,7 +104,6 @@ export default {
 	methods: {
 		async getMomoAuctionHistoryAll(){
 			let res = await Http.getMomoAuctionHistoryAll();
-			console.log("getMomoAuctionHistoryAll",res);
 			if(res){
 				res.list.map(item=>{
 					let petList = [];

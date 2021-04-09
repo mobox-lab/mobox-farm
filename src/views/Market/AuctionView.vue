@@ -277,6 +277,7 @@ export default {
 		},
 		setNowPrice(){
 			let {endPrice, startPrice, durationDays, uptime} = this.getNowPetItem;
+			console.log(this.getNowPetItem);
 			let endTime = Number(uptime) + durationDays * 86400;
 			let nowTime = parseInt(new Date().valueOf() / 1000);
 			let nowPrice = endPrice;
@@ -288,7 +289,7 @@ export default {
 				this.getWidth = "100%";
 			}
 			this.nowPrice = nowPrice;
-
+			
 			//明天的价格
 			let nextDayPrice = endPrice;
 			let nextDayTime = nowTime + 86400;
@@ -372,7 +373,7 @@ export default {
 			let data = await this.getPetInfo();
 			let {auctor, index} = this.getNowPetItem;
 			let {uptime} = JSON.parse(this.$route.params.petInfo);
-		
+
 			if(data.status != 3 || data.startTime != uptime){
 				this.showNotify(this.$t("Market_35"), "error");
 				this.$router.replace("/market");

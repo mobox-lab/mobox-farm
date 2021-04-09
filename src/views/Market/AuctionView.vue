@@ -277,7 +277,6 @@ export default {
 		},
 		setNowPrice(){
 			let {endPrice, startPrice, durationDays, uptime} = this.getNowPetItem;
-			console.log(this.getNowPetItem);
 			let endTime = Number(uptime) + durationDays * 86400;
 			let nowTime = parseInt(new Date().valueOf() / 1000);
 			let nowPrice = endPrice;
@@ -289,7 +288,7 @@ export default {
 				this.getWidth = "100%";
 			}
 			this.nowPrice = nowPrice;
-			
+
 			//明天的价格
 			let nextDayPrice = endPrice;
 			let nextDayTime = nowTime + 86400;
@@ -324,6 +323,9 @@ export default {
 			this.sellObj.endPrice = endPrice / 1e9;
 			this.sellObj.durationDays = durationDays;
 			this.priceTypePos = startPrice == endPrice ? 0: 1;
+			this.$nextTick(()=>{
+				this.$refs.priceTypeTab.reload();
+			})
 
 			if(isClick){
 				let { uptime } = this.getNowPetItem;
@@ -420,7 +422,7 @@ export default {
 				return;
 			}
 
-			if(endPrice == "") this.endPrice = startPrice;
+			if(endPrice == "" || this.priceTypePos == 0) this.sellObj.endPrice = startPrice;
 
 			let obj = {
 				index: this.getNowPetItem.index,

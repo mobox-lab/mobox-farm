@@ -121,15 +121,11 @@ export default {
 		async getAuctionPetsMy(needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
 			let account = this.myAccount;
-			// account = "0x464282e1B02A51A4F438516f444F2b8fF362368e";
+			// account = "0x390Ec77a320a3822bd3074aBa174570307154140";
 			let data = await Http.getMyAuctionList("BNB", account);
-			console.log(data);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let hashArr = [];
 			let needGetNameArr = [];
-			console.log(BaseConfig);
-
-			// data.list = data.list.splice(0, 15);
 
 			data.list.map(item=>{
 				if( item.tokenId != 0){

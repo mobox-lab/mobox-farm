@@ -338,7 +338,9 @@ export default {
 					});
 				
 					this.petDataArr = showArr;
-					this.openAnime();
+					this.$nextTick(()=>{
+						this.openAnime();
+					})
 				}
 			});
 
@@ -644,6 +646,7 @@ export default {
 	-webkit-transition: 0.6s;
 	-webkit-transform-style: preserve-3d;
 	-webkit-transform: rotateX(0deg);
+	
 }
 
 .show-card-item.animation{
@@ -702,22 +705,6 @@ export default {
 	42%  { transform: scale(1.1);-webkit-transform: scale(1.1);}
 	70%  { transform: scale(1);-webkit-transform: scale(1);}
 }
-/* @keyframes bounceIn-my {
-	20%  { top:100px;transform: scale(1);-webkit-transform: scale(1);}
-	40%  {top:100px; transform: scale(0.9);-webkit-transform: scale(0.9);}
-	60%  {top:100px; transform: scale(1.05);-webkit-transform: scale(1.05);}
-	80%  {top:100px; transform: scale(0.9);-webkit-transform: scale(0.9);}
-	100%  {top:100px; transform: scale(1);-webkit-transform: scale(1);}
-}
-@keyframes shake-my {
-	0%  {top:100px; transform: rotate(0deg);-webkit-transform: rotate(0deg);}
-	20%  {top:100px; transform: rotate(10deg);-webkit-transform: rotate(10deg);}
-	40%  {top:100px; transform: rotate(0deg);-webkit-transform: rotate(0deg);}
-	60%  { top:100px;transform: rotate(-10deg);-webkit-transform: rotate(-10deg);}
-	80%  {top:100px; transform: rotate(0deg);-webkit-transform: rotate(0deg);}
-	90%  {top:100px; transform: rotate(10deg);-webkit-transform: rotate(10deg);}
-	100%  {top:100px; transform: rotate(0deg);-webkit-transform: rotate(0deg);}
-} */
 
 #show-card-cont{
 	/* width: calc(90vh * 9 / 16); */

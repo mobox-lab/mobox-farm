@@ -60,6 +60,7 @@ const state = () => ({
 		},
 
 		pancakeHistory: [],
+		onlyShowPledge:false,
 	},
 })
 

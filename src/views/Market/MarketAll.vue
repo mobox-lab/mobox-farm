@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
-			<span class="vertical-children mgt-10">{{$t("Market_33")}}: {{ marketPets.total }} </span>&nbsp;
+			<span class="vertical-children mgt-10 dib">{{$t("Market_33")}}: {{ marketPets.total }} </span>
 			<span class="search-box mgl-20 mgt-10 dib">
 				<div class="dib por" >
 					<div class="dib">

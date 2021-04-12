@@ -39,9 +39,7 @@
  }
 
 @media (max-width: 768px) {
-	*{
-		user-select: none!important;
-	}
+
 	.pet_item .pet-power{
 		top: 0px !important;
 	}

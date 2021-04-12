@@ -120,15 +120,17 @@ export default {
 		}, 10000);
 	},
 	mounted(){
-		window.$(this.$refs.searchInput).blur(()=>{
-			let t = setTimeout(()=>{
-				clearTimeout(t);
-				window.$(this.$refs.searchPreview).hide();
-			}, 100);
-		})
-		window.$(this.$refs.searchInput).focus(()=>{
-			window.$(this.$refs.searchPreview).show();
-		})
+		if(document.body.clientWidth > 1000){
+			window.$(this.$refs.searchInput).blur(()=>{
+				let t = setTimeout(()=>{
+					clearTimeout(t);
+					window.$(this.$refs.searchPreview).hide();
+				}, 100);
+			})
+			window.$(this.$refs.searchInput).focus(()=>{
+				window.$(this.$refs.searchPreview).show();
+			})
+		}
 	},
 	beforeDestroy(){
 		if(timer) clearInterval(timer);

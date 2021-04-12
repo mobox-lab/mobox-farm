@@ -55,6 +55,7 @@ input::-webkit-inner-spin-button {
 input {
 	/* font-weight: bold; */
 	font-size: 14px;
+	user-select: text !important;
 }
 
 input::placeholder {

@@ -289,12 +289,14 @@
 		
 		<div id="fly-dot"></div>
 		<Pancake ref="pancake" />
+		<QuickBuy ref="quickBuy" />
 		<WalletOprStatus />
 		<WalletConnectDialog />
 	</div>
 </template>
 <script>
 import Pancake from "./views/Airdrop/Pancake";
+import QuickBuy from "./views/Market/QuickBuy";
 
 import { Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
 import { InitEth, InitTron, CommonMethod } from "@/mixin";
@@ -306,7 +308,7 @@ let timer = null;
 export default {
 	name: "App",
 	mixins: [InitEth, InitTron, CommonMethod],
-	components: {Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading },
+	components: {QuickBuy,Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading },
 	data() {
 		return {
 			langArr: ["English", "中文"],

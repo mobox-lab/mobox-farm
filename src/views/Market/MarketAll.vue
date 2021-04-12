@@ -4,12 +4,11 @@
 			<span class="vertical-children mgt-10">{{$t("Market_33")}}: {{ marketPets.total }} </span>&nbsp;
 			<span class="search-box mgl-20 mgt-10 dib">
 				<div class="dib por" >
-					<input class="ly-input" ref="searchInput" type="text" :placeholder="$t('BOX_17')" v-model="searchWord" />
+					<div class="dib">
+						<input class="ly-input" ref="searchInput" type="text" :placeholder="$t('BOX_17')" v-model="searchWord" />
+						<span v-if="searchWord != '' " style="position:absolute;right:10px " class="cur-point opa-6" @click="searchWord='';goSearch()">&times;</span>
+					</div>
 					<div class="search-preview" ref="searchPreview"  style="margin-bottom:50px" v-if="getSearchArr.length > 0">
-						<div class="aveage-box">
-							<p class="tal small opa-6">{{$t("Fetters_09")}}: {{getSearchArr.length}}</p>
-							<p class="tar small "><span class="cur-point"  @click="searchWord=''">清除</span></p>
-						</div>
 						<div class="aveage-box" v-for="item in getSearchArr" :key="item.prototype" @click="setSearchItme(item)">
 							<div class="tal"><img :src="require(`../../assets/pet/${item.prototype}.png`)" alt="" height="40"></div>
 							<div class="tar small opa-6" style="flex:3" :class="'c-lv'+item.vType">{{item.realName}}</div>
@@ -100,7 +99,7 @@ export default {
 			for (let key in nftConfig) {
 				let item =nftConfig[key];
 				let realName = langMap[item.tokenName];
-				if(realName.indexOf(searchWord) != -1){
+				if(realName.toLowerCase().indexOf(searchWord.toLowerCase()) != -1){
 					item.realName = realName;
 					item.vType = parseInt(item.prototype / 1e4);
 					retArr.push(item);
@@ -110,6 +109,10 @@ export default {
 		}
 	},
 	created(){
+		let searcheItem = BaseConfig.NftCfg[this.marketSearch.pType];
+		if(searcheItem){
+			this.setSearchItme({realName: this.getLangMap[searcheItem["tokenName"]], prototype: searcheItem.prototype});
+		}
 		this.getAuctionPets(this.marketPage, true);
 		if(timer) clearInterval(timer);
 		timer = setInterval(()=>{
@@ -133,12 +136,20 @@ export default {
 	methods: {
 		goSearch(){
 			let prototype = this.searchWord.split(":")[1];
-			if(BaseConfig.NftCfg[prototype] == undefined) return;
-			console.log({prototype});
-
+			if(this.searchWord == ""){
+				prototype = 0;
+			}else{
+				if(BaseConfig.NftCfg[prototype] == undefined) return;
+			}
+			this.$store.commit("marketState/marketSearch", {type: "pType", value: prototype});
+			this.$nextTick(()=>{
+				this.getAuctionPets(this.marketPage, true);
+			})
 		},
 		setSearchItme(item){
+			if(item.prototype == 0) return;
 			this.searchWord = item.realName + ":"+item.prototype;
+			this.goSearch();
 		},
 		//获取市场上的宠物
 		async getAuctionPets(page, needLoading = false){
@@ -244,7 +255,6 @@ export default {
 		border-top-right-radius: 10px;
 		border-top-left-radius: 10px;
 		border: none;
-		cursor: default;
 		padding:10px;
 	}
 	.search-preview .aveage-box:last-child{
@@ -259,9 +269,7 @@ export default {
 	.search-preview .aveage-box:hover{
 		background: #2c3d6b;
 	}
-	.search-preview .aveage-box:nth-child(1):hover{
-		background: #182342
-	}
+
 	#shop-history {
 		margin-right: 15px;
 		cursor: pointer;

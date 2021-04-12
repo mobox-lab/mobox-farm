@@ -86,6 +86,7 @@ export default class HTTP {
 		let params = {...search};
 		if(params.vType == 0) params.vType = "";
 		if(params.category == 0) params.category = "";
+		if(params.pType == 0) params.pType = "";
 		if(params.sort != undefined) params.sort = this.sortPosToName[params.sort];
 		
 		let { data } = await this.get(`/auction/search/${chain}?page=${page}&limit=${limit}`, params);

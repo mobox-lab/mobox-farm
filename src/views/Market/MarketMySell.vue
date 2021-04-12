@@ -75,14 +75,20 @@ export default {
 		}),
 		getSellList() {
 			let totalPet = [];
+			let nftConfig = BaseConfig.NftCfg;
 			this.marketPetsMy.list.map((item) => {
 				//类型的筛选,品质的筛选
-				let isMatchCategory =
-					this.myMarketSellFilter.category == 0 ||
-					this.myMarketSellFilter.category == item.category;
-				let isMathVType =
-					this.myMarketSellFilter.vType == 0 ||
-					this.myMarketSellFilter.vType == item.vType;
+				let isMatchCategory = this.myMarketSellFilter.category == 0 || this.myMarketSellFilter.category == item.category;
+				let isMathVType = this.myMarketSellFilter.vType == 0 || this.myMarketSellFilter.vType == item.vType;
+				//出售中打包的momo
+				if(item.ids.length != 0){
+					item.ids.map(prototype=>{
+						let {category} = nftConfig[prototype];
+						let vType = parseInt(prototype/1e4);
+						if(this.myMarketSellFilter.category == category) isMatchCategory = true;
+						if(this.myMarketSellFilter.vType == vType) isMathVType = true;
+					})
+				}
 				if (isMatchCategory && isMathVType) {
 					totalPet.push(item);
 				}
@@ -110,7 +116,7 @@ export default {
 		}
 		timer = setInterval(()=>{
 			this.getAuctionPetsMy();
-		}, 10000);
+		}, 5000);
 	},
 	
 	beforeDestroy(){

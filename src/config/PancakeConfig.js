@@ -67,7 +67,7 @@ export default class PancakeConfig {
 			addr: "0x7561EEe90e24F3b348E1087A005F78B4c8453524",
 			allocPoint: 2,
 			decimals: 1e18,
-			omit: 1e6,
+			omit: 1e8,
 		},
 		"ETH-BNB":{
 			pIndex: 2,

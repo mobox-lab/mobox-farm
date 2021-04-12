@@ -20,17 +20,24 @@
 			<div class="clear mgt-20">
 				<PetItem  v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()" v-bind:data="{item: item}" class="market" >
 					<div style="height:43px;position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
-						<div v-if="item.vType > 3" class=" tar">
-							<button class="btn-primary" @click="set721Price(item)">
-								<span>{{$t("Market_02")}}</span>
+						<div v-if="item.isLock" class="tar">
+							<button class="btn-primary disable-btn">
+								<img  src="../../assets/icon/lock.png" alt="" height="20"/>
 							</button>
 						</div>
+						<div v-else>
+							<div v-if="item.vType > 3" class=" tar">
+								<button class="btn-primary" @click="set721Price(item)">
+									<span>{{$t("Market_02")}}</span>
+								</button>
+							</div>
 
-						<div class="tar " v-if="item.vType <= 3" >
-							<SelectNum :maxNum="item.num" v-show="getSelectNum(item.prototype) > 0" :defaultNum="getSelectNum(item.prototype)" :data="item" :onChange="onNumChange" />
-							<button class="btn-primary" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.prototype) == 0">
-								<span>{{$t("Market_08")}}</span>
-							</button>
+							<div class="tar " v-if="item.vType <= 3" >
+								<SelectNum :maxNum="item.num" v-show="getSelectNum(item.prototype) > 0" :defaultNum="getSelectNum(item.prototype)" :data="item" :onChange="onNumChange" />
+								<button class="btn-primary" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.prototype) == 0">
+									<span>{{$t("Market_08")}}</span>
+								</button>
+							</div>
 						</div>
 					</div>
 				</PetItem>
@@ -219,6 +226,7 @@ export default {
 			tempSells: (state) => state.marketState.data.tempSells,
 			marketHistory: (state) => state.marketState.data.marketHistory,
 			historyNotice: (state) => state.marketState.data.historyNotice,
+			lockList: (state) => state.ethState.data.lockList,
 		}),
 		getTotalPetNum: function () {
 			let totalPet = 0;
@@ -230,8 +238,15 @@ export default {
 		getTotalPage() {
 			return Math.ceil(this.getTotalPet.length / this.onePageCount);
 		},
+		//获取锁定type
+		getLockTypes(){
+			let lockTypes = [];
+			this.lockList.map(item=>lockTypes.push(item.prototype));
+			return lockTypes;
+		},
 		getTotalPet() {
 			let totalPet = [];
+
 			[...this.myNFT_stake].map((item) => {
 				//类型的筛选,品质的筛选
 				let isMatchCategory =
@@ -241,6 +256,8 @@ export default {
 					this.myMarketPetFilter.vType == 0 ||
 					this.myMarketPetFilter.vType == item.vType;
 				if (isMatchCategory && isMathVType) {
+					let bookType =  item.prototype % (item.vType * 10000)
+					item.isLock = this.getLockTypes.indexOf(bookType) != -1;
 					totalPet.push(item);
 				}
 			});

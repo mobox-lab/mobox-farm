@@ -172,7 +172,7 @@ export default {
 		},
 		getTargetLvReport(){
 			let report = [];
-			let upgradeCfg = this.vTypeToSelectPos == 0?BaseConfig.MomoLv4Cfg:  BaseConfig.MomoLv5Cfg;
+			let upgradeCfg = this.perviewVTypeSelectPos == 0?BaseConfig.MomoLv4Cfg:  BaseConfig.MomoLv5Cfg;
 			let growup = this.getGrowup;
 			let hashRate = Number(this.perviewLvHashRate);
 			if(hashRate == 0) return report;

@@ -1,10 +1,22 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
-			<span class="vertical-children">{{$t("Market_33")}}: {{ marketPets.total }} </span>&nbsp;
-			<span class="search-box hide" >
-				<input class="ly-input mgl-20" type="text/" />&nbsp;
-				<img :src="require('@/assets/icon/search.png')" alt="" />
+			<span class="vertical-children mgt-10">{{$t("Market_33")}}: {{ marketPets.total }} </span>&nbsp;
+			<span class="search-box mgl-20 mgt-10 dib">
+				<div class="dib por" >
+					<input class="ly-input" ref="searchInput" type="text" :placeholder="$t('BOX_17')" v-model="searchWord" />
+					<div class="search-preview" ref="searchPreview"  style="margin-bottom:50px" v-if="getSearchArr.length > 0">
+						<div class="aveage-box">
+							<p class="tal small opa-6">{{$t("Fetters_09")}}: {{getSearchArr.length}}</p>
+							<p class="tar small "><span class="cur-point"  @click="searchWord=''">清除</span></p>
+						</div>
+						<div class="aveage-box" v-for="item in getSearchArr" :key="item.prototype" @click="setSearchItme(item)">
+							<div class="tal"><img :src="require(`../../assets/pet/${item.prototype}.png`)" alt="" height="40"></div>
+							<div class="tar small opa-6" style="flex:3" :class="'c-lv'+item.vType">{{item.realName}}</div>
+						</div>
+					</div>
+				</div>
+				<img class="mgl-10 cur-point" :src="require('@/assets/icon/search.png')" alt="" @click="goSearch"  />
 			</span>
 			
 			<div id="market-pet-fitter">
@@ -58,6 +70,7 @@ export default {
 			selectCategory:[],
 			selectVType: [],
 			sortArr: [this.$t("Market_47"),this.$t("Market_04"), this.$t("Market_05"), this.$t("Market_06"), this.$t("Market_07")],
+			searchWord: "",
 		});
 	},
 	computed: {
@@ -69,6 +82,32 @@ export default {
 			marketLoading: (state) => state.marketState.data.marketLoading,
 			historyNotice: (state) => state.marketState.data.historyNotice,
 		}),
+		getLangMap(){
+			let langToName = {};
+			let nftConfig = BaseConfig.NftCfg;
+			for (let key in nftConfig) {
+				let item =nftConfig[key];
+				langToName[item.tokenName] = this.$t(item.tokenName);
+			}
+			return langToName;
+		},
+		getSearchArr(){
+			let retArr = [];
+			let searchWord = this.searchWord;
+			if(searchWord == "") return retArr;
+			let nftConfig = BaseConfig.NftCfg;
+			let langMap = this.getLangMap;
+			for (let key in nftConfig) {
+				let item =nftConfig[key];
+				let realName = langMap[item.tokenName];
+				if(realName.indexOf(searchWord) != -1){
+					item.realName = realName;
+					item.vType = parseInt(item.prototype / 1e4);
+					retArr.push(item);
+				}
+			}
+			return retArr.reverse();
+		}
 	},
 	created(){
 		this.getAuctionPets(this.marketPage, true);
@@ -77,10 +116,30 @@ export default {
 			this.getAuctionPets(this.marketPage);
 		}, 10000);
 	},
+	mounted(){
+		window.$(this.$refs.searchInput).blur(()=>{
+			let t = setTimeout(()=>{
+				clearTimeout(t);
+				window.$(this.$refs.searchPreview).hide();
+			}, 100);
+		})
+		window.$(this.$refs.searchInput).focus(()=>{
+			window.$(this.$refs.searchPreview).show();
+		})
+	},
 	beforeDestroy(){
 		if(timer) clearInterval(timer);
 	},
 	methods: {
+		goSearch(){
+			let prototype = this.searchWord.split(":")[1];
+			if(BaseConfig.NftCfg[prototype] == undefined) return;
+			console.log({prototype});
+
+		},
+		setSearchItme(item){
+			this.searchWord = item.realName + ":"+item.prototype;
+		},
 		//获取市场上的宠物
 		async getAuctionPets(page, needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
@@ -171,6 +230,38 @@ export default {
 </script>
 
 <style scoped>
+	.search-box{
+	}
+	.search-preview{
+		position: absolute;
+		width: 100%;
+		z-index: 999;
+		background: #182342;
+		margin-top: 5px;
+		border-radius: 10px;
+	}
+	.search-preview .aveage-box:nth-child(1){
+		border-top-right-radius: 10px;
+		border-top-left-radius: 10px;
+		border: none;
+		cursor: default;
+		padding:10px;
+	}
+	.search-preview .aveage-box:last-child{
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+	}
+	.search-preview .aveage-box{
+		border-top: 1px solid #3f5185;
+		padding: 5px 10px;
+		cursor: pointer;
+	}
+	.search-preview .aveage-box:hover{
+		background: #2c3d6b;
+	}
+	.search-preview .aveage-box:nth-child(1):hover{
+		background: #182342
+	}
 	#shop-history {
 		margin-right: 15px;
 		cursor: pointer;

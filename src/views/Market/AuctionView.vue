@@ -67,7 +67,7 @@
 						<div class="tac">
 							<div id="price" class="vertical-children">
 								<img src="../assets/coin/BUSD.png" height="25" alt="">&nbsp;
-								<span>{{numFloor( this.nowPrice/ 1e9, 10000)}}</span>
+								<span>{{numFloor( this.nowPrice/ 1e9, 1e4)}}</span>
 							</div>
 							<div v-if="this.getNowPetItem.startPrice != this.getNowPetItem.endPrice">
 								<div class="jdt">
@@ -79,17 +79,17 @@
 									<span class="jdt-bar" :class="this.getWidth == '100%'?'active':''" style="left:auto;right:-5px" ></span>
 									<span class="jdt-startPrice vertical-children">
 										<img src="../assets/coin/BUSD.png" height="18" alt="">&nbsp;
-										<span>{{numFloor( this.getNowPetItem.startPrice/ 1e9, 100)}}</span>
+										<span>{{numFloor( this.getNowPetItem.startPrice/ 1e9, 1e4)}}</span>
 									</span>
 									<span class="jdt-endPrice vertical-children">
 										<img src="../assets/coin/BUSD.png" height="18" alt="">&nbsp;
-										<span>{{numFloor( this.getNowPetItem.endPrice/ 1e9, 100)}}</span>
+										<span>{{numFloor( this.getNowPetItem.endPrice/ 1e9, 1e4)}}</span>
 									</span>
 								</div>
 								<p class="small vertical-children por" style="top: -15px" v-if="this.nowPrice != this.getNowPetItem.endPrice">
 									<span>{{$t('Market_32').replace('#0#', countdown)}}:</span>&nbsp;
 									<img src="../assets/coin/BUSD.png" height="16" alt="">&nbsp;
-									<span>{{numFloor( nextDayPrice/ 1e9, 100)}}</span>
+									<span>{{numFloor( nextDayPrice/ 1e9, 1e4)}}</span>
 								</p>
 							</div>
 							<div v-if="!isMyPet" class="mgt-30">

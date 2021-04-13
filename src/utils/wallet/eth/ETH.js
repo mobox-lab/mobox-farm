@@ -704,7 +704,7 @@ export default class ETH {
 					prototype);
 			}
 		}
-		// myAddr = "0x464282e1B02A51A4F438516f444F2b8fF362368e";
+		// myAddr = "0xF4858431927211c890E3C982848F096d518d009f";
 		return new Promise(resolve => {
 			switch (type) {
 				case ConstantConfig.NFT_LOCATION.WALLET:

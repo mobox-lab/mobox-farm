@@ -39,6 +39,9 @@
  }
 
 @media (max-width: 768px) {
+	.btn-primary{
+		padding: 0px 10px!important;
+	}
 
 	.pet_item .pet-power{
 		top: 0px !important;

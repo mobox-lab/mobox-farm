@@ -202,7 +202,7 @@ export default {
 				needPrototype: false,
 				type: "v1",
 			},
-			showCanSelectArr: [],
+			// showCanSelectArr: [],
 			selectAddPetPos: 0,
 			tab: [this.$t("MOMO_31"), this.$t("MOMO_32")],
 			tab_pos: 0,
@@ -233,6 +233,21 @@ export default {
 			allowance_721_to_stake: (state) =>state.ethState.data.allowance_721_to_stake,
 			upgradeLocks: (state) =>state.ethState.data.upgradeLocks,
 		}),
+		showCanSelectArr(){
+			let { type, needPrototype } = this.needHandleData;
+			let needShowArr = [];
+			this.myNFT_stake.map((item) => {
+				//去掉自己
+				let isSelf = type >= 4 && item.tokenId == this.getNowPetItem.tokenId;
+				// item.level >= needLv &&
+				let bookType =  item.prototype % (item.vType * 10000)
+				item.isLock = this.getLockTypes.indexOf(bookType) != -1;
+				if ( "v" + item.vType == type && (!needPrototype || needPrototype == item.prototype) && !isSelf ) {
+					needShowArr.push(item);
+				}
+			});
+			return needShowArr;
+		},
 		isLock(){
 			let {vType, prototype} = this.getNowPetItem;
 			let bookType =  prototype % (vType * 10000)
@@ -734,19 +749,19 @@ export default {
 		//打开选择面板
 		showSelectNftDialog(needHandleData, index, isTabChange = false) {
 			if(this.lockUpgradeTime > 0) return;
-			let { type, needPrototype } = needHandleData;
-			let needShowArr = [];
-			this.myNFT_stake.map((item) => {
-				//去掉自己
-				let isSelf = type >= 4 && item.tokenId == this.getNowPetItem.tokenId;
-				// item.level >= needLv &&
-				let bookType =  item.prototype % (item.vType * 10000)
-				item.isLock = this.getLockTypes.indexOf(bookType) != -1;
-				if ( "v" + item.vType == type && (!needPrototype || needPrototype == item.prototype) && !isSelf ) {
-					needShowArr.push(item);
-				}
-			});
-			this.showCanSelectArr = needShowArr;
+			// let { type, needPrototype } = needHandleData;
+			// let needShowArr = [];
+			// this.myNFT_stake.map((item) => {
+			// 	//去掉自己
+			// 	let isSelf = type >= 4 && item.tokenId == this.getNowPetItem.tokenId;
+			// 	// item.level >= needLv &&
+			// 	let bookType =  item.prototype % (item.vType * 10000)
+			// 	item.isLock = this.getLockTypes.indexOf(bookType) != -1;
+			// 	if ( "v" + item.vType == type && (!needPrototype || needPrototype == item.prototype) && !isSelf ) {
+			// 		needShowArr.push(item);
+			// 	}
+			// });
+			// this.showCanSelectArr = needShowArr;
 			this.needHandleData = needHandleData;
 			//momo每次升整5倍数等级的时候默认升级界面在图鉴模式
 			if(!isTabChange && (this.getNowPetItem.level +1) % 5 == 0){

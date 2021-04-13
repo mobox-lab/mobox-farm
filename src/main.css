@@ -862,11 +862,10 @@ svg {
 	border-bottom: 1px solid #324374;
 }
 
-/* .btn-group{
+.btn-group{
 	position: relative;
-	border: 1px solid red;
-} */
-
+	left: -10px;
+}
 
 .btn-group button:not(button[data-step='1']):not(button[data-step='2'])::before{
 	content: "";
@@ -874,7 +873,7 @@ svg {
 	height: 21.6px;
 	background: #4E7399;
 	position: absolute;
-	right: -24px;
+	right: -17px;
 	top: -15.6px;
 }
 .btn-group button[data-step='2']::before{
@@ -884,7 +883,7 @@ svg {
 	background: #4E7399;
 	/* background: linear-gradient(0deg, #4E7399, 50%, #407DD1); */
 	position: absolute;
-	right: -24px;
+	right: -17px;
 	top: -15.6px;
 }
 
@@ -894,7 +893,7 @@ svg {
 	position: absolute;
 	right: 0px;
 	top: 50%;
-	transform: translate(150%, -50%);
+	transform: translate(120%, -50%);
 	background: #407DD1;
 	border-radius: 22px;
 	width: 22px;

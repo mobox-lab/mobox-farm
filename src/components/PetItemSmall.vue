@@ -69,12 +69,12 @@ export default {
 	methods: {
 		addNum() {
 			let { tokenId, prototype, num, vType, isLock } = this.data;
-			if(isLock) return;
 			//超过自己数量没法再选择
 			if (this.getSelectNum >= num) {
 				Common.app.$refs.quickBuy.show(prototype);
 				return;
 			}
+			if(isLock) return;
 			if (typeof this.onSelectChange == "function") {
 				this.onSelectChange({ tokenId, prototype, vType, num: 1 });
 			}

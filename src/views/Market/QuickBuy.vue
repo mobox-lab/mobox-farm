@@ -235,6 +235,7 @@ export default {
 
 			if(data.status != 3 || data.startTime != uptime){
 				this.showNotify(this.$t("Market_35"), "error");
+				this.getAuctionPets();
 				return;
 			}
 

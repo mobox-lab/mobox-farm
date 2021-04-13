@@ -27,6 +27,14 @@
 						<img src="../assets/icon/metamask.svg" height="30" alt="">
 					</div>
 				</div>
+				<div class="connect-wallet-item aveage-box mgt-10" @click="connectWallet('walletConnect')">
+					<div class="tal">
+						<span>Wallet Connect</span>	
+					</div>
+					<div class="tar">
+						<img src="../assets/icon/metamask.svg" height="30" alt="">
+					</div>
+				</div>
 			</div>
 		</Dialog>
 		<Dialog id="connected-wallet-info-dialog" :top="100" :width="400">
@@ -49,6 +57,10 @@ import { Wallet, Common } from '@/utils';
 import { CommonMethod } from '@/mixin';
 import { mapState } from 'vuex';
 
+// import WalletConnect from "@walletconnect/client";
+// import QRCodeModal from "@walletconnect/qrcode-modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+
 export default {
 	mixins: [CommonMethod],
 	components: {Dialog},
@@ -60,9 +72,21 @@ export default {
 	data(){
 		return({
 			connectedWallet: "",
+			walletConnectProvider: null,
 		})
 	},
 	created(){
+		// this.connector = new WalletConnect({
+		// 	bridge: "https://bridge.walletconnect.org", // Required
+		// 	qrcodeModal: QRCodeModal,
+		// });
+
+		this.walletConnectProvider = new WalletConnectProvider({
+			rpc: {
+				56: "https://bsc-dataseed4.binance.org"
+			}
+		});
+
 		let type = Common.getStorageItem("connect-wallet");
 		if(document.body.clientWidth < 1000){
 			type = "mboxWallet";
@@ -99,6 +123,8 @@ export default {
 		}
 
 		// todo---mobox listen
+
+		
 		
 
 	},
@@ -114,12 +140,42 @@ export default {
 			this.oprDialog("connected-wallet-info-dialog", "none");
 			window.hackReload();
 		},
+
 		async connectWallet(type){
 			console.log("connect", type);
 			let account = "";
 			let chainNetwork = 0;
 			let provider = null;
 			switch (type) {
+				case "walletConnect":
+						// if(this.connector == null) break;
+						// if (!this.connector.connected) {
+						// 	this.connector.createSession();
+						// 	this.connector.on("connect", (error, payload) => {
+						// 		if (error) {
+						// 			throw error;
+						// 		}
+						// 		// Get provided accounts and chainId
+						// 		console.log(payload);
+						// 		let { accounts, chainId } = payload.params[0];
+						// 		console.log(accounts,chainId )
+						// 		chainNetwork = chainId;
+						// 		account = accounts[0];
+						// 		this.initData(account, provider, type, chainNetwork);
+						// 	});
+						// } else {
+						// 	console.log(this.connector)
+						// 	// chainNetwork = chainId;
+						// 	// account = accounts[0];
+						// 	// this.initData(account, provider, type, chainNetwork);
+						// }
+						if(this.walletConnectProvider){
+							await this.walletConnectProvider.enable();
+							let accounts = await this.walletConnectProvider.request({ method: 'eth_requestAccounts' });
+							account =  accounts[0];
+							console.log(account);
+						}
+					break;
 				case "metamask":
 						if (typeof window.ethereum !== 'undefined' && window.ethereum.request) {
 							try {
@@ -177,6 +233,11 @@ export default {
 					break;
 			}
 
+			if(type != "walletConnect"){
+				this.initData(account, provider, type, chainNetwork);
+			}
+		},
+		initData(account, provider, type, chainNetwork){
 			if(account == "") {
 				if(type != "metamask"){
 					this.connectWallet("metamask");

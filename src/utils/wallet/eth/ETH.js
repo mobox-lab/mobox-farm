@@ -41,7 +41,7 @@ export default class ETH {
 	}
 
 	static changeWeb3(provider){
-		if(this.web3) this.web3.setProvider(provider);
+		if(this.web3 && provider != null) this.web3.setProvider(provider);
 	}
 
 	static async getNetwork() {

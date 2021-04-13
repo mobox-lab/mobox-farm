@@ -7,8 +7,6 @@
 		</div>
 		<div style="min-height:200px">
 			<div class="mgt-10 tab-panel" v-for="item in marketData.list" :key="item.tx">
-			
-
 				<div class="aveage-box">
 					<div class="vertical-children"  style="flex:1.5">
 						<div class="tac" >
@@ -20,11 +18,11 @@
 						</div>
 
 						<div class="tac mgt-5 bold">
-							<span>价格:</span>
+							<span>{{$t("Market_17")}}:</span>
 							<span>{{numFloor( item.nowPrice/ 1e9, 1e4)}}</span>&nbsp;
 							<img src="../../assets/coin/BUSD.png" height="25"  alt="">
 						</div>
-						<div class=" tac mgt-5" v-if="item.startPrice != item.endPrice && item.countdown != '00:00:00'">
+						<div class=" tac mgt-5" v-if="item.nowPrice != item.endPrice && item.countdown != '00:00:00'">
 							<span class="small opa-6">{{$t('Market_32').replace('#0#', item.countdown)}}:{{numFloor( item.nextDayPrice/ 1e9, 1e4)}}</span>
 						</div>
 					</div>
@@ -34,8 +32,11 @@
 					</div>
 				</div>
 			</div>
+			<div class="mgt-10 small opa-6" v-if="marketData.list.length == 5">
+				{{$t("Market_51")}}
+			</div>
 			<div v-if="marketData.list.length  == 0" class="tab-panel mgt-10" style="height:200px;display:flex;align-items:center;justify-content: center">
-				<span class="opa-6" v-if="!marketLoading">暂无该MOMO出售</span>
+				<span class="opa-6" v-if="!marketLoading">{{$t("Market_52")}}</span>
 				<Loading v-else :width="30" :height="30"/>
 			</div>
 		</div>
@@ -234,7 +235,6 @@ export default {
 
 			if(data.status != 3 || data.startTime != uptime){
 				this.showNotify(this.$t("Market_35"), "error");
-				this.$router.replace("/market");
 				return;
 			}
 

@@ -27,7 +27,7 @@
 			<div class="dib" style="height: 94px"></div>
 			<img class="lock" src="../assets/icon/lock.png" height="20" alt="" />
 		</div>
-		<span class="opa-6" v-if="data.num <= 0" style="position:absolute;top:0px;right:0px">
+		<span class="opa-6" v-if="data.num <= 0 || getSelectNum == data.num" style="position:absolute;top:-5px;left:15px">
 			<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M867.7 423.8H599.8V155.9c0-49.3-40-89.3-89.3-89.3s-89.3 40-89.3 89.3v267.9H153.3c-49.3 0-89.3 40-89.3 89.3s40 89.3 89.3 89.3h267.9v267.9c0 49.3 40 89.3 89.3 89.3s89.3-40 89.3-89.3V602.4h267.9c49.3 0 89.3-40 89.3-89.3s-40-89.3-89.3-89.3z"  fill="#E1FF17"></path></svg>
 		</span>
 	</div>

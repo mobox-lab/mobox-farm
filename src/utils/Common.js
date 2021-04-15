@@ -3,29 +3,6 @@ export default class Common {
 	static store = null;
 	static walletConnectConnector = null;
 
-	// 获取阶段标准算力
-	static getHashrateByStep(lv, step) {
-		switch(lv) {
-			case 4:
-				return ((((step - 8) / 2) * 10) + (((step - 2) * 10) + 80)) / 2;
-			case 5:
-				return ((((step - 8) / 2) * 10) + (((step - 2) * 10) + 150)) / 2;
-			case 6:
-				return ((step - 1) * 10) + 90;
-		}
-	}
-
-	static debounce (fun, waitTime = 500) {
-		let timeout = null;
-		return function () {
-			const self = this;
-			clearTimeout(timeout);
-			timeout = setTimeout(() => {
-				fun.apply(self, Array.prototype.slice.call(arguments));
-			}, waitTime);
-		};
-	}
-
 	static getUrlParms(name) {
 		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
 		var r = window.location.search.substr(1).match(reg);
@@ -56,7 +33,7 @@ export default class Common {
 		window.localStorage.removeItem(name);
 	}
 	static getRandomNum(start, end) {
-		return parseInt(Math.random()*(end-start+1)+start,10);
+		return Math.ceil(start + Math.random() * end);
 	}
 	static async sleep(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms))
@@ -88,35 +65,6 @@ export default class Common {
 		}
 		dom.classList.remove("yf-dialog-remove");
 		dom.style.display = type;
-	}
-
-	//对象深拷贝
-	static ObjClone(obj) {
-	if (null == obj || "object" != typeof obj) return obj;
-
-	let copy = null;
-
-	// Handle Date
-	if (obj instanceof Date) {
-	copy = new Date();
-	copy.setTime(obj.getTime());
-	return copy;
-	}
-	// Handle Array or Object
-	if (obj instanceof Array || obj instanceof Object) {
-	if(obj.updateTs != undefined){
-	copy = (obj instanceof Array)?[...obj]:{...obj};
-	copy.updateTs = obj.updateTs;
-	return copy;
-	}
-	copy = (obj instanceof Array)?[]:{};
-	for (var attr in obj) {
-	if (Object.hasOwnProperty.call(obj, attr))
-	copy[attr] = this.ObjClone(obj[attr]);
-	}
-	return copy;
-	}
-	throw new Error("Unable to clone obj! Its type isn't supported.");
 	}
 
 }

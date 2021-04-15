@@ -22,6 +22,7 @@ Common.app = app.$children[0];
 Common.store = store;
 
 window.hackReload = ()=>{
+  clearInterval(Common.app.timer);
   Common.store = getNewStore.getNewStore();
   app = new Vue({
       store:  Common.store,

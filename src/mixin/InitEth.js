@@ -91,6 +91,7 @@ const InitEth = {
 		EventBus.$on(EventConfig.SwapSuccess, this.setBalance);
 		EventBus.$on(EventConfig.getMboxSuccess, async ()=>{
 			await this.eth_setMbox();
+			await this.eth_setEarnedMbox();
 			this.$store.commit("globalState/unLockBtn", "getMboxLock");
 			await this.setBalance();
 		});

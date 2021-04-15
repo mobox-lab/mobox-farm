@@ -63,7 +63,7 @@
 							</td>
 							<td class="addr">{{getShortAddr(item.bidder)}}</td>
 							<td class="addr">{{getShortAddr(item.auctor)}}</td>
-							<td class="vertical-children"> <img class="hide-xs" src="../../assets/coin/BUSD.png" height="25" alt=""> {{item.bidPrice / 1e9}} BUSD</td>
+							<td class="vertical-children"> <img class="hide-xs" src="../../assets/coin/BUSD.png" height="25" alt=""> {{numFloor(item.bidPrice / 1e9, 1e2)}} BUSD</td>
 							<td class="tar" >
 								<p>{{dateFtt("yyyy.MM.dd", new Date(item.crtime * 1000))}}</p>
 								<p>{{dateFtt("hh:mm:ss", new Date(item.crtime * 1000))}}</p>

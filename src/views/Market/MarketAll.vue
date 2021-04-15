@@ -30,7 +30,7 @@
 			</div>
 		</div>
 		<div :class="marketPets.list.length < 6 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
-			<router-link :to="'/auctionView/'+ JSON.stringify(item)"  v-for="item in marketPets.list" :key="item.tx">
+			<router-link :to="'/auctionView/'+ JSON.stringify(item)"  v-for="item in marketPets.list" :key="item.tx + item.index">
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;

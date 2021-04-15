@@ -119,6 +119,85 @@ export default class ETH {
 		method.value = sendAttr.value;
 		method.myAddr = sendAttr.from;
 		let saveHash;
+
+		let type = Common.getStorageItem("connect-wallet");
+		//walletConnect 相关
+		if(type == "walletConnect" && Common.walletConnectConnector){
+			let tx = {
+				from: sendAttr.from,
+				to: method._parent._address,
+				data: method.encodeABI(),
+				value: sendAttr.value || "0x0",
+			}
+			Common.walletConnectConnector.sendTransaction(tx).then(hash=>{
+				console.log(hash);
+				onHash(hash);
+				saveHash = hash;
+				Common.store.commit("globalState/setwalletStatus", {status:3, hash});
+				let t = 0;
+				let timer = setInterval(()=>{
+					t++;
+					if(t < 60){
+						this.web3.eth.getTransactionReceipt(hash).then(data=>{
+							if(!data) return;
+							if(data.status){
+								onRecipt(data);
+								this.onReciptNotice(hash, method, "success");
+							}else{
+								Common.store.commit("globalState/setwalletStatus", {status:2});
+								this.onReciptNotice(hash, method, "error");
+							}
+							clearInterval(timer);
+						})
+					}else{
+						clearInterval(timer);
+					}
+				}, 2000)
+				
+			}).catch((err) => {
+				// Error returned when rejected
+				console.log(err);
+				onError();
+
+				let type = Common.getStorageItem("connect-wallet");
+				if(type == "mboxWallet"){
+					Common.store.commit("globalState/setwalletStatus", {status:2});
+				}
+				//清空coin的各种loading状态
+				Common.store.commit("bnbState/clearLoading");
+
+				//交易失败了，暂时判断包含 reverted 字段
+				if(err.message && err.message.indexOf("-32603") != -1){
+					return;
+				}
+
+				//追踪不到订单信息 不用处理
+				if(err.toString().indexOf("eth_getTransactionReceipt") != -1){
+					return;
+				}
+
+				//拒绝交易
+				if(err.code == 4001) {
+					Common.store.commit("globalState/setwalletStatus", {status:2});
+					return;
+				}
+				//gas费用太低
+				if(err.code == -32603){
+					Common.app.showNotify("intrinsic gas too low", "error");
+					Common.store.commit("globalState/setwalletStatus", {status:2});
+					return;
+				}
+				
+				if(saveHash){
+					this.onReciptNotice(saveHash, method, "error");
+				}
+				
+				Common.store.commit("globalState/setwalletStatus", {status:2});
+
+			});
+			return;
+		}
+
 		method.send(sendAttr).on("transactionHash", hash => {
 			onHash(hash);
 			saveHash = hash;

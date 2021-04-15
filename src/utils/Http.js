@@ -98,13 +98,23 @@ export default class HTTP {
 		return data;
 	}
 	//获取交易历史记录
-	static async getMyAuctionHistory(address) {
-		let { data } = await this.get(`/auction/logs/${address}?&page=1&limit=50`);
+	static async getMyAuctionHistory(address, page=1,limit=25) {
+		let { data } = await this.get(`/auction/logs/${address}?&page=${page}&limit=${limit}`);
 		return data;
 	}
 	//获取momo交易历史记录
 	static async getMomoAuctionHistory(tokenId) {
 		let { data } = await this.get(`/auction/logs/token/${tokenId}?&page=1&limit=50`);
+		return data;
+	}
+	//获取momo交易历史记录24小时top50
+	static async getMomoAuctionRankHistory24() {
+		let { data } = await this.get(`/auction/transactions/top50?ago=1`);
+		return data;
+	}
+	//获取momo交易历史记录top50
+	static async getMomoAuctionRankHistory() {
+		let { data } = await this.get(`/auction/transactions/top50`);
 		return data;
 	}
 	//获取momo交易历史记录

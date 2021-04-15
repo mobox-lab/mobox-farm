@@ -58,8 +58,9 @@
 	}
 	.statistics-top-tab li{
 		font-size: 12px;
-		padding: 5px 10px !important;
+		padding: 5px !important;
 		padding-top: 0px !important;
+		min-width: auto!important;
 	}
 	#shop-history-dialog .addr{
 		margin-top: 10px;

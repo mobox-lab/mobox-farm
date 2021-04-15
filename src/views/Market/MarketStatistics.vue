@@ -21,14 +21,14 @@
 						<img src="../../assets/coin/BUSD.png" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
 							<p class="opa-6">{{$t("Market_45")}}</p>
-							<h1 class="color-w tac">{{numFloor(statistics.volume / 1e9, 1e4)}} </h1>
+							<h1 class="color-w tac">{{numFloor(statistics.volume / 1e9, 1e2).toLocaleString()}} </h1>
 						</div>
 					</div>
 					<div class="vertical-children tac">
 						<img src="../../assets/icon/evage-icon.png" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
 							<p class="opa-6">{{$t("Market_46")}}</p>
-							<h1 class="color-w tac">{{numFloor(statistics.avgPrice / 1e9, 1e4)}}</h1>
+							<h1 class="color-w tac">{{numFloor(statistics.avgPrice / 1e9, 1e2)}}</h1>
 						</div>
 					</div>
 				</div>
@@ -36,9 +36,9 @@
 			<section class="mgt-20">
 				<ul class="statistics-top-tab" style="padding:0px">
 					<li @click="tableDataPos = 'recent';getTargetHistory('recent') " :class="tableDataPos == 'recent'?'active':''" class="opa-6">{{$t("Market_40")}}</li>
-					<!-- <li @click="tableDataPos = 'last24';getTargetHistory('last24')" :class="tableDataPos == 'last24'?'active':''" class="opa-6">24小时TOP50</li> -->
-					<!-- <li @click="tableDataPos = 'last';getTargetHistory('last')" :class="tableDataPos == 'last'?'active':''" class="opa-6">历史TOP50</li> -->
-					<li @click="tableDataPos = 'myHistory';getTargetHistory('myHistory')" :class="tableDataPos == 'myHistory'?'active':''" class="opa-6">我的记录({{marketHistory.total}})</li>
+					<li @click="tableDataPos = 'last24';getTargetHistory('last24')" :class="tableDataPos == 'last24'?'active':''" class="opa-6">{{$t("Market_55")}}</li>
+					<!-- <li @click="tableDataPos = 'last';getTargetHistory('last')" :class="tableDataPos == 'last'?'active':''" class="opa-6">{{$t('Market_56')}}</li> -->
+					<li @click="tableDataPos = 'myHistory';getTargetHistory('myHistory')" :class="tableDataPos == 'myHistory'?'active':''" class="opa-6">{{$t("Market_54")}}({{marketHistory.total}})</li>
 				</ul>
 
 				<table class="mgt-20" style="width:100%; border-collapse:collapse;border: none;">
@@ -89,7 +89,7 @@
 				</table>
 
 				<div style="margin-top: 30px" v-if="tableDataPos == 'myHistory' ">
-					<Page :defaultPage="this.myHistoryPage" :totalPage="Math.ceil(marketHistory.total / 25)" :onChange="onPageChange" v-if="Math.ceil(marketHistory.total / 25) > 1" />
+					<Page :defaultPage="this.myHistoryPage" :totalPage="Math.ceil(marketHistory.total / 50)" :onChange="onPageChange" v-if="Math.ceil(marketHistory.total / 50) > 1" />
 				</div>
 			</section>
 		</div>

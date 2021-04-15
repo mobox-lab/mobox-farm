@@ -11,8 +11,10 @@
 					</span>
 				</p>
 				<div class="aveage-box mgt-10">
-					<input type="text" class="ly-input"  style="flex:1 1 auto" v-model="setting.slippage"  v-number placeholder="0.5"> 
-					<p  class="tac">%</p>
+					<div style="flex:1 1 auto">
+						<input type="text" class="ly-input"  style="width:100%" v-model="setting.slippage"  v-number placeholder="0.5"> 
+					</div>
+					<p  class="tal" style="padding:0px 10px">%</p>
 				</div>
 				<div class=" mgt-10">
 					<button :class="Number(setting.slippage) == 0.1?'btn-primary':'btn-default' " @click="setting.slippage = 0.1">0.1%</button>&nbsp;
@@ -31,7 +33,9 @@
 					</span>
 				</p>
 				<div class="aveage-box mgt-10">
-					<input type="number" class="ly-input" style="flex:1 1 auto" v-model="setting.duration" v-int placeholder="20"> 
+					<div style="flex:1 1 auto">
+						<input style="width:100%" type="number" class="ly-input"  v-model="setting.duration" v-int placeholder="20"> 
+					</div>
 					<p  class="tac" style="padding:0px 10px">{{$t("Air-drop_44")}}</p>
 				</div>
 				<p class="color-danger small mgt-10" v-if="setting.duration == '' ">{{$t("Air-drop_99")}}</p>

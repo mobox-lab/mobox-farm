@@ -98,7 +98,7 @@ export default class HTTP {
 		return data;
 	}
 	//获取交易历史记录
-	static async getMyAuctionHistory(address, page=1,limit=25) {
+	static async getMyAuctionHistory(address, page=1,limit=50) {
 		let { data } = await this.get(`/auction/logs/${address}?&page=${page}&limit=${limit}`);
 		return data;
 	}

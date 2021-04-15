@@ -39,6 +39,14 @@
  }
 
 @media (max-width: 768px) {
+	#aridorp .menu-btn{
+		padding: 0px!important;
+		padding-top: 10px!important;
+	}
+
+	.yf-tab li{
+		padding: 0px 20px!important;
+	}
 	.btn-primary{
 		padding: 0px 10px!important;
 	}

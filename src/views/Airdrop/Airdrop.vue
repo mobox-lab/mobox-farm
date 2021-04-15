@@ -379,10 +379,7 @@ export default {
 	#airdrop-cont #recheck{
 		zoom: 0.65;
 	}
-	#aridorp .menu-btn{
-		padding: 0px;
-		padding-top: 10px;
-	}
+	
 }
 @media (max-width: 1500px) {
 	#airdrop-cont {

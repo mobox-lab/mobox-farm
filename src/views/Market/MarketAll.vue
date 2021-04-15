@@ -4,9 +4,11 @@
 			<span class="vertical-children mgt-10 dib">{{$t("Market_33")}}: {{ marketPets.total }} </span>
 			<span class="search-box mgl-20 mgt-10 dib">
 				<div class="dib por" >
-					<div class="dib">
-						<input class="ly-input" ref="searchInput" type="text" :placeholder="$t('BOX_17')" v-model="searchWord" />
-						<span v-if="searchWord != '' " style="position:absolute;right:10px " class="cur-point opa-6" @click="searchWord='';goSearch()">&times;</span>
+					<div class="dib por">
+						<input class="ly-input" ref="searchInput" style="padding-right:30px;width:200px" type="text" :placeholder="$t('BOX_17')" v-model="searchWord" />
+						<span v-if="searchWord != '' " style="position:absolute;right:10px;height:100%;align-items: center;display: inline-flex;justify-content: center;" class="cur-point opa-6" @click="searchWord='';goSearch()">
+							<svg t="1618473937077" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1127" width="20" height="20"><path d="M601.376 512l191.52-191.52c28.096-28.096 30.976-71.168 6.4-95.744s-67.68-21.696-95.744 6.4l-191.52 191.52-191.52-191.52c-28.096-28.096-71.168-30.976-95.744-6.368s-21.696 67.68 6.4 95.744l191.52 191.52-191.52 191.52c-28.096 28.096-30.976 71.168-6.368 95.744s67.68 21.696 95.744-6.4l191.52-191.52 191.52 191.52c28.096 28.096 71.168 30.976 95.744 6.4s21.696-67.68-6.4-95.744l-191.52-191.52z" p-id="1128" fill="#94BBFF"></path></svg>
+						</span>
 					</div>
 					<div class="search-preview" ref="searchPreview"  style="margin-bottom:50px" v-if="getSearchArr.length > 0">
 						<div class="aveage-box" v-for="item in getSearchArr" :key="item.prototype" @click="setSearchItme(item)">

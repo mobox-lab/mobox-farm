@@ -96,7 +96,7 @@ export default {
 	components: { Tab, MarketAll, MarketMy, MarketMySell , Dialog , Loading, MarketStatistics, PetItemMin},
 	data() {
 		return {
-			tabList: [this.$t('Market_01'), this.$t("Market_02"), this.$t("Market_03"), this.$t("Market_40")],
+			tabList: [this.$t('Market_01'), this.$t("Market_02"), this.$t("Market_03"), this.$t("Market_53")],
 			tabPos: 0,
 			selectCategory: [
 				this.$t("MOMO_02"),

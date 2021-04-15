@@ -16,9 +16,11 @@
 					</p>
 					<p class="tar small">{{$t("Mine_05")}}: {{from.coinName==""?"-":coinArr[from.coinName].balance}}</p>
 				</div>
-				<div class="aveage-box vertical-children mgt-10">
-					<input style="flex:1 1 auto" type="text" placeholder="0.0" v-model="from.inputValue" v-number @keyup="inputValueChange('from')">
-					<p class="text-btn" v-if="from.coinName != ''" @click="maxInputFrom();inputValueChange('from')">Max</p>
+				<div class="aveage-box vertical-children mgt-10" >
+					<div  style="flex:1 1 auto">
+						<input style="width:100%" type="text" placeholder="0.0" v-model="from.inputValue" v-number @keyup="inputValueChange('from')">
+					</div>
+					<p class="text-btn tac"  v-if="from.coinName != ''" @click="maxInputFrom();inputValueChange('from')">Max</p>
 					<!-- <p class="tar cur-point text-btn vertical-children" @click="openSelectCoin('from')"> -->
 					<p class="tar cur-point text-btn vertical-children" >
 						<span  v-if="from.coinName != '' ">
@@ -46,7 +48,9 @@
 					<p class="tar small">{{$t("Mine_05")}}: {{to.coinName==""?"-":coinArr[to.coinName].balance}}</p>
 				</div>
 				<div class="aveage-box vertical-children mgt-10">
-					<input style="flex:1 1 auto" type="text" placeholder="0.0" v-model="to.inputValue" v-number @keyup="inputValueChange('to')">
+					<div style="flex:1 1 auto;">
+						<input style="width:100%" type="text" placeholder="0.0" v-model="to.inputValue" v-number @keyup="inputValueChange('to')">
+					</div>
 					<!-- <p class="tar text-btn vertical-children" @click="openSelectCoin('to')"> -->
 					<p class="tar text-btn vertical-children" >
 						<span  v-if="to.coinName != '' ">

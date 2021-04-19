@@ -35,7 +35,7 @@
 							<div class="tac " v-if="item.vType <= 3" >
 								<SelectNum :maxNum="item.num" v-show="getSelectNum(item.prototype) > 0" :defaultNum="getSelectNum(item.prototype)" :data="item" :onChange="onNumChange" />
 								<button class="btn-primary" @click="sell1155Direct(item)" v-show="getSelectNum(item.prototype) == 0">
-									<span>单个{{$t("Market_02")}}</span>
+									<span>{{$t("Market_57")}}</span>
 								</button>
 								<button class="btn-primary mgl-5" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.prototype) == 0">
 									<span>{{$t("Market_08")}}</span>

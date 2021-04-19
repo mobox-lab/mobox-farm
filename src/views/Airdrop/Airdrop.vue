@@ -158,7 +158,7 @@
 					<p class="small opa-6 tac" >{{$t("Air-drop_80")}}</p>
 					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
 				</div>
-				<div style="padding:10px">
+				<div style="padding:10px" class="hide">
 					<p class="small opa-6 tac" >{{$t("Air-drop_81")}}</p>
 					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
 				</div>

@@ -232,7 +232,7 @@
 		<Dialog id="showPetPowerUp-dialog" :top="100" :width="420" :animation="scorllToTargetPos" >
 			<div style="padding: 10px">
 				<h3>{{ $t("Fetters_01") }}</h3>
-				<p class="small opa-6 mgt-10 tal">{{ $t("Fetters_02") }}</p>
+				<p class="small opa-6 mgt-10 tal">{{ $t("Fetters_02") }}{{$t("Fetters_12")}}</p>
 				<p class="mgt-10 tal small vertical-children">
 					{{ $t("Fetters_03") }}:
 					<span style="color: #aaf45a">{{showPowerUpList.length * 100}}</span>
@@ -288,32 +288,11 @@
 			</div>
 		</Dialog>
 		<Dialog id="showNotice-dialog" :top="100" :width="520">
-			<h2>公告</h2>
-			<div class="mgt-10 tab-body tal" style="max-height:500px;overflow-x:auto">
-				<div class="tab-panel">
-					askdljaslkdjalskdjlasaskdljaslkdjalskdjlas3askdljaslkdja
-					lskdjlas2askdljaslkdj
-					alskdjlas.askdljaslkdjalskdjlas,askdljaslkdjalskdjla
-					s,askdl
-					jaslkdjalskdjlas,askdljaslkdjalskdjlas,askdlja
-					slkdjalskdjlas
-					askdljaslkdjalskdjlasaskdljaslkdjalskdjlas3askdljas
-					lkdjalskdjlas2askdljas
-					lkdjalskdjlas.askdljaslkdjalskdjlas,askdljaslkdjalskdjlas,askdl
-					jaslkdjalskdjlas,askdljaslkdjalskdjlas,askdljaslkdjal
-					skdjlas
-					askdljaslkdjalskdjlasaskdljaslkdjalskdjlas3askdljasl
-					kdjalskdjlas2askdljaslkdjalskdjlas.askdljaslkdjalsk
-					djlas,askdljaslkdjalskdjlas,askdljaslkdjalskdjlas,askdljaslk
-					djalskdjlas,askdljaslkdjalskdjlas
-					askdljaslkdjalskdjlasaskdljaslkdjalskdjlas3askdljasl
-					kdjalskdjlas2askdljaslkdjalskdjlas.askdljaslkdja
-					lskdjlas,askdljaslkdjalskdjlas,askdljaslkdjalskdjlas,askdlj
-					aslkdjalskdjlas,askdljaslkdjalskdjlas
-					askdljaslkdjalskdjlasaskdljaslkdjalskdjlas3askdljaslkdja
-					lskdjlas2askdljaslkdjalskdjlas.askdljaslkdjal
-					skdjlas,askdljaslkdjalskdjlas,askdljaslkdjalskdjlas,ask
-					dljaslkdjalskdjlas,askdljaslkdjalskdjlas
+			<h2>{{$t("Notice_01")}}</h2>
+			<div class="mgt-10 tab-body tal" >
+				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8)">
+					<span v-html="$t('Notice_02')" >
+					</span>
 				</div>
 			</div>
 		</Dialog>

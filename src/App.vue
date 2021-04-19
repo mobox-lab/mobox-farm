@@ -296,15 +296,13 @@
 				</div>
 			</div>
 		</Dialog>
-		<Dialog id="momo-des-dialog" :top="100" :width="400">
+		<Dialog id="momo-des-dialog" :top="100" :width="390">
 			<div class="tab-body tal" style="max-height:500px;overflow-x:auto">
 				<div class="tab-panel">
-					检测到你是第一打开momo，是否要需要查看FAQ帮助你快速了解
-					<div class="mgt-50 tac">
-						<a href="https://faqcn.mobox.io/" target="_blanck" v-if="$i18n.locale == 'zh-CN' || $i18n.locale=='zh-TW' "><button class="btn-primary">查看FAQ</button></a>
-						<a href="https://faqen.mobox.io/" target="_blanck" v-if="$i18n.locale == 'en' "><button class="btn-primary">查看FAQ</button></a>
-						<a href="https://faqkr.mobox.io/" target="_blanck" v-if="$i18n.locale == 'kr' "><button class="btn-primary">查看FAQ</button></a>
-						<button class="btn-primary mgl-20" @click="setStorageItem('hasReadFAQ', true);oprDialog('momo-des-dialog', 'none')">跳过</button>
+					<span class="mgt-20 dib">{{$t("Common_26")}}</span>
+					<div class="mgt-50 tac" >
+						<button class="btn-primary mgt-10" style="width:90%" @click="goToFAQ">{{$t("Common_27")}}</button>
+						<button class="btn-primary mgt-10" style="width:90%" @click="setStorageItem('hasReadFAQ', true);oprDialog('momo-des-dialog', 'none')">{{$t("Common_28")}}</button>
 					</div>
 				</div>
 			</div>
@@ -502,12 +500,11 @@ export default {
 		
 		this.setLang();
 
+
+
 		setTimeout(() => {
 			this.scorllToTargetPos();
-			let hasReadFAQ = Common.getStorageItem("hasReadFAQ");
-			if(!hasReadFAQ){
-				this.oprDialog("momo-des-dialog", "block")
-			}
+			
 		}, 5000);
 
 		let count = 0;
@@ -540,10 +537,32 @@ export default {
 		await this.getTotalStakeUSDTAndAirdropKEY();
 
 	},
+
+	mounted(){
+		let hasReadFAQ = Common.getStorageItem("hasReadFAQ");
+		if(!hasReadFAQ){
+			let t = setTimeout(()=>{
+				clearTimeout(t);
+				this.oprDialog("momo-des-dialog", "block")
+			}, 1000)
+		}
+	},
 	beforeDestroy(){
 		clearInterval(timer);
 	},
 	methods: {
+		goToFAQ(){
+			let lang = this.$i18n.locale;
+			if(lang == "zh-CN" ||lang == "zh"){
+				window.open("https://faqcn.mobox.io/");
+			}else if(lang=="kr"){
+				window.open("https://faqkr.mobox.io/");
+			}else{
+				window.open("https://faqen.mobox.io/");
+			}
+			this.oprDialog("momo-des-dialog", "none");
+			Common.setStorageItem("hasReadFAQ", true);
+		},
 		setStorageItem(name, value){
 			Common.setStorageItem(name, value);
 		},

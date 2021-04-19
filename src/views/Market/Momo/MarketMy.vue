@@ -20,23 +20,27 @@
 			<div class="clear mgt-20">
 				<PetItem  v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()" v-bind:data="{item: item}" class="market" >
 					<div style="height:43px;position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
-						<div v-if="item.isLock" class="tar">
+						<div v-if="item.isLock" class="tac">
 							<button class="btn-primary disable-btn">
 								<img  src="../../assets/icon/lock.png" alt="" height="20"/>
 							</button>
 						</div>
 						<div v-else>
-							<div v-if="item.vType > 3" class=" tar">
+							<div v-if="item.vType > 3" class=" tac">
 								<button class="btn-primary" @click="set721Price(item)">
 									<span>{{$t("Market_02")}}</span>
 								</button>
 							</div>
 
-							<div class="tar " v-if="item.vType <= 3" >
+							<div class="tac " v-if="item.vType <= 3" >
 								<SelectNum :maxNum="item.num" v-show="getSelectNum(item.prototype) > 0" :defaultNum="getSelectNum(item.prototype)" :data="item" :onChange="onNumChange" />
-								<button class="btn-primary" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.prototype) == 0">
+								<button class="btn-primary" @click="sell1155Direct(item)" v-show="getSelectNum(item.prototype) == 0">
+									<span>单个{{$t("Market_02")}}</span>
+								</button>
+								<button class="btn-primary mgl-5" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.prototype) == 0">
 									<span>{{$t("Market_08")}}</span>
 								</button>
+								
 							</div>
 						</div>
 					</div>
@@ -352,6 +356,7 @@ export default {
 				return;
 			}
 			auctionObj._suggestIndex = Number(suggestIndex);
+			console.log(auctionObj);
 			let hash = await Wallet.ETH.createAuction(auctionObj);
 			if (hash) {
 				await Common.sleep(200);
@@ -402,6 +407,13 @@ export default {
 		set721Price(item) {
 			this.sellObj.sellData = item;
 			this.sellObj.sellType = "721";
+			this.initSellObjInput();
+			this.oprDialog("confirm-sell-dialog", "block");
+		},
+		//直接单个出售1155
+		sell1155Direct(item){
+			this.sellObj.sellData = [{prototype: item.prototype, sellNum: 1}];
+			this.sellObj.sellType = "shopCar";
 			this.initSellObjInput();
 			this.oprDialog("confirm-sell-dialog", "block");
 		},

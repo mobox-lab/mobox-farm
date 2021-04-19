@@ -137,7 +137,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="top-res">
+		<div id="top-res" class="vertical-children">
 			<p class="vertical-children">
 				<img src="./assets/icon/airdrop.png" alt="" height="25" />&nbsp;
 				<span>{{ eth_myHashrate }}</span>
@@ -154,9 +154,10 @@
 				<img src="./assets/coin/BNB.png" alt="" height="25" />&nbsp;
 				<span>{{ Number(coinArr["BNB"].balance) || 0 }}</span>
 			</p>
-			<a class="hide" href="https://www.certik.org/projects/mobox" style="position:absolute;right:15px;top: 0px" target="_blank">
-				<img src="./assets/icon/check-icon.png" alt="" height="50" />
-			</a>
+			<span class="text-btn por" @click="showNotice">
+				<span class="notice" v-if="!hasReadNotice"></span>
+				<img src="./assets/icon/notice_icon.png" alt="" height="25"/>
+			</span>
 		</div>
 		<!-- 手机底部导航 -->
 		<div id="nav-list-mobile" class="hide">
@@ -286,6 +287,49 @@
 				<span v-html="$t('MOMO_36')" class="small tal" style="font-weight:200"></span>
 			</div>
 		</Dialog>
+		<Dialog id="showNotice-dialog" :top="100" :width="520">
+			<h2>公告</h2>
+			<div class="mgt-10 tab-body tal" style="max-height:500px;overflow-x:auto">
+				<div class="tab-panel">
+					askdljaslkdjalskdjlasaskdljaslkdjalskdjlas3askdljaslkdja
+					lskdjlas2askdljaslkdj
+					alskdjlas.askdljaslkdjalskdjlas,askdljaslkdjalskdjla
+					s,askdl
+					jaslkdjalskdjlas,askdljaslkdjalskdjlas,askdlja
+					slkdjalskdjlas
+					askdljaslkdjalskdjlasaskdljaslkdjalskdjlas3askdljas
+					lkdjalskdjlas2askdljas
+					lkdjalskdjlas.askdljaslkdjalskdjlas,askdljaslkdjalskdjlas,askdl
+					jaslkdjalskdjlas,askdljaslkdjalskdjlas,askdljaslkdjal
+					skdjlas
+					askdljaslkdjalskdjlasaskdljaslkdjalskdjlas3askdljasl
+					kdjalskdjlas2askdljaslkdjalskdjlas.askdljaslkdjalsk
+					djlas,askdljaslkdjalskdjlas,askdljaslkdjalskdjlas,askdljaslk
+					djalskdjlas,askdljaslkdjalskdjlas
+					askdljaslkdjalskdjlasaskdljaslkdjalskdjlas3askdljasl
+					kdjalskdjlas2askdljaslkdjalskdjlas.askdljaslkdja
+					lskdjlas,askdljaslkdjalskdjlas,askdljaslkdjalskdjlas,askdlj
+					aslkdjalskdjlas,askdljaslkdjalskdjlas
+					askdljaslkdjalskdjlasaskdljaslkdjalskdjlas3askdljaslkdja
+					lskdjlas2askdljaslkdjalskdjlas.askdljaslkdjal
+					skdjlas,askdljaslkdjalskdjlas,askdljaslkdjalskdjlas,ask
+					dljaslkdjalskdjlas,askdljaslkdjalskdjlas
+				</div>
+			</div>
+		</Dialog>
+		<Dialog id="momo-des-dialog" :top="100" :width="400">
+			<div class="tab-body tal" style="max-height:500px;overflow-x:auto">
+				<div class="tab-panel">
+					检测到你是第一打开momo，是否要需要查看FAQ帮助你快速了解
+					<div class="mgt-50 tac">
+						<a href="https://faqcn.mobox.io/" target="_blanck" v-if="$i18n.locale == 'zh-CN' || $i18n.locale=='zh-TW' "><button class="btn-primary">查看FAQ</button></a>
+						<a href="https://faqen.mobox.io/" target="_blanck" v-if="$i18n.locale == 'en' "><button class="btn-primary">查看FAQ</button></a>
+						<a href="https://faqkr.mobox.io/" target="_blanck" v-if="$i18n.locale == 'kr' "><button class="btn-primary">查看FAQ</button></a>
+						<button class="btn-primary mgl-20" @click="setStorageItem('hasReadFAQ', true);oprDialog('momo-des-dialog', 'none')">跳过</button>
+					</div>
+				</div>
+			</div>
+		</Dialog>
 		
 		<div id="fly-dot"></div>
 		<Pancake ref="pancake" />
@@ -387,6 +431,7 @@ export default {
 				],
 				},
 			powerTab: "v4",
+			hasReadNotice: false,
 		};
 	},
 	computed: {
@@ -474,17 +519,21 @@ export default {
 	},
 	async created() {
 		window.addEventListener("message", this.listenPostMsg, false);
+		this.hasReadNotice = Common.getStorageItem("hasReadNotice");
 		
 		this.setLang();
 
 		setTimeout(() => {
 			this.scorllToTargetPos();
+			let hasReadFAQ = Common.getStorageItem("hasReadFAQ");
+			if(!hasReadFAQ){
+				this.oprDialog("momo-des-dialog", "block")
+			}
 		}, 5000);
 
 		let count = 0;
 		//1s定时器
 		clearInterval(timer);
-		let airdropCountDown = 1617768000 - parseInt(new Date().valueOf()/ 1000);
 		timer = setInterval(async ()=>{
 			//定时移除锁定按钮状态
 			for (let key in this.globalState.lockBtn) {
@@ -498,16 +547,7 @@ export default {
 					this.upgradeLocks[key]--;
 				}
 			}
-
-			if(airdropCountDown >= 0){
-				airdropCountDown--;
-				this.$store.commit("globalState/setData", {airdropCountDown});
-
-				if(airdropCountDown == 0){
-					this.getTotalStakeUSDTAndAirdropKEY();
-				}
-			}
-
+		
 			count++;
 			if(count % 10 == 0){
 				await this.setOurPrice("KEY");
@@ -525,6 +565,14 @@ export default {
 		clearInterval(timer);
 	},
 	methods: {
+		setStorageItem(name, value){
+			Common.setStorageItem(name, value);
+		},
+		showNotice(){
+			this.hasReadNotice = true;
+			Common.setStorageItem("hasReadNotice", true);
+			this.oprDialog("showNotice-dialog", "block");
+		},
 		setLang(){
 			let langMap = {"ko":"kr", "zh-CN":"zh-CN","zh-TW":"zh-CN", "en":"en", "zh":"zh-CN", "kr":"kr"};
 

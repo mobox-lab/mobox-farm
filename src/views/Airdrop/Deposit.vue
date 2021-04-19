@@ -4,32 +4,6 @@
 			<div class="tab-menu active" >{{$t("Air-drop_07")}}</div>
 		</div>
 		<div class="tab-body">
-			<!-- <div class="tab-content">
-				<div class="aveage-box">
-					<p class="tal small opa-6">{{$t("Air-drop_20")}}</p>
-				</div>
-				<div class="mgt-10 por">
-					<div class="ly-input-pre-icon" :class="oprData.isLP?'double-img':'' " v-if="oprData.coinName != ''" style="zoom: 0.75">
-						<img v-for="(name, key) in oprData.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="40" alt="" />
-					</div>
-					<input type="text" class="ly-input tac" style="width:100%;padding: 0px 50px" v-model="inputValue"  readonly="readonly" >
-				</div>
-				<div class="aveage-box mgt-10">
-					<p class="tal small">{{$t("Air-drop_19")}}</p>
-					<div class="tar small">
-						<p>{{oprData.wantAmount}} {{oprData.coinName}}</p>
-					</div>
-				</div>
-				<div class="mgt-10">
-					<PercentSelect :selectCB="percent => inputPercent = percent" />
-				</div>
-				
-				<StatuButton :isLoading="oprData.coinName != ''  && coinArr[oprData.coinName].isWithdrawing" 
-					:isDisable="oprData.coinName == '' || Number(inputValue) <= 0 || coinArr[oprData.coinName].isWithdrawing" :onClick="withdraw" style="width: 70%">
-					{{$t("Air-drop_08")}}
-				</StatuButton>
-
-			</div> -->
 			<div class="tab-content">
 				<div class="aveage-box hide">
 					<p class="tal small">{{$t("Air-drop_10")}}</p>

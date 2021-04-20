@@ -543,6 +543,7 @@ export default {
 		if(!hasReadFAQ){
 			let t = setTimeout(()=>{
 				clearTimeout(t);
+				Common.setStorageItem("hasReadFAQ", true);
 				this.oprDialog("momo-des-dialog", "block")
 			}, 1000)
 		}

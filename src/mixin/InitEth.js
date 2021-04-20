@@ -199,7 +199,10 @@ const InitEth = {
 		async getBuyBack(){
 			let res = await Http.buybackpool();
 			if(res){
-				this.buyBack.hasAmount = Common.numFloor(res.amount, 1e2);
+				this.buyBack.amount = Common.numFloor(res.amount, 1e2);
+				this.buyBack.avgPrice = Common.numFloor(res.avgPrice, 1e4);
+				this.buyBack.moboxBurn = Common.numFloor(res.moboxBurn/ 1e18, 1e2);
+				this.buyBack.logs = res.logs;
 				this.$store.commit("bnbState/setData", {buyBack: this.buyBack});
 			}
 		},

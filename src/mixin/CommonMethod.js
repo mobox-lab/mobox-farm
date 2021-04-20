@@ -1,9 +1,5 @@
 import Common from "../utils/Common";
-import {WalletConfig, ConstantConfig, } from "@/config";
-import {Wallet} from '@/utils'
-import axios from 'axios';
-
-const $ = window.$;
+import {WalletConfig} from "@/config";
 
 const CommonMethod = {
 	data() {
@@ -14,81 +10,13 @@ const CommonMethod = {
 				3: "fish",
 				4: "monster",
 				5: "people",
-				6: "people",
 			},
-			hackReload: "page_"+new Date().valueOf(),
-			locationSelect: [
-				"All",
-				this.$t("MOMO_95"),
-				// this.$t("MOMO_94"),
-				"Wallet",
-			],
-			categorySelect: [
-				this.$t("MOMO_02"),
-				this.$t("MOMO_03"),
-				this.$t("MOMO_04"),
-				this.$t("MOMO_05"),
-				this.$t("MOMO_06"),
-				this.$t("MOMO_07"),
-			],
-			locationName:["","stake","verse","wallet"]
+			hackReload: "page_"+new Date().valueOf()
 		})
 	},
 	methods: {
-		
-		toggleFilter(target){
-			$(target).toggleClass("hide");
-		},
-		quickBuy(ptype){
-			Common.app.$refs.quickBuy.show(ptype);
-		},
-		getVType(prototype){
-			return parseInt(prototype/1e4)
-		},
-		async setAction(actionId){
-			let sendData = {
-				actionId: actionId.toString(),
-				platform:"web",
-				version:"1.0",
-				fd: Wallet.ETH.myAddr
-			}
-			axios.post("https://accountapi.mobox.io/app/action", sendData);
-		},
-		getRoot(){
-			return this.$root.$children[0]
-		},
-		getRootRefs(){
-			return this.$root.$children[0].$refs
-		},
-		getConfirmDialog(){
-			return this.$root.$children[0].$refs.confirmDialog;
-		},
-		getMomoShopCar(){
-			return this.$root.$children[0].$refs.momoShopCar;
-		},
-		showSwapBox(){
-			// this.$root.$children[0].$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap');
-			window.open("https://pancakeswap.finance/swap?outputCurrency=0x3203c9e46ca618c8c1ce5dc67e7e9d75f5da2377");
-		},
-		getCurrencyName(currency){
-			return ConstantConfig.CurrencyTypeName[currency]
-		},
-		showDrop(e) {
-			if(e.target.className != "dropdown-group-value por") return;
-			e.stopPropagation();
-			let $nextDom = $(e.target).next();
-			let display = $nextDom.css("display");
-			if (display == "none") {
-				$nextDom.show();
-			} else {
-				$nextDom.hide();
-			}
-		},
 		getTxUrl(tx) {
 			return WalletConfig.ETH.view_tx_url + tx;
-		},
-		getBlockUrl(block){
-			return WalletConfig.ETH.view_block_url + block;
 		},
 		hackReloadMethod(){
 			this.hackReload =  "page_"+new Date().valueOf();
@@ -98,7 +26,6 @@ const CommonMethod = {
 			return addr.substr(0, 6) + "..." + addr.substr(addr.length - 4, addr.length);
 		},
 		numFloor(num, decimals = 100) {
-			if(num == "-") return "-"
 			return Number(Math.floor(num * decimals + 0.0000002) / decimals);
 		},
 		//根据算力得到显示文字的颜色
@@ -111,15 +38,6 @@ const CommonMethod = {
 				return "c-lv1";
 			}
 			return "c-lv" + (quality - 1);
-		},
-		getHashrateColor2(hashRate, vType){
-			let quality;
-			if(hashRate < 20) quality = 4;
-			if(hashRate >= 80) quality = 6;
-			if(hashRate>= 20 && hashRate < 30) quality = 5;
-			if(hashRate>= 30) quality = 6;
-			if(hashRate >= 50 && hashRate < 80 && vType == 5) quality = 5;
-			return this.getHashrateColor({quality});
 		},
 		async oprDialog(domId, type) {
 			let dom = document.getElementById(domId);
@@ -149,13 +67,6 @@ const CommonMethod = {
 		shorAddress(address) {
 			if (!address) return ""
 			return address.substring(0, 4).concat("...").concat(address.substring(address.length - 4, address.length));
-		},
-		shortHash(hash) {
-			if (!hash) return ""
-			return hash.substring(0, 6).concat("...").concat(hash.substring(hash.length - 6, hash.length));
-		},
-		getRandomInt(min, max) {
-			return Math.floor(Math.random() * (max - min + 1) + min);
 		},
 		shortStr(name) {
 			if (!name) return ""
@@ -210,19 +121,6 @@ const CommonMethod = {
 				second = Math.floor(times) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
 			}
 			return this.patchTimeLength(hour) + ":" + this.patchTimeLength(minute) + ":" + this.patchTimeLength(second)
-		},
-		getLeftTime2(times) {
-			let day = 0,
-				hour = 0,
-				minute = 0,
-				second = 0;
-			if (times > 0) {
-				day = Math.floor(times / 60 / 60 / 24);
-				hour = Math.floor(times / (60 * 60) - day * 24);
-				minute = Math.floor(times / 60) - day * 24 * 60 - hour * 60;
-				second = Math.floor(times) - day * 24 * 60 * 60 - hour * 60 * 60 - minute * 60;
-			}
-			return this.patchTimeLength(day) + ":"+ this.patchTimeLength(hour) + ":" + this.patchTimeLength(minute) + ":" + this.patchTimeLength(second)
 		},
 
 		// 时间长度补位

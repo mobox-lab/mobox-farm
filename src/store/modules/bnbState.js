@@ -57,6 +57,10 @@ const state = () => ({
 		//回购相关
 		buyBack:{
 			hasAmount: 0,
+			amount: "-",
+			avgPrice: "-",
+			logs: [],
+			moboxBurn: "-"
 		},
 
 		pancakeHistory: [],

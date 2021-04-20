@@ -148,21 +148,41 @@
 			<div class="aveage-box">
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_78")}}({{$t("Air-drop_131")}})</p>
-					<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.hasAmount" />
+					<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.amount.toLocaleString()" />
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_79")}}</p>
-					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
+					<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.avgPrice" />
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_80")}}</p>
-					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
+					<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.moboxBurn"  />
 				</div>
 				<div style="padding:10px" class="hide">
 					<p class="small opa-6 tac" >{{$t("Air-drop_81")}}</p>
 					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
 				</div>
 			</div>
+			<table class="mgt-20 table-his tac small" style="width:100%" border="0" frame="void" rules="none">
+				<tr>
+					<th style="width:25%;">{{ $t("BOX_12") }}</th>
+					<th>{{ $t("Air-drop_49") }}</th>
+					<th>{{ $t("Air-drop_51") }}</th>
+					<th>{{ $t("Air-drop_50") }}</th>
+					<th>{{ $t("BOX_12") }}</th>
+				</tr>
+				<tr v-for="item in buyBack.logs" :key="item.txId">
+					<td >{{ dateFtt("yyyy-MM-dd hh:mm:ss", new Date(item.ts* 1000)) }}</td>
+					<td>{{item.type}}</td>
+					<td>${{numFloor(item.price, 1e2)}}</td>
+					<td>{{numFloor(item.amount, 1e2)}}</td>
+					<td>
+						<a :href="getTxUrl(item.txId)" target="_blank">
+							<img src="../../assets/icon/viewTx.png" alt="" class="cur-point" />
+						</a>
+					</td>
+				</tr>
+			</table>
 		</section>
 
 		<Dialog id="deposit-notice-dialog" :top="100" :width="400">
@@ -300,6 +320,10 @@ export default {
 </script>
 
 <style scoped>
+.table-his tr:nth-of-type(odd) {
+	background: #182342;
+}
+
 .airdorp-item-coin-icon {
 	position: absolute;
 	left: 20px;
@@ -378,6 +402,9 @@ export default {
 	}
 	#airdrop-cont #recheck{
 		zoom: 0.65;
+	}
+	#buy-back{
+		padding: 10px !important;
 	}
 	
 }

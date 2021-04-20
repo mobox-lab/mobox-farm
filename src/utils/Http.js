@@ -24,6 +24,7 @@ export default class HTTP {
 	}
 	static async buybackpool(){
 		let { data } = await this.get(`/buybackpool/amount`);
+		console.log("buybackpool", data);
 		return data;
 	}
 	static async getKeyDrop(){

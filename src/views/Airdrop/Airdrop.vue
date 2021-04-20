@@ -145,14 +145,15 @@
 					<span class="popMsg left">{{$t("Air-drop_91")}}</span>
 				</span>
 			</div>
-			<div class="aveage-box">
+			<div class="aveage-box" style="background:#2A3B67;border-radius:10px">
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_78")}}({{$t("Air-drop_131")}})</p>
 					<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.amount.toLocaleString()" />
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_79")}}</p>
-					<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.avgPrice" />
+					<!-- <input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.avgPrice" /> -->
+					<input type="text" readonly class="ly-input mgt-10 tac"  value="-" />
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_80")}}</p>
@@ -173,7 +174,8 @@
 				</tr>
 				<tr v-for="item in buyBack.logs" :key="item.txId">
 					<td >{{ dateFtt("yyyy-MM-dd hh:mm:ss", new Date(item.ts* 1000)) }}</td>
-					<td>{{item.type}}</td>
+					<td v-if="item.type == 1">{{$t("Air-drop_132")}}</td>
+					<td v-else>{{$t("Air-drop_133")}}</td>
 					<td>${{numFloor(item.price, 1e2)}}</td>
 					<td>{{numFloor(item.amount, 1e2)}}</td>
 					<td>

@@ -1,8 +1,9 @@
 <template>
 	<div id="aridorp" class="tac">
-		<section class="mgt-0">
-			<div class="menu-btn active">
-				<img src="../../assets/icon/bnb.png" alt="" height="50" />
+		<section class="mgt-50">
+			<div class="tac mgt-10">
+				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v1'}) "  :class="pledgeType == 'v1'?'active':''" class="tab-menu " style="font-size:16px">V1</div>
+				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v2'})"  :class="pledgeType == 'v2'?'active':''"  class="tab-menu" style="font-size:16px"  >V2</div>
 			</div>
 		</section>
 		<section id="airdrop-cont" class="por">
@@ -36,7 +37,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-4 col-xs-12 col-sm-6 mgt-10" v-for="item in getPledgeList" :key="item.coinName" >
-					<div class="airdrop-item tal">
+					<div class="airdrop-item tal" :class="`pledgeType-${pledgeType}`">
 						<div class="vertical-children" style="padding-left: 56px" >
 							<div class="dib airdorp-item-coin-icon tac " :class="item.isLP?'double-img':'' ">
 								<img v-for="(name, key) in item.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="50" alt="" />
@@ -254,6 +255,7 @@ export default {
 			buyBack: (state) => state.bnbState.data.buyBack,
 			airdropCountDown: (state) => state.globalState.data.airdropCountDown,
 			onlyShowPledge: (state) => state.bnbState.data.onlyShowPledge,
+			pledgeType: (state) => state.bnbState.data.pledgeType,
 		}),
 		//获取总质押USDT
 		getTotalSupplyUSDT() {
@@ -266,7 +268,7 @@ export default {
 
 		getPledgeList(){
 			let arr = [];
-			let stakeLP = PancakeConfig.StakeLP;
+			let stakeLP = this.pledgeType == "v1"?PancakeConfig.StakeLPV1:PancakeConfig.StakeLP;
 			for (let key in stakeLP) {
 				if(stakeLP[key].pIndex != -1 && (this.coinArr[key].wantAmount > 0 || !this.onlyShowPledge)){
 					arr.push({coinName: key, ...stakeLP[key], ...this.coinArr[key]})
@@ -322,6 +324,9 @@ export default {
 </script>
 
 <style scoped>
+.pledgeType-v2{
+	background: #1c222c !important;
+}
 .table-his tr:nth-of-type(odd) {
 	background: #182342;
 }
@@ -374,7 +379,6 @@ export default {
 	background: #1d2b50;
 	border-radius: 20px;
 	display: inline-block;
-	margin-top: -20px;
 }
 #aridorp .menu-btn {
 	user-select: none;
@@ -386,6 +390,7 @@ export default {
 	padding: 20px;
 	cursor: pointer;
 	margin: 10px;
+	border: 1px solid red;
 }
 #aridorp .menu-btn.active {
 	border-bottom: none;
@@ -395,6 +400,9 @@ export default {
 
 #aridorp .col-md-4{
 	padding: 10px 15px;
+}
+#aridorp{
+	padding-top: 50px;
 }
 @media (max-width: 768px) {
 	#airdrop-cont {

@@ -46,6 +46,17 @@ const state = () => ({
 			"KEY-BNB": {...baseCoinAttr, isLP: true},
 			"ts": 0,
 		},
+		coinArrV1: {
+			"MBOX-BNB": {...baseCoinAttr, isLP: true},
+			"BTCB-BNB": {...baseCoinAttr, isLP: true},
+			"ETH-BNB": {...baseCoinAttr, isLP: true},
+			"BUSD-BNB": {...baseCoinAttr, isLP: true},
+			"USDT-BNB": {...baseCoinAttr, isLP: true},
+			"USDT-BUSD": {...baseCoinAttr, isLP: true},
+			"DAI-BUSD": {...baseCoinAttr, isLP: true},
+			"USDC-BUSD": {...baseCoinAttr, isLP: true},
+			"KEY-BNB": {...baseCoinAttr, isLP: true},
+		},
 		setting: {
 			slippage: 0.5,
 			duration: 20,
@@ -65,6 +76,7 @@ const state = () => ({
 
 		pancakeHistory: [],
 		onlyShowPledge:false,
+		pledgeType: "v2",//质押版本
 	},
 })
 

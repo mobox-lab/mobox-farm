@@ -629,6 +629,7 @@ svg {
 	margin-right: 8px;
 	cursor: pointer;
 	font-size: 12px;
+	user-select: none;
 }
 .tab-menu:nth-child(1){
 	margin-left: 10px;

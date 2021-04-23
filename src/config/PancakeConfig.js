@@ -1,5 +1,6 @@
 export default class PancakeConfig {
 	static SwapRouterAddr = "0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F";
+	static SwapRouterAddrV2 = "0x2AD2C5314028897AEcfCF37FD923c079BeEb2C56";
 	static SelectCoin = {
 		"BNB": {
 			decimals: 1e18,
@@ -127,7 +128,7 @@ export default class PancakeConfig {
 		},
 		"BTCB-BNB":{
 			pIndex: 13,
-			addr: "0x7561EEe90e24F3b348E1087A005F78B4c8453524",
+			addr: "0x356b7d0d3c54F22C82B7a670C6Ba9E2381b0624c",
 			allocPoint: 2,
 			decimals: 1e18,
 			omit: 1e8,
@@ -135,7 +136,7 @@ export default class PancakeConfig {
 		},
 		"ETH-BNB":{
 			pIndex: 14,
-			addr: "0x70D8929d04b60Af4fb9B58713eBcf18765aDE422",
+			addr: "0x4D7078a6B348766E7a16cD6e6fCb3064721bc6a6",
 			allocPoint: 2,
 			decimals: 1e18,
 			omit: 1e6,
@@ -143,7 +144,7 @@ export default class PancakeConfig {
 		},
 		"BUSD-BNB":{
 			pIndex: 15,
-			addr: "0x1b96b92314c44b159149f7e0303511fb2fc4774f",
+			addr: "0x9bdEdb0c876fC0Da79D945DF28942b898Af89Fc7",
 			allocPoint: 2,
 			decimals: 1e18,
 			omit: 1e6,
@@ -151,7 +152,7 @@ export default class PancakeConfig {
 		},
 		"USDT-BNB":{
 			pIndex: 16,
-			addr: "0x20bCC3b8a0091dDac2d0BC30F68E6CBb97de59Cd",
+			addr: "0x4160910ca32eAD83B6d4b32107974397D2579c2d",
 			allocPoint: 2,
 			decimals: 1e18,
 			omit: 1e6,
@@ -159,7 +160,7 @@ export default class PancakeConfig {
 		},
 		"USDT-BUSD":{
 			pIndex: 17,
-			addr: "0xc15fa3E22c912A276550F3E5FE3b0Deb87B55aCd",
+			addr: "0x28b81C6b155fd9152AE4A09c4eeB7E7F1C114FaC",
 			allocPoint: 1,
 			decimals: 1e18,
 			omit: 1e6,
@@ -167,7 +168,7 @@ export default class PancakeConfig {
 		},
 		"DAI-BUSD":{
 			pIndex: 18,
-			addr: "0x3aB77e40340AB084c3e23Be8e5A6f7afed9D41DC",
+			addr: "0xdaFE10aA3AB6758596aDAC70f6873C49F5a9bf86",
 			allocPoint: 1,
 			decimals: 1e18,
 			omit: 1e6,
@@ -175,7 +176,7 @@ export default class PancakeConfig {
 		},
 		"USDC-BUSD":{
 			pIndex: 19,
-			addr: "0x680dd100e4b394bda26a59dd5c119a391e747d18",
+			addr: "0x05FC2ac8a4FA697501087C916c87b8a5dc4f7b46",
 			allocPoint: 1,
 			decimals: 1e18,
 			omit: 1e6,

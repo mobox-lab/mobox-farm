@@ -27,14 +27,14 @@
 			<div class="dib " style="position:absolute;top:0px;right:130px;zoom:0.8" >
 				<div class="vertical-children dib">
 					<img src="./assets/coin/KEY.png" height="25" alt=""/>
-					<span  @click="$refs.pancake.setOprData({coinName: 'KEY-BNB'}).show('swap')">
+					<span  @click="$refs.pancake.setOprData({coinName: 'KEY-BNB',pancakeVType: 1}).show('swap')">
 						$<span v-if="ourPrice['KEY'] != '-' ">{{ourPrice["KEY"]}}</span>
 						<Loading v-else />
 					</span>
 				</div>
 				<div class="vertical-children  dib mgl-10 ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<span @click="$refs.pancake.setOprData({coinName: 'MBOX-BNB'}).show('swap')">
+					<span @click="$refs.pancake.setOprData({coinName: 'MBOX-BNB', pancakeVType: 1}).show('swap')">
 						$<span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
 						<Loading v-else />
 					</span>
@@ -123,14 +123,14 @@
 			<div id="our-parice-pc">
 				<div class="vertical-children point-block">
 					<img src="./assets/coin/KEY.png" height="25" alt=""/>
-					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinName: 'KEY-BNB'}).show('swap')">
+					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinName: 'KEY-BNB', pancakeVType: 1}).show('swap')">
 						$<span v-if="ourPrice['KEY'] != '-' ">{{ourPrice["KEY"]}}</span>
 						<Loading v-else />
 					</span>
 				</div>
 				<div class="vertical-children mgt-10 point-block ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinName: 'MBOX-BNB'}).show('swap')">
+					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinName: 'MBOX-BNB', pancakeVType: 1}).show('swap')">
 						$<span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
 						<Loading v-else />
 					</span>

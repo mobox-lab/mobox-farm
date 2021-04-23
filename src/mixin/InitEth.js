@@ -18,6 +18,8 @@ const InitEth = {
 			tempSells: (state) => state.marketState.data.tempSells,
 			tempMarketCancelTx: (state) => state.marketState.data.tempMarketCancelTx,
 			coinArr: (state) => state.bnbState.data.coinArr,
+			coinArrV1: (state) => state.bnbState.data.coinArrV1,
+			setting: (state) => state.bnbState.data.setting,
 			buyBack: (state) => state.bnbState.data.buyBack,
 		}),
 	},
@@ -146,6 +148,7 @@ const InitEth = {
 		async needUpdate() {
 			//查询我质押的和key的收益
 			await this.getStakeValueAndEarndKey();
+			await this.getStakeValueAndEarndKey_v1();
 
 			//质押挖矿相关
 			await this.eth_setTotalDropMbox();
@@ -206,15 +209,18 @@ const InitEth = {
 				this.$store.commit("bnbState/setData", {buyBack: this.buyBack});
 			}
 		},
+
 		//获取我质押的币和kEY的收益
 		async getStakeValueAndEarndKey(){
 			let pIndexObj  = {};
 			for (let key in PancakeConfig.StakeLP) {
-				let {pIndex} = PancakeConfig.StakeLP[key];
-				if(pIndex != 0 && pIndex != -1){
+				let {pIndex, pancakeVType} = PancakeConfig.StakeLP[key];
+				if(pIndex != 0 && pIndex != -1 && !(pancakeVType == 2)){
 					pIndexObj[key] = pIndex;
 				}
 			}
+			
+			console.log("getStakeValueAndEarndKey", pIndexObj);
 			let res = await Wallet.ETH.getStakeValueAndEarndKey(Object.values(pIndexObj));
 			if(res){
 				let {gracePeriods, pkeys, wantAmounts, workingBalances, rewardStore} = res;
@@ -228,22 +234,49 @@ const InitEth = {
 					this.coinArr["ts"] = new Date().valueOf();
 					this.$store.commit("bnbState/setData", {coinArr: this.coinArr, rewardStoreKey: Common.numFloor(Number(rewardStore) / 1e18, 1e4)});
 				});
-
-				// for (let key in coinArr) {
-				// 	let coinName = coinArr[key];
-				// 	await this.getLPCoinValue(coinName);
-				// }
 			}
 		},
 
-		async getLPCoinValue(coinName){
-			let dtTime = new Date().valueOf() - this.coinArr[coinName].lpPriceUpTs;
+		//获取我质押的币和kEY的收益V1
+		async getStakeValueAndEarndKey_v1(){
+			let pIndexObj  = {};
+			for (let key in PancakeConfig.StakeLPV1) {
+				let {pIndex} = PancakeConfig.StakeLPV1[key];
+				if(pIndex != 0 && pIndex != -1){
+					pIndexObj[key] = pIndex;
+				}
+			}
+			
+			console.log("getStakeValueAndEarndKey_v1", pIndexObj);
+			let res = await Wallet.ETH.getStakeValueAndEarndKey(Object.values(pIndexObj));
+			if(res){
+				let {gracePeriods, pkeys, wantAmounts, workingBalances} = res;
+				let coinArr = Object.keys(pIndexObj);
+				coinArr.map((coinName, index)=>{
+					let {decimals, omit} = PancakeConfig.StakeLP[coinName];
+					this.coinArrV1[coinName].earnedKey = Common.numFloor(Number(pkeys[index]) / decimals, 1e4);
+					this.coinArrV1[coinName].gracePeriod = gracePeriods[index];
+					this.coinArrV1[coinName].wantAmount = Common.numFloor(Number(wantAmounts[index]) / decimals, omit);
+					this.coinArrV1[coinName].workingBalance = workingBalances;
+					this.coinArrV1["ts"] = new Date().valueOf();
+					this.$store.commit("bnbState/setData", {coinArrV1: this.coinArrV1});
+				});
+			}
+		},
+
+		async getLPCoinValue(item){
+			let {coinName, pancakeVType} = item;
+
+			let coinArr =  this.setting.pancakeVType == 1? this.coinArrV1: this.coinArr;
+			let version = pancakeVType == 1?"V1":"V2";
+
+			let dtTime = new Date().valueOf() - coinArr[coinName].lpPriceUpTs;
 			if(coinName.indexOf("-") == -1 || dtTime < 5000) return;
 			let tokenA = coinName.split("-")[0];
 			let tokenB = coinName.split("-")[1];
 			if(tokenA == undefined || tokenB == undefined) return;
-			this.coinArr[coinName].lpPriceUpTs = new Date().valueOf();
-			let res = await SwapHttp.post("/pair/lpamount",{token0: tokenA, token1: tokenB});
+			coinArr[coinName].lpPriceUpTs = new Date().valueOf();
+			let res = await SwapHttp.post("/pair/lpamount",{token0: tokenA, token1: tokenB, version});
 			let {data, code } = res.data;
 			if(code == 200){
 				let reserve0 = Number(0);
@@ -259,15 +292,15 @@ const InitEth = {
 
 				let retObj = ["-","-"];
 
-				let lp =  this.coinArr[coinName].wantAmount;
+				let lp =  coinArr[coinName].wantAmount;
 				if(totalSupply == 0 || reserve0 == 0 || reserve1 == 0) return retObj;
 
 				retObj[0] = Common.numFloor(lp * reserve0 / totalSupply, PancakeConfig.SelectCoin[tokenA].omit);
 				retObj[1] = Common.numFloor(lp * reserve1 / totalSupply, PancakeConfig.SelectCoin[tokenB].omit);
 
-				this.coinArr[coinName].lpPrice = retObj;
-				this.coinArr["ts"] = new Date().valueOf();
-				this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+				coinArr[coinName].lpPrice = retObj;
+				coinArr["ts"] = new Date().valueOf();
+				this.$store.commit("bnbState/setData", {coinArr: coinArr});
 
 			}
 		},
@@ -278,7 +311,20 @@ const InitEth = {
 			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 
 			//设置MBOX的余额
-			this.setCoinValueByName("MBOX")
+			await this.setCoinValueByName("MBOX");
+
+			//获取V2版本的lp余额
+			for (let coinName in PancakeConfig.StakeLP) {
+				await this.setCoinValueByName(coinName);
+				await Common.sleep(500);
+			}
+
+			//获取V1版本的lp余额
+			for (let coinName in PancakeConfig.StakeLPV1) {
+				await this.setCoinValueByNameV1(coinName);
+				await Common.sleep(500);
+			}
+
 		},
 		//设置币的余额
 		async setCoinValueByName(coinName){
@@ -291,6 +337,19 @@ const InitEth = {
 				this.coinArr[coinName].isWithdrawing = false;
 				this.coinArr["ts"] = new Date().valueOf();
 				this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+			}
+		},
+		//设置币的余额V1
+		async setCoinValueByNameV1(coinName){
+			let {addr, decimals, omit} =  PancakeConfig.StakeLPV1[coinName];
+			if(addr != ""){
+				let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
+				this.coinArrV1[coinName].balance =  Common.numFloor((Number(value) / decimals), omit);
+				this.coinArrV1[coinName].isApproving = false;
+				this.coinArrV1[coinName].isDeposing = false;
+				this.coinArrV1[coinName].isWithdrawing = false;
+				this.coinArrV1["ts"] = new Date().valueOf();
+				this.$store.commit("bnbState/setData", {coinArrV1: this.coinArrV1});
 			}
 		},
 		//获取锁定列表

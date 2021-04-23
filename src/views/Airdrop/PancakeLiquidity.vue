@@ -3,7 +3,7 @@
 		<div v-if="!showAddLiquidityPanel && !showRemoveLiquidityPanel" class="tab-body tal" style="padding-bottom:10px">
 			<div class="tab-content"  v-if="oprData.isLP">
 				<div   v-if="oprData.isLP" >
-					<h2>{{$t("Air-drop_115")}}</h2>
+					<h2>{{$t("Air-drop_115")}}{{setting.pancakeVType}}</h2>
 					<p class="small opa-6">{{$t("Air-drop_58")}}</p>
 				</div>
 				<div class="mgt-10" >
@@ -54,7 +54,7 @@
 					<div class="tal cur-point" @click="showAddLiquidityPanel = false">
 						<svg style="transform:rotate(90deg)" viewBox="0 0 24 24"  width="24px" ><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
 					</div>
-					<div class="tac" style="flex:3">{{$t("Air-drop_116")}}</div>
+					<div class="tac" style="flex:3">{{$t("Air-drop_116")}}{{setting.pancakeVType}}</div>
 					<div class="tar">
 						<span class="cur-point por" v-popMsg >
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E9DB8F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
@@ -384,8 +384,10 @@ export default {
 			}
 		},
 		async setCoinAllowance(coinName){
+			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
+
 			if(coinName != "" && coinName != "BNB" && this.coinArr[coinName].allowanceToSwap == -1) {
-				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinName].addr, PancakeConfig.SwapRouterAddr, false);
+				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinName].addr, routerAddr, false);
 				this.coinArr[coinName].allowanceToSwap = Number(allowance);
 				this.coinArr["ts"] = new Date().valueOf();
 			}
@@ -393,12 +395,14 @@ export default {
 
 		async approve(coinName){
 			console.log(coinName);
+			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
+
 			if(coinName == "" || coinName == "BNB") return;
 			let {isApproving, allowanceToSwap} =  this.coinArr[coinName];
 			if(isApproving || Number(allowanceToSwap) >1e8) return;
 
 			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinName].addr, 
-			PancakeConfig.SwapRouterAddr, {coinName, type: "allowanceToSwap"});
+			routerAddr, {coinName, type: "allowanceToSwap"});
 			if(hash){
 				this.coinArr[coinName].isApproving = true;
 			}

@@ -21,7 +21,7 @@
 					</div>
 				</div>
 				<div class="mgt-10 tar">
-					<button class="buy-key-btn" v-if="oprData.isLP" style="background:#3a557b" @click="$root.$children[0].$refs.pancake.setOprData({coinName: oprData.coinName}).show('liquidity').showAddLiquidityPanel()">{{$t("Air-drop_57")}}</button>
+					<button class="buy-key-btn" v-if="oprData.isLP" style="background:#3a557b" @click="$root.$children[0].$refs.pancake.setOprData(oprData).show('liquidity').showAddLiquidityPanel()">{{$t("Air-drop_57")}}</button>
 				</div>
 			
 				<div>

@@ -60,6 +60,7 @@ const state = () => ({
 		setting: {
 			slippage: 0.5,
 			duration: 20,
+			pancakeVType: 2,
 		},
 		useCoinPos: 0,
 		totalAirdropKey: 0,

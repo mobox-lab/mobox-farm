@@ -23,6 +23,7 @@ export default class ETH {
 	static momoHelperContract;
 	static momoStakeContract;
 	static pancakeSwapContract;
+	static pancakeSwapContracV2;
 
 	static hasInit = false;
 	static myAddr = "";
@@ -110,6 +111,20 @@ export default class ETH {
 			PancakSwapContract.swapExactTokensForTokens,
 			PancakSwapContract.swapTokensForExactTokens,
 		], PancakeConfig.SwapRouterAddr);
+		this.pancakeSwapContracV2 = new this.web3.eth.Contract([
+			PancakSwapContract.approve,
+			PancakSwapContract.allowance,
+			PancakSwapContract.addLiquidity,
+			PancakSwapContract.removeLiquidity,
+			PancakSwapContract.addLiquidityETH,
+			PancakSwapContract.removeLiquidityETH,
+			PancakSwapContract.swapExactETHForTokens,
+			PancakSwapContract.swapETHForExactTokens,
+			PancakSwapContract.swapExactTokensForETH,
+			PancakSwapContract.swapTokensForExactETH,
+			PancakSwapContract.swapExactTokensForTokens,
+			PancakSwapContract.swapTokensForExactTokens,
+		], PancakeConfig.SwapRouterAddrV2);
 	}
 
 	//调起钱包
@@ -1355,6 +1370,8 @@ export default class ETH {
 
 		let deadline = parseInt(new Date().valueOf() / 1000) + (60 *duration);
 
+		let PancakeSwapContract = setting.pancakeVType == 1? this.pancakeSwapContract: this.pancakeSwapContracV2;
+
 		//包含BNB
 		if(coinName.indexOf("BNB") != -1){
 			let token = coinObj[0] == "BNB"? tokenB: tokenA;
@@ -1362,11 +1379,11 @@ export default class ETH {
 			let amountETHMin = coinObj[0] == "BNB"?amountAMin: amountBMin;
 
 			console.log({token,liquidity, amountTokenMin, amountETHMin});
-			method = this.pancakeSwapContract.methods.removeLiquidityETH(
+			method =PancakeSwapContract.methods.removeLiquidityETH(
 				token, liquidity, amountTokenMin, amountETHMin,
 				myAddr, deadline);
 		}else{
-			method = this.pancakeSwapContract.methods.removeLiquidity(
+			method =PancakeSwapContract.methods.removeLiquidity(
 				tokenA,tokenB, liquidity, amountAMin, amountBMin,
 				myAddr, deadline);
 		}
@@ -1406,8 +1423,10 @@ export default class ETH {
 		let amountAMin = this.numToHex(BigNumber(Common.numFloor(from.inputValue * (1-slippage/100), 1e8)).times(decimals_from));
 		let amountBMin = this.numToHex(BigNumber(Common.numFloor(to.inputValue * (1-slippage/100), 1e8)).times(decimals_to));
 
+		let PancakeSwapContract = setting.pancakeVType == 1? this.pancakeSwapContract: this.pancakeSwapContracV2;
+
 		if(from.coinName != "BNB" && to.coinName != "BNB"){
-			method = this.pancakeSwapContract.methods.addLiquidity(
+			method = PancakeSwapContract.methods.addLiquidity(
 				tokenA, tokenB, amountADesired, amountBDesired, amountAMin, amountBMin,
 				myAddr, deadline);
 		}else{
@@ -1415,7 +1434,7 @@ export default class ETH {
 			let amountTokenDesired = from.coinName == "BNB"? amountBDesired: amountADesired;
 			let amountTokenMin =  from.coinName == "BNB"? amountBMin: amountAMin;
 			let amountETHMin = from.coinName == "BNB"?amountAMin: amountBMin;
-			method = this.pancakeSwapContract.methods.addLiquidityETH(
+			method = PancakeSwapContract.methods.addLiquidityETH(
 				token, amountTokenDesired, amountTokenMin, amountETHMin,
 				myAddr, deadline);
 			callValue = from.coinName == "BNB"?amountADesired: amountBDesired;
@@ -1456,16 +1475,19 @@ export default class ETH {
 		let amountOut = this.numToHex(BigNumber(Common.numFloor(to.inputValue , 1e8)).times(decimals_to));
 		let amountOutMin = this.numToHex(BigNumber(Common.numFloor(to.inputValue * (1-slippage/100), 1e8)).times(decimals_to));
 
+		let PancakeSwapContract = setting.pancakeVType == 1? this.pancakeSwapContract: this.pancakeSwapContracV2;
+
+
 		if(from.coinName == "BNB" || to.coinName == "BNB"){
 			//BNB 兑换其他币
 			if(from.coinName == "BNB"){
 				if(to.isEstimated){
-					method = this.pancakeSwapContract.methods.swapExactETHForTokens(amountOutMin, path, myAddr, deadline);
+					method =PancakeSwapContract.methods.swapExactETHForTokens(amountOutMin, path, myAddr, deadline);
 					callValue = amountIn;
 				}
 
 				if(from.isEstimated){
-					method = this.pancakeSwapContract.methods.swapETHForExactTokens(amountOut,path, myAddr, deadline);
+					method =PancakeSwapContract.methods.swapETHForExactTokens(amountOut,path, myAddr, deadline);
 					callValue = amountInMax;
 				}
 			}
@@ -1473,19 +1495,19 @@ export default class ETH {
 			//其他币兑换成BNB
 			if(to.coinName == "BNB"){
 				if(to.isEstimated){
-					method = this.pancakeSwapContract.methods.swapExactTokensForETH(amountIn, amountOutMin, path, myAddr, deadline);
+					method =PancakeSwapContract.methods.swapExactTokensForETH(amountIn, amountOutMin, path, myAddr, deadline);
 				}
 				if(from.isEstimated){
-					method = this.pancakeSwapContract.methods.swapTokensForExactETH(amountOut,amountInMax, path, myAddr, deadline);
+					method =PancakeSwapContract.methods.swapTokensForExactETH(amountOut,amountInMax, path, myAddr, deadline);
 				}
 			}
 
 		}else{
 			if(to.isEstimated){
-				method = this.pancakeSwapContract.methods.swapExactTokensForTokens(amountIn, amountOutMin, path, myAddr, deadline);
+				method =PancakeSwapContract.methods.swapExactTokensForTokens(amountIn, amountOutMin, path, myAddr, deadline);
 			}
 			if(from.isEstimated){
-				method = this.pancakeSwapContract.methods.swapTokensForExactTokens(amountOut, amountInMax, path, myAddr, deadline);
+				method =PancakeSwapContract.methods.swapTokensForExactTokens(amountOut, amountInMax, path, myAddr, deadline);
 			}
 		}
 		

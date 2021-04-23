@@ -73,12 +73,14 @@ export default {
 		...mapState({
 			setting: (state) => state.bnbState.data.setting,
 			coinArr: (state) => state.bnbState.data.coinArr,
+			coinArrV1: (state) => state.bnbState.data.coinArrV1,
 			pancakeHistory: (state) => state.bnbState.data.pancakeHistory,
 		}),
 		oprData(){
-			let stakeLP = PancakeConfig.StakeLP;
 			let coinName = this.oprCoinName;
-			return {coinName, ...stakeLP[coinName], ...this.coinArr[coinName]}
+			let stakeLP = this.setting.pancakeVType ==  1?PancakeConfig.StakeLPV1: PancakeConfig.StakeLP;
+			let coinArr = this.setting.pancakeVType ==  1?this.coinArrV1: this.coinArr;
+			return {coinName, ...stakeLP[coinName], ...coinArr[coinName]}
 		},
 	},
 	data() {
@@ -86,6 +88,7 @@ export default {
 			dialog_tab_pos: 1,
 			hasGetCoinValue: false,
 			oprCoinName: "",
+			pancakeVType: "v2",
 		};
 	},
 	
@@ -115,12 +118,19 @@ export default {
 			this.$refs.pancakeLiquidity.showAddLiquidityPanel = true;
 			return this;
 		},
+		showRemoveLiquidityPanel(){
+			this.$refs.pancakeLiquidity.showRemoveLiquidityPanel = true;
+			return this;
+		},
 		close(){
 			this.oprDialog("pancake-dialog","none")
 			return this;
 		},
 		setOprData(data){
+			console.log(data);
 			this.oprCoinName = data.coinName;
+			this.setting.pancakeVType = data.pancakeVType;
+			this.$store.commit("bnbState/setData", {setting: this.setting});
 			return this;
 		},
 	},

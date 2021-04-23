@@ -1,7 +1,7 @@
 <template>
 	<div  class="tab-body tal">
 		<div class="tab-content">
-			<h2>{{$t("Air-drop_114")}}</h2>
+			<h2>{{$t("Air-drop_114")}}{{setting.pancakeVType}}</h2>
 			<p class="small opa-6">{{$t("Air-drop_34")}}</p>
 		</div>
 		<div class="tab-split"></div>
@@ -278,8 +278,9 @@ export default {
 		},
 		async setCoinAllowance(){
 			let coinName = this.from.coinName;
+			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
 			if(coinName != "" && coinName != "BNB" && this.coinArr[coinName].allowanceToSwap == -1) {
-				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinName].addr, PancakeConfig.SwapRouterAddr, false);
+				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinName].addr, routerAddr, false);
 				this.coinArr[coinName].allowanceToSwap = Number(allowance);
 				this.coinArr["ts"] = new Date().valueOf();
 			}
@@ -329,7 +330,9 @@ export default {
 			let {isApproving, allowanceToSwap} =  this.coinArr[coinName];
 			if(isApproving || Number(allowanceToSwap) >1e8) return;
 
-			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinName].addr, PancakeConfig.SwapRouterAddr, {coinName, type: "allowanceToSwap"});
+			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
+
+			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinName].addr, routerAddr, {coinName, type: "allowanceToSwap"});
 			if(hash){
 				this.coinArr[coinName].isApproving = true;
 			}

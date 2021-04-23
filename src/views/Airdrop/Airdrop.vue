@@ -23,7 +23,7 @@
 				</div>
 				<div class="dib por" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10 ">{{ $t("Air-drop_21") }}</h3>
-					<h3 class="mgt-10">{{totalAirdropKey}} KEY</h3>
+					<h3 class="mgt-10">{{pledgeType == 'v2'?totalAirdropKey:"-"}} KEY</h3>
 					<small style="position:absolute;transform: translateX(-50%);width:200%" class="opa-6" v-if="airdropCountDown > 0">{{$t("Air-drop_119")}}: {{getLeftTime(airdropCountDown)}}</small>
 				</div>
 				<div class="dib" style="padding:0px 10px">
@@ -43,7 +43,7 @@
 								<img v-for="(name, key) in item.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="50" alt="" />
 							</div>
 							<div style="margin-left: 15px">
-								<h3 class="color-w tal">{{ item.coinName }} {{item.isLP?"LP":"POOL"}}</h3>
+								<h3 class="color-w tal">{{ item.coinName }} {{item.isLP?"LP":"POOL"}} <sub v-if="item.isLP">({{item.pancakeVType==1?"V1":"V2"}})</sub></h3>
 								<p class=" tal mgt-5" >
 									<span style="display:inline-block;padding:2px 10px;border-radius:50px;background:#4383D7;color:#fff;font-size:16px" >{{item.allocPoint}}X</span>
 									<span class="mgl-5" style="font-size:18px">APY: {{ item.apy }}</span>
@@ -62,11 +62,12 @@
 						<div class="tal mgt-20">
 							<p class="por mgt-10">
 								<span class="opa-6 ">{{$t("Air-drop_112")}}</span>
-								<span class="suffix">{{ numFloor(coinArr[item.coinName].balance, 1e6) || "0" }}</span>
+								<span class="suffix" v-if="pledgeType=='v2' " >{{ numFloor(coinArr[item.coinName].balance, 1e6) || "0" }}</span>
+								<span class="suffix" v-else>{{ numFloor(coinArrV1[item.coinName].balance, 1e6) || "0" }}</span>
 							</p>
 						</div>
 
-						<div class=" point-block mgt-20 close" @click="getLPPrice(item.coinName);toggleClass($event, item)">
+						<div class=" point-block mgt-20 close" @click="getLPPrice(item);toggleClass($event, item)">
 							<div class="aveage-box">
 								<div><span class="opa-6 " >{{ $t("Air-drop_03") }}</span></div>
 								<div class="tar "  style="flex:2">
@@ -107,24 +108,32 @@
 						</div>
 						<!-- 存款提现操作 -->
 						<div class="tac mgt-30"> 
-							<div class="dib por tac" style="width:50px" @click="needSetItem = item;oprDialog('deposit-notice-dialog','block')"  v-if="needShowNotice">
-								<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
-								<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_07")}}</span>
-							</div>
-							<div class="dib por tac" style="width:50px" @click="$refs.deposit.setOprData(item).show();" v-else>
-								<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
-								<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_07")}}</span>
-							</div>
-							<div class="dib por" style="margin-left:50px;width:50px" @click="$refs.withdraw.setOprData(item).show();" >
-								<img class="cur-point "  width="40" src="../../assets/icon/withdraw_icon.png" alt="" >
-								<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_08")}}</span>
-							</div>
+							<template v-if="pledgeType=='v2'">
+								<div class="dib por tac" style="width:50px" @click="needSetItem = item;oprDialog('deposit-notice-dialog','block')"  v-if="needShowNotice">
+									<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
+									<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_07")}}</span>
+								</div>
+								<div class="dib por tac" style="width:50px" @click="$refs.deposit.setOprData(item).show();" v-else>
+									<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
+									<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_07")}}</span>
+								</div>
+								
+								<div class="dib por" style="margin-left:50px;width:50px" @click="$refs.withdraw.setOprData(item).show();" >
+									<img class="cur-point "  width="40" src="../../assets/icon/withdraw_icon.png" alt="" >
+									<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_08")}}</span>
+								</div>
+							</template>
+							<template v-else>
+								<button class="btn-primary" style="width: 60%"  @click="migrateItme = item;oprDialog('migrate-dialog','block')" >
+									资产迁移
+								</button>
+							</template>
 						</div>
 
 					</div>
 					<!-- pancake -->
-					<div class="tac" v-if="item.isLP"> 
-						<button class="btn-primary" style="width: 40%"  @click="$root.$children[0].$refs.pancake.setOprData(item).show('swap')" >
+					<div class="tac" v-if="item.isLP && pledgeType == 'v2' " > 
+						<button class="btn-primary"  style="width: 40%"  @click="$root.$children[0].$refs.pancake.setOprData(item).show('swap')" >
 							{{$t("Air-drop_29")}}
 						</button> &nbsp;
 						<button class="btn-primary" style="width: 40%"  @click="$root.$children[0].$refs.pancake.setOprData(item).show('liquidity')" >
@@ -153,8 +162,7 @@
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_79")}}</p>
-					<!-- <input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.avgPrice" /> -->
-					<input type="text" readonly class="ly-input mgt-10 tac"  value="-" />
+					<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.avgPrice" />
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_80")}}</p>
@@ -187,7 +195,48 @@
 				</tr>
 			</table>
 		</section>
-
+		<!-- 迁移弹窗 -->
+		<Dialog id="migrate-dialog" :top="100" :width="500">
+			<template v-if="migrateItme.coinName">
+				<h2>{{ migrateItme.coinName }} LP 迁移引导</h2>
+				<div class="tab-panel aveage-box mgt-20">
+					<h3 class="tal">1, 提现</h3>
+					<div>
+						<p class="small">可提现：{{migrateItme.wantAmount}} {{ migrateItme.coinName }} LP V1</p>
+						<StatuButton class="mgt-10" :isDisable="migrateItme.wantAmount <= 0" style="width:80%" :onClick="()=>$refs.withdraw.setOprData(migrateItme).show()">
+							{{$t("Air-drop_08")}}
+						</StatuButton>
+					</div>
+				</div>
+				<svg viewBox="0 0 24 24" width="24px"  class="mgt-10"><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
+				<div class="tab-panel aveage-box  mgt-10">
+					<h3 class="tal">2, 移除流动性(V1)</h3>
+					<div>
+						<p class="small">可移除：{{ numFloor(coinArrV1[migrateItme.coinName].balance, 1e6) || "0" }} {{ migrateItme.coinName }} LP V1</p>
+						<StatuButton class="mgt-10" :isDisable="coinArrV1[migrateItme.coinName].balance <= 0" style="width:80%" :onClick="()=>$root.$children[0].$refs.pancake.setOprData(migrateItme).show('liquidity').showRemoveLiquidityPanel()">
+							{{$t("Air-drop_95")}}
+						</StatuButton>
+					</div>
+				</div>
+				<svg viewBox="0 0 24 24" width="24px" class="mgt-10"><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
+				<div class="tab-panel aveage-box  mgt-10">
+					<h3 class="tal">3, 增加流动性(V2)</h3>
+					<div>
+						<p style="opacity:0">1</p>
+						<button class="btn-primary por" style="width:80%;top:-8px" @click="$root.$children[0].$refs.pancake.setOprData({coinName: migrateItme.coinName, pancakeVType: 2}).show('liquidity').showAddLiquidityPanel()">增加流动性</button>
+					</div>
+				</div>
+				<svg viewBox="0 0 24 24" width="24px"  class="mgt-10"><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
+				<div class="tab-panel aveage-box  mgt-10">
+					<h3 class="tal">4, 质押</h3>
+					<div>
+						<p class="small">可质押：0 {{ migrateItme.coinName }} LP V2</p>
+						<button class="btn-primary  mgt-10" style="width:80%">质押</button>
+					</div>
+				</div>
+			</template>
+		</Dialog>
+		<!-- 充值提示 -->
 		<Dialog id="deposit-notice-dialog" :top="100" :width="400">
 			<h2>{{$t("Air-drop_23")}}</h2>
 			<div class="tab-body tal mgt-10 small" v-html="$t('Air-drop_24')" style=" padding:15px;"></div>
@@ -233,23 +282,25 @@ import { PancakeConfig } from "@/config";
 import KeyOpr from "./KeyOpr";
 import Withdraw from './Withdraw';
 import Deposit from './Deposit';
-import { Dialog, Loading } from '@/components';
+import { Dialog, Loading, StatuButton } from '@/components';
 
 export default {
 	mixins: [CommonMethod],
-	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading},
+	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, StatuButton},
 	data(){
 		return({
 			hasAgreeNotice: false,
 			hasSelectNotShow: false,
 			needShowNotice: true,
 			needSetItem: {},
+			migrateItme: {},//需要迁移的对象
 		});
 	},
 	computed: {
 		...mapState({
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			coinArr: (state) => state.bnbState.data.coinArr,
+			coinArrV1: (state) => state.bnbState.data.coinArrV1,
 			totalAirdropKey: (state) => state.bnbState.data.totalAirdropKey,
 			rewardStoreKey: (state) => state.bnbState.data.rewardStoreKey,
 			buyBack: (state) => state.bnbState.data.buyBack,
@@ -302,8 +353,8 @@ export default {
 			}
 		},
 
-		getLPPrice(coinName){
-			Common.app.getLPCoinValue(coinName);
+		getLPPrice(item){
+			Common.app.getLPCoinValue(item);
 		},
 
 		agreeNotice(){
@@ -324,9 +375,9 @@ export default {
 </script>
 
 <style scoped>
-.pledgeType-v2{
+/* .pledgeType-v2{
 	background: #1c222c !important;
-}
+} */
 .table-his tr:nth-of-type(odd) {
 	background: #182342;
 }

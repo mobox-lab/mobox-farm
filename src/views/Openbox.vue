@@ -71,7 +71,7 @@
 				<button class="btn-primary mgt-20" style="width: 80%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; ">
 					{{ $t("BOX_04") }}
 				</button>
-				<button class="mgt-20 buy-key-btn" style="width:40%;" @click="$root.$children[0].$refs.pancake.setOprData({coinName: 'KEY-BNB'}).show('swap')">
+				<button class="mgt-20 buy-key-btn" style="width:40%;" @click="$root.$children[0].$refs.pancake.setOprData({coinName: 'KEY-BNB', pancakeVType: 1}).show('swap')">
 					{{$t("BOX_33")}}
 				</button>
 				

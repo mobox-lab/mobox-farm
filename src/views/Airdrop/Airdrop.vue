@@ -1,22 +1,23 @@
 <template>
 	<div id="aridorp" class="tac">
-		<section class="mgt-50">
-			<div class="tac mgt-10">
-				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v1'}) "  :class="pledgeType == 'v1'?'active':''" class="tab-menu " style="font-size:16px">V1</div>
-				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v2'})"  :class="pledgeType == 'v2'?'active':''"  class="tab-menu" style="font-size:16px"  >V2</div>
+		<section class="mgt-20">
+			<div class="tac mgt-10" >
+				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v1'}) "  :class="pledgeType == 'v1'?'active':''" class="tab-menu " style="font-size:16px">{{$t("Air-drop_134")}}</div>
+				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v2'})"  :class="pledgeType == 'v2'?'active':''"  class="tab-menu" style="font-size:16px"  >{{$t("Air-drop_135")}}</div>
 			</div>
 		</section>
 		<section id="airdrop-cont" class="por">
 			<a id="recheck" href="https://www.certik.org/projects/mobox" style="position:absolute;right:0px;top: -70px" target="_blank">
 				<img src="../../assets/icon/check-icon.png" alt="" height="60" />
 			</a>
-			<div id="only-show-my" style="position:absolute;left:10px;top: -30px" class="vertical-children">
+			<div id="only-show-my" style="position:absolute;left:10px;top:10px" class="vertical-children">
 				<div class="ly-checkbox" style="background:#3e4b70" @click="$store.commit('bnbState/setData', {onlyShowPledge:!onlyShowPledge})" :class="onlyShowPledge?'active':'' ">
 					<svg class="hide"  viewBox="0 0 1024 1024" width="20" height="20"><path fill="#92FFDA" d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z" ></path></svg>
 				</div> &nbsp;
 				<span>{{$t("Air-drop_130")}}</span>
 			</div>
-			<div class="mgt-10 aveage-box" id="airdrop-cont-info">
+			
+			<div class="mgt-20 aveage-box" id="airdrop-cont-info">
 				<div class="dib" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10 ">{{ $t("Air-drop_02") }}</h3>
 					<h3 class="mgt-10">${{getTotalSupplyUSDT.toLocaleString() }}</h3>
@@ -37,7 +38,8 @@
 			</div>
 			<div class="row">
 				<div class="col-md-4 col-xs-12 col-sm-6 mgt-10" v-for="item in getPledgeList" :key="item.coinName" >
-					<div class="airdrop-item tal" :class="`pledgeType-${pledgeType}`">
+					<div class="airdrop-item tal " :class="`pledgeType-${pledgeType}`">
+						<div class="over" v-if="pledgeType=='v1' ">{{$t("Air-drop_134")}}</div>
 						<div class="vertical-children" style="padding-left: 56px" >
 							<div class="dib airdorp-item-coin-icon tac " :class="item.isLP?'double-img':'' ">
 								<img v-for="(name, key) in item.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="50" alt="" />
@@ -125,7 +127,7 @@
 							</template>
 							<template v-else>
 								<button class="btn-primary" style="width: 60%"  @click="migrateItme = item;oprDialog('migrate-dialog','block')" >
-									资产迁移
+									{{$t("Air-drop_136")}}
 								</button>
 							</template>
 						</div>
@@ -179,7 +181,7 @@
 					<th>{{ $t("Air-drop_49") }}</th>
 					<th>{{ $t("Air-drop_51") }}</th>
 					<th>{{ $t("Air-drop_50") }}</th>
-					<th>{{ $t("BOX_12") }}</th>
+					<th>TX</th>
 				</tr>
 				<tr v-for="item in buyBack.logs" :key="item.txId">
 					<td >{{ dateFtt("yyyy-MM-dd hh:mm:ss", new Date(item.ts* 1000)) }}</td>
@@ -198,40 +200,39 @@
 		<!-- 迁移弹窗 -->
 		<Dialog id="migrate-dialog" :top="100" :width="500">
 			<template v-if="migrateItme.coinName">
-				<h2>{{ migrateItme.coinName }} LP 迁移引导</h2>
-				<div class="tab-panel aveage-box mgt-20">
-					<h3 class="tal">1, 提现</h3>
-					<div>
-						<p class="small">可提现：{{migrateItme.wantAmount}} {{ migrateItme.coinName }} LP V1</p>
-						<StatuButton class="mgt-10" :isDisable="migrateItme.wantAmount <= 0" style="width:80%" :onClick="()=>$refs.withdraw.setOprData(migrateItme).show()">
+				<h3>{{$t("Air-drop_137").replace("#0#", migrateItme.coinName)}}</h3>
+				<div class="tab-panel  mgt-20">
+					<h3 class="tal">1, {{$t("Air-drop_08")}}</h3>
+					<div class="mgt-20">
+						<p class="small">{{$t("Air-drop_138")}}: {{migrateItme.wantAmount}} {{ migrateItme.coinName }} LP</p>
+						<StatuButton class="mgt-10" style="min-width:150px" :isDisable="migrateItme.wantAmount <= 0" :onClick="()=>$refs.withdraw.setOprData(migrateItme).show()">
 							{{$t("Air-drop_08")}}
 						</StatuButton>
 					</div>
 				</div>
-				<svg viewBox="0 0 24 24" width="24px"  class="mgt-10"><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
-				<div class="tab-panel aveage-box  mgt-10">
-					<h3 class="tal">2, 移除流动性(V1)</h3>
-					<div>
-						<p class="small">可移除：{{ numFloor(coinArrV1[migrateItme.coinName].balance, 1e6) || "0" }} {{ migrateItme.coinName }} LP V1</p>
-						<StatuButton class="mgt-10" :isDisable="coinArrV1[migrateItme.coinName].balance <= 0" style="width:80%" :onClick="()=>$root.$children[0].$refs.pancake.setOprData(migrateItme).show('liquidity').showRemoveLiquidityPanel()">
+				<svg viewBox="0 0 24 24" width="18px"  class="mgt-10"><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
+				<div class="tab-panel  mgt-10">
+					<h3 class="tal">2, {{$t("Air-drop_141")}}</h3>
+					<div class="mgt-20">
+						<p class="small">{{$t("Air-drop_139")}}: {{ numFloor(coinArrV1[migrateItme.coinName].balance, 1e6) || "0" }} {{ migrateItme.coinName }} LP</p>
+						<StatuButton class="mgt-10" :isDisable="coinArrV1[migrateItme.coinName].balance <= 0"  :onClick="()=>$root.$children[0].$refs.pancake.setOprData(migrateItme).show('liquidity').showRemoveLiquidityPanel()">
 							{{$t("Air-drop_95")}}
 						</StatuButton>
 					</div>
 				</div>
-				<svg viewBox="0 0 24 24" width="24px" class="mgt-10"><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
-				<div class="tab-panel aveage-box  mgt-10">
-					<h3 class="tal">3, 增加流动性(V2)</h3>
-					<div>
-						<p style="opacity:0">1</p>
-						<button class="btn-primary por" style="width:80%;top:-8px" @click="$root.$children[0].$refs.pancake.setOprData({coinName: migrateItme.coinName, pancakeVType: 2}).show('liquidity').showAddLiquidityPanel()">增加流动性</button>
+				<svg viewBox="0 0 24 24" width="18px" class="mgt-10"><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
+				<div class="tab-panel  mgt-10">
+					<h3 class="tal">3, {{$t("Air-drop_142")}}</h3>
+					<div class="mgt-20">
+						<button class="btn-primary por" style="min-width:150px"  @click="$root.$children[0].$refs.pancake.setOprData({coinName: migrateItme.coinName, pancakeVType: 2}).show('liquidity').showAddLiquidityPanel()">{{$t("Air-drop_57")}}</button>
 					</div>
 				</div>
-				<svg viewBox="0 0 24 24" width="24px"  class="mgt-10"><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
-				<div class="tab-panel aveage-box  mgt-10">
-					<h3 class="tal">4, 质押</h3>
-					<div>
-						<p class="small">可质押：0 {{ migrateItme.coinName }} LP V2</p>
-						<button class="btn-primary  mgt-10" style="width:80%">质押</button>
+				<svg viewBox="0 0 24 24" width="18px"  class="mgt-10"><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
+				<div class="tab-panel  mgt-10">
+					<h3 class="tal">4, {{$t("Air-drop_07")}}</h3>
+					<div class="mgt-20">
+						<p class="small">{{$t("Air-drop_112")}}: 0 {{ migrateItme.coinName }} LP</p>
+						<button class="btn-primary  mgt-10" style="min-width:150px">{{$t("Air-drop_07")}}</button>
 					</div>
 				</div>
 			</template>
@@ -320,9 +321,10 @@ export default {
 		getPledgeList(){
 			let arr = [];
 			let stakeLP = this.pledgeType == "v1"?PancakeConfig.StakeLPV1:PancakeConfig.StakeLP;
+			let coinArr =  this.pledgeType == "v1"?this.coinArrV1: this.coinArr;
 			for (let key in stakeLP) {
 				if(stakeLP[key].pIndex != -1 && (this.coinArr[key].wantAmount > 0 || !this.onlyShowPledge)){
-					arr.push({coinName: key, ...stakeLP[key], ...this.coinArr[key]})
+					arr.push({coinName: key, ...stakeLP[key], ...coinArr[key]})
 				}
 			}
 			return arr;
@@ -375,9 +377,24 @@ export default {
 </script>
 
 <style scoped>
-/* .pledgeType-v2{
-	background: #1c222c !important;
-} */
+.pledgeType-v1{
+	overflow: hidden;
+}
+.over{
+	transform: rotate(-315deg);
+	transform-origin: right top;
+	font-family: AvenirNext-Bold;
+	font-size: 14px;
+	color: #c7c7c7;
+	background: #646c74;
+	position: absolute;
+	right: -25px;
+	top: 80px;
+	height: 33px;
+	line-height: 33px;
+	width: 150px;
+	text-align: center;
+}
 .table-his tr:nth-of-type(odd) {
 	background: #182342;
 }

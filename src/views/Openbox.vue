@@ -111,7 +111,7 @@
 				<th width="20%">{{ $t("BOX_26") }}</th>
 				<th width="10%">{{ $t("BOX_13") }}</th>
 				<th width="20%">{{ $t("BOX_27") }}</th>
-				<th width="40%" class="tal">{{ $t("BOX_14") }}</th>
+				<th width="40%" class="tal">TX</th>
 			</tr>
 			<tr v-for="item in getOpenBoxHistory" :key="item.tx">
 				<td class="tar tac-xs">{{ getTimeFtt(item.crtime) }}</td>

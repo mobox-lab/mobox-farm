@@ -5,7 +5,10 @@
 				<div class="tal cur-point" @click="$parent.showRemoveLiquidityPanel = false">
 					<svg style="transform:rotate(90deg)" viewBox="0 0 24 24"  width="24px" ><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
 				</div>
-				<div class="tac" style="flex:3">{{$t("Air-drop_117")}}{{setting.pancakeVType}}</div>
+				<div class="tac" style="flex:3">
+					<span v-if="setting.pancakeVtype==1">{{$t("Air-drop_141")}}</span>
+					<span v-else>{{$t("Air-drop_143")}}</span>
+				</div>
 				<div></div>
 			</div>
 		</div>

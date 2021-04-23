@@ -339,12 +339,14 @@ export default {
 
 		async getLPBalance(){
 			let {addr , omit , decimals, coinName} = this.oprData;
+			let coinArr =  this.setting.pancakeVType == 1? this.coinArrV1: this.coinArr;
+
 			if(addr == "") return;
 			let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
 			this.oprData.balance =  Common.numFloor((Number(value) / decimals), omit);
-			this.coinArr[coinName].balance =  Common.numFloor((Number(value) / decimals), omit);
-			this.coinArr[coinName].balanceTrue =  value;
-			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+			coinArr[coinName].balance =  Common.numFloor((Number(value) / decimals), omit);
+			coinArr[coinName].balanceTrue =  value;
+			coinArr["ts"] = new Date().valueOf();
 		},
 	
 		async getLPAmount(){

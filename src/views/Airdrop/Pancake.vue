@@ -75,11 +75,13 @@ export default {
 			coinArr: (state) => state.bnbState.data.coinArr,
 			coinArrV1: (state) => state.bnbState.data.coinArrV1,
 			pancakeHistory: (state) => state.bnbState.data.pancakeHistory,
+			pledgeType: (state) => state.bnbState.data.pledgeType,
 		}),
 		oprData(){
 			let coinName = this.oprCoinName;
-			let stakeLP = this.setting.pancakeVType ==  1?PancakeConfig.StakeLPV1: PancakeConfig.StakeLP;
-			let coinArr = this.setting.pancakeVType ==  1?this.coinArrV1: this.coinArr;
+			let stakeLP = this.pledgeType == "v1"?PancakeConfig.StakeLPV1: PancakeConfig.StakeLP;
+			let coinArr = this.pledgeType == "v1"?this.coinArrV1: this.coinArr;
+
 			return {coinName, ...stakeLP[coinName], ...coinArr[coinName]}
 		},
 	},
@@ -88,7 +90,6 @@ export default {
 			dialog_tab_pos: 1,
 			hasGetCoinValue: false,
 			oprCoinName: "",
-			pancakeVType: "v2",
 		};
 	},
 	

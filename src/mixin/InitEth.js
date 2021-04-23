@@ -20,6 +20,7 @@ const InitEth = {
 			coinArr: (state) => state.bnbState.data.coinArr,
 			coinArrV1: (state) => state.bnbState.data.coinArrV1,
 			setting: (state) => state.bnbState.data.setting,
+			pledgeType: (state) => state.bnbState.data.pledgeType,
 			buyBack: (state) => state.bnbState.data.buyBack,
 		}),
 	},
@@ -220,7 +221,6 @@ const InitEth = {
 				}
 			}
 			
-			console.log("getStakeValueAndEarndKey", pIndexObj);
 			let res = await Wallet.ETH.getStakeValueAndEarndKey(Object.values(pIndexObj));
 			if(res){
 				let {gracePeriods, pkeys, wantAmounts, workingBalances, rewardStore} = res;
@@ -247,7 +247,6 @@ const InitEth = {
 				}
 			}
 			
-			console.log("getStakeValueAndEarndKey_v1", pIndexObj);
 			let res = await Wallet.ETH.getStakeValueAndEarndKey(Object.values(pIndexObj));
 			if(res){
 				let {gracePeriods, pkeys, wantAmounts, workingBalances} = res;
@@ -267,7 +266,8 @@ const InitEth = {
 		async getLPCoinValue(item){
 			let {coinName, pancakeVType} = item;
 
-			let coinArr =  this.setting.pancakeVType == 1? this.coinArrV1: this.coinArr;
+			let coinArr =  this.pledgeType == "v1"? this.coinArrV1: this.coinArr;
+
 			let version = pancakeVType == 1?"V1":"V2";
 
 			let dtTime = new Date().valueOf() - coinArr[coinName].lpPriceUpTs;
@@ -300,7 +300,7 @@ const InitEth = {
 
 				coinArr[coinName].lpPrice = retObj;
 				coinArr["ts"] = new Date().valueOf();
-				this.$store.commit("bnbState/setData", {coinArr: coinArr});
+				// this.$store.commit("bnbState/setData", {coinArr: coinArr});
 
 			}
 		},

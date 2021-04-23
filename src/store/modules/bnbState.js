@@ -26,37 +26,37 @@ const baseCoinAttr = {
 const state = () => ({
 	data: {
 		coinArr: {
-			"BNB": {...baseCoinAttr, isLP: false},
-			"MBOX": {...baseCoinAttr, isLP: false},
-			"BTCB": {...baseCoinAttr, isLP: false},
-			"ETH": {...baseCoinAttr, isLP: false},
-			"BUSD": {...baseCoinAttr, isLP: false},
-			"USDT": {...baseCoinAttr, isLP: false},
-			"DAI": {...baseCoinAttr, isLP: false},
-			"USDC": {...baseCoinAttr, isLP: false},
-			"KEY": {...baseCoinAttr, isLP: false},
-			"MBOX-BNB": {...baseCoinAttr, isLP: true},
-			"BTCB-BNB": {...baseCoinAttr, isLP: true},
-			"ETH-BNB": {...baseCoinAttr, isLP: true},
-			"BUSD-BNB": {...baseCoinAttr, isLP: true},
-			"USDT-BNB": {...baseCoinAttr, isLP: true},
-			"USDT-BUSD": {...baseCoinAttr, isLP: true},
-			"DAI-BUSD": {...baseCoinAttr, isLP: true},
-			"USDC-BUSD": {...baseCoinAttr, isLP: true},
-			"KEY-BNB": {...baseCoinAttr, isLP: true},
+			"BNB": {...baseCoinAttr, isLP: false,coinName: "BNB"},
+			"MBOX": {...baseCoinAttr, isLP: false,coinName: "MBOX"},
+			"BTCB": {...baseCoinAttr, isLP: false,coinName: "BTCB"},
+			"ETH": {...baseCoinAttr, isLP: false,coinName: "ETH"},
+			"BUSD": {...baseCoinAttr, isLP: false,coinName: "BUSD"},
+			"USDT": {...baseCoinAttr, isLP: false,coinName: "USDT"},
+			"DAI": {...baseCoinAttr, isLP: false,coinName: "DAI"},
+			"USDC": {...baseCoinAttr, isLP: false,coinName: "USDC"},
+			"KEY": {...baseCoinAttr, isLP: false,coinName: "KEY"},
+			"MBOX-BNB": {...baseCoinAttr, isLP: true,coinName: "MBOX-BNB"},
+			"BTCB-BNB": {...baseCoinAttr, isLP: true,coinName: "BTCB-BNB"},
+			"ETH-BNB": {...baseCoinAttr, isLP: true,coinName: "ETH-BNB"},
+			"BUSD-BNB": {...baseCoinAttr, isLP: true,coinName: "BUSD-BNB"},
+			"USDT-BNB": {...baseCoinAttr, isLP: true,coinName: "USDT-BNB"},
+			"USDT-BUSD": {...baseCoinAttr, isLP: true,coinName: "USDT-BUSD"},
+			"DAI-BUSD": {...baseCoinAttr, isLP: true,coinName: "DAI-BUSD"},
+			"USDC-BUSD": {...baseCoinAttr, isLP: true,coinName: "USDC-BUSD"},
+			"KEY-BNB": {...baseCoinAttr, isLP: true,coinName: "KEY-BNB"},
+
+			"MBOX-BNB-V2": {...baseCoinAttr, isLP: true,coinName: "MBOX-BNB"},
+			"BTCB-BNB-V2": {...baseCoinAttr, isLP: true,coinName: "BTCB-BNB"},
+			"ETH-BNB-V2": {...baseCoinAttr, isLP: true,coinName: "ETH-BNB"},
+			"BUSD-BNB-V2": {...baseCoinAttr, isLP: true,coinName: "BUSD-BNB"},
+			"USDT-BNB-V2": {...baseCoinAttr, isLP: true,coinName: "USDT-BNB"},
+			"USDT-BUSD-V2": {...baseCoinAttr, isLP: true,coinName: "USDT-BUSD"},
+			"DAI-BUSD-V2": {...baseCoinAttr, isLP: true,coinName: "DAI-BUSD"},
+			"USDC-BUSD-V2": {...baseCoinAttr, isLP: true,coinName: "USDC-BUSD"},
+			"KEY-BNB-V2": {...baseCoinAttr, isLP: true,coinName: "KEY-BNB"},
 			"ts": 0,
 		},
-		coinArrV1: {
-			"MBOX-BNB": {...baseCoinAttr, isLP: true},
-			"BTCB-BNB": {...baseCoinAttr, isLP: true},
-			"ETH-BNB": {...baseCoinAttr, isLP: true},
-			"BUSD-BNB": {...baseCoinAttr, isLP: true},
-			"USDT-BNB": {...baseCoinAttr, isLP: true},
-			"USDT-BUSD": {...baseCoinAttr, isLP: true},
-			"DAI-BUSD": {...baseCoinAttr, isLP: true},
-			"USDC-BUSD": {...baseCoinAttr, isLP: true},
-			"KEY-BNB": {...baseCoinAttr, isLP: true},
-		},
+		
 		setting: {
 			slippage: 0.5,
 			duration: 20,
@@ -85,19 +85,19 @@ const mutations = {
 	setData(state, newState) {
 		state.data = Object.assign(state.data, newState);
 	},
-	setCoinAllowance(state, {coinName, allowance, type}){
+	setCoinAllowance(state, {coinKey, allowance, type}){
 		state.data.coinArr["ts"] = new Date().valueOf();
-		state.data.coinArr[coinName].isApproving = false;
-		state.data.coinArr[coinName][type] = allowance;
+		state.data.coinArr[coinKey].isApproving = false;
+		state.data.coinArr[coinKey][type] = allowance;
 	},
 	clearLoading(state){
-		for (let coinName in state.data.coinArr) {
-			if(coinName == "ts") return;
-			state.data.coinArr[coinName].isApproving = false;
-			state.data.coinArr[coinName].isDeposing = false;
-			state.data.coinArr[coinName].isWithdrawing = false;
-			state.data.coinArr[coinName].isRemoveLiqiditing = false;
-			state.data.coinArr[coinName].isAddLiqiditing = false;
+		for (let coinKey in state.data.coinArr) {
+			if(coinKey == "ts") return;
+			state.data.coinArr[coinKey].isApproving = false;
+			state.data.coinArr[coinKey].isDeposing = false;
+			state.data.coinArr[coinKey].isWithdrawing = false;
+			state.data.coinArr[coinKey].isRemoveLiqiditing = false;
+			state.data.coinArr[coinKey].isAddLiqiditing = false;
 		}
 		state.data.conArr["ts"] = new Date().valueOf();
 	},

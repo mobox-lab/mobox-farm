@@ -73,15 +73,13 @@ export default {
 		...mapState({
 			setting: (state) => state.bnbState.data.setting,
 			coinArr: (state) => state.bnbState.data.coinArr,
-			coinArrV1: (state) => state.bnbState.data.coinArrV1,
 			pancakeHistory: (state) => state.bnbState.data.pancakeHistory,
 			pledgeType: (state) => state.bnbState.data.pledgeType,
 		}),
 		oprData(){
 			let coinName = this.oprCoinName;
-			let stakeLP = this.pledgeType == "v1"?PancakeConfig.StakeLPV1: PancakeConfig.StakeLP;
-			let coinArr = this.pledgeType == "v1"?this.coinArrV1: this.coinArr;
-
+			let stakeLP = PancakeConfig.StakeLP;
+			let coinArr = this.coinArr;
 			return {coinName, ...stakeLP[coinName], ...coinArr[coinName]}
 		},
 	},

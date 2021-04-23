@@ -98,7 +98,6 @@ export default {
 	computed: {
 		...mapState({
 			coinArr: (state) => state.bnbState.data.coinArr,
-			coinArrV1: (state) => state.bnbState.data.coinArrV1,
 			setting: (state) => state.bnbState.data.setting,
 		}),
 		getTargetLPPrice(){
@@ -119,7 +118,7 @@ export default {
 		needApprove(){
 			let {coinName} = this.oprData;
 			if(coinName == "") return false;
-			let coinArr =  this.setting.pancakeVType == 1? this.coinArrV1: this.coinArr;
+			let coinArr = this.coinArr;
 			
 			let allowanceToSwap = Number(coinArr[coinName].allowanceToSwap);
 			return coinName != ''  && allowanceToSwap >= 0 && allowanceToSwap <  1e8
@@ -149,7 +148,7 @@ export default {
 	},
 	methods:{
 		async removeLp(){
-			let coinArr =  this.setting.pancakeVType == 1? this.coinArrV1: this.coinArr;
+			let coinArr = this.coinArr;
 
 			let res = await Wallet.ETH.removeLiquidity(this.oprData.coinName, Number(this.inputValue), this.getTargetLPPrice, this.setting);
 			if(res){
@@ -160,8 +159,8 @@ export default {
 		async approve(coinName){
 			console.log(coinName);
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
-			let coinArr =  this.setting.pancakeVType == 1? this.coinArrV1: this.coinArr;
-			let stakeLp = this.setting.pancakeVType == 1?PancakeConfig.StakeLPV1: PancakeConfig.StakeLP;
+			let coinArr =  this.coinArr;
+			let stakeLp = PancakeConfig.StakeLP;
 
 			if(coinName == "") return;
 			let {isApproving, allowanceToSwap} =  coinArr[coinName];
@@ -176,8 +175,8 @@ export default {
 
 		async setCoinAllowance(coinName){
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
-			let coinArr =  this.setting.pancakeVType == 1? this.coinArrV1: this.coinArr;
-			let stakeLp = this.setting.pancakeVType == 1?PancakeConfig.StakeLPV1: PancakeConfig.StakeLP;
+			let coinArr =  this.coinArr;
+			let stakeLp = PancakeConfig.StakeLP;
 
 			if(coinName != "" && coinArr[coinName].allowanceToSwap == -1) {
 				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(stakeLp[coinName].addr, routerAddr, false);

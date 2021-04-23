@@ -17,7 +17,7 @@
 				<div class="aveage-box mgt-10">
 					<p class="tal small">{{$t("Air-drop_11")}}</p>
 					<div class="tar small" style="flex:2">
-						<p>{{oprData.balance}} {{oprData.coinName}} <span v-if="oprData.isLP">(Pancake LP)</span></p>
+						<p>{{oprData.balance}} {{oprData.coinName}} <span v-if="oprData.isLP">(Pancake LP V{{oprData.pancakeVType}})</span></p>
 					</div>
 				</div>
 				<div class="mgt-10 tar">
@@ -29,13 +29,13 @@
 				</div>
 				<div class="mgt-30 tac" :class="depositNeedApprove?' btn-group':'' " style="margin-bottom:10px">
 					<div v-if="depositNeedApprove">
-						<button data-step="1" @click="approveToPool(oprData.coinName)" class="btn-primary por" style="width:70%;" :class="oprData.coinName != '' && coinArr[oprData.coinName].allowanceToPool > 1e8 || coinArr[oprData.coinName].isApproving?'disable-btn':''">
-							<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
+						<button data-step="1" @click="approveToPool(oprData.coinKey)" class="btn-primary por" style="width:70%;" :class="oprData.coinName != '' && coinArr[oprData.coinKey].allowanceToPool > 1e8 || coinArr[oprData.coinKey].isApproving?'disable-btn':''">
+							<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinKey].isApproving"  style="position:absolute;left:8px;top:9px"/>
 							{{$t("Air-drop_16")}} {{oprData.coinName}}
 						</button>
 					</div>
 					<button data-step="2" class="btn-primary mgt-10 por" style="width:70%" :class="!isCanDeposit?'disable-btn':''" @click="deposit">
-						<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinName].isDeposing"  style="position:absolute;left:8px;top:9px"/>
+						<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinKey].isDeposing"  style="position:absolute;left:8px;top:9px"/>
 						{{$t("Air-drop_07")}}
 					</button>
 				</div>
@@ -104,8 +104,8 @@ export default {
 			this.inputPercent = 0;
 		},
 		inputPercent: function(newData){
-			let {omit, coinName} = this.oprData;
-			let { balance } = this.coinArr[coinName];
+			let {omit, coinKey} = this.oprData;
+			let { balance } = this.coinArr[coinKey];
 			let targetValue = Common.numFloor(Number(balance) * Number(newData), omit);
 			//留点手续费
 			if(newData == 1 ){
@@ -128,7 +128,7 @@ export default {
 		}),
 			// 是否可以存款
 		isCanDeposit(){
-			let oprCoin = this.coinArr[this.oprData.coinName];
+			let oprCoin = this.coinArr[this.oprData.coinKey];
 			return Number(this.inputDepositValue) > 0 
 						&& Number(this.inputDepositValue) <= this.getTrueShowBalacne(Number(oprCoin.balance))
 						&& !oprCoin.isDeposing
@@ -136,9 +136,9 @@ export default {
 		},
 
 		depositNeedApprove(){
-			let {coinName} = this.oprData;
+			let {coinName, coinKey} = this.oprData;
 			if(coinName == "") return false;
-			let allowanceToPool = Number(this.coinArr[coinName].allowanceToPool);
+			let allowanceToPool = Number(this.coinArr[coinKey].allowanceToPool);
 			return coinName != 'BNB' && allowanceToPool >= 0 && allowanceToPool <  1e8;
 		},
 		
@@ -146,52 +146,52 @@ export default {
 
 	methods:{
 		async updateBalance(){
-			let { coinName} = this.oprData;
-			this.coinArr[coinName].isApproving = false;
-			this.coinArr[coinName].isDeposing = false;
+			let { coinKey} = this.oprData;
+			this.coinArr[coinKey].isApproving = false;
+			this.coinArr[coinKey].isDeposing = false;
 			this.coinArr["ts"] = new Date().valueOf();
 			await this.getLPBalance();
-			await this.setCoinAllowanceToPool(coinName);
+			await this.setCoinAllowanceToPool(coinKey);
 		},
 		//存款充值
 		async deposit(){
 			if(!this.isCanDeposit) return;
-			let {coinName} = this.oprData;
-			let hash = await Wallet.ETH.deposit(coinName, this.inputDepositValue);
+			let {coinKey} = this.oprData;
+			let hash = await Wallet.ETH.deposit(coinKey, this.inputDepositValue);
 			if(hash){
-				this.coinArr[coinName].isDeposing = true;
+				this.coinArr[coinKey].isDeposing = true;
 				this.inputDepositValue = ""
 			}
 		},
 		async getLPBalance(){
-			let {addr , omit , decimals, coinName} = this.oprData;
+			let {addr , omit , decimals, coinKey} = this.oprData;
 			if(addr == "") return;
 			let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
 			this.oprData.balance =  Common.numFloor((Number(value) / decimals), omit);
-			this.coinArr[coinName].balance =  Common.numFloor((Number(value) / decimals), omit);
+			this.coinArr[coinKey].balance =  Common.numFloor((Number(value) / decimals), omit);
 			this.coinArr["ts"] = new Date().valueOf();
 			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 			// this.inputDepositValue = this.getTrueShowBalacne(this.oprData.balance);
 		},
 
-		async setCoinAllowanceToPool(coinName){
-			if(coinName != "" && coinName != "BNB" && this.coinArr[coinName].allowanceToPool == -1) {
-				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.StakeLP[coinName].addr , WalletConfig.ETH.momoFarm, false);
+		async setCoinAllowanceToPool(coinKey){
+			if(coinKey != "" && coinKey != "BNB" && this.coinArr[coinKey].allowanceToPool == -1) {
+				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.StakeLP[coinKey].addr , WalletConfig.ETH.momoFarm, false);
 				console.log("setCoinAllowanceToPool", Number(allowance));
-				this.coinArr[coinName].allowanceToPool = Number(allowance);
+				this.coinArr[coinKey].allowanceToPool = Number(allowance);
 				this.coinArr["ts"] = new Date().valueOf();
 			}
 		},
 
-		async approveToPool(coinName){
-			if(coinName == "" || coinName == "BNB") return;
-			let {isApproving, allowanceToPool} =  this.coinArr[coinName];
+		async approveToPool(coinKey){
+			if(coinKey == "" || coinKey == "BNB") return;
+			let {isApproving, allowanceToPool} =  this.coinArr[coinKey];
 			if(isApproving || Number(allowanceToPool) >1e8) return;
 
-			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.StakeLP[coinName].addr, 
-			WalletConfig.ETH.momoFarm, {coinName, type:"allowanceToPool"});
+			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.StakeLP[coinKey].addr, 
+			WalletConfig.ETH.momoFarm, {coinKey, type:"allowanceToPool"});
 			if(hash){
-				this.coinArr[coinName].isApproving = true;
+				this.coinArr[coinKey].isApproving = true;
 			}
 		},
 
@@ -218,6 +218,7 @@ export default {
 			return this;
 		},
 		setOprData(data){
+			console.log("deposit",data);
 			this.oprData = data;
 			this.inputPercent = 0;
 			return this;

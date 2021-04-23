@@ -37,7 +37,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-4 col-xs-12 col-sm-6 mgt-10" v-for="item in getPledgeList" :key="item.coinName" >
+				<div class="col-md-4 col-xs-12 col-sm-6 mgt-10" v-for="item in getPledgeList" :key="item.coinName + item.addr" >
 					<div class="airdrop-item tal " :class="`pledgeType-${pledgeType}`">
 						<div class="over" v-if="pledgeType=='v1' ">{{$t("Air-drop_134")}}</div>
 						<div class="vertical-children" style="padding-left: 56px" >
@@ -64,8 +64,7 @@
 						<div class="tal mgt-20">
 							<p class="por mgt-10">
 								<span class="opa-6 ">{{$t("Air-drop_112")}}</span>
-								<span class="suffix" v-if="pledgeType=='v2' " >{{ numFloor(coinArr[item.coinName].balance, 1e6) || "0" }}</span>
-								<span class="suffix" v-else>{{ numFloor(coinArrV1[item.coinName].balance, 1e6) || "0" }}</span>
+								<span class="suffix" >{{ numFloor(coinArr[item.coinKey].balance, 1e6) || "0" }}</span>
 							</p>
 						</div>
 
@@ -214,8 +213,8 @@
 				<div class="tab-panel  mgt-10">
 					<h3 class="tal">2, {{$t("Air-drop_141")}}</h3>
 					<div class="mgt-20">
-						<p class="small">{{$t("Air-drop_139")}}: {{ numFloor(coinArrV1[migrateItme.coinName].balance, 1e6) || "0" }} {{ migrateItme.coinName }} LP</p>
-						<StatuButton class="mgt-10" :isDisable="coinArrV1[migrateItme.coinName].balance <= 0"  :onClick="()=>$root.$children[0].$refs.pancake.setOprData(migrateItme).show('liquidity').showRemoveLiquidityPanel()">
+						<p class="small">{{$t("Air-drop_139")}}: {{ numFloor(coinArr[migrateItme.coinKey].balance, 1e6) || "0" }} {{ migrateItme.coinName }} LP</p>
+						<StatuButton class="mgt-10" :isDisable="coinArr[migrateItme.coinKey].balance <= 0"  :onClick="()=>$root.$children[0].$refs.pancake.setOprData(migrateItme).show('liquidity').showRemoveLiquidityPanel()">
 							{{$t("Air-drop_95")}}
 						</StatuButton>
 					</div>
@@ -301,7 +300,6 @@ export default {
 		...mapState({
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			coinArr: (state) => state.bnbState.data.coinArr,
-			coinArrV1: (state) => state.bnbState.data.coinArrV1,
 			totalAirdropKey: (state) => state.bnbState.data.totalAirdropKey,
 			rewardStoreKey: (state) => state.bnbState.data.rewardStoreKey,
 			buyBack: (state) => state.bnbState.data.buyBack,
@@ -312,19 +310,25 @@ export default {
 		//获取总质押USDT
 		getTotalSupplyUSDT() {
 			let num = 0;
-			Object.keys(PancakeConfig.StakeLP).map(coinName=>{
-				num += Number(this.coinArr[coinName].totalSupply);
+			Object.keys(PancakeConfig.StakeLP).map(coinKey=>{
+				num += Number(this.coinArr[coinKey].totalSupply);
 			});
 			return this.numFloor(num, 100);
 		},
 
 		getPledgeList(){
 			let arr = [];
-			let stakeLP = this.pledgeType == "v1"?PancakeConfig.StakeLPV1:PancakeConfig.StakeLP;
-			let coinArr =  this.pledgeType == "v1"?this.coinArrV1: this.coinArr;
+			let stakeLP = PancakeConfig.StakeLP;
+			let coinArr =  this.coinArr;
 			for (let key in stakeLP) {
-				if(stakeLP[key].pIndex != -1 && (this.coinArr[key].wantAmount > 0 || !this.onlyShowPledge)){
-					arr.push({coinName: key, ...stakeLP[key], ...coinArr[key]})
+				let {pIndex, isFinish} = stakeLP[key];
+				if(pIndex != -1 && (this.coinArr[key].wantAmount > 0 || !this.onlyShowPledge)){
+					if(this.pledgeType == "v1" && isFinish){
+						arr.push({coinKey: key, ...stakeLP[key], ...coinArr[key]});
+					}
+					if(this.pledgeType == "v2" && !isFinish){
+						arr.push({coinKey: key, ...stakeLP[key], ...coinArr[key]});
+					}
 				}
 			}
 			return arr;

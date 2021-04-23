@@ -32,7 +32,7 @@
 						</div>
 					</div>
 				</div>
-				<div v-for="item in getPledgeList" :key="item.coinName" >
+				<div v-for="item in getPledgeList" :key="item.coinName + item.addr" >
 					<div  class="aveage-box select-key-item" v-if="item.earnedKey > 0 && (onlyCheck == '' || item.coinName == onlyCheck) ">
 						<div class="tal vertical-children">
 							<div class="ly-checkbox" @click="toggleSelect(item)" :class="selectKeyCoin.indexOf(item.coinName) != -1 ?'active':'' ">

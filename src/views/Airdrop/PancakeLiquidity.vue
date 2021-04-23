@@ -339,7 +339,7 @@ export default {
 
 		async getLPBalance(){
 			let {addr , omit , decimals, coinName} = this.oprData;
-			let coinArr =  this.setting.pancakeVType == 1? this.coinArrV1: this.coinArr;
+			let coinArr =  this.coinArr;
 
 			if(addr == "") return;
 			let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);

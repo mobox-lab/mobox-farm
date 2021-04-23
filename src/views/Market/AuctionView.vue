@@ -352,14 +352,14 @@ export default {
 		},
 		//授权
 		async approve(){
-			let coinName = "BUSD";
-			let {allowanceToAuction, isApproving} = this.coinArr[coinName];
+			let coinKey = "BUSD";
+			let {allowanceToAuction, isApproving} = this.coinArr[coinKey];
 			if(allowanceToAuction > 0 || isApproving) return;
 
 			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin["BUSD"].addr,
-			WalletConfig.ETH.moMoStakeAuction, {coinName, type: "allowanceToAuction"});
+			WalletConfig.ETH.moMoStakeAuction, {coinKey, type: "allowanceToAuction"});
 			if (hash) {
-				this.coinArr[coinName].isApproving = true;
+				this.coinArr[coinKey].isApproving = true;
 			}
 		},
 	

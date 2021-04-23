@@ -490,7 +490,7 @@ export default class ETH {
 		});
 	}
 	//授权Erc20给矿池
-	static async approveErcToTarget(fromAddr, targetAddr, approveInfo = {coinName: "", type: ""}) {
+	static async approveErcToTarget(fromAddr, targetAddr, approveInfo = {coinKey: "", type: ""}) {
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
 		let contract = new this.web3.eth.Contract([
@@ -502,10 +502,10 @@ export default class ETH {
 				contract.methods.approve(targetAddr,"0x" + Common.repeat("f", 64)), {from: myAddr},
 				hash=>resolve(hash),
 				()=>{
-					let {coinName, type} = approveInfo;
+					let {coinKey, type} = approveInfo;
 					console.log("recipt",approveInfo);
-					if(coinName != ""){
-						Common.store.commit("bnbState/setCoinAllowance", {coinName, allowance: 1.157920892373162e77, type});
+					if(coinKey != ""){
+						Common.store.commit("bnbState/setCoinAllowance", {coinKey, allowance: 1.157920892373162e77, type});
 					}
 				}
 			)
@@ -1243,7 +1243,7 @@ export default class ETH {
 
 	// static async withdraw
 
-	static async deposit(coinName, amount){
+	static async deposit(coinKey, amount){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
 
@@ -1252,7 +1252,7 @@ export default class ETH {
 			Contract.depositBNB,
 		], WalletConfig.ETH.momoFarm);
 
-		let {pIndex, decimals}  = PancakeConfig.StakeLP[coinName];
+		let {pIndex, decimals}  = PancakeConfig.StakeLP[coinKey];
 		let amountHex = this.numToHex(BigNumber(Common.numFloor(amount , 1e8)).times(decimals));
 
 		console.log({pIndex, amountHex});
@@ -1260,7 +1260,7 @@ export default class ETH {
 		return new Promise(resolve => {
 			let method = contract.methods.deposit(pIndex,amountHex);
 			let value = this.numToHex(0);
-			if(coinName == "BNB"){
+			if(coinKey == "BNB"){
 				method = contract.methods.deposit(pIndex);
 				value = amountHex;
 			}

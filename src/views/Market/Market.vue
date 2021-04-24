@@ -132,9 +132,9 @@ export default {
 		}),
 		getSelectCoinArr(){
 			let arr = [];
-			Object.keys(PancakeConfig.SelectCoin).map(coinName=>{
-				if(coinName == "BUSD"){
-					arr.push(coinName + ": " + this.coinArr[coinName].balance);
+			Object.keys(PancakeConfig.SelectCoin).map(coinKey=>{
+				if(coinKey == "BUSD"){
+					arr.push(coinKey + ": " + this.coinArr[coinKey].balance);
 				}
 			})
 			return arr;
@@ -160,11 +160,11 @@ export default {
 			this.coinArr["BNB"].balance = balance;
 			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 
-			for (let key in PancakeConfig.SelectCoin) {
-				let {addr, decimals, omit} = PancakeConfig.SelectCoin[key];
+			for (let coinKey in PancakeConfig.SelectCoin) {
+				let {addr, decimals, omit} = PancakeConfig.SelectCoin[coinKey];
 				if(addr != ""){
 					let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
-					this.coinArr[key].balance =  Common.numFloor((Number(value) / decimals), omit);
+					this.coinArr[coinKey].balance =  Common.numFloor((Number(value) / decimals), omit);
 					this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 					await Common.sleep(500);
 				}

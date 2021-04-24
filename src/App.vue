@@ -6,35 +6,20 @@
 <template>
 	<div id="app">
 		<div class="mask" @click="navOpr('hide')"></div>
-
-		<!-- <div class="vertical-children point-block">
-					<img src="./assets/coin/KEY.png" height="25" alt=""/>
-					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinName: 'KEY-BNB'}).show('swap')">
-						$ <span v-if="ourPrice['KEY'] != '-' ">{{ourPrice["KEY"]}}</span>
-						<Loading v-else />
-					</span>
-				</div>
-				<div class="vertical-children mgt-10 point-block ">
-					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinName: 'MBOX-BNB'}).show('swap')">
-						$ <span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
-						<Loading v-else />
-					</span>
-				</div> -->
 		<!-- ipad导航 -->
 		<div id="mobile-nav" class="hide">
 			<img src="./assets/logo.png" height="30" alt="" />
 			<div class="dib " style="position:absolute;top:0px;right:130px;zoom:0.8" >
 				<div class="vertical-children dib">
 					<img src="./assets/coin/KEY.png" height="25" alt=""/>
-					<span  @click="$refs.pancake.setOprData({coinName: 'KEY-BNB',pancakeVType: 1}).show('swap')">
+					<span  @click="$refs.pancake.setOprData({coinKey: 'KEY-BNB',pancakeVType: 1}).show('swap')">
 						$<span v-if="ourPrice['KEY'] != '-' ">{{ourPrice["KEY"]}}</span>
 						<Loading v-else />
 					</span>
 				</div>
 				<div class="vertical-children  dib mgl-10 ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<span @click="$refs.pancake.setOprData({coinName: 'MBOX-BNB', pancakeVType: 1}).show('swap')">
+					<span @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB', pancakeVType: 1}).show('swap')">
 						$<span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
 						<Loading v-else />
 					</span>
@@ -123,14 +108,14 @@
 			<div id="our-parice-pc">
 				<div class="vertical-children point-block">
 					<img src="./assets/coin/KEY.png" height="25" alt=""/>
-					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinName: 'KEY-BNB', pancakeVType: 1}).show('swap')">
+					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'KEY-BNB', pancakeVType: 1}).show('swap')">
 						$<span v-if="ourPrice['KEY'] != '-' ">{{ourPrice["KEY"]}}</span>
 						<Loading v-else />
 					</span>
 				</div>
 				<div class="vertical-children mgt-10 point-block ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinName: 'MBOX-BNB', pancakeVType: 1}).show('swap')">
+					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB', pancakeVType: 1}).show('swap')">
 						$<span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
 						<Loading v-else />
 					</span>
@@ -602,9 +587,9 @@ export default {
 
 		//
 		async setOurPrice(coinName){
-			let res = await SwapHttp.post("/pair/price", {from: coinName, to: "BNB", amountIn: 1});
+			let res = await SwapHttp.post("/pair/price", {from: coinName, to: "BNB", amountIn: 1, version: "V1"});
 			if(res.data.code == 200){
-				let res2 = await SwapHttp.post("/pair/price", {from: "BNB", to: "USDT", amountIn: res.data.data.amountOut});
+				let res2 = await SwapHttp.post("/pair/price", {from: "BNB", to: "USDT", amountIn: res.data.data.amountOut, version: "V1"});
 				if(res2.data.code == 200){
 					this.ourPrice[coinName] = this.numFloor(res2.data.data.amountOut, 1e4);
 				}

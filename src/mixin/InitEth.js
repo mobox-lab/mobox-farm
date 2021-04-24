@@ -187,17 +187,7 @@ const InitEth = {
 				}
 			}
 		},
-		// async getBuyBack(){
-		// 	let autoBuyback = "0x5C3B530FB20520F8E4d6875Eab2Fed43534BE908";
-		// 	let wBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
 
-		// 	let res = await Wallet.ETH.getTargetBalancefromTokenAddr(autoBuyback, wBNB);
-		// 	if(res){
-		// 		let value = Common.numFloor(Number(res) / 1e18, 1e4);
-		// 		this.buyBack.hasAmount = value;
-		// 		this.$store.commit("bnbState/setData", {buyBack: this.buyBack});
-		// 	}
-		// },
 		async getBuyBack(){
 			let res = await Http.buybackpool();
 			if(res){

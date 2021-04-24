@@ -78,9 +78,9 @@ export default {
 		}),
 		getSelectCoinArr(){
 			let arr = [];
-			Object.keys(PancakeConfig.SelectCoin).map(coinName=>{
-				if(coinName == "BUSD"){
-					arr.push(coinName + ": " + this.coinArr[coinName].balance);
+			Object.keys(PancakeConfig.SelectCoin).map(coinKey=>{
+				if(coinKey == "BUSD"){
+					arr.push(coinKey + ": " + this.coinArr[coinKey].balance);
 				}
 			})
 			return arr;
@@ -210,22 +210,22 @@ export default {
 		},
 		//授权
 		async approve(){
-			let coinName = "BUSD";
-			let {allowanceToAuction, isApproving} = this.coinArr[coinName];
+			let coinKey = "BUSD";
+			let {allowanceToAuction, isApproving} = this.coinArr[coinKey];
 			if(allowanceToAuction > 0 || isApproving) return;
 
 			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin["BUSD"].addr,
-			WalletConfig.ETH.moMoStakeAuction, {coinName, type: "allowanceToAuction"});
+			WalletConfig.ETH.moMoStakeAuction, {coinKey, type: "allowanceToAuction"});
 			if (hash) {
-				this.coinArr[coinName].isApproving = true;
+				this.coinArr[coinKey].isApproving = true;
 			}
 		},
 	
 		//购买
 		async buyPet(item){
-			let coinName = "BUSD"
-			if(this.coinArr[coinName].allowanceToAuction <= 0 || this.lockBtn.buyMomoLock > 0) return
-			if(item.nowPrice/1e9 > Number(this.coinArr[coinName].balance)){
+			let coinKey = "BUSD"
+			if(this.coinArr[coinKey].allowanceToAuction <= 0 || this.lockBtn.buyMomoLock > 0) return
+			if(item.nowPrice/1e9 > Number(this.coinArr[coinKey].balance)){
 				this.showNotify(this.$t("Market_34"), "error");
 				return ;
 			}
@@ -239,7 +239,7 @@ export default {
 				return;
 			}
 
-			let hash = await Wallet.ETH.buyMarketPet(auctor, index, coinName);
+			let hash = await Wallet.ETH.buyMarketPet(auctor, index, coinKey);
 			if(hash){
 				await Common.sleep(1000);
 				this.$store.commit("globalState/lockBtn", "buyMomoLock");
@@ -253,12 +253,12 @@ export default {
 		},
 		//获取BUSD的授权情况
 		async viewAllowance(){
-			let coinName = "BUSD";
-			if(this.coinArr[coinName].allowanceToAuction > 0) return;
+			let coinKey = "BUSD";
+			if(this.coinArr[coinKey].allowanceToAuction > 0) return;
 
-			let allowanceToAuction = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinName].addr, WalletConfig.ETH.moMoStakeAuction, false);
+			let allowanceToAuction = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, WalletConfig.ETH.moMoStakeAuction, false);
 			if(allowanceToAuction){
-				this.coinArr[coinName].allowanceToAuction = Number(allowanceToAuction);
+				this.coinArr[coinKey].allowanceToAuction = Number(allowanceToAuction);
 				this.coinArr.ts = new Date().valueOf();
 				this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 			}

@@ -1,7 +1,7 @@
 <template>
 	<div  class="tab-body tal">
 		<div class="tab-content">
-			<h2 v-if="setting.pancakeVtype==1">{{$t("Air-drop_144")}}</h2>
+			<h2 v-if="setting.pancakeVType==1">{{$t("Air-drop_144")}}</h2>
 			<h2 v-else>{{$t("Air-drop_146")}}</h2>
 			<p class="small opa-6">{{$t("Air-drop_34")}}</p>
 		</div>
@@ -187,13 +187,13 @@ export default {
 						&& this.hasApproved
 		},
 		hasApproved(){
-			let coinName = this.from.coinName;
-			return coinName == "BNB" || (coinName != "" && coinName != "BNB" && this.coinArr[coinName].allowanceToSwap > 1e8);
+			let coinKey = this.from.coinName;
+			return coinKey == "BNB" || (coinKey != "" && coinKey != "BNB" && this.coinArr[coinKey].allowanceToSwap > 1e8);
 		},
 		needApproved(){
-			let coinName = this.from.coinName;
+			let coinKey = this.from.coinName;
 			let needApprove =  false;
-			if(coinName != "" && coinName != "BNB" && this.coinArr[coinName].allowanceToSwap == 0){
+			if(coinKey != "" && coinKey != "BNB" && this.coinArr[coinKey].allowanceToSwap == 0){
 				needApprove = true;
 			}
 			return needApprove;
@@ -224,6 +224,8 @@ export default {
 		async inputValueChange(type, stepTime = this.stepTime){
 			this.lastType = type;
 			let otherType = type == "from"?"to":"from";
+			let version = "V1";
+			if(this.setting.pancakeVType == 2) version = "V2";
 			if(this.hasSelectTargetCoin){
 				//TODO: 请求可以兑换到的数量,延时防抖
 				clearTimeout(this.timer);
@@ -231,7 +233,8 @@ export default {
 					let sendData = {
 						from: this[type].coinName,
 						to: this[otherType].coinName,
-						amountIn: this[type].inputValue
+						amountIn: this[type].inputValue,
+						version
 					}
 					if(Number(sendData.amountIn) <= 0) return;
 					this[otherType].loading = true;
@@ -278,11 +281,11 @@ export default {
 			this.inputValueChange(otherType, 0);
 		},
 		async setCoinAllowance(){
-			let coinName = this.from.coinName;
+			let coinKey = this.from.coinName;
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
-			if(coinName != "" && coinName != "BNB" && this.coinArr[coinName].allowanceToSwap == -1) {
-				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinName].addr, routerAddr, false);
-				this.coinArr[coinName].allowanceToSwap = Number(allowance);
+			if(coinKey != "" && coinKey != "BNB" && this.coinArr[coinKey].allowanceToSwap == -1) {
+				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, routerAddr, false);
+				this.coinArr[coinKey].allowanceToSwap = Number(allowance);
 				this.coinArr["ts"] = new Date().valueOf();
 			}
 		},
@@ -326,16 +329,16 @@ export default {
 			this.setCoinAllowance();
 		},
 		async approve(){
-			let coinName = this.from.coinName;
-			if(coinName == "" || coinName == "BNB") return;
-			let {isApproving, allowanceToSwap} =  this.coinArr[coinName];
+			let coinKey = this.from.coinName;
+			if(coinKey == "" || coinKey == "BNB") return;
+			let {isApproving, allowanceToSwap} =  this.coinArr[coinKey];
 			if(isApproving || Number(allowanceToSwap) >1e8) return;
 
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
 
-			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinName].addr, routerAddr, {coinName, type: "allowanceToSwap"});
+			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr, routerAddr, {coinKey, type: "allowanceToSwap"});
 			if(hash){
-				this.coinArr[coinName].isApproving = true;
+				this.coinArr[coinKey].isApproving = true;
 			}
 		}
 	}

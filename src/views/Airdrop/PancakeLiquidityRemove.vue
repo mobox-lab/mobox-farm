@@ -6,7 +6,7 @@
 					<svg style="transform:rotate(90deg)" viewBox="0 0 24 24"  width="24px" ><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
 				</div>
 				<div class="tac" style="flex:3">
-					<span v-if="setting.pancakeVtype==1">{{$t("Air-drop_141")}}</span>
+					<span v-if="setting.pancakeVType==1">{{$t("Air-drop_141")}}</span>
 					<span v-else>{{$t("Air-drop_143")}}</span>
 				</div>
 				<div></div>
@@ -21,12 +21,6 @@
 					</div>
 					<input type="text" class="ly-input tac" style="width:100%;padding: 0px 50px" v-model="inputValue"  readonly="readonly" >
 				</div>
-				<!-- <div class="aveage-box mgt-10">
-					<p class="tal small">{{$t("Air-drop_19")}}</p>
-					<div class="tar small">
-						<p>{{coinArr[oprData.coinName].balance}} {{oprData.coinName}}</p>
-					</div>
-				</div> -->
 				<div class="mgt-10">
 					<PercentSelect :selectCB="percent => inputPercent = percent" />
 				</div>
@@ -68,10 +62,10 @@
 			</div>
 
 			<div class="mgt-20 " :class="needApprove?'btn-group':'' ">
-				<StatuButton data-step="1" v-if="needApprove" :onClick="approve.bind(this, oprData.coinName)" :isDisable="!needApprove || coinArr[oprData.coinName].isApproving" :isLoading="coinArr[oprData.coinName].isApproving"  style="width: 80%" >
+				<StatuButton data-step="1" v-if="needApprove" :onClick="approve.bind(this, oprData.coinKey)" :isDisable="!needApprove" :isLoading="coinArr[oprData.coinKey].isApproving"  style="width: 80%" >
 					{{$t("Air-drop_16")}} {{oprData.coinName}}
 				</StatuButton>
-				<StatuButton data-step="2" :onClick="removeLp.bind(this)" style="width: 80%" :isDisable="needApprove && oprData.balance > 0" :isLoading="coinArr[oprData.coinName].isRemoveLiqiditing" class="mgt-10">
+				<StatuButton data-step="2" :onClick="removeLp.bind(this)" style="width: 80%" :isDisable="needApprove && oprData.balance > 0" :isLoading="coinArr[oprData.coinKey].isRemoveLiqiditing" class="mgt-10">
 					{{$t("MOMO_20")}}
 				</StatuButton>
 			</div>
@@ -116,11 +110,11 @@ export default {
 
 		},
 		needApprove(){
-			let {coinName} = this.oprData;
+			let {coinName, coinKey} = this.oprData;
 			if(coinName == "") return false;
 			let coinArr = this.coinArr;
 			
-			let allowanceToSwap = Number(coinArr[coinName].allowanceToSwap);
+			let allowanceToSwap = Number(coinArr[coinKey].allowanceToSwap);
 			return coinName != ''  && allowanceToSwap >= 0 && allowanceToSwap <  1e8
 		},
 	},
@@ -132,7 +126,7 @@ export default {
 			handler(newData){
 				if(this.inputValue === ""){
 					this.inputValue = newData.balance;
-					this.setCoinAllowance(newData.coinName);
+					this.setCoinAllowance(newData.coinKey);
 				} 
 			},
 			immediate: true
@@ -150,37 +144,37 @@ export default {
 		async removeLp(){
 			let coinArr = this.coinArr;
 
-			let res = await Wallet.ETH.removeLiquidity(this.oprData.coinName, Number(this.inputValue), this.getTargetLPPrice, this.setting);
+			let res = await Wallet.ETH.removeLiquidity(this.oprData, Number(this.inputValue), this.getTargetLPPrice, this.setting);
 			if(res){
 				this.inputValue = 0;
-				coinArr[this.oprData.coinName].isRemoveLiqiditing = true;
+				coinArr[this.oprData.coinKey].isRemoveLiqiditing = true;
 			}
 		},
-		async approve(coinName){
-			console.log(coinName);
+		async approve(coinKey){
+			console.log(coinKey);
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
 			let coinArr =  this.coinArr;
 			let stakeLp = PancakeConfig.StakeLP;
 
-			if(coinName == "") return;
-			let {isApproving, allowanceToSwap} =  coinArr[coinName];
+			if(coinKey == "") return;
+			let {isApproving, allowanceToSwap} =  coinArr[coinKey];
 			if(isApproving || Number(allowanceToSwap) >1e8) return;
 
-			let hash = await Wallet.ETH.approveErcToTarget(stakeLp[coinName].addr, 
-			routerAddr, {coinName, type: "allowanceToSwap"});
+			let hash = await Wallet.ETH.approveErcToTarget(stakeLp[coinKey].addr, 
+			routerAddr, {coinKey, type: "allowanceToSwap"});
 			if(hash){
-				coinArr[coinName].isApproving = true;
+				coinArr[coinKey].isApproving = true;
 			}
 		},
 
-		async setCoinAllowance(coinName){
+		async setCoinAllowance(coinKey){
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
 			let coinArr =  this.coinArr;
 			let stakeLp = PancakeConfig.StakeLP;
 
-			if(coinName != "" && coinArr[coinName].allowanceToSwap == -1) {
-				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(stakeLp[coinName].addr, routerAddr, false);
-				coinArr[coinName].allowanceToSwap = Number(allowance);
+			if(coinKey != "" && coinArr[coinKey].allowanceToSwap == -1) {
+				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(stakeLp[coinKey].addr, routerAddr, false);
+				coinArr[coinKey].allowanceToSwap = Number(allowance);
 				coinArr["ts"] = new Date().valueOf();
 			}
 		},

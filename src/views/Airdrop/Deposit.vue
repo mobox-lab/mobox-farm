@@ -218,7 +218,6 @@ export default {
 			return this;
 		},
 		setOprData(data){
-			console.log("deposit",data);
 			this.oprData = data;
 			this.inputPercent = 0;
 			return this;

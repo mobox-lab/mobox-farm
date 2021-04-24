@@ -77,17 +77,17 @@ export default {
 			pledgeType: (state) => state.bnbState.data.pledgeType,
 		}),
 		oprData(){
-			let coinName = this.oprCoinName;
+			let coinKey = this.oprCoinKey;
 			let stakeLP = PancakeConfig.StakeLP;
 			let coinArr = this.coinArr;
-			return {coinName, ...stakeLP[coinName], ...coinArr[coinName]}
+			return {coinKey, ...stakeLP[coinKey], ...coinArr[coinKey]}
 		},
 	},
 	data() {
 		return {
 			dialog_tab_pos: 1,
 			hasGetCoinValue: false,
-			oprCoinName: "",
+			oprCoinKey: "",
 		};
 	},
 	
@@ -127,7 +127,7 @@ export default {
 		},
 		setOprData(data){
 			console.log(data);
-			this.oprCoinName = data.coinName;
+			this.oprCoinKey = data.coinKey;
 			this.setting.pancakeVType = data.pancakeVType;
 			this.$store.commit("bnbState/setData", {setting: this.setting});
 			return this;

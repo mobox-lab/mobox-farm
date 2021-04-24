@@ -1,12 +1,12 @@
 <template>
 	<Dialog id="select-coin-dialog" :top="100" :width="400">
 		<h2>{{$t("Air-drop_38")}}</h2>
-		<div v-for="item in selectCoinList" :key="item" :class="hasSelectCoin.indexOf(item) != -1?'disable':'' " class="aveage-box select-coin-item" @click="itemClick(item)">
+		<div v-for="coinKey in selectCoinList" :key="coinKey" :class="hasSelectCoin.indexOf(coinKey) != -1?'disable':'' " class="aveage-box select-coin-item" @click="itemClick(coinKey)">
 			<div class="vertical-children tal">
-				<img :src="require(`../../assets/coin/${item}.png`)" width="20" alt="">&nbsp;
-				<span class="mgl-5">{{item}}</span>
+				<img :src="require(`../../assets/coin/${coinKey}.png`)" width="20" alt="">&nbsp;
+				<span class="mgl-5">{{coinKey}}</span>
 			</div>
-			<div class="tar" v-if="coinArr[item].balance != '-'">{{coinArr[item].balance}}</div>
+			<div class="tar" v-if="coinArr[coinKey].balance != '-'">{{coinArr[coinKey].balance}}</div>
 			<div class="tar" v-else>
 				<Loading />
 			</div>
@@ -51,11 +51,11 @@ export default {
 			this.coinArr["BNB"].balance = balance;
 			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 
-			for (let key in PancakeConfig.SelectCoin) {
-				let {addr, decimals, omit} = PancakeConfig.SelectCoin[key];
+			for (let coinKey in PancakeConfig.SelectCoin) {
+				let {addr, decimals, omit} = PancakeConfig.SelectCoin[coinKey];
 				if(addr != ""){
 					let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
-					this.coinArr[key].balance =  Common.numFloor((Number(value) / decimals), omit);
+					this.coinArr[coinKey].balance =  Common.numFloor((Number(value) / decimals), omit);
 					this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 					await Common.sleep(500);
 				}

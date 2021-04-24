@@ -48,67 +48,7 @@ export default class PancakeConfig {
 			addr: "0x85c128eE1feEb39A59490c720A9C563554B51D33"
 		},
 	}
-
-	//v1版本的流动池
-	static StakeLPV1 = {
-		"BTCB-BNB":{
-			pIndex: 1,
-			addr: "0x7561EEe90e24F3b348E1087A005F78B4c8453524",
-			allocPoint: 2,
-			decimals: 1e18,
-			omit: 1e8,
-			pancakeVType: 1,
-		},
-		"ETH-BNB":{
-			pIndex: 2,
-			addr: "0x70D8929d04b60Af4fb9B58713eBcf18765aDE422",
-			allocPoint: 2,
-			decimals: 1e18,
-			omit: 1e6,
-			pancakeVType: 1,
-		},
-		"BUSD-BNB":{
-			pIndex: 3,
-			addr: "0x1b96b92314c44b159149f7e0303511fb2fc4774f",
-			allocPoint: 2,
-			decimals: 1e18,
-			omit: 1e6,
-			pancakeVType: 1,
-		},
-		"USDT-BNB":{
-			pIndex: 4,
-			addr: "0x20bCC3b8a0091dDac2d0BC30F68E6CBb97de59Cd",
-			allocPoint: 2,
-			decimals: 1e18,
-			omit: 1e6,
-			pancakeVType: 1,
-		},
-		"USDT-BUSD":{
-			pIndex: 5,
-			addr: "0xc15fa3E22c912A276550F3E5FE3b0Deb87B55aCd",
-			allocPoint: 1,
-			decimals: 1e18,
-			omit: 1e6,
-			pancakeVType: 1,
-		},
-		"DAI-BUSD":{
-			pIndex: 6,
-			addr: "0x3aB77e40340AB084c3e23Be8e5A6f7afed9D41DC",
-			allocPoint: 1,
-			decimals: 1e18,
-			omit: 1e6,
-			pancakeVType: 1,
-		},
-		"USDC-BUSD":{
-			pIndex: 7,
-			addr: "0x680dd100e4b394bda26a59dd5c119a391e747d18",
-			allocPoint: 1,
-			decimals: 1e18,
-			omit: 1e6,
-			pancakeVType: 1,
-		},
-	}
-
+	
 	static StakeLP = {
 		"KEY-BNB":{
 			pIndex: -1,

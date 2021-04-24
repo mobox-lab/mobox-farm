@@ -1141,7 +1141,7 @@ export default class ETH {
 	}
 
 	//购买市场上的物品
-	static async buyMarketPet(_auctor, _index, coinName){
+	static async buyMarketPet(_auctor, _index, coinKey){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
 
@@ -1155,7 +1155,7 @@ export default class ETH {
 				hash=>resolve(hash),
 				()=>{
 					console.log("buyMarketPet success!!!!!");
-					EventBus.$emit(EventConfig.BidPetSuccess, {chain: "eth", coinName});
+					EventBus.$emit(EventConfig.BidPetSuccess, {chain: "eth", coinKey});
 				}
 			)
 		});
@@ -1276,33 +1276,9 @@ export default class ETH {
 		});
 
 	}
-
-	//充值质押
-	static async deposit_old(coinName, amount) {
-		let coinObj = WalletConfig.ETH[coinName];
-		let myAddr = await this.getAccount();
-		if (!myAddr) return;
-		//创建合约对象
-		let contract = new this.web3.eth.Contract([
-			Contract.depositAndStake,
-		], coinObj["poolAddr"]);
-		console.log(coinObj);
-		console.log(coinName, amount);
-
-		return new Promise(resolve => {
-			this.sendMethod(
-				contract.methods.depositAndStake("0x" + BigNumber(BigNumber(amount).times(BigNumber(coinObj["decimals"]))).toString(16)), {from: myAddr},
-				hash=>resolve(hash),
-				()=>{
-					console.log("depositAndStake success!!!!!");
-					EventBus.$emit(EventConfig.DepositOrWithdrawConfirm, {chain: "eth"});
-				}
-			)
-		});
-
-	}
+	
 	//提币
-	static async withdraw(coinName, amount) {
+	static async withdraw(coinKey, amount) {
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
 		//创建合约对象
@@ -1310,9 +1286,9 @@ export default class ETH {
 			Contract.withdrawCoin,
 		], WalletConfig.ETH.momoFarm);
 
-		console.log({coinName, amount});
+		console.log({coinKey, amount});
 
-		let {pIndex, decimals}  = PancakeConfig.StakeLP[coinName];
+		let {pIndex, decimals}  = PancakeConfig.StakeLP[coinKey];
 		let amountHex = this.numToHex(BigNumber(Common.numFloor(amount , 1e8)).times(decimals));
 
 		return new Promise(resolve => {
@@ -1322,7 +1298,7 @@ export default class ETH {
 				()=>{
 					console.log("withdraw success!!!!!");
 					Common.app.getStakeValueAndEarndKey();
-					Common.app.setCoinValueByName(coinName);
+					Common.app.setCoinValueByName(coinKey);
 				}
 			)
 		});
@@ -1349,14 +1325,16 @@ export default class ETH {
 
 
 	//pancake相关
-	static async removeLiquidity(coinName, liquidity, targetLPPrice, setting){
+	static async removeLiquidity(coinItemObj, liquidity, targetLPPrice, setting){
+		console.log({coinItemObj});
+		let {coinName, coinKey} = coinItemObj;
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
 
 		let coinObj = coinName.split("-");
 		let selectCoinA = PancakeConfig.SelectCoin[coinObj[0]];
 		let selectCoinB = PancakeConfig.SelectCoin[coinObj[1]];
-		let LPObj = PancakeConfig.StakeLP[coinName];
+		let LPObj = PancakeConfig.StakeLP[coinKey];
 		let duration = Number(setting.duration) || 20;
 		let slippage = Number(setting.slippage) || 0.5;
 

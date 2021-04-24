@@ -1,8 +1,11 @@
 <template>
 	<div id="aridorp" class="tac">
 		<section class="mgt-20">
-			<div class="tac mgt-10" >
-				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v1'}) "  :class="pledgeType == 'v1'?'active':''" class="tab-menu " style="font-size:16px">{{$t("Air-drop_134")}}</div>
+			<div class="tac mgt-10"  id="airdorp-top-menu">
+				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v1'}) "  :class="pledgeType == 'v1'?'active':''" class="tab-menu por" style="font-size:16px">
+					{{$t("Air-drop_134")}}
+					<button class="pop-notice animate__animated  animate__headShake animate__infinite" >迁移</button>
+				</div>
 				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v2'})"  :class="pledgeType == 'v2'?'active':''"  class="tab-menu" style="font-size:16px"  >{{$t("Air-drop_135")}}</div>
 			</div>
 		</section>
@@ -100,7 +103,7 @@
 							<p class="por mgt-10">
 								<span class="opa-6">{{ $t("Air-drop_05") }}</span>
 								<span class="suffix">
-									<button class="btn-success btn-small por"  :class="lockBtn.getKeyLock > 0 ||  item.earnedKey == 0?'disable-btn':''" @click="$refs.keyopr.setCheckCoin(item.coinName).show()">
+									<button class="btn-success btn-small por"  :class="lockBtn.getKeyLock > 0 ||  item.earnedKey == 0?'disable-btn':''" @click="$refs.keyopr.setCheckCoin(item.coinKey).show()">
 										<img v-if="lockBtn.getKeyLock > 0" src="../../assets/icon/loading.png" class="rotate" height="10" alt="" style="position:absolute;left:8px;top:10px" />
 										{{ item.earnedKey }} KEY
 									</button>
@@ -203,7 +206,7 @@
 				<div class="tab-panel  mgt-20">
 					<h3 class="tal">1, {{$t("Air-drop_08")}}</h3>
 					<div class="mgt-20">
-						<p class="small">{{$t("Air-drop_138")}}: {{migrateItme.wantAmount}} {{ migrateItme.coinName }} LP</p>
+						<p class="small">{{$t("Air-drop_138")}}: {{migrateItme.wantAmount}} {{ migrateItme.coinName }} LP V1</p>
 						<StatuButton class="mgt-10" style="min-width:150px" :isDisable="migrateItme.wantAmount <= 0" :onClick="()=>$refs.withdraw.setOprData(migrateItme).show()">
 							{{$t("Air-drop_08")}}
 						</StatuButton>
@@ -213,7 +216,7 @@
 				<div class="tab-panel  mgt-10">
 					<h3 class="tal">2, {{$t("Air-drop_141")}}</h3>
 					<div class="mgt-20">
-						<p class="small">{{$t("Air-drop_139")}}: {{ numFloor(coinArr[migrateItme.coinKey].balance, 1e6) || "0" }} {{ migrateItme.coinName }} LP</p>
+						<p class="small">{{$t("Air-drop_139")}}: {{ numFloor(coinArr[migrateItme.coinKey].balance, 1e6) || "0" }} {{ migrateItme.coinName }} LP V1</p>
 						<StatuButton class="mgt-10" :isDisable="coinArr[migrateItme.coinKey].balance <= 0"  :onClick="()=>$root.$children[0].$refs.pancake.setOprData(migrateItme).show('liquidity').showRemoveLiquidityPanel()">
 							{{$t("Air-drop_95")}}
 						</StatuButton>
@@ -223,15 +226,17 @@
 				<div class="tab-panel  mgt-10">
 					<h3 class="tal">3, {{$t("Air-drop_142")}}</h3>
 					<div class="mgt-20">
-						<button class="btn-primary por" style="min-width:150px"  @click="$root.$children[0].$refs.pancake.setOprData({coinName: migrateItme.coinName, pancakeVType: 2}).show('liquidity').showAddLiquidityPanel()">{{$t("Air-drop_57")}}</button>
+						<button class="btn-primary por" style="min-width:150px"  @click="$root.$children[0].$refs.pancake.setOprData({coinKey: migrateItme.coinKey+'-V2', pancakeVType: 2}).show('liquidity').showAddLiquidityPanel()">{{$t("Air-drop_57")}}</button>
 					</div>
 				</div>
 				<svg viewBox="0 0 24 24" width="18px"  class="mgt-10"><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
 				<div class="tab-panel  mgt-10">
 					<h3 class="tal">4, {{$t("Air-drop_07")}}</h3>
 					<div class="mgt-20">
-						<p class="small">{{$t("Air-drop_112")}}: 0 {{ migrateItme.coinName }} LP</p>
-						<button class="btn-primary  mgt-10" style="min-width:150px">{{$t("Air-drop_07")}}</button>
+						<p class="small">{{$t("Air-drop_112")}}: {{getMigrateTargetItem.balance}} {{ migrateItme.coinName }} LP V2</p>
+						<StatuButton class="mgt-10" style="min-width:150px" :isDisable="getMigrateTargetItem.balance <= 0"  :onClick="()=>$refs.deposit.setOprData(getMigrateTargetItem).show()">
+							{{$t("Air-drop_07")}}
+						</StatuButton>
 					</div>
 				</div>
 			</template>
@@ -333,7 +338,13 @@ export default {
 			}
 			return arr;
 		},
-
+		//获取迁移的目标对象
+		getMigrateTargetItem(){
+			let retItem = {};
+			let targetCoinKey = this.migrateItme.coinKey + "-V2";
+			retItem = {coinKey: targetCoinKey, ...PancakeConfig.StakeLP[targetCoinKey], ...this.coinArr[targetCoinKey]};
+			return retItem;
+		},
 		getTotalKey(){
 			let allKey = 0;
 			this.getPledgeList.map(item=>{
@@ -381,6 +392,20 @@ export default {
 </script>
 
 <style scoped>
+.pop-notice{
+	position: absolute;
+	font-size: 12px;
+	background: rgb(255, 0, 0);
+	top: -10px;
+	right: 0px;
+	padding: 0px 3px;
+	height: 20px;
+	color: #fff;
+	border-radius: 5px;
+	border: none;
+	zoom: 0.8;
+}
+
 .pledgeType-v1{
 	overflow: hidden;
 }
@@ -477,6 +502,12 @@ export default {
 	padding-top: 50px;
 }
 @media (max-width: 768px) {
+	#airdorp-top-menu{
+		text-align: left;
+	}
+	#airdorp-top-menu .tab-menu{
+		font-size: 14px !important;
+	}
 	#airdrop-cont {
 		width: 100%;
 		padding: 10px !important;

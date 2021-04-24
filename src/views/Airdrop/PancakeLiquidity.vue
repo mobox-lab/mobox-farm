@@ -3,7 +3,10 @@
 		<div v-if="!showAddLiquidityPanel && !showRemoveLiquidityPanel" class="tab-body tal" style="padding-bottom:10px">
 			<div class="tab-content"  v-if="oprData.isLP">
 				<div   v-if="oprData.isLP" >
-					<h2>{{$t("Air-drop_115")}}{{setting.pancakeVType}}</h2>
+					<h2>
+						<span v-if="setting.pancakeVType==1">{{$t("Air-drop_145")}}</span>
+						<span v-else>{{$t("Air-drop_147")}}</span>
+					</h2>
 					<p class="small opa-6">{{$t("Air-drop_58")}}</p>
 				</div>
 				<div class="mgt-10" >
@@ -54,7 +57,11 @@
 					<div class="tal cur-point" @click="showAddLiquidityPanel = false">
 						<svg style="transform:rotate(90deg)" viewBox="0 0 24 24"  width="24px" ><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
 					</div>
-					<div class="tac" style="flex:3">{{$t("Air-drop_116")}}{{setting.pancakeVType}}</div>
+					<div class="tac" style="flex:3">
+						<span v-if="setting.pancakeVType==1">{{$t("Air-drop_140")}}</span>
+						<span v-else>{{$t("Air-drop_142")}}</span>
+					</div>
+					
 					<div class="tar">
 						<span class="cur-point por" v-popMsg >
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E9DB8F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
@@ -128,7 +135,7 @@
 						</button>
 					</div>
 					<div class="mgt-10">
-						<StatuButton :data-step="toNeedApprove && fromNeedApprove ? 3: 2" style="width:80%" :onClick="goSupply.bind(this)" :isDisable="!canSupply" :isLoading="coinArr[this.oprData.coinName].isAddLiqiditing">{{$t("Air-drop_57")}}</StatuButton>
+						<StatuButton :data-step="toNeedApprove && fromNeedApprove ? 3: 2" style="width:80%" :onClick="goSupply.bind(this)" :isDisable="!canSupply" :isLoading="coinArr[oprData.coinKey].isAddLiqiditing">{{$t("Air-drop_57")}}</StatuButton>
 					</div>
 				</div>
 			</div>
@@ -278,7 +285,7 @@ export default {
 	},
 	watch: {
 		oprData: function(newData, oldData){
-			if(newData.coinName != oldData.coinName){
+			if(newData.coinKey != oldData.coinKey){
 				this.initData();
 			}
 		},
@@ -330,22 +337,22 @@ export default {
 			await this.getLPAmount();
 		},
 		updateBalance(){
-			let { coinName} = this.oprData;
-			this.coinArr[coinName].isApproving = false;
-			this.coinArr[coinName].isDeposing = false;
+			let { coinKey} = this.oprData;
+			this.coinArr[coinKey].isApproving = false;
+			this.coinArr[coinKey].isDeposing = false;
 			this.coinArr["ts"] = new Date().valueOf();
 			this.getLPBalance();
 		},
 
 		async getLPBalance(){
-			let {addr , omit , decimals, coinName} = this.oprData;
+			let {addr , omit , decimals, coinKey} = this.oprData;
 			let coinArr =  this.coinArr;
 
 			if(addr == "") return;
 			let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
 			this.oprData.balance =  Common.numFloor((Number(value) / decimals), omit);
-			coinArr[coinName].balance =  Common.numFloor((Number(value) / decimals), omit);
-			coinArr[coinName].balanceTrue =  value;
+			coinArr[coinKey].balance =  Common.numFloor((Number(value) / decimals), omit);
+			coinArr[coinKey].balanceTrue =  value;
 			coinArr["ts"] = new Date().valueOf();
 		},
 	
@@ -354,7 +361,11 @@ export default {
 			let tokenB = this.to.coinName;
 			if(tokenA == "" || tokenB == "") return;
 
-			let res = await SwapHttp.post("/pair/lpamount",{token0: tokenA, token1: tokenB});
+			let version = "V1";
+			if(this.setting.pancakeVType  == 2){
+				version = "V2";
+			}
+			let res = await SwapHttp.post("/pair/lpamount",{token0: tokenA, token1: tokenB, version});
 			let {data, code } = res.data;
 			if(code == 200){
 				let {token0, token1, totalSupply} = data;
@@ -382,31 +393,31 @@ export default {
 			if(hash){
 				this.from.inputValue = "";
 				this.to.inputValue = "";
-				this.coinArr[this.oprData.coinName].isAddLiqiditing = true;
+				this.coinArr[this.oprData.coinKey].isAddLiqiditing = true;
 			}
 		},
-		async setCoinAllowance(coinName){
+		async setCoinAllowance(coinKey){
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
 
-			if(coinName != "" && coinName != "BNB" && this.coinArr[coinName].allowanceToSwap == -1) {
-				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinName].addr, routerAddr, false);
-				this.coinArr[coinName].allowanceToSwap = Number(allowance);
+			if(coinKey != "" && coinKey != "BNB" && this.coinArr[coinKey].allowanceToSwap == -1) {
+				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, routerAddr, false);
+				this.coinArr[coinKey].allowanceToSwap = Number(allowance);
 				this.coinArr["ts"] = new Date().valueOf();
 			}
 		},
 
-		async approve(coinName){
-			console.log(coinName);
+		async approve(coinKey){
+			console.log(coinKey);
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
 
-			if(coinName == "" || coinName == "BNB") return;
-			let {isApproving, allowanceToSwap} =  this.coinArr[coinName];
+			if(coinKey == "" || coinKey == "BNB") return;
+			let {isApproving, allowanceToSwap} =  this.coinArr[coinKey];
 			if(isApproving || Number(allowanceToSwap) >1e8) return;
 
-			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinName].addr, 
-			routerAddr, {coinName, type: "allowanceToSwap"});
+			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr, 
+			routerAddr, {coinKey, type: "allowanceToSwap"});
 			if(hash){
-				this.coinArr[coinName].isApproving = true;
+				this.coinArr[coinKey].isApproving = true;
 			}
 		},
 	

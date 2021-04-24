@@ -24,7 +24,7 @@
 					<PercentSelect :selectCB="percent => inputPercent = percent" />
 				</div>
 				
-				<StatuButton :isLoading="oprData.coinName != ''  && coinArr[oprData.coinName].isWithdrawing" 
+				<StatuButton :isLoading="oprData.coinName != ''  && coinArr[oprData.coinKey].isWithdrawing" 
 					:isDisable="oprData.coinName == '' || Number(inputValue) <= 0 || Number(inputValue) > Number(oprData.wantAmount) " :onClick="withdraw" style="width: 70%">
 					{{$t("Air-drop_08")}}
 				</StatuButton>
@@ -75,6 +75,7 @@ export default {
 			this.inputPercent = 0;
 		},
 		oprData: function(newData){
+			console.log("widthdraw", newData);
 			let { wantAmount, gracePeriod} = newData;
 			this.inputValue = wantAmount;
 
@@ -93,7 +94,7 @@ export default {
 			this.inputPercent = 0;
 		},
 		inputPercent: function(newData){
-			let {wantAmount} = this.coinArr[this.oprData.coinName];
+			let {wantAmount} = this.coinArr[this.oprData.coinKey];
 			let targetValue = Common.numFloor(Number(wantAmount) * Number(newData), this.oprData.omit);
 			if(newData == 0) return;
 			this.inputValue = targetValue;
@@ -117,11 +118,11 @@ export default {
 	methods:{
 		async withdraw(){
 			console.log(this.inputValue);
-			let {coinName} = this.oprData;
-			this.coinArr[coinName].isWithdrawing = true;
-			let res = await Wallet.ETH.withdraw(this.oprData.coinName,this.inputValue);
+			let {coinKey} = this.oprData;
+			this.coinArr[coinKey].isWithdrawing = true;
+			let res = await Wallet.ETH.withdraw(coinKey,this.inputValue);
 			if(res){
-				this.coinArr[coinName].isWithdrawing = true;
+				this.coinArr[coinKey].isWithdrawing = true;
 				this.inputValue = ""
 				this.close()
 			}

@@ -33,9 +33,9 @@
 					</div>
 				</div>
 				<div v-for="item in getPledgeList" :key="item.coinName + item.addr" >
-					<div  class="aveage-box select-key-item" v-if="item.earnedKey > 0 && (onlyCheck == '' || item.coinName == onlyCheck) ">
+					<div  class="aveage-box select-key-item" v-if="item.earnedKey > 0 && (onlyCheck == '' || item.coinKey == onlyCheck) ">
 						<div class="tal vertical-children">
-							<div class="ly-checkbox" @click="toggleSelect(item)" :class="selectKeyCoin.indexOf(item.coinName) != -1 ?'active':'' ">
+							<div class="ly-checkbox" @click="toggleSelect(item)" :class="selectKeyCoin.indexOf(item.coinKey) != -1 ?'active':'' ">
 								<svg class="hide"  viewBox="0 0 1024 1024" width="20" height="20"><path fill="#92FFDA" d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z" ></path></svg>
 							</div> &nbsp;
 							<span class="mgl-10">{{item.earnedKey}} KEY</span> 
@@ -88,7 +88,7 @@ export default {
 		getPledgeDic(){
 			let obj = {};
 			this.getPledgeList.map(item=>{
-				obj[item.coinName] = item;
+				obj[item.coinKey] = item;
 			})
 			return obj;
 		},
@@ -115,7 +115,7 @@ export default {
 			let selectArr = [];
 			this.getPledgeList.map(item=>{
 				if(item.earnedKey > 0){
-					selectArr.push(item.coinName);
+					selectArr.push(item.coinKey);
 				}
 			});
 			this.selectKeyCoin = selectArr;
@@ -127,26 +127,26 @@ export default {
 			this.oprDialog("keyopr-dialog","none")
 			return this;
 		},
-		setCheckCoin(coinName){
-			this.selectKeyCoin = [coinName];
-			this.onlyCheck = coinName;
+		setCheckCoin(coinKey){
+			this.selectKeyCoin = [coinKey];
+			this.onlyCheck = coinKey;
 			return this;
 		},
 		toggleSelect(item){
-			let selectPos =  this.selectKeyCoin.indexOf(item.coinName);
+			let selectPos =  this.selectKeyCoin.indexOf(item.coinKey);
 			if(selectPos != -1){
 				//只有一个不能取消
 				if(this.selectKeyCoin.length == 1) return;
 				this.selectKeyCoin.splice(selectPos, 1);
 			}else{
-				this.selectKeyCoin.push(item.coinName);
+				this.selectKeyCoin.push(item.coinKey);
 			}
 		},
 		selectAll(){
 			let allArr = [...this.selectKeyCoin];
 			this.getPledgeList.map(item=>{
-				if(item.earnedKey > 0 && allArr.indexOf(item.coinName) == -1){
-					allArr.push(item.coinName);
+				if(item.earnedKey > 0 && allArr.indexOf(item.coinKey) == -1){
+					allArr.push(item.coinKey);
 				}
 			});
 			this.selectKeyCoin = allArr;
@@ -159,8 +159,8 @@ export default {
 			}
 
 			let pIndexArr = [];
-			this.selectKeyCoin.map(coinName=>{
-				pIndexArr.push(PancakeConfig.StakeLP[coinName].pIndex);
+			this.selectKeyCoin.map(coinKey=>{
+				pIndexArr.push(PancakeConfig.StakeLP[coinKey].pIndex);
 			});
 
 			let hash = await Wallet.ETH.getChestBox(pIndexArr, parseInt(this.getSelectAllKey));
@@ -174,8 +174,8 @@ export default {
 		async getRewardKey(){
 			console.log(this.selectKeyCoin, Wallet);
 			let pIndexArr = [];
-			this.selectKeyCoin.map(coinName=>{
-				pIndexArr.push(PancakeConfig.StakeLP[coinName].pIndex);
+			this.selectKeyCoin.map(coinKey=>{
+				pIndexArr.push(PancakeConfig.StakeLP[coinKey].pIndex);
 			});
 
 			let hash = await Wallet.ETH.getRewardKey(pIndexArr);

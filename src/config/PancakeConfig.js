@@ -1,6 +1,6 @@
 export default class PancakeConfig {
 	static SwapRouterAddr = "0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F";
-	static SwapRouterAddrV2 = "0x2AD2C5314028897AEcfCF37FD923c079BeEb2C56";
+	static SwapRouterAddrV2 = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
 	static SelectCoin = {
 		"BNB": {
 			decimals: 1e18,
@@ -133,8 +133,8 @@ export default class PancakeConfig {
 		},
 		
 		"BTCB-BNB-V2":{
-			pIndex: 13,
-			addr: "0x356b7d0d3c54F22C82B7a670C6Ba9E2381b0624c",
+			pIndex: 14,
+			addr: "0x61EB789d75A95CAa3fF50ed7E47b96c132fEc082",
 			allocPoint: 2,
 			decimals: 1e18,
 			omit: 1e8,
@@ -142,8 +142,8 @@ export default class PancakeConfig {
 			isFinish: false,
 		},
 		"ETH-BNB-V2":{
-			pIndex: 14,
-			addr: "0x4D7078a6B348766E7a16cD6e6fCb3064721bc6a6",
+			pIndex: 15,
+			addr: "0x74E4716E431f45807DCF19f284c7aA99F18a4fbc",
 			allocPoint: 2,
 			decimals: 1e18,
 			omit: 1e6,
@@ -151,8 +151,8 @@ export default class PancakeConfig {
 			isFinish: false,
 		},
 		"BUSD-BNB-V2":{
-			pIndex: 15,
-			addr: "0x9bdEdb0c876fC0Da79D945DF28942b898Af89Fc7",
+			pIndex: 16,
+			addr: "0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
 			allocPoint: 2,
 			decimals: 1e18,
 			omit: 1e6,
@@ -160,8 +160,8 @@ export default class PancakeConfig {
 			isFinish: false,
 		},
 		"USDT-BNB-V2":{
-			pIndex: 16,
-			addr: "0x4160910ca32eAD83B6d4b32107974397D2579c2d",
+			pIndex: 17,
+			addr: "0x16b9a82891338f9bA80E2D6970FddA79D1eb0daE",
 			allocPoint: 2,
 			decimals: 1e18,
 			omit: 1e6,
@@ -169,8 +169,8 @@ export default class PancakeConfig {
 			isFinish: false,
 		},
 		"USDT-BUSD-V2":{
-			pIndex: 17,
-			addr: "0x28b81C6b155fd9152AE4A09c4eeB7E7F1C114FaC",
+			pIndex: 18,
+			addr: "0x7EFaEf62fDdCCa950418312c6C91Aef321375A00",
 			allocPoint: 1,
 			decimals: 1e18,
 			omit: 1e6,
@@ -178,8 +178,8 @@ export default class PancakeConfig {
 			isFinish: false,
 		},
 		"DAI-BUSD-V2":{
-			pIndex: 18,
-			addr: "0xdaFE10aA3AB6758596aDAC70f6873C49F5a9bf86",
+			pIndex: 19,
+			addr: "0x66FDB2eCCfB58cF098eaa419e5EfDe841368e489",
 			allocPoint: 1,
 			decimals: 1e18,
 			omit: 1e6,
@@ -187,8 +187,8 @@ export default class PancakeConfig {
 			isFinish: false,
 		},
 		"USDC-BUSD-V2":{
-			pIndex: 19,
-			addr: "0x05FC2ac8a4FA697501087C916c87b8a5dc4f7b46",
+			pIndex: 20,
+			addr: "0x2354ef4DF11afacb85a5C7f98B624072ECcddbB1",
 			allocPoint: 1,
 			decimals: 1e18,
 			omit: 1e6,

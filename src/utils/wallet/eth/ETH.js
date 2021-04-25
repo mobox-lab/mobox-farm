@@ -455,12 +455,7 @@ export default class ETH {
 	static async getStakeValueAndEarndKey(pIndexArr){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return null;
-
-		// let contract = new this.web3.eth.Contract([
-		// 	Contract.getUserFarmInfos
-		// ], "0xDB1D008E5F46D114e1E0E2560c70516c92AdD867");
 		if (!this.momoHelperContract) return null;
-
 		return new Promise(resolve => {
 			this.momoHelperContract.methods.getUserFarmInfos(pIndexArr, myAddr).call().then(res => {
 				resolve(res);

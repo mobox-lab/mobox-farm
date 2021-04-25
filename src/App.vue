@@ -273,11 +273,17 @@
 			</div>
 		</Dialog>
 		<Dialog id="showNotice-dialog" :top="100" :width="520">
-			<h2>{{$t("Notice_01")}}</h2>
+			<h2>{{$t("Notice_03")}}</h2>
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8)">
-					<span v-html="$t('Notice_02')" >
-					</span>
+					<div >
+						<h3 class="tac">{{$t("Notice_05")}}</h3>
+						<span v-html="$t('Notice_04')" ></span>
+					</div>
+					<div class="mgt-20">
+						<h3 class="tac">{{$t("Notice_01")}}</h3>
+						<span v-html="$t('Notice_02')" ></span>
+					</div>
 				</div>
 			</div>
 		</Dialog>
@@ -481,7 +487,7 @@ export default {
 	},
 	async created() {
 		window.addEventListener("message", this.listenPostMsg, false);
-		this.hasReadNotice = Common.getStorageItem("hasReadNotice");
+		this.hasReadNotice = Common.getStorageItem("hasReadNotice3");
 		
 		this.setLang();
 
@@ -495,6 +501,8 @@ export default {
 		let count = 0;
 		//1s定时器
 		clearInterval(timer);
+		let airdropCountDown = 1619355600 - parseInt(new Date().valueOf()/ 1000);
+
 		timer = setInterval(async ()=>{
 			//定时移除锁定按钮状态
 			for (let key in this.globalState.lockBtn) {
@@ -506,6 +514,15 @@ export default {
 			for (let key in this.upgradeLocks){
 				if(this.upgradeLocks[key] >0){
 					this.upgradeLocks[key]--;
+				}
+			}
+
+			if(airdropCountDown >= 0){
+				airdropCountDown--;
+				this.$store.commit("globalState/setData", {airdropCountDown});
+
+				if(airdropCountDown == 0){
+					this.getTotalStakeUSDTAndAirdropKEY();
 				}
 			}
 		
@@ -554,7 +571,7 @@ export default {
 		},
 		showNotice(){
 			this.hasReadNotice = true;
-			Common.setStorageItem("hasReadNotice", true);
+			Common.setStorageItem("hasReadNotice3", true);
 			this.oprDialog("showNotice-dialog", "block");
 		},
 		setLang(){

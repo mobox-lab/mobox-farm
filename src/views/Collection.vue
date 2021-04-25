@@ -11,9 +11,8 @@
 			<div class="por" >
 				<p class="opa-6 small">{{ $t("Mine_01") }}</p>
 				<h3 class="gradientText">{{totalAirdropMbox}} MBOX</h3>
-				<small style="position:absolute;transform: translateX(-50%)" class="opa-6" v-if="airdropCountDown > 0">{{$t("Air-drop_119")}}: {{getLeftTime(airdropCountDown)}}</small>
 			</div>
-			<div class="row mgt-20 " :class="airdropCountDown > 0?'mgt-30':'mgt-20'" id="collection-view">
+			<div class="row mgt-20 "  id="collection-view">
 				<div class="mining-pet" v-for="item in myNFT_stake.slice(0, 20)" :key="item.prototype.toString() + item.tokenId + item.num" >
 					<JumpPet :prototype="item.prototype" />
 				</div>
@@ -132,7 +131,6 @@ export default {
 			canOpenBox: (state) => state.ethState.data.canOpenBox,
 			totalAirdropMbox: (state) => state.ethState.data.totalAirdropMbox,
 			lockBtn: (state) => state.globalState.data.lockBtn,
-			airdropCountDown: (state) => state.globalState.data.airdropCountDown,
 		}),
 		canBuyBox() {
 			return (

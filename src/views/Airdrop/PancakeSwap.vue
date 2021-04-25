@@ -283,7 +283,7 @@ export default {
 		async setCoinAllowance(){
 			let coinKey = this.from.coinName;
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
-			if(coinKey != "" && coinKey != "BNB" && this.coinArr[coinKey].allowanceToSwap == -1) {
+			if(coinKey != "" && coinKey != "BNB") {
 				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, routerAddr, false);
 				this.coinArr[coinKey].allowanceToSwap = Number(allowance);
 				this.coinArr["ts"] = new Date().valueOf();

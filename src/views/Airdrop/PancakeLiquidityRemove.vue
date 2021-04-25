@@ -172,7 +172,7 @@ export default {
 			let coinArr =  this.coinArr;
 			let stakeLp = PancakeConfig.StakeLP;
 
-			if(coinKey != "" && coinArr[coinKey].allowanceToSwap == -1) {
+			if(coinKey != "") {
 				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(stakeLp[coinKey].addr, routerAddr, false);
 				coinArr[coinKey].allowanceToSwap = Number(allowance);
 				coinArr["ts"] = new Date().valueOf();

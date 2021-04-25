@@ -69,10 +69,16 @@ export default {
 	components: {Dialog, StatuButton},
 	data(){
 		return({
-			inputKey: 0,
 			selectKeyCoin: [],
 			onlyCheck: "",
 		})
+	},
+
+	watch: {
+		getPledgeList: function(){
+			this.selectKeyCoin = [];
+			this.onlyCheck = ""
+		}
 	},
 
 	computed: {
@@ -98,7 +104,7 @@ export default {
 			this.selectKeyCoin.map(item=>{
 				allKey += pledgeDic[item].earnedKey;
 			});
-			allKey +=  this.rewardStoreKey
+			allKey +=  this.rewardStoreKey;
 			return this.numFloor(allKey, 1e4);
 		},
 		isCanExchangeToBox(){

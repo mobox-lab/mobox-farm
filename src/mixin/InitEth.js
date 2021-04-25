@@ -203,8 +203,8 @@ const InitEth = {
 		async getStakeValueAndEarndKey(){
 			let pIndexObj  = {};
 			for (let key in PancakeConfig.StakeLP) {
-				let {pIndex, pancakeVType} = PancakeConfig.StakeLP[key];
-				if(pIndex != 0 && pIndex != -1 && !(pancakeVType == 2)){
+				let {pIndex} = PancakeConfig.StakeLP[key];
+				if(pIndex != 0 && pIndex != -1){
 					pIndexObj[key] = pIndex;
 				}
 			}

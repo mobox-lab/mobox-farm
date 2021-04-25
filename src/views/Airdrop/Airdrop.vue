@@ -2,11 +2,12 @@
 	<div id="aridorp" class="tac">
 		<section class="mgt-20">
 			<div class="tac mgt-10"  id="airdorp-top-menu">
-				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v1'}) "  :class="pledgeType == 'v1'?'active':''" class="tab-menu por" style="font-size:16px">
-					{{$t("Air-drop_134")}}
-					<button class="pop-notice animate__animated  animate__headShake animate__infinite" >迁移</button>
-				</div>
 				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v2'})"  :class="pledgeType == 'v2'?'active':''"  class="tab-menu" style="font-size:16px"  >{{$t("Air-drop_135")}}</div>
+				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v1'});"  :class="pledgeType == 'v1'?'active':''" class="tab-menu por" style="font-size:16px">
+					{{$t("Air-drop_134")}}
+					<span class="notice" v-if="needMigrate"></span>
+					<button class="pop-notice animate__animated  animate__headShake animate__infinite hide" ></button>
+				</div>
 			</div>
 		</section>
 		<section id="airdrop-cont" class="por">
@@ -27,8 +28,17 @@
 				</div>
 				<div class="dib por" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10 ">{{ $t("Air-drop_21") }}</h3>
-					<h3 class="mgt-10">{{pledgeType == 'v2'?totalAirdropKey:"-"}} KEY</h3>
-					<small style="position:absolute;transform: translateX(-50%);width:200%" class="opa-6" v-if="airdropCountDown > 0">{{$t("Air-drop_119")}}: {{getLeftTime(airdropCountDown)}}</small>
+					<h3 class="mgt-10">{{(pledgeType == 'v1' && !(airdropCountDown > 0))?"-": totalAirdropKey}} KEY</h3>
+					<template v-if="pledgeType == 'v1'">
+						<small style="position:absolute;transform: translateX(-50%);width:200%" class="opa-6" v-if="airdropCountDown > 0">
+							({{$t("Air-drop_149").replace("#0#",getLeftTime(airdropCountDown))}})
+						</small>
+					</template>
+					<template v-else>
+						<small style="position:absolute;transform: translateX(-50%);width:200%" class="opa-6" v-if="airdropCountDown > 0">
+							({{$t("Air-drop_150").replace("#0#",getLeftTime(airdropCountDown))}})
+						</small>
+					</template>
 				</div>
 				<div class="dib" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10">{{ $t("Air-drop_05") }}</h3>
@@ -53,7 +63,6 @@
 									<span style="display:inline-block;padding:2px 10px;border-radius:50px;background:#4383D7;color:#fff;font-size:16px" >{{item.allocPoint}}X</span>
 									<span class="mgl-5" style="font-size:18px">APY: {{ item.apy }}</span>
 								</p>
-								<p class="small opa-6" v-if="airdropCountDown > 0" style="margin-left:45px">{{$t("Air-drop_120")}}</p>
 							</div>
 						</div>
 						
@@ -128,7 +137,7 @@
 								</div>
 							</template>
 							<template v-else>
-								<button class="btn-primary" style="width: 60%"  @click="migrateItme = item;oprDialog('migrate-dialog','block')" >
+								<button class="btn-primary" style="width: 60%"  @click="migrateCoinKey = item.coinKey;oprDialog('migrate-dialog','block')" >
 									{{$t("Air-drop_136")}}
 								</button>
 							</template>
@@ -161,7 +170,7 @@
 			</div>
 			<div class="aveage-box" style="background:#2A3B67;border-radius:10px">
 				<div style="padding:10px">
-					<p class="small opa-6 tac" >{{$t("Air-drop_78")}}({{$t("Air-drop_131")}})</p>
+					<p class="small opa-6 tac" >{{$t("Air-drop_78")}}</p>
 					<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.amount.toLocaleString()" />
 				</div>
 				<div style="padding:10px">
@@ -177,7 +186,7 @@
 					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
 				</div>
 			</div>
-			<table class="mgt-20 table-his tac small" style="width:100%" border="0" frame="void" rules="none">
+			<table class=" table-his tac small mgt-20" style="width:100%" border="0" frame="void" rules="none">
 				<tr>
 					<th style="width:25%;">{{ $t("BOX_12") }}</th>
 					<th>{{ $t("Air-drop_49") }}</th>
@@ -197,17 +206,22 @@
 						</a>
 					</td>
 				</tr>
+				<tr>
+					<td colspan="6">
+						<a href="https://bscscan.com/address/0x9907fa65f3b0a9b9254a2c29a213c4d3501bf84f" target="_blank">{{$t("Air-drop_148")}}</a>
+					</td>
+				</tr>
 			</table>
 		</section>
 		<!-- 迁移弹窗 -->
 		<Dialog id="migrate-dialog" :top="100" :width="500">
-			<template v-if="migrateItme.coinName">
-				<h3>{{$t("Air-drop_137").replace("#0#", migrateItme.coinName)}}</h3>
+			<template v-if="migrateCoinKey != '' ">
+				<h3>{{$t("Air-drop_137").replace("#0#", getMigrateItem.coinName)}}</h3>
 				<div class="tab-panel  mgt-20">
 					<h3 class="tal">1, {{$t("Air-drop_08")}}</h3>
 					<div class="mgt-20">
-						<p class="small">{{$t("Air-drop_138")}}: {{migrateItme.wantAmount}} {{ migrateItme.coinName }} LP V1</p>
-						<StatuButton class="mgt-10" style="min-width:150px" :isDisable="migrateItme.wantAmount <= 0" :onClick="()=>$refs.withdraw.setOprData(migrateItme).show()">
+						<p class="small">{{$t("Air-drop_138")}}: {{getMigrateItem.wantAmount}} {{ getMigrateItem.coinName }} LP V1</p>
+						<StatuButton class="mgt-10" style="min-width:150px" :isDisable="getMigrateItem.wantAmount <= 0" :onClick="()=>$refs.withdraw.setOprData(getMigrateItem).show()">
 							{{$t("Air-drop_08")}}
 						</StatuButton>
 					</div>
@@ -216,8 +230,8 @@
 				<div class="tab-panel  mgt-10">
 					<h3 class="tal">2, {{$t("Air-drop_141")}}</h3>
 					<div class="mgt-20">
-						<p class="small">{{$t("Air-drop_139")}}: {{ numFloor(coinArr[migrateItme.coinKey].balance, 1e6) || "0" }} {{ migrateItme.coinName }} LP V1</p>
-						<StatuButton class="mgt-10" :isDisable="coinArr[migrateItme.coinKey].balance <= 0"  :onClick="()=>$root.$children[0].$refs.pancake.setOprData(migrateItme).show('liquidity').showRemoveLiquidityPanel()">
+						<p class="small">{{$t("Air-drop_139")}}: {{ numFloor(getMigrateItem.balance, 1e6) || "0" }} {{ getMigrateItem.coinName }} LP V1</p>
+						<StatuButton class="mgt-10" :isDisable="getMigrateItem.balance <= 0"  :onClick="()=>$root.$children[0].$refs.pancake.setOprData(getMigrateItem).show('liquidity').showRemoveLiquidityPanel()">
 							{{$t("Air-drop_95")}}
 						</StatuButton>
 					</div>
@@ -226,14 +240,14 @@
 				<div class="tab-panel  mgt-10">
 					<h3 class="tal">3, {{$t("Air-drop_142")}}</h3>
 					<div class="mgt-20">
-						<button class="btn-primary por" style="min-width:150px"  @click="$root.$children[0].$refs.pancake.setOprData({coinKey: migrateItme.coinKey+'-V2', pancakeVType: 2}).show('liquidity').showAddLiquidityPanel()">{{$t("Air-drop_57")}}</button>
+						<button class="btn-primary por" style="min-width:150px"  @click="$root.$children[0].$refs.pancake.setOprData({coinKey: migrateCoinKey+'-V2', pancakeVType: 2}).show('liquidity').showAddLiquidityPanel()">{{$t("Air-drop_57")}}</button>
 					</div>
 				</div>
 				<svg viewBox="0 0 24 24" width="18px"  class="mgt-10"><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
 				<div class="tab-panel  mgt-10">
 					<h3 class="tal">4, {{$t("Air-drop_07")}}</h3>
 					<div class="mgt-20">
-						<p class="small">{{$t("Air-drop_112")}}: {{getMigrateTargetItem.balance}} {{ migrateItme.coinName }} LP V2</p>
+						<p class="small">{{$t("Air-drop_112")}}: {{getMigrateTargetItem.balance}} {{ getMigrateItem.coinName }} LP V2</p>
 						<StatuButton class="mgt-10" style="min-width:150px" :isDisable="getMigrateTargetItem.balance <= 0"  :onClick="()=>$refs.deposit.setOprData(getMigrateTargetItem).show()">
 							{{$t("Air-drop_07")}}
 						</StatuButton>
@@ -298,7 +312,7 @@ export default {
 			hasSelectNotShow: false,
 			needShowNotice: true,
 			needSetItem: {},
-			migrateItme: {},//需要迁移的对象
+			migrateCoinKey: "",//需要迁移的名称
 		});
 	},
 	computed: {
@@ -338,11 +352,25 @@ export default {
 			}
 			return arr;
 		},
+		needMigrate(){
+			let needMigrate = false;
+			let oldCoinArr = ["BTCB-BNB", "ETH-BNB", "BUSD-BNB", "USDT-BNB", "USDT-BUSD", "DAI-BUSD","USDC-BUSD"];
+			oldCoinArr.map(coinKey=>{
+				if(this.coinArr[coinKey].wantAmount > 0) needMigrate = true;
+			})
+			return needMigrate;
+		},
 		//获取迁移的目标对象
 		getMigrateTargetItem(){
 			let retItem = {};
-			let targetCoinKey = this.migrateItme.coinKey + "-V2";
+			let targetCoinKey = this.migrateCoinKey + "-V2";
 			retItem = {coinKey: targetCoinKey, ...PancakeConfig.StakeLP[targetCoinKey], ...this.coinArr[targetCoinKey]};
+			return retItem;
+		},
+		getMigrateItem(){
+			let retItem = {};
+			let coinKey = this.migrateCoinKey;
+			retItem = {coinKey, ...PancakeConfig.StakeLP[coinKey], ...this.coinArr[coinKey]};
 			return retItem;
 		},
 		getTotalKey(){

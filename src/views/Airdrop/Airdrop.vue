@@ -23,12 +23,12 @@
 			
 			<div class="mgt-20 aveage-box" id="airdrop-cont-info">
 				<div class="dib" style="padding:0px 10px">
-					<h3 class="opa-6 mgt-10 ">{{ $t("Air-drop_02") }}</h3>
-					<h3 class="mgt-10">${{getTotalSupplyUSDT.toLocaleString() }}</h3>
+					<h3 class="opa-6 mgt-10 small">{{ $t("Air-drop_02") }}</h3>
+					<h3 class="mgt-5">${{getTotalSupplyUSDT.toLocaleString() }}</h3>
 				</div>
 				<div class="dib por" style="padding:0px 10px">
-					<h3 class="opa-6 mgt-10 ">{{ $t("Air-drop_21") }}</h3>
-					<h3 class="mgt-10">{{(pledgeType == 'v1' && !(airdropCountDown > 0))?"-": totalAirdropKey}} KEY</h3>
+					<h3 class="opa-6 mgt-10 small ">{{ $t("Air-drop_21") }}</h3>
+					<h3 class="mgt-5">{{(pledgeType == 'v1' && !(airdropCountDown > 0))?"-": totalAirdropKey}} KEY</h3>
 					<template v-if="pledgeType == 'v1'">
 						<small style="position:absolute;transform: translateX(-50%);width:200%" class="opa-6" v-if="airdropCountDown > 0">
 							({{$t("Air-drop_149").replace("#0#",getLeftTime(airdropCountDown))}})
@@ -41,8 +41,8 @@
 					</template>
 				</div>
 				<div class="dib" style="padding:0px 10px">
-					<h3 class="opa-6 mgt-10">{{ $t("Air-drop_05") }}</h3>
-					<div class="mgt-10">
+					<h3 class="opa-6 mgt-10 small">{{ $t("Air-drop_05") }}</h3>
+					<div class="mgt-5">
 						<button class="btn-success btn-small por"  @click="$refs.keyopr.showAll()">
 							{{getTotalKey}} KEY
 						</button>

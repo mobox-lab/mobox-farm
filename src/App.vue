@@ -491,8 +491,6 @@ export default {
 		
 		this.setLang();
 
-
-
 		setTimeout(() => {
 			this.scorllToTargetPos();
 			
@@ -575,7 +573,7 @@ export default {
 			this.oprDialog("showNotice-dialog", "block");
 		},
 		setLang(){
-			let langMap = {"ko":"kr", "zh-CN":"zh-CN","zh-TW":"zh-CN", "en":"en", "zh":"zh-CN", "kr":"kr"};
+			let langMap = {"ko":"kr", "zh-CN":"zh-CN","zh-TW":"zh-CN", "en":"en", "zh":"zh-CN", "kr":"kr", "fr":"fr"};
 
 			let lang = 'en';
 			let storageLang = Common.getUrlParms("lang");

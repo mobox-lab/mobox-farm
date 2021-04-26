@@ -75,9 +75,11 @@ export default {
 	},
 
 	watch: {
-		getPledgeList: function(){
-			this.selectKeyCoin = [];
-			this.onlyCheck = ""
+		pledgeType: function(newData, oldData){
+			if(newData != oldData){
+				this.selectKeyCoin = [];
+				this.onlyCheck = ""
+			}
 		}
 	},
 
@@ -86,6 +88,7 @@ export default {
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			canOpenBox: (state) => state.ethState.data.canOpenBox,
 			rewardStoreKey: (state) => state.bnbState.data.rewardStoreKey,
+			pledgeType: (state) => state.bnbState.data.pledgeType,
 		}),
 
 		getPledgeList(){

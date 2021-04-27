@@ -47,6 +47,14 @@
 						<span>{{ $t("Menu_01") }}</span>
 					</li>
 				</router-link>
+				<router-link to="/gemBuy">
+					<li :class="this.$route.path == '/gemBuy' ? 'active' : ''">
+						<span class="per-icon vertical-children">
+							<img src="./assets/icon/yellow_icon.png" alt="" width="25" />
+						</span>
+						<span>宝石申购</span>
+					</li>
+				</router-link>
 				<router-link to="/openbox">
 					<li :class="this.$route.path == '/openbox' ? 'active' : ''">
 						<span class="per-icon vertical-children">
@@ -91,6 +99,7 @@
 						<span>{{ $t("Rank_05") }}</span>
 					</li>
 				</router-link>
+				
 
 				<!-- <router-link to="/rule">
 					<li :class="this.$route.path == '/rule' ? 'active' : ''">
@@ -122,6 +131,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- 顶部资源 -->
 		<div id="top-res" class="vertical-children">
 			<p class="vertical-children">
 				<img src="./assets/icon/airdrop.png" alt="" height="25" />&nbsp;

@@ -9,6 +9,7 @@ import Rank from '../views/Rank.vue'
 import Rule from '../views/Rule.vue'
 import Market from '../views/Market/Market.vue'
 import AuctionView from '../views/AuctionView.vue'
+import GemBuy from '../views/Gem/GemBuy.vue'
 
 Vue.use(VueRouter)
 
@@ -52,6 +53,11 @@ const routes = [
 		path: '/rule/',
 		name: 'Rule',
 		component: Rule
+	},
+	{
+		path: '/gemBuy/',
+		name: 'GemBuy',
+		component: GemBuy
 	},
 	{
 		path: '/auctionView/:petInfo',

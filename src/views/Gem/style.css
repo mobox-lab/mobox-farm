@@ -1,0 +1,22 @@
+.gemBag{
+	position: absolute;
+	bottom: 0px;
+	right: 20px;
+	cursor: pointer;
+}
+.gemBag p{
+	position: absolute;bottom: 0px;
+	color: #fff;
+	left: -50%;
+	text-align: center;
+	width: 200%;
+	z-index: 2;
+	font-size: 12px;
+	font-weight: bold;
+}
+.stroke::before {
+      content: attr(data-text);
+      position: absolute;
+      -webkit-text-stroke: 3px #0a2b70;
+      z-index: -1;
+    }

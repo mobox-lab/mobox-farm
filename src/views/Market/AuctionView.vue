@@ -382,7 +382,7 @@ export default {
 				return;
 			}
 
-			let hash = await Wallet.ETH.buyMarketPet(auctor, index, coinKey);
+			let hash = await Wallet.ETH.buyMarketPet(auctor, index, coinKey, data.startTime);
 			if(hash){
 				await Common.sleep(1000);
 				this.$router.back(-1);

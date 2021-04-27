@@ -1136,7 +1136,7 @@ export default class ETH {
 	}
 
 	//购买市场上的物品
-	static async buyMarketPet(_auctor, _index, coinKey){
+	static async buyMarketPet(_auctor, _index, coinKey, _startTime){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
 
@@ -1144,9 +1144,11 @@ export default class ETH {
 			Contract.bid,
 		], WalletConfig.ETH.moMoStakeAuction);
 
+		console.log("buyMarketPet",{_auctor, _index, _startTime});
+
 		return new Promise(resolve => {
 			this.sendMethod(
-				contract.methods.bid(_auctor, _index), {from: myAddr},
+				contract.methods.bid(_auctor, _index, _startTime), {from: myAddr},
 				hash=>resolve(hash),
 				()=>{
 					console.log("buyMarketPet success!!!!!");

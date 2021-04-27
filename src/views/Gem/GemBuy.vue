@@ -13,7 +13,7 @@
 			<button class="btn-primary" style="margin:10px">宝石申购</button>
 			<button class="btn-primary" style="margin:10px">收集宝石</button>
 		</div>
-		<div class="gemBag">
+		<div class="gemBag" @click="oprDialog('gemBag-dialog','block')">
 			<img  src="../../assets/icon/gem_bag_icon.png" alt="">
 			<p class="stroke" data-text="宝石背包">宝石背包</p>
 		</div>
@@ -57,7 +57,10 @@
 </div>
 </template>
 <script>
+import { CommonMethod } from '@/mixin';
+
 export default {
+	mixins: [CommonMethod],
 	computed:{
 		getHistory(){
 			return [];

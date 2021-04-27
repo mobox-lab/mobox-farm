@@ -20,3 +20,34 @@
       -webkit-text-stroke: 3px #0a2b70;
       z-index: -1;
     }
+    .gem-item{
+	    width: 80px;
+	    height: 80px;
+	    background: #1D2B50;
+	    border-radius: 10px;
+	    cursor: pointer;
+	    position: relative;
+	    user-select: none;
+    }
+    .gem-item.active{
+	    border: 3px solid #F9CB50;
+    }
+    .gem-num{
+	    position: absolute;right: 5px;bottom: 2px;
+	    color: #fff;
+	    font-size: 14px;
+    }
+    .gem-tab{
+	    list-style: none;
+	    text-align: left;
+    }
+    .gem-tab li{
+	    display: inline-block;
+	    width: 50px;
+	    height: 50px;
+	    background: #05080D;
+	    margin: 0px 5px;
+	    border-top-left-radius: 5px;
+	    border-top-right-radius: 5px;
+	    cursor: pointer;
+    }

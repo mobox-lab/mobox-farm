@@ -312,6 +312,7 @@
 		<div id="fly-dot"></div>
 		<Pancake ref="pancake" />
 		<QuickBuy ref="quickBuy" />
+		<GemBag ref="gemBag" />
 		<WalletOprStatus />
 		<WalletConnectDialog />
 	</div>
@@ -319,8 +320,9 @@
 <script>
 import Pancake from "./views/Airdrop/Pancake";
 import QuickBuy from "./views/Market/QuickBuy";
+import GemBag from "./views/Gem/GemBag";
 
-import { Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
+import {Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
 import { InitEth, InitTron, CommonMethod } from "@/mixin";
 import { mapState } from "vuex";
 import { Common, SwapHttp, Http } from "@/utils";
@@ -330,7 +332,7 @@ let timer = null;
 export default {
 	name: "App",
 	mixins: [InitEth, InitTron, CommonMethod],
-	components: {QuickBuy,Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading },
+	components: {GemBag, QuickBuy,Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading },
 	data() {
 		return {
 			langArr: ["English", "中文"],

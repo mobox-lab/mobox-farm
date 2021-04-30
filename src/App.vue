@@ -515,7 +515,7 @@ export default {
 		let count = 0;
 		//1s定时器
 		clearInterval(timer);
-		let airdropCountDown = 1619355600 - parseInt(new Date().valueOf()/ 1000);
+		let airdropCountDown = 1619784000 - parseInt(new Date().valueOf()/ 1000);
 
 		timer = setInterval(async ()=>{
 			//定时移除锁定按钮状态

@@ -29,7 +29,7 @@
 				<div class="dib por" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10 small ">{{ $t("Air-drop_21") }}</h3>
 					<h3 class="mgt-5">{{(pledgeType == 'v1' && !(airdropCountDown > 0))?"-": totalAirdropKey}} KEY</h3>
-					<template v-if="pledgeType == 'v1'">
+					<!-- <template v-if="pledgeType == 'v1'">
 						<small style="position:absolute;transform: translateX(-50%);width:200%" class="opa-6" v-if="airdropCountDown > 0">
 							({{$t("Air-drop_149").replace("#0#",getLeftTime(airdropCountDown))}})
 						</small>
@@ -38,7 +38,7 @@
 						<small style="position:absolute;transform: translateX(-50%);width:200%" class="opa-6" v-if="airdropCountDown > 0">
 							({{$t("Air-drop_150").replace("#0#",getLeftTime(airdropCountDown))}})
 						</small>
-					</template>
+					</template> -->
 				</div>
 				<div class="dib" style="padding:0px 10px">
 					<h3 class="opa-6 mgt-10 small">{{ $t("Air-drop_05") }}</h3>
@@ -52,7 +52,7 @@
 			<div class="row">
 				<div class="col-md-4 col-xs-12 col-sm-6 mgt-10" v-for="item in getPledgeList" :key="item.coinName + item.addr" >
 					<div class="airdrop-item tal " :class="`pledgeType-${pledgeType}`">
-						<div class="over" v-if="pledgeType=='v1' ">{{$t("Air-drop_134")}}</div>
+						<div class="over" v-if="pledgeType=='v1' && (item.coinKey != 'MBOX-BNB' || (item.coinKey == 'MBOX-BNB' && airdropCountDown <= 0)) ">{{$t("Air-drop_134")}}</div>
 						<div class="vertical-children" style="padding-left: 56px" >
 							<div class="dib airdorp-item-coin-icon tac " :class="item.isLP?'double-img':'' ">
 								<img v-for="(name, key) in item.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="50" alt="" />
@@ -65,6 +65,17 @@
 								</p>
 							</div>
 						</div>
+
+						<template v-if="pledgeType == 'v1'">
+							<p  class="opa-6 tac small mgt-10" v-if="airdropCountDown > 0 && item.coinKey == 'MBOX-BNB'">
+								({{$t("Air-drop_149").replace("#0#",getLeftTime(airdropCountDown))}})
+							</p>
+						</template>
+						<template v-else>
+							<p  class="opa-6 tac small mgt-10" v-if="airdropCountDown > 0 && item.coinKey == 'MBOX-BNB-V2' ">
+								({{$t("Air-drop_150").replace("#0#",getLeftTime(airdropCountDown))}})
+							</p>
+						</template>
 						
 						<div class="tal mgt-30">
 							<p class="por mgt-10">

@@ -67,12 +67,12 @@
 						</div>
 
 						<template v-if="pledgeType == 'v1'">
-							<p  class="opa-6 tac small mgt-10" v-if="airdropCountDown > 0 && item.coinKey == 'MBOX-BNB'">
+							<p  class="tac small mgt-10" style="color:#49c773" v-if="airdropCountDown > 0 && item.coinKey == 'MBOX-BNB'">
 								({{$t("Air-drop_149").replace("#0#",getLeftTime(airdropCountDown))}})
 							</p>
 						</template>
 						<template v-else>
-							<p  class="opa-6 tac small mgt-10" v-if="airdropCountDown > 0 && item.coinKey == 'MBOX-BNB-V2' ">
+							<p  class="tac small mgt-10" style="color:#49c773" v-if="airdropCountDown > 0 && item.coinKey == 'MBOX-BNB-V2' ">
 								({{$t("Air-drop_150").replace("#0#",getLeftTime(airdropCountDown))}})
 							</p>
 						</template>

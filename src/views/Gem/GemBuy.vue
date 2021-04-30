@@ -155,6 +155,7 @@ export default {
 		},
 		async getApplyInfo(){
 			let result = await Wallet.ETH.getGemApplyState();
+			console.log(result);
 			if(result){
 				this.applyInfo = result;
 				let dtTime = parseInt(new Date().valueOf() / 1000) - Number(result.roundStartTime);

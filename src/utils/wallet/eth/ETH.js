@@ -1630,6 +1630,8 @@ export default class ETH {
 			Contract.hApplyForGem,
 		], WalletConfig.ETH.momoGemApply);
 
+		console.log({type, applyNum_});
+
 		return new Promise(resolve => {
 			let method;
 			if(type == "normal"){

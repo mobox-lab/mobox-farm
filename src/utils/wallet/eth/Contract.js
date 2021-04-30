@@ -1,4 +1,160 @@
 export default class Contract {
+	//普通申购宝石
+	static nApplyForGem = {
+		type: "function",
+		name: 'nApplyForGem',
+		inputs: [{
+			type: 'uint256',
+			name: 'applyNum_'
+		}],
+		outputs: [],
+	}
+	//算力申购宝石
+	static hApplyForGem = {
+		type: "function",
+		name: 'hApplyForGem',
+		inputs: [{
+			type: 'uint256',
+			name: 'applyNum_'
+		}],
+		outputs: [],
+	}
+
+	//查看玩家申购数据(申购合约)
+	static getUserInfo = {
+		type: "function",
+		name: 'getUserInfo',
+		inputs: [{
+			type: "address",
+			name: "owner"
+		}],
+		outputs:[{
+			"components": [
+				{
+					"internalType": "uint128",
+					"type": "uint128"
+				},
+				{
+					"internalType": "uint128",
+					"type": "uint128"
+				}
+			],
+			"internalType": "struct GemMinter.Ticket",
+			"name": "userNormalTicket",
+			"type": "tuple"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint128",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"type": "uint128"
+					}
+				],
+				"internalType": "struct GemMinter.Ticket",
+				"name": "userHighTicket",
+				"type": "tuple"
+			},
+			{
+			"components": [
+				{
+					"internalType": "uint256",
+					"name": "red",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "green",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "blue",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "gold",
+					"type": "uint256"
+				}
+			],
+			"internalType": "struct GemMinter.InlayPosition",
+			"name": "gems",
+			"type": "tuple"
+			},
+			{
+				"internalType": "uint256",
+				"name": "frozenBalance",
+				"type": "uint256"
+			}
+		],
+	}
+	//查看申购状态(申购合约)
+	static getRoundInfo = {
+		type: "function",
+		name: 'getRoundInfo',
+		inputs: [],
+		outputs: [{
+			type: "uint256",
+			name: "roundIndex"
+		},{
+			type: "uint256",
+			name: "roundPrice"
+		},{
+			type: "uint256",
+			name: "roundStartTime"
+		},{
+			type: "uint256",
+			name: "roundState"
+		},{
+			type: "uint256",
+			name: "maxAmount"
+		},{
+			type: "uint256",
+			name: "nowAmount"
+		},{
+			type: "uint256",
+			name: "nowNormalAmount"
+		},{
+			type: "uint256",
+			name: "maxNormalLuckyAmount"
+		},{
+			type: "uint256",
+			name: "maxLuckyAmount"
+		}],
+	}
+	//批量查询宝石数量
+	static balanceOfOneBatch = {
+		type: "function",
+		name: 'balanceOfOneBatch',
+		inputs: [{
+			type: 'address',
+			name: 'ownerAddress'
+		},{
+			type: 'uint256[]',
+			name: '_ids'
+		}],
+		outputs: [{
+			type: "uint256[]",
+			name: "_values"
+		}],
+	}
+	//宝石升级
+	static levelUpGem = {
+		type: "function",
+		name: 'levelUp',
+		inputs: [{
+			type: 'uint256',
+			name: '_gemId'
+		},{
+			type: 'uint256',
+			name: '_amount'
+		}],
+	}
+
 	static getUserFarmInfos = {
 		type: "function",
 		name: 'getUserFarmInfos',

@@ -6,7 +6,6 @@ import ethState from './modules/ethState'
 import marketState from './modules/marketState'
 import bnbState from './modules/bnbState'
 import gemState from './modules/gemState'
-import momoMarketState from './modules/momoMarketState'
 
 Vue.use(Vuex)
 
@@ -17,7 +16,6 @@ export default new Vuex.Store({
 		ethState,
 		marketState,
 		bnbState,
-		gemState,
-		momoMarketState
+		gemState
 	}
 })

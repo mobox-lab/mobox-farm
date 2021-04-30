@@ -135,6 +135,10 @@ const InitEth = {
 
 				this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
+
+				//宝石相关
+				await this.getGemBag();
+
 				await this.eth_set1155IsApprovedForStake();
 				await this.eth_set721IsApprovedForStake();
 
@@ -157,6 +161,8 @@ const InitEth = {
 			await this.eth_setBox();
 			await this.eth_setMbox();
 
+			
+
 			//算力挖矿相关
 			await this.eth_setMyHashrate();
 			await this.eth_setTotalHashrate();
@@ -171,6 +177,13 @@ const InitEth = {
 
 			//获取总打开箱子数
 			await this.setTotalOpenBox();
+		},
+		async getGemBag(){
+			let gemBag = await Wallet.ETH.getMyGemNum();
+			if(gemBag){
+				console.log({gemBag});
+				this.$store.commit("gemState/setData", {gemBag});
+			}
 		},
 		async getCoinValue(){
 			let balance = await Wallet.ETH.getBalance();
@@ -511,12 +524,14 @@ const InitEth = {
 	
 		//获取ETH上mBOX数量
 		async eth_setMbox() {
-			let myMbox = await Wallet.ETH.getErc20BalanceByTokenAddr(WalletConfig.ETH.mboxToken, false);
-			if (myMbox != null) {
-				this.$store.commit("ethState/setData", {
-					mbox: Common.numFloor((Number(myMbox) / 1e18), 10000)
-				});
-			}
+			return;
+			// let myMbox = await Wallet.ETH.getErc20BalanceByTokenAddr(WalletConfig.ETH.mboxToken, false);
+			// console.log("eth_setMbox", Common.numFloor((Number(myMbox) / 1e18), 10000));
+			// if (myMbox != null) {
+			// 	this.$store.commit("ethState/setData", {
+			// 		mbox: Common.numFloor((Number(myMbox) / 1e18), 10000)
+			// 	});
+			// }
 		},
 		//获取ETH上KEY数量(之前叫box后面改成key)
 		async eth_setBox() {

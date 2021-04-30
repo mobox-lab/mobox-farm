@@ -10,8 +10,9 @@ export default class WalletConfig {
 		moMoStake: "0x3bD6a582698ECCf6822dB08141818A1a8512c68D", //质押挖矿合约
 		moMoStakeAuction: "0xcB0CffC2B12739D4BE791b8aF7fbf49bc1d6a8c2", //质押拍卖合约
 		momoFarm: "0xdaD49e63F97c967955975490a432de3796C699E6",
-
-
+		momoGemApply: "0x33d4dF01BcF7f812b1aCAde3beE8e0Ac00f4e8f0",//宝石申购合约
+		momoGemToken: "0xC87625754954fac7d27B7Fd251104b17FCd321C4", //宝石token， ERC1155
+		momoGemOpr: "0x5eB559cb1bde8538FDF01C17e3Fa3CD98c310884", //宝石穿戴操作合约
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",
@@ -19,13 +20,4 @@ export default class WalletConfig {
 
 		MAX_ORDER: 128, //质押拍卖最大上架数量
 	}
-
-	static TRON = {
-
-	}
-
-	static BNB = {
-
-	}
-
 }

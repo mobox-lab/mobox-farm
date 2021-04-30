@@ -28,6 +28,7 @@ const state = () => ({
 			unStakeLock: 0, //取消质押锁定
 			getMboxLock: 0, //领取mbox锁
 			openBoxLock: 0,//开箱子锁
+			compGemLock: 0,//升级宝石锁
 		},
 		walletStatus: {
 			status: 1, //1,等待中，2，reject，3，success

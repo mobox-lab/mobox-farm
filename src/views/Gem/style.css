@@ -21,33 +21,53 @@
       z-index: -1;
     }
     .gem-item{
-	    width: 80px;
-	    height: 80px;
-	    background: #1D2B50;
+	    width: 100%;
+	    background: #10172A;
 	    border-radius: 10px;
 	    cursor: pointer;
 	    position: relative;
 	    user-select: none;
     }
-    .gem-item.active{
-	    border: 3px solid #F9CB50;
+    .gem-border.active.border_red{
+	    border: 2px solid #FB4001;
+    }
+    .gem-border.active.border_yellow{
+	    border: 2px solid #F9CB50;
+    }
+    .gem-border.active.border_blue{
+	    border: 2px solid #2D73F8;
+    }
+    .gem-border.active.border_green{
+	    border: 2px solid #99FB4D;
     }
     .gem-num{
 	    position: absolute;right: 5px;bottom: 2px;
-	    color: #fff;
-	    font-size: 14px;
+	    color: #92B9FD;
+	    font-size: 12px;
     }
     .gem-tab{
 	    list-style: none;
 	    text-align: left;
+	    height: 50px;
+	    position: relative;
+	    bottom: -2px;
     }
     .gem-tab li{
 	    display: inline-block;
-	    width: 50px;
+	    width: 60px;
 	    height: 50px;
-	    background: #05080D;
-	    margin: 0px 5px;
+	    margin-left: 5px;
 	    border-top-left-radius: 5px;
 	    border-top-right-radius: 5px;
 	    cursor: pointer;
+	    padding: 0px !important;
+	    text-align: center;
+    }
+    #apply-info-table{
+	    
+    }
+    #apply-info-table td{
+	    border: 1px solid #324374;
+	    min-width: 150px;
+	    padding: 3px 10px;
     }

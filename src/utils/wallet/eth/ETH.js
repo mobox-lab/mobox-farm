@@ -5,11 +5,6 @@ import PancakSwapContract from './PancakSwapContract'
 import {EventBus,Common,Http} from "@/utils";
 import {EventConfig,WalletConfig,BaseConfig,ConstantConfig, PancakeConfig} from '@/config';
 import BigNumber from "bignumber.js";
-// import store from '@/store';
-
-// const store = Common.store;
-
-
 
 export default class ETH {
 	static web3;
@@ -25,15 +20,12 @@ export default class ETH {
 	static pancakeSwapContract;
 	static pancakeSwapContracV2;
 
-	static hasInit = false;
 	static myAddr = "";
 
 	static async init() {
 		this.web3 = new Web3(new Web3.providers.HttpProvider(Rpc.apiNode));
 		this.web3MainNet = new Web3(new Web3.providers.HttpProvider(Rpc.apiNodeMainNet));
-
 		this.initContract();
-
 	}
 
 	static logoutWallet(){
@@ -454,7 +446,7 @@ export default class ETH {
 	//查询质押和Key的收益
 	static async getStakeValueAndEarndKey(pIndexArr){
 		let myAddr = await this.getAccount();
-		if (!myAddr) return null;
+		if (myAddr) return null;
 		if (!this.momoHelperContract) return null;
 		return new Promise(resolve => {
 			this.momoHelperContract.methods.getUserFarmInfos(pIndexArr, myAddr).call().then(res => {
@@ -771,6 +763,41 @@ export default class ETH {
 				hash=>resolve(hash),
 				()=>{
 					EventBus.$emit(EventConfig.ApprovedConfirm, {chain: "eth"});
+				}
+			);
+		});
+	}
+
+	//是否授权给对应的合约，针对我们自己的token处理
+	static async isApprovedForAll(fromToken, toToken){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return null;
+
+		let contract = new this.web3.eth.Contract([
+			Contract.isApprovedForAll,
+		], fromToken);
+		return new Promise(resolve => {
+			contract.methods.isApprovedForAll(myAddr, toToken).call().then(isApproved => {
+				resolve(isApproved);
+			});
+		});
+	}
+	//授权给目标合约
+	static async approvedForAll(fromToken, toToken, recipet){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return null;
+
+		let contract = new this.web3.eth.Contract([
+			Contract.setApprovalForAll,
+		], fromToken);
+		console.log({fromToken, toToken});
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.setApprovalForAll(toToken, true), {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					Common.app.unLockBtn("approveLock")
+					recipet();
 				}
 			);
 		});
@@ -1319,9 +1346,8 @@ export default class ETH {
 		});
 	}
 
-
-
 	//pancake相关
+	//移除流动性
 	static async removeLiquidity(coinItemObj, liquidity, targetLPPrice, setting){
 		console.log({coinItemObj});
 		let {coinName, coinKey} = coinItemObj;
@@ -1376,7 +1402,7 @@ export default class ETH {
 		});
 
 	}
-
+	//增加流动性
 	static async addLiquidity(from, to, setting){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
@@ -1428,7 +1454,7 @@ export default class ETH {
 		});
 
 	}
-
+	//兑换
 	static async goSwap(from,  to, path, setting){
 		console.log({from});
 		console.log({to});
@@ -1497,6 +1523,111 @@ export default class ETH {
 			)
 		});
 		
+	}
+
+	//宝石相关
+	//获取背包宝石数量
+	static async getMyGemNum(){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+		let contract = new this.web3.eth.Contract([
+			Contract.balanceOfOneBatch,
+		], WalletConfig.ETH.momoGemToken);
+		let ids = [];
+		[100, 200, 300, 400].map(item=>{
+			for (let index = 1; index <= 9; index++) {
+				ids.push(item+index);
+			}
+		});
+		console.log("getMyGemNum", ids);
+		return new Promise(resolve => {
+			contract.methods.balanceOfOneBatch(myAddr, ids).call().then(data => {
+				let retObj = {};
+				let colorToNum = [0, "red", "green", "blue","yellow"];
+				ids.map((id, pos)=>{
+					let colorId = colorToNum[parseInt(id / 100)] +(id % 100);
+					retObj[colorId] = data[pos];
+				})
+				resolve(retObj);
+			})
+		});
+	}
+
+	//宝石升级
+	static async gemLevelUp(gemId, amount){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+		let contract = new this.web3.eth.Contract([
+			Contract.levelUpGem,
+		], WalletConfig.ETH.momoGemOpr);
+
+		console.log({gemId, amount});
+
+		return new Promise(resolve => {
+			let method = contract.methods.levelUp(gemId,amount);
+			this.sendMethod(method, {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					console.log("gemLevelUp success!!!!!");
+					Common.app.getGemBag();
+					Common.app.unLockBtn("compGemLock");
+				}
+			)
+		});
+
+	}
+
+	//查询申购状态
+	static async getGemApplyState(){
+		let contract = new this.web3.eth.Contract([
+			Contract.getRoundInfo,
+		], WalletConfig.ETH.momoGemApply);
+		return new Promise(resolve => {
+			contract.methods.getRoundInfo().call().then(data => {
+				resolve(data);
+			})
+		});
+	}
+
+	//查询我的申购信息
+	static async getMyApplyInfo(){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+		let contract = new this.web3.eth.Contract([
+			Contract.getUserInfo,
+		], WalletConfig.ETH.momoGemApply);
+		return new Promise(resolve => {
+			contract.methods.getUserInfo(myAddr).call().then(data => {
+				resolve(data);
+			})
+		});
+	}
+
+	//申购宝石
+	static async applyForGem(type, applyNum_, recipt){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+		let contract = new this.web3.eth.Contract([
+			Contract.nApplyForGem,
+			Contract.hApplyForGem,
+		], WalletConfig.ETH.momoGemApply);
+
+		return new Promise(resolve => {
+			let method;
+			if(type == "normal"){
+				method = contract.methods.nApplyForGem(applyNum_);
+			}else{
+				method = contract.methods.hApplyForGem(applyNum_);
+			}
+			this.sendMethod(method, {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					console.log("applyForGem success!!!!!");
+					Common.app.unLockBtn("compGemLock");
+					recipt();
+				}
+			)
+		});
 	}
 
 }

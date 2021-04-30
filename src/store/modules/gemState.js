@@ -1,6 +1,7 @@
 const state = () => ({
 	data: {
 		gemBag: {},
+		mboxAllownceToApply: -1, //mbox是否授权给申购合约
 	},
 })
 

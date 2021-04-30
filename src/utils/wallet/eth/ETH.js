@@ -498,6 +498,24 @@ export default class ETH {
 			)
 		});
 	}
+	//授权Erc20给矿池带返回
+	static async approveErcToTargetOnRecipt(fromAddr, targetAddr, recipt) {
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+		let contract = new this.web3.eth.Contract([
+			Contract.approve,
+			Contract.allowance
+		], fromAddr);
+		return new Promise((resolve) => {
+			this.sendMethod(
+				contract.methods.approve(targetAddr,"0x" + Common.repeat("f", 64)), {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					recipt()
+				}
+			)
+		});
+	}
 	//查询合约里面币我的币
 	static async balanceOfToTarget(targetAddr) {
 		let myAddr = await this.getAccount();

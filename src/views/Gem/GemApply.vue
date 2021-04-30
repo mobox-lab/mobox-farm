@@ -41,8 +41,11 @@
 		<div class="mgt-50">
 			<p v-if="!isStartApply">本轮申购暂未开始</p>
 			<p class="tac" v-if="Number(inputNum) > 0 && isCanApply">优先扣除#0#临时余额</p>
-			<button v-if="dialog_tab_pos == 0" class="btn-primary mgt-10" style="width:80%" @click="applyForGem('normal')">普通申购</button>
-			<button v-else class="btn-primary mgt-10 " style="width:80%" @click="applyForGem('high')">算力申购</button>
+			<div class="mgt-10" :class="{'btn-group': mboxAllownceToApply == 0}">
+				<StatuButton isDisable="" data-step="1" style="width:70%" :onClick="approve" v-if="mboxAllownceToApply == 0">授权MBOX</StatuButton>
+				<StatuButton :isDisable="mboxAllownceToApply <= 0" data-step="2" class="mgt-10" style="width:70%" v-if="dialog_tab_pos == 0" :onClick="()=>applyForGem('normal')">普通申购</StatuButton>
+				<StatuButton :isDisable="mboxAllownceToApply <= 0" data-step="2" class="mgt-10" style="width:70%" v-else :onClick="()=>applyForGem('high')">算力申购</StatuButton>
+			</div>
 			<p class="small opa-6 mgt-10">注意：同一账户同一种申购只能发起一次</p>
 		</div>
 	</Dialog>
@@ -52,6 +55,7 @@ import { Dialog, StatuButton } from '@/components';
 import { mapState } from 'vuex';
 import CommonMethod from '@/mixin/CommonMethod';
 import { Wallet } from '@/utils';
+import { WalletConfig, PancakeConfig } from '@/config';
 
 export default {
 	mixins: [CommonMethod],
@@ -66,6 +70,7 @@ export default {
 	computed:{
 		...mapState({
 			eth_myHashrate: (state) => state.ethState.data.myHashrate,
+			mboxAllownceToApply: (state) => state.gemState.data.mboxAllownceToApply,
 		}),
 		getMaxApplyTimes(){
 			if(this.dialog_tab_pos == 0) return 1;
@@ -120,9 +125,21 @@ export default {
 			return this.applyInfo.roundState == 0;
 		}
 	},
-	created(){
+	async created(){
+		await Wallet.ETH.getAccount();
+		if(this.mboxAllownceToApply == -1){
+			this.getAllownce();
+		}
 	},
 	methods:{
+		async getAllownce(){
+			let res = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin.MBOX.addr, WalletConfig.ETH.momoGemApply);
+			console.log("getAllownce", res);
+			this.$store.commit("gemState/setData", {mboxAllownceToApply: Number(res)});
+		},
+		async approve(){
+
+		},
 		async applyForGem(type){
 			if(Number(this.inputNum) <= 0) return;
 			let hash = await Wallet.ETH.applyForGem(type, this.inputNum, ()=>{

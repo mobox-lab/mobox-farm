@@ -117,14 +117,14 @@
 			<div id="our-parice-pc">
 				<div class="vertical-children point-block">
 					<img src="./assets/coin/KEY.png" height="25" alt=""/>
-					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'KEY-BNB', pancakeVType: 1}).show('swap')">
+					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
 						$<span v-if="ourPrice['KEY'] != '-' ">{{ourPrice["KEY"]}}</span>
 						<Loading v-else />
 					</span>
 				</div>
 				<div class="vertical-children mgt-10 point-block ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB', pancakeVType: 1}).show('swap')">
+					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
 						$<span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
 						<Loading v-else />
 					</span>
@@ -287,6 +287,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8)">
 					<div >
+						<h3 class="tac">{{$t("Notice_07")}}</h3>
+						<span v-html="$t('Notice_06')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_05")}}</h3>
 						<span v-html="$t('Notice_04')" ></span>
 					</div>
@@ -499,7 +503,7 @@ export default {
 	},
 	async created() {
 		window.addEventListener("message", this.listenPostMsg, false);
-		this.hasReadNotice = Common.getStorageItem("hasReadNotice3");
+		this.hasReadNotice = Common.getStorageItem("hasReadNotice4");
 		
 		this.setLang();
 
@@ -581,7 +585,7 @@ export default {
 		},
 		showNotice(){
 			this.hasReadNotice = true;
-			Common.setStorageItem("hasReadNotice3", true);
+			Common.setStorageItem("hasReadNotice4", true);
 			this.oprDialog("showNotice-dialog", "block");
 		},
 		setLang(){
@@ -614,9 +618,9 @@ export default {
 
 		//
 		async setOurPrice(coinName){
-			let res = await SwapHttp.post("/pair/price", {from: coinName, to: "BNB", amountIn: 1, version: "V1"});
+			let res = await SwapHttp.post("/pair/price", {from: coinName, to: "BNB", amountIn: 1, version: "V2"});
 			if(res.data.code == 200){
-				let res2 = await SwapHttp.post("/pair/price", {from: "BNB", to: "USDT", amountIn: res.data.data.amountOut, version: "V1"});
+				let res2 = await SwapHttp.post("/pair/price", {from: "BNB", to: "USDT", amountIn: res.data.data.amountOut, version: "V2"});
 				if(res2.data.code == 200){
 					this.ourPrice[coinName] = this.numFloor(res2.data.data.amountOut, 1e4);
 				}

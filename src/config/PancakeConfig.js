@@ -59,6 +59,15 @@ export default class PancakeConfig {
 			pancakeVType: 1,
 			isFinish: false,
 		},
+		"KEY-BNB-V2":{
+			pIndex: -1,
+			addr: "0x9303613fefAf05a573d046CFEdd2519B776BC29F",
+			allocPoint: 1,
+			decimals: 1e18,
+			omit: 1e6,
+			pancakeVType: 2,
+			isFinish: false,
+		},
 		"MBOX-BNB":{
 			pIndex: 12,
 			addr: "0x8D42EE6F423a5016792E6D0d4508c05F30cAc5BC",
@@ -66,7 +75,7 @@ export default class PancakeConfig {
 			decimals: 1e18,
 			omit: 1e6,
 			pancakeVType: 1,
-			isFinish: false,
+			isFinish: true,
 		},
 		"BTCB-BNB":{
 			pIndex: 1,
@@ -131,7 +140,16 @@ export default class PancakeConfig {
 			pancakeVType: 1,
 			isFinish: true,
 		},
-		
+
+		"MBOX-BNB-V2":{
+			pIndex: 21,
+			addr: "0x8FA59693458289914dB0097F5F366d771B7a7C3F",
+			allocPoint: 10,
+			decimals: 1e18,
+			omit: 1e6,
+			pancakeVType: 2,
+			isFinish: false,
+		},
 		"BTCB-BNB-V2":{
 			pIndex: 14,
 			addr: "0x61EB789d75A95CAa3fF50ed7E47b96c132fEc082",

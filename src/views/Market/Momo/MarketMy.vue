@@ -170,9 +170,16 @@
 				</div>
 			</div>
 			<div class="small mgt-10 opa-6" v-if="Number(sellObj.startPrice) > 0 && Number(sellObj.endPrice) > 0 && priceTypePos==1">{{$t("Market_14").replace("#0#", sellObj.day).replace("#1#",sellObj.startPrice).replace("#2#",sellObj.endPrice)}}</div>
-			<button style="width: 200px" class="btn-primary mgt-20" :class="!(sellObj.day > 1 && sellObj.startPrice > 0)? 'disable-btn': '' " @click="confirmSell">
+			<button style="width: 200px" class="btn-primary mgt-20" :class="!(sellObj.day > 1 && sellObj.startPrice > 0)? 'disable-btn': '' " @click="confirmSubmit">
 				{{$t("Common_03")}}
 			</button>
+		</Dialog>
+		<Dialog id="confirm-submit-dialog"  :top="200" :width="350">
+			<h4 class="mgt-30" v-html="$t('Market_58').replace('#0#', `<span style='color: #49c773'>${sellObj.startPrice} BUSD</span>` )"></h4>
+			<div class="mgt-50">
+				<button class="btn-primary" @click="oprDialog('confirm-submit-dialog', 'none');">{{$t("Common_04")}}</button>
+				<button class="btn-primary mgl-5" @click="oprDialog('confirm-submit-dialog', 'none');confirmSell()">{{$t("Common_03")}}</button>
+			</div>
 		</Dialog>
 	</div>
 </template>
@@ -322,6 +329,14 @@ export default {
 				this.sellObj.endPrice = this.sellObj.startPrice;
 			}
 		},
+		confirmSubmit(){
+			let { sellType} = this.sellObj;
+			if(sellType == "721"){
+				this.oprDialog("confirm-submit-dialog", "block");
+			}else{
+				this.confirmSell();
+			}
+		},
 		//确定出售
 		async confirmSell() {
 			let { sellType, startPrice, endPrice, day, sellData, } = this.sellObj;
@@ -349,6 +364,7 @@ export default {
 			}
 			if (sellType == "721") {
 				auctionObj._tokenId = Number(sellData.tokenId);
+
 			}
 			let suggestIndex = await Wallet.ETH.getSuggestIndex();
 			if (suggestIndex == WalletConfig.ETH.MAX_ORDER) {

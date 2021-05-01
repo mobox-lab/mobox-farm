@@ -1557,7 +1557,6 @@ export default class ETH {
 				ids.push(item+index);
 			}
 		});
-		console.log("getMyGemNum", ids);
 		return new Promise(resolve => {
 			contract.methods.balanceOfOneBatch(myAddr, ids).call().then(data => {
 				let retObj = {};
@@ -1630,8 +1629,6 @@ export default class ETH {
 			Contract.hApplyForGem,
 		], WalletConfig.ETH.momoGemApply);
 
-		console.log({type, applyNum_});
-
 		return new Promise(resolve => {
 			let method;
 			if(type == "normal"){
@@ -1642,8 +1639,48 @@ export default class ETH {
 			this.sendMethod(method, {from: myAddr},
 				hash=>resolve(hash),
 				()=>{
-					console.log("applyForGem success!!!!!");
-					Common.app.unLockBtn("compGemLock");
+					Common.app.unLockBtn("applyGemLock");
+					Common.app.setCoinValueByName("MBOX");
+					recipt();
+				}
+			)
+		});
+	}
+	//领取宝石
+	static async takeGem(recipt){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			Contract.claimfrozenGem,
+		], WalletConfig.ETH.momoGemApply);
+
+		return new Promise(resolve => {
+			this.sendMethod(contract.methods.claimfrozenGem(), {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					Common.app.unLockBtn("takeGemLock");
+					Common.app.getGemBag();
+					recipt();
+				}
+			)
+		});
+	}
+	//领取多余的MBOX
+	static async takeMbox(recipt){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			Contract.claimfrozenMbox,
+		], WalletConfig.ETH.momoGemApply);
+
+		return new Promise(resolve => {
+			this.sendMethod(contract.methods.claimfrozenMbox(), {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					Common.app.unLockBtn("takeMboxLock");
+					Common.app.setCoinValueByName("MBOX");
 					recipt();
 				}
 			)

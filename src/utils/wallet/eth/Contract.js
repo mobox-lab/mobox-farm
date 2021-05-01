@@ -1,4 +1,18 @@
 export default class Contract {
+	//领取冻结MBOX
+	static claimfrozenMbox = {
+		type: "function",
+		name: 'claimfrozenMbox',
+		inputs: [],
+		outputs: [],
+	}
+	//领取宝石
+	static claimfrozenGem = {
+		type: "function",
+		name: 'claimfrozenGem',
+		inputs: [],
+		outputs: [],
+	}
 	//普通申购宝石
 	static nApplyForGem = {
 		type: "function",
@@ -124,6 +138,9 @@ export default class Contract {
 		},{
 			type: "uint256",
 			name: "maxLuckyAmount"
+		},{
+			type: "uint256",
+			name: "roundDuration"
 		}],
 	}
 	//批量查询宝石数量

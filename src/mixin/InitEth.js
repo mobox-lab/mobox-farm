@@ -181,7 +181,6 @@ const InitEth = {
 		async getGemBag(){
 			let gemBag = await Wallet.ETH.getMyGemNum();
 			if(gemBag){
-				console.log({gemBag});
 				this.$store.commit("gemState/setData", {gemBag});
 			}
 		},

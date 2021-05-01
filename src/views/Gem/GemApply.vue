@@ -2,10 +2,10 @@
 <template>
 	<Dialog id="gem-apply-dialog" :top="100" :width="400">
 		<div class="tal mgt-10">
-			<div @click="dialog_tab_pos =  0"  :class="dialog_tab_pos == 0?'active':''" class="tab-menu " >普通申购</div>
-			<div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  >算力申购</div>
+			<div @click="dialog_tab_pos =  0;inputNum = '' "  :class="dialog_tab_pos == 0?'active':''" class="tab-menu " >普通申购</div>
+			<div @click="dialog_tab_pos =  1; inputNum = ''"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  >算力申购</div>
 		</div>
-		<div class="ly-input-content ">
+		<div class="ly-input-content por">
 			<p class="small tal opa-6">可申购数量: {{getMaxApplyTimes - getNowApplyNum}}</p>
 			<div class="por mgt-5">
 				<div class="ly-input-pre-icon">
@@ -35,9 +35,9 @@
 		</div>
 	
 		<div class="mgt-30">
-			<div class="aveage-box ly-input-content ">
+			<div class="aveage-box ly-input-content " v-if="numFloor(myApplyInfo.frozenBalance / 1e18, 1e4) > 0 && getHighApplyNum + getNormalApplyNum > 0 ">
 				<p class="vertical-children tal">
-					<span>申购冻结: {{numFloor(myApplyInfo.frozenBalance / 1e18, 1e4)}}</span>&nbsp;
+					<span>申购冻结: {{getStakeMbox}}</span>&nbsp;
 					<img src="../../assets/coin/MBOX.png" alt="" height="20"/>
 				</p>
 			</div>
@@ -48,24 +48,29 @@
 						<img src="../../assets/coin/MBOX.png" alt="" height="20"/>
 					</p>
 					<div class="tar">
-						<StatuButton v-if="getHighApplyNum + getNormalApplyNum == 0" class="btn-small" :isDisable="Number(myApplyInfo.frozenBalance) <= 0">取回</StatuButton>
+						<StatuButton style="width:50%" :onClick="takeMbox" :isLoading="lockBtn.takeMboxLock > 0" v-if="getHighApplyNum + getNormalApplyNum == 0" class="btn-small" :isDisable="Number(myApplyInfo.frozenBalance) <= 0">取回</StatuButton>
 						<button v-else class="btn-primary disable-btn btn-small">已冻结</button>
 					</div>
 				</div>
 			</template>
 		</div>
 		
-		<div class="mgt-30">
-			<p v-if="!isStartApply">本轮申购暂未开始</p>
+		<div class="mgt-50">
+			<p v-if="!isStartApply">结算中<span class="dotting"></span></p>
 			<div class="tac" v-if="Number(inputNum) > 0 && isCanApply">
 				<p v-if="getCanUseTemMbox > 0">优先扣除{{getCanUseTemMbox > getNeedPayMbox? getNeedPayMbox: getCanUseTemMbox}}临时余额</p>
 				<p >需要支付：{{getCanUseTemMbox > getNeedPayMbox? 0 : getNeedPayMbox -   getCanUseTemMbox}}MBOX</p>
 			</div>
 			<div  :class="{'btn-group': mboxAllownceToApply == 0}">
 				<StatuButton :isLoading="lockBtn.mboxApproveToApplyLock > 0" data-step="1" class="mgt-10" style="width:70%" :onClick="approve" v-if="mboxAllownceToApply == 0">授权MBOX</StatuButton>
-				<StatuButton :isDisable="mboxAllownceToApply <= 0 || !isCanApply" data-step="2" class="mgt-10" style="width:70%" v-if="dialog_tab_pos == 0" :onClick="()=>applyForGem('normal')">普通申购</StatuButton>
-				<StatuButton  :isDisable="mboxAllownceToApply <= 0 || !isCanApply" data-step="2" class="mgt-10" style="width:70%" v-else :onClick="()=>applyForGem('high')">算力申购</StatuButton>
+				<StatuButton :isLoading="lockBtn.applyGemLock > 0" :isDisable="mboxAllownceToApply <= 0 || !isCanApply" data-step="2" class="mgt-10" style="width:70%"  :onClick="()=>applyForGem(dialog_tab_pos == 0?'normal':'high')">
+					<span v-if="dialog_tab_pos == 0">普通申购</span>
+					<span v-else>算力申购</span>
+				</StatuButton>
 			</div>
+			<p class="small mgt-5 opa-6">
+				{{$t("Air-drop_11")}}: {{Number(coinArr["MBOX"].balance) || 0}}MBOX
+			</p>
 			<p class="small opa-6 mgt-10">注意：同一账户同一种申购只能发起一次</p>
 		</div>
 	</Dialog>
@@ -92,6 +97,7 @@ export default {
 			eth_myHashrate: (state) => state.ethState.data.myHashrate,
 			mboxAllownceToApply: (state) => state.gemState.data.mboxAllownceToApply,
 			lockBtn: (state) => state.globalState.data.lockBtn,
+			coinArr: (state) => state.bnbState.data.coinArr,
 		}),
 		getMaxApplyTimes(){
 			if(this.dialog_tab_pos == 0) return 1;
@@ -136,10 +142,16 @@ export default {
 			if(ticketObj[0] == 0) num = 0;
 			return num; 
 		},
+		//获取质押完还可以用mbox
 		getCanUseTemMbox(){
 			let totalApplyNum = this.getHighApplyNum + this.getNormalApplyNum;
 			let balance = Number(this.myApplyInfo.frozenBalance) - Number(this.applyInfo.roundPrice) * totalApplyNum;
 			return Number(this.numFloor(balance/1e18, 1e4));
+		},
+		//获取质押的Mbox
+		getStakeMbox(){
+			let totalApplyNum = this.getHighApplyNum + this.getNormalApplyNum
+			return this.numFloor(Number(this.applyInfo.roundPrice) * totalApplyNum /1e18, 1e4);
 		},
 		getNeedPayMbox(){
 			return Number(this.numFloor(this.applyInfo.roundPrice / 1e18, 1e4) * Number(this.inputNum));
@@ -153,6 +165,10 @@ export default {
 			if(this.getMaxApplyTimes < Number(this.inputNum)) isCanApply = false;
 			//申购还没有开始
 			if(!this.isStartApply) isCanApply = false;
+			//没有输入
+			if(Number(this.inputNum) <= 0) isCanApply = false;
+			//余额不足
+			if(this.getNeedPayMbox > this.coinArr["MBOX"].balance) isCanApply = false;
 			return isCanApply;
 		},
 		//是否开始申购
@@ -162,13 +178,14 @@ export default {
 	},
 	async created(){
 		await Wallet.ETH.getAccount();
-		this.getAllownce();
+		await this.getAllownce();
+
+		this.unLockBtn("applyGemLock");
+		this.unLockBtn("mboxApproveToApplyLock");
 	},
 	methods:{
 		async getAllownce(){
 			let res = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin.MBOX.addr, WalletConfig.ETH.momoGemApply);
-			console.log("getAllownce", res);
-			this.unLockBtn("mboxApproveToApplyLock");
 			this.$store.commit("gemState/setData", {mboxAllownceToApply: Number(res)});
 		},
 		async approve(){
@@ -182,11 +199,21 @@ export default {
 		async applyForGem(type){
 			if(Number(this.inputNum) <= 0) return;
 			let hash = await Wallet.ETH.applyForGem(type, this.inputNum, ()=>{
-				console.log("applyForGem recipt");
+				this.$parent.getUserApplyInfo();
+				this.unLockBtn("applyGemLock");
+				this.inputNum = "";
+			});
+			if(hash){
+				this.lockBtnMethod("applyGemLock");
+			}
+		},
+		//领取多余的MBox
+		async takeMbox(){
+			let hash = await Wallet.ETH.takeMbox(()=>{
 				this.$parent.getUserApplyInfo();
 			});
 			if(hash){
-				console.log("applyForGem success");
+				this.lockBtnMethod("takeMboxLock");
 			}
 		}
 	}

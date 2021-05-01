@@ -11,7 +11,10 @@
 			</div>
 		</section>
 		<section id="airdrop-cont" class="por">
-			<a id="recheck" href="https://www.certik.org/projects/mobox" style="position:absolute;right:0px;top: -70px" target="_blank">
+			<!-- <a id="recheck" href="https://www.certik.org/projects/mobox" style="position:absolute;right:0px;top: -70px" target="_blank">
+				<img src="../../assets/icon/check-icon.png" alt="" height="60" />
+			</a> -->
+			<a id="recheck" href="https://github.com/moboxio/NFTfarmer/blob/168033026c87a010c196360e12fc94091d164740/CertiK%20Audit%20Report%20for%20MOBOX.pdf" style="position:absolute;right:0px;top: -70px" target="_blank">
 				<img src="../../assets/icon/check-icon.png" alt="" height="60" />
 			</a>
 			<div id="only-show-my" style="position:absolute;left:10px;top:10px" class="vertical-children">

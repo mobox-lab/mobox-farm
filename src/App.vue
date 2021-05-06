@@ -12,14 +12,14 @@
 			<div class="dib " style="position:absolute;top:0px;right:130px;zoom:0.8" >
 				<div class="vertical-children dib">
 					<img src="./assets/coin/KEY.png" height="25" alt=""/>
-					<span  @click="$refs.pancake.setOprData({coinKey: 'KEY-BNB',pancakeVType: 1}).show('swap')">
+					<span  @click="$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2',pancakeVType: 2}).show('swap')">
 						$<span v-if="ourPrice['KEY'] != '-' ">{{ourPrice["KEY"]}}</span>
 						<Loading v-else />
 					</span>
 				</div>
 				<div class="vertical-children  dib mgl-10 ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<span @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB', pancakeVType: 1}).show('swap')">
+					<span @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
 						$<span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
 						<Loading v-else />
 					</span>

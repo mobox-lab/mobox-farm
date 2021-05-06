@@ -1158,9 +1158,12 @@ export default class ETH {
 
 		let saveHash;
 
+		_startPrice = BigNumber(Common.numFloor(_startPrice, 1e9)).times(BigNumber(1e18));
+		_endPrice = BigNumber(Common.numFloor(_endPrice, 1e9)).times(BigNumber(1e18));
+
 		return new Promise(resolve => {
 			this.sendMethod(
-				contract.methods.createAuction(this.numToHex(Common.numFloor(_startPrice, 1e9) * 1e18),this.numToHex(Common.numFloor(_endPrice, 1e9) * 1e18),
+				contract.methods.createAuction(this.numToHex(_startPrice),this.numToHex(_endPrice),
 					_durationDay, _suggestIndex, _tokenId, _ids, _amounts), {from: myAddr},
 					hash=>{
 						saveHash = hash;
@@ -1241,9 +1244,12 @@ export default class ETH {
 			Contract.changePrice,
 		], WalletConfig.ETH.moMoStakeAuction);
 
+		startPrice = BigNumber(Common.numFloor(startPrice, 1e9)).times(BigNumber(1e18));
+		endPrice = BigNumber(Common.numFloor(endPrice, 1e9)).times(BigNumber(1e18));
+
 		return new Promise(resolve => {
 			this.sendMethod(
-				contract.methods.changePrice(index,this.numToHex(Common.numFloor(startPrice, 1e9) * 1e18),this.numToHex(Common.numFloor(endPrice, 1e9) * 1e18), Number(durationDays)), 
+				contract.methods.changePrice(index,this.numToHex(startPrice),this.numToHex(endPrice), Number(durationDays)), 
 				{from: myAddr},
 				hash=>resolve(hash),
 				()=>{

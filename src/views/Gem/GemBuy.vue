@@ -13,8 +13,8 @@
 						<p>{{applyInfo.nowNormalAmount}}</p>
 					</td>
 					<td >
-						<p class="small opa-6">中签数量</p>
-						<p>{{applyInfo.maxNormalLuckyAmount}}</p>
+						<p class="small opa-6">中签率</p>
+						<p>{{ numFloor(applyInfo.maxNormalLuckyAmount / (applyInfo.nowNormalAmount >= applyInfo.maxNormalLuckyAmount?applyInfo.nowNormalAmount:applyInfo.maxNormalLuckyAmount) * 100, 1e3 ) }}%</p>
 					</td>
 				</tr>
 				<tr>
@@ -23,8 +23,8 @@
 						<p>{{applyInfo.nowAmount}}/{{applyInfo.maxAmount}}</p>
 					</td>
 					<td >
-						<p class="small opa-6">中签数量</p>
-						<p>{{applyInfo.maxLuckyAmount}}</p>
+						<p class="small opa-6">中签率</p>
+						<p>{{ numFloor(applyInfo.maxLuckyAmount / (applyInfo.nowAmount >= applyInfo.maxLuckyAmount?applyInfo.nowAmount:applyInfo.maxLuckyAmount) * 100, 1e3 ) }}%</p>
 					</td>
 				</tr>
 			</table>
@@ -183,7 +183,6 @@ export default {
 					arr.push({type: this.gemType[index], num: num, level: 1})
 				}
 			});
-			console.log(arr);
 			return arr;
 		},
 		getRecordNoArr(){
@@ -203,24 +202,23 @@ export default {
 		this.getApplyInfo();
 		let count = 0;
 		clearInterval(timer);
-		timer = setInterval(()=>{
-			count++
+		timer = setInterval(async ()=>{
+			count++;
 			if(this.getCountDown > 0){
 				this.getCountDown--;
 				if(this.getCountDown == 0){
-					this.getApplyInfo();
-					this.getGemApply();
+					await this.getApplyInfo();
+					await this.getGemApply();
 				}
 			}
 			if(count % 20 == 0){
-				this.getApplyInfo();
-				this.getUserApplyInfo();
-				this.getGemApply();
+				await this.getApplyInfo();
+				await this.getUserApplyInfo();
+				await this.getGemApply();
 			}
 		}, 1000);
 
 		this.account = await Wallet.ETH.getAccount();
-		// this.account = "0x1403cC55a47d864fb210C057Be454222f709F945";
 		await this.getUserApplyInfo();
 		await this.getGemApply();
 
@@ -235,7 +233,6 @@ export default {
 			this.oprDialog("gem-num-result-dialig", "block");
 			let {roundIndex} = item;
 			let result = await Http.getGemApplyResult(this.account, roundIndex);
-			console.log("getApplyDetial",result);
 			this.historyDitail.isOver = result.isOver;
 			this.historyDitail.wins = result.wins;
 		},
@@ -257,7 +254,6 @@ export default {
 		//获取我的申购信息
 		async getUserApplyInfo(){
 			let result = await Wallet.ETH.getMyApplyInfo();
-			console.log("getUserApplyInfo",result);
 			if(result){
 				this.myApplyInfo = result;
 			}

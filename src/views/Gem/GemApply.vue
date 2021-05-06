@@ -6,7 +6,7 @@
 			<div @click="dialog_tab_pos =  1; inputNum = ''"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  >算力申购</div>
 		</div>
 		<div class="ly-input-content por">
-			<p class="small tal opa-6">可申购数量: {{getMaxApplyTimes - getNowApplyNum}}</p>
+			<p class="small tal opa-6">可申购数量: {{getMaxApplyTimes}}</p>
 			<div class="por mgt-5">
 				<div class="ly-input-pre-icon">
 					<img  :src="require(`../../assets/icon/${$parent.getShowApplyType}_icon.png`)" alt="" />

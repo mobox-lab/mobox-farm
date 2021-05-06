@@ -32,9 +32,28 @@
 		<!-- 宝石相关功能 -->
 		<div v-if="getNowPetItem.vType >= 4 && !isMarket && getNowPetItem.location=='stake'">
 			<h3 class="mgt-10" >{{$t("MOMO_40")}}</h3>
-			<p class="mgt-10 small opa-6">
+			<!-- <p class="mgt-10 small opa-6">
 				{{$t("Common_05")}}
-			</p>
+			</p> -->
+			<div class="ly-input-content mgt-10">
+				<div class="aveage-box tac mgt-10">
+					<div  v-for="item in ['red', 'green','blue','yellow']" :key="item"  class="tac">
+						<div class="gem-item opa-6" style="max-width:80px">
+							<img :src="require(`@/assets/gem/${item}_1.png`)" alt="" width="100%">
+						</div>
+						<div class="tac mgt-10">
+							<button class="btn-primary btn-small" style="width:100%;max-width:80px" >移除</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="por mgt-30" style="height:50px;width:100%;">
+					<div class="gemBag" @click="oprDialog('gemBag-dialog','block')">
+						<img  src="../assets/icon/gem_bag_icon.png" alt="">
+						<p class="stroke" data-text="宝石背包">宝石背包</p>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<!-- 升级记录 -->
@@ -328,6 +347,15 @@ export default {
 </script>
 
 <style scoped>
+.gem-item{
+	display: inline-block;
+	width: 100%;
+	background: #10172A;
+	border-radius: 10px;
+	cursor: pointer;
+	position: relative;
+	user-select: none;
+}
 .pet-des {
 	background: #10172a;
 	border-radius: 10px;

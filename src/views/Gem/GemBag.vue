@@ -2,7 +2,7 @@
 <template>
 	<Dialog id="gemBag-dialog" :top="100" :width="450">
 		<ul class="gem-tab">
-			<li v-for="item in gemType" :key="item" :class="['border_'+item, {active: item == selectGemType}]" class="tab-menu" @click="selectGemLv=1;selectGemType = item">
+			<li v-for="item in gemType" :key="item" :class="['border_'+item, {active: item == selectGemType}]" class="tab-menu" @click="selectGemLv=1;needCompNum=1;selectGemType = item">
 				<img :src="require(`@/assets/gem/${item}_1.png`)" alt=""  height="100%">
 			</li>
 		</ul>
@@ -16,7 +16,7 @@
 				</div>	
 			</div>
 		</div>
-		<div v-if="selectGemLv <= 8" class="ly-input-content mgt-10">
+		<div v-if="selectGemLv <= 4" class="ly-input-content mgt-10">
 			<div class="small opa-6 mgt-10">
 				宝石合成:三个低级的宝石合成下一等级的宝石
 			</div>
@@ -29,9 +29,9 @@
 				</div>
 				<div style="flex: 2" class="tac">
 					<div>
-						<button class="btn-primary btn-small" @click="needCompNum=1" v-if="getCompObj.maxComp > 10">Min</button>&nbsp;
+						<button class="btn-primary btn-small" @click="needCompNum=1">Min</button>&nbsp;
 						<SelectNum :needHideReduce="false" :maxNum="getCompObj.maxComp"  :defaultNum="needCompNum" :data="{needGemLv: selectGemLv-1}" :onChange="onNumChange" />&nbsp;
-						<button class="btn-primary btn-small" @click="needCompNum=getCompObj.maxComp" v-if="getCompObj.maxComp > 10">Max</button> 
+						<button class="btn-primary btn-small" @click="needCompNum=getCompObj.maxComp" >Max</button> 
 					</div>
 					<div class="mgt-10" :class="{'btn-group': !hasApprove && hasApprove != -1}">
 						<StatuButton v-if="hasApprove != -1 && !hasApprove" data-step="1" :onClick="approve.bind(this)" :isLoading="lockBtn.approveLock > 0" style="width:70%" >
@@ -44,6 +44,10 @@
 				</div>
 			</div>
 		</div>
+		<div v-else-if="selectGemLv == 5"  class="ly-input-content mgt-10">
+			{{$t("BOX_15")}}
+		</div>
+		<div v-else  class="ly-input-content mgt-10">{{$t("Common_05")}}</div>
 	</Dialog>
 </template>
 <script>

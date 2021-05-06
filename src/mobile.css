@@ -39,6 +39,9 @@
  }
 
 @media (max-width: 768px) {
+	.gemBag{
+		zoom: 0.8;
+	}
 	#aridorp .menu-btn{
 		padding: 0px!important;
 		padding-top: 10px!important;

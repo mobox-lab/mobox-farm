@@ -446,7 +446,7 @@ export default class ETH {
 	//查询质押和Key的收益
 	static async getStakeValueAndEarndKey(pIndexArr){
 		let myAddr = await this.getAccount();
-		if (!myAddr) return null;
+		if (myAddr) return null;
 		if (!this.momoHelperContract) return null;
 		return new Promise(resolve => {
 			this.momoHelperContract.methods.getUserFarmInfos(pIndexArr, myAddr).call().then(res => {

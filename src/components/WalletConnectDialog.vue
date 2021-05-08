@@ -257,6 +257,8 @@ export default {
 				return;
 			}
 
+			// account = "0xCb6Ac700Aad286Aa2790e86C170D2120746538B4"
+
 			Wallet.ETH.myAddr = account;
 			Wallet.ETH.changeWeb3(provider);
 			this.$store.commit("globalState/setData", {

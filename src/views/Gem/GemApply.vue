@@ -2,17 +2,17 @@
 <template>
 	<Dialog id="gem-apply-dialog" :top="100" :width="400">
 		<div class="tal mgt-10">
-			<div @click="dialog_tab_pos =  0;inputNum = '' "  :class="dialog_tab_pos == 0?'active':''" class="tab-menu " >普通申购</div>
-			<div @click="dialog_tab_pos =  1; inputNum = ''"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  >算力申购</div>
+			<div @click="dialog_tab_pos =  0;inputNum = '' "  :class="dialog_tab_pos == 0?'active':''" class="tab-menu " >{{$t("Gemstone_27")}}</div>
+			<div @click="dialog_tab_pos =  1; inputNum = ''"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  >{{$t("Gemstone_28")}}</div>
 		</div>
 		<div class="ly-input-content por">
-			<p class="small tal opa-6">可申购数量: {{getMaxApplyTimes}}</p>
+			<p class="small tal">{{$t("Gemstone_04").replace("#0#",getMaxApplyTimes)}}</p>
 			<div class="por mgt-5">
 				<div class="ly-input-pre-icon">
 					<img  :src="require(`../../assets/icon/${$parent.getShowApplyType}_icon.png`)" alt="" />
 				</div>
 				<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
-					v-int :data-max="getMaxApplyTimes" data-min="1" v-model="inputNum" placeholder="请输入申购的宝石数量" />
+					v-int :data-max="getMaxApplyTimes" data-min="1" v-model="inputNum" :placeholder="$t('Gemstone_05')" />
 				<div class="dib" style="width: 30%">
 					<button @click="inputNum = dialog_tab_pos==0?1:getMaxApplyTimes" class="btn-primary btn-small" style="width: 80%" >
 						Max
@@ -20,16 +20,16 @@
 				</div>
 			</div>
 			<div class="mgt-10 aveage-box small">
-				<p class="tal">已提交的申购数量: {{getNowApplyNum}}</p>
+				<p class="tal">{{$t("Gemstone_06")}}: {{getNowApplyNum}}</p>
 				<p class="vertical-children tar">
-					<span>申购单价: {{numFloor(applyInfo.roundPrice / 1e18, 1e4)}}</span>&nbsp;
+					<span>{{$t("Gemstone_07")}}: {{numFloor(applyInfo.roundPrice / 1e18, 1e4)}}</span>&nbsp;
 					<img src="../../assets/coin/MBOX.png" alt="" height="20"/>
 				</p>
 			</div>
 		</div>
 		
 		<div class=" tal ly-input-content" style="margin-top:2px" v-if="getNowApplyNum > 0">
-			<p style="">我的申购号码: 
+			<p style="">{{$t("Gemstone_18")}}: 
 				<span v-for="item in getNowApplyNum" :key="dialog_tab_pos+'_'+item"><small v-if="item > 1"> ,</small>{{Number(getNowStartTicketNo) + item - 1}}</span>
 			</p>
 		</div>
@@ -37,41 +37,42 @@
 		<div class="mgt-30">
 			<div class="aveage-box ly-input-content " v-if="numFloor(myApplyInfo.frozenBalance / 1e18, 1e4) > 0 && getHighApplyNum + getNormalApplyNum > 0 ">
 				<p class="vertical-children tal">
-					<span>申购冻结: {{getStakeMbox}}</span>&nbsp;
+					<span>{{$t("Gemstone_37")}}: {{getStakeMbox}}</span>&nbsp;
 					<img src="../../assets/coin/MBOX.png" alt="" height="20"/>
 				</p>
 			</div>
 			<template v-if="getCanUseTemMbox > 0">
 				<div class="aveage-box  ly-input-content mgt-10">
 					<p class="vertical-children tal">
-						<span>临时账户余额: {{ getCanUseTemMbox }}</span>&nbsp;
+						<span>{{$t("Gemstone_08")}}: {{ getCanUseTemMbox }}</span>&nbsp;
 						<img src="../../assets/coin/MBOX.png" alt="" height="20"/>
 					</p>
 					<div class="tar">
-						<StatuButton style="width:50%" :onClick="takeMbox" :isLoading="lockBtn.takeMboxLock > 0" v-if="getHighApplyNum + getNormalApplyNum == 0" class="btn-small" :isDisable="Number(myApplyInfo.frozenBalance) <= 0">取回</StatuButton>
-						<button v-else class="btn-primary disable-btn btn-small">已冻结</button>
+						<StatuButton style="width:50%" :onClick="takeMbox" :isLoading="lockBtn.takeMboxLock > 0" v-if="getHighApplyNum + getNormalApplyNum == 0" class="btn-small" :isDisable="Number(myApplyInfo.frozenBalance) <= 0">{{$t("Gemstone_10")}}</StatuButton>
+						<button v-else class="btn-primary disable-btn btn-small">{{$t("Gemstone_09")}}</button>
 					</div>
 				</div>
 			</template>
 		</div>
 		
 		<div class="mgt-50">
-			<p v-if="!isStartApply">结算中<span class="dotting"></span></p>
+			<p v-if="!isStartApply">{{$t("Gemstone_22")}}<span class="dotting"></span></p>
+			<p v-if="isHightAndIsMax && isStartApply">{{$t("Gemstone_26")}}</p>
 			<div class="tac" v-if="Number(inputNum) > 0 && isCanApply">
-				<p v-if="getCanUseTemMbox > 0">优先扣除{{getCanUseTemMbox > getNeedPayMbox? getNeedPayMbox: getCanUseTemMbox}}临时余额</p>
-				<p >需要支付：{{getCanUseTemMbox > getNeedPayMbox? 0 : getNeedPayMbox -   getCanUseTemMbox}}MBOX</p>
+				<p v-if="getCanUseTemMbox > 0">{{$t("Gemstone_11").replace("#0#",getCanUseTemMbox > getNeedPayMbox? getNeedPayMbox: getCanUseTemMbox)}}</p>
+				<p >{{$t("Gemstone_12").replace("#0#", getCanUseTemMbox > getNeedPayMbox? 0 : numFloor(getNeedPayMbox -   getCanUseTemMbox, 1e3))}}</p>
 			</div>
 			<div  :class="{'btn-group': mboxAllownceToApply == 0}">
-				<StatuButton :isLoading="lockBtn.mboxApproveToApplyLock > 0" data-step="1" class="mgt-10" style="width:70%" :onClick="approve" v-if="mboxAllownceToApply == 0">授权MBOX</StatuButton>
+				<StatuButton :isLoading="lockBtn.mboxApproveToApplyLock > 0" data-step="1" class="mgt-10" style="width:70%" :onClick="approve" v-if="mboxAllownceToApply == 0">{{$t("Air-drop_16")}} MBOX</StatuButton>
 				<StatuButton :isLoading="lockBtn.applyGemLock > 0" :isDisable="mboxAllownceToApply <= 0 || !isCanApply" data-step="2" class="mgt-10" style="width:70%"  :onClick="()=>applyForGem(dialog_tab_pos == 0?'normal':'high')">
-					<span v-if="dialog_tab_pos == 0">普通申购</span>
-					<span v-else>算力申购</span>
+					<span v-if="dialog_tab_pos == 0">{{$t("Gemstone_27")}}</span>
+					<span v-else>{{$t("Gemstone_28")}}</span>
 				</StatuButton>
 			</div>
 			<p class="small mgt-5 opa-6">
 				{{$t("Air-drop_11")}}: {{Number(coinArr["MBOX"].balance) || 0}}MBOX
 			</p>
-			<p class="small opa-6 mgt-10">注意：同一账户同一种申购只能发起一次</p>
+			<p class="small opa-6 mgt-10">{{$t("Gemstone_13")}}</p>
 		</div>
 	</Dialog>
 </template>
@@ -169,7 +170,18 @@ export default {
 			if(Number(this.inputNum) <= 0) isCanApply = false;
 			//余额不足
 			if(this.getNeedPayMbox > this.coinArr["MBOX"].balance) isCanApply = false;
+
+			//高级申购已达到最大申购名额
+			if(this.dialog_tab_pos == 1 && Number(this.applyInfo.nowAmount) + Number(this.inputNum) >  Number(this.applyInfo.maxAmount)) isCanApply = false;
+
 			return isCanApply;
+		},
+		//是否高级申购并且申购名额已经满了
+		isHightAndIsMax(){
+			let status = true;
+			if(this.dialog_tab_pos != 1) status = false;
+			if(Number(this.applyInfo.nowAmount) + Number(this.inputNum) <=  Number(this.applyInfo.maxAmount)) status = false;
+			return status;
 		},
 		//是否开始申购
 		isStartApply(){

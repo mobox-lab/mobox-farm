@@ -446,7 +446,7 @@ export default class ETH {
 	//查询质押和Key的收益
 	static async getStakeValueAndEarndKey(pIndexArr){
 		let myAddr = await this.getAccount();
-		if (myAddr) return null;
+		if (!myAddr) return null;
 		if (!this.momoHelperContract) return null;
 		return new Promise(resolve => {
 			this.momoHelperContract.methods.getUserFarmInfos(pIndexArr, myAddr).call().then(res => {
@@ -1621,6 +1621,20 @@ export default class ETH {
 		], WalletConfig.ETH.momoGemApply);
 		return new Promise(resolve => {
 			contract.methods.getUserInfo(myAddr).call().then(data => {
+				resolve(data);
+			})
+		});
+	}
+
+	//查询是否参与高级申购
+	static async hasHighApply(){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+		let contract = new this.web3.eth.Contract([
+			Contract.isHighApplying,
+		], WalletConfig.ETH.momoGemApply);
+		return new Promise(resolve => {
+			contract.methods.isHighApplying(myAddr).call().then(data => {
 				resolve(data);
 			})
 		});

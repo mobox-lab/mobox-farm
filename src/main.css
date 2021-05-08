@@ -193,6 +193,12 @@ svg {
 .vertical-children * {
 	vertical-align: middle;
 }
+.vertical-children2{
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+}
+
 
 .tal {
 	text-align: left;

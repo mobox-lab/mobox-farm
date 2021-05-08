@@ -33,8 +33,8 @@
 					</router-link>
 				</div>
 			</div>
-			<div style="margin-top: 30px" v-if="Math.ceil(getTotalPet.length / onePageCount) > 1" >
-				<Page :defaultPage="myPetPage" :totalPage="Math.ceil(getTotalPet.length / onePageCount)" :onChange="onPageChange" />
+			<div style="margin-top: 30px" v-show="Math.ceil(getTotalPet.length / onePageCount) > 1" >
+				<Page ref="page" :defaultPage="myPetPage" :totalPage="Math.ceil(getTotalPet.length / onePageCount)" :onChange="onPageChange" />
 			</div>
 		</div>
 		<!-- momo图鉴 -->
@@ -334,7 +334,9 @@ export default {
 		},
 		onPageChange(page) {
 			this.$store.commit("globalState/setMyPetPage", page);
-			this.hackReloadMethod();
+			this.$nextTick(()=>{
+				this.$refs.page.initPage();
+			})
 		},
 		onTabChange(tab) {
 			if (tab == 1) this.hasShowBook = true;

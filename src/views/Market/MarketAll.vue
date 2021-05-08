@@ -49,7 +49,7 @@
 		</div>
 
 		<div style="margin-top: 30px" >
-			<Page :defaultPage="this.marketPage" :totalPage="Math.ceil(marketPets.total / onePageCount)" :onChange="onPageChange" v-if="Math.ceil(marketPets.total / onePageCount) > 1" />
+			<Page ref="page" :defaultPage="this.marketPage" :totalPage="Math.ceil(marketPets.total / onePageCount)" :onChange="onPageChange" v-show="Math.ceil(marketPets.total / onePageCount) > 1" />
 		</div>
 	</div>
 </template>
@@ -222,6 +222,7 @@ export default {
 			this.$store.commit("marketState/marketSearch", {type: "category", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketPage, true);
+				this.$refs.page.initPage();
 			});
 		},
 		onSelectVTypeChange(pos){
@@ -230,6 +231,7 @@ export default {
 			this.$store.commit("marketState/marketSearch", {type: "vType", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketPage, true);
+				this.$refs.page.initPage();
 			});
 		},
 		onSortChange(pos){
@@ -238,6 +240,7 @@ export default {
 			this.$store.commit("marketState/marketSearch", {type: "sort", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketPage, true);
+				this.$refs.page.initPage();
 			});
 		}
 	}

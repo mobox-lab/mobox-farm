@@ -18,7 +18,7 @@
 		</div>
 		<div v-if="selectGemLv <= 4" class="ly-input-content mgt-10">
 			<div class="small opa-6 mgt-10">
-				宝石合成:三个低级的宝石合成下一等级的宝石
+				{{$t("Gemstone_34")}}
 			</div>
 			<div class="mgt-20 aveage-box" >
 				<div class="tar">
@@ -35,19 +35,19 @@
 					</div>
 					<div class="mgt-10" :class="{'btn-group': !hasApprove && hasApprove != -1}">
 						<StatuButton v-if="hasApprove != -1 && !hasApprove" data-step="1" :onClick="approve.bind(this)" :isLoading="lockBtn.approveLock > 0" style="width:70%" >
-							授权宝石
+							{{$t("Air-drop_16")}}
 						</StatuButton>
 						<StatuButton data-step="2" class="mgt-10" :onClick="compGem.bind(this)" style="width:70%" :isDisable="!hasApprove || needCompNum <= 0 || needCompNum > getCompObj.maxComp" :isLoading="lockBtn.compGemLock > 0">
-							合成
+							{{$t("Gemstone_25")}}
 						</StatuButton>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div v-else-if="selectGemLv == 5"  class="ly-input-content mgt-10">
-			{{$t("BOX_15")}}
+			{{$t("Gemstone_35")}}
 		</div>
-		<div v-else  class="ly-input-content mgt-10">{{$t("Common_05")}}</div>
+		<div v-else  class="ly-input-content mgt-10">{{$t("Gemstone_36")}}</div>
 	</Dialog>
 </template>
 <script>

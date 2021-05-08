@@ -71,3 +71,14 @@
 	    min-width: 150px;
 	    padding: 3px 10px;
     }
+
+    .rule-table{
+	    width: 100% !important;
+	    min-width: 0px !important;
+    }
+
+    @media (max-width: 768px) {
+	#gem-apply-type{
+		zoom: 0.6;
+	}
+}

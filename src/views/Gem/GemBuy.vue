@@ -2,52 +2,58 @@
 <template>
 <div class="tac">
 	<div class="por">
-		<h1>宝石申购</h1>
+		<h1 class="vertical-children">
+			<span>{{$t("Gemstone_01")}}</span>
+			<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="../../assets/icon/help.png" alt="" height="30">
+		</h1>
 		<div class="tac mgt-10">
-			<p v-if="getCountDown >0">申购倒计时: {{getLeftTime(getCountDown)}}</p>
-			<p v-else>结算中<span class="dotting"></span></p>
-			<table  class="dib mgt-10" id="apply-info-table" cellpadding="0" cellspacing="0">
+			<p v-if="getCountDown >0">{{$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
+			<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
+			<div style="height:280px" id="gem-apply-type">
+				<p v-if="applyInfo.roundIndex != '' ">
+					<img :src="require(`../../assets/icon/gemIcon_${getShowApplyType}.png`)" alt="" height="280px"/>
+				</p>
+			</div>
+			<table  class="dib" id="apply-info-table" cellpadding="0" cellspacing="0">
 				<tr>
 					<td >
-						<p class="small opa-6">普通申购数量</p>
+						<p class="small opa-6">{{$t("Gemstone_32")}}</p>
 						<p>{{applyInfo.nowNormalAmount}}</p>
 					</td>
 					<td >
-						<p class="small opa-6">中签率</p>
-						<p>{{ numFloor(applyInfo.maxNormalLuckyAmount / (applyInfo.nowNormalAmount >= applyInfo.maxNormalLuckyAmount?applyInfo.nowNormalAmount:applyInfo.maxNormalLuckyAmount) * 100, 1e3 ) }}%</p>
+						<p class="small opa-6">{{$t("Gemstone_24")}}</p>
+						<p>{{ numFloor(applyInfo.maxNormalLuckyAmount / (Number(applyInfo.nowNormalAmount) >= Number(applyInfo.maxNormalLuckyAmount)?applyInfo.nowNormalAmount:applyInfo.maxNormalLuckyAmount) * 100, 1e3 ) || "-" }}%</p>
 					</td>
 				</tr>
 				<tr>
 					<td >
-						<p class="small opa-6">高级申购数量</p>
+						<p class="small opa-6">{{$t("Gemstone_33")}}</p>
 						<p>{{applyInfo.nowAmount}}/{{applyInfo.maxAmount}}</p>
 					</td>
 					<td >
-						<p class="small opa-6">中签率</p>
-						<p>{{ numFloor(applyInfo.maxLuckyAmount / (applyInfo.nowAmount >= applyInfo.maxLuckyAmount?applyInfo.nowAmount:applyInfo.maxLuckyAmount) * 100, 1e3 ) }}%</p>
+						<p class="small opa-6">{{$t("Gemstone_24")}}</p>
+						<p>{{ numFloor(applyInfo.maxLuckyAmount / (Number(applyInfo.nowAmount) >= Number(applyInfo.maxLuckyAmount)?applyInfo.nowAmount:applyInfo.maxLuckyAmount) * 100, 1e3 ) || "-" }}%</p>
 					</td>
 				</tr>
 			</table>
-			<div style="height:350px">
-				<p v-if="applyInfo.roundIndex != '' ">
-					<img :src="require(`../../assets/icon/gemIcon_${getShowApplyType}.png`)" alt="" height="350px"/>
-				</p>
-			</div>
 		</div>
 		<div class="mgt-10">
-			<button class="btn-primary" style="margin:10px" @click="oprDialog('gem-apply-dialog', 'block')">宝石申购</button>
+			<div class="dib por">
+				<button class="btn-primary" style="margin:10px" @click="oprDialog('gem-apply-dialog', 'block')">{{$t("Gemstone_14")}}</button>
+				<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('gem-rule-dialog','block')">{{$t("Gemstone_02")}}>></p>
+			</div>
 			<button class="btn-primary por" style="margin:10px" @click="oprDialog('gem-take-dialog', 'block')">
 				<span class="notice" v-if="gemToTakeNum > 0"></span>
-				收集宝石
+				{{$t("Gemstone_15")}}
 			</button>
 		</div>
 		<div class="gemBag" @click="oprDialog('gemBag-dialog','block')">
 			<img  src="../../assets/icon/gem_bag_icon.png" alt="">
-			<p class="stroke" data-text="宝石背包">宝石背包</p>
+			<p class="stroke" :data-text="$t('Gemstone_16')">{{$t("Gemstone_16")}}</p>
 		</div>
 	</div>
 	<!-- 记录 -->
-	<table class="mgt-30 small table-his" border="0" frame="void" rules="none" >
+	<table class="mgt-50 small table-his" border="0" frame="void" rules="none" >
 		<tr>
 			<th width="30%" class="tar">
 				<span class="dib tac" style="width: 120px">
@@ -55,20 +61,20 @@
 				</span>
 			</th>
 			<th width="20%">{{ $t("BOX_26") }}</th>
-			<th width="10%">{{ $t("BOX_13") }}</th>
+			<th width="10%">{{ $t("Gemstone_29") }}</th>
 			<th width="20%">{{ $t("BOX_27") }}</th>
 			<th width="40%" class="tal">TX</th>
 		</tr>
 		<tr v-for="item in getHistory" :key="item.tx">
 			<td class="tar tac-xs">{{ dateFtt("yyyy-MM-dd hh:mm:ss" , new Date(item.crtime * 1000)) }}</td>
 			<td>
-				<span v-if="Number(item.ticketStartNo) > 1e6">普通申购</span>
-				<span v-else>算力申购</span>
+				<span v-if="Number(item.ticketStartNo) > 1e6">{{$t("Gemstone_27")}}</span>
+				<span v-else>{{$t("Gemstone_28")}}</span>
 			</td>
 			<td>x{{ item.amountGem }}</td>
 			<td class="vertical-children">
-				<span v-if="item.isOver==false" style="color:#49c773">等待开奖</span>
-				<span v-else>开奖结束</span>
+				<span v-if="item.isOver==false" style="color:#49c773">{{$t("Gemstone_30")}}</span>
+				<span v-else>{{$t("Gemstone_31")}}</span>
 			</td>
 			<td class="tal">
 				<img  @click="getApplyDetial(item)" src="../../assets/icon/view.png" alt="" class="cur-point" />&nbsp;
@@ -94,15 +100,15 @@
 			</div>
 		</div>
 		<div class="mgt-20">
-			<StatuButton  style="width:60%" :onClick="takeGem" :isDisable="getTakeArr.length == 0" :isLoading="lockBtn.takeGemLock > 0">领取</StatuButton>
+			<StatuButton  style="width:60%" :onClick="takeGem" :isDisable="getTakeArr.length == 0" :isLoading="lockBtn.takeGemLock > 0">{{$t("Gemstone_10")}}</StatuButton>
 		</div>
 	</Dialog>
 	<Dialog id="gem-num-result-dialig" :top="100" :width="350">
-		<h3>查看申购情况</h3>
+		<h3>{{$t("Gemstone_17")}}</h3>
 		<div class="tab-body mgt-10">
 			<div class="aveage-box tab-content " style="padding:8px">
-				<p class="tal opa-6">号码</p>
-				<p class="tar opa-6">结果</p>
+				<p class="tal opa-6">{{$t("Gemstone_18")}}</p>
+				<p class="tar opa-6">{{$t("Gemstone_19")}}</p>
 			</div>
 			<div v-for="item in getRecordNoArr" :key="item.number">
 				<div class="tab-split"></div>
@@ -110,15 +116,19 @@
 					<p class="tal">{{item.number}}</p>
 					<p class="tar" v-if="historyDitail.isOver==true">
 						<span v-if="item.isWins"><img :src="require(`@/assets/icon/${item.type}_icon.png`)" alt=""  height="30"></span>
-						<span class="color-danger" v-else>未中奖</span>
+						<span class="color-danger" v-else>{{$t("Gemstone_20")}}</span>
 					</p>
 					<p v-else-if="historyDitail.isOver == '-'" class="tar">
 						<Loading />
 					</p>
-					<p v-else class="tar">等待开奖</p>
+					<p v-else class="tar">{{$t("Gemstone_30")}}</p>
 				</div>
 			</div>
 		</div>
+	</Dialog>
+	<Dialog id="gem-rule-dialog" :top="100" :width="520">
+		<h2>{{$t("Gemstone_02")}}</h2>
+		<p v-html="$t('Gemstone_03')" class="tal mgt-20"></p>
 	</Dialog>
 </div>
 </template>

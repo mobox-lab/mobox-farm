@@ -52,7 +52,7 @@
 						<span class="per-icon vertical-children">
 							<img src="./assets/icon/yellow_icon.png" alt="" width="25" />
 						</span>
-						<span>宝石申购</span>
+						<span>{{$t("Gemstone_01")}}</span>
 					</li>
 				</router-link>
 				<router-link to="/openbox">
@@ -163,6 +163,14 @@
 							<img src="./assets/icon/home.png" alt="" height="30" />
 						</p>
 						<span>{{ $t("Menu_01") }}</span>
+					</li>
+				</router-link>
+				<router-link to="/gemBuy">
+					<li :class="this.$route.path == '/gemBuy' ? 'active' : ''">
+						<span class="per-icon vertical-children">
+							<img src="./assets/icon/yellow_icon.png" alt="" width="40" />
+						</span>
+						<span>{{$t("Gemstone_01")}}</span>
 					</li>
 				</router-link>
 				<router-link to="/openbox">
@@ -676,7 +684,9 @@ export default {
 	/* padding:5px 10px;
 	border-radius: 5px; */
 /* } */
-/* #nav-list-mobile{
+
+/* 滚动菜单 */
+#nav-list-mobile{
 	position: fixed;
 	bottom:0px;
 	left: 0px;
@@ -703,7 +713,7 @@ export default {
 #nav-list-mobile ul li{
 	text-align: center;
 	height: 50px;
-	width: 60px;
+	width: 66px;
 	vertical-align: top;
 	display: inline-flex;
 	justify-content: center;
@@ -725,8 +735,10 @@ export default {
 	zoom: 0.8;
 	white-space:normal;
 	height: 30px;
-} */
+}
 
+/* 固定6个菜单 */
+/* 
 #nav-list-mobile ul{
 	list-style: none;
 	display: flex;
@@ -767,7 +779,7 @@ export default {
 #nav-list-mobile ul li.active{
 	background: #1D2B50;
 	border-radius: 10px;
-}
+} */
 
 @media (max-width: 768px) {
 	#nav-list-mobile{

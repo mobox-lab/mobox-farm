@@ -32,10 +32,10 @@
 		<!-- 宝石相关功能 -->
 		<div v-if="getNowPetItem.vType >= 4 && !isMarket && getNowPetItem.location=='stake'">
 			<h3 class="mgt-10" >{{$t("MOMO_40")}}</h3>
-			<!-- <p class="mgt-10 small opa-6">
+			<p class="mgt-10 small opa-6">
 				{{$t("Common_05")}}
-			</p> -->
-			<div class="ly-input-content mgt-10">
+			</p>
+			<!-- <div class="ly-input-content mgt-10">
 				<div class="aveage-box tac mgt-10">
 					<div  v-for="item in ['red', 'green','blue','yellow']" :key="item"  class="tac">
 						<div class="gem-item opa-6" style="max-width:80px">
@@ -53,7 +53,7 @@
 						<p class="stroke" data-text="宝石背包">宝石背包</p>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 
 		<!-- 升级记录 -->
@@ -275,6 +275,12 @@ export default {
 		//取消质押
 		async unStakeNftConfirm(){
 			this.oprDialog('unstake-confirm-dialog', 'none');
+			//判断是否参与了高级申购
+			let hasHighApply = await Wallet.ETH.hasHighApply();
+			if(!hasHighApply){
+				this.showNotify(this.$t("Gemstone_38"), "error");
+				return;
+			}
 			let { prototype, tokenId, vType, num } = this.getNowPetItem;
 			let erc1155ids = [];
 			let erc1155Num = [];

@@ -39,7 +39,7 @@
 		</div>
 
 		<div style="margin-top: 30px" v-if="Math.ceil(marketPetsMy.total / onePageCount) > 1">
-			<Page :defaultPage="marketMySellPage" :totalPage="Math.ceil(marketPetsMy.total / onePageCount)" :onChange="onPageChange" v-if="Math.ceil(marketPetsMy.total / onePageCount) > 1" />
+			<Page ref="page" :defaultPage="marketMySellPage" :totalPage="Math.ceil(marketPetsMy.total / onePageCount)" :onChange="onPageChange" v-show="Math.ceil(marketPetsMy.total / onePageCount) > 1" />
 		</div>
 	</div>
 </template>
@@ -200,7 +200,9 @@ export default {
 		},
 		onPageChange(page){
 			this.$store.commit("marketState/setData", {marketMySellPage: page});
-			this.hackReloadMethod();
+			this.$nextTick(()=>{
+				this.$refs.page.initPage();
+			})
 		},
 		onSelectQualityChange(pos) {
 			this.$store.commit("marketState/myMarketSellFilter", {

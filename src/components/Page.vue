@@ -42,8 +42,8 @@ export default {
 		},
 	},
 	watch: {
-		nowPage: function (newVal) {
-			if (newVal > this.totalPage || newVal == "" || isNaN(Number(newVal))) return;
+		nowPage: function (newVal, oldVal) {
+			if (newVal > this.totalPage || newVal == "" || isNaN(Number(newVal)) || newVal == oldVal) return;
 			if (typeof this.onChange == "function") this.onChange(this.nowPage);
 		},
 	},
@@ -68,6 +68,9 @@ export default {
 					break;
 			}
 		},
+		initPage(){
+			this.nowPage = this.defaultPage;
+		}
 	},
 };
 </script>

@@ -1,4 +1,17 @@
 export default class Contract {
+	//判断是否申购了
+	static isHighApplying = {
+		type: "function",
+		name: 'isHighApplying',
+		inputs: [{
+			type: 'address',
+			name: 'owner_'
+		}],
+		outputs: [{
+			type: 'bool',
+			name: 'hasApply'
+		}],
+	}
 	//领取冻结MBOX
 	static claimfrozenMbox = {
 		type: "function",

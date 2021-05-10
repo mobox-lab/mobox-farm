@@ -32,17 +32,21 @@
 		<!-- 宝石相关功能 -->
 		<div v-if="getNowPetItem.vType >= 4 && !isMarket && getNowPetItem.location=='stake'">
 			<h3 class="mgt-10" >{{$t("MOMO_40")}}</h3>
-			<!-- <p class="mgt-10 small opa-6">
-				{{$t("Common_05")}}
-			</p> -->
 			<div class="ly-input-content mgt-10">
 				<div class="aveage-box tac mgt-10">
 					<div  v-for="item in ['red', 'green','blue','yellow']" :key="item"  class="tac">
-						<div class="gem-item opa-6" style="max-width:80px">
-							<img :src="require(`@/assets/gem/${item}_6.png`)" alt="" width="100%">
+						<div class="gem-item por" style="max-width:80px" @click="oprDialog('gemBag-dialog','block')">
+							<img :class="{'opa-3': item=='red'}" :src="require(`@/assets/gem/${item}_1.png`)" alt="" width="100%">
+							<svg v-if="item=='red' " style="position:absolute;right:3px;top:3px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+								<path  fill="#E1FF17" d="M867.7 423.8H599.8V155.9c0-49.3-40-89.3-89.3-89.3s-89.3 40-89.3 89.3v267.9H153.3c-49.3 0-89.3 40-89.3 89.3s40 89.3 89.3 89.3h267.9v267.9c0 49.3 40 89.3 89.3 89.3s89.3-40 89.3-89.3V602.4h267.9c49.3 0 89.3-40 89.3-89.3s-40-89.3-89.3-89.3z" ></path>
+							</svg>
+							<svg v-else style="position:absolute;right:3px;top:3px;transform: rotate(270deg);"  viewBox="0 0 1024 1024" width="15" height="15"  >
+								<path fill="#E1FF17" d="M583.586909 555.473455a62.091636 62.091636 0 0 0 0-86.94691L151.970909 30.138182a60.113455 60.113455 0 0 0-85.783273 0 62.045091 62.045091 0 0 0 0 86.946909L454.981818 512 66.210909 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.043636 60.043636 0 0 0 85.783273 0l431.592727-438.388363zM440.459636 117.061818L829.160727 512 440.413091 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.090182 60.090182 0 0 0 85.806545 0l431.569455-438.388363a62.091636 62.091636 0 0 0 0-86.94691L526.196364 30.138182a60.136727 60.136727 0 0 0-85.806546 0 62.045091 62.045091 0 0 0 0.023273 86.923636z"></path>
+							</svg >
+							<Loading style="position:absolute;left:3px;top:3px;" :width="20" :height="20"  />
 						</div>
 						<div class="tac mgt-10">
-							<button class="btn-primary btn-small" style="width:100%;max-width:80px" >移除</button>
+							<StatuButton :isLoading="true" class="btn-small" style="width:100%;max-width:80px">移除</StatuButton>
 						</div>
 					</div>
 				</div>
@@ -165,13 +169,13 @@
 <script>
 import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
-import { Loading, Dialog } from '@/components';
+import { Loading, Dialog, StatuButton } from '@/components';
 import { WalletConfig } from "@/config";
 import { mapState } from 'vuex';
 
 let timer = null;
 export default {
-	components: {Loading, Dialog},
+	components: {Loading, Dialog, StatuButton},
 	mixins: [CommonMethod],
 	data() {
 		return {

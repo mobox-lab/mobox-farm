@@ -215,7 +215,9 @@ svg {
 .opa-6 {
 	opacity: 0.6;
 }
-
+.opa-3 {
+	opacity: 0.3;
+}
 
 .mgt-5 {
 	margin-top: 5px;

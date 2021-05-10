@@ -903,6 +903,7 @@ export default {
 }
 .mask.show{
 	display: block !important;
+	opacity: 0 !important;
 }
 #nav-btn {
 	position: absolute;

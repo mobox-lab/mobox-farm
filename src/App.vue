@@ -5,7 +5,7 @@
 <style src="./assets/anime/v6b/gka.css"></style>
 <template>
 	<div id="app">
-		<div class="mask" @click="navOpr('hide')"></div>
+		<div class="mask" :class="{'show':showMoreMenu}" @click="showMoreMenu=false;navOpr('hide')"></div>
 		<!-- ipad导航 -->
 		<div id="mobile-nav" class="hide">
 			<img src="./assets/logo.png" height="30" alt="" />
@@ -99,8 +99,6 @@
 						<span>{{ $t("Rank_05") }}</span>
 					</li>
 				</router-link>
-				
-
 				<!-- <router-link to="/rule">
 					<li :class="this.$route.path == '/rule' ? 'active' : ''">
 						<span class="per-icon vertical-children">
@@ -160,15 +158,15 @@
 				<router-link to="/">
 					<li :class="this.$route.path == '/' ? 'active' : ''">
 						<p class="per-icon vertical-children">
-							<img src="./assets/icon/home.png" alt="" height="30" />
+							<img src="./assets/icon/home.png" alt="" height="28" />
 						</p>
-						<span>{{ $t("Menu_01") }}</span>
+						<span  class="mgt-5">{{ $t("Menu_01") }}</span>
 					</li>
 				</router-link>
 				<router-link to="/gemBuy">
 					<li :class="this.$route.path == '/gemBuy' ? 'active' : ''">
 						<span class="per-icon vertical-children">
-							<img src="./assets/icon/yellow_icon.png" alt="" width="40" />
+							<img src="./assets/icon/yellow_icon.png" alt="" width="60" />
 						</span>
 						<span>{{$t("Gemstone_01")}}</span>
 					</li>
@@ -176,17 +174,17 @@
 				<router-link to="/openbox">
 					<li :class="this.$route.path == '/openbox' ? 'active' : ''">
 						<p class="per-icon vertical-children">
-							<img src="./assets/icon/box.png" alt="" height="30" />
+							<img src="./assets/icon/box.png" alt="" width="40" />
 						</p>
-						<span>{{ $t("Menu_02") }}</span>
+						<span  class="mgt-5">{{ $t("Menu_02") }}</span>
 					</li>
 				</router-link>
 				<router-link to="/mypet">
 					<li :class="this.$route.path == '/mypet' ? 'active' : ''">
 						<p class="per-icon vertical-children">
-							<img src="./assets/icon/mypet.png" alt="" height="30" />
+							<img src="./assets/icon/mypet.png" alt="" height="32" />
 						</p>
-						<span>{{ $t("Menu_03") }}</span>
+						<span  class="mgt-5">{{ $t("Menu_03") }}</span>
 					</li>
 				</router-link>
 				<router-link to="/collection">
@@ -194,11 +192,22 @@
 						<p class="per-icon vertical-children">
 							<img src="./assets/icon/airdrop.png" alt="" height="30" />
 						</p>
-						<span>{{ $t("Menu_04") }}</span>
+						<span  class="mgt-5">{{ $t("Menu_04") }}</span>
 					</li>
 				</router-link>
 
-				<router-link to="/market">
+				<a href="javascript:void(0)"> 
+					<li @click="showMoreMenu = !showMoreMenu">
+						<svg t="1620618592541" style="fill: #fff"  class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9809" width="30" height="30"><path d="M506 531.42c-11.27 0-22.53-2.02-33.25-6.05l-1.24-0.47-361.09-174.95c-14.36-6.11-23.71-19.92-23.97-35.65-0.26-15.68 8.57-29.77 22.65-36.38L468.49 85.65l1.31-0.54c23-9.55 49.39-9.55 72.39 0l1.31 0.54 1.25 0.67 358.14 191.6c14.08 6.61 22.91 20.7 22.65 36.38-0.26 15.73-9.61 29.54-23.97 35.65L540.49 524.91l-1.24 0.47a94.446 94.446 0 0 1-33.25 6.04z m-11.76-59.95c7.63 2.6 15.89 2.6 23.52 0l327.43-158.65-326.36-174.59c-8.22-3.09-17.45-3.09-25.67 0l-326.35 174.6 327.43 158.64z" p-id="9810"></path>
+							<path d="M506 733.28c-11.27 0-22.53-2.02-33.25-6.05l-1.48-0.56-364.88-184.83c-14.29-7.24-20-24.69-12.77-38.97 7.24-14.29 24.69-20 38.97-12.77l361.86 183.3c7.5 2.51 15.6 2.51 23.1 0L879.4 490.1c14.29-7.24 31.74-1.52 38.97 12.77 7.24 14.29 1.52 31.74-12.77 38.97L540.73 726.67l-1.48 0.56a94.457 94.457 0 0 1-33.25 6.05z" p-id="9811"></path>
+							<path d="M506 946.11c-11.27 0-22.53-2.02-33.25-6.05l-1.48-0.56-364.88-184.83c-14.29-7.24-20-24.69-12.77-38.97s24.69-20 38.97-12.77l361.85 183.29c7.5 2.51 15.6 2.51 23.1 0L879.4 702.93c14.29-7.24 31.74-1.52 38.97 12.77 7.24 14.29 1.52 31.74-12.77 38.97L540.73 939.5l-1.48 0.56a94.457 94.457 0 0 1-33.25 6.05z" p-id="9812"></path>
+						</svg>
+						<span class="mgt-5">{{$t("Common_29")}}</span>
+					</li>
+				</a>
+				
+
+				<!-- <router-link to="/market">
 					<li :class="this.$route.path == '/market' ? 'active' : ''">
 						<p class="per-icon vertical-children">
 							<section class="por dib">
@@ -208,16 +217,16 @@
 						</p>
 						<span>{{ $t("Menu_05") }}</span>
 					</li>
-				</router-link>
+				</router-link> -->
 			
-				<router-link to="/rank">
+				<!-- <router-link to="/rank">
 					<li :class="this.$route.path == '/rank' ? 'active' : ''">
 						<p class="per-icon vertical-children">
 							<img src="./assets/icon/rank.png" alt="" height="25" />
 						</p>
 						<span>{{ $t("Rank_05") }}</span>
 					</li>
-				</router-link>
+				</router-link> -->
 
 				<!-- <router-link to="/rule">
 					<li :class="this.$route.path == '/rule' ? 'active' : ''">
@@ -228,6 +237,27 @@
 					</li>
 				</router-link> -->
 			</ul>
+		</div>
+		<div  id="nav-mobile-more" v-if="showMoreMenu">
+			<router-link to="/market">
+				<div :class="this.$route.path == '/market' ? 'active' : ''">
+					<p class="per-icon vertical-children">
+						<section class="por dib">
+							<span class="notice" v-if="historyNotice"></span>
+							<img src="./assets/icon/market.png" alt="" height="30" />
+						</section>
+					</p>
+					<span>{{ $t("Menu_05") }}</span>
+				</div>
+			</router-link>
+			<router-link to="/rank" >
+				<div :class="this.$route.path == '/rank' ? 'active' : ''" class="mgt-10">
+					<p class="per-icon vertical-children">
+						<img src="./assets/icon/rank.png" alt="" height="25" />
+					</p>
+					<span>{{ $t("Rank_05") }}</span>
+				</div>
+			</router-link>
 		</div>
 		<router-view />
 		<Notification />
@@ -424,7 +454,15 @@ export default {
 				},
 			powerTab: "v4",
 			hasReadNotice: false,
+			showMoreMenu: false,
 		};
+	},
+	watch: {
+		$route(to, from){
+			if(to.path != from.path){
+				this.showMoreMenu = false;
+			}
+		}
 	},
 	computed: {
 		...mapState({
@@ -686,7 +724,7 @@ export default {
 /* } */
 
 /* 滚动菜单 */
-#nav-list-mobile{
+/* #nav-list-mobile{
 	position: fixed;
 	bottom:0px;
 	left: 0px;
@@ -735,10 +773,10 @@ export default {
 	zoom: 0.8;
 	white-space:normal;
 	height: 30px;
-}
+} */
 
 /* 固定6个菜单 */
-/* 
+
 #nav-list-mobile ul{
 	list-style: none;
 	display: flex;
@@ -771,6 +809,7 @@ export default {
 	flex-direction: column;
 	justify-content: flex-end;
 	padding-bottom: 5px;
+	align-items: center;
 }
 #nav-list-mobile span{
 	zoom: 0.5;
@@ -779,7 +818,36 @@ export default {
 #nav-list-mobile ul li.active{
 	background: #1D2B50;
 	border-radius: 10px;
-} */
+} 
+
+#nav-mobile-more{
+	position: fixed;
+	bottom: 75px;
+	right: 5px;
+	background: #37537c;
+	width: 60px;
+	text-align: center;
+	padding: 5px;
+	border-radius: 10px;
+	z-index: 9999;
+}
+
+#nav-mobile-more div{
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
+	height: 50px;
+}
+
+#nav-mobile-more .active{
+	background: #1D2B50;
+	border-radius: 10px;
+}
+
+#nav-mobile-more span{
+	zoom: 0.6;
+	font-size: 14px;
+}
 
 @media (max-width: 768px) {
 	#nav-list-mobile{
@@ -832,6 +900,9 @@ export default {
 	width: 100%;
 	z-index: 999;
 	display: none;
+}
+.mask.show{
+	display: block !important;
 }
 #nav-btn {
 	position: absolute;

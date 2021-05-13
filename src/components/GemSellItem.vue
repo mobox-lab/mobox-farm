@@ -1,19 +1,18 @@
 <template>
-<div class="pet_item por " >
+<div class="pet_item por pet_hover_lv1" :class="'pet_hover_lv3' ">
 	<div ref="container" class="swiper-container dib " :id="data.item.tx">
 		<div class="swiper-wrapper">
-			<div class="swiper-slide por" v-for="item in getShowList" :key="item.id">
-
-				<div class="pet_img">
-					<img  :src="require(`@/assets/market/${item.imgName}.png`)" alt="" height="80%" />
+			<div class="swiper-slide " v-for="item in getShowList" :key="item.id">
+				<div class="pet-lv vertical-children">
+					<img :src="require(`../assets/icon/${item.chain.toLocaleLowerCase()}.png`)" alt="" width="15" />&nbsp;
+					<span class="mgl-5">Lv. {{ item.level }}</span>
 				</div>
 
-				<h2 style="position: absolute;  top: 15px; right: 20px;" class="bold2">x{{ item.num }}</h2>
-				<h2 class="pet-lv bold2" v-if="Number(item.imgName) > 100">Lv. {{ item.level }}</h2>
+				<img class="pet_img" :src="require(`@/assets/gem/${item.imgName}.png`)" alt="" width="170" height="170" />
 
-				<div style="position: absolute;  top: 15px; left: 20px;" v-if="item.erc1155_ != 1 && item.currency == 3">
-					<div class="vertical-children pet_num small bold2"  >
-						<span>{{$t('Market_39')}}: {{ numFloor(item.price / item.num /1e9, 1e6) }} <span class="opa-6">{{getCurrencyName(item.currency)}}</span></span>
+				<div style="position: absolute; width: 100%; bottom: 80px; left: 0px">
+					<div class="vertical-children pet_num"  >
+						x{{ item.num }}
 					</div>
 				</div>
 			</div>
@@ -40,18 +39,14 @@ export default {
 	},
 	computed: {
 		getShowList(){
-			let {ids, amounts,price, currency, erc1155_} = this.data.item;
+			let {ids, amounts} = this.data.item;
 			let arr = [];
 			ids.map((id, index)=>{
 				let obj = {};
 				obj.num = amounts[index];
 				obj.level = Number(id) % 100;
-				//erc1155_=4为水晶，但是id跟box重复了都是1，所以这里特殊处理一下
-				obj.imgName = erc1155_ == 4? erc1155_ : id;
+				obj.imgName = id;
 				obj.chain = "bnb";
-				obj.price = price;
-				obj.currency = currency;
-				obj.erc1155_ = erc1155_;
 				arr.push(obj);
 			});
 
@@ -60,9 +55,7 @@ export default {
 			});
 			return arr;
 		},
-		showCoin(){
-			return this.marketTypePos == 4 ? "BUSD": "MBOX"
-		}
+
 	},
 	async mounted(){
 		let that = this;
@@ -110,7 +103,7 @@ export default {
   }
 .swiper-slide{
 	border-radius: 20px;
-	padding: 5px;
+	padding: 15px;
 }
 .swiper-container{
 	width: 100%;
@@ -122,14 +115,11 @@ export default {
 }
 .slot{
 	position: absolute;
-	bottom: 15px;
+	bottom: 20px;
 	z-index: 9999;
 	text-align: center;
 	width: 100%;
 	height: 25px;
-	left: 0px;
-	padding: 0px 10px;
-
 }
 .slot .mgt-10{
 	margin-top: 0px;
@@ -152,10 +142,10 @@ export default {
 	top: 15px;
 }
 .pet_item .pet-lv {
-	left: 20px;
+	line-height: 11px;
+	left: 15px;
 	top: 15px;
 	position: absolute;
-	font-size: 16px;
 }
 .pet-bottom .pet-name {
 	display: inline-block;
@@ -180,28 +170,28 @@ export default {
 	margin-left: 20px;
 	margin-top: 20px;
 	cursor: pointer;
-	padding: 5px;
+	padding: 15px;
 	user-select: none;
 	color: #c9c9c9;
 	height: 250px;
 	transition: all 0.3s linear;
-	background: #1c222c;
-	border-radius: 16px;
 }
 
 .pet_item .pet_img {
 	vertical-align: middle;
 	user-select: none;
 	position: relative;
-	height: 190px;
-	background: #00000031;
-	border-radius: 12px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding-top: 20px;
+	top: -15px;
 }
 
+.pet_num {
+	display: inline-block;
+	border-radius: 30px;
+	padding: 2px 15px;
+	font-size: 12px;
+	background: rgba(0, 0, 0, 0.3);
+	text-align: center;
+}
 
 .gka {
 	width: 51px;

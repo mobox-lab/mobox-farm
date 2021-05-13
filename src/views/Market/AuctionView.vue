@@ -101,7 +101,7 @@
 										</button>
 									</div>
 									<div class="mgt-10">
-										<button data-step="2" :class="(coinArr['BUSD'].allowanceToAuction > 0 && lockBtn.buyMomoLock <= 0 )?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="buyPet">
+										<button data-step="2" :class="(coinArr['BUSD'].allowanceToAuction > 0 && lockBtn.buyMomoLock <= 0 )?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="oprDialog('confirm-buy-dialog','block')">
 											<Loading class="btn-loading" v-if="lockBtn.buyMomoLock > 0" />
 											{{$t("Market_22")}}
 										</button>
@@ -163,6 +163,14 @@
 			</button>
 		</Dialog>
 
+		<Dialog id="confirm-buy-dialog"  :top="200" :width="350">
+			<h4 class="mgt-30" v-html="$t('Market_59').replace('#0#', `<span style='color: #49c773'>${sellObj.startPrice} BUSD</span>` )"></h4>
+			<div class="mgt-50">
+				<button class="btn-primary" @click="oprDialog('confirm-buy-dialog', 'none');">{{$t("Common_04")}}</button>
+				<button class="btn-primary mgl-5" @click="oprDialog('confirm-buy-dialog', 'none');buyPet()">{{$t("Common_03")}}</button>
+			</div>
+		</Dialog>
+
 	</div>
 </template>
 <script>
@@ -171,6 +179,7 @@ import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
 import {  Wallet, EventBus, Common } from '@/utils';
 import { WalletConfig, EventConfig, BaseConfig, PancakeConfig } from '@/config';
+import BigNumber from "bignumber.js";
 
 
 let updatePriceTimer = null;
@@ -187,7 +196,6 @@ export default {
 				endPrice: "",
 				durationDays: 2,
 			},
-			getNowPetItem: JSON.parse(this.$route.params.petInfo),
 			nowPrice : 0,
 			getWidth: "0%",
 			tradeHistory: [],
@@ -201,7 +209,24 @@ export default {
 			tempMarketCancelTx: (state) => state.marketState.data.tempMarketCancelTx,
 			coinArr: (state) => state.bnbState.data.coinArr,
 			lockBtn: (state) => state.globalState.data.lockBtn,
+			marketPets: (state) => state.marketState.data.marketPets,
+			marketPetsMy: (state) => state.marketState.data.marketPetsMy,
 		}),
+		getNowPetItem(){
+			let petObj;
+			let tx = this.$route.params.petInfo;
+			[...this.marketPets.list, ...this.marketPetsMy.list].map(item=>{
+				if(item.tx == tx){
+					petObj = item;
+				}
+			});
+			if(petObj == undefined){
+				this.$router.replace("/market");
+				return;
+			}
+			petObj.oldTime = petObj.uptime;
+			return petObj;
+		},
 		//是否设置过名字
 		hasSetName() {
 			return this.getNowPetItem.tokenName.indexOf("Name_") == -1;
@@ -309,8 +334,8 @@ export default {
 			if(data){
 				let {durationDays, endPrice, startPrice, startTime} = data;
 				this.getNowPetItem.durationDays =  durationDays;
-				this.getNowPetItem.endPrice =  endPrice / 1e9;
-				this.getNowPetItem.startPrice =  startPrice / 1e9;
+				this.getNowPetItem.endPrice =  Number(BigNumber(endPrice).div(1e9));
+				this.getNowPetItem.startPrice =  Number(BigNumber(startPrice).div(1e9));
 				this.getNowPetItem.uptime =  startTime;
 
 				this.setChangePriceData();
@@ -367,16 +392,15 @@ export default {
 		async buyPet(){
 			let coinKey = "BUSD"
 			if(this.coinArr[coinKey].allowanceToAuction <= 0 || this.lockBtn.buyMomoLock > 0) return
-			if(this.nowPrice/1e9 > Number(this.coinArr[coinKey].balance)){
-				this.showNotify(this.$t("Market_34"), "error");
-				return ;
-			}
+			// if(this.nowPrice/1e9 > Number(this.coinArr[coinKey].balance)){
+			// 	this.showNotify(this.$t("Market_34"), "error");
+			// 	return ;
+			// }
 
 			let data = await this.getPetInfo();
-			let {auctor, index} = this.getNowPetItem;
-			let {uptime} = JSON.parse(this.$route.params.petInfo);
+			let {auctor, index, oldTime} = this.getNowPetItem;
 
-			if(data.status != 3 || data.startTime != uptime){
+			if(data.status != 3 || data.startTime != oldTime){
 				this.showNotify(this.$t("Market_35"), "error");
 				this.$router.replace("/market");
 				return;

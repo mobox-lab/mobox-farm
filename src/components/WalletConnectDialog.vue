@@ -84,7 +84,7 @@ export default {
 				if(type != undefined){
 					this.connectWallet(type);
 				}
-			}, 500);
+			}, 1000);
 		}else{
 			if(type != undefined){
 				this.connectWallet(type);
@@ -221,12 +221,8 @@ export default {
 						}
 					break;
 				case "mboxWallet":
-					console.log("------",window.mbox);
 						if(window.mbox){
-							console.log("-BinanceChain-----",window.mbox.BinanceChain);
-							console.log("-enable-----",window.mbox.BinanceChain.enable);
 							let wallets = await window.mbox.BinanceChain.enable();
-							console.log("---123---",wallets);
 							if(wallets && wallets[0]){
 								account =  wallets[0];
 								chainNetwork = 56;

@@ -31,8 +31,8 @@
 				<Dropdown :list="$parent.getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="$parent.onCoinChange" />&nbsp;
 			</div>
 		</div>
-		<div :class="marketPets.list.length < 6 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
-			<router-link :to="'/auctionView/'+ JSON.stringify(item)"  v-for="item in marketPets.list" :key="item.tx + item.index">
+		<div :class="marketPets.list.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
+			<router-link :to="'/auctionView/'+ item.tx"  v-for="item in marketPets.list" :key="item.tx + item.index">
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
@@ -80,6 +80,7 @@ export default {
 			marketPage: (state) => state.marketState.data.marketPage,
 			marketSearch: (state) => state.marketState.data.marketSearch,
 			momoNameObjs: (state) => state.marketState.data.momoNameObjs,
+			momoGemsObjs: (state) => state.marketState.data.momoGemsObjs,
 			marketLoading: (state) => state.marketState.data.marketLoading,
 			historyNotice: (state) => state.marketState.data.historyNotice,
 		}),
@@ -161,14 +162,17 @@ export default {
 			let data = await Http.getAuctionList("BNB", page, 15, this.marketSearch);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let needGetNameArr = [];
+			let needGetGemArr = [];
 			data.list.map(item=>{
 				if( item.tokenId != 0){
 					let {tokenName} = BaseConfig.NftCfg[item.prototype];
 					item.tokenName = tokenName;
+					item.gems = [0,0,0,0];
 					item.vType = parseInt(item.prototype/1e4);
 					if(item.specialty == 1 || item.specialty == 3){
 						needGetNameArr.push(item.tokenId);
 					}
+					needGetGemArr.push(Number(item.tokenId));
 				}
 				//计算当前价格
 				let endTime = Number(item.uptime) + item.durationDays * 86400;
@@ -182,8 +186,9 @@ export default {
 			});
 			this.$store.commit("marketState/setData", {marketPets:data});
 			
-			this.$nextTick(()=>{
-				this.getMomoName(needGetNameArr);
+			this.$nextTick(async ()=>{
+				await this.getMomoGem(needGetGemArr);
+				await this.getMomoName(needGetNameArr);
 			})
 		},
 		async getMomoName(needGetNameArr){
@@ -207,6 +212,29 @@ export default {
 				item.tokenName = this.momoNameObjs[item.tokenId] || item.tokenName;
 			});
 			this.$store.commit("marketState/setData", {marketPets: this.marketPets, momoNameObjs : this.momoNameObjs});
+		},
+		async getMomoGem(needGetGemArr){
+			let fitterArr = [];
+			//去除重复的名字
+			needGetGemArr.map(item=>{
+				if(!Object.prototype.hasOwnProperty.call(this.momoGemsObjs, item)){
+					fitterArr.push(item);
+				}
+			});
+
+			if(fitterArr.length != 0){
+				let gems = await Wallet.ETH.getBatchInlayInfo(fitterArr);
+				if(gems){
+					fitterArr.map((item, index)=>{
+						this.momoGemsObjs[item] = [...gems[index]];
+					});
+				}
+			}
+
+			this.marketPets.list.map(item=>{
+				item.gems = this.momoGemsObjs[item.tokenId] || [0,0,0,0];
+			});
+			this.$store.commit("marketState/setData", {marketPets: this.marketPets, momoGemsObjs : this.momoGemsObjs});
 		},
 		onPageChange(page){
 			if(page == this.marketPage) return;

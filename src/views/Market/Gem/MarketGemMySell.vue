@@ -1,70 +1,28 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
+			<span>{{$t("Market_33")}}: {{ marketGemMy.total }}</span>&nbsp;
 			<div id="market-pet-fitter">
-				<div class="dib por mgl-10 cur-point"  @click="oprDialog('shop-history-gem-dialog', 'block')" >
+				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
-					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
+					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-				<!-- 宝石 -->
-				<div class="dib por mgl-10 filter" v-if="marketTypePos == 2">
-					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
-					<div class="filter-panel hide " ref="filter">
-						<div >
-							<h5>Types</h5>
-							<div @click="onSelectTypeChange(pos)" class="filter-select-item" :class="{'active': pos == myGemMarketSellFilter.type}" v-for="(item, pos) in $parent.gemType" :key="item">
-								{{item}}
-							</div>
-						</div>
-						<div class="mgt-20">
-							<h5>Levels</h5>
-							<div @click="onSelectLevelChange(pos)" class="filter-select-item" :class="{'active': pos == myGemMarketSellFilter.level}" v-for="(item, pos) in $parent.gemLv" :key="item">
-								{{item}}
-							</div>
-						</div>
-						<div class="mgt-30 tac" @click="toggleFilter($refs.filter)">
-							<button class="btn-primary" style="width:80%">{{$t("Common_03")}}</button>
-						</div>
-					</div>
-				</div>
+				<Dropdown :list="$parent.gemType" :defaultSelectPos="myGemMarketSellFilter.type" :onChange="onSelectTypeChange" />&nbsp;
+				<Dropdown :list="$parent.gemLv" :defaultSelectPos="myGemMarketSellFilter.level" :onChange="onSelectLevelChange" />&nbsp;
 			</div>
-
-			<div class="vertical-children  dib">
-				<span>{{$t("Market_33")}}({{ marketGemMy.total }})</span>
-				<div class="dib filter-show-group" v-if="marketTypePos == 2">
-					<div class="filter-show-item" v-if="myGemMarketSellFilter.type != 0" >
-						<span class="filter-close" @click="onSelectTypeChange(0)">&times;</span>
-						<span class="mgl-10">{{$parent.gemType[myGemMarketSellFilter.type]}}</span>
-					</div>
-					<div class="filter-show-item" v-if="myGemMarketSellFilter.level != 0" >
-						<span class="filter-close" @click="onSelectLevelChange(0)">&times;</span>
-						<span class="mgl-10">{{$parent.gemLv[myGemMarketSellFilter.level]}}</span>
-					</div>
-				</div>
-			</div>
-
 		</div>
 		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children">
-			<div class="no-show" v-if="getShowList.length == 0">
-				<img src="@/assets/no_items.png" alt="">
-				<p class="opa-6 mgt-10">No items to display</p>
-			</div>
 			<router-link :to=" item.orderId >= 0 ? ('/auctionGemView/'+ item.tx):'###'" :class="item.orderId >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime">
 				<GemSellItem  :key="item.orderId" :data="{item: item}">
-					<template v-if="item.currency == 2">
-						<div class="vertical-children mgt-10" style="font-size: 18px" v-if="item.orderId >= 0">
-							<img :src="require(`@/assets/coin/${getShowCoin(item)}.png`)" alt="" height="20"/>&nbsp;
-							<span>{{numFloor(item.price/1e9, 10000)}} <sub class="small">{{getShowCoin(item)}}</sub></span>
-						</div>
-						<div class="vertical-children mgt-10" v-else style="font-size: 18px;">
-							<Loading/> &nbsp;
-							<small v-if="item.orderId == -1">{{$t("Market_30")}}...</small>
-							<small v-if="item.orderId == -2">{{$t("Market_31")}}...</small>
-						</div>
-					</template>
-					<span v-else class="color-buy ">
-						{{$t("Market_76")}}
-					</span>
+					<div class="vertical-children mgt-10" style="font-size: 18px" v-if="item.orderId >= 0">
+						<img src="@/assets/coin/MBOX.png" alt="" height="20"/>&nbsp;
+						<span>{{numFloor(item.price/1e9, 10000)}} <sub class="small">MBOX</sub></span>
+					</div>
+					<div class="vertical-children mgt-10" v-else style="font-size: 18px;">
+						<Loading/> &nbsp;
+						<small v-if="item.orderId == -1">{{$t("Market_30")}}...</small>
+						<small v-if="item.orderId == -2">{{$t("Market_31")}}...</small>
+					</div>
 				</GemSellItem>
 			</router-link>
 		</div>
@@ -76,14 +34,16 @@
 </template>
 
 <script>
-import { Page, GemSellItem, Loading } from '@/components';
+import { Page, GemSellItem, Dropdown, Loading } from '@/components';
 import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
 import { mapState } from "vuex";
 
+let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {   GemSellItem, Page, Loading},
+	// components: {  Page, Dropdown},
+	components: {   GemSellItem, Dropdown, Page, Loading},
 	data(){
 		return({
 			onePageCount: 15,
@@ -93,16 +53,12 @@ export default {
 	},
 	computed: {
 		...mapState({
-			marketTabPos: (state) => state.marketState.data.marketTabPos,
 			marketGemMy: (state) => state.marketState.data.marketGemMy,
 			myGemMarketSellFilter: (state) => state.marketState.data.myGemMarketSellFilter,
-			marketGemFilter: (state) => state.marketState.data.marketGemFilter,
 			tempGemSells: (state) => state.marketState.data.tempGemSells,
 			tempGemMarketCancelTx: (state) => state.marketState.data.tempGemMarketCancelTx,
 			marketGemMySellPage: (state) => state.marketState.data.marketGemMySellPage,
 			historyNotice: (state) => state.marketState.data.historyNotice,
-			marketTypePos: (state) => state.marketState.data.marketTypePos,
-			nowTs: (state) => state.globalState.data.nowTs,
 		}),
 		getSellList() {
 			let totalPet = [];
@@ -130,16 +86,12 @@ export default {
 			this.tempGemMarketCancelTx.map(item=>cancelTx.push(item.tx));
 			list.map(item=>{
 				if(cancelTx.indexOf(item.tx) != -1) item.orderId = -2;
-			});
-			let temSell = this.tempGemSells.filter(item=>{
-				return item.erc1155_ == this.marketGemFilter
-			});
-
-			return   [...temSell,...list].slice(
+			})
+			return   [...this.tempGemSells,...list].slice(
 				this.onePageCount * (this.marketGemMySellPage - 1),
 				this.onePageCount * this.marketGemMySellPage
 			);
-		},
+		}
 	},
 	async created(){
 		this.myAccount = await Wallet.ETH.getAccount();
@@ -147,21 +99,15 @@ export default {
 			this.hasLoad = true;
 			this.getAuctionPetsMy(true);
 		}
+		timer = setInterval(()=>{
+			this.getAuctionPetsMy();
+		}, 5000);
 	},
-
-	watch: {
-		nowTs: function(val){
-			if(val % 5 == 0){
-				if(this.myAccount == "") return;
-				this.getAuctionPetsMy();
-			}
-		},
+	
+	beforeDestroy(){
+		if(timer) clearInterval(timer);
 	},
-
 	methods: {
-		getShowCoin(item){
-			return item.currency == 1?"MBOX": "USDT";
-		},
 		//获取市场上的宠物
 		async getAuctionPetsMy(needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
@@ -173,7 +119,6 @@ export default {
 
 			data.list.map(item=>{
 				hashArr.push(item.tx);
-				item.erc1155_ = item.type;
 			});
 
 			//删除临时出售的数据
@@ -185,7 +130,7 @@ export default {
 
 			//删除临时下架的数据
 			this.tempGemMarketCancelTx.map((item, index)=>{
-				if(hashArr.indexOf(item.tx) == -1 && item.currency == this.marketGemFilter){
+				if(hashArr.indexOf(item.tx) == -1){
 					this.tempGemMarketCancelTx.splice(index, 1);
 				}
 			})
@@ -202,16 +147,14 @@ export default {
 			})
 		},
 		onSelectLevelChange(pos) {
-			this.$store.commit("marketState/setFilter", {
-				filterName:"myGemMarketSellFilter",
+			this.$store.commit("marketState/myGemMarketSellFilter", {
 				type: "level",
 				value: pos,
 			});
 			this.onPageChange(1);
 		},
 		onSelectTypeChange(pos) {
-			this.$store.commit("marketState/setFilter", {
-				filterName:"myGemMarketSellFilter",
+			this.$store.commit("marketState/myGemMarketSellFilter", {
 				type: "type",
 				value: pos,
 			});
@@ -222,7 +165,12 @@ export default {
 </script>
 
 <style scoped>
-
+	#shop-history {
+		margin-right: 15px;
+		cursor: pointer;
+		position: relative;
+		user-select: none;
+	}
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;

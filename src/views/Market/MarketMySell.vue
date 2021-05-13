@@ -11,8 +11,8 @@
 				<Dropdown :list="$parent.selectVType" :defaultSelectPos="myMarketSellFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
 			</div>
 		</div>
-		<div :class="getShowList.length < 6 ? 'tal' : ''"  class="mgt-20 vertical-children">
-			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ JSON.stringify(item)):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime">
+		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children">
+			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ item.tx):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime">
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
 						<img src="../../assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
@@ -70,6 +70,7 @@ export default {
 			tempMarketCancelTx: (state) => state.marketState.data.tempMarketCancelTx,
 			marketMySellPage: (state) => state.marketState.data.marketMySellPage,
 			momoNameObjs: (state) => state.marketState.data.momoNameObjs,
+			momoGemsObjs: (state) => state.marketState.data.momoGemsObjs,
 			myMarketSellFilter: (state) => state.marketState.data.myMarketSellFilter,
 			historyNotice: (state) => state.marketState.data.historyNotice,
 		}),
@@ -132,15 +133,18 @@ export default {
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let hashArr = [];
 			let needGetNameArr = [];
+			let needGetGemArr = [];
 
 			data.list.map(item=>{
 				if( item.tokenId != 0){
 					let {tokenName} = BaseConfig.NftCfg[item.prototype];
 					item.tokenName = tokenName;
 					item.vType = parseInt(item.prototype/1e4);
+					item.gems = [0,0,0,0];
 					if(item.specialty == 1 || item.specialty == 3){
 						needGetNameArr.push(item.tokenId);
 					}
+					needGetGemArr.push(Number(item.tokenId));
 				}
 				//计算当前价格
 				let endTime = Number(item.uptime) + item.durationDays * 86400;
@@ -172,8 +176,9 @@ export default {
 			// return ;
 			this.$store.commit("marketState/setData", {tempSells: this.tempSells, marketPetsMy:data, tempMarketCancelTx: this.tempMarketCancelTx});
 
-			this.$nextTick(()=>{
-				this.getMomoName(needGetNameArr);
+			this.$nextTick(async ()=>{
+				await this.getMomoName(needGetNameArr);
+				await this.getMomoGem(needGetGemArr);
 			})
 		},
 		async getMomoName(needGetNameArr){
@@ -197,6 +202,29 @@ export default {
 				item.tokenName = this.momoNameObjs[item.tokenId] || item.tokenName;
 			});
 			this.$store.commit("marketState/setData", {marketPetsMy: this.marketPetsMy, momoNameObjs : this.momoNameObjs});
+		},
+		async getMomoGem(needGetGemArr){
+			let fitterArr = [];
+			//去除重复的名字
+			needGetGemArr.map(item=>{
+				if(!Object.prototype.hasOwnProperty.call(this.momoGemsObjs, item)){
+					fitterArr.push(item);
+				}
+			});
+
+			if(fitterArr.length != 0){
+				let gems = await Wallet.ETH.getBatchInlayInfo(fitterArr);
+				if(gems){
+					fitterArr.map((item, index)=>{
+						this.momoGemsObjs[item] = [...gems[index]];
+					});
+				}
+			}
+
+			this.marketPetsMy.list.map(item=>{
+				item.gems = this.momoGemsObjs[item.tokenId] || [0,0,0,0];
+			});
+			this.$store.commit("marketState/setData", {marketPetsMy: this.marketPetsMy, momoGemsObjs : this.momoGemsObjs});
 		},
 		onPageChange(page){
 			this.$store.commit("marketState/setData", {marketMySellPage: page});

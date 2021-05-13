@@ -3,15 +3,15 @@
 	<Dialog id="gemBag-dialog" :top="100" :width="450">
 		<ul class="gem-tab">
 			<li v-for="item in gemType" :key="item" :class="['border_'+item, {active: item == selectGemType}]" class="tab-menu" @click="selectGemLv=1;needCompNum=1;selectGemType = item">
-				<img :src="require(`@/assets/gem/${item}_1.png`)" alt=""  height="100%">
+				<img :src="require(`@/assets/gem/${item+1}.png`)" alt=""  height="100%">
 			</li>
 		</ul>
 		<div class="ly-input-content por">
 			<div class="aveage-box" v-for="item in [0, 4, 8]" :key="item">
 				<div v-for="item2 in [1,2,3, 4]" :key="item + item2" style="padding:5px" >
-					<div v-if="item + item2 <= 9" class="gem-item gem-border" :class="[{active: selectGemLv == item+item2},  'border_'+selectGemType, {'opa-6': gemBag[selectGemType+(item + item2)] <= 0}]" @click="selectGemLv = item+item2">
-						<img :src="require(`@/assets/gem/${selectGemType}_${item + item2}.png`)" alt=""  width="100%">
-						<span class="gem-num stroke bold">{{gemBag[selectGemType+(item + item2)]}}</span>
+					<div v-if="item + item2 <= 9" class="gem-item gem-border" :class="[{active: selectGemLv == item+item2},  'border_'+selectGemType, {'opa-6': gemBag[Number(selectGemType)+item + item2] <= 0}]" @click="selectGemLv = item+item2">
+						<img :src="require(`@/assets/gem/${Number(selectGemType)+item + item2}.png`)" alt=""  width="100%">
+						<span class="gem-num stroke bold">{{gemBag[Number(selectGemType)+item + item2]}}</span>
 					</div>
 				</div>	
 			</div>
@@ -23,7 +23,7 @@
 			<div class="mgt-20 aveage-box" >
 				<div class="tar">
 					<div class="gem-item dib" style=" width:70px;height:70px">
-						<img :src="require(`@/assets/gem/${selectGemType}_${selectGemLv}.png`)" alt="" width="100%">
+						<img :src="require(`@/assets/gem/${Number(selectGemType)+selectGemLv}.png`)" alt="" width="100%">
 						<span class="gem-num stroke bold">{{getCompObj.consumeNum}}/3</span>
 					</div>
 				</div>
@@ -63,9 +63,8 @@ export default {
 	data(){
 		return({
 			selectGemLv: 1,
-			gemType: ['red', 'green', 'blue', 'yellow'],
-			gemTypeToNum:{"red": 100,"green": 200,"blue": 300,"yellow": 400,},
-			selectGemType: "red",
+			gemType: [100,200,300,400],
+			selectGemType: 100,
 			needCompNum: 1,
 			hasApprove: -1,
 		})
@@ -88,12 +87,14 @@ export default {
 				consumeNum: 0,
 				maxComp: 0,
 			}
-			retObj.consumeNum = this.gemBag[this.selectGemType+(this.selectGemLv)] || 0;
+			let gemId = Number(this.selectGemType)+Number(this.selectGemLv);
+			retObj.consumeNum = this.gemBag[gemId] || 0;
 			retObj.maxComp = parseInt(retObj.consumeNum / 3);
 			return retObj;
 		}
 	},
-	created(){
+	async created(){
+		await Wallet.ETH.getAccount();
 		this.isApprove();
 	},
 	methods:{
@@ -115,7 +116,7 @@ export default {
 			}
 		},
 		async compGem(){
-			let gemId = this.gemTypeToNum[this.selectGemType] + this.selectGemLv;
+			let gemId = Number(this.selectGemType) + Number(this.selectGemLv);
 			let hash = await Wallet.ETH.gemLevelUp(gemId, this.needCompNum * 3);
 			if(hash){
 				this.lockBtnMethod("compGemLock");

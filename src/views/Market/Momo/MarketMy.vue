@@ -16,7 +16,7 @@
 			</div>
 		</div>
 
-		<div :class="myNFT_stake.length < 6 ? 'tal' : ''" >
+		<div :class="myNFT_stake.length < 4 ? 'tal' : ''" >
 			<div class="clear mgt-20">
 				<PetItem  v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()" v-bind:data="{item: item}" class="market" >
 					<div style="height:43px;position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
@@ -391,7 +391,7 @@ export default {
 					uptime: parseInt(new Date().valueOf()/1000),
 					index: -1,
 					tx: hash,
-					chain: "eth"
+					chain: "bnb"
 				}
 
 				if(sellType == "721"){

@@ -33,6 +33,9 @@ const state = () => ({
 			applyGemLock:0,//申购宝石锁
 			takeGemLock:0,//领取宝石锁
 			takeMboxLock:0,//领取多余Mbox锁
+			wearGemLock: 0,//穿戴宝石锁
+			takeOffGemLock: 0,//移除宝石锁
+			upgradeGemWearLock: 0,//穿戴升级锁
 		},
 		walletStatus: {
 			status: 1, //1,等待中，2，reject，3，success

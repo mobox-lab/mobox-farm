@@ -11,12 +11,12 @@
 			</div>
 		</section>
 		<section id="airdrop-cont" class="por">
-			<!-- <a id="recheck" href="https://www.certik.org/projects/mobox" style="position:absolute;right:0px;top: -70px" target="_blank">
-				<img src="../../assets/icon/check-icon.png" alt="" height="60" />
-			</a> -->
-			<a id="recheck" href="https://github.com/moboxio/CertiK-Audit/blob/main/CertiK%20Security%20Assessment%20for%20MOBOX.pdf" style="position:absolute;right:0px;top: -70px" target="_blank">
+			<a id="recheck" href="https://www.certik.org/projects/mobox" style="position:absolute;right:0px;top: -70px" target="_blank">
 				<img src="../../assets/icon/check-icon.png" alt="" height="60" />
 			</a>
+			<!-- <a id="recheck" href="https://github.com/moboxio/CertiK-Audit/blob/main/CertiK%20Security%20Assessment%20for%20MOBOX.pdf" style="position:absolute;right:0px;top: -70px" target="_blank">
+				<img src="../../assets/icon/check-icon.png" alt="" height="60" />
+			</a> -->
 			<div id="only-show-my" style="position:absolute;left:10px;top:10px" class="vertical-children">
 				<div class="ly-checkbox" style="background:#3e4b70" @click="$store.commit('bnbState/setData', {onlyShowPledge:!onlyShowPledge})" :class="onlyShowPledge?'active':'' ">
 					<svg class="hide"  viewBox="0 0 1024 1024" width="20" height="20"><path fill="#92FFDA" d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z" ></path></svg>

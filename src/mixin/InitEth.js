@@ -72,7 +72,12 @@ const InitEth = {
 					this.tempMarketCancelTx.splice(index, 1);
 				}
 			});
-			this.$store.commit("globalState/setData", {tempMarketCancelTx: this.tempMarketCancelTx});
+			this.tempGemMarketCancelTx.map((item, index)=>{
+				if(item.nextHash == hash){
+					this.tempGemMarketCancelTx.splice(index, 1);
+				}
+			});
+			this.$store.commit("globalState/setData", {tempMarketCancelTx: this.tempMarketCancelTx, tempGemMarketCancelTx: this.tempGemMarketCancelTx});
 		});
 		//上架失败
 		EventBus.$on(EventConfig.CreateAuctionError,  async ({hash}) => {
@@ -82,7 +87,13 @@ const InitEth = {
 					this.tempSells.splice(index, 1);
 				}
 			});
-			this.$store.commit("globalState/setData", {tempSells: this.tempSells});
+
+			this.tempGemSells.map((item,index)=>{
+				if(item.tx == hash){
+					this.tempGemSells.splice(index, 1);
+				}
+			});
+			this.$store.commit("globalState/setData", {tempSells: this.tempSells, tempGemSells: this.tempGemSells});
 		});
 		//HTTP请求错误
 		EventBus.$on(EventConfig.HttpError,  async () => {
@@ -542,7 +553,7 @@ const InitEth = {
 			}
 		},
 		//设置质押中我的NFT
-		async setMyNftByType(type) {
+		async setMyNftByType(type, needRemoveGem = true) {
 			//优先在Strorage里面取
 			let account = await Wallet.ETH.getAccount();
 			let key = "myNFT_" + type;
@@ -552,18 +563,21 @@ const InitEth = {
 			let saveObj = {};
 			saveObj[key] = JSON.parse(ntfStorage);
 			if (ntfStorage != null) {
+				//先清空宝石的显示
+				if(needRemoveGem){
+					saveObj[key].map(item=>{
+						item.gems = [0,0,0,0];
+					})
+				}
 				this.$store.commit("ethState/setData", saveObj);
 			}
 			let nftObj = await Wallet.ETH.getMomosByType(type);
 			if (nftObj != null) {
 				saveObj[key] = nftObj;
-				this.$store.commit("ethState/setData", saveObj);
-				Common.setStorageItem(
-					storageKey,
-					JSON.stringify(nftObj)
-				);
 				//设置名字
 				await this.setName(nftObj);
+				//设置宝石
+				await this.setGem(nftObj);
 				this.$store.commit("ethState/setData", saveObj);
 				Common.setStorageItem(
 					storageKey,
@@ -593,6 +607,36 @@ const InitEth = {
 					item.tokenName = names[tokenPos];
 				}
 			});
+		},
+		async setGem(nftArr){
+			let needGetGemArr = [];
+			nftArr.map(({vType, tokenId})=>{
+				if(vType >= 4){
+					needGetGemArr.push(Number(tokenId));
+				}
+			});
+			let gems = await Wallet.ETH.getBatchInlayInfo(needGetGemArr);
+
+			nftArr.map((item) => {
+				let gemPos = needGetGemArr.indexOf(Number(item.tokenId));
+				if (gemPos != -1) {
+					item.gems = [...gems[gemPos]];
+					// item.gems[0] = "101"
+					// item.gems[1] = "105"
+					// item.gems[2] = "108"
+					// item.gems[3] = "109"
+				}
+			});
+		},
+
+		//临时移除掉宝石
+		removeStakeGem(momoId, pos){
+			this.myNFT_stake.map(item=>{
+				if(item.tokenId == momoId){
+					item.gems[pos] = 0;
+				}
+			});
+			this.$store.commit("ethState/setData", {myNFT_stake: this.myNFT_stake});
 		}
 	}
 }

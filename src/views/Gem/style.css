@@ -28,17 +28,17 @@
 	    position: relative;
 	    user-select: none;
     }
-    .gem-border.active.border_red{
+    .gem-border.active.border_100{
 	    border: 2px solid #FB4001;
-    }
-    .gem-border.active.border_yellow{
-	    border: 2px solid #F9CB50;
-    }
-    .gem-border.active.border_blue{
+	}
+	.gem-border.active.border_200{
+		border: 2px solid #99FB4D;
+	}
+    .gem-border.active.border_300{
 	    border: 2px solid #2D73F8;
     }
-    .gem-border.active.border_green{
-	    border: 2px solid #99FB4D;
+    .gem-border.active.border_400{
+	    border: 2px solid #F9CB50;
     }
     .gem-num{
 	    position: absolute;right: 5px;bottom: 2px;

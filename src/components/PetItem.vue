@@ -6,11 +6,13 @@
 		</div>
 
 		<div class="jewel" v-if="data.item.vType >= 4">
-			<div v-for="item in 4" :key="item">
-				<img src="../assets/icon/jewelbg.png" alt="" title="jewel"/>
+			<div v-for="(item, index) in [100,200,300,400 ]" :key="JSON.stringify(item.gems)" class="gem-item-little">
+				<img v-if="data.item.gems == undefined || data.item.gems[index] == 0" :src="require(`../assets/gem/${item+1}.png`)" class="opa-3 gray" alt="" title="jewel"/>
+				<img v-else :src="require(`../assets/gem/${data.item.gems[index]}.png`)" alt="">
 			</div>
 		</div>
 
+		<!-- 抽卡特效 -->
 		<div v-if="data.item.isOpenCard">
 			<div id="light-shadow" ref="lightShadow" v-if="data.item.vType >= 4"></div>
 			<div id="light-border-show" class="v5b" v-if="data.item.vType == 5"></div>
@@ -67,14 +69,7 @@ export default {
 	},
 
 	async mounted() {
-		await Common.sleep(Common.getRandomNum(200, 1000));
-		if (this.$refs.anime && this.data.item.location == "stake") {
-			this.$refs.anime.classList.add("animation-harmer");
-		}
 
-		// console.log(lottie);
-
-		// setTimeout(()=>{
 		if(this.data.item.vType >= 4 && this.data.item.isOpenCard){
 			lottie.loadAnimation({
 				container: this.$refs.lightShadow, // the dom element that will contain the animation
@@ -85,9 +80,10 @@ export default {
 			});
 		}
 
-		// }, 3000)
-
-		// if
+		await Common.sleep(Common.getRandomNum(200, 1000));
+		if (this.$refs.anime && this.data.item.location == "stake") {
+			this.$refs.anime.classList.add("animation-harmer");
+		}
 
 		
 	},
@@ -95,6 +91,21 @@ export default {
 </script>
 
 <style  scoped>
+.gem-item-little{
+	width: 30px;
+	height: 30px;
+	position: relative;
+	background: rgba(0, 0, 0, 0.493);
+	border-radius: 5px;
+	margin-top: 5px;
+}
+.gem-item-little img{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+}
 #light-border-show{
 	position: absolute;
 	left:50%;

@@ -1,14 +1,34 @@
 <template>
 	<div id="market">
-		<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempSells.length + tempMarketCancelTx.length]"  />
-		<MarketAll v-show="marketTabPos == 0" />
-		<MarketMy v-show="marketTabPos == 1" />
-		<MarketMySell v-if="marketTabPos == 2" />
-		<MarketStatistics v-if="marketTabPos == 3" />
+		<section id="market-type">
+			<div class="market-type-list-item vertical-children " :class="{active: marketTypePos == 0}" @click="$store.commit('marketState/setData', {marketTypePos: 0})">
+				<img src="../../assets/icon/momo_icon.png" alt="" height="30">&nbsp;
+				<span>MOMO</span>
+			</div>
+			<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 1}" @click="$store.commit('marketState/setData', {marketTypePos: 1})">
+				<img src="../../assets/icon/yellow_icon.png" alt="" height="30">&nbsp;
+				<span>{{$t("Gemstone_44")}}</span>
+			</div>
+		</section>
+		<div class="mgt-10" v-if="marketTypePos==0">
+			<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempSells.length + tempMarketCancelTx.length]"  />
+			<MarketAll v-show="marketTabPos == 0" />
+			<MarketMy v-show="marketTabPos == 1" />
+			<MarketMySell v-if="marketTabPos == 2" />
+			<MarketStatistics v-if="marketTabPos == 3" />
+		</div>
+		<div v-else class="mgt-10">
+			<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempGemSells.length + tempGemMarketCancelTx.length]"  />
+			<MarketGemAll v-show="marketTabPos == 0" />
+			<MarketGemMy v-show="marketTabPos == 1" />
+			<MarketGemMySell v-if="marketTabPos == 2" />
+			<MarketGemStatistics v-if="marketTabPos == 3" />
+		</div>
+
 		<div class="loading" v-show="marketLoading">
 			<Loading :width="30" :height="30"  />
 		</div>
-
+		<!-- momo的交易记录 -->
 		<Dialog id="shop-history-dialog" :top="100" :width="650" :animation="viewHistory">
 			<h2>{{$t("Market_24")}}</h2>
 			<div class="mgt-10" style="background:#000912;border-radius:10px;padding:8px;">
@@ -19,7 +39,7 @@
 					<div class="tar" >{{$t("Market_17")}}</div>
 				</div>
 				<div style="por mgt-10 tal"  >
-					<div class="aveage-box mgt-10 por tal" v-for="item in marketHistory.list" :key="item.tx" style="background:#1D2B50;border-radius:15px;padding:10px 8px ;">
+					<div class="aveage-box mgt-10 por tal" v-for="(item, index) in marketHistory.list" :key="item.tx+index" style="background:#1D2B50;border-radius:15px;padding:10px 8px ;">
 						<div class="shop-history-pet" style="flex:2">
 							<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px" class="dib">
 								<PetItemMin :data="item2" style="zoom: 0.6" />
@@ -33,47 +53,36 @@
 						</div>
 					</div>
 				</div>
-				<!-- <div class="history-item mgt-10 close" v-for="item in marketHistory.list" :key="item.tx" @click="toggleClass($event)">
-					<div class="row tal opa-6">
-						<div class="col-md-3 col-xs-4 ">MOMO</div>
-						<div class="col-md-3 col-xs-4 tac ">{{$t("Market_25")}}</div>
-						<div class="col-md-3 col-xs-4 tac">{{$t("Market_26")}}</div>
-						<div class="col-md-3 col-xs-4 tar">{{$t("Market_17")}}</div>
-					</div>
-					<div class="row tal cur-point por" style="background:#2E3F6B;border-radius:10px;padding:5px;padding-bottom:12px">
-						<table >
-							<tr style="color:#fff">
-								<td>
-									<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px">
-										<PetItemMin :data="item2" style="zoom: 0.6" />
-									</span>
-								</td>
-								<td class="tac">{{shorAddress(item.bidder)}}</td>
-								<td class="tac">{{shorAddress(item.auctor)}}</td>
-								<td class="tar" :class="item.isBuy?'color-buy':'color-sell'">
-									{{item.isBuy?"-":"+"}}{{numFloor((item.bidPrice / 1e9) * (item.isBuy?1:0.95), 10000)}} BUSD
-									<p style="color:#6481b0;zoom:0.8;" >{{dateFtt('yyyy-MM-dd hh:mm:ss', new Date(item.crtime * 1000))}}</p></td>
-							</tr>
-						</table>
-						<div class="arrow-down hide">
-							<svg viewBox="0 0 1024 1024" width="8" height="8"><path fill="#6481b0" d="M461.7 790.9c26.2 28 70 29.3 98 3.2 1.1-1.1 2.2-2.1 3.2-3.2L992 340.2c13.5-14.4 21-33.4 20.9-53.2 1-40.5-31-74-71.5-75.1-19 0.3-37.1 8.2-50.1 22L511.8 631.5 133.2 233.9c-13.1-13.9-31.5-21.9-50.7-22C42 213 10 246.5 11 287c-0.1 19.8 7.4 38.8 20.9 53.2l429.8 450.7z" p-id="3922"></path></svg>
+			</div>
+		</Dialog>
+		<!-- 宝石的交易记录 -->
+		<Dialog id="shop-history-gem-dialog" :top="100" :width="650" :animation="viewGemHistory">
+			<h2>{{$t("Market_24")}}</h2>
+			<div class="mgt-10" style="background:#000912;border-radius:10px;padding:8px;">
+				<div class="aveage-box opa-6 small tal" style="padding: 0px 8px">
+					<div class="hide-xs" style="flex:2">{{$t("Gemstone_44")}}</div>
+					<div>{{$t("Market_25")}}</div>
+					<div>{{$t("Market_26")}}</div>
+					<div class="tar" >{{$t("Market_17")}}</div>
+				</div>
+				<div style="por mgt-10 tal"  >
+					<div class="aveage-box mgt-10 por tal" v-for="(item, index) in marketGemHistory.list" :key="item.tx+index" style="background:#1D2B50;border-radius:15px;padding:10px 8px ;">
+						<div class="shop-history-pet" style="flex:2">
+							<span v-for="(item2, index) in item.ids" :key="item2+index" style="margin:0px 2px" class="por">
+								<template v-if="item2 > 0">
+									<img  :src="require(`@/assets/gem/${item2}.png`)" alt="" height="50">
+									<span style="position:absolute;bottom:0px;width:80%;left:10%;background:rgba(0,0,0,0.5);border-radius:5px;zoom:0.8" class="tac small">x{{item.amounts[index]}}</span>
+								</template>
+							</span>
+						</div>
+						<div class="opa-6 small addr">{{shorAddress(item.bidder)}}</div>
+						<div class="opa-6 small addr">{{shorAddress(item.auctor)}}</div>
+						<div class="tar small" :class="item.isBuy?'color-buy':'color-sell'">
+							{{item.isBuy?"-":"+"}}{{numFloor((item.price / 1e9) * (item.isBuy?1:0.95), 10000)}} MBOX
+							<p style="color:#6481b0;zoom:0.8;" >{{dateFtt('yyyy-MM-dd hh:mm:ss', new Date(item.crtime * 1000))}}</p>
 						</div>
 					</div>
-					<div class="col-md-12 mgt-10" style="zoom: 0.6" @click="$event.stopPropagation()">
-						<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
-						<div class="vertical-children mgt-10" style="font-size: 18px">
-							<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-							<span>{{numFloor(item.bidPrice/1e9, 100)}}</span>
-						</div>
-						</PetItem>
-						<PetItemScroll v-bind:data="{item: item}" class="market" v-if="item.tokenId == 0 && hackReload">
-							<div class="vertical-children mgt-10" style="font-size: 18px">
-								<img src="../../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-								<span>{{numFloor(item.bidPrice/1e9, 100)}}</span>
-							</div>
-						</PetItemScroll>
-					</div>
-				</div> -->
+				</div>
 			</div>
 		</Dialog>
 	</div>
@@ -82,9 +91,13 @@
 <script>
 import {  Tab, Dialog, Loading, PetItemMin } from "@/components";
 import MarketAll from './MarketAll.vue'
+import MarketGemAll from './Gem/MarketGemAll.vue'
 import MarketMy from './MarketMy.vue'
+import MarketGemMy from './Gem/MarketGemMy.vue'
 import MarketMySell from './MarketMySell.vue'
+import MarketGemMySell from './Gem/MarketGemMySell.vue'
 import MarketStatistics from './MarketStatistics.vue'
+import MarketGemStatistics from './Gem/MarketGemStatistics.vue'
 import { mapState } from "vuex";
 import { BaseConfig, PancakeConfig } from '@/config';
 import {Http, Wallet, Common} from "@/utils";
@@ -93,7 +106,7 @@ import { CommonMethod } from "@/mixin";
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { Tab, MarketAll, MarketMy, MarketMySell , Dialog , Loading, MarketStatistics, PetItemMin},
+	components: { Tab, MarketAll, MarketGemAll, MarketMy, MarketGemMy, MarketMySell , MarketGemMySell,  Dialog , Loading, MarketStatistics, MarketGemStatistics, PetItemMin},
 	data() {
 		return {
 			tabList: [this.$t('Market_01'), this.$t("Market_02"), this.$t("Market_03"), this.$t("Market_53")],
@@ -115,6 +128,8 @@ export default {
 				this.$t("MOMO_13"),
 				this.$t("MOMO_14"),
 			],
+			gemType:[this.$t("MOMO_02"),this.$t("Gemstone_45"), this.$t("Gemstone_46"), this.$t("Gemstone_47"),this.$t("Gemstone_48"),],
+			gemLv:[this.$t("Gemstone_49"), "Lv.1", "Lv.2", "Lv.3","Lv.4","Lv.5","Lv.6","Lv.7","Lv.8","Lv.9"],
 			myAccount: "",
 			hackReload: true,
 		};
@@ -125,8 +140,13 @@ export default {
 			marketLoading: (state) => state.marketState.data.marketLoading,
 			tempSells: (state) => state.marketState.data.tempSells,
 			tempMarketCancelTx: (state) => state.marketState.data.tempMarketCancelTx,
+			tempGemSells: (state) => state.marketState.data.tempGemSells,
+			tempGemMarketCancelTx: (state) => state.marketState.data.tempGemMarketCancelTx,
 			marketHistory: (state) => state.marketState.data.marketHistory,
+			marketGemHistory: (state) => state.marketState.data.marketGemHistory,
 			historyNotice: (state) => state.marketState.data.historyNotice,
+			historyGemNotice: (state) => state.marketState.data.historyGemNotice,
+			marketTypePos: (state) => state.marketState.data.marketTypePos,
 			coinArr: (state) => state.bnbState.data.coinArr,
 			useCoinPos: (state) => state.bnbState.data.useCoinPos,
 		}),
@@ -143,10 +163,12 @@ export default {
 	async created(){
 		this.myAccount = await Wallet.ETH.getAccount();
 
-		this.getMyAuctionHistory();
+		await this.getMyAuctionHistory();
+		await this.getMyGemAuctionHistory()
 		if(timer) clearInterval(timer);
-		timer = setInterval(()=>{
-			this.getMyAuctionHistory();
+		timer = setInterval(async ()=>{
+			await this.getMyAuctionHistory();
+			await this.getMyGemAuctionHistory();
 		}, 10000)
 
 		this.getCoinValue();
@@ -174,6 +196,9 @@ export default {
 		viewHistory(){
 			this.$store.commit("marketState/setData", { historyNotice: false});
 		},
+		viewGemHistory(){
+			this.$store.commit("marketState/setData", { historyGemNotice: false});
+		},
 		//获取交易记录
 		async getMyAuctionHistory(){
 			if(this.myAccount == "") return;
@@ -193,19 +218,21 @@ export default {
 						let {ids, amounts, bidPrice} = item;
 						ids.map((prototype, index)=>{
 							let obj = BaseConfig.NftCfg[prototype];
-							petList.push({
-								...obj,
-								bidPrice,
-								prototype,
-								level: 1,
-								num: amounts[index],
-								chain: "bnb",
-								tokenId: 1,
-								hashrate: obj.quality,
-								lvHashrate: obj.quality,
-								vType: parseInt(prototype / 1e4),
-								quality: obj.quality,
-							});
+							if(obj){
+								petList.push({
+									...obj,
+									bidPrice,
+									prototype,
+									level: 1,
+									num: amounts[index],
+									chain: "bnb",
+									tokenId: 1,
+									hashrate: obj.quality,
+									lvHashrate: obj.quality,
+									vType: parseInt(prototype / 1e4),
+									quality: obj.quality,
+								});
+							}
 						});
 					}else{
 						//721
@@ -237,6 +264,22 @@ export default {
 				this.$store.commit("marketState/setData", {marketHistory: data, historyNotice});
 			}
 		},
+		//获取宝石交易记录
+		async getMyGemAuctionHistory(){
+			if(this.myAccount == "") return;
+			let data = await Http.getMyGemAuctionHistory(this.myAccount);
+			if(data){
+				data.list.map(item=>{
+					item.isBuy =  item.bidder.toLocaleLowerCase() == this.myAccount.toLocaleLowerCase();
+				});
+				data.uptime = new Date().valueOf();
+				let historyGemNotice = this.historyGemNotice;
+				if(!historyGemNotice){
+					historyGemNotice =  (data.total != this.marketGemHistory.total && this.marketGemHistory.uptime != 0);
+				}
+				this.$store.commit("marketState/setData", {marketGemHistory: data, historyGemNotice});
+			}
+		},
 		toggleClass(e){
 			e.currentTarget.classList.toggle("close");
 			this.hackReload = false;
@@ -261,6 +304,22 @@ export default {
 </script>
 
 <style >
+#market-type{
+	text-align: left;
+	border-bottom: 1px solid #39465e ;
+}
+.market-type-list-item{
+	display: inline-block;
+	height: 40px;
+	margin-right: 10px;
+	min-width: 100px;
+	text-align: center;
+	cursor: pointer;
+	user-select: none;
+}
+.market-type-list-item.active{
+	border-bottom: 4px solid #93BBFF;
+}
 .loading{
 	position: absolute;
 	left: 0px;

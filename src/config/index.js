@@ -4,8 +4,8 @@ import EventConfig from '@/config/EventConfig';
 import WalletConfig from '@/config/WalletConfigBscTest';
 import StorageConfig from '@/config/StorageConfig';
 import ConstantConfig from '@/config/ConstantConfig';
-import PancakeConfig from '@/config/PancakeConfig';
-// import PancakeConfig from '@/config/PancakeConfigDev';
+// import PancakeConfig from '@/config/PancakeConfig';
+import PancakeConfig from '@/config/PancakeConfigDev';
 
 export {
 	BaseConfig,

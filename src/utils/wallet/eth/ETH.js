@@ -892,7 +892,8 @@ export default class ETH {
 				hashrate: quality,
 				lvHashrate: quality,
 				chain: "bnb",
-				location
+				location,
+				gems: [0,0,0,0]
 			});
 		});
 
@@ -917,6 +918,7 @@ export default class ETH {
 				chain: "bnb",
 				tokenName: BaseConfig.NftCfg[itemAttr[0]] ? BaseConfig.NftCfg[itemAttr[0]]["tokenName"] : "",
 				location,
+				gems: [0,0,0,0]
 			})
 		});
 
@@ -1566,10 +1568,10 @@ export default class ETH {
 		return new Promise(resolve => {
 			contract.methods.balanceOfOneBatch(myAddr, ids).call().then(data => {
 				let retObj = {};
-				let colorToNum = [0, "red", "green", "blue","yellow"];
+				// let colorToNum = [0, "red", "green", "blue","yellow"];
 				ids.map((id, pos)=>{
-					let colorId = colorToNum[parseInt(id / 100)] +(id % 100);
-					retObj[colorId] = data[pos];
+					// let colorId = colorToNum[parseInt(id / 100)] +"_"+(id % 100);
+					retObj[id] = data[pos];
 				})
 				resolve(retObj);
 			})
@@ -1706,5 +1708,305 @@ export default class ETH {
 			)
 		});
 	}
+
+	//穿戴宝石
+	static async wearGem({momoId_, gemId_, pos_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			Contract.takeOn,
+		], WalletConfig.ETH.momoGemOpr);
+
+		console.log({momoId_, gemId_, pos_});
+
+		return new Promise(resolve => {
+			this.sendMethod(contract.methods.takeOn(momoId_, gemId_, pos_), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					Common.app.unLockBtn("wearGemLock");
+					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE, false);
+					await Common.app.getGemBag();
+				}
+			)
+		});
+	}
+
+	//查看momo宝石穿戴情况
+	static async getInlayInfo(momoId_){
+		let contract = new this.web3.eth.Contract([
+			Contract.getInlayInfo,
+		], WalletConfig.ETH.momoGemOpr);
+
+		console.log("getInlayInfo", momoId_);
+
+		return new Promise(resolve => {
+			contract.methods.getInlayInfo(momoId_).call().then(data => {
+				resolve(data);
+			})
+		});
+	}
+
+	//查看多个momo宝石穿戴情况
+	static async getBatchInlayInfo(momoIds_){
+		let contract = new this.web3.eth.Contract([
+			Contract.getInlayInfoBatch,
+		], WalletConfig.ETH.momoGemOpr);
+
+		return new Promise(resolve => {
+			contract.methods.getInlayInfoBatch(momoIds_).call().then(data => {
+				resolve(data);
+			})
+		});
+	}
+
+	//脱下宝石
+	static async takeOffGem({momoId_, pos_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			Contract.takeOff,
+		], WalletConfig.ETH.momoGemOpr);
+
+		console.log("takeOffGem", {momoId_, pos_});
+
+		return new Promise(resolve => {
+			this.sendMethod(contract.methods.takeOff(momoId_, pos_), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					Common.app.unLockBtn("takeOffGemLock");
+					Common.app.removeStakeGem(momoId_, pos_);
+					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE, false);
+					await Common.app.getGemBag();
+				}
+			)
+		});
+	}
+
+	//快速升级
+	static async inlayQuickLvUp({momoId_, pos_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			Contract.inlayQuickLvUp,
+		], WalletConfig.ETH.momoGemOpr);
+
+		console.log("takeOffGem", {momoId_, pos_});
+
+		return new Promise(resolve => {
+			this.sendMethod(contract.methods.inlayQuickLvUp(momoId_, pos_), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					Common.app.unLockBtn("upgradeGemWearLock");
+					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE, false);
+					await Common.app.getGemBag();
+				}
+			)
+		});
+	}
+
+	//查询1155可上架位置
+	static async getGemSuggestIndex() {
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			Contract.getSuggestIndex,
+		], WalletConfig.ETH.common1155Auction);
+
+		return new Promise(resolve => {
+			contract.methods.getSuggestIndex(myAddr).call().then(_suggestIndex => {
+				resolve(_suggestIndex);
+			})
+		});
+	}
+
+	static async gemCreateAuction({price_, suggestIndex_,currency_, erc1155_ ,ids_,  amounts_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				type: "function",
+				name: 'createAuction',
+				inputs: [
+					{type: 'uint256',name: 'price_'},
+					{type: 'uint256',name: 'suggestIndex_'},
+					{type: 'uint256',name: 'currency_'},
+					{type: 'uint256',name: 'erc1155_'},
+					{type: 'uint256[]',name: 'ids_'},
+					{type: 'uint256[]',name: 'amounts_'},
+				],
+				outputs: [],
+			}
+		], WalletConfig.ETH.common1155Auction);
+
+		console.log(price_, suggestIndex_,currency_, erc1155_ ,ids_,  amounts_);
+		price_ = BigNumber(Common.numFloor(price_, 1e9)).times(BigNumber(1e18));
+
+		let saveHash;
+
+		return new Promise(resolve => {
+			this.sendMethod(contract.methods.createAuction(this.numToHex(price_), suggestIndex_,currency_, erc1155_ ,ids_,  amounts_), {from: myAddr},
+				hash=>{
+					resolve(hash);
+					saveHash = hash;
+				},
+				async ()=>{
+					console.log("gemCreateAuction success");
+				},
+				()=>{
+					EventBus.$emit(EventConfig.CreateAuctionError, {chain: "eth", hash: saveHash});
+				}
+			)
+		});
+
+	}
+
+	//获取 宝石市场上的订单信息
+	static async getGemMarketOrder(orderId_){
+		let contract = new this.web3.eth.Contract([
+			Contract.getGemMarketOrder,
+		], WalletConfig.ETH.common1155Auction);
+
+		return new Promise(resolve => {
+			contract.methods.getOrder(orderId_).call().then(data => {
+				resolve(data);
+			})
+		});
+	}
+
+	//取消上架
+	static async cancelGemAuction(orderId_){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "orderId_",
+						"type": "uint256"
+					}
+				],
+				"name": "cancelAuction",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		], WalletConfig.ETH.common1155Auction);
+
+		let saveHash;
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.cancelAuction(orderId_), {from: myAddr},
+				hash=>{
+					saveHash = hash;
+					resolve(hash);
+				},
+				()=>{
+					console.log("cancelAuction success!!!!!");
+				},
+				()=>{
+					console.log(saveHash);
+					EventBus.$emit(EventConfig.CancelAuctionError, {chain: "eth", hash: saveHash});
+				}
+			)
+		});
+	}
+
+	//修改价格
+	static async changeGemPrice({orderId_, price_, }, recipt){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"inputs": [
+					{
+					"internalType": "uint256",
+					"name": "orderId_",
+					"type": "uint256"
+					},
+					{
+					"internalType": "uint256",
+					"name": "price_",
+					"type": "uint256"
+					}
+				],
+				"name": "changePrice",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		], WalletConfig.ETH.common1155Auction);
+
+		price_ = BigNumber(Common.numFloor(price_, 1e9)).times(BigNumber(1e18));
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.changePrice(orderId_,this.numToHex(price_)), 
+				{from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					console.log("changePrice success!!!!!");
+					Common.app.unLockBtn("changePriceLock");
+					recipt();
+				}
+			)
+		});
+	}
+
+		//购买市场上的物品
+		static async buyGemMarketPet({auctor_, orderId_, coinKey, amount_}){
+			let myAddr = await this.getAccount();
+			if (!myAddr) return;
+	
+			let contract = new this.web3.eth.Contract([
+				{
+					"inputs": [
+						{
+						"internalType": "address",
+						"name": "auctor_",
+						"type": "address"
+						},
+						{
+						"internalType": "uint256",
+						"name": "orderId_",
+						"type": "uint256"
+						},
+						{
+						"internalType": "uint256",
+						"name": "amount_",
+						"type": "uint256"
+						}
+					],
+					"name": "bid",
+					"outputs": [],
+					"stateMutability": "nonpayable",
+					"type": "function"
+				}
+			], WalletConfig.ETH.common1155Auction);
+	
+			console.log("buyMarketPet",{auctor_, orderId_, amount_});
+	
+			return new Promise(resolve => {
+				this.sendMethod(
+					contract.methods.bid(auctor_, orderId_, amount_), {from: myAddr},
+					hash=>resolve(hash),
+					()=>{
+						console.log("buyGemMarketPet success!!!!!");
+						Common.app.setCoinValueByName(coinKey);
+						Common.app.getGemBag();
+					}
+				)
+			});
+		}
+
+
 
 }

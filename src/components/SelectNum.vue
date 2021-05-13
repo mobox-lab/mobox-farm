@@ -1,7 +1,7 @@
 <template>
 	<div class="dib yf-select-num vertical-children" :style="`transform: scale(${scale})`">
 		<img src="../assets/icon/reduce.png" :class="{'opa-6': getNowNum<=0}" v-if="getNowNum >= 1 || !needHideReduce" @click="reduce($event)" alt=""/>
-		<div class="dib" style="min-width:25px">
+		<div class="dib tac" style="min-width:25px">
 			<span class="color-w mgl-5" v-if="getNowNum >= 1 || !needHideReduce">{{ getNowNum }}</span>
 		</div>
 		<img src="../assets/icon/add.png" class="mgl-5" :class="{'opa-6': getNowNum >= maxNum}" @click="add($event)" alt="" />

@@ -169,7 +169,7 @@ export default {
 			//没有输入
 			if(Number(this.inputNum) <= 0) isCanApply = false;
 			//余额不足
-			if(this.getNeedPayMbox > this.coinArr["MBOX"].balance) isCanApply = false;
+			if(this.getNeedPayMbox > Number(this.coinArr["MBOX"].balance) + this.getCanUseTemMbox) isCanApply = false;
 
 			//高级申购已达到最大申购名额
 			if(this.dialog_tab_pos == 1 && Number(this.applyInfo.nowAmount) + Number(this.inputNum) >  Number(this.applyInfo.maxAmount)) isCanApply = false;

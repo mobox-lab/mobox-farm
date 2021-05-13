@@ -1,4 +1,120 @@
 export default class Contract {
+	//快速升级
+	static inlayQuickLvUp = {
+		type: "function",
+		name: 'inlayQuickLvUp',
+		inputs: [{
+			type: 'uint256',
+			name: 'momoId_'
+		},{
+			type: 'uint256',
+			name: 'pos_'
+		}],
+		outputs: [],
+	}
+	//脱下宝石
+	static takeOff = {
+		type: "function",
+		name: 'takeOff',
+		inputs: [{
+			type: 'uint256',
+			name: 'momoId_'
+		},{
+			type: 'uint256',
+			name: 'pos_'
+		}],
+		outputs: [],
+	}
+	//穿戴宝石
+	static takeOn = {
+		type: "function",
+		name: 'takeOn',
+		inputs: [{
+			type: 'uint256',
+			name: 'momoId_'
+		},{
+			type: 'uint256',
+			name: 'gemId_'
+		},{
+			type: 'uint256',
+			name: 'pos_'
+		}],
+		outputs: [],
+	}
+	//查看多个momo的宝石镶嵌情况
+	static getInlayInfoBatch = {
+		type: "function",
+		name: 'getInlayInfoBatch',
+		inputs: [{
+			type: 'uint256[]',
+			name: 'momoIds_'
+		}],
+		outputs: [{
+			"components": [
+			{
+			"internalType": "uint256",
+			"name": "red",
+			"type": "uint256"
+			},
+			{
+			"internalType": "uint256",
+			"name": "green",
+			"type": "uint256"
+			},
+			{
+			"internalType": "uint256",
+			"name": "blue",
+			"type": "uint256"
+			},
+			{
+			"internalType": "uint256",
+			"name": "yellow",
+			"type": "uint256"
+			}
+			],
+			"internalType": "struct MoMoInlay.Inlay[]",
+			"name": "inlayInfos",
+			"type": "tuple[]"
+			}
+		],
+	}
+	//查看单个momo的宝石镶嵌情况
+	static getInlayInfo = {
+		type: "function",
+		name: 'getInlayInfo',
+		inputs: [{
+			type: 'uint256',
+			name: 'momoId_'
+		}],
+		outputs: [{
+				"components": [
+				{
+					"internalType": "uint256",
+					"name": "red",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "green",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "blue",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "yellow",
+					"type": "uint256"
+				}
+				],
+				"internalType": "struct MoMoInlay.Inlay",
+				"name": "inlayInfo",
+				"type": "tuple"
+			}
+		],
+	}
 	//判断是否申购了
 	static isHighApplying = {
 		type: "function",
@@ -104,7 +220,7 @@ export default class Contract {
 				},
 				{
 					"internalType": "uint256",
-					"name": "gold",
+					"name": "yellow",
 					"type": "uint256"
 				}
 			],
@@ -849,6 +965,70 @@ export default class Contract {
 			type: "uint256[]",
 			name: "amounts"
 		}],
+	}
+
+	//查询宝石市场上的详情-MomoStakeAuction
+	static getGemMarketOrder = {
+		name: 'getOrder',
+		type: "function",
+		inputs: [ {
+			type: 'uint256',
+			name: 'orderId_'
+		}],
+		outputs: [
+			{
+			"components": [
+			{
+			"internalType": "uint64",
+			"name": "orderId",
+			"type": "uint64"
+			},
+			{
+			"internalType": "uint32",
+			"name": "erc1155Id",
+			"type": "uint32"
+			},
+			{
+			"internalType": "uint32",
+			"name": "currencyId",
+			"type": "uint32"
+			},
+			{
+			"internalType": "uint16",
+			"name": "status",
+			"type": "uint16"
+			},
+			{
+			"internalType": "uint16",
+			"name": "userIndex",
+			"type": "uint16"
+			},
+			{
+			"internalType": "uint128",
+			"name": "price",
+			"type": "uint128"
+			},
+			{
+			"internalType": "uint32",
+			"name": "startTime",
+			"type": "uint32"
+			},
+			{
+			"internalType": "uint32[7]",
+			"name": "ids",
+			"type": "uint32[7]"
+			},
+			{
+			"internalType": "uint32[7]",
+			"name": "amounts",
+			"type": "uint32[7]"
+			}
+			],
+			"internalType": "struct MoMo1155Auction.AuctionOrder",
+			"name": "order",
+			"type": "tuple"
+			}
+		],
 	}
 
 }

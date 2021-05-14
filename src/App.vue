@@ -325,6 +325,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8)">
 					<div >
+						<h3 class="tac">{{$t("Notice_09")}}</h3>
+						<span v-html="$t('Notice_08')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_07")}}</h3>
 						<span v-html="$t('Notice_06')" ></span>
 					</div>
@@ -455,6 +459,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
+			noticeVersion: "1.0"
 		};
 	},
 	watch: {
@@ -549,7 +554,12 @@ export default {
 	},
 	async created() {
 		window.addEventListener("message", this.listenPostMsg, false);
-		this.hasReadNotice = Common.getStorageItem("hasReadNotice4");
+		Common.removeStorageItem("hasReadNotice");
+		Common.removeStorageItem("hasReadNotice1");
+		Common.removeStorageItem("hasReadNotice2");
+		Common.removeStorageItem("hasReadNotice3");
+		Common.removeStorageItem("hasReadNotice4");
+		this.hasReadNotice = Common.getStorageItem("noticeVersion") == this.noticeVersion;
 		
 		this.setLang();
 
@@ -631,7 +641,7 @@ export default {
 		},
 		showNotice(){
 			this.hasReadNotice = true;
-			Common.setStorageItem("hasReadNotice4", true);
+			Common.setStorageItem("noticeVersion", this.noticeVersion);
 			this.oprDialog("showNotice-dialog", "block");
 		},
 		setLang(){

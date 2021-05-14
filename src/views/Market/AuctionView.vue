@@ -164,7 +164,7 @@
 		</Dialog>
 
 		<Dialog id="confirm-buy-dialog"  :top="200" :width="350">
-			<h4 class="mgt-30" v-html="$t('Market_59').replace('#0#', `<span style='color: #49c773'>${sellObj.startPrice} BUSD</span>` )"></h4>
+			<h4 class="mgt-30" v-html="$t('Market_59').replace('#0#', `<span style='color: #49c773'>${numFloor(nowPrice/ 1e9, 1e4)} BUSD</span>` )"></h4>
 			<div class="mgt-50">
 				<button class="btn-primary" @click="oprDialog('confirm-buy-dialog', 'none');">{{$t("Common_04")}}</button>
 				<button class="btn-primary mgl-5" @click="oprDialog('confirm-buy-dialog', 'none');buyPet()">{{$t("Common_03")}}</button>
@@ -224,7 +224,9 @@ export default {
 				this.$router.replace("/market");
 				return;
 			}
-			petObj.oldTime = petObj.uptime;
+			if(petObj.oldTime == undefined){
+				petObj.oldTime = petObj.uptime;
+			}
 			return petObj;
 		},
 		//是否设置过名字
@@ -392,10 +394,10 @@ export default {
 		async buyPet(){
 			let coinKey = "BUSD"
 			if(this.coinArr[coinKey].allowanceToAuction <= 0 || this.lockBtn.buyMomoLock > 0) return
-			// if(this.nowPrice/1e9 > Number(this.coinArr[coinKey].balance)){
-			// 	this.showNotify(this.$t("Market_34"), "error");
-			// 	return ;
-			// }
+			if(this.nowPrice/1e9 > Number(this.coinArr[coinKey].balance)){
+				this.showNotify(this.$t("Market_34"), "error");
+				return ;
+			}
 
 			let data = await this.getPetInfo();
 			let {auctor, index, oldTime} = this.getNowPetItem;
@@ -406,7 +408,7 @@ export default {
 				return;
 			}
 
-			let hash = await Wallet.ETH.buyMarketPet(auctor, index, coinKey, data.startTime);
+			let hash = await Wallet.ETH.buyMarketPet(auctor, index, coinKey, data.startTime, this.nowPrice);
 			if(hash){
 				await Common.sleep(1000);
 				this.$router.back(-1);

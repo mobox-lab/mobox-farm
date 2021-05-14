@@ -1,6 +1,6 @@
 <style src="./style.css"></style>
 <template>
-	<Dialog id="gemBag-dialog" :top="100" :width="450">
+	<Dialog id="gemBag-dialog" :top="100" :width="450" :animation="isApprove">
 		<ul class="gem-tab">
 			<li v-for="item in gemType" :key="item" :class="['border_'+item, {active: item == selectGemType}]" class="tab-menu" @click="selectGemLv=1;needCompNum=1;selectGemType = item">
 				<img :src="require(`@/assets/gem/${item+1}.png`)" alt=""  height="100%">

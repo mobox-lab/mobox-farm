@@ -290,15 +290,7 @@ export default {
 		onTabChange(tabPos) {
 			this.$store.commit("marketState/setData", {marketTabPos:tabPos});
 		},
-		onCoinChange(pos){
-			console.log("onCoinChange", pos);
-			// this.marketPets.list = [];
-			// this.$store.commit("marketState/setData", {marketPage:1, marketPets: this.marketPets});
-			// this.$store.commit("marketState/marketSearch", {type: "sort", value: pos});
-			// this.$nextTick(()=>{
-			// 	this.getAuctionPets(this.marketPage, true);
-			// });
-		}
+
 	},
 };
 </script>
@@ -306,7 +298,7 @@ export default {
 <style >
 #market-type{
 	text-align: left;
-	border-bottom: 1px solid #39465e ;
+	border-bottom: 1px solid #162340 ;
 }
 .market-type-list-item{
 	display: inline-block;

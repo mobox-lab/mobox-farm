@@ -446,7 +446,7 @@ export default class ETH {
 	//查询质押和Key的收益
 	static async getStakeValueAndEarndKey(pIndexArr){
 		let myAddr = await this.getAccount();
-		if (myAddr) return null;
+		if (!myAddr) return null;
 		if (!this.momoHelperContract) return null;
 		return new Promise(resolve => {
 			this.momoHelperContract.methods.getUserFarmInfos(pIndexArr, myAddr).call().then(res => {
@@ -1186,7 +1186,7 @@ export default class ETH {
 	}
 
 	//购买市场上的物品
-	static async buyMarketPet(_auctor, _index, coinKey, _startTime){
+	static async buyMarketPet(_auctor, _index, coinKey, _startTime, _price){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
 
@@ -1194,11 +1194,13 @@ export default class ETH {
 			Contract.bid,
 		], WalletConfig.ETH.moMoStakeAuction);
 
-		console.log("buyMarketPet",{_auctor, _index, _startTime});
+		_price = BigNumber(Common.numFloor(_price, 1e9)).times(BigNumber(1e9));
+
+		console.log("buyMarketPet",{_auctor, _index, _startTime, _price: Number(_price)});
 
 		return new Promise(resolve => {
 			this.sendMethod(
-				contract.methods.bid(_auctor, _index, _startTime), {from: myAddr},
+				contract.methods.bid(_auctor, _index, _startTime, this.numToHex(_price)), {from: myAddr},
 				hash=>resolve(hash),
 				()=>{
 					console.log("buyMarketPet success!!!!!");
@@ -1856,6 +1858,7 @@ export default class ETH {
 				},
 				async ()=>{
 					console.log("gemCreateAuction success");
+					Common.app.getGemBag();
 				},
 				()=>{
 					EventBus.$emit(EventConfig.CreateAuctionError, {chain: "eth", hash: saveHash});
@@ -1910,6 +1913,7 @@ export default class ETH {
 				},
 				()=>{
 					console.log("cancelAuction success!!!!!");
+					Common.app.getGemBag();
 				},
 				()=>{
 					console.log(saveHash);

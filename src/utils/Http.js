@@ -3,8 +3,8 @@ import {EventBus} from "@/utils";
 import {EventConfig} from '@/config';
 export default class HTTP {
 	// static serverNode = "https://nfttestapi.mobox.io"; //测试
-	// static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
-	static serverNode = "http://192.168.5.87:3000"; // 测试
+	static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
+	// static serverNode = "http://192.168.5.87:3000"; // 测试
 
 	static async post(url, sendData) {
 		try {

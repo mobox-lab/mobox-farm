@@ -890,16 +890,12 @@ export default class Contract {
 	static bid = {
 		name: 'bid',
 		type: "function",
-		inputs: [{
-			type: 'address',
-			name: '_auctor'
-		}, {
-			type: 'uint256',
-			name: '_index'
-		}, {
-			type: 'uint256',
-			name: '_startTime'
-		}],
+		inputs: [
+			{type: 'address',name: '_auctor'}, 
+			{type: 'uint256',name: '_index'}, 
+			{type: 'uint256',name: '_startTime'}, 
+			{type: 'uint256',name: '_price'}, 
+		],
 	}
 	//取消上架-MomoStakeAuction
 	static cancelAuction = {
@@ -978,51 +974,51 @@ export default class Contract {
 		outputs: [
 			{
 			"components": [
-			{
-			"internalType": "uint64",
-			"name": "orderId",
-			"type": "uint64"
-			},
-			{
-			"internalType": "uint32",
-			"name": "erc1155Id",
-			"type": "uint32"
-			},
-			{
-			"internalType": "uint32",
-			"name": "currencyId",
-			"type": "uint32"
-			},
-			{
-			"internalType": "uint16",
-			"name": "status",
-			"type": "uint16"
-			},
-			{
-			"internalType": "uint16",
-			"name": "userIndex",
-			"type": "uint16"
-			},
-			{
-			"internalType": "uint128",
-			"name": "price",
-			"type": "uint128"
-			},
-			{
-			"internalType": "uint32",
-			"name": "startTime",
-			"type": "uint32"
-			},
-			{
-			"internalType": "uint32[7]",
-			"name": "ids",
-			"type": "uint32[7]"
-			},
-			{
-			"internalType": "uint32[7]",
-			"name": "amounts",
-			"type": "uint32[7]"
-			}
+				{
+				"internalType": "uint64",
+				"name": "orderId",
+				"type": "uint64"
+				},
+				{
+				"internalType": "uint32",
+				"name": "erc1155Id",
+				"type": "uint32"
+				},
+				{
+				"internalType": "uint32",
+				"name": "startTime",
+				"type": "uint32"
+				},
+				{
+				"internalType": "uint128",
+				"name": "price",
+				"type": "uint128"
+				},
+				{
+				"internalType": "uint16",
+				"name": "status",
+				"type": "uint16"
+				},
+				{
+				"internalType": "uint16",
+				"name": "userIndex",
+				"type": "uint16"
+				},
+				{
+				"internalType": "uint32",
+				"name": "currencyId",
+				"type": "uint32"
+				},
+				{
+				"internalType": "uint32[6]",
+				"name": "ids",
+				"type": "uint32[6]"
+				},
+				{
+				"internalType": "uint32[6]",
+				"name": "amounts",
+				"type": "uint32[6]"
+				}
 			],
 			"internalType": "struct MoMo1155Auction.AuctionOrder",
 			"name": "order",

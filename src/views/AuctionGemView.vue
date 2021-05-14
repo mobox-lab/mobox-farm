@@ -159,7 +159,9 @@ export default {
 				this.$router.replace("/market");
 				return;
 			}
-			petObj.oldTime = petObj.uptime;
+			if(petObj.oldTime == undefined){
+				petObj.oldTime = petObj.uptime;
+			}
 			return petObj;
 		},
 		//是否是我的拍卖
@@ -203,9 +205,11 @@ export default {
 		async setPetInfo(){
 			let data = await this.getPetInfo();
 			if(data){
-				let { startTime, price} = data;
+				let { startTime, price, ids, amounts} = data;
 				this.getNowPetItem.price = Number(BigNumber(price).div(1e9));
 				this.getNowPetItem.uptime =  startTime;
+				this.getNowPetItem.ids =  ids.filter(item=>item !=0);
+				this.getNowPetItem.amounts =  amounts.filter(item=>item !=0);
 				this.setChangePriceData();
 			}
 		},
@@ -260,9 +264,9 @@ export default {
 			}
 
 			let data = await this.getPetInfo();
-			let {auctor, orderId, oldTime} = this.getNowPetItem;
+			let {auctor, orderId} = this.getNowPetItem;
 
-			if(data.status != 3 || data.startTime != oldTime){
+			if(data.status != 3 ){
 				this.showNotify(this.$t("Market_35"), "error");
 				this.$router.replace("/market");
 				return;

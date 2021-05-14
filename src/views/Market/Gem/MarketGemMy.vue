@@ -101,7 +101,7 @@
 					</div>
 				</div>
 			</div>
-			<button style="width: 200px" :class="`btn-primary mgt-20 ${ !inputPrice ? 'disable-btn' : '' }`" @click="confirmSetPrice($event)" >
+			<button style="width: 200px" :class="`btn-primary mgt-20 ${ Number(inputPrice)<=0 ? 'disable-btn' : '' }`" @click="confirmSetPrice($event)" >
 				{{$t("Common_03")}}
 			</button>
 		</Dialog>
@@ -147,7 +147,7 @@
 				<StatuButton v-if="hasApprove != -1 && !hasApprove" data-step="1" :onClick="approve.bind(this)" :isLoading="lockBtn.approveLock > 0" style="width:70%" >
 					{{$t("Air-drop_16")}}
 				</StatuButton>
-				<StatuButton data-step="2" class="mgt-10" :onClick="confirmSubmit.bind(this)" style="width:70%" :isDisable="!hasApprove || Number(sellObj.startPrice) < 0" >
+				<StatuButton data-step="2" class="mgt-10" :onClick="confirmSubmit.bind(this)" style="width:70%" :isDisable="!hasApprove || Number(sellObj.startPrice) <= 0" >
 					{{$t("Common_03")}}
 				</StatuButton>
 			</div>

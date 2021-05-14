@@ -304,12 +304,13 @@ export default {
 		},
 		setNowPrice(){
 			let {endPrice, startPrice, durationDays, uptime} = this.getNowPetItem;
+			console.log(this.getNowPetItem);
 			let endTime = Number(uptime) + durationDays * 86400;
 			let nowTime = parseInt(new Date().valueOf() / 1000);
 			let nowPrice = endPrice;
 			let diffPrice = endPrice - startPrice;
 			if(endTime > nowTime){
-				nowPrice = startPrice + (diffPrice / durationDays * Math.floor((nowTime-uptime)/ 86400));
+				nowPrice = Number(startPrice) + (diffPrice / durationDays * Math.floor((nowTime-uptime)/ 86400));
 				this.getWidth = (nowTime-uptime) / (durationDays * 86400) * 100 +"%";
 			}else{
 				this.getWidth = "100%";

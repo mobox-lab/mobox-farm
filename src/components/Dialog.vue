@@ -1,5 +1,5 @@
 <template>
-	<div class="yf-dialog-bg" v-on:animationend="closed" @click="close($event.target)">
+	<div class="yf-dialog-bg" v-on:animationend="closed">
 		<div class="yf-dialog" :style="`margin-top:${top}px;width:${width}px`" @click="$event.stopPropagation()" v-on:animationend="animationed" >
 			<img v-if="!hideClose" @click="close($event.target.parentNode.parentNode)" class="yf-dialog-close-btn" src="../assets/icon/close.png" alt="" width="25" />
 			<slot></slot>
@@ -47,7 +47,7 @@ export default {
 .yf-dialog-bg {
 	display: none;
 	position: fixed;
-	z-index: 9999999;
+	z-index: 9999;
 	top: 0px;
 	left: 0px;
 	right: 0px;
@@ -59,26 +59,20 @@ export default {
 }
 .yf-dialog-close-btn {
 	position: absolute;
-	right: -10px;
-	top: -10px;
+	right: -5px;
+	top: -5px;
 	cursor: pointer;
 	z-index: 999;
-	width: 25px;
-	height: 25px;
-	border: 1px solid #36383A;
-	border-radius: 50%;
 }
 .yf-dialog {
 	max-width: 100%;
+	background: #10172a;
+	/* border: 2px solid #2d4a77; */
 	border-radius: 15px;
 	padding: 15px;
 	display: inline-block;
 	position: relative;
 	animation: showAni 0.3s;
-	background: #13181f;
-	border: 1px solid #36383A;
-	border-radius: 10px;
-
 }
 
 .yf-dialog-remove {

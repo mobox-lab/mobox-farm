@@ -239,7 +239,7 @@ export default {
 				return;
 			}
 
-			let hash = await Wallet.ETH.buyMarketPet(auctor, index, coinKey, data.startTime);
+			let hash = await Wallet.ETH.buyMarketPet(auctor, index, coinKey, data.startTime, item.nowPrice);
 			if(hash){
 				await Common.sleep(1000);
 				this.$store.commit("globalState/lockBtn", "buyMomoLock");

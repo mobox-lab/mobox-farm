@@ -25,7 +25,7 @@
 		</div>
 		<!--我的momo-->
 		<div :class="tab_pos == 0 ? '' : 'hide'" style="padding: 10px">
-			<div :class="getShowPetArr.length < 6 ? 'tal' : ''">
+			<div :class="getShowPetArr.length < 4 ? 'tal' : ''">
 				<div class="clear mgt-20">
 					<router-link :to="(item.location=='auction'?'/auctionView/': '/upgrade/') + item.prototype + '-' + item.tokenId" v-for="item in getShowPetArr"
 						:key=" item.prototype.toString() + item.tokenId + item.num " >

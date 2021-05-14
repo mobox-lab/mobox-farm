@@ -147,8 +147,7 @@ const InitEth = {
 				this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
 
-				//宝石相关
-				await this.getGemBag();
+				
 
 				await this.eth_set1155IsApprovedForStake();
 				await this.eth_set721IsApprovedForStake();
@@ -172,7 +171,8 @@ const InitEth = {
 			await this.eth_setBox();
 			await this.eth_setMbox();
 
-			
+			//宝石相关
+			await this.getGemBag();
 
 			//算力挖矿相关
 			await this.eth_setMyHashrate();

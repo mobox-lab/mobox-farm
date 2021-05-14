@@ -128,7 +128,7 @@ export default {
 				this.$t("MOMO_13"),
 				this.$t("MOMO_14"),
 			],
-			gemType:[this.$t("MOMO_02"),this.$t("Gemstone_45"), this.$t("Gemstone_46"), this.$t("Gemstone_47"),this.$t("Gemstone_48"),],
+			gemType:[this.$t("Market_60"),this.$t("Gemstone_45"), this.$t("Gemstone_46"), this.$t("Gemstone_47"),this.$t("Gemstone_48"),],
 			gemLv:[this.$t("Gemstone_49"), "Lv.1", "Lv.2", "Lv.3","Lv.4","Lv.5","Lv.6","Lv.7","Lv.8","Lv.9"],
 			myAccount: "",
 			hackReload: true,

@@ -21,7 +21,7 @@
 						<span v-if="item.rank > 3" class="dib tac" style="width: 33px" >{{ item.rank }}</span >
 						<img v-if="item.rank <= 3" :src="require(`../assets/rank${item.rank}.png`)" alt="" height="18" />
 						<span style="margin-left: 20px">
-							{{ shorAddress(item.member) }}
+							{{ shorAddress(item.member) }}---{{item.member}}
 						</span>
 					</div>
 

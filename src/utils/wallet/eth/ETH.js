@@ -287,8 +287,8 @@ export default class ETH {
 		if(["swapExactTokensForETH", "swapTokensForExactETH"].indexOf(methodName) != -1  ){
 			let fromName = "";
 			let toName = "BNB"
-			let fromValue =  BigNumber(_arguments[0]);
-			let toValue =  BigNumber(_arguments[1]);
+			let fromValue =  methodName == "swapTokensForExactETH"? BigNumber(_arguments[1]):BigNumber(_arguments[0]);
+			let toValue =   methodName == "swapTokensForExactETH"?BigNumber(_arguments[0]):BigNumber(_arguments[1]);
 			
 			let path = _arguments[2];
 			for (let key in PancakeConfig.SelectCoin) {
@@ -305,8 +305,8 @@ export default class ETH {
 		if(["swapExactTokensForTokens", "swapTokensForExactTokens"].indexOf(methodName) != -1  ){
 			let fromName = "";
 			let toName = ""
-			let fromValue =  BigNumber(_arguments[0]);
-			let toValue =  BigNumber(_arguments[1]);
+			let fromValue =  methodName == "swapTokensForExactTokens"?BigNumber(_arguments[1]): BigNumber(_arguments[0]);
+			let toValue =  methodName == "swapTokensForExactTokens"?BigNumber(_arguments[0]): BigNumber(_arguments[1]);
 			
 			let path = _arguments[2];
 			for (let key in PancakeConfig.SelectCoin) {

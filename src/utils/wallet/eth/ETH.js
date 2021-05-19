@@ -1965,51 +1965,106 @@ export default class ETH {
 		});
 	}
 
-		//购买市场上的物品
-		static async buyGemMarketPet({auctor_, orderId_, coinKey, amount_}){
-			let myAddr = await this.getAccount();
-			if (!myAddr) return;
-	
-			let contract = new this.web3.eth.Contract([
-				{
-					"inputs": [
-						{
-						"internalType": "address",
-						"name": "auctor_",
-						"type": "address"
-						},
-						{
-						"internalType": "uint256",
-						"name": "orderId_",
-						"type": "uint256"
-						},
-						{
-						"internalType": "uint256",
-						"name": "amount_",
-						"type": "uint256"
-						}
-					],
-					"name": "bid",
-					"outputs": [],
-					"stateMutability": "nonpayable",
-					"type": "function"
+	//购买市场上的物品
+	static async buyGemMarketPet({auctor_, orderId_, coinKey, amount_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "bid",
+				"type": "function",
+				"inputs": [
+					{"name": "auctor_","type": "address"},
+					{"name": "orderId_","type": "uint256"},
+					{"name": "amount_","type": "uint256"}
+				],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.common1155Auction);
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.bid(auctor_, orderId_, amount_), {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					console.log("buyGemMarketPet success!!!!!");
+					Common.app.setCoinValueByName(coinKey);
+					Common.app.getGemBag();
 				}
-			], WalletConfig.ETH.common1155Auction);
-	
-			console.log("buyMarketPet",{auctor_, orderId_, amount_});
-	
-			return new Promise(resolve => {
-				this.sendMethod(
-					contract.methods.bid(auctor_, orderId_, amount_), {from: myAddr},
-					hash=>resolve(hash),
-					()=>{
-						console.log("buyGemMarketPet success!!!!!");
-						Common.app.setCoinValueByName(coinKey);
-						Common.app.getGemBag();
-					}
-				)
-			});
-		}
+			)
+		});
+	}
+
+	//momo出租相关
+	static async createRent({tokenId_, curRentDays_, curRentRound_,curRentPrice_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "bid",
+				"type": "createRent",
+				"inputs": [
+					{"name": "tokenId_","type": "uint256"},
+					{"name": "curRentDays_","type": "uint256"},
+					{"name": "curRentRound_","type": "uint256"},
+					{"name": "curRentPrice_","type": "uint256"},
+					{"name": "nextRentDays_","type": "uint256"},
+					{"name": "nextRentRound_","type": "uint256"},
+					{"name": "nextRentPrice_","type": "uint256"},
+				],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.momoRent);
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.createRent(tokenId_, curRentDays_, curRentRound_,
+					curRentPrice_,0,0,0), {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					console.log("createRent success!!!!!");
+					// Common.app.setCoinValueByName(coinKey);
+					// Common.app.getGemBag();
+				}
+			)
+		});
+	}
+
+	//增加续租合同
+	static async addRentRenewal({tokenId_, orderId_, nextRentDays_,nextRentRound_,nextRentPrice_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "bid",
+				"type": "addRentRenewal",
+				"inputs": [
+					{"name": "tokenId_","type": "uint256"},
+					{"name": "orderId_","type": "uint256"},
+					{"name": "nextRentDays_","type": "uint256"},
+					{"name": "nextRentRound_","type": "uint256"},
+					{"name": "nextRentPrice_","type": "uint256"},
+				],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.momoRent);
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.addRentRenewal(tokenId_, orderId_, nextRentDays_,
+					nextRentRound_,nextRentPrice_), {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					console.log("addRentRenewal success!!!!!");
+					// Common.app.setCoinValueByName(coinKey);
+					// Common.app.getGemBag();
+				}
+			)
+		});
+	}
 
 
 

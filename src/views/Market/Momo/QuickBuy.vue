@@ -1,22 +1,12 @@
 <template>
-	<Dialog id="market-quick-buy-dialog" :top="100" width="550" >
+	<Dialog id="market-quick-buy-dialog" :top="100" width="550">
 		<h2>{{$t("Market_50")}}</h2>
-		<div class="aveage-box vertical-children2 mgt-10" >
-			<div class="tal" >
-				<div class="dib momo-tab" v-for="item in getShowArr" :key="item" @click="quickBuy(item)" :class="[{'opa-6': item != marketSearch.pType},`pet-min-type`+ parseInt(item / 1e4)]">
-					<img  :src="require(`@/assets/pet/${item}.png`)" alt="" width="100%" />
-				</div>
-			</div>
-			<div class="tar  vertical-children" style="zoom:0.8;">
-				<div  class="cur-point dib por  shop-car-btn" @click="getMomoShopCar().show()" >
-					<span v-if="shopCar.length >0" class="shop-car-num">{{shopCar.length}}</span>
-					<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
-				</div>
-				<Dropdown class="mgl-10" style="margin-top:0px" :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
-			</div>
+		<div class="tar mgt-10" style="zoom:0.8">
+			<Dropdown :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
+			<Dropdown :list="getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="onCoinChange" />&nbsp;
 		</div>
 		<div style="min-height:200px">
-			<div class="mgt-10 tab-panel" v-for="item in marketData.list" :key="item.tx+''+item.uptime+item.index">
+			<div class="mgt-10 tab-panel" v-for="item in marketData.list" :key="item.tx">
 				<div class="aveage-box">
 					<div class="vertical-children"  style="flex:1.5">
 						<div class="tac" >
@@ -30,26 +20,15 @@
 						<div class="tac mgt-5 bold">
 							<span>{{$t("Market_17")}}:</span>
 							<span>{{numFloor( item.nowPrice/ 1e9, 1e4)}}</span>&nbsp;
-							<img src="@/assets/coin/USDT.png" height="25"  alt="">
+							<img src="@/assets/coin/BUSD.png" height="25"  alt="">
 						</div>
 						<div class=" tac mgt-5" v-if="item.nowPrice != item.endPrice && item.countdown != '00:00:00'">
 							<span class="small opa-6">{{$t('Market_32').replace('#0#', item.countdown)}}:{{numFloor( item.nextDayPrice/ 1e9, 1e4)}}</span>
 						</div>
 					</div>
-
-					<div :class="{'btn-group': needApprove(item)}" style="zoom:0.9">
-						<StatuButton :onClick="approve.bind(this)" data-step="1"  v-if="needApprove(item)" :isDisable="coinArr['USDT'].allowanceToAuction > 0" :isLoading="coinArr['USDT'].isApproving" style="width:80%">{{$t("Air-drop_16")}} USDT</StatuButton>
-						<StatuButton :onClick="buyPet.bind(this, item)" data-step="2" :isDisable="needApprove(item) || (nowTs - item.uptime) <= 120" :isLoading="lockBtn.buyMomoLock > 0" class="mgt-10"  style="width:80%;">
-							<template v-if="nowTs -item.uptime <= 120">
-								<img src="@/assets/icon/lock.png" alt="" height="20" style="position:absolute;left:10px;top:6px">
-								<span>{{getLeftTime(Number(item.uptime) + 120 - nowTs)}}</span>
-							</template>
-							<span v-else>{{$t("Market_22")}}</span>
-						</StatuButton>
-						<button v-if="coinArr['USDT'].allowanceToAuction > 0 && (nowTs - item.uptime) > 120"  @click="addToShopCar(item)" style="zoom:0.9;width:80%;"  class=" mgt-10 " :class="isInShopCar(item)?'btn-danger':'btn-line' ">
-							<span v-if="isInShopCar(item)">{{$t("Market_70")}}</span>
-							<span v-else>{{$t("Market_69")}}</span>
-						</button>
+					<div :class="coinArr['BUSD'].allowanceToAuction == 0 ?'btn-group':''" style="zoom:0.9">
+						<StatuButton :onClick="approve.bind(this)" data-step="1"  v-if="coinArr['BUSD'].allowanceToAuction == 0" :isDisable="coinArr['BUSD'].allowanceToAuction > 0" :isLoading="coinArr['BUSD'].isApproving" style="width:80%">{{$t("Air-drop_16")}} BUSD</StatuButton>
+						<StatuButton :onClick="buyPet.bind(this, item)" data-step="2" :isDisable="coinArr['BUSD'].allowanceToAuction <=0" :isLoading="lockBtn.buyMomoLock > 0" class="mgt-10"  style="width:80%;">{{$t("Market_22")}}</StatuButton>
 					</div>
 				</div>
 			</div>
@@ -69,7 +48,7 @@
 import { Dialog, Dropdown, PetItemMin, StatuButton, Loading } from '@/components';
 import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
-import {Http,Wallet, EventBus} from "@/utils";
+import {Http,Wallet, Common, EventBus} from "@/utils";
 import {BaseConfig, PancakeConfig,WalletConfig, EventConfig} from "@/config";
 let updatePriceTimer = null;
 export default {
@@ -96,28 +75,15 @@ export default {
 			useCoinPos: (state) => state.bnbState.data.useCoinPos,
 			marketLoading: (state) => state.marketState.data.marketLoading,
 			lockBtn: (state) => state.globalState.data.lockBtn,
-			nowTs: (state) => state.globalState.data.nowTs,
-			shopCar: (state) => state.marketState.data.shopCar,
 		}),
 		getSelectCoinArr(){
 			let arr = [];
 			Object.keys(PancakeConfig.SelectCoin).map(coinKey=>{
-				if(coinKey == "USDT"){
+				if(coinKey == "BUSD"){
 					arr.push(coinKey + ": " + this.coinArr[coinKey].balance);
 				}
 			})
 			return arr;
-		},
-		getShowArr(){
-			let retArr = []
-			let {pType} = this.marketSearch;
-			if(!(pType == 0 || pType > 5e4)){
-				let mType = pType % 1e4;
-				[1,2,3,4].map(item=>{
-					retArr.push(mType + item * 1e4);
-				})
-			}
-			return retArr;
 		}
 	},
 	async created(){
@@ -134,47 +100,6 @@ export default {
 		EventBus.$off(EventConfig.BidPetSuccess, this.bitPetSuccess);
 	},
 	methods:{
-		//是否需要授权, 授权额度不足支付
-		needApprove(item){
-			return this.coinArr['USDT'].allowanceToAuction / 1e18 < Number(item.nowPrice/ 1e9) && this.coinArr['USDT'].allowanceToAuction !=-1;
-		},
-		getShowList(item){
-			let {ids, amounts} = item;
-			let arr = [];
-			ids.map((prototype, index)=>{
-				let obj = BaseConfig.NftCfg[prototype];
-				obj.num = amounts[index];
-				obj.vType = parseInt(prototype / 1e4);
-				obj.tokenId = 0;
-				obj.level = 1;
-				obj.chain = "bnb";
-				obj.hashrate = obj.quality;
-				obj.lvHashrate = obj.quality;
-				arr.push(obj);
-			});
-			arr.sort((a,b)=>{
-				return b.vType - a.vType;
-			});
-			return arr;
-		},
-		async addToShopCar(item){
-			let {auctor, index, uptime} = item
-			if(!this.isInShopCar(item)){
-				let data = await Wallet.ETH.getMarketOrder(auctor, index);
-				if(data.status != 3 || data.startTime != uptime){
-					this.showNotify(this.$t("Market_35"), "error");
-					return;
-				}
-			}
-			this.$store.commit("marketState/addToShopCar", {...item, ...this.getShowList(item)[0]});
-		},
-		isInShopCar(testItem){
-			let isInShopCar = false;
-			this.shopCar.map(item=>{
-				if(item.tx == testItem.tx) isInShopCar = true;
-			});
-			return isInShopCar;
-		},
 		bitPetSuccess(){
 			this.getAuctionPets();
 			this.oprDialog("market-quick-buy-dialog","none");
@@ -197,6 +122,7 @@ export default {
 			});
 		},
 		onCoinChange(pos){
+			console.log("onCoinChange", pos);
 		},
 		show(pType){
 			this.marketData.list = [];
@@ -228,7 +154,6 @@ export default {
 				item.bidPrice = nowPrice;
 				item.nowPrice = nowPrice;
 				item.isMyPet =  item.auctor.toLocaleLowerCase() == myAccount.toLocaleLowerCase();
-				item.tx = item.tx.toString() + item.auctor.toString() + item.index;
 				
 				//明天的价格
 				let nextDayPrice = item.endPrice;
@@ -253,7 +178,7 @@ export default {
 							level: 1,
 							num: amounts[index],
 							chain: "bnb",
-							tokenId: 0,
+							tokenId: 1,
 							hashrate: obj.quality,
 							lvHashrate: obj.quality,
 							quality: obj.quality,
@@ -285,11 +210,11 @@ export default {
 		},
 		//授权
 		async approve(){
-			let coinKey = "USDT";
-			let { isApproving} = this.coinArr[coinKey];
-			if( isApproving) return;
+			let coinKey = "BUSD";
+			let {allowanceToAuction, isApproving} = this.coinArr[coinKey];
+			if(allowanceToAuction > 0 || isApproving) return;
 
-			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin["USDT"].addr,
+			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin["BUSD"].addr,
 			WalletConfig.ETH.moMoStakeAuction, {coinKey, type: "allowanceToAuction"});
 			if (hash) {
 				this.coinArr[coinKey].isApproving = true;
@@ -298,7 +223,7 @@ export default {
 	
 		//购买
 		async buyPet(item){
-			let coinKey = "USDT"
+			let coinKey = "BUSD"
 			if(this.coinArr[coinKey].allowanceToAuction <= 0 || this.lockBtn.buyMomoLock > 0) return
 			if(item.nowPrice/1e9 > Number(this.coinArr[coinKey].balance)){
 				this.showNotify(this.$t("Market_34"), "error");
@@ -316,6 +241,7 @@ export default {
 
 			let hash = await Wallet.ETH.buyMarketPet(auctor, index, coinKey, data.startTime, item.nowPrice);
 			if(hash){
+				await Common.sleep(1000);
 				this.$store.commit("globalState/lockBtn", "buyMomoLock");
 			}
 		},
@@ -325,9 +251,9 @@ export default {
 			let data = await Wallet.ETH.getMarketOrder(auctor, index);
 			return data;
 		},
-		//获取USDT的授权情况
+		//获取BUSD的授权情况
 		async viewAllowance(){
-			let coinKey = "USDT";
+			let coinKey = "BUSD";
 			if(this.coinArr[coinKey].allowanceToAuction > 0) return;
 
 			let allowanceToAuction = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, WalletConfig.ETH.moMoStakeAuction, false);
@@ -341,10 +267,3 @@ export default {
 
 }
 </script>
-
-<style>
-#market-quick-buy-dialog .yf-dialog{
-	background: #000 !important;
-}
-
-</style>

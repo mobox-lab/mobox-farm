@@ -88,7 +88,7 @@ export default {
 		onSelectLevelChange(pos){
 			this.marketGems.list = [];
 			this.$store.commit("marketState/setData", {marketGemPage:1, marketGems: this.marketGems});
-			this.$store.commit("marketState/marketGemSearch", {type: "level", value: pos});
+			this.$store.commit("marketState/setFilter", {filterName:"marketGemSearch",type: "level", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionAll(this.marketGemPage, true);
 				this.$refs.page.initPage();
@@ -97,7 +97,7 @@ export default {
 		onSelectTypeChange(pos){
 			this.marketGems.list = [];
 			this.$store.commit("marketState/setData", {marketGemPage:1, marketGems: this.marketGems});
-			this.$store.commit("marketState/marketGemSearch", {type: "type", value: pos});
+			this.$store.commit("marketState/setFilter", {filterName:"marketGemSearch",type: "type", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionAll(this.marketGemPage, true);
 				this.$refs.page.initPage();
@@ -106,7 +106,7 @@ export default {
 		onSortChange(pos){
 			this.marketGems.list = [];
 			this.$store.commit("marketState/setData", {marketGemPage:1, marketGems: this.marketGems});
-			this.$store.commit("marketState/marketGemSearch", {type: "sort", value: pos});
+			this.$store.commit("marketState/setFilter", {filterName:"marketGemSearch",type: "sort", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionAll(this.marketGemPage, true);
 				this.$refs.page.initPage();

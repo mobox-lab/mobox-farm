@@ -82,7 +82,6 @@
 				
 				<router-link to="/market">
 				<li :class="this.$route.path == '/market' ? 'active' : ''">
-				<!-- <li> -->
 					<span class="per-icon vertical-children">
 						<span class="notice" v-if="historyNotice"></span>
 						<img src="./assets/icon/market.png" alt="" height="30" />
@@ -99,18 +98,6 @@
 						<span>{{ $t("Rank_05") }}</span>
 					</li>
 				</router-link>
-				<!-- <router-link to="/rule">
-					<li :class="this.$route.path == '/rule' ? 'active' : ''">
-						<span class="per-icon vertical-children">
-							<img
-								src="./assets/icon/help.png"
-								alt=""
-								height="30"
-							/>
-						</span>
-						<span>{{ $t("Rule_01") }}</span>
-					</li>
-				</router-link> -->
 			</ul>
 			<div id="our-parice-pc">
 				<div class="vertical-children point-block">
@@ -314,9 +301,9 @@
 				</p>
 			</div>
 		</Dialog>
-		<Dialog id="upgrade-des-dialog" :width="350" :top="100">
+		<Dialog id="upgrade-des-dialog" :width="450" :top="100">
 			<h3 class="mgt-10">{{$t("MOMO_35")}}</h3>
-			<div class="dialog-content mgt-20 tal">
+			<div class="dialog-content mgt-10 tal">
 				<span v-html="$t('MOMO_36')" class="small tal" style="font-weight:200"></span>
 			</div>
 		</Dialog>
@@ -365,7 +352,7 @@
 </template>
 <script>
 import Pancake from "./views/Airdrop/Pancake";
-import QuickBuy from "./views/Market/QuickBuy";
+import QuickBuy from "./views/Market/Momo/QuickBuy";
 import GemBag from "./views/Gem/GemBag";
 
 import {Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
@@ -554,11 +541,6 @@ export default {
 	},
 	async created() {
 		window.addEventListener("message", this.listenPostMsg, false);
-		Common.removeStorageItem("hasReadNotice");
-		Common.removeStorageItem("hasReadNotice1");
-		Common.removeStorageItem("hasReadNotice2");
-		Common.removeStorageItem("hasReadNotice3");
-		Common.removeStorageItem("hasReadNotice4");
 		this.hasReadNotice = Common.getStorageItem("noticeVersion") == this.noticeVersion;
 		
 		this.setLang();

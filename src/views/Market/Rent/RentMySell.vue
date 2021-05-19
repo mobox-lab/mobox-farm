@@ -1,283 +1,271 @@
 <template>
-	<div id="rentList">
-		<section >
-			<ul class="statistics-top-tab" style="padding:0px">
-				<li @click="rentStatePos = 0" :class="rentStatePos == 0?'active':''" class="opa-6">{{$t("Hire_26")}}({{getNumShow.isMyRent}})</li>
-				<li @click="rentStatePos = 1" :class="rentStatePos == 1?'active':''" class="opa-6">{{$t("Hire_27")}}({{getNumShow.isRentOther}})</li>
-			</ul>
-
-			<table class="mgt-20 small-table" style="width:100%; border-collapse:collapse;border: none;" >
-				<tr class="opa-6 tac">
-					<th class="list-item-momo tal" style="padding-left:10px">MOMO</th>
-					<th >
-						<span v-if="rentStatePos == 0">{{$t("Hire_09")}}</span>
-						<span v-else>{{$t("Hire_10")}}</span>
-					</th>
-					<th class="vertical-children">
-						<span>{{$t("Hire_28")}}</span>
-						<span @click="getMyRentList">
-							<Loading :width="20" :height="20" :isRotate="loadingData" class="mgl-5 cur-point" />
-						</span>
-					</th>
-					<th >{{$t("Hire_22")}}</th>
-					<th >{{$t("Hire_23")}}</th>
-					<!-- <th>{{$t("BOX_14")}}</th> -->
-				</tr>
-				<tr>
-					<td colspan="6">
-						<hr class="split-hr mgt-10"  />
-					</td>
-				</tr>
-				<tr><td colspan="6" style="height:10px"></td></tr>
-				<tbody v-for="item in getShowOrderList" :key="item.tx" class="por tac">
-					<div class="list-item-momo-mobile" >
-						<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px">
-							<PetItemMin :data="item2" />&nbsp;
-						</span>
+	<div>
+		<div class="tal search vertical-children por mgt-20">
+			<span>{{$t("Market_33")}}: {{ marketPetsMy.total }}</span>&nbsp;
+			<div id="market-pet-fitter">
+				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+					<span class="notice" v-if="historyNotice"></span>
+					<img src="../../assets/icon/tradeRecord.png" alt="" />
+				</div>
+				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="myMarketSellFilter.category" :onChange="onSelectTypeChange" />&nbsp;
+				<Dropdown :list="$parent.selectVType" :defaultSelectPos="myMarketSellFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
+			</div>
+		</div>
+		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children">
+			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ item.tx):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime">
+				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
+					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
+						<img src="../../assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
+						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
 					</div>
-					<tr><td colspan="6" style="height:5px"></td></tr>
-					<tr class="list-item" >
-						<td  class="list-item-momo tal">
-							<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px">
-								<PetItemMin :data="item2" />
-							</span>
-						</td>
-						<td>
-							<span v-if="rentStatePos == 0">{{getShortAddr(item.renter)}}</span>
-							<span v-else>{{getShortAddr(item.owner)}}</span>
-						</td>
-						<td class="vertical-children">
-							<span v-if="item.leftTs < 0">{{$t("Hire_32")}}</span>
-							<span v-else>{{getLeftTime(item.leftTs)}}</span>
-							<img v-if="item.leftTs > 0 && Number(item.orderId) >= 5e4" class="cur-point mgl-5" src="@/assets/icon/view.png" height="25" alt="" @click="$parent.$refs.rentDeal.setOprData(item.tokenId, item.isRentOther).show()">
-						</td>
-						<td class="vertical-children">
-							<img class="hide-xs"  :src="require(`@/assets/coin/${Number(item.orderId) >= 5e4?'USDT':'MBOX'}.png`)" alt="" height="25">
-							<span class="mgl-5">{{numFloor(item.price/1e9, 10000)}}  {{Number(item.orderId) >= 5e4?'USDT':"MBOX" }}</span>
-						</td>
-						<td>{{item.rentDays}}</td>
-						<!-- <td  >
-							<span  v-if="item.leftTs < 0">{{$t("Hire_32")}}</span>
-							<p v-else>
-								<span style="color:#ADC202" v-if="item.round > 0">{{$t("Hire_31").replace("#0#", item.round)}}</span>
-								<span style="color: #7388C1" v-else>{{$t("Hire_30")}}</span>
-							</p>
-						</td> -->
-					</tr>
-					<tr><td colspan="6" style="height:5px"></td></tr>
-				</tbody>
-			</table>
-			<div class="no-show" v-if="getShowOrderList.length == 0">
-				<img src="@/assets/no_items.png" alt="">
-				<p class="opa-6 mgt-10">No items to display</p>
-			</div>
+					<div class="vertical-children mgt-10" v-if="item.index < 0" style="font-size: 18px;">
+						<img  src="../../assets/icon/loading.png" class="rotate" height="20" alt=""  /> &nbsp;
+						<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
+						<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
+					</div>
+				</PetItem>
+				<PetItemScroll v-bind:data="{item: item}" class="market" v-if="item.tokenId == 0 ">
+					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
+						<img src="../../assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
+						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
+					</div>
+					<div class="vertical-children mgt-10" v-if="item.index < 0" style="font-size: 18px;">
+						<img  src="../../assets/icon/loading.png" class="rotate" height="20" alt=""  /> &nbsp;
+						<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
+						<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
+					</div>
+				</PetItemScroll>
+			</router-link>
+		</div>
 
-			<div style="margin-top: 30px" v-if="getTotalPage > 1" >
-				<Page ref="page"   :defaultPage="page" :totalPage="getTotalPage" :onChange="onPageChange"  />
-			</div>
-			
-		</section>
+		<div style="margin-top: 30px" v-if="Math.ceil(marketPetsMy.total / onePageCount) > 1">
+			<Page ref="page" :defaultPage="marketMySellPage" :totalPage="Math.ceil(marketPetsMy.total / onePageCount)" :onChange="onPageChange" v-show="Math.ceil(marketPetsMy.total / onePageCount) > 1" />
+		</div>
 	</div>
 </template>
 
 <script>
-import { PetItemMin, Loading, Page } from '@/components';
+import {Page, PetItem, PetItemScroll, Dropdown} from "@/components";
 import { CommonMethod } from "@/mixin";
-import { Wallet, Http, Common } from '@/utils';
+import { Http, Wallet } from '@/utils';
+import { BaseConfig } from "@/config";
 import { mapState } from "vuex";
-import {BaseConfig, ConstantConfig} from "@/config";
 
-let t = null;
+let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { PetItemMin , Loading, Page},
+	// components: {  Page, Dropdown},
+	components: {   PetItem, PetItemScroll, Dropdown, Page},
 	data(){
 		return({
-			rentStatePos:0,
+			onePageCount: 15,
 			myAccount: "",
-			rentData: [],
-			loadingData: false,
-			oneDay: 600,
-			page: 1,
-			onePageCount: 20,
+			hasLoad: false,
 		});
 	},
 	computed: {
 		...mapState({
 			marketPetsMy: (state) => state.marketState.data.marketPetsMy,
-			marketRentOrderList: (state) => state.marketState.data.marketRentOrderList,
+			tempSells: (state) => state.marketState.data.tempSells,
+			tempMarketCancelTx: (state) => state.marketState.data.tempMarketCancelTx,
+			marketMySellPage: (state) => state.marketState.data.marketMySellPage,
+			momoNameObjs: (state) => state.marketState.data.momoNameObjs,
+			momoGemsObjs: (state) => state.marketState.data.momoGemsObjs,
+			myMarketSellFilter: (state) => state.marketState.data.myMarketSellFilter,
+			historyNotice: (state) => state.marketState.data.historyNotice,
 		}),
-		getShowOrderList(){
-			return this.getTotalOrder.slice(
-				this.onePageCount * (this.page - 1),
-				this.onePageCount * this.page
+		getSellList() {
+			let totalPet = [];
+			let nftConfig = BaseConfig.NftCfg;
+			this.marketPetsMy.list.map((item) => {
+				//类型的筛选,品质的筛选
+				let isMatchCategory = this.myMarketSellFilter.category == 0 || this.myMarketSellFilter.category == item.category;
+				let isMathVType = this.myMarketSellFilter.vType == 0 || this.myMarketSellFilter.vType == item.vType;
+				//出售中打包的momo
+				if(item.ids.length != 0){
+					item.ids.map(prototype=>{
+						let {category} = nftConfig[prototype];
+						let vType = parseInt(prototype/1e4);
+						if(this.myMarketSellFilter.category == category) isMatchCategory = true;
+						if(this.myMarketSellFilter.vType == vType) isMathVType = true;
+					})
+				}
+				if (isMatchCategory && isMathVType) {
+					totalPet.push(item);
+				}
+			});
+			return totalPet;
+		},
+		getShowList(){
+			let list = this.getSellList;
+			let cancelTx = [];
+			this.tempMarketCancelTx.map(item=>cancelTx.push(item.tx));
+			list.map(item=>{
+				if(cancelTx.indexOf(item.tx) != -1) item.index = -2;
+			})
+			return   [...this.tempSells,...list].slice(
+				this.onePageCount * (this.marketMySellPage - 1),
+				this.onePageCount * this.marketMySellPage
 			);
-		},
-		getTotalOrder(){
-			let list = [];
-			this.marketRentOrderList.list.map(item=>{
-				if(this.rentStatePos == 0){
-					if(!item.isRentOther) list.push(item);
-				}else{
-					if(item.isRentOther) list.push(item);
-				}
-			});
-			return list;
-		},
-
-		getTotalPage() {
-			return Math.ceil(this.getTotalOrder.length / this.onePageCount);
-		},
-		getNumShow(){
-			let obj = {
-				isMyRent: 0,
-				isRentOther: 0,
-			};
-			this.marketRentOrderList.list.map(item=>{
-				if(item.leftTs > 0){
-					if(item.isRentOther) 
-						obj.isRentOther++;
-					else 
-						obj.isMyRent++;
-				}
-			});
-			return obj;
 		}
 	},
 	async created(){
 		this.myAccount = await Wallet.ETH.getAccount();
-		await this.getMyRentList();
-		if(t)  clearInterval(t);
-		let count = 0;
-		await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE, false);
-		t = setInterval(async ()=>{
-			count++;
-			let needUpdateMomo = false;
-			this.marketRentOrderList.list.map(item=>{
-				if(item.leftTs > 0){
-					item.leftTs--;
-					if(item.leftTs == 0) needUpdateMomo = true;
-				}
-			});
-			if(count%20 == 0 || needUpdateMomo){
-				await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE, false);
-				await this.getMyRentList();
-			}
-		}, 1000);
+		if(!this.hasLoad){
+			this.hasLoad = true;
+			this.getAuctionPetsMy(true);
+		}
+		timer = setInterval(()=>{
+			this.getAuctionPetsMy();
+		}, 5000);
 	},
+	
 	beforeDestroy(){
-		if(t)  clearInterval(t);
+		if(timer) clearInterval(timer);
 	},
 	methods: {
-		onPageChange(page){
-			this.page = page;
-			this.$nextTick(()=>{
-				this.$refs.page && this.$refs.page.initPage();
+		//获取市场上的宠物
+		async getAuctionPetsMy(needLoading = false){
+			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
+			let account = this.myAccount;
+			// account = "0x390Ec77a320a3822bd3074aBa174570307154140";
+			let data = await Http.getMyAuctionList("BNB", account);
+			this.$store.commit("marketState/setData", {marketLoading: false});
+			let hashArr = [];
+			let needGetNameArr = [];
+			let needGetGemArr = [];
+
+			data.list.map(item=>{
+				if( item.tokenId != 0){
+					let {tokenName} = BaseConfig.NftCfg[item.prototype];
+					item.tokenName = tokenName;
+					item.vType = parseInt(item.prototype/1e4);
+					item.gems = [0,0,0,0];
+					if(item.specialty == 1 || item.specialty == 3){
+						needGetNameArr.push(item.tokenId);
+					}
+					needGetGemArr.push(Number(item.tokenId));
+				}
+				//计算当前价格
+				let endTime = Number(item.uptime) + item.durationDays * 86400;
+				let nowTime = parseInt(new Date().valueOf() / 1000);
+				let nowPrice = item.endPrice;
+				let diffPrice = item.endPrice - item.startPrice;
+				if(endTime > nowTime){
+					nowPrice = item.startPrice + (diffPrice / item.durationDays * Math.floor((nowTime-item.uptime)/ 86400))
+				}
+				item.nowPrice = nowPrice;
+				hashArr.push(item.tx);
+				
+			});
+
+			//删除临时出售的数据
+			this.tempSells.map((item,index)=>{
+				if(hashArr.indexOf(item.tx) != -1){
+					this.tempSells.splice(index, 1);
+				}
+			});
+
+			//删除临时下架的数据
+			this.tempMarketCancelTx.map((item, index)=>{
+				if(hashArr.indexOf(item.tx) == -1){
+					this.tempMarketCancelTx.splice(index, 1);
+				}
+			})
+
+			// return ;
+			this.$store.commit("marketState/setData", {tempSells: this.tempSells, marketPetsMy:data, tempMarketCancelTx: this.tempMarketCancelTx});
+
+			this.$nextTick(async ()=>{
+				await this.getMomoName(needGetNameArr);
+				await this.getMomoGem(needGetGemArr);
 			})
 		},
-		async getMyRentList(){
-			if(this.loadingData) return;
-			this.loadingData = true;
-			let data = await Http.getMyRentList(this.myAccount);
-			let t = setTimeout(()=>{
-				clearTimeout(t);
-				this.loadingData = false;
-			}, 1000)
-			if(data){
-				let total = 0;
-				data.list.map(item=>{
-					let petList = [];
-					let obj = BaseConfig.NftCfg[item.prototype];
-					petList.push({
-						...obj,
-						bidPrice: item.price,
-						prototype: item.prototype,
-						level: item.level,
-						num: 1,
-						chain: "bnb",
-						tokenId: item.tokenId,
-						hashrate: item.hashrate,
-						lvHashrate: item.lvHashrate,
-						vType: parseInt(item.prototype / 1e4),
-						category: item.category,
-						quality: item.quality,
-						isRent: true,
-						orderId: item.orderId,
+		async getMomoName(needGetNameArr){
+			let fitterArr = [];
+			//去除重复的名字
+			needGetNameArr.map(item=>{
+				if(!Object.prototype.hasOwnProperty.call(this.momoNameObjs, item)){
+					fitterArr.push(item);
+				}
+			});
+			if(fitterArr.length != 0){
+				//请求name
+				let names = await Wallet.ETH.getMomoNamesByTokenIds(fitterArr);
+				if(names != ""){
+					fitterArr.map((item, index)=>{
+						this.momoNameObjs[item] = names[index];
 					});
-					let nowTs = parseInt(new Date().valueOf()/1000);
-					item.leftTs = Number(item.rentTime) - nowTs;
-					item.isRentOther = item.renter.toLocaleLowerCase() == this.myAccount.toLocaleLowerCase();
-					item.petList = petList;
-					if(Number(item.leftTs) > 0) total++;
-				});
-				data.total = total;
-				this.$store.commit("marketState/setData", {marketRentOrderList:data});
+				}
 			}
-		}
-	},
+			this.marketPetsMy.list.map(item=>{
+				item.tokenName = this.momoNameObjs[item.tokenId] || item.tokenName;
+			});
+			this.$store.commit("marketState/setData", {marketPetsMy: this.marketPetsMy, momoNameObjs : this.momoNameObjs});
+		},
+		async getMomoGem(needGetGemArr){
+			let fitterArr = [];
+			//去除重复的名字
+			needGetGemArr.map(item=>{
+				if(!Object.prototype.hasOwnProperty.call(this.momoGemsObjs, item)){
+					fitterArr.push(item);
+				}
+			});
+
+			if(fitterArr.length != 0){
+				let gems = await Wallet.ETH.getBatchInlayInfo(fitterArr);
+				if(gems){
+					fitterArr.map((item, index)=>{
+						this.momoGemsObjs[item] = [...gems[index]];
+					});
+				}
+			}
+
+			this.marketPetsMy.list.map(item=>{
+				item.gems = this.momoGemsObjs[item.tokenId] || [0,0,0,0];
+			});
+			this.$store.commit("marketState/setData", {marketPetsMy: this.marketPetsMy, momoGemsObjs : this.momoGemsObjs});
+		},
+		onPageChange(page){
+			this.$store.commit("marketState/setData", {marketMySellPage: page});
+			this.$nextTick(()=>{
+				this.$refs.page.initPage();
+			})
+		},
+		onSelectQualityChange(pos) {
+			this.$store.commit("marketState/setFilter", {
+				filterName: "myMarketSellFilter",
+				type: "vType",
+				value: pos,
+			});
+			this.onPageChange(1);
+		},
+		onSelectTypeChange(pos) {
+			this.$store.commit("marketState/setFilter", {
+				filterName: "myMarketSellFilter",
+				type: "category",
+				value: pos,
+			});
+			this.onPageChange(1);
+		},
+	}
 }
 </script>
 
 <style scoped>
-	.list-item{
-		color: #7187C0;
-	}
-	.list-item-momo-mobile{
-		position: absolute;
-		zoom: 0.6;
-		text-align: left;
-		display: none;
-		left: 20px;
-		margin-top: -5px;
-	}
-	.list-item td:last-child{
-		border-top-right-radius: 20px;
-		border-bottom-right-radius: 20px;
-	}
-	.list-item td:first-child{
-		border-top-left-radius: 20px;
-		border-bottom-left-radius: 20px;
-	}
-	.list-item td{
-		padding: 10px;
-		background: #13181F;
-		border-left: none;
-		border-right: none;
-		border-bottom: none;
-	}
-	#rentList{
-		margin: 0px auto;
-		margin-top: 20px;
-	}
-	.statistics-top-tab li.active{
-		border-bottom: 4px solid #1B54F5;
-		color: #fff;
-		opacity: 1;
-	}
-	.statistics-top-tab li{
-		padding: 10px;
-		display: inline-block;
+	#shop-history {
+		margin-right: 15px;
 		cursor: pointer;
-		min-width: 80px;
-		text-align: center;
-		font-size: 13px;
+		position: relative;
+		user-select: none;
 	}
-	.statistics-top-tab{
-		padding: 10px;
-		padding-bottom: 0px;
-		list-style: none;
-		text-align: left;
-	}
-
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;
 		top: 0px;
 	}
 	@media (max-width: 768px) {
-		#rentList{
-			margin-top: 10px !important;
-		}
+
 		#market-pet-fitter{
 			zoom: 0.8;
 		}

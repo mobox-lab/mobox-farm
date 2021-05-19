@@ -6,7 +6,6 @@
 						<li @click="daySelect = 1;getMomoAuctionStatistics() " :class="daySelect == 1?'active':''" class="opa-6">{{$t("Market_41")}}</li>
 						<li @click="daySelect = 7;getMomoAuctionStatistics() " :class="daySelect == 7?'active':''" class="opa-6">{{$t("Market_42")}}</li>
 						<li @click="daySelect = 30;getMomoAuctionStatistics() " :class="daySelect == 30?'active':''" class="opa-6">{{$t("Market_43")}}</li>
-						<li @click="daySelect = 'all';getMomoAuctionStatistics() " :class="daySelect == 'all'?'active':''" class="opa-6">{{$t("Market_61")}}</li>
 					</ul>
 					<div class="tab-split"></div>
 				</div>
@@ -19,7 +18,7 @@
 						</div>
 					</div>
 					<div class="vertical-children tac">
-						<img src="@/assets/coin/USDT.png" height="50" alt="">
+						<img src="@/assets/coin/BUSD.png" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
 							<p class="opa-6">{{$t("Market_45")}}</p>
 							<h1 class="color-w tac">{{numFloor(statistics.volume / 1e9, 1e2).toLocaleString()}} </h1>
@@ -56,29 +55,28 @@
 						</td>
 					</tr>
 					<tr><td colspan="5" style="height:10px"></td></tr>
-					<tbody v-for="(item, pos) in tableData[tableDataPos]" :key="item.tx + item.prototype + item.bidPrice + pos" class="por tal">
+					<tbody v-for="item in tableData[tableDataPos]" :key="item.tx" class="por tal">
 						<div class="list-item-momo-mobile" >
 							<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px">
-								<PetItemMin :data="item2" :isTop="pos > tableData[tableDataPos].length-4"/>&nbsp;
+								<PetItemMin :data="item2" />&nbsp;
 							</span>
 						</div>
 						<tr><td colspan="5" style="height:5px"></td></tr>
 						<tr class="list-item">
 							<td style="width:350px;" class="list-item-momo">
 								<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px">
-									<PetItemMin :data="item2" :isTop="pos > tableData[tableDataPos].length-4" />
+									<PetItemMin :data="item2" />
 								</span>
 							</td>
 							<td class="addr">{{getShortAddr(item.bidder)}}</td>
 							<td class="addr">{{getShortAddr(item.auctor)}}</td>
-							<td class="vertical-children addr">
+							<td class="vertical-children">
 								<span :class="item.isBuy?'color-buy':'color-sell'" v-if="tableDataPos == 'myHistory' ">
-									{{item.isBuy?"-":"+"}}{{numFloor((item.bidPrice / 1e9) * (item.isBuy?1:0.95), 10000)}} {{ getMarketCoin(item.crtime) }}
+									{{item.isBuy?"-":"+"}}{{numFloor((item.bidPrice / 1e9) * (item.isBuy?1:0.95), 10000)}} BUSD
 								</span>
 								<span v-else>
-									<img  class="hide-xs" :src="require(`@/assets/coin/${getMarketCoin(item.crtime)}.png`)" height="25" alt="">
-									
-									{{numFloor(item.bidPrice / 1e9, 1e2)}} {{ getMarketCoin(item.crtime) }}
+									<img  class="hide-xs" src="@/assets/coin/BUSD.png" height="25" alt="">
+									{{numFloor(item.bidPrice / 1e9, 1e2)}} BUSD
 								</span>
 							</td>
 							<td class="tar" >
@@ -89,11 +87,6 @@
 						<tr><td colspan="5" style="height:5px"></td></tr>
 					</tbody>
 				</table>
-				
-				<div class="no-show" v-if="tableData[tableDataPos].length == 0">
-					<img src="@/assets/no_items.png" alt="">
-					<p class="opa-6 mgt-10">No items to display</p>
-				</div>
 
 				<div style="margin-top: 30px" v-if="tableDataPos == 'myHistory' ">
 					<Page :defaultPage="this.myHistoryPage" :totalPage="Math.ceil(marketHistory.total / 50)" :onChange="onPageChange" v-if="Math.ceil(marketHistory.total / 50) > 1" />
@@ -106,7 +99,7 @@
 import { CommonMethod } from "@/mixin";
 import {PetItemMin, Page} from "@/components";
 import { Http, Wallet } from '@/utils';
-import { BaseConfig } from "@/config";
+import {BaseConfig} from "@/config";
 import { mapState } from "vuex";
 
 export default {
@@ -204,13 +197,58 @@ export default {
 			this.$store.commit("marketState/setData", {marketLoading: true});
 			this.tableData.myHistory = [];
 			let data = await Http.getMyAuctionHistory(myAccount, this.myHistoryPage);
-			console.log(data, "myadads");
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			this.scrollToTop(0);
 			if(data){
 				data.list.map(item=>{
+					if(item.tokenId != 0){
+						item.tokenName = BaseConfig.NftCfg[item.prototype]["tokenName"];
+						item.vType = parseInt(item.prototype / 10000);
+					}
 					item.isBuy =  item.bidder.toLocaleLowerCase() == myAccount.toLocaleLowerCase();
-					item.petList = this.getPetList(item);
+
+					//生成显示小头像数据
+					let petList = [];
+					//1155
+					if(item.tokenId == 0){
+						let {ids, amounts, bidPrice} = item;
+						ids.map((prototype, index)=>{
+							let obj = BaseConfig.NftCfg[prototype];
+							petList.push({
+								...obj,
+								bidPrice,
+								prototype,
+								level: 1,
+								num: amounts[index],
+								chain: "bnb",
+								tokenId: 1,
+								hashrate: obj.quality,
+								lvHashrate: obj.quality,
+								vType: parseInt(prototype / 1e4),
+								quality: obj.quality,
+							});
+						});
+					}else{
+						//721
+						let obj = BaseConfig.NftCfg[item.prototype];
+						petList.push({
+							...obj,
+							bidPrice: item.bidPrice,
+							prototype: item.prototype,
+							level: item.level,
+							num: 1,
+							chain: "bnb",
+							tokenId: item.tokenId,
+							hashrate: item.hashrate,
+							lvHashrate: item.lvHashrate,
+							vType: parseInt(item.prototype / 1e4),
+							category: item.category,
+							quality: item.quality,
+						})
+					}
+
+					item.petList = petList;
+
 				});
 				this.tableData.myHistory = data.list;
 			}
@@ -222,45 +260,49 @@ export default {
 			}, time)
 		},
 		async setData(res,type){
-			console.log(res, "-----");
 			res.list.map(item=>{
-				item.petList = this.getPetList(item);
-			})
-			this.tableData[type] = res.list;
-		},
-		getPetList(data){
-			let petList = [];
-			//1155
-			let {ids, amounts, bidPrice, tokens, type} = data;
-			ids.map((prototype, index)=>{
-				let obj = BaseConfig.NftCfg[prototype];
-				petList.push({
-					...obj,
-					bidPrice,
-					level: 1,
-					num: amounts[index],
-					chain: "bnb",
-					tokenId: 0,
-					hashrate: obj.quality,
-					lvHashrate: obj.quality,
-					vType: parseInt(prototype / 1e4),
-				});
-			});
-			// 721
-			tokens.map(item=>{
-				let obj = BaseConfig.NftCfg[item.prototype];
-				petList.push({
-					...obj,
-					...item,
-					num: 1,
-					chain: "bnb",
-					bidPrice,
-					vType: this.getVType(item.prototype),
-					noPrice: true,
-					isGroup: type == 1
+					let petList = [];
+					//1155
+					if(item.tokenId == 0){
+						let {ids, amounts, bidPrice} = item;
+						ids.map((prototype, index)=>{
+							let obj = BaseConfig.NftCfg[prototype];
+							petList.push({
+								...obj,
+								bidPrice,
+								prototype,
+								level: 1,
+								num: amounts[index],
+								chain: "bnb",
+								tokenId: 1,
+								hashrate: obj.quality,
+								lvHashrate: obj.quality,
+								quality: obj.quality,
+								vType: parseInt(prototype / 1e4),
+							});
+						});
+					}else{
+						//721
+						let obj = BaseConfig.NftCfg[item.prototype];
+						petList.push({
+							...obj,
+							bidPrice: item.bidPrice,
+							prototype: item.prototype,
+							quality: item.quality,
+							level: item.level,
+							num: 1,
+							chain: "bnb",
+							tokenId: item.tokenId,
+							hashrate: item.hashrate,
+							lvHashrate: item.lvHashrate,
+							vType: parseInt(item.prototype / 1e4),
+							category: item.category
+						})
+					}
+
+					item.petList = petList;
 				})
-			})
-			return petList;
+				this.tableData[type] = res.list;
 		},
 		//获取统计分析
 		async getMomoAuctionStatistics(){
@@ -304,13 +346,13 @@ export default {
 	}
 	.list-item td{
 		padding: 10px;
-		background: #13181F;
+		background: #1D2B50;
 		border-left: none;
 		border-right: none;
 		border-bottom: none;
 	}
 	.statistics-top-tab li.active{
-		border-bottom: 4px solid #1B54F5;
+		border-bottom: 4px solid #93BBFF;
 		color: #fff;
 		opacity: 1;
 	}
@@ -329,11 +371,12 @@ export default {
 		text-align: left;
 	}
 	.statistics{
+		max-width: 1400px;
 		margin: 0px auto;
 		margin-top: 20px;
 	}
 	.statistics-top{
-		background: #13181F;
+		background: #2A3B67;
 		border-radius: 20px;
 	}
 </style>

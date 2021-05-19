@@ -10,22 +10,18 @@
 				<div class="tar" >{{$t("Market_17")}}</div>
 			</div>
 			<div style="por mgt-10 tal"  >
-				<div class="aveage-box mgt-10 por tal" v-for="(item, index) in marketHistory.list" :key="item.tx+index" style="background:#13181F;border-radius:15px;padding:10px 8px ;">
+				<div class="aveage-box mgt-10 por tal" v-for="(item, index) in marketHistory.list" :key="item.tx+index" style="background:#1D2B50;border-radius:15px;padding:10px 8px ;">
 					<div class="shop-history-pet" style="flex:2">
-						<span v-for="item2 in item.petList" :key="''+item2.prototype+item2.tokenId" style="margin:0px 2px" class="dib">
-							<PetItemMin :data="item2" style="zoom: 0.5" :isTop="index > marketHistory.list.length-4" />
+						<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px" class="dib">
+							<PetItemMin :data="item2" style="zoom: 0.6" />
 						</span>
 					</div>
 					<div class="opa-6 small addr">{{shorAddress(item.bidder)}}</div>
 					<div class="opa-6 small addr">{{shorAddress(item.auctor)}}</div>
 					<div class="tar small" :class="item.isBuy?'color-buy':'color-sell'">
-						{{item.isBuy?"-":"+"}}{{numFloor((item.bidPrice / 1e9) * (item.isBuy?1:0.95), 10000)}} {{getMarketCoin(item.crtime)}}
-						<p style="color:#8f8f8f;zoom:0.8;" >{{dateFtt('yyyy-MM-dd hh:mm:ss', new Date(item.crtime * 1000))}}</p>
+						{{item.isBuy?"-":"+"}}{{numFloor((item.bidPrice / 1e9) * (item.isBuy?1:0.95), 10000)}} BUSD
+						<p style="color:#6481b0;zoom:0.8;" >{{dateFtt('yyyy-MM-dd hh:mm:ss', new Date(item.crtime * 1000))}}</p>
 					</div>
-				</div>
-				<div class="no-show" v-if="marketHistory.list.length == 0">
-					<img src="@/assets/no_items.png" alt="">
-					<p class="opa-6 mgt-10">No items to display</p>
 				</div>
 			</div>
 		</div>
@@ -37,10 +33,8 @@ import { PetItemMin, Dialog } from "@/components";
 import { Http } from "@/utils";
 import { mapState } from "vuex";
 import { BaseConfig } from '@/config';
-import { CommonMethod } from "@/mixin";
 
 export default {
-	mixins: [CommonMethod],
 	components: {PetItemMin, Dialog},
 	computed: {
 		...mapState({
@@ -58,8 +52,56 @@ export default {
 			let data = await Http.getMyAuctionHistory(myAccount);
 			if(data){
 				data.list.map(item=>{
+					if(item.tokenId != 0){
+						item.tokenName = BaseConfig.NftCfg[item.prototype]["tokenName"];
+						item.vType = parseInt(item.prototype / 10000);
+					}
 					item.isBuy =  item.bidder.toLocaleLowerCase() == myAccount.toLocaleLowerCase();
-					item.petList = this.getPetList(item);
+
+					//生成显示小头像数据
+					let petList = [];
+					//1155
+					if(item.tokenId == 0){
+						let {ids, amounts, bidPrice} = item;
+						ids.map((prototype, index)=>{
+							let obj = BaseConfig.NftCfg[prototype];
+							if(obj){
+								petList.push({
+									...obj,
+									bidPrice,
+									prototype,
+									level: 1,
+									num: amounts[index],
+									chain: "bnb",
+									tokenId: 1,
+									hashrate: obj.quality,
+									lvHashrate: obj.quality,
+									vType: parseInt(prototype / 1e4),
+									quality: obj.quality,
+								});
+							}
+						});
+					}else{
+						//721
+						let obj = BaseConfig.NftCfg[item.prototype];
+						petList.push({
+							...obj,
+							bidPrice: item.bidPrice,
+							prototype: item.prototype,
+							level: item.level,
+							num: 1,
+							chain: "bnb",
+							tokenId: item.tokenId,
+							hashrate: item.hashrate,
+							lvHashrate: item.lvHashrate,
+							vType: parseInt(item.prototype / 1e4),
+							category: item.category,
+							quality: item.quality,
+						})
+					}
+
+					item.petList = petList;
+
 				});
 				data.uptime = new Date().valueOf();
 				let historyNotice = this.historyNotice;
@@ -68,40 +110,6 @@ export default {
 				}
 				this.$store.commit("marketState/setData", {marketHistory: data, historyNotice});
 			}
-		},
-		getPetList(data){
-			let petList = [];
-			//1155
-			let {ids, amounts, bidPrice, tokens, type} = data;
-			ids.map((prototype, index)=>{
-				let obj = BaseConfig.NftCfg[prototype];
-				petList.push({
-					...obj,
-					bidPrice,
-					level: 1,
-					num: amounts[index],
-					chain: "bnb",
-					tokenId: 0,
-					hashrate: obj.quality,
-					lvHashrate: obj.quality,
-					vType: parseInt(prototype / 1e4),
-				});
-			});
-			// 721
-			tokens.map(item=>{
-				let obj = BaseConfig.NftCfg[item.prototype];
-				petList.push({
-					...obj,
-					...item,
-					num: 1,
-					chain: "bnb",
-					bidPrice,
-					vType: this.getVType(item.prototype),
-					noPrice: true,
-					isGroup: type == 1
-				})
-			})
-			return petList;
 		},
 	}
 }

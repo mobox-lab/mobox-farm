@@ -1,74 +1,41 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
+			<span>{{$t("Market_33")}}: {{ marketPetsMy.total }}</span>&nbsp;
 			<div id="market-pet-fitter">
-				<div class="dib por cur-point" @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
-					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
+					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-
-				<div class="dib por mgl-10 filter"  >
-					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
-					<div class="filter-panel hide " ref="filter">
-						<div >
-							<h5>Qualities</h5>
-							<div @click="onSelectQualityChange(pos)" class="filter-select-item" :class="{'active': pos == myMarketSellFilter.vType}" v-for="(item, pos) in $parent.$parent.selectVType" :key="item">
-								{{item}}
-							</div>
-						</div>
-						<div class="mgt-30 tac" @click="toggleFilter($refs.filter)">
-							<button class="btn-primary" style="width:80%">{{$t("Common_03")}}</button>
-						</div>
-					</div>
-				</div>
+				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="myMarketSellFilter.category" :onChange="onSelectTypeChange" />&nbsp;
+				<Dropdown :list="$parent.selectVType" :defaultSelectPos="myMarketSellFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
 			</div>
-			<div class="vertical-children  dib">
-				<span>{{$t("Market_33")}}({{ marketPetsMy.total + bigSellMy.total }})</span>
-				<div class="dib filter-show-group">
-					<div class="filter-show-item" v-if="myMarketSellFilter.vType != 0" >
-						<span class="filter-close" @click="onSelectQualityChange(0)">&times;</span>
-						<span class="mgl-10">{{$parent.$parent.selectVType[myMarketSellFilter.vType]}}</span>
-					</div>
-				</div>
-			</div>
-
 		</div>
-		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="vertical-children momo-content">
-			<div class="no-show" v-if="getShowList.length == 0 && getBigShowList.length == 0">
-				<img src="@/assets/no_items.png" alt="">
-				<p class="opa-6 mgt-10">No items to display</p>
-			</div>
-			<div>
-				<router-link :to="`/bigSellView/`+item.tx" v-for="item in getBigShowList" :key="item.tx">
-					<BigSellItem :data="item" />
-				</router-link>
-			</div>
-			<div>
-				<router-link :to=" item.index >= 0 ? ('/auctionView/'+ item.tx):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime + item.tokenId+item.ids[0]">
-					<PetItem  v-bind:data="{item: item.tokenId == 0?item.list1155[0]:item}" class="market" v-if="item.tokenId != 0 || item.list1155.length == 1" >
-						<div class="vertical-children " style="font-size: 18px" v-if="item.index >= 0 ">
-							<img src="@/assets/coin/USDT.png"  alt="" height="20"/>&nbsp;
-							<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">USDT</sub></span>
-						</div>
-						<div class="vertical-children " v-if="item.index < 0" style="font-size: 18px;">
-							<Loading />&nbsp;
-							<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
-							<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
-						</div>
-					</PetItem>
-					<PetItemScroll v-bind:data="{item: item}" class="market" v-else>
-						<div class="vertical-children " style="font-size: 18px;" v-if="item.index >= 0">
-							<img src="@/assets/coin/USDT.png"  alt="" height="20"/>&nbsp;
-							<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">USDT</sub></span>
-						</div>
-						<div class="vertical-children " v-if="item.index < 0" style="font-size: 18px;">
-							<Loading />&nbsp;
-							<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
-							<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
-						</div>
-					</PetItemScroll>
-				</router-link>
-			</div>
+		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children">
+			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ item.tx):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime">
+				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
+					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
+						<img src="@/assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
+						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
+					</div>
+					<div class="vertical-children mgt-10" v-if="item.index < 0" style="font-size: 18px;">
+						<img  src="@/assets/icon/loading.png" class="rotate" height="20" alt=""  /> &nbsp;
+						<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
+						<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
+					</div>
+				</PetItem>
+				<PetItemScroll v-bind:data="{item: item}" class="market" v-if="item.tokenId == 0 ">
+					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
+						<img src="@/assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
+						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
+					</div>
+					<div class="vertical-children mgt-10" v-if="item.index < 0" style="font-size: 18px;">
+						<img  src="@/assets/icon/loading.png" class="rotate" height="20" alt=""  /> &nbsp;
+						<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
+						<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
+					</div>
+				</PetItemScroll>
+			</router-link>
 		</div>
 
 		<div style="margin-top: 30px" v-if="Math.ceil(marketPetsMy.total / onePageCount) > 1">
@@ -78,20 +45,20 @@
 </template>
 
 <script>
-import { Page, PetItem, PetItemScroll, Loading } from '@/components';
+import {Page, PetItem, PetItemScroll, Dropdown} from "@/components";
 import { CommonMethod } from "@/mixin";
-import { Http, Wallet,Common  } from '@/utils';
-import { BaseConfig,  } from "@/config";
+import { Http, Wallet } from '@/utils';
+import { BaseConfig } from "@/config";
 import { mapState } from "vuex";
-import BigSellItem from './items/BigSellItem.vue';
 
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {   PetItem, PetItemScroll, Page, Loading, BigSellItem},
+	// components: {  Page, Dropdown},
+	components: {   PetItem, PetItemScroll, Dropdown, Page},
 	data(){
 		return({
-			onePageCount: 12,
+			onePageCount: 15,
 			myAccount: "",
 			hasLoad: false,
 		});
@@ -99,7 +66,6 @@ export default {
 	computed: {
 		...mapState({
 			marketPetsMy: (state) => state.marketState.data.marketPetsMy,
-			bigSellMy: (state) => state.momoMarketState.data.bigSellMy,
 			tempSells: (state) => state.marketState.data.tempSells,
 			tempMarketCancelTx: (state) => state.marketState.data.tempMarketCancelTx,
 			marketMySellPage: (state) => state.marketState.data.marketMySellPage,
@@ -123,7 +89,6 @@ export default {
 						if(this.myMarketSellFilter.category == category) isMatchCategory = true;
 						if(this.myMarketSellFilter.vType == vType) isMathVType = true;
 					})
-					item.list1155 = this.get1155ShowList(item);
 				}
 				if (isMatchCategory && isMathVType) {
 					totalPet.push(item);
@@ -131,7 +96,6 @@ export default {
 			});
 			return totalPet;
 		},
-		
 		getShowList(){
 			let list = this.getSellList;
 			let cancelTx = [];
@@ -143,48 +107,23 @@ export default {
 				this.onePageCount * (this.marketMySellPage - 1),
 				this.onePageCount * this.marketMySellPage
 			);
-		},
-		getBigShowList(){
-			return this.marketMySellPage > 1?[]: this.bigSellMy.list;
 		}
 	},
 	async created(){
 		this.myAccount = await Wallet.ETH.getAccount();
-
 		if(!this.hasLoad){
 			this.hasLoad = true;
 			this.getAuctionPetsMy(true);
-			Common.app.getBigAuctionPetsMy();
 		}
 		timer = setInterval(()=>{
 			this.getAuctionPetsMy();
-		}, 10000);
-
+		}, 5000);
 	},
+	
 	beforeDestroy(){
 		if(timer) clearInterval(timer);
 	},
 	methods: {
-		get1155ShowList(item){
-			let {ids, amounts} = item;
-			let arr = [];
-			ids.map((prototype, index)=>{
-				let obj = BaseConfig.NftCfg[prototype];
-				obj.num = amounts[index];
-				obj.vType = parseInt(prototype / 1e4);
-				obj.tokenId = 0;
-				obj.level = 1;
-				obj.chain = "bnb";
-				obj.hashrate = obj.quality;
-				obj.lvHashrate = obj.quality;
-				arr.push(obj);
-			});
-
-			arr.sort((a,b)=>{
-				return b.vType - a.vType;
-			});
-			return arr;
-		},
 		//获取市场上的宠物
 		async getAuctionPetsMy(needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
@@ -206,9 +145,6 @@ export default {
 						needGetNameArr.push(item.tokenId);
 					}
 					needGetGemArr.push(Number(item.tokenId));
-					hashArr.push(item.tx + item.tokenId);
-				}else{
-					hashArr.push(item.tx + item.ids[0])
 				}
 				//计算当前价格
 				let endTime = Number(item.uptime) + item.durationDays * 86400;
@@ -220,7 +156,7 @@ export default {
 				}
 				item.nowPrice = nowPrice;
 				hashArr.push(item.tx);
-				item.tx = item.tx.toString() + item.auctor.toString() + item.index;
+				
 			});
 
 			//删除临时出售的数据
@@ -245,16 +181,6 @@ export default {
 				await this.getMomoGem(needGetGemArr);
 			})
 		},
-		// 获取市场上我的大宗交易
-		async getBigAuctionPetsMy2(needLoading = false){
-			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
-			let account = this.myAccount;
-			let data = await Http.getMyBigAuctionList(account);
-			this.$store.commit("marketState/setData", {marketLoading: false});
-			console.log(data, "big------");
-			this.$store.commit("momoMarketState/setData", {bigSellMy:data});
-		},
-	
 		async getMomoName(needGetNameArr){
 			let fitterArr = [];
 			//去除重复的名字
@@ -303,7 +229,7 @@ export default {
 		onPageChange(page){
 			this.$store.commit("marketState/setData", {marketMySellPage: page});
 			this.$nextTick(()=>{
-				this.$refs.page && this.$refs.page.initPage();
+				this.$refs.page.initPage();
 			})
 		},
 		onSelectQualityChange(pos) {
@@ -327,7 +253,12 @@ export default {
 </script>
 
 <style scoped>
-
+	#shop-history {
+		margin-right: 15px;
+		cursor: pointer;
+		position: relative;
+		user-select: none;
+	}
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;
@@ -337,7 +268,6 @@ export default {
 
 		#market-pet-fitter{
 			zoom: 0.8;
-			top: -65px !important;
 		}
 	}
 </style>

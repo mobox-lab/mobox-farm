@@ -34,6 +34,13 @@ export default {
 			}
 		}
 	},
+	watch: {
+		defaultSelectPos: function(newValue){
+			if(newValue != this.selectPos){
+				this.selectPos = newValue;
+			}
+		}
+	},
 	computed: {
 		getNowPos: function () {
 			return this.selectPos == -1

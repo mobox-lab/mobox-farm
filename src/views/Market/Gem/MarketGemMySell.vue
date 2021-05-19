@@ -147,14 +147,16 @@ export default {
 			})
 		},
 		onSelectLevelChange(pos) {
-			this.$store.commit("marketState/myGemMarketSellFilter", {
+			this.$store.commit("marketState/setFilter", {
+				filterName:"myGemMarketSellFilter",
 				type: "level",
 				value: pos,
 			});
 			this.onPageChange(1);
 		},
 		onSelectTypeChange(pos) {
-			this.$store.commit("marketState/myGemMarketSellFilter", {
+			this.$store.commit("marketState/setFilter", {
+				filterName:"myGemMarketSellFilter",
 				type: "type",
 				value: pos,
 			});

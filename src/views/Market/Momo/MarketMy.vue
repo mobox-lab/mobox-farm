@@ -5,11 +5,11 @@
 			<div id="market-pet-fitter">
 				<div class="dib mgt-10" id="shop-car" @click="oprDialog('shop-car-dialog', 'block')" >
 					<span id="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span>
-					<img src="../../assets/icon/shopcar.png" alt="" />
+					<img src="@/assets/icon/shopcar.png" alt="" />
 				</div>
 				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
-					<img src="../../assets/icon/tradeRecord.png" alt="" />
+					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
 				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="myMarketPetFilter.category" :onChange="onSelectTypeChange" />&nbsp;
 				<Dropdown :list="$parent.selectVType" :defaultSelectPos="myMarketPetFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
@@ -22,7 +22,7 @@
 					<div style="height:43px;position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
 						<div v-if="item.isLock" class="tac">
 							<button class="btn-primary disable-btn">
-								<img  src="../../assets/icon/lock.png" alt="" height="20"/>
+								<img  src="@/assets/icon/lock.png" alt="" height="20"/>
 							</button>
 						</div>
 						<div v-else>
@@ -66,22 +66,22 @@
 			<div class="dialog-content mgt-10" id="shop-car-content">
 				<div v-for="item in shopCar" :key="item.prototype" :class="'pet_hover_lv' +item.vType" class="shop-car-item  vertical-children por mgt-10">
 					<div class="dib por">
-						<img  :src="require(`../../assets/pet/${item.prototype}.png`)" alt="" width="100" height="100" />
+						<img  :src="require(`@/assets/pet/${item.prototype}.png`)" alt="" width="100" height="100" />
 						<p style="position:absolute;bottom:5px;width:100%;text-align:center">
 							<span style="background:rgba(0,0,0,0.5);padding:2px 10px;font-size:12px;border-radius:10px">x{{item.num}}</span>
 						</p>
 					</div>
 					<div class="dib small mgl-5">
 						<p class="vertical-children">
-							<img src="../../assets/icon/airdrop.png" width="20" alt="" />
+							<img src="@/assets/icon/airdrop.png" width="20" alt="" />
 							<span class="mgl-5 color-w" style="font-size:18px"> {{ item.lvHashrate }} </span>
 						</p>
 						<p class="vertical-children mgt-5">
-							<img :src=" require(`../../assets/icon/${ category_img[item.category] }.png`) " width="12" alt="" />&nbsp;
+							<img :src=" require(`@/assets/icon/${ category_img[item.category] }.png`) " width="12" alt="" />&nbsp;
 							<span class="mgl-5"> Lv.{{ item.level }} </span>
 						</p>
 						<p class="vertical-children mgt-5">
-							<img :src=" require(`../../assets/icon/bnb.png`) " width="12" alt="" />
+							<img :src=" require(`@/assets/icon/bnb.png`) " width="12" alt="" />
 							<span class="mgl-5"> {{  $t(item.tokenName) }} </span>
 						</p>
 						
@@ -89,9 +89,9 @@
 					<div class="absolute-r tar" style="right: 20px; top: 5px">
 						<span class="small">{{$t("Market_39")}}</span>
 						<p class="vertical-children mgt-5">
-							<img src="../../assets/coin/BUSD.png" height="25" alt="" />
+							<img src="@/assets/coin/BUSD.png" height="25" alt="" />
 							<span style="font-size: 16px" class="color-w mgl-5" >{{ item.sellPrice }}</span >&nbsp;
-							<img @click="edit1155Price(item)" class="mgl-5 cur-point" src="../../assets/icon/edit.png" height="24" alt="" />
+							<img @click="edit1155Price(item)" class="mgl-5 cur-point" src="@/assets/icon/edit.png" height="24" alt="" />
 						</p>
 						<p class="mgt-5" >
 							<SelectNum :scale="0.8" :maxNum="item.num"  :defaultNum="item.sellNum" :data="item" :onChange="onNumChange" />
@@ -102,13 +102,13 @@
 			<div class="vertical-children por mgt-10 tal" style="height: 50px">
 				<div class="dib por">
 					<span id="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span >
-					<img src="../../assets/icon/shopcar.png" alt="" />
+					<img src="@/assets/icon/shopcar.png" alt="" />
 				</div>
 
 				<div class="dib tal" style="margin-left: 12px">
 					<span class="small opa-6">{{$t("Market_18")}}</span>
 					<p class="vertical-children mgt-5">
-						<img src="../../assets/coin/BUSD.png" height="25" alt="" />
+						<img src="@/assets/coin/BUSD.png" height="25" alt="" />
 						<span style="font-size: 20px" class="color-w mgl-5">{{ getShopCarTotalPrice }} <small style="font-size:12px">BUSD</small></span>
 					</p>
 					<button @click="confirmSellShopCar" :class="`btn-primary  ${ shopCar.length == 0 ? 'disable-btn' : '' }`" style="position: absolute; right: 0px; top: 10px" >
@@ -124,7 +124,7 @@
 					<p class="small tal opa-6">{{$t("Market_39")}}</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="../../assets/coin/BUSD.png" alt="" />
+							<img  src="@/assets/coin/BUSD.png" alt="" />
 						</div>
 						<input v-model="inputPrice" class="ly-input" type="number"
 							style=" background: #0f172a; text-align: center; width: 100%; "
@@ -146,7 +146,7 @@
 					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} (BUSD)</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="../../assets/coin/BUSD.png" alt="" />
+							<img  src="@/assets/coin/BUSD.png" alt="" />
 						</div>
 						<input v-model="sellObj.startPrice"   class="ly-input sell-input" type="number" :placeholder="priceTypePos == 1?$t('Market_11'):$t('Market_17')" v-number  data-max="100000000"/>
 					</div>
@@ -156,7 +156,7 @@
 						<p class="small tal opa-6">{{$t("Market_12")}} (BUSD)</p>
 						<div class="por mgt-5">
 							<div class="ly-input-pre-icon">
-								<img  src="../../assets/coin/BUSD.png" alt="" />
+								<img  src="@/assets/coin/BUSD.png" alt="" />
 							</div>
 							<input v-model="sellObj.endPrice" class="ly-input sell-input" type="number" :placeholder="$t('Market_12')" v-number data-max="100000000"/>
 						</div>
@@ -196,23 +196,6 @@ export default {
 	mixins: [CommonMethod],
 	data() {
 		return {
-			select1: [
-				this.$t("MOMO_02"),
-				this.$t("MOMO_03"),
-				this.$t("MOMO_04"),
-				this.$t("MOMO_05"),
-				this.$t("MOMO_06"),
-				this.$t("MOMO_07"),
-			],
-			select3: [
-				this.$t("MOMO_08"),
-				this.$t("MOMO_09"),
-				this.$t("MOMO_10"),
-				this.$t("MOMO_11"),
-				this.$t("MOMO_12"),
-				this.$t("MOMO_13"),
-				this.$t("MOMO_14"),
-			],
 			onePageCount: 15,
 			inputPrice: "",
 			shopCar: [],
@@ -529,14 +512,16 @@ export default {
 			this.setShopCarPrice();
 		},
 		onSelectQualityChange(pos) {
-			this.$store.commit("marketState/myMarketPetFilter", {
+			this.$store.commit("marketState/setFilter", {
+				filterName: "myMarketPetFilter",
 				type: "vType",
 				value: pos,
 			});
 			this.onPageChange(1);
 		},
 		onSelectTypeChange(pos) {
-			this.$store.commit("marketState/myMarketPetFilter", {
+			this.$store.commit("marketState/setFilter", {
+				filterName: "myMarketPetFilter",
 				type: "category",
 				value: pos,
 			});

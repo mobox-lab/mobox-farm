@@ -14,6 +14,7 @@ export default class WalletConfig {
 		momoGemApply: "0x5Cc9AF3DEaAc89764eb98B0513E8d938D90B073D",//宝石申购合约
 		momoGemToken: "0xf91d6e71F6D9E6DBfFE92597ce0fdD76058c49a7", //宝石token， ERC1155
 		momoGemOpr: "0x5Fb3035d07E5d0E1D8Efbc5aE5b7546C15173035", //宝石穿戴操作合约
+		momoRent: "0xF585bC2Df509c73d2A1F0868FCB64D198A2A2011", //momo出租
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

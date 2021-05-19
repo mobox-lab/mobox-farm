@@ -404,7 +404,7 @@ export default {
 			this.oprDialog('unstake-confirm-dialog', 'none');
 			//判断是否参与了高级申购
 			let hasHighApply = await Wallet.ETH.hasHighApply();
-			if(!hasHighApply){
+			if(hasHighApply){
 				this.showNotify(this.$t("Gemstone_38"), "error");
 				return;
 			}

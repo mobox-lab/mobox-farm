@@ -358,7 +358,7 @@ import GemBag from "./views/Gem/GemBag";
 import {Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
 import { InitEth, InitTron, CommonMethod } from "@/mixin";
 import { mapState } from "vuex";
-import { Common, SwapHttp, Http } from "@/utils";
+import { Common, Http, Wallet } from "@/utils";
 import { PancakeConfig } from "@/config";
 
 let timer = null;
@@ -656,13 +656,10 @@ export default {
 
 		//
 		async setOurPrice(coinName){
-			let res = await SwapHttp.post("/pair/price", {from: coinName, to: "BNB", amountIn: 1, version: "V2"});
-			if(res.data.code == 200){
-				let res2 = await SwapHttp.post("/pair/price", {from: "BNB", to: "USDT", amountIn: res.data.data.amountOut, version: "V2"});
-				if(res2.data.code == 200){
-					this.ourPrice[coinName] = this.numFloor(res2.data.data.amountOut, 1e4);
-				}
-			}
+			let wBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+			if(wBNB) return;
+			let res = await Wallet.ETH.getAmountsOut(1e18, [PancakeConfig.SelectCoin[coinName].addr, wBNB, PancakeConfig.SelectCoin["USDT"].addr]);
+			this.ourPrice[coinName] = this.numFloor(res[2]/1e18, 1e4);
 		},
 		//滚动到激活的位置
 		scorllToTargetPos() {

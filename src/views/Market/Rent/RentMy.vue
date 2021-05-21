@@ -17,7 +17,7 @@
 				<PetItem  v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()" v-bind:data="{item: item}" class="market" >
 					<div style="height:43px;position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
 						<div v-if="item.vType > 3" class=" tac">
-							<router-link :to="`/rentView/wallet/${item.tokenId}`">
+							<router-link :to="`/rentView/${item.tokenId}`">
 								<button class="btn-primary" >
 									<span>出租</span>
 								</button>

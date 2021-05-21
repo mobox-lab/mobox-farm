@@ -23,7 +23,7 @@
 		</div>
 		<div v-else-if="marketTypePos==1" class="mgt-10">
 			<Tab :list="rentTabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempGemSells.length + tempGemMarketCancelTx.length]"  />
-			<MarketAll v-show="marketTabPos == 0" />
+			<RentAll v-show="marketTabPos == 0" />
 			<RentMy v-show="marketTabPos == 1" />
 			<MarketMySell v-if="marketTabPos == 2" />
 			<MarketStatistics v-if="marketTabPos == 3" />
@@ -60,6 +60,7 @@ import MarketGemMySell from './Gem/MarketGemMySell.vue'
 import GemHistory from './Gem/GemHistory.vue'
 import MarketGemStatistics from './Gem/MarketGemStatistics.vue'
 //Rent
+import RentAll from './Rent/RentAll.vue'
 import RentMy from './Rent/RentMy.vue'
 
 
@@ -75,7 +76,7 @@ export default {
 		Tab , Loading,
 		MarketAll, MarketMy, MarketMySell ,MarketStatistics,MomoHistory,
 		MarketGemAll,MarketGemMy,MarketGemMySell, MarketGemStatistics,GemHistory,
-		RentMy,
+		RentAll,RentMy,
 	},
 	data() {
 		return {

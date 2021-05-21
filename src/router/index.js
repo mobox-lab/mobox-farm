@@ -72,7 +72,7 @@ const routes = [
 		component: AuctionGemView
 	},
 	{
-		path: '/rentView/:type/:tokenId',
+		path: '/rentView/:tokenId',
 		name: 'RentView',
 		component: RentView
 	},

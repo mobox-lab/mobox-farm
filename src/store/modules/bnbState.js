@@ -15,6 +15,7 @@ const baseCoinAttr = {
 	allowanceToSwap: -1,
 	allowanceToAuction: -1,
 	allowanceToGemAuction: -1,
+	allowanceToRent: -1,
 	totalAirdrop: 0,
 	perFullShare: 0,
 	isApproving: false, //是否授权中

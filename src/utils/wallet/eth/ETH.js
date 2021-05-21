@@ -105,6 +105,7 @@ export default class ETH {
 		], PancakeConfig.SwapRouterAddr);
 		this.pancakeSwapContracV2 = new this.web3.eth.Contract([
 			PancakSwapContract.approve,
+			PancakSwapContract.getAmountsOut,
 			PancakSwapContract.allowance,
 			PancakSwapContract.addLiquidity,
 			PancakSwapContract.removeLiquidity,
@@ -1553,6 +1554,19 @@ export default class ETH {
 		
 	}
 
+	//获取兑换价格
+	static async getAmountsOut(amountIn, path){
+		amountIn = this.numToHex(BigNumber(amountIn));
+		let contract = new this.web3.eth.Contract([
+			PancakSwapContract.getAmountsOut,
+		], PancakeConfig.SwapRouterAddrV2);
+		return new Promise(resolve => {
+			contract.methods.getAmountsOut(amountIn, path).call().then(data => {
+				resolve(data);
+			})
+		});
+	}
+
 	//宝石相关
 	//获取背包宝石数量
 	static async getMyGemNum(){
@@ -2003,25 +2017,25 @@ export default class ETH {
 
 		let contract = new this.web3.eth.Contract([
 			{
-				"name": "bid",
-				"type": "createRent",
+				"name": "createRent",
+				"type": "function",
 				"inputs": [
 					{"name": "tokenId_","type": "uint256"},
 					{"name": "curRentDays_","type": "uint256"},
 					{"name": "curRentRound_","type": "uint256"},
 					{"name": "curRentPrice_","type": "uint256"},
-					{"name": "nextRentDays_","type": "uint256"},
-					{"name": "nextRentRound_","type": "uint256"},
-					{"name": "nextRentPrice_","type": "uint256"},
 				],
 				"outputs": [],
 			}
 		], WalletConfig.ETH.momoRent);
 
+		console.log({tokenId_, curRentDays_, curRentRound_,curRentPrice_});
+
+		curRentPrice_ = BigNumber(Common.numFloor(curRentPrice_, 1e9)).times(BigNumber(1e18));
+
 		return new Promise(resolve => {
 			this.sendMethod(
-				contract.methods.createRent(tokenId_, curRentDays_, curRentRound_,
-					curRentPrice_,0,0,0), {from: myAddr},
+				contract.methods.createRent(Number(tokenId_), Number(curRentDays_), Number(curRentRound_),this.numToHex(curRentPrice_)), {from: myAddr},
 				hash=>resolve(hash),
 				()=>{
 					console.log("createRent success!!!!!");
@@ -2039,8 +2053,8 @@ export default class ETH {
 
 		let contract = new this.web3.eth.Contract([
 			{
-				"name": "bid",
-				"type": "addRentRenewal",
+				"name": "addRentRenewal",
+				"type": "function",
 				"inputs": [
 					{"name": "tokenId_","type": "uint256"},
 					{"name": "orderId_","type": "uint256"},
@@ -2064,6 +2078,108 @@ export default class ETH {
 				}
 			)
 		});
+	}
+
+	//获取momo出租详情
+	static async getMomoRentInfo(tokenId){
+		console.log("getPetInfo", tokenId);
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "getRentInfo",
+				"type": "function",
+				"inputs": [
+					{"name": "tokenId_","type": "uint256"},
+				],
+				"outputs": [
+					{"name": "orderId","type": "uint256"},
+					{"name": "status","type": "uint256"},
+					{"name": "rentTime","type": "uint256"},
+					{"name": "owner","type": "address"},
+					{"name": "renter","type": "address"},
+					{"name": "currentRentDays","type": "uint256"},
+					{"name": "currentRentRound","type": "uint256"},
+					{"name": "currentRentPrice","type": "uint256"},
+					{"name": "nextRentDays","type": "uint256"},
+					{"name": "nextRentRound","type": "uint256"},
+					{"name": "nextRentPrice","type": "uint256"},
+					{"name": "gameId","type": "uint256"},
+				],
+			}
+		], WalletConfig.ETH.momoRent);
+
+		return new Promise(resolve => {
+			contract.methods.getRentInfo(tokenId).call().then(data => {
+				resolve(data);
+			})
+		});
+
+	}
+
+	//取消上架的租赁
+	static async cancelPutRent({tokenId_, orderId_},recipet){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		console.log({tokenId_,orderId_ });
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "cancelRent",
+				"type": "function",
+				"inputs": [
+					{"name": "tokenId_","type": "uint256"},
+					{"name": "orderId_","type": "uint256"},
+				],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.momoRent);
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.cancelRent(Number(tokenId_), Number(orderId_)), {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					console.log("cancelPutRent success!!!!!");
+					Common.app.unLockBtn("cancelRentLock");
+					recipet();
+				}
+			)
+		});
+	}
+
+	//租赁momo
+	static async rentMomo({tokenId_, orderId_, gameId_, price_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "rent",
+				"type": "function",
+				"inputs": [
+					{"name": "tokenId_","type": "uint256"},
+					{"name": "orderId_","type": "uint256"},
+					{"name": "gameId_","type": "uint256"},
+					{"name": "price_","type": "uint256"},
+				],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.momoRent);
+
+		console.log({tokenId_, orderId_, gameId_, price_});
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.rent(tokenId_, orderId_,gameId_ ,this.numToHex(price_)), {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					console.log("rentMomo success!!!!!");
+					Common.app.unLockBtn("rentLock");
+				}
+			)
+		});
+
+
 	}
 
 

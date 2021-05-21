@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
-			<span class="vertical-children mgt-10 dib">{{$t("Market_33")}}: {{ marketPets.total }} </span>
+			<span class="vertical-children mgt-10 dib">{{$t("Market_33")}}: {{ marketRents.total }} </span>
 			<span class="search-box mgl-20 mgt-10 dib">
 				<div class="dib por" >
 					<div class="dib por">
@@ -25,37 +25,37 @@
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="marketSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
-				<Dropdown :list="$parent.selectVType" :defaultSelectPos="marketSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
-				<Dropdown :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
+				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="marketRentSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
+				<Dropdown :list="$parent.selectVType" :defaultSelectPos="marketRentSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
+				<Dropdown :list="sortArr" :defaultSelectPos="marketRentSearch.sort" :onChange="onSortChange" />&nbsp;
 				<Dropdown :list="$parent.getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="$parent.onCoinChange" />&nbsp;
 			</div>
 		</div>
-		<div :class="marketPets.list.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
-			<router-link :to="'/auctionView/'+ item.tx"  v-for="item in marketPets.list" :key="item.tx + item.index">
+		<div :class="marketRents.list.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
+			<router-link :to="'/rentView/'+ item.tokenId"  v-for="item in marketRents.list" :key="item.tx + item.index">
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
-					<div class="vertical-children mgt-10" style="font-size: 18px">
-						<img src="@/assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
+					<div class="aveage-box" style="color:#fff">
+						<div class="vertical-children mgt-20 tal" style="font-size: 18px">
+							<img src="@/assets/icon/rent_time.png" alt="" height="20"/>&nbsp;
+							<span>{{item.rentDays}} D</span>
+						</div>
+						<div class="vertical-children mgt-20 tar" style="font-size: 18px">
+							<img src="@/assets/coin/MBOX.png" alt="" height="20"/>&nbsp;
+							<span>{{numFloor(item.rentPrice/1e9, 10000)}} <sub class="small">MBOX</sub></span>
+						</div>
 					</div>
 				</PetItem>
-				<PetItemScroll v-bind:data="{item: item}" class="market" v-if="item.tokenId == 0 ">
-					<div class="vertical-children mgt-10" style="font-size: 18px">
-						<img src="@/assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
-					</div>
-				</PetItemScroll>
 			</router-link>
 		</div>
 
 		<div style="margin-top: 30px" >
-			<Page ref="page" :defaultPage="this.marketPage" :totalPage="Math.ceil(marketPets.total / onePageCount)" :onChange="onPageChange" v-show="Math.ceil(marketPets.total / onePageCount) > 1" />
+			<Page ref="page" :defaultPage="this.marketRentPage" :totalPage="Math.ceil(marketRents.total / onePageCount)" :onChange="onPageChange" v-show="Math.ceil(marketRents.total / onePageCount) > 1" />
 		</div>
 	</div>
 </template>
 
 <script>
-import {  Page, PetItem, PetItemScroll, Dropdown } from "@/components";
+import {  Page, PetItem, Dropdown } from "@/components";
 import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
 import { BaseConfig } from "@/config";
@@ -64,7 +64,7 @@ import { mapState } from "vuex";
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {  Page, PetItem, PetItemScroll, Dropdown},
+	components: {  Page, PetItem, Dropdown},
 	data(){
 		return({
 			onePageCount: 15,
@@ -76,9 +76,9 @@ export default {
 	},
 	computed: {
 		...mapState({
-			marketPets: (state) => state.marketState.data.marketPets,
-			marketPage: (state) => state.marketState.data.marketPage,
-			marketSearch: (state) => state.marketState.data.marketSearch,
+			marketRents: (state) => state.marketState.data.marketRents,
+			marketRentPage: (state) => state.marketState.data.marketRentPage,
+			marketRentSearch: (state) => state.marketState.data.marketRentSearch,
 			momoNameObjs: (state) => state.marketState.data.momoNameObjs,
 			momoGemsObjs: (state) => state.marketState.data.momoGemsObjs,
 			marketLoading: (state) => state.marketState.data.marketLoading,
@@ -112,14 +112,14 @@ export default {
 		}
 	},
 	created(){
-		let searcheItem = BaseConfig.NftCfg[this.marketSearch.pType];
+		let searcheItem = BaseConfig.NftCfg[this.marketRentSearch.pType];
 		if(searcheItem){
 			this.setSearchItme({realName: this.getLangMap[searcheItem["tokenName"]], prototype: searcheItem.prototype});
 		}
-		this.getAuctionPets(this.marketPage, true);
+		this.getAuctionPets(this.marketRentPage, true);
 		if(timer) clearInterval(timer);
 		timer = setInterval(()=>{
-			this.getAuctionPets(this.marketPage);
+			this.getAuctionPets(this.marketRentPage);
 		}, 10000);
 	},
 	mounted(){
@@ -146,9 +146,9 @@ export default {
 			}else{
 				if(BaseConfig.NftCfg[prototype] == undefined) return;
 			}
-			this.$store.commit("marketState/setFilter", {filterName:"marketSearch",type: "pType", value: prototype});
+			this.$store.commit("marketState/setFilter", {filterName:"marketRentSearch",type: "pType", value: prototype});
 			this.$nextTick(()=>{
-				this.getAuctionPets(this.marketPage, true);
+				this.getAuctionPets(this.marketRentPage, true);
 			})
 		},
 		setSearchItme(item){
@@ -159,7 +159,8 @@ export default {
 		//获取市场上的宠物
 		async getAuctionPets(page, needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
-			let data = await Http.getAuctionList("BNB", page, 15, this.marketSearch);
+			let data = await Http.getRentList("BNB", page, 15, this.marketRentSearch);
+			console.log("getAuctionPets",data);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let needGetNameArr = [];
 			let needGetGemArr = [];
@@ -169,22 +170,15 @@ export default {
 					item.tokenName = tokenName;
 					item.gems = [0,0,0,0];
 					item.vType = parseInt(item.prototype/1e4);
+					item.chain = "bnb";
 					if(item.specialty == 1 || item.specialty == 3){
 						needGetNameArr.push(item.tokenId);
 					}
 					needGetGemArr.push(Number(item.tokenId));
 				}
-				//计算当前价格
-				let endTime = Number(item.uptime) + item.durationDays * 86400;
-				let nowTime = parseInt(new Date().valueOf() / 1000);
-				let nowPrice = item.endPrice;
-				let diffPrice = item.endPrice - item.startPrice;
-				if(endTime > nowTime){
-					nowPrice = item.startPrice + (diffPrice / item.durationDays * Math.floor((nowTime-item.uptime)/ 86400))
-				}
-				item.nowPrice = nowPrice;
+	
 			});
-			this.$store.commit("marketState/setData", {marketPets:data});
+			this.$store.commit("marketState/setData", {marketRents:data});
 			
 			this.$nextTick(async ()=>{
 				await this.getMomoGem(needGetGemArr);
@@ -208,10 +202,10 @@ export default {
 					});
 				}
 			}
-			this.marketPets.list.map(item=>{
+			this.marketRents.list.map(item=>{
 				item.tokenName = this.momoNameObjs[item.tokenId] || item.tokenName;
 			});
-			this.$store.commit("marketState/setData", {marketPets: this.marketPets, momoNameObjs : this.momoNameObjs});
+			this.$store.commit("marketState/setData", {marketRents: this.marketRents, momoNameObjs : this.momoNameObjs});
 		},
 		async getMomoGem(needGetGemArr){
 			let fitterArr = [];
@@ -231,43 +225,43 @@ export default {
 				}
 			}
 
-			this.marketPets.list.map(item=>{
+			this.marketRents.list.map(item=>{
 				item.gems = this.momoGemsObjs[item.tokenId] || [0,0,0,0];
 			});
-			this.$store.commit("marketState/setData", {marketPets: this.marketPets, momoGemsObjs : this.momoGemsObjs});
+			this.$store.commit("marketState/setData", {marketRents: this.marketRents, momoGemsObjs : this.momoGemsObjs});
 		},
 		onPageChange(page){
-			if(page == this.marketPage) return;
-			this.marketPets.list = [];
-			this.$store.commit("marketState/setData", {marketPage:page, marketPets: this.marketPets});
+			if(page == this.marketRentPage) return;
+			this.marketRents.list = [];
+			this.$store.commit("marketState/setData", {marketRentPage:page, marketRents: this.marketRents});
 			this.$nextTick(()=>{
-				this.getAuctionPets(this.marketPage, true);
+				this.getAuctionPets(this.marketRentPage, true);
 			});
 		},
 		onSelectCategoryChange(pos){
-			this.marketPets.list = [];
-			this.$store.commit("marketState/setData", {marketPage:1, marketPets: this.marketPets});
-			this.$store.commit("marketState/setFilter", {filterName:"marketSearch",type: "category", value: pos});
+			this.marketRents.list = [];
+			this.$store.commit("marketState/setData", {marketRentPage:1, marketRents: this.marketRents});
+			this.$store.commit("marketState/setFilter", {filterName:"marketRentSearch",type: "category", value: pos});
 			this.$nextTick(()=>{
-				this.getAuctionPets(this.marketPage, true);
+				this.getAuctionPets(this.marketRentPage, true);
 				this.$refs.page.initPage();
 			});
 		},
 		onSelectVTypeChange(pos){
-			this.marketPets.list = [];
-			this.$store.commit("marketState/setData", {marketPage:1, marketPets: this.marketPets});
-			this.$store.commit("marketState/setFilter", {filterName:"marketSearch",type: "vType", value: pos});
+			this.marketRents.list = [];
+			this.$store.commit("marketState/setData", {marketRentPage:1, marketRents: this.marketRents});
+			this.$store.commit("marketState/setFilter", {filterName:"marketRentSearch",type: "vType", value: pos});
 			this.$nextTick(()=>{
-				this.getAuctionPets(this.marketPage, true);
+				this.getAuctionPets(this.marketRentPage, true);
 				this.$refs.page.initPage();
 			});
 		},
 		onSortChange(pos){
-			this.marketPets.list = [];
-			this.$store.commit("marketState/setData", {marketPage:1, marketPets: this.marketPets});
-			this.$store.commit("marketState/setFilter", {filterName:"marketSearch",type: "sort", value: pos});
+			this.marketRents.list = [];
+			this.$store.commit("marketState/setData", {marketRentPage:1, marketRents: this.marketRents});
+			this.$store.commit("marketState/setFilter", {filterName:"marketRentSearch",type: "sort", value: pos});
 			this.$nextTick(()=>{
-				this.getAuctionPets(this.marketPage, true);
+				this.getAuctionPets(this.marketRentPage, true);
 				this.$refs.page.initPage();
 			});
 		}

@@ -101,6 +101,16 @@ export default class HTTP {
 		let { data } = await this.get(`/gem_auction/search/${chain}?page=${page}&limit=${limit}`, params);
 		return data;
 	}
+	static async getRentList(chain, page = 1, limit = 15, search = {}){
+		let params = {...search};
+		if(params.vType == 0) params.vType = "";
+		if(params.category == 0) params.category = "";
+		if(params.pType == 0) params.pType = "";
+
+		if(params.sort != undefined) params.sort = this.sortPosToName[params.sort];
+		let { data } = await this.get(`/momo_renter/search/${chain}?page=${page}&limit=${limit}`, params);
+		return data;
+	}
 	//获取交易市场上我的NFT
 	static async getMyGemAuctionList(chain, address) {
 		let { data } = await this.get(`/gem_auction/list/${chain}/${address}?sort=-time&page=1&limit=128`);

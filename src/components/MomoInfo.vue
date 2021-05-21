@@ -2,13 +2,13 @@
 	<div>
 		<!-- 宝石相关功能 -->
 		<div v-if="getNowPetItem.vType >= 4  && getNowPetItem.gems" class="mgt-20">
-			<h3 >{{getNowPetItem.location == 'stake'?$t("MOMO_40"): $t("Gemstone_44")}}</h3>
+			<h3 >{{getNowPetItem.location == 'stake'  && !isMarket ?$t("MOMO_40"): $t("Gemstone_44")}}</h3>
 			<div class="ly-input-content mgt-10" style="padding-bottom:20px">
 				<div class="aveage-box tac mgt-10 "  id="gem-show">
 					<div  v-for="(item, index) in [100,200,300,400]" :key="item"  class="tac">
 						<div class="gem-item por" style="max-width:80px" @click="showGemBag(index)">
 							<img :class="{'opa-3': Number(data.gems[index]) == 0}" :src="require(`@/assets/gem/${data.gems[index]==0?item+1:data.gems[index]}.png`)" alt="" width="100%">
-							<template v-if="getNowPetItem.location =='stake'">
+							<template v-if="getNowPetItem.location =='stake'  && !isMarket">
 								<svg v-if="Number(data.gems[index]) == 0 " style="position:absolute;right:3px;top:3px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
 									<path  fill="#E1FF17" d="M867.7 423.8H599.8V155.9c0-49.3-40-89.3-89.3-89.3s-89.3 40-89.3 89.3v267.9H153.3c-49.3 0-89.3 40-89.3 89.3s40 89.3 89.3 89.3h267.9v267.9c0 49.3 40 89.3 89.3 89.3s89.3-40 89.3-89.3V602.4h267.9c49.3 0 89.3-40 89.3-89.3s-40-89.3-89.3-89.3z" ></path>
 								</svg>
@@ -20,13 +20,13 @@
 								</template>
 							</template>
 						</div>
-						<div class="tac mgt-10" style="height:30px" v-if="getNowPetItem.location =='stake'">
+						<div class="tac mgt-10" style="height:30px" v-if="getNowPetItem.location =='stake'  && !isMarket">
 							<StatuButton :onClick="removeGem.bind(this, index)" v-if="Number(data.gems[index]) != 0" :isDisable="isDisableOpr"  :isLoading="lockBtn.takeOffGemLock > 0"  class="btn-small" style="width:100%;max-width:80px">{{$t("Gemstone_43")}}</StatuButton>
 						</div>
 					</div>
 				</div>
 
-				<div class="por mgt-20" style="height:50px;width:100%;" v-if="getNowPetItem.location =='stake'">
+				<div class="por mgt-20" style="height:50px;width:100%;" v-if="getNowPetItem.location =='stake' && !isMarket">
 					<div class="gemBag" @click="oprDialog('gemBag-dialog','block')">
 						<img  src="../assets/icon/gem_bag_icon.png" alt="">
 						<p class="stroke" :data-text="$t('Gemstone_16')">{{$t("Gemstone_16")}}</p>
@@ -274,6 +274,7 @@ export default {
 			return speciality == 2 || speciality == 3
 		},
 		getNowPetItem(){
+			console.log("getNowPetItem-------",this.data);
 			return this.data;
 		},
 		needApprove() {

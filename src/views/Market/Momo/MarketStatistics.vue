@@ -6,6 +6,7 @@
 						<li @click="daySelect = 1;getMomoAuctionStatistics() " :class="daySelect == 1?'active':''" class="opa-6">{{$t("Market_41")}}</li>
 						<li @click="daySelect = 7;getMomoAuctionStatistics() " :class="daySelect == 7?'active':''" class="opa-6">{{$t("Market_42")}}</li>
 						<li @click="daySelect = 30;getMomoAuctionStatistics() " :class="daySelect == 30?'active':''" class="opa-6">{{$t("Market_43")}}</li>
+						<li @click="daySelect = 'all';getMomoAuctionStatistics() " :class="daySelect == 'all'?'active':''" class="opa-6">All</li>
 					</ul>
 					<div class="tab-split"></div>
 				</div>

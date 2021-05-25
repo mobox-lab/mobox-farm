@@ -7,7 +7,7 @@
 			</div>
 			<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 1}" @click="$store.commit('marketState/setData', {marketTypePos: 1, marketTabPos: 0})">
 				<img src="../../assets/icon/rent_icon.png" alt="" height="30">&nbsp;
-				<span>MOMO出租</span>
+				<span>{{$t("Hire_01")}}</span>
 			</div>
 			<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 2}" @click="$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0})">
 				<img src="../../assets/icon/yellow_icon.png" alt="" height="30">&nbsp;
@@ -22,11 +22,11 @@
 			<MarketStatistics v-if="marketTabPos == 3" />
 		</div>
 		<div v-else-if="marketTypePos==1" class="mgt-10">
-			<Tab :list="rentTabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempGemSells.length + tempGemMarketCancelTx.length]"  />
+			<Tab :list="rentTabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,marketRentOrderList.total]"  />
 			<RentAll v-show="marketTabPos == 0" />
 			<RentMy v-show="marketTabPos == 1" />
-			<MarketMySell v-if="marketTabPos == 2" />
-			<MarketStatistics v-if="marketTabPos == 3" />
+			<RentMySell ref="rentMySell" v-show="marketTabPos == 2" />
+			<RentStatistics v-if="marketTabPos == 3" />
 		</div>
 		<div v-else class="mgt-10">
 			<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempGemSells.length + tempGemMarketCancelTx.length]"  />
@@ -42,6 +42,7 @@
 		
 		<MomoHistory ref="momoHistory" />
 		<GemHistory ref="gemHistory" />
+		<RentDeal ref="rentDeal" />
 	</div>
 </template>
 
@@ -62,7 +63,9 @@ import MarketGemStatistics from './Gem/MarketGemStatistics.vue'
 //Rent
 import RentAll from './Rent/RentAll.vue'
 import RentMy from './Rent/RentMy.vue'
-
+import RentMySell from './Rent/RentMySell.vue'
+import RentDeal from './Rent/RentDeal.vue'
+import RentStatistics from './Rent/RentStatistics.vue'
 
 import { mapState } from "vuex";
 import { PancakeConfig } from '@/config';
@@ -76,12 +79,12 @@ export default {
 		Tab , Loading,
 		MarketAll, MarketMy, MarketMySell ,MarketStatistics,MomoHistory,
 		MarketGemAll,MarketGemMy,MarketGemMySell, MarketGemStatistics,GemHistory,
-		RentAll,RentMy,
+		RentAll,RentMy,RentMySell, RentDeal, RentStatistics
 	},
 	data() {
 		return {
 			tabList: [this.$t('Market_01'), this.$t("Market_02"), this.$t("Market_03"), this.$t("Market_53")],
-			rentTabList:[this.$t('Market_01'), "出租","租借清单",this.$t("Market_53")],
+			rentTabList:[this.$t('Market_01'), this.$t("Hire_02"),this.$t("Hire_03"),this.$t("Market_53")],
 			tabPos: 0,
 			selectCategory: [
 				this.$t("MOMO_02"),
@@ -114,6 +117,7 @@ export default {
 			tempGemSells: (state) => state.marketState.data.tempGemSells,
 			tempGemMarketCancelTx: (state) => state.marketState.data.tempGemMarketCancelTx,
 			marketTypePos: (state) => state.marketState.data.marketTypePos,
+			marketRentOrderList: (state) => state.marketState.data.marketRentOrderList,
 			coinArr: (state) => state.bnbState.data.coinArr,
 		}),
 		getSelectCoinArr(){
@@ -129,13 +133,13 @@ export default {
 	async created(){
 		this.myAccount = await Wallet.ETH.getAccount();
 		this.getCoinValue();
-		this.$refs.momoHistory.getMyHistory(this.myAccount);
-		this.$refs.gemHistory.getMyHistory(this.myAccount);
+		this.$refs.momoHistory && this.$refs.momoHistory.getMyHistory(this.myAccount);
+		this.$refs.gemHistory && this.$refs.gemHistory.getMyHistory(this.myAccount);
 
 		if(timer) clearInterval(timer);
 		timer = setInterval(async ()=>{
-			await this.$refs.momoHistory.getMyHistory(this.myAccount);
-			await this.$refs.gemHistory.getMyHistory(this.myAccount);
+			await this.$refs.momoHistory && this.$refs.momoHistory.getMyHistory(this.myAccount);
+			await this.$refs.gemHistory &&  this.$refs.gemHistory.getMyHistory(this.myAccount);
 		}, 10000)
 
 	},

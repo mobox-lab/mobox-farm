@@ -27,9 +27,11 @@
 						</div>
 						<div v-else>
 							<div v-if="item.vType > 3" class=" tac">
-								<button class="btn-primary" @click="set721Price(item)">
+								<button v-if="item.rent.state==-1" class="btn-primary" @click="set721Price(item)">
 									<span>{{$t("Market_02")}}</span>
 								</button>
+								<span v-if="item.rent.state == 0" class="dib mgt-10">招租中</span>
+								<span v-if="item.rent.state == 1" class="dib mgt-10">出租中</span>
 							</div>
 
 							<div class="tac " v-if="item.vType <= 3" >

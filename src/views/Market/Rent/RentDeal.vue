@@ -1,66 +1,107 @@
 <template>
 	<section>
-		<Dialog id="rent-deal-dialog" :top="150" :width="400">
+		<Dialog id="rent-deal-dialog" :top="100" :width="390">
 			<h2>{{$t("Hire_33")}}</h2>
 			<p class="mgt-10" v-if="isRentOther">{{$t("Hire_10")}}: {{shorAddress(statusObj.owner)}}</p>
 			<p class="mgt-10" v-else>{{$t("Hire_09")}}: {{shorAddress(statusObj.renter)}}</p>
 			<div class="ly-input-content mgt-10">
+				<h3>{{$t("Hire_34")}}</h3>
 				<div class="aveage-box tal mgt-20">
-					<p>{{$t("Hire_49")}}</p>
-					<p class="tar vertical-children" v-if="statusObj.orderId != '-' ">
-						<img :src="require(`@/assets/coin/${showCoin}.png`)" alt="" height="25">
+					<p>{{$t("Hire_22")}}</p>
+					<p class="tar vertical-children">
+						<img src="@/assets/coin/MBOX.png" alt="" height="25">
 						<span class="mgl-5">
-							<span v-if="statusObj.rentPrice !='-' ">{{numFloor(statusObj.rentPrice/1e18, 1e4)}} {{showCoin}}</span>
+							<span v-if="statusObj.currentRentPrice !='-' ">{{numFloor(statusObj.currentRentPrice/1e18, 8)}} MBOX</span>
 							<span v-else><Loading /></span>
 						</span>
 					</p>
 				</div>
-			
-				<div class="aveage-box tal  mgt-10">
-					<p>{{$t("Hire_56")}}</p>
+				<div class="aveage-box tal mgt-10">
+					<p>{{$t("Hire_23")}}</p>
 					<p class="tar">
-						<span v-if="statusObj.rentDays !='-' ">{{statusObj.rentDays}} {{$t("Hire_46")}}</span>
+						<span v-if="statusObj.currentRentDays !='-' ">{{statusObj.currentRentDays}}</span>
 						<span v-else><Loading /></span>
 					</p>
 				</div>
-		
-				<StatuButton  :onClick="()=>oprDialog('rerent-day-dialog', 'block')" :isLoading="lockBtn.rentLock > 0" class="mgt-20" v-if="Number(statusObj.rentDays) > 0 && isRentOther" :isDisable="Number(statusObj.leftTs) <= 0">
+				<div class="aveage-box tal  mgt-10">
+					<p>{{$t("Hire_24")}}</p>
+					<p class="tar">
+						<span v-if="statusObj.currentRentRound !='-' ">{{statusObj.currentRentRound}}</span>
+						<span v-else><Loading /></span>
+					</p>
+				</div>
+				<StatuButton :isLoading="lockBtn.rentLock > 0" :onClick="reRent" class="mgt-10" v-if="Number(statusObj.currentRentRound) > 0 && isRentOther" :isDisable="Number(statusObj.leftTs) <= 0">
 					<span v-if="Number(statusObj.leftTs) > 0">{{$t("Hire_35")}}</span>
 					<span v-else>{{$t("Hire_32")}}</span>
 				</StatuButton>
-				
 			</div>
-			
+			<div class="ly-input-content mgt-10">
+				<h3>{{$t("Hire_36")}}</h3>
+				<div class="aveage-box tal mgt-20">
+					<p>{{$t("Hire_22")}}</p>
+					<p class="tar vertical-children" v-if="Number(statusObj.nextRentPrice) > 0">
+						<img src="@/assets/coin/MBOX.png" alt="" height="25">
+						<span class="mgl-5">{{numFloor(statusObj.nextRentPrice/1e18, 8) || "-"}} MBOX</span>
+					</p>
+					<p v-else class="tar">-</p>
+				</div>
+				<div class="aveage-box tal  mgt-10">
+					<p>{{$t("Hire_23")}}</p>
+					<p class="tar">{{Number(statusObj.nextRentDays) || "-"}}</p>
+				</div>
+				<div class="aveage-box tal  mgt-10">
+					<p>{{$t("Hire_24")}}</p>
+					<p class="tar">{{Number(statusObj.nextRentRound) > 0 ?  Number(statusObj.nextRentRound)-1 :  "-"}}</p>
+				</div>
+				<button class="mgt-10 btn-primary" @click="oprDialog('new-deal-dialog', 'block')" v-if="!isRentOther && Number(statusObj.nextRentDays) == 0 && Number(statusObj.leftTs) > 0 ">{{$t("Hire_38")}}</button>
+				<StatuButton :onClick="reRent.bind(this, true)" :isLoading="lockBtn.rentLock > 0" class="mgt-10" v-if="isRentOther && Number(statusObj.nextRentDays) > 0 && Number(statusObj.currentRentRound) == 0 && Number(statusObj.leftTs) > 0">
+					{{$t("Hire_45")}}
+				</StatuButton>
+			</div>
 		</Dialog>
-		<Dialog id="rerent-day-dialog" :top="150" :width="390">
-			<h2>{{$t("Hire_35")}}</h2>
+		<Dialog id="new-deal-dialog" :top="100" :width="390">
+			<h2>{{$t("Hire_41")}}</h2>
 			<section class="mgt-20">
-				<p class="vertical-children">
-					<span>{{$t("Hire_49")}}: {{numFloor(statusObj.rentPrice/1e18, 1e4)}} {{showCoin}}</span>
-					<img :src="require(`@/assets/coin/${showCoin}.png`)" alt="" height="20" class="mgl-5">
-				</p>
+				<p >{{$t("Hire_13")}}</p>
 				<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
-					<p class="small tal opa-6">{{$t("Hire_55").replace('#0#', statusObj.rentDays)}}</p>
+					<p class="small tal opa-6">{{$t("Hire_22")}}(MBOX)</p>
 					<div class="por mgt-5">
-						<input v-model="inputRentDays" class="ly-input" type="text" v-number :data-max="statusObj.rentDays"
+						<div class="ly-input-pre-icon">
+							<img  src="@/assets/coin/MBOX.png" alt="" />
+						</div>
+						<input v-model="rentObj.rentPrice" class="ly-input" type="number" v-number
 							style=" background: #0f172a; text-align: center; width: 100%; "
-							:placeholder="$t('Hire_55').replace('#0#', statusObj.rentDays)"
+							:placeholder="$t('Hire_13')"
 						/>
-					</div>
-					<div class="aveage-box  mgt-10" v-if="Number(inputRentDays) > 0">
-						<p class="tal">{{$t("Market_18")}}</p>
-						<p class="tar vertical-children">
-							<span>{{numFloor(statusObj.rentPrice * inputRentDays/1e18, 1e4)}} {{showCoin}}</span>
-							<img :src="require(`@/assets/coin/${showCoin}.png`)" alt="" height="20" class="mgl-5">
-						</p>
 					</div>
 				</div>
 			</section>
-			
+			<section class="mgt-20">
+				<p >{{$t("Hire_14")}}</p>
+				<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
+					<p class="small tal opa-6">{{$t("Hire_15")}}</p>
+					<div class="por mgt-5">
+						<input v-model="rentObj.rentDay" class="ly-input" type="number" v-int data-max="7" data-min="1"
+							style=" background: #0f172a; text-align: center; width: 100%; "
+							:placeholder="$t('Hire_14')"
+						/>
+					</div>
+				</div>
+			</section>
+			<section class="mgt-20">
+				<p >{{$t("Hire_16")}}</p>
+				<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
+					<p class="small tal opa-6">{{$t("Hire_17")}}</p>
+					<div class="por mgt-5">
+						<input v-model="rentObj.rentRound" class="ly-input" type="number" v-int data-max="3" data-min="0"
+							style=" background: #0f172a; text-align: center; width: 100%; "
+							:placeholder="0"
+						/>
+					</div>
+				</div>
+			</section>
 			<div class="mgt-20">
-				<StatuButton :onClick="reRent" class="btn-primary mgt-10"  :isDisable="Number(inputRentDays) <= 0 && Number(inputRentDays) > Number(statusObj.rentDays)"  :isLoading="lockBtn.rentLock > 0">
-					{{$t("Common_03")}}
-				</StatuButton>
+				<StatuButton class="btn-primary mgt-10"  :isDisable="!isCanPutRent" :onClick="addRentRenewal" :isLoading="lockBtn.putRentLock > 0">{{$t("Hire_42")}}</StatuButton>
 			</div>
 		</Dialog>
 	</section>
@@ -77,17 +118,13 @@ export default {
 	components: {Dialog, StatuButton,Loading},
 	computed: {
 		...mapState({
-			lockBtn: (state) => state.globalState.data.lockBtn,
-			coinArr: (state) => state.bnbState.data.coinArr,
+			lockBtn: (state) => state.globalState.data.lockBtn
 		}),
 		//上架租赁
 		isCanPutRent(){
 			let {rentPrice, rentDay} = this.rentObj;
 			return Number(rentPrice) > 0 && Number(rentDay) >= 1;
 		},
-		showCoin(){
-			return Number(this.statusObj.orderId) >= 5e4 ? "USDT": "MBOX"; 
-		}
 	},
 	data(){
 		return({
@@ -100,40 +137,54 @@ export default {
 			},
 			statusObj: {
 				orderId: "-",
-				status: "-",
-				rentDays: "-",
+				currentRentDays: "-",
+				currentRentPrice: "-",
+				currentRentRound: "-",
+				gameId: "-",
+				nextRentDays: "-",
+				nextRentPrice: "-",
+				nextRentRound: "-",
 				owner: "-",
-				startTime: 0,
-				bidEndTime: "-",
 				rentTime: "-",
 				renter: "-",
-				bidPrice: "-",
-				rentPrice: "-",
+				status: "-",
 				leftTs: "-",
 			},
-			inputRentDays: "",
 		})
 	},
 	methods:{
-		//续租订单
-		async reRent(){
-			let totalPrice = this.statusObj.rentPrice / 1e18 * this.inputRentDays;
-
-			if(totalPrice > Number(this.coinArr["USDT"].balance)){
-				this.showNotify(this.$t("Market_34"), "error");
-				return;
+		//新的合同
+		async addRentRenewal(){
+			if(!this.isCanPutRent) return;
+			let obj = {
+				tokenId_: this.tokenId,
+				orderId_: this.statusObj.orderId,
+				nextRentDays_: this.rentObj.rentDay, 
+				nextRentRound_: Number(this.rentObj.rentRound) + 1,
+				nextRentPrice_:this.rentObj.rentPrice
 			}
-
+			console.log(obj);
+			let hash = await Wallet.ETH.addRentRenewal(obj, async ()=>{
+				await this.getDealInfo();
+				this.rentObj =  {
+					rentPrice: "",
+					rentDay: "",
+					rentRound: ""
+				};
+				this.oprDialog("new-deal-dialog", "none");
+			});
+			if(hash){
+				this.lockBtnMethod("putRentLock");
+			}
+		},
+		//续租订单
+		async reRent(isNewDeal = false){
 			let obj = {
 				tokenId_: this.tokenId, 
-				orderId_: this.statusObj.orderId,
-				price_: totalPrice + 0.000001 ,
-				days_: Number(this.inputRentDays)
+				orderId_: this.statusObj.orderId, 
+				price_: isNewDeal?this.statusObj.nextRentPrice: this.statusObj.currentRentPrice
 			}
-
-			let hash = await Wallet.ETH.Group.Rent.renewRent(obj, ()=>{
-				this.oprDialog("rerent-day-dialog", "none")
-				this.oprDialog("rent-deal-dialog", "none")
+			let hash = await Wallet.ETH.reRent(obj, ()=>{
 				this.getDealInfo();
 			});
 			if(hash){
@@ -143,7 +194,7 @@ export default {
 		
 		async getDealInfo(){
 			if(this.tokenId == 0) return;
-			let res = await Wallet.ETH.Group.Rent.getMomoRentInfo(this.tokenId);
+			let res = await Wallet.ETH.getMomoRentInfo(this.tokenId);
 			if(res){
 				this.statusObj = res;
 				let nowTs = parseInt(new Date().valueOf()/1000);
@@ -159,15 +210,17 @@ export default {
 			};
 			this.statusObj = {
 				orderId: "-",
-				status: "-",
-				rentDays: "-",
+				currentRentDays: "-",
+				currentRentPrice: "-",
+				currentRentRound: "-",
+				gameId: "-",
+				nextRentDays: "-",
+				nextRentPrice: "-",
+				nextRentRound: "-",
 				owner: "-",
-				startTime: 0,
-				bidEndTime: "-",
 				rentTime: "-",
 				renter: "-",
-				bidPrice: "-",
-				rentPrice: "-",
+				status: "-",
 				leftTs: "-",
 			},
 			this.getDealInfo();

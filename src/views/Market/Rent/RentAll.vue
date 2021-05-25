@@ -21,14 +21,9 @@
 			</span>
 			
 			<div id="market-pet-fitter">
-				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
-					<span class="notice" v-if="historyNotice"></span>
-					<img src="@/assets/icon/tradeRecord.png" alt="" />
-				</div>
 				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="marketRentSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
-				<Dropdown :list="$parent.selectVType" :defaultSelectPos="marketRentSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
+				<Dropdown :list="selectVType" :defaultSelectPos="marketRentSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
 				<Dropdown :list="sortArr" :defaultSelectPos="marketRentSearch.sort" :onChange="onSortChange" />&nbsp;
-				<Dropdown :list="$parent.getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="$parent.onCoinChange" />&nbsp;
 			</div>
 		</div>
 		<div :class="marketRents.list.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
@@ -68,8 +63,12 @@ export default {
 	data(){
 		return({
 			onePageCount: 15,
-			selectCategory:[],
-			selectVType: [],
+			selectVType: [
+				this.$t("MOMO_08"),
+				this.$t("MOMO_12"),
+				this.$t("MOMO_13"),
+				this.$t("MOMO_14"),
+			],
 			sortArr: [this.$t("Market_47"),this.$t("Market_04"), this.$t("Market_05"), this.$t("Market_06"), this.$t("Market_07")],
 			searchWord: "",
 		});
@@ -102,7 +101,7 @@ export default {
 			for (let key in nftConfig) {
 				let item =nftConfig[key];
 				let realName = langMap[item.tokenName];
-				if(realName.toLowerCase().indexOf(searchWord.toLowerCase()) != -1){
+				if(realName.toLowerCase().indexOf(searchWord.toLowerCase()) != -1 && item.quality >= 4){
 					item.realName = realName;
 					item.vType = parseInt(item.prototype / 1e4);
 					retArr.push(item);
@@ -160,7 +159,6 @@ export default {
 		async getAuctionPets(page, needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
 			let data = await Http.getRentList("BNB", page, 15, this.marketRentSearch);
-			console.log("getAuctionPets",data);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let needGetNameArr = [];
 			let needGetGemArr = [];
@@ -248,6 +246,10 @@ export default {
 			});
 		},
 		onSelectVTypeChange(pos){
+			if(pos == 1) pos = 4;
+			if(pos == 2) pos = 5;
+			if(pos == 3) pos = 6;
+
 			this.marketRents.list = [];
 			this.$store.commit("marketState/setData", {marketRentPage:1, marketRents: this.marketRents});
 			this.$store.commit("marketState/setFilter", {filterName:"marketRentSearch",type: "vType", value: pos});

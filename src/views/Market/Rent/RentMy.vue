@@ -3,28 +3,25 @@
 		<div class="tal search vertical-children por mgt-20" >
 			<span>{{$t("Market_33")}}: {{ getTotalPetNum }}</span>&nbsp;
 			<div id="market-pet-fitter">
-				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
-					<span class="notice" v-if="historyNotice"></span>
-					<img src="@/assets/icon/tradeRecord.png" alt="" />
-				</div>
 				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="myRentMarketFilter.category" :onChange="onSelectTypeChange" />&nbsp;
 				<Dropdown :list="selectVType" :defaultSelectPos="myRentMarketFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
+				<Dropdown :list="momoState" :defaultSelectPos="myRentMarketFilter.state" :onChange="onSelectState" />&nbsp;
 			</div>
 		</div>
 
 		<div :class="getTotalPetNum < 4 ? 'tal' : ''" >
 			<div class="clear mgt-20">
-				<PetItem  v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()" v-bind:data="{item: item}" class="market" >
-					<div style="height:43px;position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
-						<div v-if="item.vType > 3" class=" tac">
-							<router-link :to="`/rentView/${item.tokenId}`">
-								<button class="btn-primary" >
-									<span>出租</span>
-								</button>
-							</router-link>
+				<router-link :to="`/rentView/${item.tokenId}`" v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()">
+					<PetItem   v-bind:data="{item: item}" class="market" >
+						<div style="height:43px;position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px;">
+							<div v-if="item.vType > 3" class=" tac">
+								<button  v-if="item.rent.state==-1" class="btn-primary" >{{$t("Hire_02")}}</button>
+								<span v-if="item.rent.state == 0" class="dib mgt-10">{{$t("Hire_06")}}</span>
+								<span v-if="item.rent.state == 1" class="dib mgt-10" style="color:#ACC201">{{$t("Hire_07")}}</span>
+							</div>
 						</div>
-					</div>
-				</PetItem>
+					</PetItem>
+				</router-link>
 			</div>
 		</div>
 
@@ -51,6 +48,12 @@ export default {
 				this.$t("MOMO_13"),
 				this.$t("MOMO_14"),
 			],
+			momoState: [
+				this.$t("Hire_05"),
+				this.$t("Hire_06"),
+				this.$t("Hire_07"),
+				this.$t("Hire_08"),
+			]
 		};
 	},
 	components: { Dropdown, Page, PetItem },
@@ -74,11 +77,16 @@ export default {
 
 		getTotalPet() {
 			let totalPet = [];
+			let {state, category, vType} = this.myRentMarketFilter;
 			[...this.myNFT_stake].map((item) => {
 				//类型的筛选,品质的筛选
-				let isMatchCategory =this.myRentMarketFilter.category == 0 || this.myRentMarketFilter.category == item.category;
-				let isMathVType = item.vType >= 4 && (this.myRentMarketFilter.vType == 0 || this.myRentMarketFilter.vType == item.vType);
-				if (isMatchCategory && isMathVType) {
+				let isMatchCategory = category == 0 || category == item.category;
+				let isMatchVType = item.vType >= 4 && (vType == 0 || vType == item.vType);
+				let rentState = -1;
+				if(state == 1) rentState = 0;
+				if(state == 2) rentState = 1;
+				let isMatchState = item.vType >= 4 && item.rent.state ==  rentState|| state == 0;
+				if (isMatchCategory && isMatchVType && isMatchState) {
 					totalPet.push(item);
 				}
 			});
@@ -93,11 +101,10 @@ export default {
 				this.onePageCount * this.marketRentMyPage
 			);
 		},
-
-		
 	},
-
+	
 	methods: {
+
 		onSelectQualityChange(pos) {
 			if(pos == 1) pos = 4;
 			if(pos == 2) pos = 5;
@@ -123,6 +130,13 @@ export default {
 				this.$refs.page.initPage();
 			})
 		},
+		onSelectState(pos){
+			this.$store.commit("marketState/setFilter", {
+				filterName:"myRentMarketFilter",
+				type: "state",
+				value: pos,
+			});
+		}
 	},
 };
 </script>

@@ -37,44 +37,44 @@
 			<div class="col-md-6 tal">
 				<div class="panel vertical-children" style="min-height:500px">
 					<div>
-						<h3 >MOMO出租</h3>
-						<p class="opa-6 mgt-10">momo 出租介绍,momo 出租介绍,momo 出租介绍,momo 出租介绍,momo 出租介绍,</p>
+						<h3 >{{$t("Hire_01")}}</h3>
+						<p class="opa-6 mgt-10" v-if="isMyPet">{{$t("Hire_12")}}</p>
 					</div>
 					<!-- 我的momo并且可以出租 -->
 					<div class="tac mgt-30"  v-if="isMyPet && momoState == -1 ">
 						<section>
-							<p >设置每期的出租价格</p>
+							<p >{{$t("Hire_13")}}</p>
 							<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
-								<p class="small tal opa-6">价格(MBOX)</p>
+								<p class="small tal opa-6">{{$t("Hire_22")}}(MBOX)</p>
 								<div class="por mgt-5">
 									<div class="ly-input-pre-icon">
 										<img  src="@/assets/coin/MBOX.png" alt="" />
 									</div>
 									<input v-model="rentObj.rentPrice" class="ly-input" type="number" v-number
 										style=" background: #0f172a; text-align: center; width: 100%; "
-										:placeholder="$t('Market_38')"
+										:placeholder="$t('Hire_13')"
 									/>
 								</div>
 							</div>
 						</section>
 						<section class="mgt-20">
-							<p >设置起租天数</p>
+							<p >{{$t("Hire_14")}}</p>
 							<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
-								<p class="small tal opa-6">起租天数(1~7)</p>
+								<p class="small tal opa-6">{{$t("Hire_15")}}</p>
 								<div class="por mgt-5">
 									<input v-model="rentObj.rentDay" class="ly-input" type="number" v-int data-max="7" data-min="1"
 										style=" background: #0f172a; text-align: center; width: 100%; "
-										:placeholder="$t('Market_38')"
+										:placeholder="$t('Hire_14')"
 									/>
 								</div>
 							</div>
 						</section>
 						<section class="mgt-20">
-							<p >设置可被续租的期数</p>
+							<p >{{$t("Hire_16")}}</p>
 							<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
-								<p class="small tal opa-6">可续租期数(0~4)</p>
+								<p class="small tal opa-6">{{$t("Hire_17")}}</p>
 								<div class="por mgt-5">
-									<input v-model="rentObj.rentRound" class="ly-input" type="number" v-int
+									<input v-model="rentObj.rentRound" class="ly-input" type="number" v-int data-max="3"
 										style=" background: #0f172a; text-align: center; width: 100%; "
 										:placeholder="0"
 									/>
@@ -82,15 +82,17 @@
 							</div>
 						</section>
 						<div class="mgt-20">
-							<p v-if="isCanPutRent" style="max-width:350px;margin:0px auto">起步租期为{{rentObj.rentDay}}天，最多可以续租{{Number(rentObj.continueDay)}}期，每期租期为{{rentObj.inputPrice}}MBOX</p>
-							<StatuButton class="btn-primary mgt-10"  :isDisable="!isCanPutRent" :onClick="putRent">确定出租</StatuButton>
+							<p v-if="isCanPutRent" style="max-width:350px;margin:0px auto">
+								{{$t("Hire_25").replace("#0#",rentObj.rentPrice+" MBOX").replace("#1#",rentObj.rentDay).replace("2",Number(rentObj.rentRound))}}
+							</p>
+							<StatuButton class="btn-primary mgt-10"  :isDisable="!isCanPutRent" :onClick="putRent" :isLoading="lockBtn.putRentLock > 0">{{$t("Hire_19")}}</StatuButton>
 						</div>
 					</div>
 					<!-- 挂单中的momo -->
 					<div  v-if="momoState == 0">
 						<div id="rent-info-panel">
 							<div class="aveage-box">
-								<p>Price</p>
+								<p>{{$t("Hire_22")}}</p>
 								<h3 class="tar vertical-children">
 									<img src="@/assets/coin/MBOX.png" alt="" height="20">&nbsp;
 									<span>{{numFloor(statusObj.currentRentPrice / 1e18, 1e4)}}</span>
@@ -98,26 +100,28 @@
 							</div>
 							<div class="tab-split"></div>
 							<div class="aveage-box">
-								<p>起租天数</p>
+								<p>{{$t("Hire_23")}}</p>
 								<h3 class="tar">{{statusObj.currentRentDays}}</h3>
 							</div>
 							<div class="tab-split"></div>
 							<div class="aveage-box">
-								<p>可续租期数</p>
-								<h3 class="tar">{{statusObj.currentRentRound}}</h3>
+								<p>{{$t("Hire_24")}}</p>
+								<h3 class="tar">{{Number(statusObj.currentRentRound) - 1}}</h3>
 							</div>
 						</div>
 						<div v-if="isMyRent" class="tac mgt-20">
-							<StatuButton class="mgt-10" :onClick="cancelRent" :isLoading="lockBtn.cancelRentLock > 0">取消租赁</StatuButton>
+							<StatuButton class="mgt-10" v-if="momoState == 0" :onClick="cancelRent" :isLoading="lockBtn.cancelRentLock > 0">{{$t("Hire_20")}}</StatuButton>
 						</div>
 						<div class="tac mgt-20" v-else>
-							<p >momo 出租介绍,momo 出租介绍,momo 出租介绍,momo 出租介绍,momo 出租介绍,</p>
+							<p >{{$t("Hire_21")}}</p>
 							<div :class="coinArr['MBOX'].allowanceToRent == 0 ?'btn-group':''"  style="width:280px;margin:10px auto">
-								<StatuButton  data-step="1" v-if="coinArr['MBOX'].allowanceToRent == 0" class="mgt-10" style="width:80%" :onClick="approve" :isLoading="coinArr['MBOX'].isApproving">授权</StatuButton>
+								<StatuButton  data-step="1" v-if="coinArr['MBOX'].allowanceToRent == 0" class="mgt-10" style="width:80%" :onClick="approve" :isLoading="coinArr['MBOX'].isApproving">{{$t("Air-drop_16")}} MBOX</StatuButton>
 								<StatuButton  data-step="2" :isDisable="!(coinArr['MBOX'].allowanceToRent > 0)" class="mgt-10" style="width:80%" :onClick="rentPet" :isLoading="lockBtn.rentLock > 0">租赁</StatuButton>
 							</div>
 						</div>
 					</div>
+
+					<p v-if="momoState == 1" class="tac mgt-20">{{$t("Hire_26")}}<span class="dotting"></span></p>
 
 					<MomoInfo :data="this.getNowPetItem" :isMarket="true" />
 				</div>
@@ -265,6 +269,7 @@ export default {
 
 		//从链上取最新的状态
 		async getPetInfo(){
+			if(!this.getNowPetItem.tokenId) return;
 			let res = await Wallet.ETH.getMomoRentInfo(this.getNowPetItem.tokenId);
 			if(res){
 				this.statusObj = res;
@@ -296,9 +301,11 @@ export default {
 				curRentRound_: Number(this.rentObj.rentRound) + 1,
 				curRentPrice_:this.rentObj.rentPrice
 			}
-			let hash = await Wallet.ETH.createRent(obj);
+			let hash = await Wallet.ETH.createRent(obj, ()=>{
+				this.getPetInfo();
+			});
 			if(hash){
-				console.log(hash);
+				this.lockBtnMethod("putRentLock");
 			}
 		},
 		//取消租赁

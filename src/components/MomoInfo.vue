@@ -21,7 +21,10 @@
 							</template>
 						</div>
 						<div class="tac mgt-10" style="height:30px" v-if="getNowPetItem.location =='stake'  && !isMarket">
-							<StatuButton :onClick="removeGem.bind(this, index)" v-if="Number(data.gems[index]) != 0" :isDisable="isDisableOpr"  :isLoading="lockBtn.takeOffGemLock > 0"  class="btn-small" style="width:100%;max-width:80px">{{$t("Gemstone_43")}}</StatuButton>
+							<StatuButton :onClick="removeGem.bind(this, index)" v-if="Number(data.gems[index]) != 0" :isDisable="isDisableOpr || data.rent.state != -1"  :isLoading="lockBtn.takeOffGemLock > 0"  class="btn-small" style="width:100%;max-width:80px">
+								<img src="@/assets/icon/rent_time.png" alt="" height="15" v-if="data.rent.state != -1">
+								<span v-else>{{$t("Gemstone_43")}}</span>
+							</StatuButton>
 						</div>
 					</div>
 				</div>
@@ -187,8 +190,9 @@
 					<StatuButton v-if="hasApprove != -1 && !hasApprove" data-step="1" :onClick="approve.bind(this)" :isLoading="lockBtn.approveLock > 0" style="width:60%" >
 						{{$t("Air-drop_16")}}
 					</StatuButton>
-					<StatuButton data-step="2" class="mgt-10" :onClick="wearGem.bind(this)" style="width:60%" :isDisable="!hasApprove || Number(gemBag[selectGemType+selectGemLv]) <= 0 || isDisableOpr || hasSameGem" :isLoading="lockBtn.wearGemLock > 0">
-						{{hasWearGem?$t("Gemstone_42"):$t("Gemstone_41")}}
+					<StatuButton data-step="2" class="mgt-10" :onClick="wearGem.bind(this)" style="width:60%" :isDisable="!hasApprove || Number(gemBag[selectGemType+selectGemLv]) <= 0 || isDisableOpr || hasSameGem || hasRentAndLowGem" :isLoading="lockBtn.wearGemLock > 0">
+						<img src="@/assets/icon/rent_time.png" alt="" height="15" v-if="hasRentAndLowGem">
+						<span v-else>{{hasWearGem?$t("Gemstone_42"):$t("Gemstone_41")}}</span>
 					</StatuButton>
 				</div>
 
@@ -300,6 +304,10 @@ export default {
 		//当前位置有一样的gem
 		hasSameGem(){
 			return Number(this.getNowPetItem.gems[this.gemWearPos]) % 100 == this.selectGemLv;
+		},
+		//租赁中并且替换低级宝石
+		hasRentAndLowGem(){
+			return this.data.rent.state != -1 && Number(this.getNowPetItem.gems[this.gemWearPos]) % 100 > this.selectGemLv;
 		},
 		//是否已经镶嵌
 		hasWearGem(){

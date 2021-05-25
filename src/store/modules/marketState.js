@@ -21,7 +21,7 @@ const state = () => ({
 		//记录
 		marketPets: {limit: 1,list: [],page: 1,total: 0,},
 		marketPetsMy: {limit: 1,list: [],page: 1,total: 0,},
-		marketHistory: {lsit: [], total: 0, uptime: 0},
+		marketHistory: {list: [], total: 0, uptime: 0},
 
 		//momo租赁相关
 		//临时数据
@@ -33,13 +33,14 @@ const state = () => ({
 		marketRentMyPage: 1,
 		marketRentMySellPage: 1,
 		//筛选
-		myRentMarketFilter: {category: 0,vType: 0},
+		myRentMarketFilter: {category: 0,vType: 0, state: 0},
 		marketRentSearch: {type: 0,level: 0,sort: 0,},
 		myRentMarketSellFilter: {type: 0,level: 0,},
 		//记录
 		marketRents: {limit: 1,list: [],page: 1,total: 0,},
 		marketRentMy: {limit: 1,list: [],page: 1,total: 0,},
-		marketRentHistory: {lsit: [], total: 0, uptime: 0},
+		marketRentHistory: {list: [], total: 0, uptime: 0},
+		marketRentOrderList: {list:[], total: 0},
 
 		//gem
 		//临时数据
@@ -55,7 +56,7 @@ const state = () => ({
 		//记录
 		marketGems: {limit: 1,list: [],page: 1,total: 0,},
 		marketGemMy: {limit: 1,list: [],page: 1,total: 0,},
-		marketGemHistory: {lsit: [], total: 0, uptime: 0},
+		marketGemHistory: {list: [], total: 0, uptime: 0},
 		
 	},
 })

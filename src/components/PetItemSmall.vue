@@ -27,6 +27,10 @@
 			<div class="dib" style="height: 94px"></div>
 			<img class="lock" src="../assets/icon/lock.png" height="20" alt="" />
 		</div>
+		<div  class="pet-select vertical-children" v-if="isRent">
+			<div class="dib" style="height: 94px"></div>
+			<img class="rent" src="../assets/icon/rent_time.png" height="20" alt="" />
+		</div>
 		<span class="opa-6" v-if="data.num <= 0 || getSelectNum == data.num" style="position:absolute;top:-5px;left:15px">
 			<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M867.7 423.8H599.8V155.9c0-49.3-40-89.3-89.3-89.3s-89.3 40-89.3 89.3v267.9H153.3c-49.3 0-89.3 40-89.3 89.3s40 89.3 89.3 89.3h267.9v267.9c0 49.3 40 89.3 89.3 89.3s89.3-40 89.3-89.3V602.4h267.9c49.3 0 89.3-40 89.3-89.3s-40-89.3-89.3-89.3z"  fill="#E1FF17"></path></svg>
 		</span>
@@ -64,6 +68,15 @@ export default {
 		isSelect() {
 			return this.getSelectNum > 0 && this.data.vType >= 4;
 		},
+
+		isRent(){
+			let isRent = false;
+			let rent = this.data.rent;
+			if(rent && rent.state != -1){
+				isRent = true;
+			}
+			return isRent;
+		}
 		
 	},
 	methods: {
@@ -74,7 +87,7 @@ export default {
 				Common.app.$refs.quickBuy.show(prototype);
 				return;
 			}
-			if(isLock) return;
+			if(isLock || this.isRent) return;
 			if (typeof this.onSelectChange == "function") {
 				this.onSelectChange({ tokenId, prototype, vType, num: 1 });
 			}
@@ -82,7 +95,7 @@ export default {
 		reduceNum(e) {
 			e.stopPropagation();
 			let { tokenId, prototype, vType, isLock } = this.data;
-			if(isLock) return;
+			if(isLock || this.isRent) return;
 			if (typeof this.onSelectChange == "function") {
 				this.onSelectChange({ tokenId, prototype, vType, num: -1 });
 			}
@@ -95,6 +108,11 @@ export default {
 	position: absolute;
 	right: 10px;
 	top: 5px;
+}
+.rent{
+	position: absolute;
+	left: 10px;
+	top: 0px;
 }
 .opa-4{
 	opacity: 0.4;

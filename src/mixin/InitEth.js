@@ -578,11 +578,49 @@ const InitEth = {
 				await this.setName(nftObj);
 				//设置宝石
 				await this.setGem(nftObj);
+				//设置721出租状态
+				await this.setRentInfo(nftObj);
 				this.$store.commit("ethState/setData", saveObj);
 				Common.setStorageItem(
 					storageKey,
 					JSON.stringify(nftObj)
 				);
+			}
+		},
+
+		async setRentInfo(nftArr){
+			let tokenIds = [];
+			nftArr.map(item=>{
+				if(item.tokenId != 1){
+					tokenIds.push(item.tokenId);
+				}
+			});
+			let res = await Wallet.ETH.getRentInfoSimple(tokenIds);
+
+			nftArr.map((item) => {
+				let tokenPos = tokenIds.indexOf(item.tokenId);
+				if (tokenPos != -1) {
+					item.rent.orderId = res.orderIdArray[tokenPos];
+					item.rent.status = res.statusArray[tokenPos];
+					item.rent.rentTime = res.rentTimeArray[tokenPos];
+					item.rent.currentRentDays = res.currentRentDaysArray[tokenPos];
+					item.rent.state = this.getMomoState(item.rent);
+				}
+			});
+		},
+
+		getMomoState(rentInfo){
+			let {currentRentDays, status, rentTime} = rentInfo;
+			if(currentRentDays == "-") return -2;//未请求状态
+			if(currentRentDays == 0 ) return -1; //未上架
+			if(status == 0){
+				return 0;//挂单中
+			}else{
+				if(Number(rentTime) < parseInt(new Date().valueOf()/1000)){
+					return -1
+				}else{
+					return 1;//出租中
+				}
 			}
 		},
 

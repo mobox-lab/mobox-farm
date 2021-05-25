@@ -919,7 +919,14 @@ export default class ETH {
 				chain: "bnb",
 				tokenName: BaseConfig.NftCfg[itemAttr[0]] ? BaseConfig.NftCfg[itemAttr[0]]["tokenName"] : "",
 				location,
-				gems: [0,0,0,0]
+				gems: [0,0,0,0],
+				rent: {
+					orderId: "-",
+					status: "-",
+					rentTime: "-",
+					currentRentDays: "-",
+					state: -2, //-2：未请求状态，-1：未上架，0：挂单中，1：出租中
+				}
 			})
 		});
 
@@ -1753,9 +1760,6 @@ export default class ETH {
 		let contract = new this.web3.eth.Contract([
 			Contract.getInlayInfo,
 		], WalletConfig.ETH.momoGemOpr);
-
-		console.log("getInlayInfo", momoId_);
-
 		return new Promise(resolve => {
 			contract.methods.getInlayInfo(momoId_).call().then(data => {
 				resolve(data);
@@ -2011,7 +2015,7 @@ export default class ETH {
 	}
 
 	//momo出租相关
-	static async createRent({tokenId_, curRentDays_, curRentRound_,curRentPrice_}){
+	static async createRent({tokenId_, curRentDays_, curRentRound_,curRentPrice_}, recipet){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
 
@@ -2039,15 +2043,16 @@ export default class ETH {
 				hash=>resolve(hash),
 				()=>{
 					console.log("createRent success!!!!!");
-					// Common.app.setCoinValueByName(coinKey);
-					// Common.app.getGemBag();
+					Common.app.unLockBtn("putRentLock");
+					Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+					recipet();
 				}
 			)
 		});
 	}
 
 	//增加续租合同
-	static async addRentRenewal({tokenId_, orderId_, nextRentDays_,nextRentRound_,nextRentPrice_}){
+	static async addRentRenewal({tokenId_, orderId_, nextRentDays_,nextRentRound_,nextRentPrice_},recipt){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
 
@@ -2066,6 +2071,8 @@ export default class ETH {
 			}
 		], WalletConfig.ETH.momoRent);
 
+		nextRentPrice_ = BigNumber(Common.numFloor(nextRentPrice_, 1e9)).times(BigNumber(1e18));
+
 		return new Promise(resolve => {
 			this.sendMethod(
 				contract.methods.addRentRenewal(tokenId_, orderId_, nextRentDays_,
@@ -2073,8 +2080,8 @@ export default class ETH {
 				hash=>resolve(hash),
 				()=>{
 					console.log("addRentRenewal success!!!!!");
-					// Common.app.setCoinValueByName(coinKey);
-					// Common.app.getGemBag();
+					Common.app.unLockBtn("putRentLock");
+					recipt();
 				}
 			)
 		});
@@ -2115,6 +2122,32 @@ export default class ETH {
 
 	}
 
+	//获取多个momo出租详情
+	static async getRentInfoSimple(tokenIds){
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "getRentInfoSimple",
+				"type": "function",
+				"inputs": [
+					{"name": "tokenIds_","type": "uint256[]"},
+				],
+				"outputs": [
+					{"name": "orderIdArray","type": "uint256[]"},
+					{"name": "statusArray","type": "uint256[]"},
+					{"name": "rentTimeArray","type": "uint256[]"},
+					{"name": "currentRentDaysArray","type": "uint256[]"},
+				],
+			}
+		], WalletConfig.ETH.momoRent);
+
+		return new Promise(resolve => {
+			contract.methods.getRentInfoSimple(tokenIds).call().then(data => {
+				resolve(data);
+			})
+		});
+
+	}
+
 	//取消上架的租赁
 	static async cancelPutRent({tokenId_, orderId_},recipet){
 		let myAddr = await this.getAccount();
@@ -2141,6 +2174,7 @@ export default class ETH {
 				()=>{
 					console.log("cancelPutRent success!!!!!");
 					Common.app.unLockBtn("cancelRentLock");
+					Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 					recipet();
 				}
 			)
@@ -2175,6 +2209,38 @@ export default class ETH {
 				()=>{
 					console.log("rentMomo success!!!!!");
 					Common.app.unLockBtn("rentLock");
+				}
+			)
+		});
+
+	}
+
+	//续租
+	static async reRent({tokenId_, orderId_, price_}, recipt){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "renewRent",
+				"type": "function",
+				"inputs": [
+					{"name": "tokenId_","type": "uint256"},
+					{"name": "orderId_","type": "uint256"},
+					{"name": "price_","type": "uint256"},
+				],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.momoRent);
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.renewRent(tokenId_, orderId_ ,this.numToHex(price_)), {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					console.log("reRent success!!!!!");
+					Common.app.unLockBtn("rentLock");
+					recipt();
 				}
 			)
 		});

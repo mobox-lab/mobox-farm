@@ -1,17 +1,18 @@
 <template>
-	<div class="dib pet-min por" :class="'pet-min-type'+data.vType" ref="petMin"  > 
+	<div class="dib pet-min por" :class="'pet-min-type'+petData.vType" ref="petMin"  > 
 		<div class="pet-min-img">
-			<img  :src="require(`../assets/pet/${data.prototype}.png`)" alt="" />
+			<img  :src="require(`../assets/pet/${petData.prototype}.png`)" alt="" />
 		</div>
-		<p class="pet-min-lv" v-if="data.vType < 4">{{data.num}}</p>
+		<p class="pet-min-lv" v-if="petData.vType < 4">{{petData.num}}</p>
 		<p class="pet-min-catogry">
-			<img :src=" require(`../assets/icon/${ category_img[data.category] }.png`) " alt="" width="10" height="10" />
+			<img :src=" require(`../assets/icon/${ category_img[petData.category] }.png`) " alt="" width="10" height="10" />
 		</p>
 		<div class="pet-min-hover" ref="petMinHover">
-			<PetItem :data="{item: data}" :class="data.vType >= 4?'market':'' " >
-				<div class="vertical-children mgt-10" style="font-size: 18px" v-if="data.vType >= 4">
-					<img src="../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-					<span>{{numFloor(data.bidPrice/1e9, 10000)}}</span>
+			<PetItem :data="{item: petData}" :class="petData.vType >= 4?'market':'' " >
+				<div class="vertical-children mgt-10" style="font-size: 18px" v-if="petData.vType >= 4">
+					<img v-if="petData.isRent" src="../assets/coin/MBOX.png" alt="" height="20"/>&nbsp;
+					<img v-else src="../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
+					<span>{{numFloor(petData.bidPrice/1e9, 10000)}}</span>
 				</div>
 			</PetItem>
 		</div>
@@ -21,11 +22,35 @@
 <script>
 import { CommonMethod } from "@/mixin";
 import { PetItem } from '@/components';
+import { Wallet } from '@/utils';
+import { mapState } from 'vuex';
 const $ = window.$;
 export default {
 	mixins: [CommonMethod],
 	components: {PetItem},
-	props: ["data"],
+	props: ['data'],
+	data(){
+		return({
+			petData: {...this.data, gems: [0,0,0,0]},
+		})
+	},
+	computed: {
+		...mapState({
+			momoGemsObjs: (state) => state.marketState.data.momoGemsObjs,
+		})
+	},
+	async created(){
+		let tokenId = this.petData.tokenId;
+		if(tokenId != 1){
+			if(!Object.prototype.hasOwnProperty.call(this.momoGemsObjs, tokenId)){
+				let res = await Wallet.ETH.getInlayInfo(tokenId);
+				this.momoGemsObjs[tokenId] = [...res];
+				this.petData.gems = [...res];
+			}else{
+				this.petData.gems = [...this.momoGemsObjs[tokenId]];
+			}
+		}
+	},
 	mounted(){
 		$(this.$refs.petMin).hover(()=>{
 			$(this.$refs.petMinHover).show();

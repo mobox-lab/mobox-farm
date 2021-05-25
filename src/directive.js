@@ -6,7 +6,7 @@ export default () => {
 				let max = input.getAttribute("data-max");
 				let min = input.getAttribute("data-min");
 				if (input.value.length === 1) {
-					input.value = input.value.replace(/[^1-9]/g, '')
+					input.value = input.value.replace(/[^0-9]/g, '')
 				} else {
 					input.value = input.value.replace(/[^\d]/g, '')
 				}
@@ -22,7 +22,7 @@ export default () => {
 				let max = input.getAttribute("data-max");
 				let min = input.getAttribute("data-min");
 				if (input.value.length === 1) {
-					input.value = input.value.replace(/[^1-9]/g, '')
+					input.value = input.value.replace(/[^0-9]/g, '')
 				} else {
 					input.value = input.value.replace(/[^\d]/g, '')
 				}

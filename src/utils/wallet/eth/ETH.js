@@ -1202,9 +1202,7 @@ export default class ETH {
 			Contract.bid,
 		], WalletConfig.ETH.moMoStakeAuction);
 
-		_price = BigNumber(Common.numFloor(_price, 1e9)).times(BigNumber(1e9));
-
-		console.log("buyMarketPet",{_auctor, _index, _startTime, _price: Number(_price)});
+		_price = BigNumber(_price).times(BigNumber(1e9));
 
 		return new Promise(resolve => {
 			this.sendMethod(

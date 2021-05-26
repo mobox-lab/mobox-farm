@@ -39,6 +39,9 @@
  }
 
 @media (max-width: 768px) {
+	.small-table th{
+		zoom :0.8
+	}
 	.gemBag{
 		zoom: 0.7;
 	}

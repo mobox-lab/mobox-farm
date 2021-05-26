@@ -6,7 +6,7 @@
 				<li @click="rentStatePos = 1" :class="rentStatePos == 1?'active':''" class="opa-6">{{$t("Hire_27")}}({{getNumShow.isRentOther}})</li>
 			</ul>
 
-			<table class="mgt-20" style="width:100%; border-collapse:collapse;border: none;">
+			<table class="mgt-20 small-table" style="width:100%; border-collapse:collapse;border: none;" >
 				<tr class="opa-6 tac">
 					<th class="list-item-momo tal" style="padding-left:10px">MOMO</th>
 					<th >
@@ -19,24 +19,25 @@
 							<Loading :width="20" :height="20" :isRotate="loadingData" class="mgl-5 cur-point" />
 						</span>
 					</th>
-					<th class="hide-xs">{{$t("Hire_22")}}</th>
+					<th >{{$t("Hire_22")}}</th>
+					<th >{{$t("Hire_23")}}</th>
 					<th>{{$t("BOX_14")}}</th>
 				</tr>
 				<tr>
-					<td colspan="5">
+					<td colspan="6">
 						<hr class="split-hr mgt-10"  />
 					</td>
 				</tr>
-				<tr><td colspan="5" style="height:10px"></td></tr>
+				<tr><td colspan="6" style="height:10px"></td></tr>
 				<tbody v-for="item in getShowOrderList" :key="item.tx" class="por tac">
 					<div class="list-item-momo-mobile" >
 						<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px">
 							<PetItemMin :data="item2" />&nbsp;
 						</span>
 					</div>
-					<tr><td colspan="5" style="height:5px"></td></tr>
+					<tr><td colspan="6" style="height:5px"></td></tr>
 					<tr class="list-item" >
-						<td style="width:350px;" class="list-item-momo tal">
+						<td  class="list-item-momo tal">
 							<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px">
 								<PetItemMin :data="item2" />
 							</span>
@@ -48,12 +49,13 @@
 						<td class="vertical-children">
 							<span v-if="item.leftTs < 0">{{$t("Hire_32")}}</span>
 							<span v-else>{{getLeftTime(item.leftTs)}}</span>
-							<img class="cur-point mgl-5" src="@/assets/icon/view.png" alt="" @click="$parent.$refs.rentDeal.setOprData(item.tokenId, item.isRentOther).show()">
+							<img v-if="item.leftTs > 0" class="cur-point mgl-5" src="@/assets/icon/view.png" alt="" @click="$parent.$refs.rentDeal.setOprData(item.tokenId, item.isRentOther).show()">
 						</td>
-						<td class="vertical-children hide-xs">
-							<img  src="@/assets/coin/MBOX.png" alt="" height="25">
+						<td class="vertical-children">
+							<img class="hide-xs"  src="@/assets/coin/MBOX.png" alt="" height="25">
 							<span class="mgl-5">{{numFloor(item.price/1e9, 10000)}} MBOX</span>
 						</td>
+						<td>{{item.rentDays}}</td>
 						<td  >
 							<span  v-if="item.leftTs < 0">{{$t("Hire_32")}}</span>
 							<p v-else>
@@ -62,7 +64,7 @@
 							</p>
 						</td>
 					</tr>
-					<tr><td colspan="5" style="height:5px"></td></tr>
+					<tr><td colspan="6" style="height:5px"></td></tr>
 				</tbody>
 			</table>
 			

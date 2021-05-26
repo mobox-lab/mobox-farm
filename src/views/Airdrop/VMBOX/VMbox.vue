@@ -21,6 +21,8 @@
 			</div>
 		</Dialog>
 
+		<SelectOprPool ref="selectOprPool" />
+
 	</section>
 </template>
 
@@ -30,10 +32,11 @@ import CommonMethod from "@/mixin/CommonMethod";
 import Freeze from './Freeze';
 import Transfer from './Transfer';
 import Retrieve from './Retrieve';
+import SelectOprPool from './SelectOprPool';
 
 export default {
 	mixins: [CommonMethod],
-	components :{Dialog, Freeze, Transfer, Retrieve},
+	components :{Dialog, Freeze, Transfer, Retrieve, SelectOprPool},
 	data(){
 		return({
 			dialog_tab_pos: 0
@@ -59,7 +62,8 @@ export default {
 <style scoped>
 	.pancake-setting{
 		position: absolute;
-		right: 15px;
-		top: 15px;
+		right: 5px;
+		top: -30px;
+		z-index: 998
 	}
 </style>

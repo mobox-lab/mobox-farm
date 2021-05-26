@@ -368,6 +368,12 @@ svg {
 	height: 28px;
 	padding: 0px 12px!important;
 }
+.btn-default.btn-small {
+	min-width: auto !important;
+	font-size: 12px;
+	height: 28px;
+	padding: 0px 12px!important;
+}
 .btn-success.btn-small {
 	min-width: auto !important;
 	font-size: 12px;

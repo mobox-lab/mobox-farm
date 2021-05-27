@@ -3,9 +3,9 @@
 		<div class="tab-content por">
 			<p>请选择veMBOX的周期类型</p>
 			<div class="aveage-box tac mgt-10" id="select-type">
-				<p><button class="btn-primary btn-small">短期</button></p>
-				<p><button class="btn-default btn-small">中期</button></p>
-				<p><button class="btn-default btn-small">长期</button></p>
+				<div ><button class=" btn-small" :class="oprOrderIndex == 0?'btn-primary':'btn-default' " @click="oprOrderIndex=0">短期</button></div>
+				<div ><button class=" btn-small" :class="oprOrderIndex == 1?'btn-primary':'btn-default' " @click="oprOrderIndex=1">中期</button></div>
+				<div ><button class=" btn-small" :class="oprOrderIndex == 2?'btn-primary':'btn-default' " @click="oprOrderIndex=2">长期</button></div>
 			</div>
 			<p class="tac mgt-10">(非同一周期类型的veMBOX不能互相划转)</p>
 		</div>
@@ -19,7 +19,7 @@
 						<span v-if="from.isEstimated && Number(from.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
 						<Loading  v-if="from.loading" />
 					</p>
-					<p class="tar small">{{$t("Mine_05")}}: {{from.coinName==""?"-":coinArr[from.coinName].balance}} veMBOX</p>
+					<p class="tar small">{{$t("Mine_05")}}: {{from.coinName==""?"-":numFloor(coinArr[from.coinName].veMbox.orderIndexs[oprOrderIndex].veMboxNum/1e18, 1e4)}} veMBOX</p>
 				</div>
 				<div class="aveage-box vertical-children mgt-10" >
 					<div  style="flex:1 1 auto">
@@ -52,7 +52,7 @@
 						<span v-if="to.isEstimated && Number(to.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
 						<Loading  v-if="to.loading" />
 					</p>
-					<p class="tar small">{{$t("Mine_05")}}: {{to.coinName==""?"-":coinArr[to.coinName].balance}} veMBOX</p>
+					<p class="tar small">{{$t("Mine_05")}}: {{to.coinName==""?"-":numFloor(coinArr[to.coinName].veMbox.orderIndexs[oprOrderIndex].veMboxNum/1e18, 1e4)}} veMBOX</p>
 				</div>
 				<div class="aveage-box vertical-children mgt-10">
 					<div style="flex:1 1 auto;">
@@ -82,11 +82,14 @@
 <script>
 import { mapState } from 'vuex';
 import { StatuButton } from '@/components';
+import CommonMethod from '@/mixin/CommonMethod';
 
 export default {
+	mixins: [CommonMethod],
 	components: {StatuButton},
 	data(){
 		return({
+			oprOrderIndex: 0,
 			from: {
 				coinName: "MBOX-BNB",
 				isLP: true,
@@ -109,9 +112,6 @@ export default {
 		...mapState({
 			coinArr: (state) => state.bnbState.data.coinArr,
 		}),
-	},
-	created(){
-		console.log(this);
 	},
 	methods: {
 		openSelectPool(type){

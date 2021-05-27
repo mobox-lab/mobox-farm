@@ -17,7 +17,7 @@
 				</div>
 				<Freeze :oprData="oprData" v-show="dialog_tab_pos == 0" />
 				<Transfer v-show="dialog_tab_pos == 1" />
-				<Retrieve v-show="dialog_tab_pos == 2" />
+				<Retrieve :oprData="oprData" v-show="dialog_tab_pos == 2" />
 			</div>
 		</Dialog>
 
@@ -49,6 +49,7 @@ export default {
 	},
 	methods: {
 		show(){
+			this.dialog_tab_pos = 0;
 			this.oprDialog("vmbox-dialog","block");
 			return this;
 		},

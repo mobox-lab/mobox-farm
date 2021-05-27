@@ -209,9 +209,7 @@ export default {
 			let fitterArr = [];
 			//去除重复的名字
 			needGetGemArr.map(item=>{
-				if(!Object.prototype.hasOwnProperty.call(this.momoGemsObjs, item)){
-					fitterArr.push(item);
-				}
+				fitterArr.push(item);
 			});
 
 			if(fitterArr.length != 0){

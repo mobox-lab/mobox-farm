@@ -9,7 +9,7 @@
 				<span class="mgl-5">{{item.coinName}}</span>
 			</div>
 			<div class="tar" v-if="item.balance != '-'">
-				<p class="small">{{item.balance}} veMBOX</p>
+				<p class="small">{{item.veMbox.orderIndexs[oprOrderIndex].veMboxNum}} veMBOX</p>
 				<p class="small" v-if="Number(item.balance) > 0">50:66:00</p>
 			</div>
 			<div class="tar" v-else>
@@ -31,6 +31,8 @@ export default {
 	data(){
 		return({
 			hasSelectCoin: [],
+			oprOrderIndex: 0,
+			nowTs : parseInt(new Date().valueOf()/1000),
 			cb: ()=>{},
 			updataTime: 0,
 		});
@@ -62,8 +64,9 @@ export default {
 			this.oprDialog("select-pool-dialog","none")
 			return this;
 		},
-		setOprData(hasSelectCoin, cb){
+		setOprData(hasSelectCoin,oprOrderIndex, cb){
 			this.hasSelectCoin = hasSelectCoin;
+			this.oprOrderIndex = oprOrderIndex;
 			this.cb = cb;
 			return this;
 		},

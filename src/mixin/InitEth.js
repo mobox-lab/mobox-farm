@@ -163,6 +163,8 @@ const InitEth = {
 			//查询我质押的和key的收益
 			await this.getStakeValueAndEarndKey();
 
+			await this.getVeMboxStakeInfo();
+
 			//质押挖矿相关
 			await this.eth_setTotalDropMbox();
 
@@ -188,6 +190,47 @@ const InitEth = {
 
 			//获取总打开箱子数
 			await this.setTotalOpenBox();
+		},
+		//获取质押VeMobox
+		async getVeMboxStakeInfo(){
+			let pIndexObj  = {};
+			for (let key in PancakeConfig.StakeLP) {
+				let {pIndex} = PancakeConfig.StakeLP[key];
+				if(pIndex != 0 && pIndex != -1){
+					pIndexObj[pIndex] = key;
+				}
+			}
+			let res = await Wallet.ETH.getVeMboxStakeInfo(Object.keys(pIndexObj));
+			console.log(res);
+			if(res){
+				//清空veMBOX的状态
+				for (let key in this.coinArr) {
+					if(key != "ts"){
+						this.coinArr[key].veMbox = {
+							mul: 0, //倍率
+							orderIndexs: {
+								"0": {stakeMbox: 0,endTime: 0, veMboxNum: 0},
+								"1": {stakeMbox: 0,endTime: 0, veMboxNum: 0},
+								"2": {stakeMbox: 0,endTime: 0, veMboxNum: 0},
+							}
+						}
+					}
+				}
+				
+				let {poolIndexs,orderIndexs, moboxs ,veMoboxs,lockTimeValues, boosters} = res;
+				poolIndexs.map((poolIndex, pos)=>{
+					let coinKey = pIndexObj[poolIndex];
+					let orderIndex  = orderIndexs[pos];
+					let veMbox =  this.coinArr[coinKey].veMbox;
+					veMbox.mul = boosters[pos]
+					veMbox.orderIndexs[orderIndex].stakeMbox =  moboxs[pos];
+					veMbox.orderIndexs[orderIndex].veMboxNum =  veMoboxs[pos];
+					veMbox.orderIndexs[orderIndex].endTime =  lockTimeValues[pos];
+					console.log(veMbox);
+				});
+				this.coinArr["ts"] = new Date().valueOf();
+				this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+			}
 		},
 		async getGemBag(){
 			let gemBag = await Wallet.ETH.getMyGemNum();
@@ -242,9 +285,9 @@ const InitEth = {
 					this.coinArr[coinKey].gracePeriod = gracePeriods[index];
 					this.coinArr[coinKey].wantAmount = Common.numFloor(Number(wantAmounts[index]) / decimals, omit);
 					this.coinArr[coinKey].workingBalance = workingBalances;
-					this.coinArr["ts"] = new Date().valueOf();
-					this.$store.commit("bnbState/setData", {coinArr: this.coinArr, rewardStoreKey: Common.numFloor(Number(rewardStore) / 1e18, 1e4)});
 				});
+				this.coinArr["ts"] = new Date().valueOf();
+				this.$store.commit("bnbState/setData", {coinArr: this.coinArr, rewardStoreKey: Common.numFloor(Number(rewardStore) / 1e18, 1e4)});
 			}
 		},
 

@@ -35,8 +35,10 @@
 import { Dialog } from "@/components";
 import { Http } from "@/utils";
 import { mapState } from "vuex";
+import { CommonMethod } from "@/mixin";
 
 export default {
+	mixins: [CommonMethod],
 	components: { Dialog },
 	computed: {
 		...mapState({

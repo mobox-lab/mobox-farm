@@ -42,7 +42,16 @@
 
 				<div class="tac mgt-10">
 					<p v-if="Number(inputNum) > 0">冻结可获得: <span class="notice-color">{{getCanFreezeVeMbox}}</span> veMBOX</p>
-					<StatuButton class="mgt-10" :isDisable="Number(inputNum) <= 0" :isLoading="lockBtn.freezeMboxLock > 0" :onClick="freeze">确定冻结</StatuButton>
+					<!-- <StatuButton class="mgt-10" :isDisable="Number(inputNum) <= 0" :isLoading="lockBtn.freezeMboxLock > 0" :onClick="freeze">确定冻结</StatuButton> -->
+
+					<div  :class="{'btn-group': coinArr['MBOX'].allowanceToVeMbox == 0}">
+					<StatuButton :isLoading="coinArr['MBOX'].isApproving" data-step="1" class="mgt-10" style="width:70%" :onClick="approve.bind(this, 'MBOX')" v-if="coinArr['MBOX'].allowanceToVeMbox == 0">{{$t("Air-drop_16")}} MBOX</StatuButton>
+					<StatuButton :isLoading="lockBtn.freezeMboxLock > 0" :isDisable="coinArr['MBOX'].allowanceToVeMbox <= 0 || Number(inputNum) <= 0" data-step="2" class="mgt-10" style="width:70%"  :onClick="freeze">
+						确定冻结
+					</StatuButton>
+				</div>
+
+
 				</div>
 				
 			</div>
@@ -72,6 +81,8 @@ import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/antd.css'
 import { StatuButton } from '@/components';
 import CommonMethod from "@/mixin/CommonMethod";
+import { Wallet } from '@/utils';
+import { PancakeConfig , WalletConfig} from '@/config';
 
 export default {
 	mixins: [CommonMethod],
@@ -83,19 +94,21 @@ export default {
 			sliderValue: 3,
 			marks: {
 				"1": "1x",
+				"1.5": "1.5x",
 				"2": "2x",
+				"2.5": "2.5x",
 				"3": "3x",
 			},
 			selectDay: 1095,
 			freezeConf:{
-				"7": {veMBOX: 0.1, orderIndex: 0},
-				"15": {veMBOX: 0.205, orderIndex: 0},
-				"30": {veMBOX: 0.42, orderIndex: 1},
-				"90": {veMBOX: 1.28, orderIndex: 1},
-				"180": {veMBOX: 2.54, orderIndex: 1},
-				"365": {veMBOX: 5, orderIndex: 2},
-				"730": {veMBOX:10, orderIndex: 2},
-				"1095": {veMBOX: 15, orderIndex: 2},
+				"7": {veMBOX: 0.1, orderIndex: 0,timeIndex: 0},
+				"15": {veMBOX: 0.205, orderIndex: 0,timeIndex: 1},
+				"30": {veMBOX: 0.42, orderIndex: 1,timeIndex: 2},
+				"90": {veMBOX: 1.28, orderIndex: 1,timeIndex: 3},
+				"180": {veMBOX: 2.54, orderIndex: 1,timeIndex: 4},
+				"365": {veMBOX: 5, orderIndex: 2,timeIndex: 5},
+				"730": {veMBOX:10, orderIndex: 2,timeIndex: 6},
+				"1095": {veMBOX: 15, orderIndex: 2,timeIndex: 7},
 			}
 		})
 	},
@@ -112,9 +125,49 @@ export default {
 			return this.numFloor(freezeConf.veMBOX * Number(this.inputNum), 1e4);
 		},
 	},
+	async created(){
+		await Wallet.ETH.getAccount();
+		await this.setAllowance("MBOX");
+	},
 	methods: {
-		freeze(){
+		async setAllowance(coinKey){
+			if(coinKey != "" && coinKey != "BNB" && this.coinArr[coinKey].allowanceToVeMbox == -1) {
+				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr , WalletConfig.ETH.momoVeMbox, false);
+				console.log("setallowance", Number(allowance));
+				this.coinArr[coinKey].allowanceToVeMbox = Number(allowance);
+				this.coinArr["ts"] = new Date().valueOf();
+			}
+		},
 
+		async approve(coinKey){
+			if(coinKey == "" || coinKey == "BNB") return;
+			let {isApproving, allowanceToVeMbox} =  this.coinArr[coinKey];
+			if(isApproving || Number(allowanceToVeMbox) >1e8) return;
+
+			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr, 
+			WalletConfig.ETH.momoVeMbox, {coinKey, type:"allowanceToVeMbox"});
+			if(hash){
+				this.coinArr[coinKey].isApproving = true;
+			}
+		},
+
+		//冻结
+		async freeze(){
+			let {coinKey} = this.oprData;
+			let amount_ = Number(this.inputNum);
+			if(amount_ <= 0) return;
+			let obj = {
+				poolIndex_:PancakeConfig.StakeLP[coinKey].pIndex,
+				amount_,
+				lockTime_: this.freezeConf[this.selectDay].timeIndex, 
+				orderIndex_: this.freezeConf[this.selectDay].orderIndex
+			}
+			console.log(obj);
+			let hash = await Wallet.ETH.stakeMbox(obj);
+			if(hash){
+				this.inputNum = "";
+				this.lockBtnMethod("freezeMboxLock");
+			}
 		}
 	}
 }

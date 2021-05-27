@@ -103,6 +103,8 @@
 								</div>
 							</div>
 
+							
+
 							<div v-if="item.isLP" class="mgt-10 small" style="background:#202e53;padding:5px;border-radius:10px">
 								<div class="aveage-box vertical-children por" style="padding:2px"  v-for="(name, key) in item.coinName.split('-')" :key="item.coinName+key">
 								<div class="dib">
@@ -117,6 +119,16 @@
 								</div>
 							</div>
 
+						</div>
+
+						<div class="tal mgt-20">
+							<p class="por mgt-10">
+								<span class="opa-6 ">我的veMBOX</span>
+								<span class="suffix" >
+									{{ numFloor( (coinArr[item.coinKey].veMbox.orderIndexs[0].veMboxNum + coinArr[item.coinKey].veMbox.orderIndexs[1].veMboxNum + coinArr[item.coinKey].veMbox.orderIndexs[2].veMboxNum) /1e18, 1e6) || "0" }}
+									<span class="notice-color" v-if="coinArr[item.coinKey].veMbox > 0">({{coinArr[item.coinKey].veMbox.mul}}x)</span>
+								</span>
+							</p>
 						</div>
 
 						<div class="tal mgt-20 ">

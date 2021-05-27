@@ -1,3 +1,5 @@
+import Common from "../../utils/Common";
+
 const baseCoinAttr = {
 	apy: "-%",
 	balance: "-",
@@ -16,6 +18,7 @@ const baseCoinAttr = {
 	allowanceToAuction: -1,
 	allowanceToGemAuction: -1,
 	allowanceToRent: -1,
+	allowanceToVeMbox: -1,
 	totalAirdrop: 0,
 	perFullShare: 0,
 	isApproving: false, //是否授权中
@@ -23,39 +26,47 @@ const baseCoinAttr = {
 	isWithdrawing: false, //是否提现中
 	isRemoveLiqiditing: false, //是移除流动性中
 	isAddLiqiditing: false, //是增加流动性中
+	veMbox: {
+		mul: 0, //倍率
+		orderIndexs: {
+			"0": {stakeMbox: 0,endTime: 0, veMboxNum: 0,},
+			"1": {stakeMbox: 0,endTime: 0, veMboxNum: 0,},
+			"2": {stakeMbox: 0,endTime: 0, veMboxNum: 0,},
+		}
+	}
 }
 
 const state = () => ({
 	data: {
 		coinArr: {
-			"BNB": {...baseCoinAttr, isLP: false,coinName: "BNB"},
-			"MBOX": {...baseCoinAttr, isLP: false,coinName: "MBOX"},
-			"BTCB": {...baseCoinAttr, isLP: false,coinName: "BTCB"},
-			"ETH": {...baseCoinAttr, isLP: false,coinName: "ETH"},
-			"BUSD": {...baseCoinAttr, isLP: false,coinName: "BUSD"},
-			"USDT": {...baseCoinAttr, isLP: false,coinName: "USDT"},
-			"DAI": {...baseCoinAttr, isLP: false,coinName: "DAI"},
-			"USDC": {...baseCoinAttr, isLP: false,coinName: "USDC"},
-			"KEY": {...baseCoinAttr, isLP: false,coinName: "KEY"},
-			"MBOX-BNB": {...baseCoinAttr, isLP: true,coinName: "MBOX-BNB"},
-			"BTCB-BNB": {...baseCoinAttr, isLP: true,coinName: "BTCB-BNB"},
-			"ETH-BNB": {...baseCoinAttr, isLP: true,coinName: "ETH-BNB"},
-			"BUSD-BNB": {...baseCoinAttr, isLP: true,coinName: "BUSD-BNB"},
-			"USDT-BNB": {...baseCoinAttr, isLP: true,coinName: "USDT-BNB"},
-			"USDT-BUSD": {...baseCoinAttr, isLP: true,coinName: "USDT-BUSD"},
-			"DAI-BUSD": {...baseCoinAttr, isLP: true,coinName: "DAI-BUSD"},
-			"USDC-BUSD": {...baseCoinAttr, isLP: true,coinName: "USDC-BUSD"},
-			"KEY-BNB": {...baseCoinAttr, isLP: true,coinName: "KEY-BNB"},
+			"BNB": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "BNB"},
+			"MBOX": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "MBOX"},
+			"BTCB": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "BTCB"},
+			"ETH": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "ETH"},
+			"BUSD": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "BUSD"},
+			"USDT": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "USDT"},
+			"DAI": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "DAI"},
+			"USDC": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "USDC"},
+			"KEY": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "KEY"},
+			"MBOX-BNB": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "MBOX-BNB"},
+			"BTCB-BNB": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "BTCB-BNB"},
+			"ETH-BNB": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "ETH-BNB"},
+			"BUSD-BNB": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "BUSD-BNB"},
+			"USDT-BNB": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "USDT-BNB"},
+			"USDT-BUSD": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "USDT-BUSD"},
+			"DAI-BUSD": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "DAI-BUSD"},
+			"USDC-BUSD": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "USDC-BUSD"},
+			"KEY-BNB": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "KEY-BNB"},
 
-			"MBOX-BNB-V2": {...baseCoinAttr, isLP: true,coinName: "MBOX-BNB"},
-			"BTCB-BNB-V2": {...baseCoinAttr, isLP: true,coinName: "BTCB-BNB"},
-			"ETH-BNB-V2": {...baseCoinAttr, isLP: true,coinName: "ETH-BNB"},
-			"BUSD-BNB-V2": {...baseCoinAttr, isLP: true,coinName: "BUSD-BNB"},
-			"USDT-BNB-V2": {...baseCoinAttr, isLP: true,coinName: "USDT-BNB"},
-			"USDT-BUSD-V2": {...baseCoinAttr, isLP: true,coinName: "USDT-BUSD"},
-			"DAI-BUSD-V2": {...baseCoinAttr, isLP: true,coinName: "DAI-BUSD"},
-			"USDC-BUSD-V2": {...baseCoinAttr, isLP: true,coinName: "USDC-BUSD"},
-			"KEY-BNB-V2": {...baseCoinAttr, isLP: true,coinName: "KEY-BNB"},
+			"MBOX-BNB-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "MBOX-BNB"},
+			"BTCB-BNB-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "BTCB-BNB"},
+			"ETH-BNB-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "ETH-BNB"},
+			"BUSD-BNB-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "BUSD-BNB"},
+			"USDT-BNB-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "USDT-BNB"},
+			"USDT-BUSD-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "USDT-BUSD"},
+			"DAI-BUSD-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "DAI-BUSD"},
+			"USDC-BUSD-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "USDC-BUSD"},
+			"KEY-BNB-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "KEY-BNB"},
 			"ts": 0,
 		},
 		

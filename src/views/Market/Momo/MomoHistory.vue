@@ -33,8 +33,10 @@ import { PetItemMin, Dialog } from "@/components";
 import { Http } from "@/utils";
 import { mapState } from "vuex";
 import { BaseConfig } from '@/config';
+import { CommonMethod } from "@/mixin";
 
 export default {
+	mixins: [CommonMethod],
 	components: {PetItemMin, Dialog},
 	computed: {
 		...mapState({

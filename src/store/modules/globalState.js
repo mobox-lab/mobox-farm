@@ -40,6 +40,8 @@ const state = () => ({
 			rentLock:0,//租赁锁
 			putRentLock: 0, //上架租赁锁
 			freezeMboxLock: 0,//冻结Mbox锁
+			unStakeMboxLock: 0,//取回冻结Mbox锁
+			mboxApproveToVeMboxLock:0//mbox授权给veMbox申购合约锁
 		},
 		walletStatus: {
 			status: 1, //1,等待中，2，reject，3，success

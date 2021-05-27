@@ -11,7 +11,7 @@
 					<p class="tar vertical-children">
 						<img src="@/assets/coin/MBOX.png" alt="" height="25">
 						<span class="mgl-5">
-							<span v-if="statusObj.currentRentPrice !='-' ">{{numFloor(statusObj.currentRentPrice/1e18, 8)}} MBOX</span>
+							<span v-if="statusObj.currentRentPrice !='-' ">{{numFloor(statusObj.currentRentPrice/1e18, 1e4)}} MBOX</span>
 							<span v-else><Loading /></span>
 						</span>
 					</p>

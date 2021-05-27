@@ -67,4 +67,33 @@ export default class Common {
 		dom.style.display = type;
 	}
 
+	//对象深拷贝
+	static ObjClone(obj) {
+	if (null == obj || "object" != typeof obj) return obj;
+
+	let copy = null;
+
+	// Handle Date
+	if (obj instanceof Date) {
+	copy = new Date();
+	copy.setTime(obj.getTime());
+	return copy;
+	}
+	// Handle Array or Object
+	if (obj instanceof Array || obj instanceof Object) {
+	if(obj.updateTs != undefined){
+	copy = (obj instanceof Array)?[...obj]:{...obj};
+	copy.updateTs = obj.updateTs;
+	return copy;
+	}
+	copy = (obj instanceof Array)?[]:{};
+	for (var attr in obj) {
+	if (Object.hasOwnProperty.call(obj, attr))
+	copy[attr] = this.ObjClone(obj[attr]);
+	}
+	return copy;
+	}
+	throw new Error("Unable to clone obj! Its type isn't supported.");
+	}
+
 }

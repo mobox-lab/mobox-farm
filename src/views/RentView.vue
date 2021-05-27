@@ -83,7 +83,7 @@
 						</section>
 						<div class="mgt-20">
 							<p v-if="isCanPutRent" style="max-width:350px;margin:0px auto">
-								{{$t("Hire_25").replace("#0#",rentObj.rentPrice+" MBOX").replace("#1#",rentObj.rentDay).replace("2",Number(rentObj.rentRound))}}
+								{{$t("Hire_25").replace("#0#",rentObj.rentPrice+" MBOX").replace("#1#",rentObj.rentDay).replace("#2#",Number(rentObj.rentRound))}}
 							</p>
 							<StatuButton class="btn-primary mgt-10"  :isDisable="!isCanPutRent" :onClick="putRent" :isLoading="lockBtn.putRentLock > 0">{{$t("Hire_19")}}</StatuButton>
 						</div>

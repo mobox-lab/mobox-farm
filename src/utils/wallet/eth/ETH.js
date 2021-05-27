@@ -2246,6 +2246,110 @@ export default class ETH {
 
 	}
 
+	///veMBOX相关
+	static async stakeMbox({poolIndex_, amount_, lockTime_, orderIndex_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "stake",
+				"type": "function",
+				"inputs": [
+					{"name": "poolIndex_","type": "uint256"},
+					{"name": "amount_","type": "uint256"},
+					{"name": "lockTime_","type": "uint256"},
+					{"name": "orderIndex_","type": "uint256"},
+				],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.momoVeMbox);
+
+		amount_ = this.numToHex(BigNumber(amount_).times(BigNumber(1e18)));
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.stake(poolIndex_, amount_, lockTime_, orderIndex_), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					console.log("stakeMbox success!!!!!");
+					Common.app.unLockBtn("freezeMboxLock");
+					//更新钱包余额
+					await Common.app.setCoinValueByName("MBOX");
+					//更新质押余额
+					await Common.app.getVeMboxStakeInfo();
+				}
+			)
+		});
+
+	}
+
+	///取回质押的MBOX
+	static async unstakeMbox({poolIndex_, orderIndex_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "unstake",
+				"type": "function",
+				"inputs": [
+					{"name": "poolIndex_","type": "uint256"},
+					{"name": "orderIndex_","type": "uint256"},
+				],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.momoVeMbox);
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.unstake(poolIndex_, orderIndex_), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					console.log("unstakeMbox success!!!!!");
+					Common.app.unLockBtn("unStakeMboxLock");
+					//更新质押余额
+					await Common.app.getVeMboxStakeInfo();
+					//更新钱包余额
+					await Common.app.setCoinValueByName("MBOX");
+				}
+			)
+		});
+
+	}
+
+	//获取多个池子的质押的veMbox的信息
+	static async getVeMboxStakeInfo(poolIndexs_){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "getStakeInfo",
+				"type": "function",
+				"inputs": [
+					{"name": "user_","type": "address"},
+					{"name": "poolIndexArray_","type": "uint256[]"},
+				],
+				"outputs": [
+					{"name": "poolIndexs","type": "uint256[]"},
+					{"name": "orderIndexs","type": "uint256[]"},
+					{"name": "moboxs","type": "uint256[]"},
+					{"name": "veMoboxs","type": "uint256[]"},
+					{"name": "lockTimeValues","type": "uint256[]"},
+					{"name": "boosters","type": "uint256[]"},
+				],
+			}
+		], WalletConfig.ETH.momoVeMbox);
+
+		return new Promise(resolve => {
+			contract.methods.getStakeInfo(myAddr, poolIndexs_).call().then(data => {
+				resolve(data);
+			})
+		});
+
+	}
+
 
 
 }

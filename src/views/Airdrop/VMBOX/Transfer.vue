@@ -19,7 +19,7 @@
 						<span v-if="from.isEstimated && Number(from.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
 						<Loading  v-if="from.loading" />
 					</p>
-					<p class="tar small">{{$t("Mine_05")}}: {{from.coinName==""?"-":coinArr[from.coinName].balance}}</p>
+					<p class="tar small">{{$t("Mine_05")}}: {{from.coinName==""?"-":coinArr[from.coinName].balance}} veMBOX</p>
 				</div>
 				<div class="aveage-box vertical-children mgt-10" >
 					<div  style="flex:1 1 auto">
@@ -52,7 +52,7 @@
 						<span v-if="to.isEstimated && Number(to.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
 						<Loading  v-if="to.loading" />
 					</p>
-					<p class="tar small">{{$t("Mine_05")}}: {{to.coinName==""?"-":coinArr[to.coinName].balance}}</p>
+					<p class="tar small">{{$t("Mine_05")}}: {{to.coinName==""?"-":coinArr[to.coinName].balance}} veMBOX</p>
 				</div>
 				<div class="aveage-box vertical-children mgt-10">
 					<div style="flex:1 1 auto;">
@@ -61,8 +61,10 @@
 					<p class="tar text-btn vertical-children" @click="openSelectPool('to')">
 					<!-- <p class="tar text-btn vertical-children" > -->
 						<span  v-if="to.coinName != '' ">
-							<img :src="require(`@/assets/coin/${to.coinName}.png`)" alt="" height="20" />&nbsp;
-							<span>{{to.coinName}}</span>
+							<div  :class="to.isLP?'double-img':'' " v-if="to.coinName != ''" style="height:40px;zoom:0.5" class="dib por">
+								<img v-for="(name, key) in to.coinName.split('-')" :key="name+key" :src=" require(`@/assets/coin/${name}.png`) " height="20" alt="" />
+							</div>
+							<span class="mgl-5">{{to.coinName}}</span>
 						</span>
 						<span v-else>{{$t("Air-drop_38")}}</span>
 						<svg viewBox="0 0 24 24"  height="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
@@ -95,6 +97,7 @@ export default {
 			to: {
 				coinName: "",
 				inputValue: "",
+				isLP: true,
 				isEstimated: false,// 是否为预估的
 				loading: false,
 			},
@@ -112,11 +115,11 @@ export default {
 	},
 	methods: {
 		openSelectPool(type){
-			console.log("ssss", type);
 			this.$parent.$parent.$refs.selectOprPool.setOprData([this.from.coinName, this.to.coinName], this.onSelectPool.bind(this, type)).show();
 		},
 		onSelectPool(type, coinName){
 			console.log({type, coinName});
+			this[type].coinName = coinName;
 		},
 	}
 }

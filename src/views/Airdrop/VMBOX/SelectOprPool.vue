@@ -4,11 +4,14 @@
 		<div v-for="item in selectCoinList" :key="item.coinKey" :class="hasSelectCoin.indexOf(item.coinKey) != -1?'disable':'' " class="aveage-box select-coin-item" @click="itemClick(item.coinKey)">
 			<div class="vertical-children tal">
 				<div  :class="item.isLP?'double-img':'' " v-if="item.coinName != ''" style="height:40px;zoom:0.5" class="dib por">
-					<img v-for="(name, key) in item.coinName.split('-')" :key="name+key" :src=" require(`@/assets/coin/${name}.png`) " height="20" alt="" />
+					<img v-for="(name, key) in item.coinName.split('-')" :key="name+key" :src=" require(`@/assets/coin/${name}.png`) " height="40" alt="" />
 				</div>
-				<span class="mgl-5">{{item.coinKey}}</span>
+				<span class="mgl-5">{{item.coinName}}</span>
 			</div>
-			<div class="tar" v-if="item.balance != '-'">{{item.balance}}</div>
+			<div class="tar" v-if="item.balance != '-'">
+				<p class="small">{{item.balance}} veMBOX</p>
+				<p class="small" v-if="Number(item.balance) > 0">50:66:00</p>
+			</div>
 			<div class="tar" v-else>
 				<Loading />
 			</div>
@@ -46,7 +49,6 @@ export default {
 					arr.push({coinKey: key, ...stakeLP[key], ...coinArr[key]});
 				}
 			}
-			console.log("selectCoinList", arr);
 			return arr;
 		},
 	},
@@ -78,7 +80,7 @@ export default {
 		background: #262833;
 	}
 	.select-coin-item{
-		height: 45px;
+		height: 50px;
 		cursor: pointer;
 		padding: 10px;
 		background: #1d2b50;

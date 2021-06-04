@@ -2,13 +2,13 @@
 	<div>
 		<div  class="tab-body tal">
 			<div class="ly-input-content por">
-				<p class="small tal">要冻结的MBOX数量</p>
+				<p class="small tal">{{$t("Air-drop_156")}}</p>
 				<div class="por mgt-5">
 					<div  class="ly-input-pre-icon" :class="oprData.isLP?'double-img':'' " v-if="oprData.coinName != ''" style="zoom: 0.75">
 						<img v-for="(name, key) in oprData.coinName.split('-')" :key="name+key" :src=" require(`@/assets/coin/${name}.png`) " height="40" alt="" />
 					</div>
 					<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
-						v-number :data-max="getMaxMbox" data-min="1" v-model="inputNum" placeholder="要冻结的MBOX数量" />
+						v-number :data-max="getMaxMbox"  v-model="inputNum" :placeholder="$t('Air-drop_156')" />
 					<div class="dib tac" style="width: 30%">
 						<button @click="inputNum = getMaxMbox" class="btn-primary btn-small" style="width: 80%" >
 							Max
@@ -16,7 +16,7 @@
 					</div>
 				</div>
 				<div class="mgt-10 aveage-box small">
-					<p class="tal">钱包余额</p>
+					<p class="tal">{{$t('Air-drop_11')}}</p>
 					<p class="vertical-children tar">
 						<span>{{coinArr["MBOX"].balance}} MBOX</span>
 					</p>
@@ -24,30 +24,30 @@
 
 				<div class="tab-split mgt-10"></div>
 				<section class="mgt-10" id="select-time">
-					<p class="small">请选择冻结的时间</p>
+					<p class="small">{{$t('Air-drop_157')}}</p>
 					<div class="ly-input-content aveage-box tac">
-						<p style="flex:0.5">短期</p>
+						<p style="flex:0.5">{{$t('Air-drop_173')}}</p>
 						<div v-for="day in [7,15]" :key="day"><button class=" btn-small" :class="selectDay == day?'btn-primary':'btn-default' " @click="selectDay=day">{{day}} Days</button></div>
 						<div></div>
 					</div>
 					<div class="ly-input-content aveage-box tac">
-						<p  style="flex:0.5">中期</p>
+						<p  style="flex:0.5">{{$t('Air-drop_174')}}</p>
 						<div v-for="day in [30,90,180]" :key="day"><button class=" btn-small" :class="selectDay == day?'btn-primary':'btn-default' " @click="selectDay=day">{{day}} Days</button></div>
 					</div>
 					<div class="ly-input-content aveage-box tac">
-						<p  style="flex:0.5">长期</p>
+						<p  style="flex:0.5">{{$t('Air-drop_175')}}</p>
 						<div v-for="day in [365,730,1095]" :key="day"><button class=" btn-small" :class="selectDay == day?'btn-primary':'btn-default' " @click="selectDay=day">{{day}} Days</button></div>
 					</div>
 				</section>
 
 				<div class="tac mgt-10">
-					<p v-if="Number(inputNum) > 0">冻结可获得: <span class="notice-color">{{getCanFreezeVeMbox}}</span> veMBOX</p>
+					<p v-if="Number(inputNum) > 0">{{$t('Air-drop_166')}}: <span class="notice-color">{{getCanFreezeVeMbox}}</span> veMBOX</p>
 					<!-- <StatuButton class="mgt-10" :isDisable="Number(inputNum) <= 0" :isLoading="lockBtn.freezeMboxLock > 0" :onClick="freeze">确定冻结</StatuButton> -->
 
 					<div  :class="{'btn-group': coinArr['MBOX'].allowanceToVeMbox == 0}">
 					<StatuButton :isLoading="coinArr['MBOX'].isApproving" data-step="1" class="mgt-10" style="width:70%" :onClick="approve.bind(this, 'MBOX')" v-if="coinArr['MBOX'].allowanceToVeMbox == 0">{{$t("Air-drop_16")}} MBOX</StatuButton>
 					<StatuButton :isLoading="lockBtn.freezeMboxLock > 0" :isDisable="coinArr['MBOX'].allowanceToVeMbox <= 0 || Number(inputNum) <= 0" data-step="2" class="mgt-10" style="width:70%"  :onClick="freeze">
-						确定冻结
+						{{$t('Air-drop_171')}}
 					</StatuButton>
 				</div>
 
@@ -61,14 +61,27 @@
 		<div class="tab-body mgt-10">
 			<div class="tab-content tal">
 				<section >
-					<p class="small">挖矿倍率计算器</p>
+					<p class="small">{{$t('Air-drop_167')}}</p>
 					<div class="range-select mgt-10">
 						<vue-slider v-model="sliderValue" :min="1" :max="3" :interval="0.02" :marks="marks"   :tooltip="'always'" :tooltip-placement="'bottom'" :tooltip-formatter="'{value}x'"/>
 					</div>
 				</section>
-				<section class="mgt-10 tac">
-					<p>达到1.2x需要：5000 veMBOX</p>
-					<p>您还需要：5000 MBOX</p>
+				<section class="mgt-10 tac" v-if="!hasStakeCoin">
+					{{$t("Air-drop_186")}}
+				</section>
+				<section class="mgt-10 tac" v-else>
+					<p >
+						<span class="tar">{{$t('Air-drop_168')}}:</span>
+						<span class="tal mgl-5">{{ getTotalVeMbox }} veMBOX</span>
+					</p>
+					<p >
+						<span class="tar">{{$t('Air-drop_169').replace("#0#", sliderValue+"x")}}:</span>
+						<span class="tal mgl-5">{{getNeedVeMboxObj.veMbox}} veMBOX</span>
+					</p>
+					<p >
+						<span class="tar">{{$t('Air-drop_170')}}:</span>
+						<span class="tal mgl-5">{{ getNeedVeMboxObj.mbox }} MBOX</span>
+					</p>
 				</section>
 			</div>
 		</div>
@@ -112,6 +125,13 @@ export default {
 			}
 		})
 	},
+	watch: {
+		oprData: function(){
+			this.inputNum = "";
+			this.selectDay = 1095;
+			this.sliderValue = 3;
+		}
+	},
 	computed: {
 		...mapState({
 			coinArr: (state) => state.bnbState.data.coinArr,
@@ -124,6 +144,42 @@ export default {
 			let freezeConf = this.freezeConf[this.selectDay];
 			return this.numFloor(freezeConf.veMBOX * Number(this.inputNum), 1e4);
 		},
+		getTotalVeMbox(){
+			let coinKey = this.oprData.coinKey;
+			if(coinKey == "") return 0;
+			let orderIndexs = this.coinArr[coinKey].veMbox.orderIndexs;
+			return  this.numFloor( (Number(orderIndexs[0].veMboxNum) + Number(orderIndexs[1].veMboxNum) + Number(orderIndexs[2].veMboxNum)) /1e18, 1e6) || "0" ;
+		},
+		//获取达到相应倍数还需要的对象
+		getNeedVeMboxObj(){
+			let needObj = {
+				veMbox: 0,
+				mbox: 0,
+			}
+			let coinObj = this.coinArr[this.oprData.coinKey];
+			if(coinObj){
+				let {shareTotal, veMoboxSupply, wantAmount} = coinObj;
+				let y = (this.sliderValue - 1)/2 *(wantAmount * 1e18 / shareTotal);
+				console.log( {veMoboxSupply, shareTotal, y});
+				needObj.veMbox = this.numFloor((y*veMoboxSupply/(1-y) - this.getTotalVeMbox*1e18)/1e18, 1e4);
+				if(veMoboxSupply == 0 || veMoboxSupply <= this.getTotalVeMbox * 1e18 || wantAmount * 1e18 >= Number(shareTotal)) {
+					needObj.veMbox = 1;
+				}
+				//如果池子里面都是我的 并且我已经质押过 就不需要质押了
+				console.log(wantAmount * 1e18, shareTotal);
+				if(wantAmount * 1e18 >= Number(shareTotal) && this.getTotalVeMbox > 0){
+					needObj.veMbox = 0;
+				}
+				if(Number(needObj.veMbox) < 0) needObj.veMbox = 0;
+				let freezeConf = this.freezeConf[this.selectDay];
+				needObj.mbox = this.numFloor(needObj.veMbox / freezeConf.veMBOX, 1e4);
+			}
+			return needObj;
+		},
+		//是否质押了LP
+		hasStakeCoin(){
+			return !(this.oprData.coinKey != '' && this.coinArr[this.oprData.coinKey].wantAmount <= 0)
+		}
 	},
 	async created(){
 		await Wallet.ETH.getAccount();
@@ -133,7 +189,6 @@ export default {
 		async setAllowance(coinKey){
 			if(coinKey != "" && coinKey != "BNB" && this.coinArr[coinKey].allowanceToVeMbox == -1) {
 				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr , WalletConfig.ETH.momoVeMbox, false);
-				console.log("setallowance", Number(allowance));
 				this.coinArr[coinKey].allowanceToVeMbox = Number(allowance);
 				this.coinArr["ts"] = new Date().valueOf();
 			}
@@ -154,13 +209,21 @@ export default {
 		//冻结
 		async freeze(){
 			let {coinKey} = this.oprData;
+			//判断是否有需要取回的MBOX
+			let orderIndex_ = this.freezeConf[this.selectDay].orderIndex;
+			let {orderIndexsCountDown, orderIndexs} = this.coinArr[coinKey].veMbox;
+			if(orderIndexsCountDown[orderIndex_] <=0 && orderIndexs[orderIndex_].stakeMbox > 0){
+				this.showNotify(this.$t("Air-drop_185"), "error");
+				return;
+			}
+
 			let amount_ = Number(this.inputNum);
 			if(amount_ <= 0) return;
 			let obj = {
 				poolIndex_:PancakeConfig.StakeLP[coinKey].pIndex,
 				amount_,
 				lockTime_: this.freezeConf[this.selectDay].timeIndex, 
-				orderIndex_: this.freezeConf[this.selectDay].orderIndex
+				orderIndex_,
 			}
 			console.log(obj);
 			let hash = await Wallet.ETH.stakeMbox(obj);

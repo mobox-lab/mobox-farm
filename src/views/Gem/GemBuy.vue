@@ -7,8 +7,12 @@
 			<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="../../assets/icon/help.png" alt="" height="30">
 		</h1>
 		<div class="tac mgt-10">
-			<p v-if="getCountDown >0">{{$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
-			<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
+			<span v-if="gemApplyEndCountDown <=0 ">{{$t("Gemstone_50")}}</span>
+			<template v-else>
+				<p v-if="getCountDown >0">{{$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
+				<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
+			</template>
+
 			<div style="height:280px" id="gem-apply-type">
 				<p v-if="applyInfo.roundIndex != '' ">
 					<img :src="require(`../../assets/icon/gemIcon_${getShowApplyType}.png`)" alt="" height="280px"/>
@@ -174,6 +178,7 @@ export default {
 	computed:{
 		...mapState({
 			lockBtn: (state) => state.globalState.data.lockBtn,
+			gemApplyEndCountDown: (state) => state.globalState.data.gemApplyEndCountDown,
 		}),
 
 		getShowApplyType(){

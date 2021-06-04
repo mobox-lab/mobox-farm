@@ -1,45 +1,50 @@
 <template>
 	<div  class="tab-body tal">
 		<div class="ly-input-content por">
-			<p class="small">veMobx 取回说明,veMobx 取回说明，veMobx 取回说明，veMobx 取回说明veMobx 取回说明</p>
+			<p class="small">{{$t('Air-drop_180')}}</p>
 			
 			<div class="mgt-20 tac" style="background: rgba(0,0,0,0.3);border-radius:10px;padding:10px"> 
-				<p>MBOX-BNB LP</p>
-				<div class="aveage-box mgt-20">
-					<p>时间类型</p>
-					<p>待取回MBOX</p>
-					<p>倒计时</p>
+				<div class="vertical-children">
+					<div  :class="oprData.isLP?'double-img':'' " v-if="oprData.coinKey != ''" style="height:40px;zoom:0.5" class="dib por">
+						<img v-for="(name, key) in oprData.coinName.split('-')" :key="name+key" :src=" require(`@/assets/coin/${name}.png`) " height="20" alt="" />
+					</div>
+					<span class="mgl-5">{{oprData.coinName}} POOL</span>
 				</div>
 				<div class="aveage-box mgt-20">
-					<p>短期</p>
+					<p>{{$t('Air-drop_181')}}</p>
+					<p>{{$t('Air-drop_182')}}</p>
+					<p>{{$t('Air-drop_183')}}</p>
+				</div>
+				<div class="aveage-box mgt-20">
+					<p>{{$t('Air-drop_173')}}</p>
 					<p>{{ numFloor(getVeMboxOrderIndexs['0'].stakeMbox/ 1e18, 1e4)}}</p>
 					<p>
 						<span v-if="Number(orderIndexsCountDown['0']) > 0">{{ getLeftTime(orderIndexsCountDown["0"]) }}</span>
 						<span v-else>
 							<span v-if="getVeMboxOrderIndexs['0'].stakeMbox == 0">-</span>
-							<StatuButton :isLoading="lockBtn.unStakeMboxLock > 0" :onClick="unstakeMbox.bind(this, 0)" v-else class="btn-small" style="width: 70%">领回</StatuButton>
+							<StatuButton :isLoading="lockBtn.unStakeMboxLock > 0" :onClick="unstakeMbox.bind(this, 0)" v-else class="btn-small" style="width: 70%">{{$t('Air-drop_155')}}</StatuButton>
 						</span>
 					</p>
 				</div>
 				<div class="aveage-box mgt-20">
-					<p>中期</p>
+					<p>{{$t('Air-drop_174')}}</p>
 					<p>{{ numFloor(getVeMboxOrderIndexs["1"].stakeMbox/ 1e18, 1e4)}}</p>
 					<p>
 						<span v-if="Number(orderIndexsCountDown['1']) > 0">{{ getLeftTime(orderIndexsCountDown["1"]) }}</span>
 						<span v-else>
 							<span v-if="getVeMboxOrderIndexs['1'].stakeMbox == 0">-</span>
-							<StatuButton :isLoading="lockBtn.unStakeMboxLock > 0" :onClick="unstakeMbox.bind(this, 1)" v-else class="btn-small" style="width: 70%">领回</StatuButton>
+							<StatuButton :isLoading="lockBtn.unStakeMboxLock > 0" :onClick="unstakeMbox.bind(this, 1)" v-else class="btn-small" style="width: 70%">{{$t('Air-drop_155')}}</StatuButton>
 						</span>
 					</p>
 				</div>
 				<div class="aveage-box mgt-20">
-					<p>长期</p>
+					<p>{{$t('Air-drop_175')}}</p>
 					<p>{{ numFloor(getVeMboxOrderIndexs["2"].stakeMbox/ 1e18, 1e4)}}</p>
 					<p>
 						<span v-if="Number(orderIndexsCountDown['2']) > 0">{{ getLeftTime(orderIndexsCountDown["2"]) }}</span>
 						<span v-else>
 							<span v-if="getVeMboxOrderIndexs['2'].stakeMbox == 0">-</span>
-							<StatuButton :isLoading="lockBtn.unStakeMboxLock > 0" :onClick="unstakeMbox.bind(this, 2)" v-else class="btn-small" style="width: 70%">领回</StatuButton>
+							<StatuButton :isLoading="lockBtn.unStakeMboxLock > 0" :onClick="unstakeMbox.bind(this, 2)" v-else class="btn-small" style="width: 70%">{{$t('Air-drop_155')}}</StatuButton>
 						</span>
 					</p>
 				</div>
@@ -62,11 +67,6 @@ export default {
 	props: ["oprData"],
 	data(){
 		return({
-			orderIndexsCountDown: {
-				"0": 0,
-				"1": 0,
-				"2": 0,
-			}
 		})
 	},
 	computed: {
@@ -85,16 +85,34 @@ export default {
 				orderIndexs = this.coinArr[coinKey].veMbox.orderIndexs;
 			}
 			return orderIndexs;
+		},
+		orderIndexsCountDown(){
+			let orderIndexsCountDown = {
+				"0": -1,
+				"1": -1,
+				"2": -1,
+			}
+			let coinObj = this.coinArr[this.oprData.coinKey];
+			if(coinObj){
+				orderIndexsCountDown = coinObj.veMbox.orderIndexsCountDown;
+			}
+			return orderIndexsCountDown;
 		}
 	},
 	created(){
 		if(timer) clearInterval(timer);
 		timer = setInterval(()=>{
-			for (const key in this.getVeMboxOrderIndexs) {
-				let endTime = this.getVeMboxOrderIndexs[key].endTime;
-				let dt = parseInt(new Date().valueOf - endTime);
-				if(dt > 0){
-					this.orderIndexsCountDown[key] = dt;
+			let coinObj = this.coinArr[this.oprData.coinKey];
+			if(coinObj){
+				let orderIndexsCountDown = coinObj.veMbox.orderIndexsCountDown;
+				for (const key in this.getVeMboxOrderIndexs) {
+					let endTime = this.getVeMboxOrderIndexs[key].endTime;
+					let dt = endTime - parseInt(new Date().valueOf()/1000);
+					if(dt > 0){
+						orderIndexsCountDown[key] = dt;
+					}else{
+						orderIndexsCountDown[key] = 0;
+					}
 				}
 			}
 		}, 1000)

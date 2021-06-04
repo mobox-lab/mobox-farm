@@ -1,13 +1,13 @@
 <template>
 	<div  class="tab-body tal">
 		<div class="tab-content por">
-			<p>请选择veMBOX的周期类型</p>
+			<p>{{$t('Air-drop_172')}}</p>
 			<div class="aveage-box tac mgt-10" id="select-type">
-				<div ><button class=" btn-small" :class="oprOrderIndex == 0?'btn-primary':'btn-default' " @click="oprOrderIndex=0">短期</button></div>
-				<div ><button class=" btn-small" :class="oprOrderIndex == 1?'btn-primary':'btn-default' " @click="oprOrderIndex=1">中期</button></div>
-				<div ><button class=" btn-small" :class="oprOrderIndex == 2?'btn-primary':'btn-default' " @click="oprOrderIndex=2">长期</button></div>
+				<div ><button class=" btn-small" :class="oprOrderIndex == 0?'btn-primary':'btn-default' " @click="oprOrderIndex=0">{{$t('Air-drop_173')}}</button></div>
+				<div ><button class=" btn-small" :class="oprOrderIndex == 1?'btn-primary':'btn-default' " @click="oprOrderIndex=1">{{$t('Air-drop_174')}}</button></div>
+				<div ><button class=" btn-small" :class="oprOrderIndex == 2?'btn-primary':'btn-default' " @click="oprOrderIndex=2">{{$t('Air-drop_175')}}</button></div>
 			</div>
-			<p class="tac mgt-10">(非同一周期类型的veMBOX不能互相划转)</p>
+			<p class="tac mgt-10">{{$t('Air-drop_176')}}</p>
 		</div>
 		<div class="tab-split mgt-10"></div>
 		<div class="tab-content">
@@ -16,20 +16,18 @@
 				<div class="aveage-box">
 					<p class="tal small vertical-children">
 						<span>{{$t("Air-drop_35")}}</span>&nbsp;
-						<span v-if="from.isEstimated && Number(from.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
-						<Loading  v-if="from.loading" />
 					</p>
-					<p class="tar small">{{$t("Mine_05")}}: {{from.coinName==""?"-":numFloor(coinArr[from.coinName].veMbox.orderIndexs[oprOrderIndex].veMboxNum/1e18, 1e4)}} veMBOX</p>
+					<p class="tar small">{{$t("Mine_05")}}: {{from.coinKey==""?"-":numFloor(coinArr[from.coinKey].veMbox.orderIndexs[oprOrderIndex].veMboxNum/1e18, 1e4)}} veMBOX</p>
 				</div>
 				<div class="aveage-box vertical-children mgt-10" >
 					<div  style="flex:1 1 auto">
-						<input style="width:100%" type="text" placeholder="0.0" v-model="from.inputValue" v-number @keyup="inputValueChange('from')">
+						<input style="width:100%" type="text" placeholder="0.0" v-model="from.inputValue" v-number  :data-max="from.coinKey==''?0:numFloor(coinArr[from.coinKey].veMbox.orderIndexs[oprOrderIndex].veMboxNum/1e18, 1e4)">
 					</div>
-					<p class="text-btn tac"  v-if="from.coinName != ''" @click="maxInputFrom();inputValueChange('from')">Max</p>
+					<p class="text-btn tac"  v-if="from.coinName != ''" @click="from.inputValue = numFloor(coinArr[from.coinKey].veMbox.orderIndexs[oprOrderIndex].veMboxNum/1e18, 1e4) ">Max</p>
 					<p class="tar cur-point text-btn vertical-children" @click="openSelectPool('from')">
 					<!-- <p class="tar cur-point text-btn vertical-children" > -->
-						<span  v-if="from.coinName != '' ">
-							<div  :class="from.isLP?'double-img':'' " v-if="from.coinName != ''" style="height:40px;zoom:0.5" class="dib por">
+						<span  v-if="from.coinKey != '' ">
+							<div  :class="from.isLP?'double-img':'' " v-if="from.coinKey != ''" style="height:40px;zoom:0.5" class="dib por">
 								<img v-for="(name, key) in from.coinName.split('-')" :key="name+key" :src=" require(`@/assets/coin/${name}.png`) " height="20" alt="" />
 							</div>
 							<span class="mgl-5">{{from.coinName}}</span>
@@ -49,14 +47,12 @@
 				<div class="aveage-box">
 					<p class="tal small vertical-children">
 						<span>{{$t("Air-drop_36")}}</span>&nbsp;
-						<span v-if="to.isEstimated && Number(to.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
-						<Loading  v-if="to.loading" />
 					</p>
-					<p class="tar small">{{$t("Mine_05")}}: {{to.coinName==""?"-":numFloor(coinArr[to.coinName].veMbox.orderIndexs[oprOrderIndex].veMboxNum/1e18, 1e4)}} veMBOX</p>
+					<p class="tar small">{{$t("Mine_05")}}: {{to.coinKey==""?"-":numFloor(coinArr[to.coinKey].veMbox.orderIndexs[oprOrderIndex].veMboxNum/1e18, 1e4)}} veMBOX</p>
 				</div>
 				<div class="aveage-box vertical-children mgt-10">
 					<div style="flex:1 1 auto;">
-						<input style="width:100%" type="text" placeholder="0.0" v-model="to.inputValue" v-number @keyup="inputValueChange('to')">
+						<input style="width:100%" type="text" placeholder="0.0" v-model="from.inputValue"  readonly >
 					</div>
 					<p class="tar text-btn vertical-children" @click="openSelectPool('to')">
 					<!-- <p class="tar text-btn vertical-children" > -->
@@ -73,7 +69,7 @@
 			</div>
 
 			<div class="mgt-20 tac">
-				<StatuButton>确定划转</StatuButton>
+				<StatuButton :isDisable="!canTransfer" :onClick="transferVeMbox" :isLoading="lockBtn.moveVeMboxLock > 0">{{$t('Air-drop_177')}}</StatuButton>
 			</div>
 		</div>
 	</div>
@@ -83,43 +79,78 @@
 import { mapState } from 'vuex';
 import { StatuButton } from '@/components';
 import CommonMethod from '@/mixin/CommonMethod';
+import { Wallet } from '@/utils';
+import { PancakeConfig } from '@/config';
 
 export default {
 	mixins: [CommonMethod],
 	components: {StatuButton},
+	props:["oprData"],
 	data(){
 		return({
 			oprOrderIndex: 0,
 			from: {
-				coinName: "MBOX-BNB",
+				coinKey: "",
+				coinName: "",
 				isLP: true,
 				inputValue: "",
-				isEstimated: false, // 是否为预估的
-				loading: false,
 			},
 			to: {
+				coinKey: "",
 				coinName: "",
-				inputValue: "",
 				isLP: true,
-				isEstimated: false,// 是否为预估的
-				loading: false,
 			},
 			timer: null,
 			stepTime: 500,
 		})
 	},
+	watch: {
+		oprData: function(newOprData){
+			if(newOprData.coinKey != ""){
+				this.from.coinKey = newOprData.coinKey;
+				this.from.coinName = newOprData.coinName;
+				this.from.isLP = newOprData.isLP;
+				this.oprOrderIndex = 0;
+			}
+		}
+	},
 	computed:{
 		...mapState({
 			coinArr: (state) => state.bnbState.data.coinArr,
+			lockBtn: (state) => state.globalState.data.lockBtn,
 		}),
+		canTransfer(){
+			let isCanTransfer = true;
+			if(this.from.coinKey == "") isCanTransfer = false;
+			if(this.from.inputValue == "") isCanTransfer = false;
+
+			if(this.to.coinKey == "") isCanTransfer = false;
+
+			return isCanTransfer;
+		}
 	},
 	methods: {
-		openSelectPool(type){
-			this.$parent.$parent.$refs.selectOprPool.setOprData([this.from.coinName, this.to.coinName], this.onSelectPool.bind(this, type)).show();
+		async transferVeMbox(){
+			let obj = {
+				moveVeMobox_ : Number(this.from.inputValue),
+				fromPool_ : PancakeConfig.StakeLP[this.from.coinKey].pIndex,
+				toPool_: PancakeConfig.StakeLP[this.to.coinKey].pIndex,
+				orderIndex_: this.oprOrderIndex
+			}
+			this.from.inputValue = "";
+			let hash = await Wallet.ETH.moveStake(obj);
+			if(hash){
+				this.lockBtnMethod("moveVeMboxLock");
+			}
 		},
-		onSelectPool(type, coinName){
-			console.log({type, coinName});
-			this[type].coinName = coinName;
+		openSelectPool(type){
+			this.$parent.$parent.$refs.selectOprPool.setOprData([this.from.coinName, this.to.coinName], this.oprOrderIndex,this.onSelectPool.bind(this, type)).show();
+		},
+		onSelectPool(type, coinKey){
+			console.log({type, coinKey});
+			this[type].coinKey = coinKey;
+			this[type].coinName =  this.coinArr[coinKey].coinName;
+			this[type].isLP =  this.coinArr[coinKey].isLP;
 		},
 	}
 }

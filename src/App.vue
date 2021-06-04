@@ -312,6 +312,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8)">
 					<div >
+						<h3 class="tac">{{$t("Notice_11")}}</h3>
+						<span v-html="$t('Notice_10')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_09")}}</h3>
 						<span v-html="$t('Notice_08')" ></span>
 					</div>
@@ -446,7 +450,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "1.0"
+			noticeVersion: "1.1"
 		};
 	},
 	watch: {
@@ -554,8 +558,11 @@ export default {
 		//1s定时器
 		clearInterval(timer);
 		let airdropCountDown = 1619784000 - parseInt(new Date().valueOf()/ 1000);
+		let gemApplyEndCountDown = 1622779200 - parseInt(new Date().valueOf()/ 1000);
 
 		timer = setInterval(async ()=>{
+			this.$store.commit("globalState/setData", {nowTs: parseInt(new Date().valueOf()/1000)});
+
 			//定时移除锁定按钮状态
 			for (let key in this.globalState.lockBtn) {
 				if(this.globalState.lockBtn[key] > 0){
@@ -576,6 +583,12 @@ export default {
 				if(airdropCountDown == 0){
 					this.getTotalStakeUSDTAndAirdropKEY();
 				}
+			}
+
+			//宝石申购结束倒计时
+			if(gemApplyEndCountDown >= 0){
+				gemApplyEndCountDown--;
+				this.$store.commit("globalState/setData", {gemApplyEndCountDown});
 			}
 		
 			count++;
@@ -657,7 +670,6 @@ export default {
 		//
 		async setOurPrice(coinName){
 			let wBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
-			if(wBNB) return;
 			let res = await Wallet.ETH.getAmountsOut(1e18, [PancakeConfig.SelectCoin[coinName].addr, wBNB, PancakeConfig.SelectCoin["USDT"].addr]);
 			this.ourPrice[coinName] = this.numFloor(res[2]/1e18, 1e4);
 		},

@@ -59,7 +59,7 @@
 						<td  >
 							<span  v-if="item.leftTs < 0">{{$t("Hire_32")}}</span>
 							<p v-else>
-								<span style="color:#ADC202" v-if="item.round > 0">{{$t("Hire_31").replace("#", item.round)}}</span>
+								<span style="color:#ADC202" v-if="item.round > 0">{{$t("Hire_31").replace("#0#", item.round)}}</span>
 								<span style="color: #7388C1" v-else>{{$t("Hire_30")}}</span>
 							</p>
 						</td>
@@ -129,14 +129,17 @@ export default {
 		await this.getMyRentList();
 		if(t)  clearInterval(t);
 		let count = 0;
+		await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE, false);
 		t = setInterval(async ()=>{
 			count++;
+			let needUpdateMomo = false;
 			this.marketRentOrderList.list.map(item=>{
 				if(item.leftTs > 0){
 					item.leftTs--;
+					if(item.leftTs == 0) needUpdateMomo = true;
 				}
 			});
-			if(count%10 == 0){
+			if(count%10 == 0 || needUpdateMomo){
 				await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE, false);
 				await this.getMyRentList();
 			}

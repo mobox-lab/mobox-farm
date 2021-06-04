@@ -41,7 +41,8 @@ const state = () => ({
 			putRentLock: 0, //上架租赁锁
 			freezeMboxLock: 0,//冻结Mbox锁
 			unStakeMboxLock: 0,//取回冻结Mbox锁
-			mboxApproveToVeMboxLock:0//mbox授权给veMbox申购合约锁
+			mboxApproveToVeMboxLock:0,//mbox授权给veMbox合约锁
+			moveVeMboxLock: 0,
 		},
 		walletStatus: {
 			status: 1, //1,等待中，2，reject，3，success
@@ -49,6 +50,8 @@ const state = () => ({
 			hash: ""
 		},  
 		airdropCountDown: 0,
+		gemApplyEndCountDown: 0,
+		nowTs: parseInt(new Date().valueOf()/1000),
 	},
 })
 

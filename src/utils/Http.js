@@ -3,8 +3,8 @@ import {EventBus} from "@/utils";
 import {EventConfig} from '@/config';
 export default class HTTP {
 	// static serverNode = "https://nfttestapi.mobox.io"; //测试
-	// static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
-	static serverNode = "http://192.168.5.78:3000"; // 测试
+	static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
+	// static serverNode = "http://192.168.5.78:3000"; // 测试
 
 	static async post(url, sendData) {
 		try {
@@ -33,6 +33,10 @@ export default class HTTP {
 	}
 	static async getLockList(owner, chain) { 
 		let { data } = await this.get(`/nft/locks?owner=${owner}&chain=${chain}`);
+		return data;
+	}
+	static async getVeMboxLog(owner) { 
+		let { data } = await this.get(`/vemobox/logs/${owner}`);
 		return data;
 	}
 

@@ -1,6 +1,6 @@
 <template>
 	<Dialog id="select-pool-dialog" :top="100" :width="400">
-		<h2>选择质押池</h2>
+		<h2>{{$t('Air-drop_178')}}</h2>
 		<div v-for="item in selectCoinList" :key="item.coinKey" :class="hasSelectCoin.indexOf(item.coinKey) != -1?'disable':'' " class="aveage-box select-coin-item" @click="itemClick(item.coinKey)">
 			<div class="vertical-children tal">
 				<div  :class="item.isLP?'double-img':'' " v-if="item.coinName != ''" style="height:40px;zoom:0.5" class="dib por">
@@ -8,12 +8,9 @@
 				</div>
 				<span class="mgl-5">{{item.coinName}}</span>
 			</div>
-			<div class="tar" v-if="item.balance != '-'">
-				<p class="small">{{item.veMbox.orderIndexs[oprOrderIndex].veMboxNum}} veMBOX</p>
-				<p class="small" v-if="Number(item.balance) > 0">50:66:00</p>
-			</div>
-			<div class="tar" v-else>
-				<Loading />
+			<div class="tar" >
+				<p class="small">{{numFloor(item.veMbox.orderIndexs[oprOrderIndex].veMboxNum/1e18, 1e4)}} veMBOX</p>
+				<p class="small" v-if="Number(item.veMbox.orderIndexs[oprOrderIndex].veMboxNum) > 0"> {{getLeftTime(item.veMbox.orderIndexs[oprOrderIndex].endTime - nowTs)}} </p>
 			</div>
 		</div>
 	</Dialog>
@@ -21,13 +18,14 @@
 
 <script>
 import { PancakeConfig } from '@/config';
-import { Dialog, Loading } from '@/components';
+import { Dialog } from '@/components';
 import {CommonMethod} from '@/mixin';
 import { mapState } from 'vuex'
 
+let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components:{Dialog, Loading},
+	components:{Dialog},
 	data(){
 		return({
 			hasSelectCoin: [],
@@ -54,7 +52,14 @@ export default {
 			return arr;
 		},
 	},
-
+	created(){
+		timer = setInterval(()=>{
+			this.nowTs = parseInt(new Date().valueOf()/1000);
+		}, 1000)
+	},
+	beforeDestroy(){
+		if(timer) clearInterval(timer);
+	},
 	methods:{
 		show(){
 			this.oprDialog("select-pool-dialog","block");

@@ -27,13 +27,21 @@ const baseCoinAttr = {
 	isRemoveLiqiditing: false, //是移除流动性中
 	isAddLiqiditing: false, //是增加流动性中
 	veMbox: {
-		mul: 0, //倍率
+		mul: 100, //倍率
 		orderIndexs: {
 			"0": {stakeMbox: 0,endTime: 0, veMboxNum: 0,},
 			"1": {stakeMbox: 0,endTime: 0, veMboxNum: 0,},
 			"2": {stakeMbox: 0,endTime: 0, veMboxNum: 0,},
-		}
-	}
+		},
+		orderIndexsCountDown: {
+			"0": 0,
+			"1": 0,
+			"2": 0,
+		},
+		notice: false,
+	},
+	shareTotal: 0,//池子总质押
+	veMoboxSupply: 0,//池子总质押veMbox
 }
 
 const state = () => ({
@@ -91,6 +99,7 @@ const state = () => ({
 		pancakeHistory: [],
 		onlyShowPledge:false,
 		pledgeType: "v2",//质押版本
+		veMboxLogs: [],//veMbox想操作日志
 	},
 })
 

@@ -123,10 +123,15 @@
 
 						<div class="tal mgt-20">
 							<p class="por mgt-10">
-								<span class="opa-6 ">我的veMBOX</span>
+								<span class="opa-6 ">{{$t("Air-drop_152")}}</span>
 								<span class="suffix" >
-									{{ numFloor( (coinArr[item.coinKey].veMbox.orderIndexs[0].veMboxNum + coinArr[item.coinKey].veMbox.orderIndexs[1].veMboxNum + coinArr[item.coinKey].veMbox.orderIndexs[2].veMboxNum) /1e18, 1e6) || "0" }}
-									<span class="notice-color" v-if="coinArr[item.coinKey].veMbox > 0">({{coinArr[item.coinKey].veMbox.mul}}x)</span>
+									{{ numFloor( 
+										(
+										Number(coinArr[item.coinKey].veMbox.orderIndexs[0].veMboxNum)
+										+ Number(coinArr[item.coinKey].veMbox.orderIndexs[1].veMboxNum)
+										+ Number(coinArr[item.coinKey].veMbox.orderIndexs[2].veMboxNum)
+										) /1e18, 1e6) || "0" }}
+									<span class="notice-color" v-if="coinArr[item.coinKey].veMbox.mul > 100">({{numFloor(coinArr[item.coinKey].veMbox.mul/100, 100)}}x)</span>
 								</span>
 							</p>
 						</div>
@@ -166,7 +171,11 @@
 							</template>
 						</div>
 
-						<img @click="$refs.vmbox.setOprData(item).show();" style="position:absolute;right:10px;bottom:10px" src="@/assets/coin/MBOX.png" alt="" height="30" class="cur-point"/>
+						<!-- <div class="dib por cur-point" style="position:absolute;right:10px;bottom:10px" @click="$refs.vmbox.setOprData(item).show();">
+							<span class="notice" v-if="coinArr[item.coinKey].veMbox.notice"></span>
+							<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
+							<span style="width:150%;position:absolute;bottom:-5px;left:-25%;font-size:12px;color:#fff;zoom:0.7" class="bold tac">veMBOX</span>
+						</div> -->
 
 					</div>
 					<!-- pancake -->
@@ -316,7 +325,7 @@
 		<KeyOpr ref="keyopr" />
 		<Withdraw ref="withdraw" />
 		<Deposit ref="deposit" />
-		<VMbox ref="vmbox" />
+		<!-- <VMbox ref="vmbox" /> -->
 	</div>
 </template>
 <script>
@@ -327,12 +336,12 @@ import { PancakeConfig } from "@/config";
 import KeyOpr from "./KeyOpr";
 import Withdraw from './Withdraw';
 import Deposit from './Deposit';
-import VMbox from "./VMBOX/VMbox";
+// import VMbox from "./VMBOX/VMbox";
 import { Dialog, Loading, StatuButton } from '@/components';
 
 export default {
 	mixins: [CommonMethod],
-	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, StatuButton, VMbox},
+	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, StatuButton},
 	data(){
 		return({
 			hasAgreeNotice: false,

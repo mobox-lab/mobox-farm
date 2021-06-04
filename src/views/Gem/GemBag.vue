@@ -101,7 +101,6 @@ export default {
 		//查询宝石合约是被授权
 		async isApprove(){
 			let isApprove = await Wallet.ETH.isApprovedForAll(WalletConfig.ETH.momoGemToken, WalletConfig.ETH.momoGemOpr);
-			console.log({isApprove});
 			if(isApprove != null){
 				this.hasApprove = isApprove;
 			}

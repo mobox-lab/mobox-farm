@@ -101,7 +101,7 @@
 							<div class="tab-split"></div>
 							<div class="aveage-box">
 								<p>{{$t("Hire_23")}}</p>
-								<h3 class="tar">{{statusObj.currentRentDays}}</h3>
+								<h3 class="tar">{{statusObj.currentRentDays}} {{$t("Hire_46")}}</h3>
 							</div>
 							<div class="tab-split"></div>
 							<div class="aveage-box">
@@ -116,7 +116,13 @@
 							<p >{{$t("Hire_21")}}</p>
 							<div :class="coinArr['MBOX'].allowanceToRent == 0 ?'btn-group':''"  style="width:280px;margin:10px auto">
 								<StatuButton  data-step="1" v-if="coinArr['MBOX'].allowanceToRent == 0" class="mgt-10" style="width:80%" :onClick="approve" :isLoading="coinArr['MBOX'].isApproving">{{$t("Air-drop_16")}} MBOX</StatuButton>
-								<StatuButton  data-step="2" :isDisable="!(coinArr['MBOX'].allowanceToRent > 0)" class="mgt-10" style="width:80%" :onClick="rentPet" :isLoading="lockBtn.rentLock > 0">租赁</StatuButton>
+								<StatuButton  data-step="2" :isDisable="!(coinArr['MBOX'].allowanceToRent > 0) || nowTs - statusObj.startTime <= 600" class="mgt-10" style="width:80%" :onClick="rentPet" :isLoading="lockBtn.rentLock > 0">
+									<template v-if="nowTs - statusObj.startTime <= 600">
+										<img src="@/assets/icon/lock.png" alt="" height="20" style="position:absolute;left:10px;top:6px">
+										<span>{{getLeftTime(Number(statusObj.startTime) + 600 - nowTs)}}</span>
+									</template>
+									<span v-else>{{$t("Hire_44")}}</span>
+								</StatuButton>
 							</div>
 						</div>
 					</div>
@@ -160,8 +166,8 @@ export default {
 				rentTime: "-",
 				renter: "-",
 				status: "-",
+				startTime: 0,
 			},
-			// allowanceToRent
 		};
 	},
 	computed: {
@@ -169,7 +175,8 @@ export default {
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,
 			marketRents: (state) => state.marketState.data.marketRents,
 			coinArr: (state) => state.bnbState.data.coinArr,
-			lockBtn: (state) => state.globalState.data.lockBtn
+			lockBtn: (state) => state.globalState.data.lockBtn,
+			nowTs: (state) => state.globalState.data.nowTs
 		}),
 		getNowPetItem(){
 			let petObj;
@@ -241,7 +248,6 @@ export default {
 			this.$root.$children[0].setCoinValueByName(coinKey);
 		}
 	},
-
 	methods: {
 		async viewAllowance(){
 			let coinKey = "MBOX";
@@ -270,8 +276,17 @@ export default {
 		//从链上取最新的状态
 		async getPetInfo(){
 			if(!this.getNowPetItem.tokenId) return;
-			let res = await Wallet.ETH.getMomoRentInfo(this.getNowPetItem.tokenId);
+			// let res = await Wallet.ETH.getMomoRentInfo(this.getNowPetItem.tokenId);
+			let res = await Wallet.ETH.getMomoRentInfoExt(this.getNowPetItem.tokenId);
 			if(res){
+				this.statusObj = res;
+			}
+		},
+		async getPetInfoExt(){
+			if(!this.getNowPetItem.tokenId) return;
+			let res = await Wallet.ETH.getMomoRentInfoExt(this.getNowPetItem.tokenId);
+			if(res){
+				console.log("getPetInfoExt",res);
 				this.statusObj = res;
 			}
 		},

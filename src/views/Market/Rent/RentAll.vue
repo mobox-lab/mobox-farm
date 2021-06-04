@@ -28,11 +28,15 @@
 		</div>
 		<div :class="marketRents.list.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
 			<router-link :to="'/rentView/'+ item.tokenId"  v-for="item in marketRents.list" :key="item.tx + item.index">
-				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
+				<PetItem  v-bind:data="{item: item}" class="market " :class="{'opa-6': nowTs -item.uptime <=  600}" v-if="item.tokenId != 0 " >
 					<div class="aveage-box" style="color:#fff">
 						<div class="vertical-children mgt-20 tal" style="font-size: 18px">
 							<img src="@/assets/icon/rent_time.png" alt="" height="20"/>&nbsp;
-							<span>{{item.rentDays}} D</span>
+							<span>{{item.rentDays}} <sub class="small">{{$t("Hire_46")}}</sub></span>
+						</div>
+						<div v-if="nowTs -item.uptime <=  600" class=" mgt-10">
+							<p class="small">{{$t("Market_30")}}<span class="dotting"></span></p>
+							<p class="mgt-5">{{getLeftTime(Number(item.uptime)+600- nowTs)}}</p>
 						</div>
 						<div class="vertical-children mgt-20 tar" style="font-size: 18px">
 							<img src="@/assets/coin/MBOX.png" alt="" height="20"/>&nbsp;
@@ -82,6 +86,7 @@ export default {
 			momoGemsObjs: (state) => state.marketState.data.momoGemsObjs,
 			marketLoading: (state) => state.marketState.data.marketLoading,
 			historyNotice: (state) => state.marketState.data.historyNotice,
+			nowTs: (state) => state.globalState.data.nowTs
 		}),
 		getLangMap(){
 			let langToName = {};
@@ -117,9 +122,13 @@ export default {
 		}
 		this.getAuctionPets(this.marketRentPage, true);
 		if(timer) clearInterval(timer);
+		let count = 0;
 		timer = setInterval(()=>{
-			this.getAuctionPets(this.marketRentPage);
-		}, 10000);
+			count++;
+			if(count % 10 == 0){
+				this.getAuctionPets(this.marketRentPage);
+			}
+		}, 1000);
 	},
 	mounted(){
 		if(document.body.clientWidth > 1000){
@@ -165,8 +174,8 @@ export default {
 			data.list.map(item=>{
 				if( item.tokenId != 0){
 					let {tokenName} = BaseConfig.NftCfg[item.prototype];
-					item.tokenName = tokenName;
-					item.gems = [0,0,0,0];
+					item.tokenName = this.momoNameObjs[item.tokenId] || tokenName;
+					item.gems = this.momoGemsObjs[item.tokenId] || [0,0,0,0];
 					item.vType = parseInt(item.prototype/1e4);
 					item.chain = "bnb";
 					if(item.specialty == 1 || item.specialty == 3){

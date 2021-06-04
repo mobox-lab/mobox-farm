@@ -39,6 +39,9 @@
  }
 
 @media (max-width: 768px) {
+	#market-type{
+		zoom: 0.8;
+	}
 	.small-table th{
 		zoom :0.8
 	}

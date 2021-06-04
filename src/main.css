@@ -936,6 +936,7 @@ svg {
 	text-align: right;
 	align-items: center;
 	user-select: none;
+	background: #202e5367;
 }
 
 .point-block .show-point-block:hover{
@@ -967,6 +968,27 @@ svg {
 	25% { box-shadow: none; }                                  /* 0个点 */
 	50% { box-shadow: 2px 0 currentColor; }                    /* 1个点 */
 	75% { box-shadow: 2px 0 currentColor, 6px 0 currentColor;  /* 2个点 */ }
+}
+
+.list-item{
+	color: #7187C0;
+}
+
+.list-item td:last-child{
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+.list-item td:first-child{
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+.list-item td{
+	padding: 10px;
+	background: #1D2B50;
+	border-left: none;
+	border-right: none;
+	border-bottom: none;
 }
 
 

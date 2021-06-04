@@ -2069,7 +2069,7 @@ export default class ETH {
 			}
 		], WalletConfig.ETH.momoRent);
 
-		nextRentPrice_ = BigNumber(Common.numFloor(nextRentPrice_, 1e9)).times(BigNumber(1e18));
+		nextRentPrice_ = this.numToHex(BigNumber(Common.numFloor(nextRentPrice_, 1e9)).times(BigNumber(1e18)));
 
 		return new Promise(resolve => {
 			this.sendMethod(
@@ -2114,6 +2114,43 @@ export default class ETH {
 
 		return new Promise(resolve => {
 			contract.methods.getRentInfo(tokenId).call().then(data => {
+				resolve(data);
+			})
+		});
+
+	}
+
+	//获取momo出租详情
+	static async getMomoRentInfoExt(tokenId){
+		console.log("getMomoRentInfoExt", tokenId);
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "getRentInfoExt",
+				"type": "function",
+				"inputs": [
+					{"name": "tokenId_","type": "uint256"},
+				],
+				"outputs": [
+					{"name": "owner","type": "address"},
+					{"name": "renter","type": "address"},
+
+					{"name": "orderId","type": "uint256"},
+					{"name": "status","type": "uint256"},
+					{"name": "rentTime","type": "uint256"},
+					{"name": "currentRentDays","type": "uint256"},
+					{"name": "currentRentRound","type": "uint256"},
+					{"name": "currentRentPrice","type": "uint256"},
+					{"name": "nextRentDays","type": "uint256"},
+					{"name": "nextRentRound","type": "uint256"},
+					{"name": "nextRentPrice","type": "uint256"},
+					{"name": "gameId","type": "uint256"},
+					{"name": "startTime","type": "uint256"}
+				],
+			}
+		], WalletConfig.ETH.momoRent);
+
+		return new Promise(resolve => {
+			contract.methods.getRentInfoExt(tokenId).call().then(data => {
 				resolve(data);
 			})
 		});
@@ -2337,7 +2374,6 @@ export default class ETH {
 					{"name": "moboxs","type": "uint256[]"},
 					{"name": "veMoboxs","type": "uint256[]"},
 					{"name": "lockTimeValues","type": "uint256[]"},
-					{"name": "boosters","type": "uint256[]"},
 				],
 			}
 		], WalletConfig.ETH.momoVeMbox);
@@ -2346,6 +2382,96 @@ export default class ETH {
 			contract.methods.getStakeInfo(myAddr, poolIndexs_).call().then(data => {
 				resolve(data);
 			})
+		});
+
+	}
+
+	//获取多个池子的质押的veMbox的倍率
+	static async getBoosterInfo(poolIndexs_){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "getBoosterInfo",
+				"type": "function",
+				"inputs": [
+					{"name": "user_","type": "address"},
+					{"name": "poolIndexArray_","type": "uint256[]"},
+				],
+				"outputs": [
+					{"name": "boosters","type": "uint256[]"},
+				],
+			}
+		], WalletConfig.ETH.momoVeMbox);
+
+		return new Promise(resolve => {
+			contract.methods.getBoosterInfo(myAddr, poolIndexs_).call().then(data => {
+				resolve(data);
+			})
+		});
+
+	}
+	
+	//获取多个池子的质押的veMbox的倍率
+	static async getPoolVeMobox(poolIndex_){
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "getPoolVeMobox",
+				"type": "function",
+				"inputs": [
+					{"name": "poolIndex_","type": "uint256"},
+				],
+				"outputs": [
+					{"name": "veMoboxSupply","type": "uint256"},
+					{"name": "shareTotal","type": "uint256"},
+				],
+			}
+		], WalletConfig.ETH.moMoHelper2);
+
+		return new Promise(resolve => {
+			contract.methods.getPoolVeMobox(poolIndex_).call().then(data => {
+				resolve(data);
+			})
+		});
+
+	}
+
+	//划转veMbox
+	static async moveStake({moveVeMobox_, fromPool_, toPool_, orderIndex_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "moveStake",
+				"type": "function",
+				"inputs": [
+					{"name": "moveVeMobox_","type": "uint256"},
+					{"name": "fromPool_","type": "uint256"},
+					{"name": "toPool_","type": "uint256"},
+					{"name": "orderIndex_","type": "uint256"},
+				],
+				"outputs": [
+				],
+			}
+		], WalletConfig.ETH.momoVeMbox);
+
+		console.log({moveVeMobox_, fromPool_, toPool_, orderIndex_});
+
+		moveVeMobox_ = this.numToHex(BigNumber(moveVeMobox_).times(BigNumber(1e18)));
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.moveStake(moveVeMobox_, fromPool_, toPool_, orderIndex_), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					console.log("moveStake success!!!!!");
+					Common.app.unLockBtn("moveVeMboxLock");
+					//更新质押余额
+					await Common.app.getVeMboxStakeInfo();
+				}
+			)
+
 		});
 
 	}

@@ -19,7 +19,7 @@
 				<div class="aveage-box tal mgt-10">
 					<p>{{$t("Hire_23")}}</p>
 					<p class="tar">
-						<span v-if="statusObj.currentRentDays !='-' ">{{statusObj.currentRentDays}}</span>
+						<span v-if="statusObj.currentRentDays !='-' ">{{statusObj.currentRentDays}} {{$t("Hire_46")}}</span>
 						<span v-else><Loading /></span>
 					</p>
 				</div>
@@ -47,7 +47,7 @@
 				</div>
 				<div class="aveage-box tal  mgt-10">
 					<p>{{$t("Hire_23")}}</p>
-					<p class="tar">{{Number(statusObj.nextRentDays) || "-"}}</p>
+					<p class="tar">{{Number(statusObj.nextRentDays) || "-"}}  {{$t("Hire_46")}}</p>
 				</div>
 				<div class="aveage-box tal  mgt-10">
 					<p>{{$t("Hire_24")}}</p>

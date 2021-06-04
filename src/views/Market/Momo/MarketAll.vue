@@ -166,8 +166,8 @@ export default {
 			data.list.map(item=>{
 				if( item.tokenId != 0){
 					let {tokenName} = BaseConfig.NftCfg[item.prototype];
-					item.tokenName = tokenName;
-					item.gems = [0,0,0,0];
+					item.tokenName = this.momoNameObjs[item.tokenId] || tokenName;
+					item.gems = this.momoGemsObjs[item.tokenId] || [0,0,0,0];
 					item.vType = parseInt(item.prototype/1e4);
 					if(item.specialty == 1 || item.specialty == 3){
 						needGetNameArr.push(item.tokenId);

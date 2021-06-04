@@ -178,8 +178,7 @@ export default {
 .market-type-list-item{
 	display: inline-block;
 	height: 40px;
-	margin-right: 10px;
-	min-width: 100px;
+	margin-right: 20px;
 	text-align: center;
 	cursor: pointer;
 	user-select: none;

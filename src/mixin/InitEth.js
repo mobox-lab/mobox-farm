@@ -163,7 +163,7 @@ const InitEth = {
 			//查询我质押的和key的收益
 			await this.getStakeValueAndEarndKey();
 
-			await this.getVeMboxStakeInfo();
+			// await this.getVeMboxStakeInfo();
 
 			//质押挖矿相关
 			await this.eth_setTotalDropMbox();
@@ -201,32 +201,39 @@ const InitEth = {
 				}
 			}
 			let res = await Wallet.ETH.getVeMboxStakeInfo(Object.keys(pIndexObj));
-			console.log(res);
+			let booster = await Wallet.ETH.getBoosterInfo(Object.keys(pIndexObj));
+
 			if(res){
+				let keyValues = Object.values(pIndexObj);
 				//清空veMBOX的状态
 				for (let key in this.coinArr) {
 					if(key != "ts"){
-						this.coinArr[key].veMbox = {
-							mul: 0, //倍率
-							orderIndexs: {
-								"0": {stakeMbox: 0,endTime: 0, veMboxNum: 0},
-								"1": {stakeMbox: 0,endTime: 0, veMboxNum: 0},
-								"2": {stakeMbox: 0,endTime: 0, veMboxNum: 0},
-							}
+						this.coinArr[key].veMbox.mul = 100;
+						this.coinArr[key].veMbox.orderIndexs = {
+							"0": {stakeMbox: 0,endTime: 0, veMboxNum: 0},
+							"1": {stakeMbox: 0,endTime: 0, veMboxNum: 0},
+							"2": {stakeMbox: 0,endTime: 0, veMboxNum: 0},
+						};
+						this.coinArr[key].veMbox.notice = false;
+
+						//赋值挖矿倍率
+						let keyPos = keyValues.indexOf(key);
+						if(keyPos != -1){
+							this.coinArr[key].veMbox.mul = booster[keyPos];
 						}
 					}
 				}
 				
-				let {poolIndexs,orderIndexs, moboxs ,veMoboxs,lockTimeValues, boosters} = res;
+				let {poolIndexs,orderIndexs, moboxs ,veMoboxs,lockTimeValues} = res;
 				poolIndexs.map((poolIndex, pos)=>{
 					let coinKey = pIndexObj[poolIndex];
 					let orderIndex  = orderIndexs[pos];
 					let veMbox =  this.coinArr[coinKey].veMbox;
-					veMbox.mul = boosters[pos]
 					veMbox.orderIndexs[orderIndex].stakeMbox =  moboxs[pos];
 					veMbox.orderIndexs[orderIndex].veMboxNum =  veMoboxs[pos];
 					veMbox.orderIndexs[orderIndex].endTime =  lockTimeValues[pos];
-					console.log(veMbox);
+					let dt =  lockTimeValues[pos] - parseInt(new Date().valueOf()/1000);
+					veMbox.notice = dt <= 0 && Number(moboxs[pos]) > 0;
 				});
 				this.coinArr["ts"] = new Date().valueOf();
 				this.$store.commit("bnbState/setData", {coinArr: this.coinArr});

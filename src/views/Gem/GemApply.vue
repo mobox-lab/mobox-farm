@@ -65,8 +65,8 @@
 			<div  :class="{'btn-group': mboxAllownceToApply == 0}">
 				<StatuButton :isLoading="lockBtn.mboxApproveToApplyLock > 0" data-step="1" class="mgt-10" style="width:70%" :onClick="approve" v-if="mboxAllownceToApply == 0">{{$t("Air-drop_16")}} MBOX</StatuButton>
 				<StatuButton :isLoading="lockBtn.applyGemLock > 0" :isDisable="mboxAllownceToApply <= 0 || !isCanApply" data-step="2" class="mgt-10" style="width:70%"  :onClick="()=>applyForGem(dialog_tab_pos == 0?'normal':'high')">
-					<span v-if="gemApplyEndCountDown <=0">{{$t("Gemstone_50")}}</span>
-					<template v-else>
+					<!-- <span v-if="gemApplyEndCountDown <=0">{{$t("Gemstone_50")}}</span> -->
+					<template >
 						<span v-if="dialog_tab_pos == 0">{{$t("Gemstone_27")}}</span>
 						<span v-else>{{$t("Gemstone_28")}}</span>
 					</template>
@@ -176,7 +176,7 @@ export default {
 			if(this.getNeedPayMbox > Number(this.coinArr["MBOX"].balance) + this.getCanUseTemMbox) isCanApply = false;
 
 			//申购已结束
-			if(this.gemApplyEndCountDown <= 0) isCanApply = false;
+			// if(this.gemApplyEndCountDown <= 0) isCanApply = false;
 
 			//高级申购已达到最大申购名额
 			if(this.dialog_tab_pos == 1 && Number(this.applyInfo.nowAmount) + Number(this.inputNum) >  Number(this.applyInfo.maxAmount)) isCanApply = false;

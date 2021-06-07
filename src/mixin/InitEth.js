@@ -163,7 +163,8 @@ const InitEth = {
 			//查询我质押的和key的收益
 			await this.getStakeValueAndEarndKey();
 
-			// await this.getVeMboxStakeInfo();
+			//获取veMBOX相关
+			await this.getVeMboxStakeInfo();
 
 			//质押挖矿相关
 			await this.eth_setTotalDropMbox();

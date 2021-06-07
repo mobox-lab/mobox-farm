@@ -670,6 +670,7 @@ export default {
 		//
 		async setOurPrice(coinName){
 			let wBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+			if(wBNB) return;
 			let res = await Wallet.ETH.getAmountsOut(1e18, [PancakeConfig.SelectCoin[coinName].addr, wBNB, PancakeConfig.SelectCoin["USDT"].addr]);
 			this.ourPrice[coinName] = this.numFloor(res[2]/1e18, 1e4);
 		},

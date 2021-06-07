@@ -171,11 +171,11 @@
 							</template>
 						</div>
 
-						<!-- <div class="dib por cur-point" style="position:absolute;right:10px;bottom:10px" @click="$refs.vmbox.setOprData(item).show();">
+						<div class="dib por cur-point" style="position:absolute;right:10px;bottom:10px" @click="$refs.vmbox.setOprData(item).show();">
 							<span class="notice" v-if="coinArr[item.coinKey].veMbox.notice"></span>
 							<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
 							<span style="width:150%;position:absolute;bottom:-5px;left:-25%;font-size:12px;color:#fff;zoom:0.7" class="bold tac">veMBOX</span>
-						</div> -->
+						</div>
 
 					</div>
 					<!-- pancake -->
@@ -325,7 +325,7 @@
 		<KeyOpr ref="keyopr" />
 		<Withdraw ref="withdraw" />
 		<Deposit ref="deposit" />
-		<!-- <VMbox ref="vmbox" /> -->
+		<VMbox ref="vmbox" />
 	</div>
 </template>
 <script>
@@ -336,12 +336,12 @@ import { PancakeConfig } from "@/config";
 import KeyOpr from "./KeyOpr";
 import Withdraw from './Withdraw';
 import Deposit from './Deposit';
-// import VMbox from "./VMBOX/VMbox";
+import VMbox from "./VMBOX/VMbox";
 import { Dialog, Loading, StatuButton } from '@/components';
 
 export default {
 	mixins: [CommonMethod],
-	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, StatuButton},
+	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, StatuButton, VMbox},
 	data(){
 		return({
 			hasAgreeNotice: false,

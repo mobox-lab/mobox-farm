@@ -111,13 +111,13 @@ export default {
 
 			if (hashRate_ < 100) {
 				maxAmount = 0;
-			} else if (hashRate_ < 500) {
+			} else if (hashRate_ < 750) {
 				maxAmount = 1;
-			} else if (hashRate_ < 1000) {
+			} else if (hashRate_ < 1500) {
 				maxAmount = 3;
-			} else if (hashRate_ < 2000) {
+			} else if (hashRate_ < 3000) {
 				maxAmount = 5;
-			} else if (hashRate_ < 4000) {
+			} else if (hashRate_ < 6000) {
 				maxAmount = 7;
 			} else {
 				maxAmount = 10;

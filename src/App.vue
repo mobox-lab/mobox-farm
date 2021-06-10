@@ -192,37 +192,7 @@
 						<span class="mgt-5">{{$t("Common_29")}}</span>
 					</li>
 				</a>
-				
 
-				<!-- <router-link to="/market">
-					<li :class="this.$route.path == '/market' ? 'active' : ''">
-						<p class="per-icon vertical-children">
-							<section class="por dib">
-								<span class="notice" v-if="historyNotice"></span>
-								<img src="./assets/icon/market.png" alt="" height="30" />
-							</section>
-						</p>
-						<span>{{ $t("Menu_05") }}</span>
-					</li>
-				</router-link> -->
-			
-				<!-- <router-link to="/rank">
-					<li :class="this.$route.path == '/rank' ? 'active' : ''">
-						<p class="per-icon vertical-children">
-							<img src="./assets/icon/rank.png" alt="" height="25" />
-						</p>
-						<span>{{ $t("Rank_05") }}</span>
-					</li>
-				</router-link> -->
-
-				<!-- <router-link to="/rule">
-					<li :class="this.$route.path == '/rule' ? 'active' : ''">
-						<p class="per-icon vertical-children">
-							<img src="./assets/icon/help.png" alt="" height="30" />
-						</p>
-						<span >{{ $t("Rule_01") }}</span>
-					</li>
-				</router-link> -->
 			</ul>
 		</div>
 		<div  id="nav-mobile-more" v-if="showMoreMenu">
@@ -674,7 +644,6 @@ export default {
 		//
 		async setOurPrice(coinName){
 			let wBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
-			if(wBNB) return;
 			let res = await Wallet.ETH.getAmountsOut(1e18, [PancakeConfig.SelectCoin[coinName].addr, wBNB, PancakeConfig.SelectCoin["USDT"].addr]);
 			this.ourPrice[coinName] = this.numFloor(res[2]/1e18, 1e4);
 		},

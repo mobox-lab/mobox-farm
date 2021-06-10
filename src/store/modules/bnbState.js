@@ -34,9 +34,9 @@ const baseCoinAttr = {
 			"2": {stakeMbox: 0,endTime: 0, veMboxNum: 0,},
 		},
 		orderIndexsCountDown: {
-			"0": 0,
-			"1": 0,
-			"2": 0,
+			"0": -1,
+			"1": -1,
+			"2": -1,
 		},
 		notice: false,
 	},
@@ -93,7 +93,8 @@ const state = () => ({
 			amount: "-",
 			avgPrice: "-",
 			logs: [],
-			moboxBurn: "-"
+			moboxBurn: "-",
+			circulating: "-"
 		},
 
 		pancakeHistory: [],

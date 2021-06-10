@@ -34,7 +34,7 @@ const state = () => ({
 		marketRentMySellPage: 1,
 		//筛选
 		myRentMarketFilter: {category: 0,vType: 0, state: 0},
-		marketRentSearch: {type: 0,level: 0,sort: 0,},
+		marketRentSearch: {category: 0,vType: 0,sort: 0,rentDays:0, },
 		myRentMarketSellFilter: {type: 0,level: 0,},
 		//记录
 		marketRents: {limit: 1,list: [],page: 1,total: 0,},

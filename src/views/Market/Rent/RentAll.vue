@@ -21,6 +21,7 @@
 			</span>
 			
 			<div id="market-pet-fitter">
+				<Dropdown :list="selectDays" :defaultSelectPos="marketRentSearch.rentDays" :onChange="onDaysChange" />&nbsp;
 				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="marketRentSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
 				<Dropdown :list="selectVType" :defaultSelectPos="marketRentSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
 				<Dropdown :list="sortArr" :defaultSelectPos="marketRentSearch.sort" :onChange="onSortChange" />&nbsp;
@@ -30,15 +31,15 @@
 			<router-link :to="'/rentView/'+ item.tokenId"  v-for="item in marketRents.list" :key="item.tx + item.index">
 				<PetItem  v-bind:data="{item: item}" class="market " :class="{'opa-6': nowTs -item.uptime <=  600}" v-if="item.tokenId != 0 " >
 					<div class="aveage-box" style="color:#fff">
-						<div class="vertical-children mgt-20 tal" style="font-size: 18px">
+						<div class="vertical-children mgt-20 tal" style="font-size: 18px;flex:2">
 							<img src="@/assets/icon/rent_time.png" alt="" height="20"/>&nbsp;
 							<span>{{item.rentDays}} <sub class="small">{{$t("Hire_46")}}</sub></span>
 						</div>
-						<div v-if="nowTs -item.uptime <=  600" class=" mgt-10">
+						<div v-if="nowTs -item.uptime <=  600" class=" mgt-10 small" style="position: absolute;right: 15px;top: 50%;transform: translateY(-50%);">
 							<p class="small">{{$t("Market_30")}}<span class="dotting"></span></p>
-							<p class="mgt-5">{{getLeftTime(Number(item.uptime)+600- nowTs)}}</p>
+							<p >{{getLeftTime(Number(item.uptime)+600- nowTs)}}</p>
 						</div>
-						<div class="vertical-children mgt-20 tar" style="font-size: 18px">
+						<div class="vertical-children mgt-20 tar" style="font-size: 18px;flex:2">
 							<img src="@/assets/coin/MBOX.png" alt="" height="20"/>&nbsp;
 							<span>{{numFloor(item.rentPrice/1e9, 10000)}} <sub class="small">MBOX</sub></span>
 						</div>
@@ -74,6 +75,16 @@ export default {
 				this.$t("MOMO_14"),
 			],
 			sortArr: [this.$t("Market_47"),this.$t("Market_04"), this.$t("Market_05"), this.$t("Market_06"), this.$t("Market_07")],
+			selectDays: [
+				this.$t("Market_62"),
+				1+this.$t("Hire_46"),
+				2+this.$t("Hire_46"),
+				3+this.$t("Hire_46"),
+				4+this.$t("Hire_46"),
+				5+this.$t("Hire_46"),
+				6+this.$t("Hire_46"),
+				7+this.$t("Hire_46"),
+			],
 			searchWord: "",
 		});
 	},
@@ -269,6 +280,15 @@ export default {
 			this.marketRents.list = [];
 			this.$store.commit("marketState/setData", {marketRentPage:1, marketRents: this.marketRents});
 			this.$store.commit("marketState/setFilter", {filterName:"marketRentSearch",type: "sort", value: pos});
+			this.$nextTick(()=>{
+				this.getAuctionPets(this.marketRentPage, true);
+				this.$refs.page.initPage();
+			});
+		},
+		onDaysChange(pos){
+			this.marketRents.list = [];
+			this.$store.commit("marketState/setData", {marketRentPage:1, marketRents: this.marketRents});
+			this.$store.commit("marketState/setFilter", {filterName:"marketRentSearch",type: "rentDays", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketRentPage, true);
 				this.$refs.page.initPage();

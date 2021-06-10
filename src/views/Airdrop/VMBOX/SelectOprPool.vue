@@ -10,7 +10,17 @@
 			</div>
 			<div class="tar" >
 				<p class="small">{{numFloor(item.veMbox.orderIndexs[oprOrderIndex].veMboxNum/1e18, 1e4)}} veMBOX</p>
-				<p class="small" v-if="Number(item.veMbox.orderIndexs[oprOrderIndex].veMboxNum) > 0"> {{getLeftTime(item.veMbox.orderIndexs[oprOrderIndex].endTime - nowTs)}} </p>
+				<p class="small" v-if="Number(item.veMbox.orderIndexs[oprOrderIndex].veMboxNum) > 0">
+					<!-- {{getLeftTime(item.veMbox.orderIndexs[oprOrderIndex].endTime - nowTs)}} -->
+					<span v-if="Number(item.veMbox.orderIndexs[oprOrderIndex].endTime - nowTs) > 0">
+						<span v-if="Number(item.veMbox.orderIndexs[oprOrderIndex].endTime - nowTs) < 86400">
+							{{ getLeftTime(item.veMbox.orderIndexs[oprOrderIndex].endTime - nowTs) }}
+						</span>
+						<span v-else>
+							&gt;{{parseInt(Number(item.veMbox.orderIndexs[oprOrderIndex].endTime - nowTs) / 86400)}} {{$t("Hire_46")}}
+						</span>
+					</span>
+				</p>
 			</div>
 		</div>
 	</Dialog>

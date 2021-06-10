@@ -3,8 +3,8 @@ import {EventBus} from "@/utils";
 import {EventConfig} from '@/config';
 export default class HTTP {
 	// static serverNode = "https://nfttestapi.mobox.io"; //测试
-	// static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
-	static serverNode = "http://192.168.5.78:3000"; // 测试
+	static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
+	// static serverNode = "http://192.168.5.78:3000"; // 测试
 
 	static async post(url, sendData) {
 		try {
@@ -116,6 +116,7 @@ export default class HTTP {
 		if(params.vType == 0) params.vType = "";
 		if(params.category == 0) params.category = "";
 		if(params.pType == 0) params.pType = "";
+		if(params.rentDays == 0) params.rentDays = "";
 
 		if(params.sort != undefined) params.sort = this.sortPosToName[params.sort];
 		let { data } = await this.get(`/momo_renter/search/${chain}?page=${page}&limit=${limit}`, params);

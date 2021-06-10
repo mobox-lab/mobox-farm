@@ -8,7 +8,7 @@
 						<img v-for="(name, key) in oprData.coinName.split('-')" :key="name+key" :src=" require(`@/assets/coin/${name}.png`) " height="40" alt="" />
 					</div>
 					<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
-						v-number :data-max="getMaxMbox"  v-model="inputNum" :placeholder="$t('Air-drop_156')" />
+						v-number :data-max="getMaxMbox" data-min="1"  v-model="inputNum" :placeholder="$t('Air-drop_156')" />
 					<div class="dib tac" style="width: 30%">
 						<button @click="inputNum = getMaxMbox" class="btn-primary btn-small" style="width: 80%" >
 							Max
@@ -27,16 +27,16 @@
 					<p class="small">{{$t('Air-drop_157')}}</p>
 					<div class="ly-input-content aveage-box tac">
 						<p style="flex:0.5">{{$t('Air-drop_173')}}</p>
-						<div v-for="day in [7,15]" :key="day"><button class=" btn-small" :class="selectDay == day?'btn-primary':'btn-default' " @click="selectDay=day">{{day}} Days</button></div>
+						<div v-for="day in [7,15]" :key="day"><button class=" btn-small" :class="selectDay == day?'btn-primary':'btn-default' " @click="selectDay=day">{{$t(freezeConf[day].lang)}}</button></div>
 						<div></div>
 					</div>
 					<div class="ly-input-content aveage-box tac">
 						<p  style="flex:0.5">{{$t('Air-drop_174')}}</p>
-						<div v-for="day in [30,90,180]" :key="day"><button class=" btn-small" :class="selectDay == day?'btn-primary':'btn-default' " @click="selectDay=day">{{day}} Days</button></div>
+						<div v-for="day in [30,90,180]" :key="day"><button class=" btn-small" :class="selectDay == day?'btn-primary':'btn-default' " @click="selectDay=day">{{$t(freezeConf[day].lang)}}</button></div>
 					</div>
 					<div class="ly-input-content aveage-box tac">
 						<p  style="flex:0.5">{{$t('Air-drop_175')}}</p>
-						<div v-for="day in [365,730,1095]" :key="day"><button class=" btn-small" :class="selectDay == day?'btn-primary':'btn-default' " @click="selectDay=day">{{day}} Days</button></div>
+						<div v-for="day in [365,730,1095]" :key="day"><button class=" btn-small" :class="selectDay == day?'btn-primary':'btn-default' " @click="selectDay=day">{{$t(freezeConf[day].lang)}}</button></div>
 					</div>
 				</section>
 
@@ -62,27 +62,43 @@
 			<div class="tab-content tal">
 				<section >
 					<p class="small">{{$t('Air-drop_167')}}</p>
+					<section class="mgt-10 tac" v-if="!hasStakeCoin">
+						{{$t("Air-drop_186")}}
+					</section>
+					<section class="mgt-10 tac" v-else  style="width:90%;margin:10px auto">
+						<!-- <p class="aveage-box">
+							<span class="tal">{{$t('Air-drop_168')}}:</span>
+							<span class="tal mgl-5">{{ getTotalVeMbox }} veMBOX</span>
+						</p>
+						<p class="aveage-box">
+							<span class="tal">{{$t('Air-drop_169').replace("#0#", sliderValue+"x")}}:</span>
+							<span class="tal mgl-5">{{getNeedVeMboxObj.veMbox}} veMBOX</span>
+						</p>
+						<p class="aveage-box">
+							<span class="tal">{{$t('Air-drop_170')}}:</span>
+							<span class="tal mgl-5">{{ getNeedVeMboxObj.mbox }} MBOX</span>
+						</p> -->
+						<table  class="tal mgt-10 my-table small"  style="width:100%;margin:10px auto;border-color:#19233E" border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td>{{$t('Air-drop_168')}}:</td>
+								<td>{{ getTotalVeMbox }} veMBOX</td>
+							</tr>
+							<tr>
+								<td style="width:55%">{{$t('Air-drop_169').replace("#0#", sliderValue+"x")}}:</td>
+								<td>{{getNeedVeMboxObj.veMbox}} veMBOX</td>
+							</tr>
+							<tr>
+								<td>{{$t('Air-drop_170')}}:</td>
+								<td>{{ getNeedVeMboxObj.mbox }} MBOX</td>
+							</tr>
+						</table>
+					</section>
+
 					<div class="range-select mgt-10">
 						<vue-slider v-model="sliderValue" :min="1" :max="3" :interval="0.02" :marks="marks"   :tooltip="'always'" :tooltip-placement="'bottom'" :tooltip-formatter="'{value}x'"/>
 					</div>
 				</section>
-				<section class="mgt-10 tac" v-if="!hasStakeCoin">
-					{{$t("Air-drop_186")}}
-				</section>
-				<section class="mgt-10 tac" v-else>
-					<p >
-						<span class="tar">{{$t('Air-drop_168')}}:</span>
-						<span class="tal mgl-5">{{ getTotalVeMbox }} veMBOX</span>
-					</p>
-					<p >
-						<span class="tar">{{$t('Air-drop_169').replace("#0#", sliderValue+"x")}}:</span>
-						<span class="tal mgl-5">{{getNeedVeMboxObj.veMbox}} veMBOX</span>
-					</p>
-					<p >
-						<span class="tar">{{$t('Air-drop_170')}}:</span>
-						<span class="tal mgl-5">{{ getNeedVeMboxObj.mbox }} MBOX</span>
-					</p>
-				</section>
+				
 			</div>
 		</div>
 	</div>
@@ -114,15 +130,15 @@ export default {
 			},
 			selectDay: 1095,
 			freezeConf:{
-				"7": {veMBOX: 0.1, orderIndex: 0,timeIndex: 0},
-				"15": {veMBOX: 0.205, orderIndex: 0,timeIndex: 1},
-				"30": {veMBOX: 0.42, orderIndex: 1,timeIndex: 2},
-				"90": {veMBOX: 1.28, orderIndex: 1,timeIndex: 3},
-				"180": {veMBOX: 2.54, orderIndex: 1,timeIndex: 4},
-				"365": {veMBOX: 5, orderIndex: 2,timeIndex: 5},
-				"730": {veMBOX:10, orderIndex: 2,timeIndex: 6},
-				"1095": {veMBOX: 15, orderIndex: 2,timeIndex: 7},
-			}
+				"7": {veMBOX: 0.1, orderIndex: 0,timeIndex: 0, lang: "Air-drop_158"},
+				"15": {veMBOX: 0.205, orderIndex: 0,timeIndex: 1, lang: "Air-drop_159"},
+				"30": {veMBOX: 0.42, orderIndex: 1,timeIndex: 2, lang: "Air-drop_160"},
+				"90": {veMBOX: 1.28, orderIndex: 1,timeIndex: 3, lang: "Air-drop_161"},
+				"180": {veMBOX: 2.54, orderIndex: 1,timeIndex: 4, lang: "Air-drop_162"},
+				"365": {veMBOX: 5, orderIndex: 2,timeIndex: 5, lang: "Air-drop_163"},
+				"730": {veMBOX:10, orderIndex: 2,timeIndex: 6, lang: "Air-drop_164"},
+				"1095": {veMBOX: 15, orderIndex: 2,timeIndex: 7, lang: "Air-drop_165"},
+			},
 		})
 	},
 	watch: {
@@ -159,14 +175,13 @@ export default {
 			let coinObj = this.coinArr[this.oprData.coinKey];
 			if(coinObj){
 				let {shareTotal, veMoboxSupply, wantAmount} = coinObj;
+				console.log({coinObj});
 				let y = (this.sliderValue - 1)/2 *(wantAmount * 1e18 / shareTotal);
-				console.log( {veMoboxSupply, shareTotal, y});
 				needObj.veMbox = this.numFloor((y*veMoboxSupply/(1-y) - this.getTotalVeMbox*1e18)/1e18, 1e4);
 				if(veMoboxSupply == 0 || veMoboxSupply <= this.getTotalVeMbox * 1e18 || wantAmount * 1e18 >= Number(shareTotal)) {
-					needObj.veMbox = 1;
+					needObj.veMbox = 0.1;
 				}
 				//如果池子里面都是我的 并且我已经质押过 就不需要质押了
-				console.log(wantAmount * 1e18, shareTotal);
 				if(wantAmount * 1e18 >= Number(shareTotal) && this.getTotalVeMbox > 0){
 					needObj.veMbox = 0;
 				}
@@ -237,6 +252,11 @@ export default {
 </script>
 
 <style>
+	.my-table td{
+		padding: 5px 5px;
+		border: 1px solid #1e2b50;
+		border-radius: 2px;
+	}
 	.vue-slider-rail{
 		background: #6783B3 !important;
 	}

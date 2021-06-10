@@ -19,7 +19,14 @@
 					<p>{{$t('Air-drop_173')}}</p>
 					<p>{{ numFloor(getVeMboxOrderIndexs['0'].stakeMbox/ 1e18, 1e4)}}</p>
 					<p>
-						<span v-if="Number(orderIndexsCountDown['0']) > 0">{{ getLeftTime(orderIndexsCountDown["0"]) }}</span>
+						<span v-if="Number(orderIndexsCountDown['0']) > 0">
+							<span v-if="Number(orderIndexsCountDown['0']) < 86400">
+								{{ getLeftTime(orderIndexsCountDown["0"]) }}
+							</span>
+							<span v-else>
+								&gt;{{parseInt(Number(orderIndexsCountDown['0']) / 86400)}} {{$t("Hire_46")}}
+							</span>
+						</span>
 						<span v-else>
 							<span v-if="getVeMboxOrderIndexs['0'].stakeMbox == 0">-</span>
 							<StatuButton :isLoading="lockBtn.unStakeMboxLock > 0" :onClick="unstakeMbox.bind(this, 0)" v-else class="btn-small" style="width: 70%">{{$t('Air-drop_155')}}</StatuButton>
@@ -30,7 +37,14 @@
 					<p>{{$t('Air-drop_174')}}</p>
 					<p>{{ numFloor(getVeMboxOrderIndexs["1"].stakeMbox/ 1e18, 1e4)}}</p>
 					<p>
-						<span v-if="Number(orderIndexsCountDown['1']) > 0">{{ getLeftTime(orderIndexsCountDown["1"]) }}</span>
+						<span v-if="Number(orderIndexsCountDown['1']) > 0">
+							<span v-if="Number(orderIndexsCountDown['1']) < 86400">
+								{{ getLeftTime(orderIndexsCountDown["1"]) }}
+							</span>
+							<span v-else>
+								&gt;{{parseInt(Number(orderIndexsCountDown['1']) / 86400)}} {{$t("Hire_46")}}
+							</span>
+						</span>
 						<span v-else>
 							<span v-if="getVeMboxOrderIndexs['1'].stakeMbox == 0">-</span>
 							<StatuButton :isLoading="lockBtn.unStakeMboxLock > 0" :onClick="unstakeMbox.bind(this, 1)" v-else class="btn-small" style="width: 70%">{{$t('Air-drop_155')}}</StatuButton>
@@ -41,7 +55,14 @@
 					<p>{{$t('Air-drop_175')}}</p>
 					<p>{{ numFloor(getVeMboxOrderIndexs["2"].stakeMbox/ 1e18, 1e4)}}</p>
 					<p>
-						<span v-if="Number(orderIndexsCountDown['2']) > 0">{{ getLeftTime(orderIndexsCountDown["2"]) }}</span>
+						<span v-if="Number(orderIndexsCountDown['2']) > 0">
+							<span v-if="Number(orderIndexsCountDown['2']) < 86400">
+								{{ getLeftTime(orderIndexsCountDown["2"]) }}
+							</span>
+							<span v-else>
+								&gt;{{parseInt(Number(orderIndexsCountDown['2']) / 86400)}} {{$t("Hire_46")}}
+							</span>
+						</span>
 						<span v-else>
 							<span v-if="getVeMboxOrderIndexs['2'].stakeMbox == 0">-</span>
 							<StatuButton :isLoading="lockBtn.unStakeMboxLock > 0" :onClick="unstakeMbox.bind(this, 2)" v-else class="btn-small" style="width: 70%">{{$t('Air-drop_155')}}</StatuButton>

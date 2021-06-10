@@ -213,11 +213,11 @@
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_80")}}</p>
-					<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.moboxBurn"  />
+					<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.moboxBurn.toLocaleString()"  />
 				</div>
-				<div style="padding:10px" class="hide">
-					<p class="small opa-6 tac" >{{$t("Air-drop_81")}}</p>
-					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
+				<div style="padding:10px">
+					<p class="small opa-6 tac" >{{$t("Air-drop_187")}}</p>
+					<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.circulating.toLocaleString()" />
 				</div>
 			</div>
 			<table class=" table-his tac small mgt-20" style="width:100%" border="0" frame="void" rules="none">

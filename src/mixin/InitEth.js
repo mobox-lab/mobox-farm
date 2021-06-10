@@ -267,7 +267,8 @@ const InitEth = {
 			if(res){
 				this.buyBack.amount = Common.numFloor(res.amount, 1e2);
 				this.buyBack.avgPrice = Common.numFloor(res.avgPrice, 1e4);
-				this.buyBack.moboxBurn = Common.numFloor(res.moboxBurn/ 1e18, 1e2);
+				this.buyBack.moboxBurn = Common.numFloor(res.moboxBurn/ 1e18, 1);
+				this.buyBack.circulating = Common.numFloor(res.circulating/ 1e18, 1);
 				this.buyBack.logs = res.logs;
 				this.$store.commit("bnbState/setData", {buyBack: this.buyBack});
 			}

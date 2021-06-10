@@ -1,6 +1,5 @@
 import axios from 'axios';
 export default class SwapHttp {
-	// static serverNode = "https://dwalletapi.mobox.io/bscswap"; 
 	static serverNode = "https://swapapi.mobox.io/bscswap"; 
 
 	static async post(url, sendData) {

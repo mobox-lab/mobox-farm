@@ -601,8 +601,8 @@ export default {
 <style >
 .buy-key-btn{
 	height: 25px;
-	background: #2f435f;
-	color: #94BBFF;
+	background: rgb(73, 73, 73);
+	color: #ebebeb;
 	border: none;
 	border-radius: 25px;
 	font-size: 12px;
@@ -611,8 +611,8 @@ export default {
 }
 
 .buy-key-btn:hover{
-	background: #385a88;
-	color: #b3cfff;
+	background: #555555;
+	color: #ebebeb;
 }
 
 .card-cont-row{

@@ -62,7 +62,7 @@ a {
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 .notice-color{
-	color:#8cfece
+	color:#A1FA40
 }
 
 svg {
@@ -391,9 +391,8 @@ svg {
 
 
 .disable-btn {
-	/* background: #4e7399 !important;
-	color: #7498bd !important; */
-	opacity: 0.6;
+	background: #666666 !important;
+	color: #919191 !important;
 }
 
 .disable-btn path{
@@ -574,14 +573,14 @@ svg {
 
 .ly-input::placeholder{
 	font-size: 16px;
-	color: rgb(100, 100, 100);
+	color: rgb(75, 75, 75);
 }
 
 .ly-input {
 	border-radius: 8px;
 	height:40px;
 	outline: none;
-	background: #2A2F35;
+	background: #141414;
 	border: none;
 	color: #fff;
 	font-size: 14px;
@@ -601,7 +600,7 @@ svg {
 }
 
 .ly-input-content {
-	background: #2A3B67;
+	background: #1C222C;
 	padding: 10px;
 	border-radius: 8px;
 }
@@ -811,7 +810,7 @@ svg {
 }
 
 .tab-body {
-	background: #2A3B67;
+	background: #1C222C;
 	border-radius: 8px;
 }
 
@@ -820,10 +819,10 @@ svg {
 }
 .tab-split{
 	height: 0.5px;
-	background: #303640;
+	background: #363D46;
 }
 .tab-panel{
-	background: #182342;
+	background: #13181F;
 	padding: 10px 10px;
 	border-radius: 8px;
 }
@@ -841,29 +840,35 @@ svg {
 	flex: 1;
 }
 .icon-btn{
-	background: #182342;
+	background: #303030;
 	border: none;
 	width: 30px;
 	height: 30px;
 	border-radius: 30px;
 	cursor: pointer;
 }
+.icon-btn path{
+	fill: #fff;
+}
+svg path{
+	fill: #fff;
+}
 .icon-btn:hover{
-	background: #202e55;
+	background: #414141;
 }
 
 .text-btn{
 	background: none;
 	border: none;
 	border-radius: 10px;
-	color: #94BBFF;
+	color: #ffffff;
 	white-space: nowrap;
 	padding: 5px;
 	cursor: pointer;
 }
 
 .text-btn:hover{
-	background: #202e55;
+	background: #414141;
 }
 .popMsg.left{
 	transform: translate(-100%, -20%);
@@ -1089,11 +1094,11 @@ svg {
 	text-align: right;
 	align-items: center;
 	user-select: none;
-	background: #202e5367;
+	background: #1e2635;
 }
 
 .point-block .show-point-block:hover{
-	background: #202e53;
+	background: #2b3544;
 }
 .toggle-item{
 	display: block;

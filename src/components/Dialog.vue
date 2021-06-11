@@ -59,20 +59,26 @@ export default {
 }
 .yf-dialog-close-btn {
 	position: absolute;
-	right: -5px;
-	top: -5px;
+	right: -10px;
+	top: -10px;
 	cursor: pointer;
 	z-index: 999;
+	width: 25px;
+	height: 25px;
+	border: 1px solid #36383A;
+	border-radius: 50%;
 }
 .yf-dialog {
 	max-width: 100%;
-	background: #10172a;
-	/* border: 2px solid #2d4a77; */
 	border-radius: 15px;
 	padding: 15px;
 	display: inline-block;
 	position: relative;
 	animation: showAni 0.3s;
+	background: #13181f;
+	border: 1px solid #36383A;
+	border-radius: 21px;
+
 }
 
 .yf-dialog-remove {

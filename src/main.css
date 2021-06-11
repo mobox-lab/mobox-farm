@@ -1095,9 +1095,15 @@ svg {
 .point-block .show-point-block:hover{
 	background: #202e53;
 }
-.point-block.close{
+.toggle-item{
+	display: block;
+}
+/* .point-block.close{
 	height: 30px;
 	overflow: hidden;
+} */
+.point-block.close .toggle-item{
+	display: none;
 }
 
 .point-block.close .rotate-arrow{

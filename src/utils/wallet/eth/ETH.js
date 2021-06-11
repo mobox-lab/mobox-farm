@@ -2437,6 +2437,37 @@ export default class ETH {
 
 	}
 
+	//获取多个池子的质押的veMbox的倍率
+	static async getUserPoolsApyParam(poolIndexs_){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "getUserPoolsApyParam",
+				"type": "function",
+				"inputs": [
+					{"name": "user_","type": "address"},
+					{"name": "poolIndexs_","type": "uint256[]"},
+				],
+				"outputs": [
+					{"name": "keyPerDays","type": "uint256[]"},
+					{"name": "wantShares","type": "uint256[]"},
+					{"name": "workingBalances","type": "uint256[]"},
+					{"name": "workingSupply","type": "uint256[]"},
+					{"name": "totalShares","type": "uint256[]"},
+				],
+			}
+		], WalletConfig.ETH.moMoHelper2);
+
+		return new Promise(resolve => {
+			contract.methods.getUserPoolsApyParam(myAddr, poolIndexs_).call().then(data => {
+				resolve(data);
+			})
+		});
+
+	}
+
 	//划转veMbox
 	static async moveStake({moveVeMobox_, fromPool_, toPool_, orderIndex_}){
 		let myAddr = await this.getAccount();

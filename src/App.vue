@@ -630,12 +630,13 @@ export default {
 		async  getTotalStakeUSDTAndAirdropKEY(){
 			let res = await Http.getKeyDrop();
 			if(res){
-				let {strategyAmounts, keyAmount, apys} = res.data;
+				let {strategyAmounts, keyAmount, apys, keyApys} = res.data;
 				Object.keys(PancakeConfig.StakeLP).map(coinKey=>{
 					this.coinArr[coinKey].totalSupply = strategyAmounts[coinKey] || 0;
 					let apy =  Common.numFloor(apys[coinKey] * 100 || 0, 100);
 					if(apy == 0) apy = "?";
 					this.coinArr[coinKey].apy = apy + "%";
+					this.coinArr[coinKey].allKeyApy = keyApys[coinKey];
 				});
 				this.$store.commit("bnbState/setData", {coinArr: this.coinArr, totalAirdropKey: keyAmount || 0});
 			}

@@ -2,24 +2,23 @@
 	<div id="aridorp" class="tac">
 		<section class="mgt-20">
 			<div class="tac mgt-10"  id="airdorp-top-menu">
-				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v2'})"  :class="pledgeType == 'v2'?'active':''"  class="tab-menu"   >{{$t("Air-drop_135")}}</div>
-				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v1'});"  :class="pledgeType == 'v1'?'active':''" class="tab-menu por" >
+				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v2'})"  :class="pledgeType == 'v2'?'active':''"  class="tab-menu" style="font-size:16px"  >{{$t("Air-drop_135")}}</div>
+				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v1'});"  :class="pledgeType == 'v1'?'active':''" class="tab-menu por" style="font-size:16px">
 					{{$t("Air-drop_134")}}
 					<span class="notice" v-if="needMigrate"></span>
 					<button class="pop-notice animate__animated  animate__headShake animate__infinite hide" ></button>
 				</div>
 			</div>
 		</section>
-
-		<section id="airdrop-info" class="por ">
-			<a id="recheck" href="https://www.certik.org/projects/mobox" style="position:absolute;right:0px;top: -70px" target="_blank" class="hide">
+		<section id="airdrop-cont" class="por">
+			<a id="recheck" href="https://www.certik.org/projects/mobox" style="position:absolute;right:0px;top: -70px" target="_blank">
 				<img src="../../assets/icon/check-icon.png" alt="" height="60" />
 			</a>
 			<div id="only-show-my" style="position:absolute;left:10px;top:10px" class="vertical-children">
-				<div class="ly-checkbox"  @click="$store.commit('bnbState/setData', {onlyShowPledge:!onlyShowPledge})" :class="onlyShowPledge?'active':'' ">
-					<svg class="hide"  viewBox="0 0 1024 1024" width="20" height="20"><path fill="#A1FA40" d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z" ></path></svg>
+				<div class="ly-checkbox" style="background:#3e4b70" @click="$store.commit('bnbState/setData', {onlyShowPledge:!onlyShowPledge})" :class="onlyShowPledge?'active':'' ">
+					<svg class="hide"  viewBox="0 0 1024 1024" width="20" height="20"><path fill="#92FFDA" d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z" ></path></svg>
 				</div> &nbsp;
-				<span class="opa-6">{{$t("Air-drop_130")}}</span>
+				<span>{{$t("Air-drop_130")}}</span>
 			</div>
 			
 			<div class="mgt-20 aveage-box" id="airdrop-cont-info">
@@ -50,169 +49,194 @@
 					</div>
 				</div>
 			</div>
-		</section>
-			
-		<section id="airdrop-cont" class="mgt-20">
 			<div class="row">
 				<div class="col-md-4 col-xs-12 col-sm-6 mgt-10" v-for="item in getPledgeList" :key="item.coinName + item.addr" >
-			
-						<div class="airdrop-item tal " :class="`pledgeType-${pledgeType}`">
-							<div class="test"></div>
-							<div style="padding:20px" class="por">
-								<div class="over" v-if="pledgeType=='v1' && (item.coinKey != 'MBOX-BNB' || (item.coinKey == 'MBOX-BNB' && airdropCountDown <= 0)) ">{{$t("Air-drop_134")}}</div>
-								<div class="vertical-children" style="padding-left: 56px" >
-									<div class="dib airdorp-item-coin-icon tac " :class="item.isLP?'double-img':'' ">
-										<img v-for="(name, key) in item.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="50" alt="" />
-									</div>
-									<div style="margin-left: 15px">
-										<h3 class="color-w tal">{{ item.coinName }} {{item.isLP?"LP":"POOL"}} <sub v-if="item.isLP">({{item.pancakeVType==1?"V1":"V2"}})</sub></h3>
-										<p class=" tal mgt-5" >
-											<span style="display:inline-block;padding:2px 10px;border-radius:50px;background:#323841;color:#fff;font-size:14px" >{{item.allocPoint}}X</span>
-											<span class="mgl-5 small opa-6" >APY: {{ item.apy }}</span>
-										</p>
-									</div>
-								</div>
+					<div class="airdrop-item tal " :class="`pledgeType-${pledgeType}`">
+						<div class="over" v-if="pledgeType=='v1' && (item.coinKey != 'MBOX-BNB' || (item.coinKey == 'MBOX-BNB' && airdropCountDown <= 0)) ">{{$t("Air-drop_134")}}</div>
+						<div class="vertical-children " style="padding-left: 56px" >
+							<div class="dib airdorp-item-coin-icon tac " :class="item.isLP?'double-img':'' ">
+								<img v-for="(name, key) in item.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="50" alt="" />
+							</div>
+							<div style="margin-left: 15px">
+								<h3 class="color-w tal">{{ item.coinName }} {{item.isLP?"LP":"POOL"}} <sub v-if="item.isLP">({{item.pancakeVType==1?"V1":"V2"}})</sub></h3>
+								<div class=" tal mgt-5 close vertical-children point-block por"   @click="getApyObj(item);toggleClass($event, {isLP: true})">
+									<span class="tac" style="display:inline-block;height:25px;line-height:26px;width:40px;border-radius:50px;background:#4383D7;color:#fff;font-size:14px;" >{{item.allocPoint}}X</span>
+									<span class="show-point-block mgl-5">
+										<span style="font-size:14px">APY: {{ item.apy }}</span>
+										<svg  viewBox="0 0 24 24" class="rotate-arrow"  height="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
+									</span>
 
-								<template v-if="pledgeType == 'v1'">
-									<p  class="tac small mgt-10" style="color:#49c773" v-if="airdropCountDown > 0 && item.coinKey == 'MBOX-BNB'">
-										({{$t("Air-drop_149").replace("#0#",getLeftTime(airdropCountDown))}})
-									</p>
-								</template>
-								<template v-else>
-									<p  class="tac small mgt-10" style="color:#49c773" v-if="airdropCountDown > 0 && item.coinKey == 'MBOX-BNB-V2' ">
-										({{$t("Air-drop_150").replace("#0#",getLeftTime(airdropCountDown))}})
-									</p>
-								</template>
-								
-								<div class="tal mgt-30">
-									<p class="por mgt-10">
-										<span class="opa-6 ">{{ $t("Air-drop_02") }}</span>
-										<span class="suffix">${{ numFloor(item.totalSupply, 100).toLocaleString() }}</span>
-									</p>
-								</div>
-
-								<div class="tal mgt-20">
-									<p class="por mgt-10">
-										<span class="opa-6 ">{{$t("Air-drop_112")}}</span>
-										<span class="suffix" >{{ numFloor(coinArr[item.coinKey].balance, 1e6) || "0" }}</span>
-									</p>
-								</div>
-
-								<div class=" point-block mgt-20 close" @click="getLPPrice(item);toggleClass($event, item)">
-									<div class="aveage-box">
-										<div><span class="opa-6 " >{{ $t("Air-drop_03") }}</span></div>
-										<div class="tar "  style="flex:2">
-											<span v-if=" item.wantAmount > 0" style="color: #8cfece" class="vertical-children " :class="item.isLP?'show-point-block':''">
-												<span>{{ item.wantAmount }}</span>
-												<svg v-if="item.isLP" viewBox="0 0 24 24" class="rotate-arrow"  height="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
-											</span>
-											<span v-else style="padding: 5px;display:inline-block">-</span>
+									<div  class="mgt-10 small toggle-item" style="background:#202e53;padding:5px;border-radius:10px">
+										<div class="aveage-box vertical-children por" style="padding:2px"  >
+											<p class="dib">KEY</p>
+											<p class="dib tar" >
+												<span v-if="item.myApy.key != '-'" class="vertical-children">
+													<span>{{numFloor(item.allKeyApy*100, 100)}}%</span>
+													<span :class="Number(item.allKeyApy) < Number(item.myApy.key) ?'color-sell':'color-buy' " v-if="item.myApy.key">
+														<span v-if="Number(item.allKeyApy) < Number(item.myApy.key) ">+</span>
+														<span v-else>-</span>
+														<span>{{numFloor(Math.abs(item.allKeyApy - item.myApy.key)*100, 100)}}%</span>
+													</span>
+												</span>
+												<Loading v-else />
+											</p>
+										</div>
+										<div v-if="item.isLP" class="aveage-box vertical-children por" style="padding:2px"  >
+											<p class="dib">CAKE</p>
+											<p class="dib tar" >
+												<span v-if="item.myApy.cake != '-'">{{numFloor(item.myApy.cake*100, 100)}}%</span>
+												<Loading v-else />
+											</p>
+										</div>
+										<div v-else class="aveage-box vertical-children por" style="padding:2px"  >
+											<p class="dib">XVS</p>
+											<p class="dib tar" >
+												<span>{{item.myApy.xvs}}%</span>
+											</p>
 										</div>
 									</div>
-
-
-									<div v-if="item.isLP" class="mgt-10 small" style="background:#13181F;padding:5px;border-radius:10px">
-										<div class="aveage-box vertical-children por" style="padding:2px"  v-for="(name, key) in item.coinName.split('-')" :key="item.coinName+key">
-										<div class="dib">
-											<span> {{name}}</span>
-										</div>
-										
-										<p class="dib tar" >
-											<span class="mgl-10" v-if="item.lpPrice[key] != '-' ">{{item.lpPrice[key]}}</span>
-											<Loading v-else />
-											<img class="mgl-5"  :src=" require(`../../assets/coin/${name}.png`) " height="20" alt="" />
-										</p>
-										</div>
-									</div>
-
-								</div>
-
-								<div class="tal mgt-20">
-									<p class="por mgt-10">
-										<span class="opa-6 ">{{$t("Air-drop_152")}}</span>
-										<span class="suffix" >
-											{{ numFloor( 
-												(
-												Number(coinArr[item.coinKey].veMbox.orderIndexs[0].veMboxNum)
-												+ Number(coinArr[item.coinKey].veMbox.orderIndexs[1].veMboxNum)
-												+ Number(coinArr[item.coinKey].veMbox.orderIndexs[2].veMboxNum)
-												) /1e18, 1e6) || "0" }}
-											<span class="notice-color" v-if="coinArr[item.coinKey].veMbox.mul > 100">({{numFloor(coinArr[item.coinKey].veMbox.mul/100, 100)}}x)</span>
-										</span>
-									</p>
-								</div>
-
-								<div class="tal mgt-20 ">
-									<p class="por mgt-10">
-										<span class="opa-6">{{ $t("Air-drop_05") }}</span>
-										<span class="suffix">
-											<button class="btn-success btn-small por"  :class="lockBtn.getKeyLock > 0 ||  item.earnedKey == 0?'disable-btn':''" @click="$refs.keyopr.setCheckCoin(item.coinKey).show()">
-												<img v-if="lockBtn.getKeyLock > 0" src="../../assets/icon/loading.png" class="rotate" height="10" alt="" style="position:absolute;left:8px;top:10px" />
-												{{ item.earnedKey }} KEY
-											</button>
-										</span>
-									</p>
-								</div>
-								<!-- 存款提现操作 -->
-								<div class="tac mgt-30"> 
-									<template v-if="pledgeType=='v2'">
-										<div class="dib por tac" style="width:50px" @click="needSetItem = item;oprDialog('deposit-notice-dialog','block')"  v-if="needShowNotice">
-											<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
-											<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold opa-6">{{$t("Air-drop_07")}}</span>
-										</div>
-										<div class="dib por tac" style="width:50px" @click="$refs.deposit.setOprData(item).show();" v-else>
-											<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
-											<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;zoom:0.8" class="bold opa-6">{{$t("Air-drop_07")}}</span>
-										</div>
-										
-										<div class="dib por" style="margin-left:50px;width:50px" @click="$refs.withdraw.setOprData(item).show();" >
-											<img class="cur-point "  width="40" src="../../assets/icon/withdraw_icon.png" alt="" >
-											<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold opa-6">{{$t("Air-drop_08")}}</span>
-										</div>
-									</template>
-									<template v-else>
-										<button class="btn-primary" style="width: 60%"  @click="migrateCoinKey = item.coinKey;oprDialog('migrate-dialog','block')" >
-											{{$t("Air-drop_136")}}
-										</button>
-									</template>
-								</div>
-
-								<div class="dib por cur-point" style="position:absolute;right:10px;bottom:10px" @click="$refs.vmbox.setOprData(item).show();">
-									<span class="notice" v-if="coinArr[item.coinKey].veMbox.notice"></span>
-									<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
-									<span style="width:150%;position:absolute;bottom:-5px;left:-25%;font-size:12px;color:#fff;zoom:0.7" class="bold tac">veMBOX</span>
 								</div>
 							</div>
 
-							<template  v-if="item.isLP && pledgeType == 'v2' ">
-								<div class="tab-split"></div>
-								<div style="padding:20px">
-									<div class="tac"  > 
-										<button class="btn-line"  style="width: 40%"  @click="$root.$children[0].$refs.pancake.setOprData(item).show('swap')" >
-											{{$t("Air-drop_29")}}
-										</button> &nbsp;
-										<button class="btn-line mgl-5" style="width: 40%"  @click="$root.$children[0].$refs.pancake.setOprData(item).show('liquidity')" >
-											{{$t("Air-drop_30")}}
-										</button> &nbsp;
-									</div>
+						</div>
+
+						<template v-if="pledgeType == 'v1'">
+							<p  class="tac small mgt-10" style="color:#49c773" v-if="airdropCountDown > 0 && item.coinKey == 'MBOX-BNB'">
+								({{$t("Air-drop_149").replace("#0#",getLeftTime(airdropCountDown))}})
+							</p>
+						</template>
+						<template v-else>
+							<p  class="tac small mgt-10" style="color:#49c773" v-if="airdropCountDown > 0 && item.coinKey == 'MBOX-BNB-V2' ">
+								({{$t("Air-drop_150").replace("#0#",getLeftTime(airdropCountDown))}})
+							</p>
+						</template>
+						
+						<div class="tal mgt-30">
+							<p class="por mgt-10">
+								<span class="opa-6 ">{{ $t("Air-drop_02") }}</span>
+								<span class="suffix">${{ numFloor(item.totalSupply, 100).toLocaleString() }}</span>
+							</p>
+						</div>
+
+						<div class="tal mgt-20">
+							<p class="por mgt-10">
+								<span class="opa-6 ">{{$t("Air-drop_112")}}</span>
+								<span class="suffix" >{{ numFloor(coinArr[item.coinKey].balance, 1e6) || "0" }}</span>
+							</p>
+						</div>
+
+						<div class=" point-block mgt-20 close" @click="getLPPrice(item);toggleClass($event, item)">
+							<div class="aveage-box">
+								<div><span class="opa-6 " >{{ $t("Air-drop_03") }}</span></div>
+								<div class="tar "  style="flex:2">
+									<span v-if=" item.wantAmount > 0" style="color: #8cfece" class="vertical-children " :class="item.isLP?'show-point-block':''">
+										<span>{{ item.wantAmount }}</span>
+										<svg v-if="item.isLP" viewBox="0 0 24 24" class="rotate-arrow"  height="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
+									</span>
+									<span v-else style="padding: 5px;display:inline-block">-</span>
 								</div>
-							</template>
+							</div>
+
+							
+
+							<div v-if="item.isLP" class="mgt-10 small toggle-item" style="background:#202e53;padding:5px;border-radius:10px">
+								<div class="aveage-box vertical-children por" style="padding:2px"  v-for="(name, key) in item.coinName.split('-')" :key="item.coinName+key">
+								<div class="dib">
+									<span> {{name}}</span>
+								</div>
+								
+								<p class="dib tar" >
+									<span class="mgl-10" v-if="item.lpPrice[key] != '-' ">{{item.lpPrice[key]}}</span>
+									<Loading v-else />
+									<img class="mgl-5"  :src=" require(`../../assets/coin/${name}.png`) " height="20" alt="" />
+								</p>
+								</div>
+							</div>
 
 						</div>
+
+						<div class="tal mgt-20">
+							<p class="por mgt-10">
+								<span class="opa-6 ">{{$t("Air-drop_152")}}</span>
+								<span class="suffix" >
+									{{ numFloor( 
+										(
+										Number(coinArr[item.coinKey].veMbox.orderIndexs[0].veMboxNum)
+										+ Number(coinArr[item.coinKey].veMbox.orderIndexs[1].veMboxNum)
+										+ Number(coinArr[item.coinKey].veMbox.orderIndexs[2].veMboxNum)
+										) /1e18, 1e6) || "0" }}
+									<span class="notice-color" v-if="coinArr[item.coinKey].veMbox.mul > 100">({{numFloor(coinArr[item.coinKey].veMbox.mul/100, 100)}}x)</span>
+								</span>
+							</p>
+						</div>
+
+						<div class="tal mgt-20 ">
+							<p class="por mgt-10">
+								<span class="opa-6">{{ $t("Air-drop_05") }}</span>
+								<span class="suffix">
+									<button class="btn-success btn-small por"  :class="lockBtn.getKeyLock > 0 ||  item.earnedKey == 0?'disable-btn':''" @click="$refs.keyopr.setCheckCoin(item.coinKey).show()">
+										<img v-if="lockBtn.getKeyLock > 0" src="../../assets/icon/loading.png" class="rotate" height="10" alt="" style="position:absolute;left:8px;top:10px" />
+										{{ item.earnedKey }} KEY
+									</button>
+								</span>
+							</p>
+						</div>
+						<!-- 存款提现操作 -->
+						<div class="tac mgt-30"> 
+							<template v-if="pledgeType=='v2'">
+								<div class="dib por tac" style="width:50px" @click="needSetItem = item;oprDialog('deposit-notice-dialog','block')"  v-if="needShowNotice">
+									<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
+									<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_07")}}</span>
+								</div>
+								<div class="dib por tac" style="width:50px" @click="$refs.deposit.setOprData(item).show();" v-else>
+									<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
+									<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_07")}}</span>
+								</div>
+								
+								<div class="dib por" style="margin-left:50px;width:50px" @click="$refs.withdraw.setOprData(item).show();" >
+									<img class="cur-point "  width="40" src="../../assets/icon/withdraw_icon.png" alt="" >
+									<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="bold">{{$t("Air-drop_08")}}</span>
+								</div>
+							</template>
+							<template v-else>
+								<button class="btn-primary" style="width: 60%"  @click="migrateCoinKey = item.coinKey;oprDialog('migrate-dialog','block')" >
+									{{$t("Air-drop_136")}}
+								</button>
+							</template>
+						</div>
+
+						<div class="dib por cur-point" style="position:absolute;right:10px;bottom:10px" @click="$refs.vmbox.setOprData(item).show();">
+							<span class="notice" v-if="coinArr[item.coinKey].veMbox.notice"></span>
+							<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
+							<span style="width:150%;position:absolute;bottom:-5px;left:-25%;font-size:12px;color:#fff;zoom:0.7" class="bold tac">veMBOX</span>
+						</div>
+
+					</div>
+					<!-- pancake -->
+					<div class="tac" v-if="item.isLP && pledgeType == 'v2' " > 
+						<button class="btn-primary"  style="width: 40%"  @click="$root.$children[0].$refs.pancake.setOprData(item).show('swap')" >
+							{{$t("Air-drop_29")}}
+						</button> &nbsp;
+						<button class="btn-primary" style="width: 40%"  @click="$root.$children[0].$refs.pancake.setOprData(item).show('liquidity')" >
+							{{$t("Air-drop_30")}}
+						</button> &nbsp;
+						<!-- <StatuButton style="width: 40%; " :onClick="showWithdraw.bind(this, item)" :isLoading="item.isWithdrawing" :isDisable="item.isWithdrawing || Number(item.wantAmount) <= 0">
+							Liquidity
+						</StatuButton> -->
+					</div>
+					
 				</div>
 			</div>
-	
-
 		</section>
 
 		<section id="buy-back" class="mgt-20 por">
 			<div class="info">
 				<span class="cur-point por dib" v-popMsg  >
-					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#E9DB8F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
 					<span class="popMsg left">{{$t("Air-drop_91")}}</span>
 				</span>
 			</div>
-			<div class="aveage-box" style="background:#1C222C;border-radius:10px">
+			<div class="aveage-box" style="background:#2A3B67;border-radius:10px">
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_78")}}</p>
 					<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.amount.toLocaleString()" />
@@ -223,11 +247,11 @@
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_80")}}</p>
-					<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.moboxBurn"  />
+					<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.moboxBurn.toLocaleString()"  />
 				</div>
-				<div style="padding:10px" class="hide">
-					<p class="small opa-6 tac" >{{$t("Air-drop_81")}}</p>
-					<input type="text" readonly class="ly-input mgt-10 tac" value="-" />
+				<div style="padding:10px">
+					<p class="small opa-6 tac" >{{$t("Air-drop_187")}}</p>
+					<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.circulating.toLocaleString()" />
 				</div>
 			</div>
 			<table class=" table-his tac small mgt-20" style="width:100%" border="0" frame="void" rules="none">
@@ -448,6 +472,10 @@ export default {
 			Common.app.getLPCoinValue(item);
 		},
 
+		getApyObj(item){
+			Common.app.getApyObj(item);
+		},
+
 		agreeNotice(){
 			if(!this.hasAgreeNotice) return;
 			if(this.hasSelectNotShow){
@@ -499,7 +527,7 @@ export default {
 	text-align: center;
 }
 .table-his tr:nth-of-type(odd) {
-	background: #1C222C;
+	background: #182342;
 }
 
 .airdorp-item-coin-icon {
@@ -516,32 +544,11 @@ export default {
 }
 
 .airdrop-item {
-	background: #1C222C;
+	background: #2a3b67;
 	border-radius: 20px;
+	padding: 20px;
 	position: relative;
-	box-sizing: border-box;
-	z-index: 1;
-}
-.airdrop-item:hover:before{
-	content: "";
-	position: absolute;
-	background: linear-gradient(145deg,#e3672a 0%, #000 100%);
-	left: -2px;
-	top: -2px;
-	bottom: -2px;
-	right: -2px;
-	z-index: -1;
-	border-radius: 20px;
-}
-.test{
-	position: absolute;
-	top: -1px;
-	right: -1px;
-	bottom: -3px;
-	left: -1px;
-	z-index: -1;
-	background: #1C222C;
-	border-radius: 20px;
+	margin:10px;
 }
 #buy-back .info{
 	position: absolute;
@@ -557,32 +564,21 @@ export default {
 #buy-back {
 	padding: 20px 30px;
 	width: 80%;
-	max-width: 1300px;
-	background: #13181F;
+	max-width: 1400px;
+	background: #1d2b50;
 	border-radius: 20px;
 	margin: 0px auto;
 	margin-top: 20px;
 }
 #airdrop-cont {
-	padding-top: 0px;
-	max-width: 1300px;
-	display: inline-block;
-	background: #13181F;
-	width: 80%;
-	padding: 20px 30px;
-	border-radius: 20px;
-}
-
-#airdrop-info{
 	padding: 20px 30px;
 	padding-top: 0px;
 	width: 80%;
-	max-width: 1300px;
-	background: #13181f;
+	max-width: 1400px;
+	background: #1d2b50;
 	border-radius: 20px;
 	display: inline-block;
 }
-
 #aridorp .menu-btn {
 	user-select: none;
 	width: 180px;
@@ -604,7 +600,9 @@ export default {
 #aridorp .col-md-4{
 	padding: 10px 15px;
 }
-
+#aridorp{
+	padding-top: 50px;
+}
 @media (max-width: 768px) {
 	#airdorp-top-menu{
 		text-align: left;
@@ -612,7 +610,7 @@ export default {
 	#airdorp-top-menu .tab-menu{
 		font-size: 14px !important;
 	}
-	#airdrop-cont,#airdrop-info {
+	#airdrop-cont {
 		width: 100%;
 		padding: 10px !important;
 		border-radius: 10px !important;

@@ -293,11 +293,36 @@ const InitEth = {
 					this.coinArr[coinKey].earnedKey = Common.numFloor(Number(pkeys[index]) / decimals, 1e4);
 					this.coinArr[coinKey].gracePeriod = gracePeriods[index];
 					this.coinArr[coinKey].wantAmount = Common.numFloor(Number(wantAmounts[index]) / decimals, omit);
-					this.coinArr[coinKey].workingBalance = workingBalances;
+					this.coinArr[coinKey].workingBalance = workingBalances[index];
 				});
 				this.coinArr["ts"] = new Date().valueOf();
 				this.$store.commit("bnbState/setData", {coinArr: this.coinArr, rewardStoreKey: Common.numFloor(Number(rewardStore) / 1e18, 1e4)});
 			}
+		},
+
+		async getApyObj(item){
+			let res = await Wallet.ETH.getUserPoolsApyParam([item.pIndex]);
+			if(res){
+				let {keyPerDays,wantShares,workingSupply, totalShares} = res;
+				let keyUsdt = await this.getCoinUsdt("KEY");
+				let {veMbox, totalSupply, allKeyApy, apy, myApy} = this.coinArr[item.coinKey];
+				let mul = Number(veMbox.mul)/100;
+				let myKeyPerDay = keyPerDays[0] * (wantShares[0]* mul / workingSupply[0]) / 1e18;
+				let myUsdtPerDay = keyUsdt/1e18 * myKeyPerDay;
+				let myStakeUsdt = totalSupply * (wantShares / totalShares);
+				let myRealKeyApy = myUsdtPerDay / myStakeUsdt * 365;
+
+				myApy.key = myRealKeyApy;
+				myApy.cake = (Number(apy.split("%")[0]) / 100) - allKeyApy;
+				this.coinArr["ts"] = new Date().valueOf();
+				this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+			}
+		},
+
+		async getCoinUsdt(coinName){
+			let wBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+			let res = await Wallet.ETH.getAmountsOut(1e18, [PancakeConfig.SelectCoin[coinName].addr, wBNB, PancakeConfig.SelectCoin["USDT"].addr]);
+			return res[2];
 		},
 
 		async getLPCoinValue(item){

@@ -2,6 +2,12 @@ import Common from "../../utils/Common";
 
 const baseCoinAttr = {
 	apy: "-%",
+	allKeyApy: "-",
+	myApy: {
+		key: "-",
+		xvs: "0",
+		cake: "-",
+	},
 	balance: "-",
 	balanceTrue: 0,
 	stake: 0,

@@ -1,5 +1,5 @@
 <template>
-	<ul class="yf-tab" >
+	<ul class="yf-tab">
 		<li v-for="(item, index) in list" :key="item" @click="selectItem(index)" :class="getNowPos == index ? 'active' : ''"  class="por">
 			{{ item }}
 			<span class="notice-num" v-if="notice[index]">{{notice[index]}}</span>
@@ -25,13 +25,6 @@ export default {
 		},
 		notice: {
 			default: () => [],
-		},
-	},
-	watch: {
-		defaultSelectPos: function(newValue){
-			if(newValue != this.selectPos){
-				this.selectPos = newValue;
-			}
 		}
 	},
 	watch: {
@@ -78,6 +71,7 @@ export default {
 }
 .yf-tab {
 	list-style: none;
+	height: 38px;
 	background: #13181F;
 	border-radius: 40px;
 	display: inline-block;
@@ -91,7 +85,6 @@ export default {
 	border-radius: 40px;
 	cursor: pointer;
 	color: rgba(255,255,255,0.5);
-	white-space:nowrap;
 }
 .yf-tab li.active {
 	background: #42464C;

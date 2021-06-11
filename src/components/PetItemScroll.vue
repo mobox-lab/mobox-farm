@@ -1,5 +1,5 @@
 <template>
-<div class="pet_item por pet_hover_lv1" :class="'pet_hover_lv' + getNowVType">
+<div class="pet_item por" :class="'pet_hover_lv' + getNowVType">
 	<div ref="container" class="swiper-container dib " :id="data.item.tx">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide " v-for="item in getShowList" :key="item.prototype">
@@ -8,8 +8,8 @@
 					<span class="mgl-5">Lv. {{ item.level }}</span>
 				</div>
 
-				<img class="pet_img" :src="require(`../assets/pet/${item.prototype}.png`)" alt="" width="170" height="170" />
-				<div style="position: absolute; width: 100%; bottom: 95px; left: 0px">
+				<img class="pet_img" :src="require(`../assets/pet/${item.prototype}.png`)" alt="" width="120" height="120" />
+				<div style="position: absolute; width: 100%; bottom: 120px; left: 0px">
 					<div class="vertical-children pet_num"  >
 						x{{ item.num }}
 					</div>
@@ -178,11 +178,11 @@ export default {
 .pet_item .pet-bottom {
 	width: 100%;
 	text-align: center;
-	margin-top: -20px;
+	margin-top: 30px;
 }
 .pet_item {
-	width: 350px;
-	border-radius: 20px;
+	width: 255px;
+	border-radius: 16px;
 	text-align: center;
 	position: relative;
 	display: inline-block;
@@ -191,8 +191,8 @@ export default {
 	cursor: pointer;
 	padding: 15px;
 	user-select: none;
-	color: #c9c9c9;
-	height: 250px;
+	color: #fff;
+	height: 265px;
 	transition: all 0.3s linear;
 }
 
@@ -200,7 +200,7 @@ export default {
 	vertical-align: middle;
 	user-select: none;
 	position: relative;
-	top: -15px;
+	top: 15px;
 }
 
 .pet_num {

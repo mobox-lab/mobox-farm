@@ -19,8 +19,8 @@
 			<div id="light-border-show" class="v6b" v-if="data.item.vType == 6"></div>
 		</div>
 
-		<img class="pet_img" :src="require(`../assets/pet/${data.item.prototype}.png`)" alt="" width="170" height="170" />
-		<div style="position: absolute; width: 100%; bottom: 95px; left: 0px">
+		<img class="pet_img" :src="require(`../assets/pet/${data.item.prototype}.png`)" alt="" width="120" height="120" />
+		<div style="position: absolute; width: 100%; bottom: 50px; left: 0px;right:0px;z-index:5">
 			<div class="vertical-children pet_num" v-if="data.item.vType < 4 && data.item.num > 1" >
 				x{{ data.item.num }}
 			</div>
@@ -44,8 +44,9 @@
 				<span :class="getHashrateColor(data.item)"  class="bold">{{ data.item.hashrate }}</span>
 			</div>
 		</div>
-
-		<slot></slot>
+		<div class="por slot">
+			<slot></slot>
+		</div>
 	</div>
 </template>
 
@@ -91,6 +92,17 @@ export default {
 </script>
 
 <style  scoped>
+.slot{
+	position: absolute;
+	bottom: 20px;
+	z-index: 9999;
+	text-align: center;
+	width: 100%;
+	height: 25px;
+}
+.slot .mgt-10{
+	margin-top: 0px;
+}
 .gem-item-little{
 	width: 30px;
 	height: 30px;
@@ -165,11 +177,13 @@ export default {
 .pet_item .pet-bottom {
 	width: 100%;
 	text-align: center;
-	margin-top: -20px;
+	margin-top: 30px;
+	position: relative;
+	z-index: 5;
 }
 .pet_item {
-	width: 350px;
-	border-radius: 20px;
+	width: 255px;
+	border-radius: 16px;
 	text-align: center;
 	position: relative;
 	display: inline-block;
@@ -179,14 +193,18 @@ export default {
 	padding: 15px;
 	user-select: none;
 	color: #c9c9c9;
-	height: 250px;
+	height: 265px;
+}
+
+.pet_item *{
+	z-index: 5;
 }
 
 .pet_item .pet_img {
 	vertical-align: middle;
 	user-select: none;
 	position: relative;
-	top: -15px;
+	top: 15px;
 }
 
 .pet_num {

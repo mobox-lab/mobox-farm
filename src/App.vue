@@ -910,19 +910,21 @@ export default {
 }
 #top-res {
 	height: 60px;
-	border-bottom: 1px solid #162340;
 	position: fixed;
 	top: 0px;
 	width: 100%;
 	left: 0px;
 	padding-left: 280px;
 	line-height: 60px;
-	background: #10172a;
+	background: #13181F;
 	z-index: 9998;
 }
 #nav-list li.active {
-	background: #1d2b50 !important;
+	background: #1F252B !important;
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
 	opacity: 1;
+	color: #fff;
 }
 #nav-list li {
 	cursor: pointer;
@@ -930,10 +932,12 @@ export default {
 	line-height: 40px;
 	padding-left: 80px;
 	margin-top: 10px;
-	opacity: 0.6;
+	color: rgb(124, 124, 124);
 }
 #nav-list li:hover {
-	background: #0b101a;
+	background: #161a1f;
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
 	opacity: 1;
 }
 #nav-list li .per-icon {
@@ -947,7 +951,8 @@ export default {
 }
 #nav-list {
 	list-style: none;
-	margin-top: 20px;
+	margin-top: 50px;
+	margin-left: 20px;
 }
 #app {
 	padding: 20px;
@@ -960,10 +965,10 @@ export default {
 	position: fixed;
 	top: 0px;
 	bottom: 0px;
-	border-right: 1px solid #162340;
+	border-right: 1px solid #262631;
 	left: 0px;
 	z-index: 9999;
-	background: #10172a;
+	background: #070D14;
 }
 #logo {
 	height: 50px;

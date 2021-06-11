@@ -30,7 +30,7 @@ export default {
 				if(this.chainNetwork == 56){
 					this.oprDialog("connected-wallet-info-dialog", "block");
 				}else{
-					this.showNotify(this.$t("Common_23"), "error");
+					this.showNotify("请在钱包切换链", "error");
 				}
 			}
 		}
@@ -41,13 +41,13 @@ export default {
 <style  scoped>
 	.connect-btn{
 		padding: 0px 20px;
-		border-radius: 30px;
-		height: 40px;
-		background: #1d2b50;
+		border-radius: 12px;
+		height: 35px;
+		background: linear-gradient(253deg,#e3672a 0%, #fab531 100%);
 		border: none;
-		color: #94BBFF;
+		color: #fff;
 		cursor: pointer;
 		line-height: 100%;
-		font-weight: 800;
+		font-size: 14px;
 	}
 </style>

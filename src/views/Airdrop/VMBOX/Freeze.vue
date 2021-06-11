@@ -7,13 +7,13 @@
 					<div  class="ly-input-pre-icon" :class="oprData.isLP?'double-img':'' " v-if="oprData.coinName != ''" style="zoom: 0.75">
 						<img v-for="(name, key) in oprData.coinName.split('-')" :key="name+key" :src=" require(`@/assets/coin/${name}.png`) " height="40" alt="" />
 					</div>
-					<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
+					<input class="ly-input dib" type="text" style=" text-align: center; width: 100%; padding-left: 50px; "
 						v-number :data-max="getMaxMbox" data-min="1"  v-model="inputNum" :placeholder="$t('Air-drop_156')" />
-					<div class="dib tac" style="width: 30%">
+					<!-- <div class="dib tac" style="width: 30%">
 						<button @click="inputNum = getMaxMbox" class="btn-primary btn-small" style="width: 80%" >
 							Max
 						</button>
-					</div>
+					</div> -->
 				</div>
 				<div class="mgt-10 aveage-box small">
 					<p class="tal">{{$t('Air-drop_11')}}</p>

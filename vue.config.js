@@ -1,7 +1,7 @@
 const path = require('path');
 module.exports = {
 	publicPath: "./",
-	assetsDir:"./",
+	// assetsDir:"./",
 	pluginOptions: {
 		i18n: {
 			locale: 'en',

@@ -20,7 +20,7 @@
 		</div>
 
 		<img class="pet_img" :src="require(`../assets/pet/${data.item.prototype}.png`)" alt="" width="120" height="120" />
-		<div style="position: absolute; width: 100%; bottom: 50px; left: 0px;right:0px;z-index:5">
+		<div style="position: absolute; width: 100%; bottom: 100px; left: 0px;right:0px;z-index:5">
 			<div class="vertical-children pet_num" v-if="data.item.vType < 4 && data.item.num > 1" >
 				x{{ data.item.num }}
 			</div>
@@ -94,11 +94,14 @@ export default {
 <style  scoped>
 .slot{
 	position: absolute;
-	bottom: 20px;
+	bottom: 10px;
 	z-index: 9999;
 	text-align: center;
 	width: 100%;
 	height: 25px;
+	left: 0px;
+	padding: 0px 10px;
+
 }
 .slot .mgt-10{
 	margin-top: 0px;
@@ -154,10 +157,13 @@ export default {
 	text-align: right;
 }
 .pet_item .pet-power {
+	width: 100%;
+	position: absolute;
 	line-height: 14px;
 	font-size: 14px;
-	right: 15px;
-	top: 15px;
+	left: 0px;
+	bottom: 10px;
+	padding: 0px 10px;
 }
 .pet_item .pet-lv {
 	line-height: 11px;
@@ -182,6 +188,20 @@ export default {
 	z-index: 5;
 }
 .pet_item {
+	width: 350px;
+	border-radius: 16px;
+	text-align: center;
+	position: relative;
+	display: inline-block;
+	margin-left: 20px;
+	margin-top: 20px;
+	cursor: pointer;
+	padding: 15px;
+	user-select: none;
+	color: #c9c9c9;
+	height: 250px;
+}
+/* .pet_item {
 	width: 255px;
 	border-radius: 16px;
 	text-align: center;
@@ -194,7 +214,7 @@ export default {
 	user-select: none;
 	color: #c9c9c9;
 	height: 265px;
-}
+} */
 
 .pet_item *{
 	z-index: 5;

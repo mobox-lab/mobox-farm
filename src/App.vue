@@ -9,7 +9,7 @@
 		<!-- ipad导航 -->
 		<div id="mobile-nav" class="hide">
 			<img src="./assets/logo.png" height="30" alt="" />
-			<div class="dib " style="position:absolute;top:0px;right:130px;zoom:0.8" >
+			<div class="dib " style="position:absolute;top:0px;right:160px;zoom:0.8" >
 				<div class="vertical-children dib">
 					<img src="./assets/coin/KEY.png" height="25" alt=""/>
 					<span  @click="$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2',pancakeVType: 2}).show('swap')">
@@ -282,6 +282,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8)">
 					<div >
+						<h3 class="tac">{{$t("Notice_15")}}</h3>
+						<span v-html="$t('Notice_14')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_13")}}</h3>
 						<span v-html="$t('Notice_12')" ></span>
 					</div>
@@ -424,7 +428,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "1.2"
+			noticeVersion: "1.3"
 		};
 	},
 	watch: {
@@ -767,7 +771,7 @@ export default {
 	right: 0px;
 	z-index: 9999;
 	height: 70px;
-	background: #37537c;
+	background: #13181F;
 	border-radius: 10px;
 	padding: 3px;
 }
@@ -786,13 +790,14 @@ export default {
 	justify-content: flex-end;
 	padding-bottom: 5px;
 	align-items: center;
+	white-space:nowrap;
 }
 #nav-list-mobile span{
 	zoom: 0.5;
 	font-size: 14px;
 }
 #nav-list-mobile ul li.active{
-	background: #1D2B50;
+	background: #293342;
 	border-radius: 10px;
 } 
 
@@ -800,7 +805,7 @@ export default {
 	position: fixed;
 	bottom: 75px;
 	right: 5px;
-	background: #37537c;
+	background: #13181F;
 	width: 60px;
 	text-align: center;
 	padding: 5px;
@@ -816,7 +821,7 @@ export default {
 }
 
 #nav-mobile-more .active{
-	background: #1D2B50;
+	background: #293342;
 	border-radius: 10px;
 }
 
@@ -898,11 +903,10 @@ export default {
 	width: 100%;
 	position: relative;
 	height: 50px;
-	border-bottom: 1px solid #162340;
 	position: fixed;
 	top: 0px;
 	line-height: 50px;
-	background: #10172a;
+	background: #13181F;
 	z-index: 9999998;
 }
 #top-res p {
@@ -934,6 +938,7 @@ export default {
 	padding-left: 80px;
 	margin-top: 10px;
 	color: rgb(124, 124, 124);
+	font-weight: bold;
 }
 #nav-list li:hover {
 	background: #161a1f;

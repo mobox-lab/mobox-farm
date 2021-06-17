@@ -1,11 +1,18 @@
 <template>
 	<div >
 		<div class="tal search vertical-children por mgt-20" >
-			<span>{{$t("Market_33")}}: {{ getTotalPetNum }}</span>&nbsp;
+			<span>{{$t("Market_33")}}({{ getTotalPetNum }})</span>&nbsp;
 			<div id="market-pet-fitter">
-				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="myRentMarketFilter.category" :onChange="onSelectTypeChange" />&nbsp;
-				<Dropdown :list="selectVType" :defaultSelectPos="myRentMarketFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
-				<Dropdown :list="momoState" :defaultSelectPos="myRentMarketFilter.state" :onChange="onSelectState" />&nbsp;
+				<div class="dropdown-group " @click="showDrop" tabindex="3">
+					<div class="dropdown-group-value por">
+						{{$t("Market_63")}} ▼
+					</div>
+					<div class="dropdown-group-list hide">
+						<Dropdown :list="$parent.selectCategory" :defaultSelectPos="myRentMarketFilter.category" :onChange="onSelectTypeChange" />&nbsp;
+						<Dropdown :list="selectVType" :defaultSelectPos="myRentMarketFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
+						<Dropdown :list="momoState" :defaultSelectPos="myRentMarketFilter.state" :onChange="onSelectState" />&nbsp;
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -13,9 +20,9 @@
 			<div class="clear mgt-20">
 				<router-link :to="`/rentView/${item.tokenId}`" v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()">
 					<PetItem   v-bind:data="{item: item}" class="market" >
-						<div style="height:43px;position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px;">
-							<div v-if="item.vType > 3" class=" tac">
-								<button  v-if="item.rent.state==-1" class="btn-primary" >{{$t("Hire_02")}}</button>
+						<div style="position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px;">
+							<div v-if="item.vType > 3" class=" tac mgt-10">
+								<button  v-if="item.rent.state==-1" class="btn-primary btn-small mgt-10" >{{$t("Hire_02")}}</button>
 								<span v-if="item.rent.state == 0" class="dib mgt-10">{{$t("Hire_06")}}</span>
 								<span v-if="item.rent.state == 1" class="dib mgt-10" style="color:#ACC201">{{$t("Hire_07")}}</span>
 							</div>

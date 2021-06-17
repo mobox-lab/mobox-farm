@@ -9,7 +9,7 @@
 				</div>
 
 				<img class="pet_img" :src="require(`../assets/pet/${item.prototype}.png`)" alt="" width="120" height="120" />
-				<div style="position: absolute; width: 100%; bottom: 120px; left: 0px">
+				<div style="position: absolute; width: 100%; bottom: 100px; left: 0px">
 					<div class="vertical-children pet_num"  >
 						x{{ item.num }}
 					</div>
@@ -134,11 +134,13 @@ export default {
 }
 .slot{
 	position: absolute;
-	bottom: 20px;
+	bottom: 10px;
 	z-index: 9999;
 	text-align: center;
 	width: 100%;
 	height: 25px;
+	left: 0px;
+	padding: 0px 10px;
 }
 .slot .mgt-10{
 	margin-top: 0px;
@@ -181,7 +183,7 @@ export default {
 	margin-top: 30px;
 }
 .pet_item {
-	width: 255px;
+	width: 350px;
 	border-radius: 16px;
 	text-align: center;
 	position: relative;
@@ -192,7 +194,7 @@ export default {
 	padding: 15px;
 	user-select: none;
 	color: #fff;
-	height: 265px;
+	height: 250px;
 	transition: all 0.3s linear;
 }
 

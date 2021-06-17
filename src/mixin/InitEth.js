@@ -164,6 +164,10 @@ const InitEth = {
 			await this.getStakeValueAndEarndKey();
 
 			//获取veMBOX相关
+			await this.getPools();
+			await this.avglockdays();
+			await this.getTotalStakeMbox();
+			//获取veMBOX相关
 			await this.getVeMboxStakeInfo();
 
 			//质押挖矿相关
@@ -191,6 +195,39 @@ const InitEth = {
 
 			//获取总打开箱子数
 			await this.setTotalOpenBox();
+		},
+		//查询总质押的MBOX
+		async getTotalStakeMbox(){
+			let res = await Wallet.ETH.balanceOfToTargetFromAddr(WalletConfig.ETH.mboxToken, WalletConfig.ETH.momoVeMbox);
+			this.$store.commit("bnbState/setData", {totalStakeMbox: res/1e18});
+		},
+
+		//查询mobox平均质押时长
+		async avglockdays(){
+			let res = await Http.avglockdays();
+			if(res){
+				this.$store.commit("bnbState/setData", {avglockdays: parseInt(res.avglockdays)});
+			}
+		},
+		async getPools(){
+			let pIndexObj  = {};
+			for (let key in PancakeConfig.StakeLP) {
+				let {pIndex} = PancakeConfig.StakeLP[key];
+				if(pIndex != 0 && pIndex != -1){
+					pIndexObj[pIndex] = key;
+				}
+			}
+			let res = await Wallet.ETH.getPools(Object.keys(pIndexObj));
+			let {veMboxTotal, poolVeMboxSupplys, poolAllocPoints} = res;
+			Object.keys(pIndexObj).map((poolIndex, pos)=>{
+				let coinKey = pIndexObj[poolIndex];
+				let coinObj =  this.coinArr[coinKey];
+				coinObj.veMboxTotal = veMboxTotal;
+				coinObj.veMoboxSupply = poolVeMboxSupplys[pos];
+				coinObj.addAllocPoint = poolAllocPoints[pos] / 100 - PancakeConfig.StakeLP[coinKey].allocPoint;
+			});
+			this.coinArr["ts"] = new Date().valueOf();
+			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 		},
 		//获取质押VeMobox
 		async getVeMboxStakeInfo(){
@@ -301,6 +338,7 @@ const InitEth = {
 		},
 
 		async getApyObj(item){
+			await this.getPoolVeMobox(item.coinKey);
 			let res = await Wallet.ETH.getUserPoolsApyParam([item.pIndex]);
 			if(res){
 				let {keyPerDays,wantShares,workingSupply, totalShares} = res;
@@ -311,12 +349,49 @@ const InitEth = {
 				let myUsdtPerDay = keyUsdt/1e18 * myKeyPerDay;
 				let myStakeUsdt = totalSupply * (wantShares / totalShares);
 				let myRealKeyApy = myUsdtPerDay / myStakeUsdt * 365;
+				
+				//达到3x的apy
+				let maxMul = 3;
+				let diffShare = wantShares[0] * 3 -  wantShares[0]* mul;
+				let maxMyKeyPerDay = keyPerDays[0] * (wantShares[0]* maxMul / (Number(workingSupply[0]) + diffShare) ) / 1e18;
+				let maxMyUsdtPerDay = keyUsdt/1e18 * maxMyKeyPerDay;
+				let maxmyRealKeyApy = maxMyUsdtPerDay / myStakeUsdt * 365;
 
+				this.coinArr[item.coinKey].maxKeyApy = maxmyRealKeyApy;
 				myApy.key = myRealKeyApy;
 				myApy.cake = (Number(apy.split("%")[0]) / 100) - allKeyApy;
+				myApy.xvs = (Number(apy.split("%")[0]) / 100) - allKeyApy;
+
+				//达到3还需要的veMbox
+				let maxApyNeedVeMobox = 0;
+				let coinObj = this.coinArr[item.coinKey];
+				let {shareTotal, veMoboxSupply, wantAmount} = coinObj;
+
+				let orderIndexs = veMbox.orderIndexs;
+				let totalVeMobox =(Number(orderIndexs[0].veMboxNum) + Number(orderIndexs[1].veMboxNum) + Number(orderIndexs[2].veMboxNum)) /1e18;
+
+				let y = (3 - 1)/2 *(wantAmount * 1e18 / shareTotal);
+				maxApyNeedVeMobox = (y*veMoboxSupply/(1-y) - totalVeMobox*1e18)/1e18;
+				if(veMoboxSupply == 0 || veMoboxSupply <= this.getTotalVeMbox * 1e18 || wantAmount * 1e18 >= Number(shareTotal)) {
+					maxApyNeedVeMobox = 0.1;
+				}
+				//如果池子里面都是我的 并且我已经质押过 就不需要质押了
+				if(wantAmount * 1e18 >= Number(shareTotal) && this.getTotalVeMbox > 0){
+					maxApyNeedVeMobox = 0;
+				}
+
+				this.coinArr[item.coinKey].maxApyNeedVeMobox = maxApyNeedVeMobox;
 				this.coinArr["ts"] = new Date().valueOf();
 				this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 			}
+		},
+
+		async getPoolVeMobox(coinKey){
+			let pIndex = PancakeConfig.StakeLP[coinKey].pIndex;
+			let res = await Wallet.ETH.getPoolVeMobox(pIndex);
+			this.coinArr[coinKey].shareTotal = res.shareTotal;
+			this.coinArr[coinKey].veMoboxSupply = res.veMoboxSupply;
+			this.coinArr[coinKey]["ts"] = new Date().valueOf();
 		},
 
 		async getCoinUsdt(coinName){

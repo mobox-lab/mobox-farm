@@ -1,19 +1,8 @@
 <template>
 	<div class="dropdown mgt-10" tabindex="2">
-		<div class="dropdown-value" @click="showDrop">
-			{{ list[getNowPos] }}
-			▼
-		</div>
-		<ul
-			class="dropdown-list hide"
-			:style="direction == 'up' ? 'bottom: 40px' : ''"
-		>
-			<li
-				v-for="(item, index) in list"
-				:key="item"
-				@click="selectItem($event, index)"
-				:class="getNowPos == index ? 'active' : ''"
-			>
+		<div class="dropdown-value por" style="padding-left:30px" @click="showDrop">{{ list[getNowPos] }}&nbsp;▼</div>
+		<ul class="dropdown-list hide" :style="direction == 'up' ? 'bottom: 40px' : ''" >
+			<li v-for="(item, index) in list" :key="item" @click="selectItem($event, index)" :class="getNowPos == index ? 'active' : ''" >
 				{{ item }}
 			</li>
 		</ul>
@@ -82,7 +71,7 @@ export default {
 .dropdown .dropdown-list {
 	position: absolute;
 	min-width: 80px;
-	background: #000912;
+	background: #1C222C;
 	border-radius: 20px;
 	list-style: none;
 	right: 0px;
@@ -90,10 +79,10 @@ export default {
 	z-index: 999;
 }
 .dropdown .dropdown-list li.active {
-	background: #1d2b50 !important;
+	background: #323841 !important;
 }
 .dropdown .dropdown-list li:hover {
-	background: #051830;
+	background: #323841;
 }
 .dropdown .dropdown-list li {
 	height: 40px;
@@ -101,17 +90,27 @@ export default {
 	white-space: nowrap;
 	line-height: 40px;
 	padding: 0px 30px;
-	border-radius: 20px;
+	
+}
+.dropdown .dropdown-list li:first-child{
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+}
+.dropdown .dropdown-list li:last-child{
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
 }
 .dropdown .dropdown-value {
 	min-width: 80px;
-	background: #1d2b50;
+	background: #13181F;
 	border-radius: 30px;
 	height: 40px;
 	display: inline-block;
 	padding: 0px 20px;
+	padding-right: 30px;
 	line-height: 40px;
 	text-align: center;
+	color:rgba(255, 255, 255,0.5);
 }
 .dropdown {
 	user-select: none;

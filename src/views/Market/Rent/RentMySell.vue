@@ -213,7 +213,7 @@ export default {
 	}
 	.list-item td{
 		padding: 10px;
-		background: #1D2B50;
+		background: #13181F;
 		border-left: none;
 		border-right: none;
 		border-bottom: none;
@@ -224,7 +224,7 @@ export default {
 		margin-top: 20px;
 	}
 	.statistics-top-tab li.active{
-		border-bottom: 4px solid #93BBFF;
+		border-bottom: 4px solid #1B54F5;
 		color: #fff;
 		opacity: 1;
 	}

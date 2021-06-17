@@ -1,141 +1,161 @@
 <template>
-	<div id="openbox" class="tac">
-		<h1>{{ $t("BOX_01") }}</h1>
-		<h1 class="gradientText dib mgt-20" style="font-size: 35px">
-			{{ totalOpenBoxAmount.bnb }}
-		</h1>
-		<br />
-		<div class="por box"  style="height:300px;width:300px; margin:0px auto; ">
-			<div id="openbox-anime-new" class="hide"></div>
-			<div class="animation-box mgt-50" id="openbox-anime"></div>
-		</div>
-		<div id="show-card" class="hide" @click="initCardAnime">
-			<div id="show-card-cont" class="animate__animated  animate__zoomIn">
-				<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
-				<div v-if="posArr[petDataArr.length].line1" class="card-cont-row"  id="show-card-cont-row1">
-					<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line1" :key="key+10" v-on:animationend="animationend">
-						<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
-						<div class="front">
-							<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
-						</div>
-						<div class="back">
-							<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key-1] }" />
+	<div id="openbox" class="tac center-box">
+		<div class="clear mgt-20">
+			<section class="col-md-7" style="padding:10px">
+				<div class="adv-panel">
+					<p class="opa-6 mgt-20">{{ $t("BOX_01") }}</p>
+					<h1 class="dib mgt-10" style="font-size: 20px">
+						{{ totalOpenBoxAmount.bnb }}
+					</h1>
+					<br />
+					<div class="por box"  style="height:300px;width:300px; margin:0px auto; ">
+						<div id="openbox-anime-new" class="hide"></div>
+						<div class="animation-box mgt-50" id="openbox-anime"></div>
+					</div>
+					<div id="show-card" class="hide" @click="initCardAnime">
+						<div id="show-card-cont" class="animate__animated  animate__zoomIn">
+							<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
+							<div v-if="posArr[petDataArr.length].line1" class="card-cont-row"  id="show-card-cont-row1">
+								<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line1" :key="key+10" v-on:animationend="animationend">
+									<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
+									<div class="front">
+										<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
+									</div>
+									<div class="back">
+										<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key-1] }" />
+									</div>
+								</div>
+							</div>
+							<div v-if="posArr[petDataArr.length].line2" class="card-cont-row "   id="show-card-cont-row2">
+								<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line2" :key="key+20" v-on:animationend="animationend">
+									<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
+									<div class="front">
+										<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
+									</div>
+									<div class="back">
+										<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 - 1 ] }" />
+									</div>
+								</div>
+							</div>
+							<div v-if="posArr[petDataArr.length].line3" class="card-cont-row"   id="show-card-cont-row3" >
+								<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line3" :key="key+30" v-on:animationend="animationend">
+									<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
+									<div class="front">
+										<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
+									</div>
+									<div class="back">
+										<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 + posArr[petDataArr.length].line2 -1] }" />
+									</div>
+								</div>
+							</div>
+							<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
 						</div>
 					</div>
-				</div>
-				<div v-if="posArr[petDataArr.length].line2" class="card-cont-row "   id="show-card-cont-row2">
-					<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line2" :key="key+20" v-on:animationend="animationend">
-						<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
-						<div class="front">
-							<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
-						</div>
-						<div class="back">
-							<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 - 1 ] }" />
-						</div>
-					</div>
-				</div>
-				<div v-if="posArr[petDataArr.length].line3" class="card-cont-row"   id="show-card-cont-row3" >
-					<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line3" :key="key+30" v-on:animationend="animationend">
-						<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
-						<div class="front">
-							<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
-						</div>
-						<div class="back">
-							<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 + posArr[petDataArr.length].line2 -1] }" />
-						</div>
-					</div>
-				</div>
-				<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
-			</div>
-		</div>
-		<br />
+					<br />
 
-		<button class="btn-primary hide" @click="openAnime">test animation</button>
+					<button class="btn-primary hide" @click="openAnime">test animation</button>
+				</div>
+			</section>
 
-		<div style="display:flex;justify-content:center;flex-wrap:wrap">
-			<div class="dib mgt-20" style="margin: 30px">
-				<div class="ly-input-content dib">
-					<p class="small tal opa-6">{{ $t("BOX_02") }}:</p>
-					<div class="por mgt-5">
-						<div class="ly-input-pre-icon">
-							<img  src="../assets/coin/KEY.png" alt="" />
+			<section class="col-md-5" style="padding:10px">
+				<div >
+					<div  >
+						<div class="ly-input-content dib" style="width:100%;padding:40px 20px">
+							<p class="tal">{{ $t("BOX_02") }}:</p>
+							<div class="por mgt-10">
+								<div class="ly-input-pre-icon">
+									<img  src="../assets/coin/KEY.png" alt="" />
+								</div>
+								<input class="ly-input" type="number"
+									style=" text-align: left; width: 100%; padding-left:65px"
+									readonly="readonly"
+									:value="ethState.box"
+								/>
+							</div>
+							<div class="aveage-box">
+								<div class="tal">
+									<button class="btn-primary mgt-20" style="width: 90%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; ">
+										{{ $t("BOX_04") }}
+									</button>
+								</div>
+								<div class="tar">
+									<button class="mgt-20 btn-line" style="width:90%;" @click="$root.$children[0].$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
+										{{$t("BOX_33")}}
+									</button>
+								</div>
+							</div>
 						</div>
-						<input class="ly-input" type="number"
-							style=" background: #0f172a; text-align: center; width: 100%; "
-							readonly="readonly"
-							:value="ethState.box"
-						/>
+					</div>
+
+					<div class=" mgt-20" >
+						<div class="ly-input-content dib" style="width:100%;padding:40px 20px">
+							<p class="tal">{{ $t("BOX_03") }}:</p>
+							<div class="por mgt-10">
+								<div class="ly-input-pre-icon">
+									<img src="../assets/icon/box.png" alt="" />
+								</div>
+								<input class="ly-input" type="number"
+									style="text-align: left; width: 100%; padding-left:65px"
+									:value="canOpenBox"
+									readonly="readonly"
+								/>
+							</div>
+							<div class="aveage-box">
+								<div class="tal">
+									<StatuButton class="mgt-20" style="width: 90%" :isDisable="lockBtn.openBoxLock > 0" :isLoading="lockBtn.openBoxLock > 0" :onClick="showOpenBox.bind(this)">
+										{{ $t("BOX_05") }}
+									</StatuButton>
+								</div>
+								<div></div>
+							</div>
+						</div>
+						<!-- <button class="btn-primary mgt-20" :class="lockBtn.openBoxLock > 0'disable-btn':''" style="width: 80%"
+							@click=" oprDialog('open-box-dialog', 'block'); openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 1; ">
+							{{ $t("BOX_05") }}
+						</button> -->
+						
 					</div>
 				</div>
-				<br />
-				<button class="btn-primary mgt-20" style="width: 80%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; ">
-					{{ $t("BOX_04") }}
-				</button>
-				<button class="mgt-20 buy-key-btn" style="width:40%;" @click="$root.$children[0].$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
-					{{$t("BOX_33")}}
-				</button>
-				
-			</div>
-			<div class="dib mgt-20" style="margin: 30px">
-				<div class="ly-input-content dib">
-					<p class="small tal opa-6">{{ $t("BOX_03") }}:</p>
-					<div class="por mgt-5">
-						<div class="ly-input-pre-icon">
-							<img src="../assets/icon/box.png" alt="" />
-						</div>
-						<input class="ly-input" type="number"
-							style=" background: #0f172a; text-align: center; width: 100%; "
-							:value="canOpenBox"
-							readonly="readonly"
-						/>
-					</div>
-				</div>
-				<br />
-				<!-- <button class="btn-primary mgt-20" :class="lockBtn.openBoxLock > 0'disable-btn':''" style="width: 80%"
-					@click=" oprDialog('open-box-dialog', 'block'); openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 1; ">
-					{{ $t("BOX_05") }}
-				</button> -->
-				<StatuButton class="mgt-20" style="width: 80%" :isDisable="lockBtn.openBoxLock > 0" :isLoading="lockBtn.openBoxLock > 0" :onClick="showOpenBox.bind(this)">
-					{{ $t("BOX_05") }}
-				</StatuButton>
-			</div>
+			</section>
 		</div>
+
 		<!-- 记录 -->
-		<table class="mgt-30 small table-his" border="0" frame="void" rules="none" >
-			<tr>
-				<th width="30%" class="tar">
-					<span class="dib tac" style="width: 120px">
-						{{ $t("BOX_12") }}
-					</span>
-				</th>
-				<th width="20%">{{ $t("BOX_26") }}</th>
-				<th width="10%">{{ $t("BOX_13") }}</th>
-				<th width="20%">{{ $t("BOX_27") }}</th>
-				<th width="40%" class="tal">TX</th>
-			</tr>
-			<tr v-for="item in getOpenBoxHistory" :key="item.tx">
-				<td class="tar tac-xs">{{ getTimeFtt(item.crtime) }}</td>
-				<td>{{ $t(eventToLang[item.event]) }}</td>
-				<td>x{{ item.amount }}</td>
-				<td class="vertical-children">
-					<span v-if="item.state != 1 && item.state != -1">
-						<img src="../assets/icon/loading.png" class="rotate" height="20" alt="" />&nbsp; {{ $t("Common_08") }}...
-					</span>
-					<span v-if="item.state == 1">{{ $t("Common_09") }}</span>
-					<span v-if="item.state == -1">
-						<svg  viewBox="0 0 1024 1024"  width="13" height="13"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FF5B5C" p-id="3023"></path><path d="M328.988444 292.750222a17.066667 17.066667 0 0 1 24.120889 0L512 451.697778l158.890667-158.890667a17.066667 17.066667 0 0 1 24.120889 0l36.238222 36.238222a17.066667 17.066667 0 0 1 0 24.120889L572.302222 512l158.947556 158.833778a17.066667 17.066667 0 0 1 0 24.120889l-36.238222 36.238222a17.066667 17.066667 0 0 1-24.120889 0L512 572.302222l-158.833778 158.890667a17.066667 17.066667 0 0 1-24.120889 0l-36.238222-36.238222a17.066667 17.066667 0 0 1 0-24.120889L451.697778 512 292.750222 353.109333a17.066667 17.066667 0 0 1 0-24.120889l36.238222-36.238222z" fill="#FFFFFF"></path></svg>
-						&nbsp;
-						Fail
-					</span>
-				</td>
-				<td class="tal">
-					<img v-if="item.event == 'MintBox' && item.state == 1" @click="showHistoryDialog(item)" src="../assets/icon/view.png" alt="" class="cur-point" />&nbsp;
-					<a :href="getTxUrl(item.tx)" target="_blank">
-						<img src="../assets/icon/viewTx.png" alt="" class="cur-point" />
-					</a>
-				</td>
-			</tr>
-		</table>
+		<div class="col-md-12" style="padding:10px">
+			<section class="mgt-10" style="padding:10px 15px;background:#13181F;border-radius:20px">
+				<table class="small  new-table" border="0" frame="void" rules="none" >
+					<tr>
+						<th width="30%" class="tal">{{ $t("BOX_12") }}</th>
+						<th width="20%" class="tal">{{ $t("BOX_26") }}</th>
+						<th width="10%">{{ $t("BOX_13") }}</th>
+						<th width="20%">{{ $t("BOX_27") }}</th>
+						<th width="40%" class="tar">TX</th>
+					</tr>
+					<tr v-for="item in getOpenBoxHistory" :key="item.tx">
+						<td class="tal tac-xs">{{ getTimeFtt(item.crtime) }}</td>
+						<td class="tal">{{ $t(eventToLang[item.event]) }}</td>
+						<td>x{{ item.amount }}</td>
+						<td class="vertical-children">
+							<span v-if="item.state != 1 && item.state != -1">
+								<img src="../assets/icon/loading.png" class="rotate" height="20" alt="" />&nbsp; {{ $t("Common_08") }}...
+							</span>
+							<span v-if="item.state == 1">{{ $t("Common_09") }}</span>
+							<span v-if="item.state == -1">
+								<svg  viewBox="0 0 1024 1024"  width="13" height="13"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FF5B5C" p-id="3023"></path><path d="M328.988444 292.750222a17.066667 17.066667 0 0 1 24.120889 0L512 451.697778l158.890667-158.890667a17.066667 17.066667 0 0 1 24.120889 0l36.238222 36.238222a17.066667 17.066667 0 0 1 0 24.120889L572.302222 512l158.947556 158.833778a17.066667 17.066667 0 0 1 0 24.120889l-36.238222 36.238222a17.066667 17.066667 0 0 1-24.120889 0L512 572.302222l-158.833778 158.890667a17.066667 17.066667 0 0 1-24.120889 0l-36.238222-36.238222a17.066667 17.066667 0 0 1 0-24.120889L451.697778 512 292.750222 353.109333a17.066667 17.066667 0 0 1 0-24.120889l36.238222-36.238222z" fill="#FFFFFF"></path></svg>
+								&nbsp;
+								Fail
+							</span>
+						</td>
+						<td class="tar">
+							<img v-if="item.event == 'MintBox' && item.state == 1" @click="showHistoryDialog(item)" src="../assets/icon/view.png" alt="" class="cur-point" />&nbsp;
+							<a :href="getTxUrl(item.tx)" target="_blank">
+								<img src="../assets/icon/viewTx.png" alt="" class="cur-point" />
+							</a>
+						</td>
+					</tr>
+				</table>
+			</section>
+		</div>
+
 		<Dialog id="open-box-history-dialog" :top="120" :width="660">
 			<div class="dialog-content tal" style="height: 500px">
 				<PetItemSmall v-for="item in showHistoryArr" :key="item.prototype.toString() + item.tokenId + item.num" :data="item" />

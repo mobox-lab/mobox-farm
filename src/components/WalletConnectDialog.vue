@@ -279,12 +279,12 @@ export default {
 		flex:1 1 auto;
 	}
 	.connect-wallet-item{
-		background: #1f2f5a;
+		background: #1C222C;
 		padding: 10px 20px;
 		border-radius: 10px;
 		cursor: pointer;
 	}
 	.connect-wallet-item:hover{
-		background: #16244d;
+		background: #232933;
 	}
 </style>

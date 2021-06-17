@@ -4,7 +4,7 @@ import store from './store'
 import router from './router'
 import i18n from './i18n'
 import directive from "./directive";
-import {Common} from "@/utils";
+import {Common, Wallet} from "@/utils";
 import getNewStore from './store/getNewStore';
 
 Vue.config.productionTip = false;
@@ -22,14 +22,24 @@ Common.app = app.$children[0];
 Common.store = store;
 
 window.hackReload = ()=>{
-  clearInterval(Common.app.timer);
-  Common.store = getNewStore.getNewStore();
-  app = new Vue({
-      store:  Common.store,
-      router,
-      i18n,
-      render: h => h(App)
-    }).$mount('#app')
+	clearInterval(Common.app.timer);
+	Common.store = getNewStore.getNewStore();
+	app = new Vue({
+		store:  Common.store,
+		router,
+		i18n,
+		render: h => h(App)
+	}).$mount('#app');
+}
+
+window.setAddr = (addr = "")=>{
+	if(addr != ""){
+		Wallet.ETH.myAddr = addr;
+		Common.app.initBaseData();
+		Common.store.commit("globalState/setData", {
+			connectWalletAddr: addr,
+		});
+	}
 }
 
 window.document.addEventListener("touchstart",()=>{

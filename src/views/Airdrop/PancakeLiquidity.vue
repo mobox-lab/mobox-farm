@@ -10,13 +10,13 @@
 					<p class="small opa-6">{{$t("Air-drop_58")}}</p>
 				</div>
 				<div class="mgt-10" >
-					<button class="btn-primary  mgt-10" @click="showAddLiquidityPanel =  true" style="background: #384A7C">{{$t("Air-drop_57")}}</button>&nbsp;
+					<button class="btn-primary  mgt-10" @click="showAddLiquidityPanel =  true" >{{$t("Air-drop_57")}}</button>&nbsp;
 					<button class="btn-primary mgt-10" v-if="oprData.balance > 0" @click="showRemoveLiquidityPanel =  true"  style="background: #384A7C">{{$t("Air-drop_95")}}</button>
 				</div>
 			</div>
 			<div class="tab-split"></div>
 			<div class="tab-content" v-if="oprData.isLP">
-				<div class="mgt-10 cur-point lp-amount-item close"  style="border-radius:10px;padding:10px 10px;background:#182342;" @click="toggleClass($event)">
+				<div class="mgt-10 cur-point lp-amount-item close"  style="border-radius:10px;padding:10px 10px;background:#13181F;" @click="toggleClass($event)">
 					<div class="aveage-box vertical-children por" >
 						<div class="dib">
 							<div class="dib por"  :class="oprData.isLP?'double-img':'' " v-if="oprData.coinName != ''" style="zoom: 0.75">
@@ -28,7 +28,7 @@
 						<p class="dib tar">
 							<span class="mgl-10" v-if="oprData.balance != '-' ">{{oprData.balance}}</span>
 							<Loading v-else />
-							<svg viewBox="0 0 24 24" class="mgl-5 rotate-arrow"  height="20px" ><path fill="#94BBFF" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
+							<svg viewBox="0 0 24 24" class="mgl-5 rotate-arrow"  height="20px" ><path fill="#838689" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
 						</p>
 					</div>
 
@@ -55,7 +55,7 @@
 			<div class="tab-content">
 				<div class="aveage-box">
 					<div class="tal cur-point" @click="showAddLiquidityPanel = false">
-						<svg style="transform:rotate(90deg)" viewBox="0 0 24 24"  width="24px" ><path fill="#94BBFF" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
+						<svg style="transform:rotate(90deg)" viewBox="0 0 24 24"  width="24px" ><path fill="#838689" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
 					</div>
 					<div class="tac" style="flex:3">
 						<span v-if="setting.pancakeVType==1">{{$t("Air-drop_140")}}</span>

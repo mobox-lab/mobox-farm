@@ -241,7 +241,7 @@ export default {
 				orderIndex_,
 			}
 			console.log(obj);
-			let hash = await Wallet.ETH.stakeMbox(obj);
+			let hash = await Wallet.ETH.stakeMbox(obj, this.coinArr[coinKey]);
 			if(hash){
 				this.inputNum = "";
 				this.lockBtnMethod("freezeMboxLock");
@@ -254,7 +254,7 @@ export default {
 <style>
 	.my-table td{
 		padding: 5px 5px;
-		border: 1px solid #1e2b50;
+		border: 1px solid #363636;
 		border-radius: 2px;
 	}
 	.vue-slider-rail{

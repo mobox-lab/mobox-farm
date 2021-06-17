@@ -1,6 +1,8 @@
 import Common from "../utils/Common";
 import {WalletConfig} from "@/config";
 
+const $ = window.$;
+
 const CommonMethod = {
 	data() {
 		return ({
@@ -15,6 +17,17 @@ const CommonMethod = {
 		})
 	},
 	methods: {
+		showDrop(e) {
+			if(e.target.className != "dropdown-group-value por") return;
+			e.stopPropagation();
+			let $nextDom = $(e.target).next();
+			let display = $nextDom.css("display");
+			if (display == "none") {
+				$nextDom.show();
+			} else {
+				$nextDom.hide();
+			}
+		},
 		getTxUrl(tx) {
 			return WalletConfig.ETH.view_tx_url + tx;
 		},

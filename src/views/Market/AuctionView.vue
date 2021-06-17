@@ -4,7 +4,7 @@
 			<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;{{ $t("MOMO_19") }}
 		</span>
 		<div class="tac row mgt-10">
-			<div class="col-md-6">
+			<div class="col-md-6 mgt-10">
 				<div class="panel" v-if="this.getNowPetItem.tokenId != 0">
 					<div id="upgrade-lv" class="vertical-children">
 						<img :src=" require(`../assets/icon/${ category_img[this.getNowPetItem.category] }.png`)" alt="" width="20" height="20" />&nbsp;
@@ -59,7 +59,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-6 tal">
+			<div class="col-md-6 tal mgt-10">
 				<div class="panel vertical-children">
 					<!-- 出售价格 -->
 					<div>

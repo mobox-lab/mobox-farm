@@ -91,7 +91,7 @@ export default {
 }
 .book-item {
 	padding: 15px;
-	background: #1d2b50;
+	background: #1C222C;
 	border-radius: 10px;
 	margin: 10px;
 }

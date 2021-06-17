@@ -1,93 +1,109 @@
 <style src="./style.css"></style>
 <template>
-<div class="tac">
-	<div class="por">
-		<h1 class="vertical-children">
-			<span>{{$t("Gemstone_01")}}</span>
-			<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="../../assets/icon/help.png" alt="" height="30">
-		</h1>
-		<div class="tac mgt-10">
-			<!-- <span v-if="gemApplyEndCountDown <=0 ">{{$t("Gemstone_50")}}</span> -->
-			<template >
-				<p v-if="getCountDown >0">{{$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
-				<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
-			</template>
+<div class="tac center-box">
+	<div class="por clear mgt-20">
+		<section class="col-md-7" style="padding:10px">
+			<div class="adv-panel">
+				<h1 class="vertical-children">
+					<span>{{$t("Gemstone_01")}}</span>
+					<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="../../assets/icon/help.png" alt="" height="30">
+				</h1>
+				<div class="tac mgt-10">
+					<!-- <span v-if="gemApplyEndCountDown <=0 ">{{$t("Gemstone_50")}}</span> -->
+					<template >
+						<p v-if="getCountDown >0">{{$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
+						<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
+					</template>
 
-			<div style="height:280px" id="gem-apply-type">
-				<p v-if="applyInfo.roundIndex != '' ">
-					<img :src="require(`../../assets/icon/gemIcon_${getShowApplyType}.png`)" alt="" height="280px"/>
-				</p>
+					<div style="height:280px" id="gem-apply-type">
+						<p v-if="applyInfo.roundIndex != '' ">
+							<img :src="require(`../../assets/icon/gemIcon_${getShowApplyType}.png`)" alt="" height="280px"/>
+						</p>
+					</div>
+					
+				</div>
 			</div>
-			<table  class="dib" id="apply-info-table" cellpadding="0" cellspacing="0">
+		</section>
+
+		<section class="col-md-5" style="padding:10px">
+			<div class="panel por" style="height:380px;padding:30px">
+				<section style="padding:10px">
+					<div class="aveage-box tal" style="border-bottom:1px solid #5d646c;padding:20px">
+						<div >
+							<p class="small opa-6">{{$t("Gemstone_32")}}</p>
+							<h3>{{applyInfo.nowNormalAmount}}</h3>
+						</div>
+						<div>
+							<p class="small opa-6">{{$t("Gemstone_24")}}</p>
+							<h3>{{ numFloor(applyInfo.maxNormalLuckyAmount / (Number(applyInfo.nowNormalAmount) >= Number(applyInfo.maxNormalLuckyAmount)?applyInfo.nowNormalAmount:applyInfo.maxNormalLuckyAmount) * 100, 1e3 ) || "-" }}%</h3>
+						</div>
+					</div>
+					<div class="aveage-box tal" style="padding:20px">
+						<div >
+							<p class="small opa-6">{{$t("Gemstone_33")}}</p>
+							<h3>{{applyInfo.nowAmount}}/{{applyInfo.maxAmount}}</h3>
+						</div>
+						<div>
+							<p class="small opa-6">{{$t("Gemstone_24")}}</p>
+							<h3>{{ numFloor(applyInfo.maxLuckyAmount / (Number(applyInfo.nowAmount) >= Number(applyInfo.maxLuckyAmount)?applyInfo.nowAmount:applyInfo.maxLuckyAmount) * 100, 1e3 ) || "-" }}%</h3>
+						</div>
+					</div>
+				</section>
+			
+				<div class="mgt-10 aveage-box">
+					<div class="dib por tac">
+						<button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('gem-apply-dialog', 'block')">{{$t("Gemstone_14")}}</button>
+						<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('gem-rule-dialog','block')">{{$t("Gemstone_02")}}>></p>
+					</div>
+					<div class="tac">
+						<button class="btn-primary por" style="width:80%" @click="oprDialog('gem-take-dialog', 'block')">
+							<span class="notice" v-if="gemToTakeNum > 0"></span>
+							{{$t("Gemstone_15")}}
+						</button>
+					</div>
+				</div>
+				<div class="gemBag" @click="oprDialog('gemBag-dialog','block')">
+					<img  src="../../assets/icon/gem_bag_icon.png" alt="">
+					<p class="stroke" :data-text="$t('Gemstone_16')">{{$t("Gemstone_16")}}</p>
+				</div>
+			</div>
+		</section>
+		
+	</div>
+
+
+	<!-- 记录 -->
+	<div class="col-md-12" style="padding:10px">
+		<section class="mgt-10" style="padding:10px 15px;background:#13181F;border-radius:20px">
+			<table class="small  new-table" border="0" frame="void" rules="none" >
 				<tr>
-					<td >
-						<p class="small opa-6">{{$t("Gemstone_32")}}</p>
-						<p>{{applyInfo.nowNormalAmount}}</p>
-					</td>
-					<td >
-						<p class="small opa-6">{{$t("Gemstone_24")}}</p>
-						<p>{{ numFloor(applyInfo.maxNormalLuckyAmount / (Number(applyInfo.nowNormalAmount) >= Number(applyInfo.maxNormalLuckyAmount)?applyInfo.nowNormalAmount:applyInfo.maxNormalLuckyAmount) * 100, 1e3 ) || "-" }}%</p>
-					</td>
+					<th width="30%" class="tal tac-xs">{{ $t("BOX_12") }}</th>
+					<th width="20%" class="tal">{{ $t("BOX_26") }}</th>
+					<th width="10%">{{ $t("Gemstone_29") }}</th>
+					<th width="20%">{{ $t("BOX_27") }}</th>
+					<th width="40%" class="tar">TX</th>
 				</tr>
-				<tr>
-					<td >
-						<p class="small opa-6">{{$t("Gemstone_33")}}</p>
-						<p>{{applyInfo.nowAmount}}/{{applyInfo.maxAmount}}</p>
+				<tr v-for="item in getHistory" :key="item.tx">
+					<td class="tal tac-xs">{{ dateFtt("yyyy-MM-dd hh:mm:ss" , new Date(item.crtime * 1000)) }}</td>
+					<td class="tal">
+						<span v-if="Number(item.ticketStartNo) > 1e6">{{$t("Gemstone_27")}}</span>
+						<span v-else>{{$t("Gemstone_28")}}</span>
 					</td>
-					<td >
-						<p class="small opa-6">{{$t("Gemstone_24")}}</p>
-						<p>{{ numFloor(applyInfo.maxLuckyAmount / (Number(applyInfo.nowAmount) >= Number(applyInfo.maxLuckyAmount)?applyInfo.nowAmount:applyInfo.maxLuckyAmount) * 100, 1e3 ) || "-" }}%</p>
+					<td>x{{ item.amountGem }}</td>
+					<td class="vertical-children">
+						<span v-if="item.isOver==false" style="color:#49c773">{{$t("Gemstone_30")}}</span>
+						<span v-else>{{$t("Gemstone_31")}}</span>
+					</td>
+					<td class="tar">
+						<img  @click="getApplyDetial(item)" src="../../assets/icon/view.png" alt="" class="cur-point" />&nbsp;
+						<a :href="getTxUrl(item.tx)" target="_blank">
+							<img src="../../assets/icon/viewTx.png" alt="" class="cur-point" />
+						</a>
 					</td>
 				</tr>
 			</table>
-		</div>
-		<div class="mgt-10">
-			<div class="dib por">
-				<button class="btn-primary" style="margin:10px" @click="oprDialog('gem-apply-dialog', 'block')">{{$t("Gemstone_14")}}</button>
-				<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('gem-rule-dialog','block')">{{$t("Gemstone_02")}}>></p>
-			</div>
-			<button class="btn-primary por" style="margin:10px" @click="oprDialog('gem-take-dialog', 'block')">
-				<span class="notice" v-if="gemToTakeNum > 0"></span>
-				{{$t("Gemstone_15")}}
-			</button>
-		</div>
-		<div class="gemBag" @click="oprDialog('gemBag-dialog','block')">
-			<img  src="../../assets/icon/gem_bag_icon.png" alt="">
-			<p class="stroke" :data-text="$t('Gemstone_16')">{{$t("Gemstone_16")}}</p>
-		</div>
+		</section>
 	</div>
-	<!-- 记录 -->
-	<table class="mgt-50 small table-his" border="0" frame="void" rules="none" >
-		<tr>
-			<th width="30%" class="tar">
-				<span class="dib tac" style="width: 120px">
-					{{ $t("BOX_12") }}
-				</span>
-			</th>
-			<th width="20%">{{ $t("BOX_26") }}</th>
-			<th width="10%">{{ $t("Gemstone_29") }}</th>
-			<th width="20%">{{ $t("BOX_27") }}</th>
-			<th width="40%" class="tal">TX</th>
-		</tr>
-		<tr v-for="item in getHistory" :key="item.tx">
-			<td class="tar tac-xs">{{ dateFtt("yyyy-MM-dd hh:mm:ss" , new Date(item.crtime * 1000)) }}</td>
-			<td>
-				<span v-if="Number(item.ticketStartNo) > 1e6">{{$t("Gemstone_27")}}</span>
-				<span v-else>{{$t("Gemstone_28")}}</span>
-			</td>
-			<td>x{{ item.amountGem }}</td>
-			<td class="vertical-children">
-				<span v-if="item.isOver==false" style="color:#49c773">{{$t("Gemstone_30")}}</span>
-				<span v-else>{{$t("Gemstone_31")}}</span>
-			</td>
-			<td class="tal">
-				<img  @click="getApplyDetial(item)" src="../../assets/icon/view.png" alt="" class="cur-point" />&nbsp;
-				<a :href="getTxUrl(item.tx)" target="_blank">
-					<img src="../../assets/icon/viewTx.png" alt="" class="cur-point" />
-				</a>
-			</td>
-		</tr>
-	</table>
 	
 	<GemApply :applyInfo="applyInfo" :myApplyInfo="myApplyInfo"/>
 	<Dialog id="gem-take-dialog" :top="100" :width="350">

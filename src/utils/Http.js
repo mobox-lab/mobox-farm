@@ -27,6 +27,10 @@ export default class HTTP {
 		let { data } = await this.get(`/buybackpool/amount`);
 		return data;
 	}
+	static async avglockdays(){
+		let { data } = await this.get(`/vemobox/avglockdays`);
+		return data;
+	}
 	static async getKeyDrop(){
 		let { data } = await this.get(`/key_drop/infos`);
 		return data;

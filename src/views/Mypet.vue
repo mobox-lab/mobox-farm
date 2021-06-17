@@ -3,24 +3,24 @@
 		<Tab :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" :notice="[]" />
 
 		<div class="tal search vertical-children por mgt-20" v-if="tab_pos != 2">
-			<span>{{ $t("MOMO_01") }}: {{ getTotalPetNum }}</span >&nbsp;
+			<span>{{ $t("Market_33") }}({{ getTotalPetNum }})</span >&nbsp;
 			<span class="search-box mgl-20 hide" style="display: none !important" >
 				<input class="ly-input" type="text/" />&nbsp;
 				<img src="../assets/icon/search.png" alt="" />
 			</span>
 
 			<div id="my-pet-fitter">
-				<img src="../assets/icon/powerup.png" class="cur-point mgt-10" alt="" height="40" @click="oprDialog('showPetPowerUp-dialog', 'block')" />&nbsp;
-				<Dropdown
-					:list="select1"
-					:defaultSelectPos="myPetFilter.category"
-					:onChange="onSelectTypeChange"
-				/>&nbsp;
-				<Dropdown
-					:list="select3"
-					:defaultSelectPos="myPetFilter.vType"
-					:onChange="onSelectQualityChange"
-				/>&nbsp;
+				<img src="../assets/icon/powerup.png" class="cur-point " alt="" height="40" @click="oprDialog('showPetPowerUp-dialog', 'block')" />&nbsp;
+			
+				<div class="dropdown-group mgl-5" @click="showDrop" tabindex="3">
+					<div class="dropdown-group-value por">
+						{{$t("Market_63")}} ▼
+					</div>
+					<div class="dropdown-group-list hide">
+						<Dropdown :list="select1" :defaultSelectPos="myPetFilter.category" :onChange="onSelectTypeChange" />&nbsp;
+						<Dropdown :list="select3" :defaultSelectPos="myPetFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
+					</div>
+				</div>
 			</div>
 		</div>
 		<!--我的momo-->
@@ -366,7 +366,7 @@ export default {
 	font-size: 14px;
 }
 .preview-item{
-	background: #1D2B50;
+	background: #13181F;
 	margin-top: 10px;
 	border-radius: 10px;
 	padding: 10px 20px;

@@ -1,14 +1,21 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
-			<span>{{$t("Market_33")}}: {{ marketPetsMy.total }}</span>&nbsp;
+			<span>{{$t("Market_33")}}({{ marketPetsMy.total }})</span>&nbsp;
 			<div id="market-pet-fitter">
-				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por " id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-				<Dropdown :list="$parent.selectCategory" :defaultSelectPos="myMarketSellFilter.category" :onChange="onSelectTypeChange" />&nbsp;
-				<Dropdown :list="$parent.selectVType" :defaultSelectPos="myMarketSellFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
+				<div class="dropdown-group " @click="showDrop" tabindex="3">
+					<div class="dropdown-group-value por">
+						{{$t("Market_63")}} ▼
+					</div>
+					<div class="dropdown-group-list hide">
+						<Dropdown :list="$parent.selectCategory" :defaultSelectPos="myMarketSellFilter.category" :onChange="onSelectTypeChange" />&nbsp;
+						<Dropdown :list="$parent.selectVType" :defaultSelectPos="myMarketSellFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
+					</div>
+				</div>
 			</div>
 		</div>
 		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children">

@@ -41,9 +41,10 @@ export default {
 <style  scoped>
 	.connect-btn{
 		padding: 0px 20px;
-		border-radius: 12px;
+		border-radius: 10px;
 		height: 35px;
-		background: linear-gradient(253deg,#e3672a 0%, #fab531 100%);
+		/* background: linear-gradient(253deg,#e3672a 0%, #fab531 100%); */
+		background: linear-gradient(77deg,#12dae7  0%, #1b4ef5  100%);
 		border: none;
 		color: #fff;
 		cursor: pointer;

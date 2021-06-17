@@ -532,6 +532,18 @@ export default class ETH {
 			});
 		});
 	}
+	//查询对应合约里面对应的币
+	static async balanceOfToTargetFromAddr(targetAddr, fromAddr) {
+		let contract = new this.web3MainNet.eth.Contract([
+			Contract.balanceOf
+		], targetAddr);
+
+		return new Promise(resolve => {
+			contract.methods.balanceOf(fromAddr).call().then(res => {
+				resolve(BigNumber(res));
+			});
+		});
+	}
 	//查询LP对应币价
 	static async getPricePerFullShare(targetAddr) {
 		return new Promise((resolve, reject) => {
@@ -2284,7 +2296,7 @@ export default class ETH {
 	}
 
 	///veMBOX相关
-	static async stakeMbox({poolIndex_, amount_, lockTime_, orderIndex_}){
+	static async stakeMbox({poolIndex_, amount_, lockTime_, orderIndex_}, coinItem){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
 
@@ -2315,6 +2327,9 @@ export default class ETH {
 					await Common.app.setCoinValueByName("MBOX");
 					//更新质押余额
 					await Common.app.getVeMboxStakeInfo();
+					
+					//更新apy相关
+					await Common.app.getApyObj(coinItem);
 				}
 			)
 		});
@@ -2505,6 +2520,30 @@ export default class ETH {
 
 		});
 
+	}
+
+	//获取多个池子的质押的veMbox的倍率
+	static async getPools(poolIndexs_){
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "getPools",
+				"type": "function",
+				"inputs": [
+					{"name": "poolIndexs_","type": "uint256[]"},
+				],
+				"outputs": [
+					{"name": "veMboxTotal","type": "uint256"},
+					{"name": "poolVeMboxSupplys","type": "uint256[]"},
+					{"name": "poolAllocPoints","type": "uint256[]"},
+				],
+			}
+		], WalletConfig.ETH.moMoHelper2);
+
+		return new Promise(resolve => {
+			contract.methods.getPools(poolIndexs_).call().then(data => {
+				resolve(data);
+			})
+		});
 	}
 
 

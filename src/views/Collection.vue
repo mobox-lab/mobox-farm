@@ -211,7 +211,7 @@ export default {
 	height: 40px;
 }
 .collection-num-item {
-	background: #1d2b50;
+	background: #1C222C;
 	border-radius: 100px;
 	padding: 8px 20px;
 	display: inline-block;
@@ -316,7 +316,7 @@ export default {
 	overflow: hidden;
 }
 .airdrop-item {
-	background: #2a3b67;
+	background: #1C222C;
 	border-radius: 20px;
 	padding: 20px;
 	position: relative;
@@ -325,7 +325,7 @@ export default {
 #airdrop-cont {
 	padding: 10px;
 	width: 80%;
-	background: #1d2b50;
+	background: #1C222C;
 	border-radius: 20px;
 	display: inline-block;
 	margin-top: -20px;
@@ -344,7 +344,7 @@ export default {
 #aridorp .menu-btn.active {
 	border-bottom: none;
 	box-shadow: none;
-	background: #1d2b50;
+	background: #1C222C;
 }
 @media (max-width: 768px) {
 	#airdrop-cont {

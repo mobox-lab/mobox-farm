@@ -4,6 +4,7 @@
 			@click="changePage('pre')"
 			src="../assets/icon/arrow.png"
 			:class="getNowPage == 1 ? 'cur-point opa-6' : 'cur-point'"
+			height="35"
 			alt=""
 		/>
 		<span class="mgl-20">{{ $t("Common_01") }}</span>
@@ -23,6 +24,7 @@
 			src="../assets/icon/arrow.png"
 			:class="getNowPage == totalPage ? 'cur-point opa-6' : 'cur-point'"
 			class="flip-x cur-point mgl-20"
+			height="35"
 			alt=""
 		/>
 	</div>

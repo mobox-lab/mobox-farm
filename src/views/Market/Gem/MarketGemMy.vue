@@ -1,18 +1,25 @@
 <template>
 	<div >
 		<div class="tal search vertical-children por mgt-20" >
-			<span>{{$t("Market_33")}}: {{ geTotalNum }}</span>&nbsp;
+			<span>{{$t("Market_33")}}({{ geTotalNum }})</span>&nbsp;
 			<div id="market-pet-fitter">
-				<div class="dib mgt-10" id="shop-car" @click="oprDialog('shop-car-dialog', 'block')" >
+				<div class="dib " id="shop-car" @click="oprDialog('shop-car-dialog', 'block')" >
 					<span id="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span>
-					<img src="@/assets/icon/shopcar.png" alt="" />
+					<img src="@/assets/icon/shopcar.png" alt="" height="40" />
 				</div>
-				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
+				<div class="dib por " id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-				<Dropdown :list="$parent.gemType" :defaultSelectPos="fitter.type" :onChange="pos=>fitter.type=pos" />&nbsp;
-				<Dropdown :list="$parent.gemLv" :defaultSelectPos="fitter.level" :onChange="pos=>fitter.level = pos" />&nbsp;
+				<div class="dropdown-group " @click="showDrop" tabindex="3">
+					<div class="dropdown-group-value por">
+						{{$t("Market_63")}} ▼
+					</div>
+					<div class="dropdown-group-list hide">
+						<Dropdown :list="$parent.gemType" :defaultSelectPos="fitter.type" :onChange="pos=>fitter.type=pos" />&nbsp;
+						<Dropdown :list="$parent.gemLv" :defaultSelectPos="fitter.level" :onChange="pos=>fitter.level = pos" />&nbsp;
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -39,8 +46,8 @@
 				<p class="cur-point vertical-children" style="position: absolute; right: 0px; top: 0px" @click="shopCar = []" >
 					<span class="opa-6"> {{$t("Market_16")}} </span>
 					<svg viewBox="0 0 1024 1024" width="20" height="20">
-						<path fill="#93BBFF" d="M519.68 0C415.232 0 330.24 82.944 326.656 186.88H82.944c-27.136 0-49.152 22.016-49.152 49.152s22.016 49.152 49.152 49.152h54.272v550.912C137.216 939.52 207.36 1024 293.888 1024h441.344c86.528 0 156.672-83.968 156.672-187.904v-550.4h49.152c27.136 0 49.152-22.016 49.152-49.152s-22.016-49.152-49.152-49.152H712.192C709.12 82.944 624.128 0 519.68 0zM418.816 186.88c3.584-53.248 47.104-94.72 100.864-94.72s97.28 41.472 100.352 94.72H418.816zM293.888 931.84c-30.72 0-64.512-39.424-64.512-95.744v-550.4h570.368v550.912c0 56.32-33.792 95.744-64.512 95.744H293.888v-0.512z"></path>
-						<path fill="#93BBFF" d="M359.936 813.568c22.528 0 40.96-22.528 40.96-50.688V473.6c0-28.16-18.432-50.688-40.96-50.688s-40.96 22.528-40.96 50.688v289.28c0 28.16 17.92 50.688 40.96 50.688z m148.48 0c22.528 0 40.96-22.528 40.96-50.688V473.6c0-28.16-18.432-50.688-40.96-50.688s-40.96 22.528-40.96 50.688v289.28c0 28.16 18.432 50.688 40.96 50.688z m156.16 0c22.528 0 40.96-22.528 40.96-50.688V473.6c0-28.16-18.432-50.688-40.96-50.688s-40.96 22.528-40.96 50.688v289.28c0 28.16 17.92 50.688 40.96 50.688z"></path>
+						<path fill="#838689" d="M519.68 0C415.232 0 330.24 82.944 326.656 186.88H82.944c-27.136 0-49.152 22.016-49.152 49.152s22.016 49.152 49.152 49.152h54.272v550.912C137.216 939.52 207.36 1024 293.888 1024h441.344c86.528 0 156.672-83.968 156.672-187.904v-550.4h49.152c27.136 0 49.152-22.016 49.152-49.152s-22.016-49.152-49.152-49.152H712.192C709.12 82.944 624.128 0 519.68 0zM418.816 186.88c3.584-53.248 47.104-94.72 100.864-94.72s97.28 41.472 100.352 94.72H418.816zM293.888 931.84c-30.72 0-64.512-39.424-64.512-95.744v-550.4h570.368v550.912c0 56.32-33.792 95.744-64.512 95.744H293.888v-0.512z"></path>
+						<path fill="#838689" d="M359.936 813.568c22.528 0 40.96-22.528 40.96-50.688V473.6c0-28.16-18.432-50.688-40.96-50.688s-40.96 22.528-40.96 50.688v289.28c0 28.16 17.92 50.688 40.96 50.688z m148.48 0c22.528 0 40.96-22.528 40.96-50.688V473.6c0-28.16-18.432-50.688-40.96-50.688s-40.96 22.528-40.96 50.688v289.28c0 28.16 18.432 50.688 40.96 50.688z m156.16 0c22.528 0 40.96-22.528 40.96-50.688V473.6c0-28.16-18.432-50.688-40.96-50.688s-40.96 22.528-40.96 50.688v289.28c0 28.16 17.92 50.688 40.96 50.688z"></path>
 					</svg>
 				</p>
 			</div>
@@ -69,7 +76,7 @@
 			<div class="vertical-children por mgt-10 tal" style="height: 50px">
 				<div class="dib por">
 					<span id="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span >
-					<img src="@/assets/icon/shopcar.png" alt="" />
+					<img src="@/assets/icon/shopcar.png" alt="" height="40" />
 				</div>
 
 				<div class="dib tal" style="margin-left: 12px">

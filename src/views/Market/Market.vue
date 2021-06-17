@@ -1,43 +1,54 @@
 <template>
 	<div id="market">
-		<section id="market-type">
-			<div class="market-type-list-item vertical-children " :class="{active: marketTypePos == 0}" @click="$store.commit('marketState/setData', {marketTypePos: 0, marketTabPos: 0})">
-				<img src="../../assets/icon/momo_icon.png" alt="" height="30">&nbsp;
-				<span>MOMO</span>
-			</div>
-			<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 1}" @click="$store.commit('marketState/setData', {marketTypePos: 1, marketTabPos: 0})">
-				<img src="../../assets/icon/rent_icon.png" alt="" height="30">&nbsp;
-				<span>{{$t("Hire_01")}}</span>
-			</div>
-			<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 2}" @click="$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0})">
-				<img src="../../assets/icon/yellow_icon.png" alt="" height="30">&nbsp;
-				<span>{{$t("Gemstone_44")}}</span>
-			</div>
-		</section>
-		<div class="mgt-10" v-if="marketTypePos==0">
-			<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempSells.length + tempMarketCancelTx.length]"  />
-			<MarketAll v-show="marketTabPos == 0" />
-			<MarketMy v-show="marketTabPos == 1" />
-			<MarketMySell v-if="marketTabPos == 2" />
-			<MarketStatistics v-if="marketTabPos == 3" />
-		</div>
-		<div v-else-if="marketTypePos==1" class="mgt-10">
-			<Tab :list="rentTabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,marketRentOrderList.total]"  />
-			<RentAll v-show="marketTabPos == 0" />
-			<RentMy v-show="marketTabPos == 1" />
-			<RentMySell ref="rentMySell" v-show="marketTabPos == 2" />
-			<RentStatistics v-if="marketTabPos == 3" />
-		</div>
-		<div v-else class="mgt-10">
-			<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempGemSells.length + tempGemMarketCancelTx.length]"  />
-			<MarketGemAll v-show="marketTabPos == 0" />
-			<MarketGemMy v-show="marketTabPos == 1" />
-			<MarketGemMySell v-if="marketTabPos == 2" />
-			<MarketGemStatistics v-if="marketTabPos == 3" />
-		</div>
+		<div class="center-content">
+			<section id="market-type">
+				<div class="market-type-list-item vertical-children " :class="{active: marketTypePos == 0}" @click="$store.commit('marketState/setData', {marketTypePos: 0, marketTabPos: 0})">
+					<img src="../../assets/icon/momo_icon.png" alt="" height="30">&nbsp;
+					<span>MOMO</span>
+				</div>
+				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 1}" @click="$store.commit('marketState/setData', {marketTypePos: 1, marketTabPos: 0})">
+					<img src="../../assets/icon/rent_icon.png" alt="" height="30">&nbsp;
+					<span>{{$t("Hire_01")}}</span>
+				</div>
+				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 2}" @click="$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0})">
+					<img src="../../assets/icon/yellow_icon.png" alt="" height="30">&nbsp;
+					<span>{{$t("Gemstone_44")}}</span>
+				</div>
+			</section>
 
-		<div class="loading" v-show="marketLoading">
-			<Loading :width="30" :height="30"  />
+			<div class="mgt-20">
+				<div class="mgt-10" v-if="marketTypePos==0">
+					<div class="tal">
+						<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempSells.length + tempMarketCancelTx.length]"  />
+					</div>
+					<MarketAll v-show="marketTabPos == 0" />
+					<MarketMy v-show="marketTabPos == 1" />
+					<MarketMySell v-if="marketTabPos == 2" />
+					<MarketStatistics v-if="marketTabPos == 3" />
+				</div>
+				<div v-else-if="marketTypePos==1" class="mgt-10">
+					<div class="tal">
+						<Tab :list="rentTabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,marketRentOrderList.total]"  />
+					</div>
+					<RentAll v-show="marketTabPos == 0" />
+					<RentMy v-show="marketTabPos == 1" />
+					<RentMySell ref="rentMySell" v-show="marketTabPos == 2" />
+					<RentStatistics v-if="marketTabPos == 3" />
+				</div>
+				<div v-else class="mgt-10">
+					<div class="tal">
+						<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempGemSells.length + tempGemMarketCancelTx.length]"  />
+					</div>
+					<MarketGemAll v-show="marketTabPos == 0" />
+					<MarketGemMy v-show="marketTabPos == 1" />
+					<MarketGemMySell v-if="marketTabPos == 2" />
+					<MarketGemStatistics v-if="marketTabPos == 3" />
+				</div>
+
+				<div class="loading" v-show="marketLoading">
+					<Loading :width="30" :height="30"  />
+				</div>
+			</div>
 		</div>
 		
 		<MomoHistory ref="momoHistory" />
@@ -171,6 +182,10 @@ export default {
 </script>
 
 <style >
+.center-content{
+	max-width: 1400px;
+	margin: 0px auto;
+}
 #market-type{
 	text-align: left;
 	border-bottom: 1px solid #162340 ;
@@ -184,7 +199,7 @@ export default {
 	user-select: none;
 }
 .market-type-list-item.active{
-	border-bottom: 4px solid #93BBFF;
+	border-bottom: 4px solid #1B54F5;
 }
 .loading{
 	position: absolute;

@@ -60,9 +60,7 @@
 		padding: 0px 10px!important;
 	}
 
-	.pet_item .pet-power{
-		top: 0px !important;
-	}
+
 	#buy-back{
 		padding: 0px;
 		width: 100% !important;
@@ -150,14 +148,7 @@
 	h1 {
 		font-size: 1.2em !important;
 	}
-	.mgt-20 {
-		margin-top: 10px !important;
-	}
-	#my-pet-fitter,#market-pet-fitter {
-		margin-top: 10px;
-		position: static !important;
-		text-align: right;
-	}
+	
 	#app {
 		padding-left: 0px !important;
 		padding: 50px 5px !important;
@@ -170,6 +161,7 @@
 		position: relative !important;
 		height: auto !important;
 		border: none !important;
+		background: none !important;
 		line-height: 30px !important;
 	}
 	#top-res p {
@@ -217,7 +209,7 @@
 		text-align: right !important;
 	}
 	.pet_item {
-		width:48% !important;
+		width: 48% !important;
 		zoom: 0.5;
 		margin: 1%!important;
 	}

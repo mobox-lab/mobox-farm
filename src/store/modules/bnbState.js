@@ -5,9 +5,11 @@ const baseCoinAttr = {
 	allKeyApy: "-",
 	myApy: {
 		key: "-",
-		xvs: "0",
+		xvs: "-",
 		cake: "-",
 	},
+	maxKeyApy: "-",
+	maxApyNeedVeMobox: "-",
 	balance: "-",
 	balanceTrue: 0,
 	stake: 0,
@@ -48,6 +50,8 @@ const baseCoinAttr = {
 	},
 	shareTotal: 0,//池子总质押
 	veMoboxSupply: 0,//池子总质押veMbox
+	veMboxTotal: 0,//所有池子的veMBOX
+	addAllocPoint: 0, //增加的挖矿比例
 }
 
 const state = () => ({
@@ -107,6 +111,8 @@ const state = () => ({
 		onlyShowPledge:false,
 		pledgeType: "v2",//质押版本
 		veMboxLogs: [],//veMbox想操作日志
+		avglockdays: 0,//平均质押时长
+		totalStakeMbox: 0,//共质押的MBOX
 	},
 })
 

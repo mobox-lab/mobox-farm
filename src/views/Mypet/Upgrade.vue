@@ -5,7 +5,7 @@
 			{{ $t("MOMO_19") }}
 		</span>
 		<div class="tac row mgt-10">
-			<div class="col-md-6">
+			<div class="col-md-6 mgt-10">
 				<div class="panel">
 					<div id="upgrade-lv" class="vertical-children">
 						<img :src=" require(`../assets/icon/${ category_img[this.getNowPetItem.category] }.png`)" alt="" width="20" height="20" />&nbsp;
@@ -38,7 +38,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6 tal">
+			<div class="col-md-6 tal mgt-10">
 				<div class="panel vertical-children">
 					<!-- momo升级 -->
 					<div v-if="getNowPetItem.tokenId != 1 && getNowPetItem.location=='stake'">
@@ -81,7 +81,7 @@
 								<div>
 									<div class="mgt-10">
 										<!-- <button v-if="allowance_1155_to_721 == 0" @click="approved1155To721" class="btn-advanced vertical-children" style="width: 180px; margin: 5px" >授权</button> -->
-										<button @click="upgrade" :class="lockUpgradeTime > 0?'disable-btn':''" class="btn-advanced vertical-children por" style="min-width: 160px; margin: 5px" >
+										<button @click="upgrade" :class="lockUpgradeTime > 0?'disable-btn':''" class="btn-primary vertical-children por" style="min-width: 160px; margin: 5px" >
 											<img v-if="lockUpgradeTime > 0" src="../assets/icon/loading.png" class="rotate" height="20" alt="" style="position:absolute;left:10px" />
 											<svg  viewBox="0 0 1024 1024" width="15" height="15" style=" transform: rotate(270deg); margin-top: -2px; " >
 												<path fill="#ffffff" d="M583.586909 555.473455a62.091636 62.091636 0 0 0 0-86.94691L151.970909 30.138182a60.113455 60.113455 0 0 0-85.783273 0 62.045091 62.045091 0 0 0 0 86.946909L454.981818 512 66.210909 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.043636 60.043636 0 0 0 85.783273 0l431.592727-438.388363zM440.459636 117.061818L829.160727 512 440.413091 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.090182 60.090182 0 0 0 85.806545 0l431.569455-438.388363a62.091636 62.091636 0 0 0 0-86.94691L526.196364 30.138182a60.136727 60.136727 0 0 0-85.806546 0 62.045091 62.045091 0 0 0 0.023273 86.923636z"></path>
@@ -138,7 +138,7 @@
 					<Tab :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" v-if="hackReload" :notice="[]" />
 					<div class="dib sort-btn" @click="bookSortTurn = !bookSortTurn" :class="tab_pos == 0?'opa-6 gray':''">
 						<svg viewBox="0 0 1024 1024" version="1.1" width="20" height="20">
-							<path d="M600.436364 60.509091v907.636364c0 27.927273 18.618182 46.545455 46.545454 46.545454s46.545455-18.618182 46.545455-46.545454V158.254545l116.363636 93.09091c18.618182 18.618182 51.2 13.963636 65.163636-4.654546 18.618182-18.618182 13.963636-51.2-4.654545-65.163636L679.563636 23.272727c-32.581818-27.927273-79.127273-4.654545-79.127272 37.236364zM377.018182 9.309091c-27.927273 0-46.545455 18.618182-46.545455 46.545454v809.89091l-116.363636-93.09091c-18.618182-18.618182-51.2-13.963636-65.163636 4.654546-18.618182 18.618182-13.963636 51.2 4.654545 65.163636l190.836364 158.254546c32.581818 23.272727 74.472727 4.654545 74.472727-37.236364V55.854545c4.654545-23.272727-18.618182-46.545455-41.890909-46.545454z" fill="#94BBFF">
+							<path d="M600.436364 60.509091v907.636364c0 27.927273 18.618182 46.545455 46.545454 46.545454s46.545455-18.618182 46.545455-46.545454V158.254545l116.363636 93.09091c18.618182 18.618182 51.2 13.963636 65.163636-4.654546 18.618182-18.618182 13.963636-51.2-4.654545-65.163636L679.563636 23.272727c-32.581818-27.927273-79.127273-4.654545-79.127272 37.236364zM377.018182 9.309091c-27.927273 0-46.545455 18.618182-46.545455 46.545454v809.89091l-116.363636-93.09091c-18.618182-18.618182-51.2-13.963636-65.163636 4.654546-18.618182 18.618182-13.963636 51.2 4.654545 65.163636l190.836364 158.254546c32.581818 23.272727 74.472727 4.654545 74.472727-37.236364V55.854545c4.654545-23.272727-18.618182-46.545455-41.890909-46.545454z" fill="#838689">
 							</path>
 						</svg>
 					</div>

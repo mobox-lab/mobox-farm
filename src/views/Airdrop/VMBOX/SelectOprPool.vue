@@ -95,20 +95,20 @@ export default {
 
 <style scoped>
 	.select-coin-item.disable{
-		background: #262833;
+		background: #202020;
 	}
 	.select-coin-item{
-		height: 50px;
+		height: 45px;
 		cursor: pointer;
 		padding: 10px;
-		background: #1d2b50;
+		background: #3f3f3f;
 		margin: 10px 0px;
 		border-radius: 10px;
 	}
 	.select-coin-item.disable:hover{
-		background: #262833;
+		background: #202020;
 	}
 	.select-coin-item:hover{
-		background: #1c2641;
+		background: #3a3a3a;
 	}
 </style>

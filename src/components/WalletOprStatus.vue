@@ -22,7 +22,7 @@
 			<h2>{{$t("Common_16")}}</h2>
 			<div class="tac mgt-50" >
 				<a   :href="'https://bscscan.com/tx/'+walletStatus.hash" target="_blank">
-					<svg xmlns="http://www.w3.org/2000/svg" width="97" height="97" viewBox="0 0 24 24" fill="none" stroke="#94BBFF" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 8 8 12"></polyline><line x1="12" y1="16" x2="12" y2="8"></line></svg>
+					<svg xmlns="http://www.w3.org/2000/svg" width="97" height="97" viewBox="0 0 24 24" fill="none" stroke="#838689" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 8 8 12"></polyline><line x1="12" y1="16" x2="12" y2="8"></line></svg>
 					<p class="mgt-20 ">{{$t("Common_17")}}</p>
 				</a>
 			</div>

@@ -85,6 +85,7 @@ export default {
 	border-radius: 40px;
 	cursor: pointer;
 	color: rgba(255,255,255,0.5);
+	white-space:nowrap;
 }
 .yf-tab li.active {
 	background: #42464C;

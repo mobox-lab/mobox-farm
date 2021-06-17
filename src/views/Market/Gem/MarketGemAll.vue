@@ -1,16 +1,23 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
-			<span class="vertical-children mgt-10 dib">{{$t("Market_33")}}: {{ marketGems.total }} </span>
+			<span class="vertical-children  dib">{{$t("Market_33")}}({{ marketGems.total }}) </span>
 			
 			<div id="market-pet-fitter">
-				<div class="dib por mgt-10" id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
+				<div class="dib por" id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-				<Dropdown :list="$parent.gemType" :defaultSelectPos="marketGemSearch.type" :onChange="onSelectTypeChange" />&nbsp;
-				<Dropdown :list="$parent.gemLv" :defaultSelectPos="marketGemSearch.level" :onChange="onSelectLevelChange" />&nbsp;
-				<Dropdown :list="sortArr" :defaultSelectPos="marketGemSearch.sort" :onChange="onSortChange" />&nbsp;
+				<div class="dropdown-group " @click="showDrop" tabindex="3">
+					<div class="dropdown-group-value por">
+						{{$t("Market_63")}} ▼
+					</div>
+					<div class="dropdown-group-list hide">
+						<Dropdown :list="$parent.gemType" :defaultSelectPos="marketGemSearch.type" :onChange="onSelectTypeChange" />&nbsp;
+						<Dropdown :list="$parent.gemLv" :defaultSelectPos="marketGemSearch.level" :onChange="onSelectLevelChange" />&nbsp;
+						<Dropdown :list="sortArr" :defaultSelectPos="marketGemSearch.sort" :onChange="onSortChange" />&nbsp;
+					</div>
+				</div>
 			</div>
 		</div>
 		<div :class="marketGems.list.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">

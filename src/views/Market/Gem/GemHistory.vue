@@ -10,7 +10,7 @@
 				<div class="tar" >{{$t("Market_17")}}</div>
 			</div>
 			<div style="por mgt-10 tal"  >
-				<div class="aveage-box mgt-10 por tal" v-for="(item, index) in marketGemHistory.list" :key="item.tx+index" style="background:#1D2B50;border-radius:15px;padding:10px 8px ;">
+				<div class="aveage-box mgt-10 por tal" v-for="(item, index) in marketGemHistory.list" :key="item.tx+index" style="background:#13181F;border-radius:15px;padding:10px 8px ;">
 					<div class="shop-history-pet" style="flex:2;top:-18px">
 						<span v-for="(item2, index) in item.ids" :key="item2+index" style="margin:0px 2px;zoom:0.9" class="por">
 							<template v-if="item2 > 0">

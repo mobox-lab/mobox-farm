@@ -68,7 +68,7 @@
 		</div>
 
 		<!-- 升级记录 -->
-		<div v-if="levelUpInfo.length > 0 "  class="mgt-20">
+		<div v-if="levelUpInfo.length > 0 "  class="mgt-20 ly-input-content">
 			<h3 class="por">{{$t("MOMO_34")}}
 				<span class="refrash" @click="getLevelupInfo">
 					<Loading :width="20" :height="20" :isRotate="loading.upgrade" />
@@ -117,14 +117,14 @@
 						<div class="col-md-4 col-xs-4 tac">{{$t("Market_26")}}</div>
 						<div class="col-md-4 col-xs-4 tar">{{$t("Market_17")}}</div>
 					</div>
-					<div class="row tal cur-point por" style="background:#2E3F6B;border-radius:6px;padding:5px;">
+					<div class="row tal cur-point por" style="background:#1C222C;border-radius:6px;padding:5px;">
 						<table class="pj-table">
 							<tr style="color:#fff">
 								<td>{{shorAddress(item.bidder)}}</td>
 								<td class="tac">{{shorAddress(item.auctor)}}</td>
 								<td class="tar">
 									{{numFloor(item.bidPrice / 1e9, 100)}} BUSD
-									<p style="color:#6481b0;zoom:0.8;" >{{dateFtt('yyyy-MM-dd hh:mm:ss', new Date(item.crtime * 1000))}}</p></td>
+									<p style="color:#fff;zoom:0.8;" class="opa-6">{{dateFtt('yyyy-MM-dd hh:mm:ss', new Date(item.crtime * 1000))}}</p></td>
 							</tr>
 						</table>
 					</div>
@@ -499,13 +499,13 @@ export default {
 	user-select: none;
 }
 .pet-des {
-	background: #10172a;
-	border-radius: 10px;
+	/* background: #10172a; */
 	padding: 15px;
 	width: 100%;
 	min-height: 100px;
 	display: inline-block;
 	margin-bottom: 10px;
+	border-bottom: 1px solid #363D46;
 }
 .pet-des-item{
 	background: #10172A;

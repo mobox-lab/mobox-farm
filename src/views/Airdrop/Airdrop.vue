@@ -1,6 +1,7 @@
 <template>
 	<div id="aridorp" class="tac">
-		<section class="mgt-20">
+		<div class="mgt-10"></div>
+		<section  v-if="needMigrate">
 			<div class="tac mgt-10"  id="airdorp-top-menu">
 				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v2'})"  :class="pledgeType == 'v2'?'active':''"  class="tab-menu"   >{{$t("Air-drop_135")}}</div>
 				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v1'});"  :class="pledgeType == 'v1'?'active':''" class="tab-menu por" >
@@ -14,7 +15,6 @@
 		<section id="airdrop-info" class="por ">
 			<img src="@/assets/icon/bnb_icon.png" alt="" height="68" id="airdrop-bnb-icon">
 			<div class="panel" >
-				
 				
 				<div class="aveage-box tal" id="airdrop-cont-info">
 					<div class="dib" id="total-stake" style="padding:0px 10px">

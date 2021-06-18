@@ -183,7 +183,7 @@ export default {
 
 <style >
 .center-content{
-	max-width: 1400px;
+	max-width: 1500px;
 	margin: 0px auto;
 }
 #market-type{

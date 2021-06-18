@@ -23,8 +23,9 @@ export default class HTTP {
 			EventBus.$emit(EventConfig.HttpError);
 		}
 	}
-	static async buybackpool(){
-		let { data } = await this.get(`/buybackpool/amount`);
+	static async buybackpool(type = 0){
+		if(type == 0) type = "";
+		let { data } = await this.get(`/buybackpool/amount?type=${type}`);
 		return data;
 	}
 	static async avglockdays(){

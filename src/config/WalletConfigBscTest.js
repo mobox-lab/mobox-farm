@@ -17,6 +17,13 @@ export default class WalletConfig {
 		momoGemOpr: "0xA302be104CA7A7c8F84cc6A21086D06497B85510", //宝石穿戴操作合约
 		momoRent: "0xF585bC2Df509c73d2A1F0868FCB64D198A2A2011", //momo出租
 		momoVeMbox: "0x589e57E1140435990Bcc9B568BC6cE7415E82fb1", //veMbox合约
+		momoMoreMinter: "0x7dD89d832aa4C7BF8F093E066Fd79364540FdcA2", //多重挖矿合约
+		balanceAddr: {
+			"0X2072FE4E74C6ECCFE3F86071E255E0D5568C58B9": {
+				name: "BANANA",
+				decimals: 1e18,
+			}
+		},
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

@@ -1149,6 +1149,7 @@ export default class ETH {
 				()=>{
 					console.log("getReward success!!!!!");
 					EventBus.$emit(EventConfig.getMboxSuccess);
+					Common.app.getPoolsEarns();
 				}
 			)
 		});
@@ -2544,6 +2545,63 @@ export default class ETH {
 				resolve(data);
 			})
 		});
+	}
+
+	//获取用户可以领取的信息(包括已经结束的, 但是未领取的)
+	static async getPoolsEarns(){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "earns",
+				"type": "function",
+				"inputs": [
+					{"name": "user_","type": "address"},
+				],
+				"outputs": [
+					{"name": "tokens","type": "address[]"},
+					{"name": "versions","type": "uint256[]"},
+					{"name": "amounts","type": "uint256[]"},
+				],
+			}
+		], WalletConfig.ETH.momoMoreMinter);
+
+		return new Promise(resolve => {
+			contract.methods.earns(myAddr).call().then(data => {
+				resolve(data);
+			})
+		});
+	}
+
+	//参与挖矿
+	static async joinStake(){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "updateReward",
+				"type": "function",
+				"inputs": [
+
+				],
+				"outputs": [
+				],
+			}
+		], WalletConfig.ETH.moMoStake);
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.updateReward(), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					console.log("joinStake success!!!!!");
+					Common.app.unLockBtn("joinStakeLock");
+					await Common.app.getPoolsEarns();
+				}
+			)
+		});
+
 	}
 
 

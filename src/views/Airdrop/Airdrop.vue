@@ -420,7 +420,9 @@
 			<table class=" table-his tac small mgt-20" style="width:100%" border="0" frame="void" rules="none">
 				<tr>
 					<th style="width:25%;">{{ $t("BOX_12") }}</th>
-					<th>{{ $t("Air-drop_49") }}</th>
+					<th style="width:25%;" class="no-dropdown-bg">
+						<Dropdown :list="burnTypeList" :defaultSelectPos="buyBackType" :onChange="onBurnTypeChange" />
+					</th>
 					<th>{{ $t("Air-drop_51") }}</th>
 					<th>{{ $t("Air-drop_50") }}</th>
 					<th>TX</th>
@@ -555,11 +557,11 @@ import KeyOpr from "./KeyOpr";
 import Withdraw from './Withdraw';
 import Deposit from './Deposit';
 import VMbox from "./VMBOX/VMbox";
-import { Dialog, Loading, StatuButton } from '@/components';
+import { Dialog, Loading, StatuButton, Dropdown } from '@/components';
 
 export default {
 	mixins: [CommonMethod],
-	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, StatuButton, VMbox},
+	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, StatuButton, VMbox, Dropdown},
 	data(){
 		return({
 			hasAgreeNotice: false,
@@ -582,6 +584,7 @@ export default {
 				{min: 0.4, max:0.75, mul: 7},
 				{min: 0.75, max:1, mul: 8},
 			],
+			burnTypeList: [this.$t('Air-drop_49'), this.$t('Air-drop_132'), this.$t('Air-drop_133')]
 		});
 	},
 	computed: {
@@ -597,6 +600,7 @@ export default {
 			avglockdays: (state) => state.bnbState.data.avglockdays,
 			totalStakeMbox: (state) => state.bnbState.data.totalStakeMbox,
 			nowTs: (state) => state.globalState.data.nowTs,
+			buyBackType: (state) => state.globalState.data.buyBackType,
 		}),
 		//获取总质押USDT
 		getTotalSupplyUSDT() {
@@ -677,6 +681,13 @@ export default {
 		}
 	},
 	methods: {
+		onBurnTypeChange(pos){
+			if(pos == this.buyBackType) return;
+			this.$store.commit("globalState/setData", {buyBackType: pos});
+			this.$nextTick(()=>{
+				Common.app.getBuyBack();
+			})
+		},
 		getNextVeMboxMul(coinObj){
 			let coinKey = coinObj.coinKey;
 			let baseMul = PancakeConfig.StakeLP[coinKey].allocPoint;
@@ -895,6 +906,7 @@ export default {
 	}
 	#airdrop-info{
 		padding-left: 0px;
+		margin-top:30px
 	}
 	#airdrop-info .panel{
 		padding-left: 0px;

@@ -1,109 +1,105 @@
 <template>
 	<div id="aridorp" class="tac">
-		<section>
-			<div class="menu-btn active">
-				<img src="../assets/icon/bnb.png" alt="" height="50" />
+		<section id="airdrop-pool-view" class="panel clear mgt-20">
+			<div class="col-xs-12  col-md-4 tal mgt-10" style="padding:10px">
+				<h3>{{$t('Air-drop_207')}}</h3>
+				<div class="aveage-box mgt-20" id="mobox-pool" >
+					<div>
+						<div class="dib coin-adv" style="border-color:#1b54f5">
+							<img src="@/assets/coin/MBOX.png" alt="">
+						</div>
+						<div class="dib mgl-10">
+							<h3>MBOX</h3>
+							<p class="opa-6">Mobox.io</p>
+						</div>
+					</div>
+					<div class="tar">
+						<h3>{{totalAirdropMbox}} MBOX</h3>
+						<p class="opa-6">{{ $t("Mine_01") }}</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-md-8 tal mgt-10" style="padding:10px">
+				<h3>{{$t('Air-drop_208')}}</h3>
+				<div class="mgt-20">
+					<div style="padding-top:10px" >
+						<div class="dib coin-adv small" style="border-color:#FFD54F">
+							<img src="@/assets/coin/BANANA.png" alt="">
+						</div>
+						<div class="dib mgl-10">
+							<h3>1551 BANANA</h3>
+							<p class="opa-6">ApeSwap</p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</section>
 		
 		<!-- 算力展示 -->
 		<section id="airdrop-cont" class="">
-			<div class="por" >
-				<p class="opa-6 small">{{ $t("Mine_01") }}</p>
-				<h3 class="gradientText">{{totalAirdropMbox}} MBOX</h3>
-			</div>
-			<div class="row mgt-20 "  id="collection-view">
+			<div class="row "  id="collection-view">
 				<div class="mining-pet" v-for="item in myNFT_stake.slice(0, 20)" :key="item.prototype.toString() + item.tokenId + item.num" >
 					<JumpPet :prototype="item.prototype" />
 				</div>
 			</div>
 		</section>
 
-		<section class="mgt-20">
-			<div class="collection-num-item">
-				<p class="small opa-6">{{ $t("Mine_02") }}</p>
-				<h2 class="mgt-10">{{ eth_totalHashrate }}</h2>
-			</div>
-
-			<div class="collection-num-item">
-				<p class="small opa-6">{{ $t("Mine_03") }}</p>
-				<h2 class="mgt-10">
-					{{ eth_myHashrate}} <span v-if="eth_getAddHashrate > 0" class="small" style="color: #75fd49" >({{ eth_getAddHashrate }})</span>
-				</h2>
-				<img src="../assets/icon/powerup.png" id="powerup-btn" alt="" @click="oprDialog('showPetPowerUp-dialog', 'block')" />
-			</div>
-		</section>
-
-		<section  class="dib tac" style="margin:10px;" >
-			<span class="small opa-6 tac">100 {{ $t("Mine_14") }}≈{{ eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 100, 100 ) }} MBOX/DAY</span><br/>
-			<button class="btn-primary por" :class="(eth_earnedMbox > 0 && lockBtn.getMboxLock <= 0)? '':'disable-btn' " style="min-width: 200px;margin-top:3px" @click="takeEarnedMbox('eth')" >
-				<Loading class="btn-loading" v-if="lockBtn.getMboxLock > 0" />
-				{{$t("Mine_04")}} {{ eth_earnedMbox }} MBOX
-			</button>
-		</section>
-
-		<!-- 兑换成chest -->
-		<!-- <button @click=" inputBox = getMaxInputBox; oprDialog('buyBox-dialog', 'block'); " class="btn-primary hide" style="margin:10px;min-width: 200px" >
-			{{ $t("Mine_07") }}
-		</button> -->
-
-	<!-- <Dialog id="buyBox-dialog" :top="200" :width="400">
-		<h3>{{ $t("Mine_07") }}</h3>
-		<div class="mgt-20">
-			<div class="ly-input-content">
-				<p class="small tal opa-6">{{ $t("Mine_08") }}:</p>
-				<div class="por mgt-5">
-					<div class="ly-input-pre-icon">
-						<img  src="../assets/icon/box.png" alt="" />
+		<section class="panel clear mgt-10" id="airdrop-opr">
+			<div class="col-xs-12 col-md-4">
+				<div class="clear tal">
+					<div class="col-md-12 mgt-10">
+						<p class="small opa-6">{{ $t("Mine_02") }}</p>
+						<input type="text" readonly class="ly-input bold mgt-10" :value="eth_totalHashrate" style="color:#86a5ff;font-size:16px;background: rgba(27,84,245,0.10);border: 1px solid #1b54f5;border-radius:10px">
 					</div>
-	
-					<input
-						class="ly-input dib"
-						type="text"
-						style="
-							background: #0f172a;
-							text-align: center;
-							width: 70%;
-							padding-left: 50px;
-						"
-						v-int
-						:data-max="getMaxInputBox"
-						v-model="inputBox"
-					/>
-
-					<div class="dib" style="width: 30%">
-						<button
-							class="btn-primary btn-small"
-							style="width: 80%"
-							@click="inputBox = getMaxInputBox"
-						>
-							Max
-						</button>
+					<div class="col-md-12 mgt-10">
+						<p class="small opa-6">{{ $t("Mine_03") }}</p>
+						<div class="por dib mgt-10" style="width:100%">
+							<input type="text" readonly class="ly-input" :value="eth_myHashrate" style="color:#a1fa40;font-size:16px;background: rgba(161,250,64,0.10);border: 1px solid #a1fa40;border-radius:10px">
+							<img src="../assets/icon/powerup.png" id="powerup-btn" alt="" @click="oprDialog('showPetPowerUp-dialog', 'block')"  />
+						</div>
 					</div>
 				</div>
 			</div>
-
-			<p class="por mgt-10 tal small">
-				<span class="opa-6">
-					{{ $t("Mine_09") }}: {{ eth_earnedMbox }} MBOX
-				</span>
-			</p>
-
-			<p class="small opa-6 tal mgt-20" v-html="$t('Mine_10')"></p>
-			<p class="mgt-50">
-				{{ $t("Mine_11") }}: {{ inputBox * 5 }} MBOX
-			</p>
-			<button
-				:class="`btn-primary mgt-10 ${
-					!canBuyBox ? 'disable-btn' : ''
-				}`"
-				style="width: 70%; margin-bottom: 20px"
-				@click="buyBox('eth')"
-			>
-				{{ $t("Air-drop_15").replace("#0#",inputBox) }}
-			</button>
-		</div>
-	</Dialog> -->
+			<div class="col-xs-12 col-md-8 tal" >
+				<p class="small opa-6 mgt-10">{{$t("Air-drop_210")}}</p>
+				<div class="row clear">
+					<div class=" col-md-4 mgt-10 tal" style="padding:0px">
+						<div  class="dib speed-show">
+							<p class="small opa-6"><span class="tac">100 {{ $t("Mine_14") }}≈{{ eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 100, 100 ) }} MBOX/DAY</span></p>
+							<p class="vertical-children mgt-10 bold">
+								<img src="@/assets/coin/MBOX.png" alt="" height="20">
+								<span class="mgl-5 " v-if="Number(eth_earnedMbox) >= 0">{{ eth_earnedMbox }}</span>
+								<Loading class="mgl-5 " v-else  />
+								<span class="mgl-5">MBOX</span>
+							</p>
+						</div>
+					</div>
+					<div class=" col-md-4 mgt-10" style="padding:0px">
+						<div  class="dib speed-show">
+							<p class="small opa-6"><span class="tac">100 {{ $t("Mine_14") }}≈{{ numFloor(Number(eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 100, 100 )) * 1551 / 200000, 1e4) }} BANANA/DAY</span></p>
+							<p class="vertical-children mgt-10">
+								<img src="@/assets/coin/BANANA.png" alt="" height="20">
+								<span class="mgl-5 bold vertical-children">
+									<span v-if="balancePool['BANANA'].amount != '-' ">{{numFloor(balancePool['BANANA'].amount, 1e4)}}</span>
+									<span v-else class="vertical-children">
+										<span v-if="balancePool['ts'] == 0"><Loading  /></span>
+										<span v-else>-</span>
+									</span>
+									<span class="mgl-5">BANANA</span>
+								</span>
+								<StatuButton v-if="balancePool['BANANA'].version == '-' && balancePool['ts'] != 0 " class="btn-small mgl-10" :isDisable="Number(eth_myHashrate) < 0" :isLoading="lockBtn.joinStakeLock > 0" :onClick="joinStake">{{$t('Air-drop_209')}}</StatuButton>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="mgt-20">
+					<button id="take-btn" class="btn-primary por" :class="(eth_earnedMbox > 0 && lockBtn.getMboxLock <= 0)? '':'disable-btn' " style="min-width: 200px;margin-top:3px" @click="takeEarnedMbox('eth')" >
+						<Loading class="btn-loading" v-if="lockBtn.getMboxLock > 0" />
+						{{$t("Mine_04")}}
+					</button>
+				</div>
+			</div>
+		</section>
 
 	</div>
 
@@ -112,11 +108,11 @@
 import { mapState } from "vuex";
 import { Common, Wallet } from "@/utils";
 import { CommonMethod } from "@/mixin";
-import {  JumpPet, Loading } from "@/components";
+import { JumpPet, Loading, StatuButton } from '@/components';
 
 const $ = window.$;
 export default {
-	components: { JumpPet,  Loading},
+	components: { JumpPet,  Loading, StatuButton},
 	mixins: [CommonMethod],
 	data() {
 		return { inputBox: 1 };
@@ -131,6 +127,7 @@ export default {
 			canOpenBox: (state) => state.ethState.data.canOpenBox,
 			totalAirdropMbox: (state) => state.ethState.data.totalAirdropMbox,
 			lockBtn: (state) => state.globalState.data.lockBtn,
+			balancePool: (state) => state.bnbState.data.balancePool,
 		}),
 		canBuyBox() {
 			return (
@@ -150,7 +147,17 @@ export default {
 			return this.numFloor(myHashrate - (myHashrate / (1 + addP) - staticAddHashrate),1);
 		},
 	},
+	async created(){
+		await Wallet.ETH.getAccount();
+		await Common.app.getPoolsEarns();
+	},
 	methods: {
+		async joinStake(){
+			let hash = await Wallet.ETH.joinStake();
+			if(hash){
+				this.lockBtnMethod("joinStakeLock")
+			}
+		},
 		async buyBox(chain) {
 			if (chain == "eth") {
 				if (!this.canBuyBox) return;
@@ -203,12 +210,29 @@ export default {
 </script>
 
 <style scoped>
+.speed-show{
+	background:#2A2F35;border-radius:10px;padding:10px;width:90%
+}
+#airdrop-opr{
+	padding: 10px;
+}
+#airdrop-opr .col-xs-12{
+	padding: 10px;
+}
+#mobox-pool{
+	border-right: 1px solid #5d646c;
+	padding-right: 20px;
+}
+#airdrop-pool-view{
+	padding: 20px;
+	padding-top: 10px;
+}
 #powerup-btn {
 	cursor: pointer;
 	position: absolute;
-	right: -10px;
-	top: -8px;
-	height: 40px;
+	right: 5px;
+	top: 5px;
+	height: 30px;
 }
 .collection-num-item {
 	background: #1C222C;
@@ -323,12 +347,15 @@ export default {
 	margin: 20px 10px;
 }
 #airdrop-cont {
-	padding: 10px;
-	width: 80%;
+	width: 100%;
 	background: #1C222C;
 	border-radius: 20px;
 	display: inline-block;
-	margin-top: -20px;
+	margin-top: 10px;
+}
+#aridorp{
+	max-width: 1300px;
+	margin:0px auto;
 }
 #aridorp .menu-btn {
 	user-select: none;
@@ -347,13 +374,29 @@ export default {
 	background: #1C222C;
 }
 @media (max-width: 768px) {
+	#take-btn{
+		width: 100% !important;
+	}
+	.speed-show{
+		width: 100% !important;
+	}
 	#airdrop-cont {
 		width: 100%;
-		padding: 10px !important;
-		border-radius: 10px !important;
+		border-radius: 20px !important;
+		padding: 0px !important;
 	}
 	#collection-view{
-		margin-top:100px;
+		margin-top:0px;
+		border-radius: 20px !important;
+	}
+	#mobox-pool{
+		border-right: none;
+	}
+	#airdrop-pool-view{
+		padding: 0px;
+	}
+	.ly-input{
+		width: 100% !important;
 	}
 }
 @media (max-width: 1200px) {

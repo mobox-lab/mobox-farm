@@ -87,6 +87,14 @@ const state = () => ({
 			"KEY-BNB-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "KEY-BNB"},
 			"ts": 0,
 		},
+
+		balancePool: {
+			"BANANA": {
+				version: "-",
+				amount: "-",
+			},
+			"ts": 0,
+		},
 		
 		setting: {
 			slippage: 0.5,

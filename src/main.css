@@ -1300,7 +1300,27 @@ svg {
 	right: 15px;
 }
 
-
+.coin-adv{
+	border: 2px solid;
+	border-radius: 20px;
+	padding: 16px;
+	line-height: 0;
+}
+.coin-adv img{
+	width: 32px;
+	height: 32px;
+}
+.coin-adv.small{
+	padding: 10px;
+	border-radius: 10px;
+}
+.coin-adv.small img{
+	width: 26px;
+	height: 26px;
+}
+.no-dropdown-bg .dropdown-value{
+	background: none;
+}
 
 
 

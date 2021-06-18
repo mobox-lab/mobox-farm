@@ -32,9 +32,9 @@
 						<Dropdown :list="$parent.selectCategory" :defaultSelectPos="marketSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
 						<Dropdown :list="$parent.selectVType" :defaultSelectPos="marketSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
 						<Dropdown :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
-						<Dropdown :list="$parent.getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="$parent.onCoinChange" />&nbsp;
 					</div>
 				</div>
+				<Dropdown id="busd" class="mgl-5" style="margin-top:0px" :list="$parent.getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="$parent.onCoinChange" />
 			</div>
 
 			<p class="vertical-children  dib mgt-10">{{$t("Market_33")}}({{ marketPets.total }}) </p>
@@ -323,10 +323,17 @@ export default {
 		top: 0px;
 	}
 	@media (max-width: 768px) {
+		#busd{
+			margin-top: 10px !important;
+			margin-left: 0px !important;
+			position: absolute;
+			right: 0px;
+			top: 40px;
+		}
 
 		#market-pet-fitter{
 			zoom: 0.8;
-			text-align: left;
+			text-align: right;
 			position: static !important;
 		}
 	}

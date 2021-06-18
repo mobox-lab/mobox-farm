@@ -21,6 +21,8 @@ const InitEth = {
 			setting: (state) => state.bnbState.data.setting,
 			pledgeType: (state) => state.bnbState.data.pledgeType,
 			buyBack: (state) => state.bnbState.data.buyBack,
+			balancePool: (state) => state.bnbState.data.balancePool,
+			buyBackType: (state) => state.globalState.data.buyBackType,
 		}),
 	},
 	async created() {
@@ -177,6 +179,7 @@ const InitEth = {
 
 			await this.eth_setBox();
 			await this.eth_setMbox();
+			await this.getPoolsEarns();
 
 			//宝石相关
 			await this.getGemBag();
@@ -195,6 +198,22 @@ const InitEth = {
 
 			//获取总打开箱子数
 			await this.setTotalOpenBox();
+		},
+		async getPoolsEarns(){
+			let res = await Wallet.ETH.getPoolsEarns();
+			console.log("getPoolsEarns",res);
+			if(res){
+				let {tokens, versions, amounts} = res;
+				tokens.map((item, pos)=>{
+					if(WalletConfig.ETH.balanceAddr[item.toUpperCase()]){
+						let {name, decimals} = WalletConfig.ETH.balanceAddr[item.toUpperCase()];
+						this.balancePool[name].version = versions[pos];
+						this.balancePool[name].amount = amounts[pos] / decimals;
+					}
+				});
+				this.balancePool["ts"] = Date.now();
+				this.$store.commit("bnbState/setData", {balancePool: this.balancePool});
+			}
 		},
 		//查询总质押的MBOX
 		async getTotalStakeMbox(){
@@ -300,7 +319,7 @@ const InitEth = {
 		},
 
 		async getBuyBack(){
-			let res = await Http.buybackpool();
+			let res = await Http.buybackpool(this.buyBackType);
 			if(res){
 				this.buyBack.amount = Common.numFloor(res.amount, 1e2);
 				this.buyBack.avgPrice = Common.numFloor(res.avgPrice, 1e4);

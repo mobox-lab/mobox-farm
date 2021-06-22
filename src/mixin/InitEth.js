@@ -201,7 +201,6 @@ const InitEth = {
 		},
 		async getPoolsEarns(){
 			let res = await Wallet.ETH.getPoolsEarns();
-			console.log("getPoolsEarns",res);
 			if(res){
 				let {tokens, versions, amounts} = res;
 				tokens.map((item, pos)=>{
@@ -398,6 +397,7 @@ const InitEth = {
 				if(wantAmount * 1e18 >= Number(shareTotal) && this.getTotalVeMbox > 0){
 					maxApyNeedVeMobox = 0;
 				}
+				if(Number(maxApyNeedVeMobox) < 0) maxApyNeedVeMobox = 0;
 
 				this.coinArr[item.coinKey].maxApyNeedVeMobox = maxApyNeedVeMobox;
 				this.coinArr["ts"] = new Date().valueOf();
@@ -762,7 +762,7 @@ const InitEth = {
 		async setRentInfo(nftArr){
 			let tokenIds = [];
 			nftArr.map(item=>{
-				if(item.tokenId != 1){
+				if(item.tokenId != 0){
 					tokenIds.push(item.tokenId);
 				}
 			});

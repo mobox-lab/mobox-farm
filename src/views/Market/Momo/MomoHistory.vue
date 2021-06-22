@@ -75,7 +75,7 @@ export default {
 									level: 1,
 									num: amounts[index],
 									chain: "bnb",
-									tokenId: 1,
+									tokenId: 0,
 									hashrate: obj.quality,
 									lvHashrate: obj.quality,
 									vType: parseInt(prototype / 1e4),

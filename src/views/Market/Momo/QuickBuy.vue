@@ -1,5 +1,5 @@
 <template>
-	<Dialog id="market-quick-buy-dialog" :top="100" width="550">
+	<Dialog id="market-quick-buy-dialog" :top="100" width="550" >
 		<h2>{{$t("Market_50")}}</h2>
 		<div class="tar mgt-10" style="zoom:0.8">
 			<Dropdown :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
@@ -178,7 +178,7 @@ export default {
 							level: 1,
 							num: amounts[index],
 							chain: "bnb",
-							tokenId: 1,
+							tokenId: 0,
 							hashrate: obj.quality,
 							lvHashrate: obj.quality,
 							quality: obj.quality,
@@ -267,3 +267,9 @@ export default {
 
 }
 </script>
+
+<style>
+#market-quick-buy-dialog .yf-dialog{
+	background: #000 !important;
+}
+</style>

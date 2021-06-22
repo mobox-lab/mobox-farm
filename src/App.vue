@@ -35,7 +35,7 @@
 			</div>
 		</div>
 		<div id="nav" class="por" @click="navOpr('hide')">
-			<div class="mgt-10 tac">
+			<div class="mgt-20 tac">
 				<WalletConnectBtn />
 			</div>
 			<ul id="nav-list" style="maring-top: 50px">
@@ -50,7 +50,7 @@
 				<router-link to="/gemBuy">
 					<li :class="this.$route.path == '/gemBuy' ? 'active' : ''">
 						<span class="per-icon vertical-children">
-							<img src="./assets/icon/yellow_icon.png" alt="" width="25" />
+							<img src="./assets/icon/gem_menu_icon.png" alt="" width="25" />
 						</span>
 						<span>{{$t("Gemstone_01")}}</span>
 					</li>
@@ -99,6 +99,12 @@
 					</li>
 				</router-link>
 			</ul>
+			<div class="tac mgt-30">
+				<span @click="jumpToTokenMaster">
+					<img v-if="$i18n.locale == 'zh-CN' " src="@/assets/icon/tmaster_zh.png" alt="" width="35%" class="cur-point">
+					<img v-else src="@/assets/icon/tmaster_en.png" alt="" width="35%" class="cur-point">
+				</span>
+			</div>
 			<div id="our-parice-pc">
 				<div class="vertical-children point-block">
 					<img src="./assets/coin/KEY.png" height="25" alt=""/>
@@ -153,7 +159,7 @@
 				<router-link to="/gemBuy">
 					<li :class="this.$route.path == '/gemBuy' ? 'active' : ''">
 						<span class="per-icon vertical-children">
-							<img src="./assets/icon/yellow_icon.png" alt="" width="60" />
+							<img src="./assets/icon/gem_menu_icon.png" alt="" width="60" />
 						</span>
 						<span>{{$t("Gemstone_01")}}</span>
 					</li>
@@ -196,6 +202,12 @@
 			</ul>
 		</div>
 		<div  id="nav-mobile-more" v-if="showMoreMenu">
+			<div>
+				<span @click="jumpToTokenMaster">
+					<img v-if="$i18n.locale == 'zh-CN' " src="@/assets/icon/tmaster_zh.png" alt="" width="70%" class="cur-point">
+					<img v-else src="@/assets/icon/tmaster_en.png" alt="" width="70%" class="cur-point">
+				</span>
+			</div>
 			<router-link to="/market">
 				<div :class="this.$route.path == '/market' ? 'active' : ''">
 					<p class="per-icon vertical-children">
@@ -424,7 +436,7 @@ export default {
 				{ num: 25, p: 0.48 },
 				{ num: 30, p: 0.51 },
 				],
-				},
+			},
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
@@ -597,6 +609,14 @@ export default {
 		clearInterval(timer);
 	},
 	methods: {
+		jumpToTokenMaster(){
+			let url = "https://www.mobox.io/#/iframe/tokenmaster";
+			if(window.SHOW_APP_BAR){
+				let token = Common.getUrlParms("lang");
+				url = `https://www.mobox.io/tokenmaster/?lang=${this.$i18n.locale}&token=${token}`
+			}
+			window.open(url);
+		},
 		goToFAQ(){
 			let lang = this.$i18n.locale;
 			if(lang == "zh-CN" ||lang == "zh"){
@@ -939,6 +959,7 @@ export default {
 	margin-top: 10px;
 	color: rgb(124, 124, 124);
 	font-weight: bold;
+	opacity: 0.7;
 }
 #nav-list li:hover {
 	background: #161a1f;

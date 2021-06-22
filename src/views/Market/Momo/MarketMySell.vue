@@ -26,7 +26,7 @@
 						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
 					</div>
 					<div class="vertical-children mgt-10" v-if="item.index < 0" style="font-size: 18px;">
-						<img  src="@/assets/icon/loading.png" class="rotate" height="20" alt=""  /> &nbsp;
+						<Loading />&nbsp;
 						<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
 						<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
 					</div>
@@ -37,7 +37,7 @@
 						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
 					</div>
 					<div class="vertical-children mgt-10" v-if="item.index < 0" style="font-size: 18px;">
-						<img  src="@/assets/icon/loading.png" class="rotate" height="20" alt=""  /> &nbsp;
+						<Loading />&nbsp;
 						<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
 						<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
 					</div>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import {Page, PetItem, PetItemScroll, Dropdown} from "@/components";
+import { Page, PetItem, PetItemScroll, Dropdown, Loading } from '@/components';
 import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
 import { BaseConfig } from "@/config";
@@ -61,8 +61,7 @@ import { mapState } from "vuex";
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	// components: {  Page, Dropdown},
-	components: {   PetItem, PetItemScroll, Dropdown, Page},
+	components: {   PetItem, PetItemScroll, Dropdown, Page, Loading},
 	data(){
 		return({
 			onePageCount: 15,

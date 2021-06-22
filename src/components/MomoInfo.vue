@@ -433,7 +433,7 @@ export default {
 			}
 		},
 		async getMomoTradeHistory(){
-			if(this.getNowPetItem.tokenId == 1 || this.getNowPetItem.tokenId == 0 || this.loading.trade) return;
+			if(this.getNowPetItem.tokenId == 0 || this.loading.trade) return;
 			this.loading.trade = true;
 			let data = await Http.getMomoAuctionHistory(this.getNowPetItem.tokenId);
 			this.loading.trade = false;
@@ -443,7 +443,7 @@ export default {
 		},
 		//获取当前升级
 		async getLevelupInfo() {
-			if(this.getNowPetItem.tokenId == 1  ||  this.getNowPetItem.tokenId == 0 || this.loading.trade) return;
+			if(this.getNowPetItem.tokenId == 0 || this.loading.trade) return;
 			this.loading.upgrade = true;
 			let data = await Http.getLevelupInfo(this.getNowPetItem.tokenId);
 			this.loading.upgrade = false;
@@ -456,7 +456,7 @@ export default {
 		async getStory(){
 			let { tokenId, speciality, specialty } = this.getNowPetItem;
 			if(speciality == undefined) speciality = specialty;
-			if(tokenId != 1 && (speciality == 3 || speciality == 2)){
+			if(tokenId != 0&& (speciality == 3 || speciality == 2)){
 				if(this.loading.story) return;
 				this.loading.story = true;
 				let story = await Http.getStory(tokenId);
@@ -515,12 +515,12 @@ export default {
 	border-radius: 5px;
 }
 textarea::-webkit-input-placeholder {
-	color: #5C76A2;
+	color: #5c5c5c;
       font-size: 0.14rem;
 }
 #input-des{
-	background: #10172A;
-	color: #5C76A2;
+	background: #010102;
+	color: #9c9c9c;
 	border: none;
 	border-radius: 5px;
 	padding: 5px;

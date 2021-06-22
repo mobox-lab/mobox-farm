@@ -55,7 +55,7 @@ export default {
 				"v" + vType + "_tokenId"
 			];
 			selectArr.map((item, index) => {
-				let targetToken = 1;
+				let targetToken = 0;
 				if (selectTokenIds) {
 					targetToken = selectTokenIds[index];
 				}
@@ -111,7 +111,7 @@ export default {
 }
 .rent{
 	position: absolute;
-	left: 10px;
+	right: 0px;
 	top: 0px;
 }
 .opa-4{

@@ -41,7 +41,7 @@ export default {
 	},
 	async created(){
 		let tokenId = this.petData.tokenId;
-		if(tokenId != 1){
+		if(tokenId != 0){
 			if(!Object.prototype.hasOwnProperty.call(this.momoGemsObjs, tokenId)){
 				let res = await Wallet.ETH.getInlayInfo(tokenId);
 				this.momoGemsObjs[tokenId] = [...res];

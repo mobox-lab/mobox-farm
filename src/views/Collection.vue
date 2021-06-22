@@ -1,6 +1,6 @@
 <template>
 	<div id="aridorp" class="tac">
-		<section id="airdrop-pool-view" class="panel clear mgt-20">
+		<section id="airdrop-pool-view" class="panel clear mgt-10">
 			<div class="col-xs-12  col-md-4 tal mgt-10" style="padding:10px">
 				<h3>{{$t('Air-drop_207')}}</h3>
 				<div class="aveage-box mgt-20" id="mobox-pool" >
@@ -28,7 +28,9 @@
 						</div>
 						<div class="dib mgl-10">
 							<h3>1551 BANANA</h3>
-							<p class="opa-6">ApeSwap</p>
+							<p class="opa-6">
+								<a href="https://apeswap.finance/" target="_blank" style="text-decoration:underline">ApeSwap</a>
+							</p>
 						</div>
 					</div>
 				</div>

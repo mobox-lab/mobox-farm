@@ -58,7 +58,7 @@ export default {
 				let obj = BaseConfig.NftCfg[prototype];
 				obj.num = amounts[index];
 				obj.vType = parseInt(prototype / 1e4);
-				obj.tokenId = 1;
+				obj.tokenId = 0;
 				obj.level = 1;
 				obj.chain = "bnb";
 				obj.hashrate = obj.quality;

@@ -110,7 +110,7 @@
 							</div>
 							<div  v-if="isMyPet" class="mgt-20">
 								<button class="btn-primary vertical-children por" :class="lockBtn.changePriceLock > 0?'disable-btn':''"   @click="setChangePriceData(true)">
-									<img v-if="lockBtn.changePriceLock > 0" src="../assets/icon/loading.png" class="rotate" height="10" alt="" style="position:absolute;left:8px;top:10px" />
+									<Loading class="btn-loading" v-if="lockBtn.changePriceLock > 0" />
 									{{$t("Market_20")}}
 								</button>&nbsp;&nbsp;
 								<button class="btn-primary vertical-children mgl-5" style="background: #384a7a !important" @click="cancelAuction">
@@ -244,7 +244,7 @@ export default {
 				let obj = BaseConfig.NftCfg[prototype];
 				obj.num = amounts[index];
 				obj.vType = parseInt(prototype / 1e4);
-				obj.tokenId = 1;
+				obj.tokenId = 0;
 				obj.level = 1;
 				obj.chain = "bnb";
 				obj.hashrate = obj.quality;

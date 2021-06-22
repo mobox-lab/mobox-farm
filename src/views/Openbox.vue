@@ -1,6 +1,6 @@
 <template>
 	<div id="openbox" class="tac center-box">
-		<div class="clear mgt-20">
+		<div class="clear mgt-10">
 			<section class="col-md-7" style="padding:10px">
 				<div class="adv-panel">
 					<p class="opa-6 mgt-20">{{ $t("BOX_01") }}</p>
@@ -136,7 +136,7 @@
 						<td>x{{ item.amount }}</td>
 						<td class="vertical-children">
 							<span v-if="item.state != 1 && item.state != -1">
-								<img src="../assets/icon/loading.png" class="rotate" height="20" alt="" />&nbsp; {{ $t("Common_08") }}...
+								<Loading />
 							</span>
 							<span v-if="item.state == 1">{{ $t("Common_09") }}</span>
 							<span v-if="item.state == -1">
@@ -222,7 +222,7 @@
 <script>
 import { mapState } from "vuex";
 import { Wallet, Common, EventBus } from "@/utils";
-import { Dialog, PetItemSmall, PetItem, StatuButton } from "@/components";
+import { Dialog, PetItemSmall, PetItem, StatuButton, Loading } from '@/components';
 import CommonMethod from "@/mixin/CommonMethod";
 import { BaseConfig, WalletConfig, EventConfig } from "@/config";
 import lottie from "lottie-web";
@@ -230,7 +230,7 @@ import lottie from "lottie-web";
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { Dialog, PetItemSmall, PetItem, StatuButton },
+	components: { Dialog, PetItemSmall, PetItem, StatuButton, Loading },
 	data() {
 		return {
 			showHistoryArr: [],
@@ -246,16 +246,16 @@ export default {
 			showOpenBoxCard: [],
 
 			petDataArr:[
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '50080',quality: 5,specialty: 0,tokenId: 1,vType: 5, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 4,specialty: 0,tokenId: 1,vType: 4, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId: 1,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '50080',quality: 5,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 4,specialty: 0,tokenId:0,vType: 4, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
 				],
 
 			posArr:[
@@ -349,7 +349,7 @@ export default {
 								lvHashrate: quality,
 								vType: parseInt(item / 1e4),
 								num,
-								tokenId: 1,
+								tokenId: 0,
 								tokenName,
 								chain: "bnb",
 								isOpenCard: true,
@@ -404,7 +404,7 @@ export default {
 					lvHashrate: quality,
 					vType: parseInt(item / 1e4),
 					num: Number(amounts[key]),
-					tokenId: 1,
+					tokenId: 0,
 				});
 			});
 
@@ -509,7 +509,7 @@ export default {
 					lvHashrate: quality,
 					vType: parseInt(item / 1e4),
 					num: Number(amounts[key]),
-					tokenId: 1,
+					tokenId: 0,
 				});
 			});
 			showHistoryArr.sort((a, b) => {

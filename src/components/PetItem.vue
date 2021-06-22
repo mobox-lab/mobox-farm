@@ -70,7 +70,6 @@ export default {
 	},
 
 	async mounted() {
-
 		if(this.data.item.vType >= 4 && this.data.item.isOpenCard){
 			lottie.loadAnimation({
 				container: this.$refs.lightShadow, // the dom element that will contain the animation

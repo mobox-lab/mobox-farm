@@ -897,7 +897,7 @@ export default class ETH {
 				prototype: item,
 				vType: parseInt(item / 1e4),
 				num: Number(_amounts[key]),
-				tokenId: 1,
+				tokenId: 0,
 				level: 1,
 				category,
 				tokenName: tokenName,

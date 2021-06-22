@@ -46,10 +46,6 @@
 								</div>
 							</div>
 							<div  v-if="isMyPet" class="mgt-20">
-								<!-- <button class="btn-primary vertical-children por" :class="lockBtn.changePriceLock > 0?'disable-btn':''"   @click="setChangePriceData(true)">
-									<img v-if="lockBtn.changePriceLock > 0" src="../assets/icon/loading.png" class="rotate" height="10" alt="" style="position:absolute;left:8px;top:10px" />
-									{{$t("Market_20")}}
-								</button> -->
 								<StatuButton :onClick="setChangePriceData.bind(this, true)" :isLoading="lockBtn.changePriceLock > 0">{{$t("Market_20")}}</StatuButton>&nbsp;&nbsp;
 								<button class="btn-primary vertical-children mgl-5" style="background: #384a7a !important" @click="cancelAuction">
 									{{$t("Market_21")}}

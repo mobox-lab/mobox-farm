@@ -12,6 +12,7 @@ const CommonMethod = {
 				3: "fish",
 				4: "monster",
 				5: "people",
+				6: "people",
 			},
 			hackReload: "page_"+new Date().valueOf()
 		})

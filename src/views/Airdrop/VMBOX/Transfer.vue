@@ -38,9 +38,7 @@
 				</div>
 			</div>
 			<div class="mgt-10 tac">
-				<button class="icon-btn">
-					<svg viewBox="0 0 24 24"  width="24px" ><path fill="#838689" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
-				</button>
+				<svg viewBox="0 0 24 24"  width="24px" ><path fill="#838689" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
 			</div>
 			<!-- To -->
 			<div class="tab-panel mgt-10">
@@ -144,7 +142,7 @@ export default {
 			}
 		},
 		openSelectPool(type){
-			this.$parent.$parent.$refs.selectOprPool.setOprData([this.from.coinName, this.to.coinName], this.oprOrderIndex,this.onSelectPool.bind(this, type)).show();
+			this.$parent.$parent.$refs.selectOprPool.setOprData([this.from.coinKey, this.to.coinKey], this.oprOrderIndex,this.onSelectPool.bind(this, type)).show();
 		},
 		onSelectPool(type, coinKey){
 			console.log({type, coinKey});

@@ -175,7 +175,6 @@ export default {
 			let coinObj = this.coinArr[this.oprData.coinKey];
 			if(coinObj){
 				let {shareTotal, veMoboxSupply, wantAmount} = coinObj;
-				console.log({coinObj});
 				let y = (this.sliderValue - 1)/2 *(wantAmount * 1e18 / shareTotal);
 				needObj.veMbox = this.numFloor((y*veMoboxSupply/(1-y) - this.getTotalVeMbox*1e18)/1e18, 1e4);
 				if(veMoboxSupply == 0 || veMoboxSupply <= this.getTotalVeMbox * 1e18 || wantAmount * 1e18 >= Number(shareTotal)) {

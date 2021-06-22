@@ -1,6 +1,6 @@
 <template>
 	<div id="mypet">
-		<Tab :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" :notice="[]" />
+		<Tab class="mgt-10" :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" :notice="[]" />
 
 		<div class="tal search vertical-children por mgt-20" v-if="tab_pos != 2">
 			<span>{{ $t("Market_33") }}({{ getTotalPetNum }})</span >&nbsp;

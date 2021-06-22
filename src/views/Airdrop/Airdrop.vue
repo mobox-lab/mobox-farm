@@ -308,7 +308,7 @@
 										<span class="opa-6">{{ $t("Air-drop_05") }}</span>
 										<span class="suffix">
 											<button class="btn-success btn-small por"  :class="lockBtn.getKeyLock > 0 ||  item.earnedKey == 0?'disable-btn':''" @click="$refs.keyopr.setCheckCoin(item.coinKey).show()">
-												<img v-if="lockBtn.getKeyLock > 0" src="../../assets/icon/loading.png" class="rotate" height="10" alt="" style="position:absolute;left:8px;top:10px" />
+												<Loading class="btn-loading" v-if="lockBtn.getKeyLock > 0" />
 												{{ item.earnedKey }} KEY
 											</button>
 										</span>
@@ -421,7 +421,7 @@
 				<tr>
 					<th style="width:25%;">{{ $t("BOX_12") }}</th>
 					<th style="width:25%;" class="no-dropdown-bg">
-						<Dropdown :list="burnTypeList" :defaultSelectPos="buyBackType" :onChange="onBurnTypeChange" />
+						<Dropdown class="small" style="margin-top:0px" :list="burnTypeList" :defaultSelectPos="buyBackType" :onChange="onBurnTypeChange" />
 					</th>
 					<th>{{ $t("Air-drop_51") }}</th>
 					<th>{{ $t("Air-drop_50") }}</th>
@@ -859,8 +859,8 @@ export default {
 	width: 80%;
 	max-width: 1300px;
 	border-radius: 20px;
-	display: inline-block;
 	padding-left: 34px;
+	margin: 0px auto;
 }
 
 #aridorp .menu-btn {

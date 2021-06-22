@@ -1,7 +1,7 @@
 <template>
 	<div class="rank tac">
 		<!-- <h3>{{ $t("Rank_01") }} {{ getLeftTime(countdown) }}</h3> -->
-		<div class="mgt-20">
+		<div class="mgt-10">
 			<Tab :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" :notice="[]"/>
 		</div>
 		<!-- <section v-if="tab_pos == 0">

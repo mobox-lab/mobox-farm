@@ -44,28 +44,9 @@ const InitEth = {
 				this.$store.commit("ethState/setData", {openBoxTemp});
 			}
 		});
-		//设置名字成功
-		EventBus.$on(EventConfig.SetNameConfirm,this.eth_setNameConfirm.bind(this));
-		EventBus.$on(EventConfig.ApprovedConfirm,this.eth_approvedConfirm.bind(this));
 		EventBus.$on(EventConfig.LevelUpConfirm,this.eth_levelUpConfirm.bind(this));
-		EventBus.$on(EventConfig.StakeNftConfirm,this.eth_stakeNftConfirm.bind(this));
-		EventBus.$on(EventConfig.CreateAuctionConfirm,this.eth_createAuctionConfirm.bind(this));
 		EventBus.$on(EventConfig.OpenBoxHistory,this.eth_openBoxHistory.bind(this));
-	
-		//拍卖成功
-		EventBus.$on(EventConfig.BidPetSuccess,  async ({coinKey}) => {
-			await this.setCoinValueByName(coinKey);
-			await this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
-			this.$store.commit("globalState/unLockBtn", "buyMomoLock");
-		});
-		//取消上架成功
-		EventBus.$on(EventConfig.CancelAuctionSuccess,  async () => {
-			await this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
-		});
-		//修改拍卖价格成功
-		EventBus.$on(EventConfig.ChangePriceSuccess,  async () => {
-			this.$store.commit("globalState/unLockBtn", "changePriceLock");
-		});
+		
 		//取消下架失败
 		EventBus.$on(EventConfig.CancelAuctionError,  async ({hash}) => {
 			//删除临时下架信息
@@ -104,12 +85,6 @@ const InitEth = {
 
 		//兑换成功
 		EventBus.$on(EventConfig.SwapSuccess, this.setBalance);
-		EventBus.$on(EventConfig.getMboxSuccess, async ()=>{
-			await this.eth_setMbox();
-			await this.eth_setEarnedMbox();
-			this.$store.commit("globalState/unLockBtn", "getMboxLock");
-			await this.setBalance();
-		});
 
 		Wallet.ETH.init();
 	},
@@ -178,7 +153,6 @@ const InitEth = {
 			await this.getCoinValue();
 
 			await this.eth_setBox();
-			await this.eth_setMbox();
 			await this.getPoolsEarns();
 
 			//宝石相关
@@ -566,12 +540,6 @@ const InitEth = {
 				totalHashrate
 			});
 		},
-		async eth_createAuctionConfirm({chain}) {
-			if (chain == "eth") {
-				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
-				//TODO: 更新市场交易列表
-			}
-		},
 		//721升级
 		async eth_levelUpConfirm({chain,tokenId,gotoLv}) {
 			console.log("levelUpConfirm", {
@@ -593,16 +561,7 @@ const InitEth = {
 				this.$store.commit("ethState/setUpgradeLocks", {tokenId, time: 0});
 			}
 		},
-		//授权合约确认
-		async eth_approvedConfirm({chain}) {
-			console.log("approvedConfirm", chain);
-			if (chain == "eth") {
-				// this.eth_set1155IsApprovedFor721();
-				await this.eth_set1155IsApprovedForStake();
-				await this.eth_set721IsApprovedForStake();
-				this.$store.commit("globalState/unLockBtn", "approveLock");
-			}
-		},
+		
 		//设置名字合约确认
 		async eth_setNameConfirm({chain,tokenId,name}) {
 			if (chain == "eth") {
@@ -638,16 +597,6 @@ const InitEth = {
 
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 				await this.eth_setMyHashrate();
-			}
-		},
-		//质押NFT确认
-		async eth_stakeNftConfirm({chain}) {
-			if (chain == "eth") {
-				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
-				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
-				await this.eth_setMyHashrate();
-				this.$store.commit("globalState/unLockBtn", "stekeLock");
-				this.$store.commit("globalState/unLockBtn", "unStekeLock");
 			}
 		},
 		//持久化修改的721
@@ -701,18 +650,6 @@ const InitEth = {
 					balance
 				});
 			}
-		},
-	
-		//获取ETH上mBOX数量
-		async eth_setMbox() {
-			return;
-			// let myMbox = await Wallet.ETH.getErc20BalanceByTokenAddr(WalletConfig.ETH.mboxToken, false);
-			// console.log("eth_setMbox", Common.numFloor((Number(myMbox) / 1e18), 10000));
-			// if (myMbox != null) {
-			// 	this.$store.commit("ethState/setData", {
-			// 		mbox: Common.numFloor((Number(myMbox) / 1e18), 10000)
-			// 	});
-			// }
 		},
 		//获取ETH上KEY数量(之前叫box后面改成key)
 		async eth_setBox() {

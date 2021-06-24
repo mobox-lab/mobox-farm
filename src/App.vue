@@ -202,7 +202,7 @@
 			</ul>
 		</div>
 		<div  id="nav-mobile-more" v-if="showMoreMenu">
-			<div>
+			<div v-if="!isMoboxWallet">
 				<span @click="jumpToTokenMaster">
 					<img v-if="$i18n.locale == 'zh-CN' " src="@/assets/icon/tmaster_zh.png" alt="" width="70%" class="cur-point">
 					<img v-else src="@/assets/icon/tmaster_en.png" alt="" width="70%" class="cur-point">
@@ -464,6 +464,9 @@ export default {
 			historyNotice: (state) => state.marketState.data.historyNotice,
 			coinArr: (state) => state.bnbState.data.coinArr,
 		}),
+		isMoboxWallet(){
+			return window.SHOW_APP_BAR != undefined;
+		},
 		canOpenBoxTrue() {
 			let canOpenBox = this.canOpenBox;
 			if ( this.orderBlockHash == "0x0000000000000000000000000000000000000000000000000000000000000001" ) {
@@ -612,8 +615,9 @@ export default {
 		jumpToTokenMaster(){
 			let url = "https://www.mobox.io/#/iframe/tokenmaster";
 			if(window.SHOW_APP_BAR){
-				let token = Common.getUrlParms("lang");
-				url = `https://www.mobox.io/tokenmaster/?lang=${this.$i18n.locale}&token=${token}`
+				let token = Common.getUrlParms("token");
+				let timer = Date.now();
+				url = `https://www.mobox.io/tokenmaster/?lang=${this.$i18n.locale}&token=${token}&t=${timer}`
 			}
 			window.open(url);
 		},
@@ -677,7 +681,12 @@ export default {
 			let pos = this.getTotalPercent[this.powerTab];
 			if (pos == -1) pos = 0;
 			let dom = document.getElementById("need-scoller-table");
-			dom.childNodes[pos].scrollIntoView();
+			dom.parentNode.scrollTop = 0;
+			if(pos != 0){
+				setTimeout(()=>{
+						dom.childNodes[pos].scrollIntoView();
+				}, 100);
+			}
 		},
 		listenPostMsg(msg) {
 			if (msg.data["from"] == "mbox") {

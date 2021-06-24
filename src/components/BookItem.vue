@@ -1,11 +1,15 @@
 <template>
 	<div class="book-item dib row por" :class="{'bg-6':data[0].vType == 6}">
+		<span v-if="data[0].vType == 6" class="pet-power c-lv5 vertical-children">
+			<img src="../assets/icon/airdrop.png" alt="" height="15">&nbsp;
+			<span>180</span>
+		</span>
 		<div v-for="item in data" class="dib por tac cur-point" :class="`${ data.length > 1 ? 'col-md-3 col-xs-3' : 'col-md-12' }`" :key="item.prototype" @click="buyMomo(item)">
 			<img
 				:src="require(`../assets/pet/${item.prototype}.png`)"
 				alt=""
 				width="100%"
-				:class="item.num >= 1 ? '' : 'opa-3'"
+				:class="item.num >= 1 ? '' : 'opa-4'"
 			/>
 			<span class="pet-num" v-if="item.num >= 1">x{{ item.num }}</span>
 			<span class="quick-buy opa-6" v-if="item.num <= 0 && item.vType<=4">
@@ -73,6 +77,11 @@ export default {
 </script>
 
 <style scoped>
+.pet-power{
+	position: absolute;
+	top: 2px;
+	right: 5px;
+}
 .quick-buy{
 	position: absolute;
 	transform: translateX(-50%); 
@@ -87,6 +96,9 @@ export default {
 }
 .opa-3 {
 	opacity: 0.3;
+}
+.opa-4 {
+	opacity: 0.4;
 }
 .book-item.bg-1 {
 	background: #1d2b50 !important;

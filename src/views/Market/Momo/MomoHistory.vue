@@ -20,7 +20,7 @@
 					<div class="opa-6 small addr">{{shorAddress(item.auctor)}}</div>
 					<div class="tar small" :class="item.isBuy?'color-buy':'color-sell'">
 						{{item.isBuy?"-":"+"}}{{numFloor((item.bidPrice / 1e9) * (item.isBuy?1:0.95), 10000)}} BUSD
-						<p style="color:#6481b0;zoom:0.8;" >{{dateFtt('yyyy-MM-dd hh:mm:ss', new Date(item.crtime * 1000))}}</p>
+						<p style="color:#8f8f8f;zoom:0.8;" >{{dateFtt('yyyy-MM-dd hh:mm:ss', new Date(item.crtime * 1000))}}</p>
 					</div>
 				</div>
 			</div>

@@ -767,7 +767,8 @@ export default class ETH {
 				this.moMoMTokenContract.methods.setApprovalForAll(tokenAddr, true), {from: myAddr},
 				hash=>resolve(hash),
 				()=>{
-					EventBus.$emit(EventConfig.ApprovedConfirm, {chain: "eth"});
+					Common.app.eth_set1155IsApprovedForStake();
+					Common.app.unLockBtn("approveLock")
 				}
 			)
 		});
@@ -793,7 +794,8 @@ export default class ETH {
 				this.moMoTokenContract.methods.setApprovalForAll(tokenAddr, true), {from: myAddr},
 				hash=>resolve(hash),
 				()=>{
-					EventBus.$emit(EventConfig.ApprovedConfirm, {chain: "eth"});
+					Common.app.eth_set721IsApprovedForStake();
+					Common.app.unLockBtn("approveLock");
 				}
 			);
 		});
@@ -987,7 +989,7 @@ export default class ETH {
 				this.momoStakeContract.methods.setMomoName(tokenId, this.web3.utils.utf8ToHex(name)), {from: myAddr,value: isFirst ? 0 : 0.05e18},
 				hash=>resolve(hash),
 				()=>{
-					EventBus.$emit(EventConfig.SetNameConfirm, {chain: "eth",tokenId,name});
+					Common.app.eth_setNameConfirm({chain: "eth",tokenId,name})
 				}
 			)
 		});
@@ -1029,13 +1031,6 @@ export default class ETH {
 			//将字符串转换为Number
 			protosV1V2V3.map((item, index) => protosV1V2V3[index] = Number(item));
 			tokensV4V5.map((item, index) => tokensV4V5[index] = Number(item));
-			console.log({
-				gotoLv,
-				tokenId,
-				protosV1V2V3,
-				amountsV1V2V3,
-				tokensV4V5
-			});
 
 			this.sendMethod(
 				this.moMoTokenContract.methods.levelUp(tokenId, protosV1V2V3, amountsV1V2V3, tokensV4V5), {from: myAddr},
@@ -1078,9 +1073,12 @@ export default class ETH {
 				hash => {
 					resolve(hash);
 				},
-				()=>{
+				async ()=>{
 					console.log("stake success!!!!!");
-					EventBus.$emit(EventConfig.StakeNftConfirm, {chain: "eth"});
+					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
+					await Common.app.eth_setMyHashrate();
+					Common.app.unLockBtn("stekeLock");
 				}
 			);
 		});
@@ -1097,9 +1095,12 @@ export default class ETH {
 				hash => {
 					resolve(hash);
 				},
-				()=>{
+				async ()=>{
 					console.log("unStakeNft success!!!!!");
-					EventBus.$emit(EventConfig.StakeNftConfirm, {chain: "eth"});
+					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
+					await Common.app.eth_setMyHashrate();
+					Common.app.unLockBtn("unStekeLock");
 				}
 			);
 		});
@@ -1146,10 +1147,12 @@ export default class ETH {
 			this.sendMethod(
 				this.momoStakeContract.methods.getReward(), {from: myAddr},
 				hash=>resolve(hash),
-				()=>{
+				async ()=>{
 					console.log("getReward success!!!!!");
-					EventBus.$emit(EventConfig.getMboxSuccess);
-					Common.app.getPoolsEarns();
+					await Common.app.setCoinValueByName("MBOX");
+					await Common.app.eth_setEarnedMbox();
+					await Common.app.getPoolsEarns();
+					Common.app.unLockBtn("getMboxLock");
 				}
 			)
 		});
@@ -1193,7 +1196,7 @@ export default class ETH {
 						resolve(hash);
 					},
 					()=>{
-						EventBus.$emit(EventConfig.CreateAuctionConfirm, {chain: "eth"});
+						Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 					},
 					()=>{
 						EventBus.$emit(EventConfig.CreateAuctionError, {chain: "eth", hash: saveHash});
@@ -1221,9 +1224,12 @@ export default class ETH {
 			this.sendMethod(
 				contract.methods.bid(_auctor, _index, _startTime, this.numToHex(_price)), {from: myAddr},
 				hash=>resolve(hash),
-				()=>{
+				async ()=>{
 					console.log("buyMarketPet success!!!!!");
 					EventBus.$emit(EventConfig.BidPetSuccess, {chain: "eth", coinKey});
+					await Common.app.setCoinValueByName(coinKey);
+					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+					Common.app.unLockBtn("buyMomoLock");
 				}
 			)
 		});
@@ -1249,7 +1255,7 @@ export default class ETH {
 				},
 				()=>{
 					console.log("cancelAuction success!!!!!");
-					EventBus.$emit(EventConfig.CancelAuctionSuccess, {chain: "eth"});
+					Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 				},
 				()=>{
 					EventBus.$emit(EventConfig.CancelAuctionError, {chain: "eth", hash: saveHash});
@@ -1278,6 +1284,7 @@ export default class ETH {
 				()=>{
 					console.log("changePrice success!!!!!");
 					EventBus.$emit(EventConfig.ChangePriceSuccess, {chain: "eth"});
+					Common.app.unLockBtn("changePriceLock");
 				}
 			)
 		});

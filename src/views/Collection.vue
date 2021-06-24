@@ -51,13 +51,16 @@
 				<div class="clear tal">
 					<div class="col-md-12 mgt-10">
 						<p class="small opa-6">{{ $t("Mine_02") }}</p>
-						<input type="text" readonly class="ly-input bold mgt-10" :value="eth_totalHashrate" style="color:#86a5ff;font-size:16px;background: rgba(27,84,245,0.10);border: 1px solid #1b54f5;border-radius:10px">
+						<p class="mgt-10 bold" style="width:80%;height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">{{eth_totalHashrate}}</p>
 					</div>
-					<div class="col-md-12 mgt-10">
+					<div class="col-md-12 mgt-20">
 						<p class="small opa-6">{{ $t("Mine_03") }}</p>
-						<div class="por dib mgt-10" style="width:100%">
-							<input type="text" readonly class="ly-input" :value="eth_myHashrate" style="color:#a1fa40;font-size:16px;background: rgba(161,250,64,0.10);border: 1px solid #a1fa40;border-radius:10px">
-							<img src="../assets/icon/powerup.png" id="powerup-btn" alt="" @click="oprDialog('showPetPowerUp-dialog', 'block')"  />
+						<div class="por dib mgt-10" style="width:80%">
+							<p class="por bold" style="height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">
+								<span>{{eth_myHashrate}}</span>
+								<span v-if="eth_getAddHashrate > 0" class="small" style="color: #75fd49" >({{ eth_getAddHashrate }})</span>
+								<img src="../assets/icon/powerup.png" id="powerup-btn" alt="" @click="oprDialog('showPetPowerUp-dialog', 'block')"  />
+							</p>
 						</div>
 					</div>
 				</div>
@@ -68,7 +71,7 @@
 					<div class=" col-md-4 mgt-10 tal" style="padding:0px">
 						<div  class="dib speed-show">
 							<p class="small opa-6"><span class="tac">100 {{ $t("Mine_14") }}≈{{ eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 100, 100 ) }} MBOX/DAY</span></p>
-							<p class="vertical-children mgt-10 bold">
+							<p class="vertical-children mgt-10 bold" style="height:25px">
 								<img src="@/assets/coin/MBOX.png" alt="" height="20">
 								<span class="mgl-5 " v-if="Number(eth_earnedMbox) >= 0">{{ eth_earnedMbox }}</span>
 								<Loading class="mgl-5 " v-else  />
@@ -79,7 +82,7 @@
 					<div class=" col-md-4 mgt-10" style="padding:0px">
 						<div  class="dib speed-show">
 							<p class="small opa-6"><span class="tac">100 {{ $t("Mine_14") }}≈{{ numFloor(Number(eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 100, 100 )) * 1551 / 200000, 1e4) }} BANANA/DAY</span></p>
-							<p class="vertical-children mgt-10">
+							<p class="vertical-children mgt-10" style="height:25px">
 								<img src="@/assets/coin/BANANA.png" alt="" height="20">
 								<span class="mgl-5 bold vertical-children">
 									<span v-if="balancePool['BANANA'].amount != '-' ">{{numFloor(balancePool['BANANA'].amount, 1e4)}}</span>
@@ -233,7 +236,7 @@ export default {
 	cursor: pointer;
 	position: absolute;
 	right: 5px;
-	top: 5px;
+	top: 4px;
 	height: 30px;
 }
 .collection-num-item {

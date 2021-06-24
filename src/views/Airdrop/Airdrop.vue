@@ -379,7 +379,7 @@
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_190")}}</p>
-					<input type="text" readonly class="ly-input mgt-10 tac" :value="numFloor(getPledgeList[0].veMboxTotal / 1e18,100).toLocaleString()" />
+					<input type="text" readonly class="ly-input mgt-10 tac" :value="numFloor(getPledgeList[0].veMboxTotal / 1e18,1).toLocaleString()" />
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_191")}}</p>

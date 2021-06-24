@@ -10,7 +10,7 @@
 
 				<img class="pet_img" :src="require(`@/assets/gem/${item.imgName}.png`)" alt="" width="170" height="170" />
 
-				<div style="position: absolute; width: 100%; bottom: 100px; left: 0px">
+				<div style="position: absolute; width: 100%; bottom: 80px; left: 0px">
 					<div class="vertical-children pet_num"  >
 						x{{ item.num }}
 					</div>
@@ -194,6 +194,7 @@ export default {
 	font-size: 12px;
 	background: rgba(0, 0, 0, 0.3);
 	text-align: center;
+	margin-top: 20px;
 }
 
 .gka {

@@ -165,7 +165,7 @@
 
 		<!-- 取消质押确认 -->
 		<Dialog id="unstake-confirm-dialog" :top="180" :width="350">
-			<p class="mgt-30 tal">{{$t("MOMO_46")}}</p>
+			<p class="mgt-20 tal">{{$t("MOMO_46")}}</p>
 			<div class="mgt-50">
 				<button class="btn-default" @click="oprDialog('unstake-confirm-dialog', 'none')">{{$t("Common_04")}}</button>
 				<button class="btn-primary mgl-10" @click="unStakeNftConfirm()">{{$t("Common_03")}}</button>

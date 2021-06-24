@@ -2,16 +2,11 @@
 	<div id="mypet">
 		<Tab class="mgt-10" :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" :notice="[]" />
 
-		<div class="tal search vertical-children por mgt-20" v-if="tab_pos != 2">
+		<div class="tal search vertical-children por mgt-10" v-if="tab_pos != 2">
 			<span>{{ $t("Market_33") }}({{ getTotalPetNum }})</span >&nbsp;
-			<span class="search-box mgl-20 hide" style="display: none !important" >
-				<input class="ly-input" type="text/" />&nbsp;
-				<img src="../assets/icon/search.png" alt="" />
-			</span>
+			<img src="../assets/icon/powerup.png" class="cur-point mgl-5 " alt="" height="40" @click="oprDialog('showPetPowerUp-dialog', 'block')" />
 
 			<div id="my-pet-fitter">
-				<img src="../assets/icon/powerup.png" class="cur-point " alt="" height="40" @click="oprDialog('showPetPowerUp-dialog', 'block')" />&nbsp;
-			
 				<div class="dropdown-group mgl-5" @click="showDrop" tabindex="3">
 					<div class="dropdown-group-value por">
 						{{$t("Market_63")}} ▼
@@ -26,7 +21,7 @@
 		<!--我的momo-->
 		<div :class="tab_pos == 0 ? '' : 'hide'" style="padding: 10px">
 			<div :class="getShowPetArr.length < 4 ? 'tal' : ''">
-				<div class="clear mgt-20">
+				<div class="clear">
 					<router-link :to="(item.location=='auction'?'/auctionView/': '/upgrade/') + item.prototype + '-' + item.tokenId" v-for="item in getShowPetArr"
 						:key=" item.prototype.toString() + item.tokenId + item.num " >
 						<PetItem v-bind:data="{ item: item }" />
@@ -51,17 +46,18 @@
 			</div>
 		</div>
 		<!-- 升级预览 -->
-		<div v-if="tab_pos == 2" >
-			<div class="content" >
-				<div class="mgt-20 aveage-box" style="padding:5px;">
-					<div class="tac" >{{$t("MOMO_48")}}: <Dropdown
-						:list="[this.$t('MOMO_12'),this.$t('MOMO_13')]"
-						:defaultSelectPos="perviewVTypeSelectPos"
-						:onChange="perviewVTypeSelect"
-					/>
+		<div v-if="tab_pos == 2" class="panel mgt-20" id="preview">
+			<div >
+				<div class="aveage-box" style="padding:5px;">
+					<div class="tal" >{{$t("MOMO_48")}}: 
+						<Dropdown class="mgl-10" :list="[this.$t('MOMO_12'),this.$t('MOMO_13'),this.$t('MOMO_14')]" :defaultSelectPos="perviewVTypeSelectPos" :onChange="perviewVTypeSelect" />
 					</div>
-					<div class="tac" >
-						{{$t("MOMO_49")}}: <input class="ly-input mgt-10" type="number"  style="width:120px;border-radius:50px" v-model="inputLvHashRate" v-int :placeholder="inputRange[perviewVTypeSelectPos].min+'~'+inputRange[perviewVTypeSelectPos].max" /> 
+					<div class="tal" >
+						{{$t("MOMO_49")}}: 
+						<div class="dib mgl-10">
+							<Dropdown v-if="perviewVTypeSelectPos == 2" :list="hashSelectArr" :defaultSelectPos="hashSelectPos" :onChange="(pos)=>{hashSelectPos = pos;search()}" />
+							<input v-else class="ly-input mgt-10" type="number"  style="width:120px;border-radius:50px" v-model="inputLvHashRate" v-int :placeholder="inputRange[perviewVTypeSelectPos].min+'~'+inputRange[perviewVTypeSelectPos].max" /> 
+						</div>
 					</div>
 					<div class="tac hide-xs" style="align-item:center;height:50px;display: flex;align-items: center;justify-content: center;">
 						<button class="btn-primary" @click="search">{{$t("Common_03")}}</button>
@@ -70,25 +66,32 @@
 				<div class="mgt-10 visiable-xs"><button class="btn-primary" style="width:50%" @click="search">{{$t("Common_03")}}</button></div>
 				<div class="split-hr mgt-10"></div>
 			</div>
-			<div class="content" >
-				<div class="aveage-box preview-item" style="background:none">
-					<p class="tac">{{$t("MOMO_50")}}</p>
+			<div>
+				<div class="aveage-box preview-item small" style="background:none">
+					<p class="tal">{{$t("MOMO_50")}}</p>
 					<p class="tal">{{$t("MOMO_51")}}</p>
 					<p class="tal">{{$t("MOMO_52")}}</p>
 				</div>
-				<div class="aveage-box preview-item" v-for="item in getTargetLvReport" :key="item.level">
-					<p class="tac">lv. {{item.level}}</p>
-					<p class="tal vertical-children">
-						<img src="../assets/icon/airdrop.png" alt="" height="25">
-						<span class="mgl-10 bold" :class="getHashrateColor(item)">{{item.lvHashRate}}</span>
-					</p>
-					<p class="tal">
-						<span v-if="item.upgradeCfg.v1 > 0" class="cl-item bg-lv1">x{{item.upgradeCfg.v1}} <img v-if="(item.level+1)%5 == 0" src="../assets/icon/preview-icon.png" alt="" @click="oprDialog('upgrade-des-dialog','block')"/></span>
-						<span v-if="item.upgradeCfg.v2 > 0" class="cl-item bg-lv2">x{{item.upgradeCfg.v2}}<img v-if="(item.level+1)%5 == 0" src="../assets/icon/preview-icon.png" alt="" @click="oprDialog('upgrade-des-dialog','block')"/></span>
-						<span v-if="item.upgradeCfg.v3 > 0" class="cl-item bg-lv3">x{{item.upgradeCfg.v3}}<img v-if="(item.level+1)%5 == 0" src="../assets/icon/preview-icon.png" alt="" @click="oprDialog('upgrade-des-dialog','block')"/></span>
-						<span v-if="item.upgradeCfg.v4 > 0" class="cl-item bg-lv4">x{{item.upgradeCfg.v4}}<img v-if="(item.level+1)%5 == 0" src="../assets/icon/preview-icon.png" alt="" @click="oprDialog('upgrade-des-dialog','block')"/></span>
-						<span v-if="item.level == 30">{{$t("BOX_15")}}</span>
-					</p>
+				<div class="split-hr mgt-10"></div>
+				<div v-for="item in getTargetLvReport" :key="item.level">
+					<div class="aveage-box preview-item" >
+						<p class="tal">lv. {{item.level}}</p>
+						<p class="tal vertical-children">
+							<img src="../assets/icon/airdrop.png" alt="" height="25">
+							<span class="mgl-10 bold" :class="getHashrateColor(item)">{{item.lvHashRate}}</span>
+						</p>
+						<p class="tal">
+							<span v-if="item.upgradeCfg.v1 > 0" class="cl-item bg-lv1">x{{item.upgradeCfg.v1}} <img v-if="(item.level+1)%5 == 0" src="../assets/icon/preview-icon.png" alt="" @click="oprDialog('upgrade-des-dialog','block')"/></span>
+							<span v-if="item.upgradeCfg.v2 > 0" class="cl-item bg-lv2">x{{item.upgradeCfg.v2}}<img v-if="(item.level+1)%5 == 0" src="../assets/icon/preview-icon.png" alt="" @click="oprDialog('upgrade-des-dialog','block')"/></span>
+							<span v-if="item.upgradeCfg.v3 > 0" class="cl-item bg-lv3">x{{item.upgradeCfg.v3}}<img v-if="(item.level+1)%5 == 0" src="../assets/icon/preview-icon.png" alt="" @click="oprDialog('upgrade-des-dialog','block')"/></span>
+							<span v-if="item.upgradeCfg.v4 > 0" class="cl-item bg-lv4">x{{item.upgradeCfg.v4}}
+								<span class="cl-item-lv" v-if="item.upgradeCfg.v4Lv > 1">Lv. {{item.upgradeCfg.v4Lv}}</span>
+								<img v-if="(item.level+1)%5 == 0" src="../assets/icon/preview-icon.png" alt="" @click="oprDialog('upgrade-des-dialog','block')"/>
+							</span>
+							<span v-if="item.level == 30">{{$t("BOX_15")}}</span>
+						</p>
+					</div>
+					<div class="split-hr mgt-10"></div>
 				</div>
 			</div>
 		</div>
@@ -127,15 +130,24 @@ export default {
 			tab: [this.$t("MOMO_31"), this.$t("MOMO_32"), this.$t("MOMO_47")],
 			tab_pos: 0,
 			hasShowBook: false,
-			perviewVTypeSelectPos: 0,
-			inputLvHashRate: "",
+			perviewVTypeSelectPos: 2,
+			inputLvHashRate: 120,
 			perviewLvHashRate: "",
-			inputRange: [{min: 10, max: 40}, {min: 50, max: 120}]
+			inputRange: [{min: 10, max: 40}, {min: 50, max: 120}],
+			//v6算力查看
+			hashSelectArr: [180,200,220,240,260],
+			hashSelectPos: 0,
+			upgradeCfg: [
+				BaseConfig.MomoLv4Cfg,
+				BaseConfig.MomoLv5Cfg,
+				BaseConfig.MomoLv6Cfg
+			]
 		};
 	},
 	components: { PetItem, Dropdown, Page, Tab, BookItem },
 	created(){
 		this.$parent.eth_setLockList();
+		this.search();
 	},
 	computed: {
 		...mapState({
@@ -146,7 +158,7 @@ export default {
 			lockList: (state) => state.ethState.data.lockList,
 		}),
 		getGrowup() {
-			let vType = this.perviewVTypeSelectPos == 0?4:5;
+			let vType = this.perviewVTypeSelectPos + 4;
 			let hashrate = Number(this.perviewLvHashRate);
 			let obj = {
 				staticPower: 0,
@@ -172,7 +184,7 @@ export default {
 		},
 		getTargetLvReport(){
 			let report = [];
-			let upgradeCfg = this.perviewVTypeSelectPos == 0?BaseConfig.MomoLv4Cfg:  BaseConfig.MomoLv5Cfg;
+			let upgradeCfg = this.upgradeCfg[this.perviewVTypeSelectPos];
 			let growup = this.getGrowup;
 			let hashRate = Number(this.perviewLvHashRate);
 			if(hashRate == 0) return report;
@@ -297,6 +309,10 @@ export default {
 	},
 	methods: {
 		search(){
+			if(this.perviewVTypeSelectPos == 2){
+				this.perviewLvHashRate = this.hashSelectArr[this.hashSelectPos];
+				return;
+			}
 			let value = Number(this.inputLvHashRate);
 			let range = this.inputRange[this.perviewVTypeSelectPos];
 			if(value < range.min || value > range.max){
@@ -314,6 +330,9 @@ export default {
 			this.inputLvHashRate = "";
 			this.perviewLvHashRate = "";
 			this.perviewVTypeSelectPos = pos;
+			if(pos == 2){
+				this.search();
+			}
 		},
 		onSelectCoinChange(pos) {
 			console.log(pos);
@@ -347,6 +366,15 @@ export default {
 </script>
 
 <style  scoped>
+.cl-item-lv{
+	position: absolute;
+	top: -10px;
+	font-size: 12px;
+	background: rgba(255,255,255,0.2);
+	padding: 0px 5px;
+	border-radius: 10px;
+	zoom: 0.8;
+}
 .cl-item img{
 	position: absolute;
 	bottom: -10px;
@@ -369,7 +397,7 @@ export default {
 	background: #13181F;
 	margin-top: 10px;
 	border-radius: 10px;
-	padding: 10px 20px;
+	padding: 8px 20px;
 }
 .content{
 	padding: 0px 30px;
@@ -385,6 +413,11 @@ export default {
 #mypet {
 	text-align: center;
 	padding: 0px 20px;
+}
+#preview{
+	max-width: 1300px;
+	margin: 0px auto;
+	margin-top: 20px;
 }
 @media (max-width: 768px) {
 	.content{
@@ -409,6 +442,9 @@ export default {
 	#my-pet-fitter{
 		text-align: center;
 		zoom: 0.8
+	}
+	.cl-item{
+		margin: 12px 5px;
 	}
 }
 </style>

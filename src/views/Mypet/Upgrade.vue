@@ -81,7 +81,7 @@
 								<div>
 									<div class="mgt-10">
 										<!-- <button v-if="allowance_1155_to_721 == 0" @click="approved1155To721" class="btn-advanced vertical-children" style="width: 180px; margin: 5px" >授权</button> -->
-										<button @click="upgrade" :class="lockUpgradeTime > 0?'disable-btn':''" class="btn-primary vertical-children por disable-btn" style="min-width: 160px; margin: 5px" >
+										<button @click="upgrade" :class="lockUpgradeTime > 0?'disable-btn':''" class="btn-primary vertical-children por" style="min-width: 160px; margin: 5px" >
 											<Loading v-if="lockUpgradeTime > 0"  class="btn-loading" />
 											<svg  viewBox="0 0 1024 1024" width="15" height="15" style=" transform: rotate(270deg); margin-top: -2px; " >
 												<path fill="#ffffff" d="M583.586909 555.473455a62.091636 62.091636 0 0 0 0-86.94691L151.970909 30.138182a60.113455 60.113455 0 0 0-85.783273 0 62.045091 62.045091 0 0 0 0 86.946909L454.981818 512 66.210909 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.043636 60.043636 0 0 0 85.783273 0l431.592727-438.388363zM440.459636 117.061818L829.160727 512 440.413091 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.090182 60.090182 0 0 0 85.806545 0l431.569455-438.388363a62.091636 62.091636 0 0 0 0-86.94691L526.196364 30.138182a60.136727 60.136727 0 0 0-85.806546 0 62.045091 62.045091 0 0 0 0.023273 86.923636z"></path>

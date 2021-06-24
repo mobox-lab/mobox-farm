@@ -48,7 +48,7 @@
 import { Dialog, Dropdown, PetItemMin, StatuButton, Loading } from '@/components';
 import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
-import {Http,Wallet, Common, EventBus} from "@/utils";
+import {Http,Wallet, EventBus} from "@/utils";
 import {BaseConfig, PancakeConfig,WalletConfig, EventConfig} from "@/config";
 let updatePriceTimer = null;
 export default {
@@ -241,7 +241,6 @@ export default {
 
 			let hash = await Wallet.ETH.buyMarketPet(auctor, index, coinKey, data.startTime, item.nowPrice);
 			if(hash){
-				await Common.sleep(1000);
 				this.$store.commit("globalState/lockBtn", "buyMomoLock");
 			}
 		},

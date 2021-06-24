@@ -28,10 +28,10 @@
 				<GemSellItem v-for="item in getMyGem" :key="item.key" :data="{item: item}">
 					<div class="tac "  >
 						<SelectNum :maxNum="item.num" v-show="getSelectNum(item.key) > 0" :defaultNum="getSelectNum(item.key)" :data="item" :onChange="onNumChange" />
-						<button class="btn-primary" @click="sell1155Direct(item)" v-show="getSelectNum(item.key) == 0">
+						<button class="btn-primary btn-small" @click="sell1155Direct(item)" v-show="getSelectNum(item.key) == 0">
 							<span>{{$t("Market_57")}}</span>
 						</button>
-						<button class="btn-primary mgl-5" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.key) == 0">
+						<button class="btn-primary mgl-5 btn-small" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.key) == 0">
 							<span>{{$t("Market_08")}}</span>
 						</button>
 					</div>

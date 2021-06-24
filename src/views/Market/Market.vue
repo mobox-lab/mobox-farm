@@ -135,7 +135,7 @@ export default {
 			let arr = [];
 			Object.keys(PancakeConfig.SelectCoin).map(coinKey=>{
 				if(coinKey == "BUSD"){
-					arr.push(coinKey + ": " + this.coinArr[coinKey].balance);
+					arr.push(coinKey + ": " + this.numFloor(this.coinArr[coinKey].balance, 1e2));
 				}
 			})
 			return arr;

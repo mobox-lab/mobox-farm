@@ -42,7 +42,7 @@
 							<td >
 								<a :href="'https://bscscan.com/tx/' + item.hash" target="_blank" style="text-decoration: underline;" class="vertical-children" :class="'color-'+item.type">
 									<span >{{item.msg}}</span>
-									<img src="../../assets/icon/viewTx.png" class="mgl-10 hide-xs" height="20" alt="" />
+									<img src="../../assets/icon/viewTx.png" class="mgl-10 hide-xs" height="25" alt="" />
 								</a>
 							</td>
 						</tr>

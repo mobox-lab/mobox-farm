@@ -836,6 +836,15 @@ export default class ETH {
 		});
 	}
 
+	static async getAll721ByAddr(addr){
+		let prototype_1155_arr = [];
+		return new Promise(resolve => {
+			this.momoHelperContract.methods.getMomosStake(addr, prototype_1155_arr).call().then(momosObj => {
+				resolve(this.generateNftObj(momosObj, ConstantConfig.NFT_LOCATION.STAKE));
+			});
+		});
+	}
+
 	//获取我的NFT
 	static async getMomosByType(type) {
 		let myAddr = await this.getAccount();

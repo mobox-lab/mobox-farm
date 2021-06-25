@@ -49,7 +49,7 @@
 									</div>
 									<div class="dib mgl-10 cur-point">
 										<a :href="getTxUrl(item.tx)" target="_blank">
-											<img src="@/assets/icon/viewTx.png" alt=""/>
+											<img src="@/assets/icon/viewTx.png" height="25" alt=""/>
 										</a>
 									</div>
 								</div>

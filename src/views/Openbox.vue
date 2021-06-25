@@ -146,9 +146,9 @@
 							</span>
 						</td>
 						<td class="tar">
-							<img v-if="item.event == 'MintBox' && item.state == 1" @click="showHistoryDialog(item)" src="../assets/icon/view.png" alt="" class="cur-point" />&nbsp;
+							<img v-if="item.event == 'MintBox' && item.state == 1" @click="showHistoryDialog(item)" height="25" src="../assets/icon/view.png" alt="" class="cur-point" />&nbsp;
 							<a :href="getTxUrl(item.tx)" target="_blank">
-								<img src="../assets/icon/viewTx.png" alt="" class="cur-point" />
+								<img src="../assets/icon/viewTx.png" alt="" class="cur-point" height="25" />
 							</a>
 						</td>
 					</tr>

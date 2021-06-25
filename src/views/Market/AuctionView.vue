@@ -95,16 +95,18 @@
 							<div v-if="!isMyPet" class="mgt-30">
 								<div :class="coinArr['BUSD'].allowanceToAuction == 0 ?'btn-group':''">
 									<div v-if="coinArr['BUSD'].allowanceToAuction == 0">
-										<button data-step="1"  :class="(!coinArr['BUSD'].isApproving && coinArr['BUSD'].allowanceToAuction == 0)?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="approve">
-											<Loading class="btn-loading" v-if="coinArr['BUSD'].isApproving" />
-											{{$t("Air-drop_16")}} BUSD
-										</button>
+										<StatuButton data-step="1" style="width:200px" :isLoading="coinArr['BUSD'].isApproving" :onClick="approve">{{$t("Air-drop_16")}} BUSD</StatuButton>
 									</div>
 									<div class="mgt-10">
-										<button data-step="2" :class="(coinArr['BUSD'].allowanceToAuction > 0 && lockBtn.buyMomoLock <= 0 )?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="oprDialog('confirm-buy-dialog','block')">
-											<Loading class="btn-loading" v-if="lockBtn.buyMomoLock > 0" />
-											{{$t("Market_22")}}
-										</button>
+										<!-- <StatuButton style="width:200px"  data-step="2" :isLoading="lockBtn.buyMomoLock > 0" :isDisable="coinArr['BUSD'].allowanceToAuction <= 0 || (nowTs - this.getNowPetItem.uptime) <= 600" :onClick="()=>oprDialog('confirm-buy-dialog','block')"> -->
+										<StatuButton style="width:200px"  data-step="2" :isLoading="lockBtn.buyMomoLock > 0" :isDisable="coinArr['BUSD'].allowanceToAuction <= 0" :onClick="()=>oprDialog('confirm-buy-dialog','block')">
+											<!-- <template v-if="nowTs - this.getNowPetItem.uptime <= 600">
+												<img src="@/assets/icon/lock.png" alt="" height="20" style="position:absolute;left:10px;top:6px">
+												<span>{{getLeftTime(Number(this.getNowPetItem.uptime) + 600 - nowTs)}}</span>
+											</template>
+											<span v-else>{{$t("Market_22")}}</span> -->
+											<span>{{$t("Market_22")}}</span>
+										</StatuButton>
 									</div>
 								</div>
 							</div>
@@ -174,7 +176,7 @@
 	</div>
 </template>
 <script>
-import { PetView, Dialog, MomoInfo, Tab, Loading } from '@/components';
+import { PetView, Dialog, MomoInfo, Tab, Loading, StatuButton } from '@/components';
 import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
 import {  Wallet, EventBus, Common } from '@/utils';
@@ -185,7 +187,7 @@ import BigNumber from "bignumber.js";
 let updatePriceTimer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { PetView, Dialog, MomoInfo, Tab, Loading },
+	components: { PetView, Dialog, MomoInfo, Tab, Loading, StatuButton },
 	data() {
 		return {
 			lockUpgradeTime: 0,
@@ -211,6 +213,7 @@ export default {
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			marketPets: (state) => state.marketState.data.marketPets,
 			marketPetsMy: (state) => state.marketState.data.marketPetsMy,
+			nowTs: (state) => state.globalState.data.nowTs
 		}),
 		getNowPetItem(){
 			let petObj;

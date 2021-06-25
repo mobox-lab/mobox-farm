@@ -30,7 +30,7 @@ export default {
 				if(this.chainNetwork == 56){
 					this.oprDialog("connected-wallet-info-dialog", "block");
 				}else{
-					this.showNotify("请在钱包切换链", "error");
+					this.showNotify(this.$t("Common_23"), "error");
 				}
 			}
 		}

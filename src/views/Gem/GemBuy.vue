@@ -95,9 +95,9 @@
 						<span v-else>{{$t("Gemstone_31")}}</span>
 					</td>
 					<td class="tar">
-						<img  @click="getApplyDetial(item)" src="../../assets/icon/view.png" alt="" class="cur-point" />&nbsp;
+						<img  @click="getApplyDetial(item)" src="../../assets/icon/view.png" height="25" alt="" class="cur-point" />&nbsp;
 						<a :href="getTxUrl(item.tx)" target="_blank">
-							<img src="../../assets/icon/viewTx.png" alt="" class="cur-point" />
+							<img src="../../assets/icon/viewTx.png" alt="" height="25" class="cur-point" />
 						</a>
 					</td>
 				</tr>

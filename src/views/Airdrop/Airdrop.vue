@@ -435,7 +435,7 @@
 					<td>{{numFloor(item.amount, 1e2)}}</td>
 					<td>
 						<a :href="getTxUrl(item.txId)" target="_blank">
-							<img src="../../assets/icon/viewTx.png" alt="" class="cur-point" />
+							<img src="../../assets/icon/viewTx.png" height="25" alt="" class="cur-point" />
 						</a>
 					</td>
 				</tr>
@@ -630,7 +630,7 @@ export default {
 		},
 		needMigrate(){
 			let needMigrate = false;
-			let oldCoinArr = ["BTCB-BNB", "ETH-BNB", "BUSD-BNB", "USDT-BNB", "USDT-BUSD", "DAI-BUSD","USDC-BUSD"];
+			let oldCoinArr = ["MBOX-BNB", "BTCB-BNB", "ETH-BNB", "BUSD-BNB", "USDT-BNB", "USDT-BUSD", "DAI-BUSD","USDC-BUSD"];
 			oldCoinArr.map(coinKey=>{
 				if(this.coinArr[coinKey].wantAmount > 0) needMigrate = true;
 			})

@@ -53,7 +53,8 @@
 					</div>
 					<br />
 
-					<button class="btn-primary hide" @click="openAnime">test animation</button>
+					<button class="btn-primary hide" @click="playBoxAnime">test animation</button>
+					<button class="btn-primary hide" @click="openAnime">test Open</button>
 				</div>
 			</section>
 
@@ -109,11 +110,6 @@
 								<div></div>
 							</div>
 						</div>
-						<!-- <button class="btn-primary mgt-20" :class="lockBtn.openBoxLock > 0'disable-btn':''" style="width: 80%"
-							@click=" oprDialog('open-box-dialog', 'block'); openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 1; ">
-							{{ $t("BOX_05") }}
-						</button> -->
-						
 					</div>
 				</div>
 			</section>
@@ -593,6 +589,10 @@ export default {
 			} else {
 				this.showNotify(this.$t("BOX_30"), "error")
 			}
+		},
+
+		playBoxAnime(){
+			document.getElementById("openbox-anime").classList.add("animation-box-start");
 		},
 
 		//开箱子动画

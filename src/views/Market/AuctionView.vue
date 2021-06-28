@@ -98,14 +98,12 @@
 										<StatuButton data-step="1" style="width:200px" :isLoading="coinArr['BUSD'].isApproving" :onClick="approve">{{$t("Air-drop_16")}} BUSD</StatuButton>
 									</div>
 									<div class="mgt-10">
-										<!-- <StatuButton style="width:200px"  data-step="2" :isLoading="lockBtn.buyMomoLock > 0" :isDisable="coinArr['BUSD'].allowanceToAuction <= 0 || (nowTs - this.getNowPetItem.uptime) <= 600" :onClick="()=>oprDialog('confirm-buy-dialog','block')"> -->
-										<StatuButton style="width:200px"  data-step="2" :isLoading="lockBtn.buyMomoLock > 0" :isDisable="coinArr['BUSD'].allowanceToAuction <= 0" :onClick="()=>oprDialog('confirm-buy-dialog','block')">
-											<!-- <template v-if="nowTs - this.getNowPetItem.uptime <= 600">
+										<StatuButton style="width:200px"  data-step="2" :isLoading="lockBtn.buyMomoLock > 0" :isDisable="coinArr['BUSD'].allowanceToAuction <= 0 || (nowTs - this.getNowPetItem.uptime) <= 600" :onClick="()=>oprDialog('confirm-buy-dialog','block')">
+											<template v-if="nowTs - this.getNowPetItem.uptime <= 600">
 												<img src="@/assets/icon/lock.png" alt="" height="20" style="position:absolute;left:10px;top:6px">
 												<span>{{getLeftTime(Number(this.getNowPetItem.uptime) + 600 - nowTs)}}</span>
 											</template>
-											<span v-else>{{$t("Market_22")}}</span> -->
-											<span>{{$t("Market_22")}}</span>
+											<span v-else>{{$t("Market_22")}}</span>
 										</StatuButton>
 									</div>
 								</div>

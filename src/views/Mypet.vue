@@ -146,6 +146,10 @@ export default {
 	},
 	components: { PetItem, Dropdown, Page, Tab, BookItem },
 	created(){
+		let tab_pos = this.$route.params.tabPos;
+		if(tab_pos != undefined){
+			this.tab_pos = tab_pos;
+		}
 		this.$parent.eth_setLockList();
 		this.search();
 	},

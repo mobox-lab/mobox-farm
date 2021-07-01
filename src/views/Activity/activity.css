@@ -1,4 +1,3 @@
-
 .center-content{
 	max-width: 1500px;
 	margin: 0px auto;
@@ -13,10 +12,4 @@
 }
 .activity-type-list-item.active{
 	border-bottom: 4px solid #1B54F5;
-}
-
-@media (max-width: 768px) {
-	#activity-type{
-		zoom: 0.8;
-	}
 }

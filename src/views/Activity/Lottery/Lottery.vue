@@ -1,210 +1,117 @@
 <template>
-	<div class="tac center-box ">
+	<div class="tac center-box">
 		<div class="por clear mgt-10">
 			<section class="col-md-7" style="padding:10px">
 				<div class="adv-panel">
 					<h1 class="vertical-children">
-						<span>{{$t("Auction_02")}}</span>
-						<img class="mgl-10 cur-point" @click="oprDialog('lottery-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="30">
+						<span>传说MOMO抽奖</span>
+						<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="30">
 					</h1>
 					<div class="tac mgt-10">
-						<p class="vertical-children">
-							<span>{{$t("Auction_16")}}: </span>
-							<Loading v-if="getNowBlock == '-' " />
-							<span v-else>{{getNowBlock}}</span>
-						</p>
-
-						<template v-if="getNowBlock != '-' ">
-							<p class="small opa-6" v-if="momoDatas[getNowRound - isShowPastRound].block > Number(getNowBlock)">{{$t("Auction_04")}}: {{getLeftTime(momoDatas[getNowRound - isShowPastRound].ts - nowTs)}}</p>
-							<p v-else>{{$t("Auction_24")}}</p>
+						<template >
+							<p v-if="getCountDown >0">{{$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
+							<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
 						</template>
 
-						<div class="mgt-10" v-if="getNowBlock != '-'">
-							<PetItem v-bind:data="{ item: momoDatas[getNowRound- isShowPastRound] }" />
+						<div style="height:280px">
+							<PetItem v-bind:data="{ item: momoDatas[nowRound] }" />
 						</div>
-						<div v-else style="height:250px">
-							<Loading style="margin-top:100px" />
-						</div>
-						<p class=" small mgt-10" style="margin-bottom:10px">
-							<router-link to="/mypet/2">
-								<span class="cur-point">{{$t("Auction_05")}} >></span>
-							</router-link>
-						</p>
+						<router-link to="/mypet/2">
+							<p class="cur-point small">查看升级预览 >> </p>
+						</router-link>
 					</div>
 				</div>
 			</section>
 			<section class="col-md-5" style="padding:10px">
-				<div class="panel por" style="height:440px;padding:20px">
-					
-					<div class="aveage-box tac" style="border-bottom: 1px solid #162340;padding-bottom:10px">
-						<div class="por">
-							<p class="small opa-6">{{$t("Air-drop_152")}}</p>
-							<h4 class="notice-color">{{myLotteryData.total_vemobox}}</h4>
+				<div class="panel por" style="height:400px;padding:30px">
+					<div class="aveage-box tal" style="border-bottom: 1px solid #162340;padding-bottom:20px">
+						<div>
+							<p class="small opa-6">我的veMBOX</p>
+							<h3>3235</h3>
 						</div>
-						<div style="flex:0.5">
-							<p class="small opa-6">{{$t("Auction_20")}}</p>
-							<h4 class="notice-color">{{myLotteryData.lottery_ticket}}</h4>
+						<div>
+							<p class="small opa-6">中奖率</p>
+							<h3>3.5%</h3>
 						</div>
-						<div >
-							<p class="small opa-6">{{$t("Auction_21")}}</p>
-							<div v-if="myLotteryData.ticket_number_start == '-' "><Loading /></div>
-							<template v-else>
-								<h4  class="notice-color" v-if="momoDatas[getNowRound - isShowPastRound].ts - 3600 - nowTs > 0">-</h4>
-								<template v-else>
-									<h4 class="notice-color" v-if="myLotteryData.lottery_ticket < 1">-</h4>
-									<h4 v-else class="notice-color">{{myLotteryData.ticket_number_start}}-{{myLotteryData.ticket_number_end}}</h4>
-								</template>
-							</template>
+						<div class="tac">
+							<button class="btn-primary">获得veMBOX</button>
 						</div>
-						
 					</div>
-
-					<div class="tac mgt-5">
-						<p class="small opa-6" >({{$t("Auction_37")}})</p>
-						<router-link to="/">
-							<button class="btn-primary mgt-5" style="width: 50%">{{$t("Auction_06")}}</button>
-						</router-link>
-					</div>
-					
-					<div class="mgt-10 tal">
-						<h4>{{$t("Auction_07")}}</h4>
-						<table class="small  new-table tac"  >
+					<div class="mgt-30 tal">
+						<h4>中奖纪录</h4>
+						<table class="small  new-table" border="0" frame="void" rules="none" >
 							<tr class="small opa-6">
-								<td class="tal">MOMO</td>
-								<td >{{$t("Air-drop_47")}}</td>
-								<td>{{$t("Auction_08")}}</td>
-								<td>{{$t("Auction_09")}}</td>
-								<td >{{$t("Auction_11")}}</td>
-								<td>{{$t("Auction_10")}}</td>
+								<td>时间</td>
+								<td>MOMO</td>
+								<td>中奖者</td>
+								<td>中奖率</td>
+								<td class="tar">TX</td>
 							</tr>
-							<tr v-for="item in luckerArr" :key="item.issue_number">
-								<td class="tal"><PetItemMin :data="momoDatas[item.issue_number]" /></td>
-								<td >
-									<p>{{dateFtt('yyyy-MM-dd',new Date(item.uptime*1000))}}</p>
-									<p>{{dateFtt('hh:mm:ss',new Date(item.uptime*1000))}}</p>
-								</td>
-								<td>{{ shorAddress(item.address) }}</td>
-								<td>{{item.ticket_no}}</td>
-								<td >{{item.total_lottery_ticket}}</td>
+							<!-- <tr>
+								<td colspan="5" class="tac">等待开奖</td>
+							</tr> -->
+							<tr v-for="item in 3" :key="item">
 								<td>
-									<a style="text-decoration:underline"  :href="getBlockUrl(item.lottery_block_number)" target="_blank">
-										{{item.lottery_block_number}}
+									<p>2021.06.23</p>
+									<p>14:25:63</p>
+								</td>
+								<td>momo</td>
+								<td>0xe8...be13</td>
+								<td>50%</td>
+								<td class="tar">
+									<a :href="getTxUrl('0xb45efd59815b68b9655ee5042e34137eba807c6142283ad14456ea806bd73810')" target="_blank">
+										<img src="@/assets/icon/viewTx.png" alt="" class="cur-point" height="25" />
 									</a>
 								</td>
-							</tr>
-							<tr v-if="luckerArr.length < 3">
-								<td class="tal"><PetItemMin :data="momoDatas[getNowRound]" /></td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
 							</tr>
 						</table>
 					</div>
 				</div>
 			</section>
-			<div class="col-md-12 por" style="padding:10px;">
-				<div class="tal mgt-10" v-if="getNowRound > 1">
-					<div class="tab-menu" :class="{active: isShowPastRound == 1}" style="margin-left:20px" @click="isShowPastRound=1;getLotteryRank();getMyLotteryData(true);">{{$t("Auction_12")}}</div>
-					<div class="tab-menu" :class="{active: isShowPastRound == 0}" @click="isShowPastRound=0;getLotteryRank();getMyLotteryData(true)">{{$t("Auction_13")}}</div>
-				</div>
-				<section id="round-info" style="padding:10px 15px;background:#13181F;border-radius:20px;">
-					<div class="aveage-box">
-						<div style="padding:10px">
-							<p class="small opa-6 tac" >{{$t("Auction_14")}}</p>
-							<input type="text" readonly class="ly-input mgt-10 tac"
-							:value="momoDatas[getNowRound - isShowPastRound].ts - 3600 - nowTs > 0 ? getLeftTime(momoDatas[getNowRound - isShowPastRound].ts - 3600 - nowTs): $t('Auction_15')" />
-						</div>
-						<div style="padding:10px">
-							<p class="small opa-6 tac" >{{$t("Auction_17")}}</p>
-							<input type="text" readonly class="ly-input mgt-10 tac" :value="momoDatas[getNowRound - isShowPastRound].block" />
-						</div>
-						<div style="padding:10px">
-							<p class="small opa-6 tac" >{{$t("Auction_18")}}</p>
-							<p  class="ly-input mgt-10 tac" style="line-height:35px">
-								<a style="text-decoration:underline" 
-								:href="getBlockUrl(momoDatas[getNowRound - isShowPastRound].block)" target="_blank" 
-								v-if="momoDatas[getNowRound - isShowPastRound].hash != '-' ">
-								{{shortHash(momoDatas[getNowRound - isShowPastRound].hash)}}</a>
-								<span v-else>-</span>
-							</p>
-						</div>
-						<div style="padding:10px">
-							<p class="small opa-6 tac" >{{$t("Auction_19")}}</p>
-							<input type="text" readonly class="ly-input mgt-10 tac" :value="rankListObj.total_lottery_ticket" />
-						</div>
-					</div>
-				</section>
-			</div>
 
-			<div class="col-md-12 por" style="padding:10px;">
-				<section class="mgt-10" style="padding:10px 15px;background:#13181F;border-radius:20px;">
-					<div style="min-height:450px;">
-						<table class="small  new-table"  >
-							<tr>
-								<th style="width:40%" class="tal">{{ $t("Rank_05") }}</th>
-								<th  class="tal">veMBOX</th>
-								<th >{{$t("Auction_20")}}</th>
-								<th  class="tar">{{$t("Auction_21")}}</th>
-							</tr>
-							<tr v-for="item in rankListObj.list" :key="item.address">
-								<td class="tal">
-									<span class="dib tac rank-icon" :class="{active: item.rank <= 3}">{{ item.rank }}</span >
-									<span class="mgl-5">
-										{{ shorAddress(item.address) }}
-									</span>
-								</td>
-								<td class="tal">{{ item.total_vemobox }}</td>
-								<td>{{ item.lottery_ticket }}</td>
-								<td class="vertical-children tar tac-xs">
-									<span v-if="momoDatas[getNowRound - isShowPastRound].ts - 3600 - nowTs > 0">-</span>
-									<span v-else>{{item.ticket_number_start}}-{{item.ticket_number_end}}</span>
-								</td>
-							</tr>
-						</table>
-					</div>
-					<table class=" new-table">
-						<tr v-if="rankListObj.total_page > 1">
-							<td colspan="4" style="border:none">
-								<Page :defaultPage="nowPage" :totalPage="rankListObj.total_page" :onChange="onPageChange" />
+			<div class="col-md-12" style="padding:10px">
+				<section class="mgt-10" style="padding:10px 15px;background:#13181F;border-radius:20px">
+					<table class="small  new-table" border="0" frame="void" rules="none" >
+						<tr>
+							<th width="30%" class="tal">{{ $t("BOX_12") }}</th>
+							<th width="20%" class="tal">{{ $t("BOX_26") }}</th>
+							<th width="10%">{{ $t("BOX_13") }}</th>
+							<th width="20%">{{ $t("BOX_27") }}</th>
+							<th width="40%" class="tar">TX</th>
+						</tr>
+						<tr v-for="item in rankList" :key="item.tx">
+							<td class="tal tac-xs">{{ getTimeFtt(item.crtime) }}</td>
+							<td class="tal">{{ $t(eventToLang[item.event]) }}</td>
+							<td>x{{ item.amount }}</td>
+							<td class="vertical-children">
+								<span v-if="item.state != 1 && item.state != -1">
+									<Loading />
+								</span>
+								<span v-if="item.state == 1">{{ $t("Common_09") }}</span>
+								<span v-if="item.state == -1">
+									<svg  viewBox="0 0 1024 1024"  width="13" height="13"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FF5B5C" p-id="3023"></path><path d="M328.988444 292.750222a17.066667 17.066667 0 0 1 24.120889 0L512 451.697778l158.890667-158.890667a17.066667 17.066667 0 0 1 24.120889 0l36.238222 36.238222a17.066667 17.066667 0 0 1 0 24.120889L572.302222 512l158.947556 158.833778a17.066667 17.066667 0 0 1 0 24.120889l-36.238222 36.238222a17.066667 17.066667 0 0 1-24.120889 0L512 572.302222l-158.833778 158.890667a17.066667 17.066667 0 0 1-24.120889 0l-36.238222-36.238222a17.066667 17.066667 0 0 1 0-24.120889L451.697778 512 292.750222 353.109333a17.066667 17.066667 0 0 1 0-24.120889l36.238222-36.238222z" fill="#FFFFFF"></path></svg>
+									&nbsp;
+									Fail
+								</span>
+							</td>
+							<td class="tar">
+								<img v-if="item.event == 'MintBox' && item.state == 1" @click="showHistoryDialog(item)" height="25" src="@/assets/icon/view.png" alt="" class="cur-point" />&nbsp;
+								<a :href="getTxUrl(item.tx)" target="_blank">
+									<img src="@/assets/icon/viewTx.png" alt="" class="cur-point" height="25" />
+								</a>
 							</td>
 						</tr>
-						<!-- <tbody class="my-rank">
-							<tr >
-								<td class="tal" style="border-top-left-radius:20px;border-bottom-left-radius:20px">
-									<span class="dib tac rank-icon" :class="{active: hashrateRankList.self.rank <= 3}">{{ hashrateRankList.self.rank || "-" }}</span >
-									<span style="margin-left: 20px"> {{ shorAddress(hashrateRankList.self.address) }} </span>
-								</td>
-								<td class="tar vertical-children" style="border-top-right-radius:20px;border-bottom-right-radius:20px">
-									<span  class="dib tal" >
-										{{ hashrateRankList.self.score || "-" }}
-									</span>&nbsp;
-									<img src="@/assets/icon/hash_icon.png" alt="" height="30" />
-								</td>
-							</tr>
-						</tbody> -->
 					</table>
 				</section>
-				<div class="loading" v-show="loading">
-					<Loading :width="30" :height="30"  />
-				</div>
 			</div>
-		</div>
 
-		<Dialog id="lottery-rule-dialog" :top="100" :width="400">
-			<h2>{{$t("Auction_22")}}</h2>
-			<p v-html="$t('Auction_23')" class="tal mgt-20" style="word-break: break-word;"></p>
-		</Dialog>
-		
+		</div>
 	</div>
 </template>
 
 <script>
-import { PetItem, Page, Loading, PetItemMin, Dialog } from '@/components';
+import { PetItem } from '@/components';
 import CommonMethod from '@/mixin/CommonMethod';
-import { Http, Wallet } from '@/utils';
-import { mapState } from 'vuex';
 
 const baseAttr = {
 	num: 1,
@@ -218,134 +125,22 @@ const baseAttr = {
 	gems: [0,0,0,0],
 	lvHashrate: 180,
 	location: "Wallet",
-	noPrice: true
 }
-let  t = null;
+
 export default {
-	components: {PetItem, Page, Loading, PetItemMin, Dialog},
+	components: {PetItem},
 	mixins: [CommonMethod],
 	data(){
 		return({
 			getCountDown: 5000,
-			isShowPastRound: 0, //是否显示上一期的Round
+			nowRound: 1,
 			momoDatas: [0,
-				// {...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243", block: 8776006, ts: 1625141100, hash: "-"},
-				{...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243", block: 8981888, ts: 1625760000, hash:"-"},
-				{...baseAttr, tokenId: 22, prototype: 60002, tokenName: "Name_242", block: 9167888, ts: 1626321600, hash:"-"},
-				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241", block: 9369488, ts: 1626926400, hash:"-"},
+				{...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243"},
+				{...baseAttr, tokenId: 22, prototype: 60002, tokenName: "Name_242"},
+				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241"},
 			],
-			rankListObj: {
-				list: [],
-				total_page: 0,
-				total_lottery_ticket: "-",
-			},
-			nowPage: 1,
-			myAddr: "",
-			loading: false,
-			luckerArr: [],
-			myLotteryData: {
-				total_vemobox: 0,
-				lottery_ticket: 0,
-				ticket_number_start: "-",
-				ticket_number_end: 0,
-			}
+			rankList: [],
 		})
-	},
-	async created(){
-		await this.setNowBlockNumber();
-		await this.getlotteryLucker();
-		await this.getLotteryRank();
-		await this.getMyLotteryData();
-		await this.setBlockHash();
-		if(t) clearInterval(t);
-		t = setInterval(async ()=>{
-			this.setNowBlockNumber();
-		}, 3000);
-	},
-	beforeDestroy(){
-		if(t) clearInterval(t);
-	},
-	watch: {
-		nowTs:function(newTs){
-			if(newTs % 20 == 0){
-				this.getMyLotteryData();
-				this.getLotteryRank(false);
-			}
-		},
-		isShowPastRound: function(){
-			this.setBlockHash();
-		}
-	},
-	computed:{
-		...mapState({
-			nowTs: (state) => state.globalState.data.nowTs,
-			getNowBlock: (state) => state.globalState.data.getNowBlock,
-		}),
-		getNowRound(){
-			let returnRound = 1;
-			let nowBlock = Number(this.getNowBlock);
-			if(nowBlock < this.momoDatas[3].block) returnRound  = 3;
-			if(nowBlock < this.momoDatas[2].block) returnRound  = 2;
-			if(nowBlock < this.momoDatas[1].block) returnRound  = 1;
-
-			//最后一期结束了
-			if(nowBlock > this.momoDatas[3].block) returnRound = 3;
-			return returnRound;
-		}
-	},
-	methods:{
-		async setBlockHash(){
-			let pos = this.getNowRound-this.isShowPastRound;
-			if(this.getNowRound > 1 && this.momoDatas[pos].hash == "-"){
-				let  res =  await Wallet.ETH.getBlockInfo(this.momoDatas[pos].block);
-				if(res){
-					this.momoDatas[pos].hash = res.hash;
-					this.$forceUpdate();
-				}
-			}
-		},
-		async setNowBlockNumber(){
-			let  res =  await Wallet.ETH.getBlockNumber();
-			this.$store.commit("globalState/setData", {getNowBlock: res});
-		},
-		async getlotteryLucker(){
-			let res = await Http.getlotteryLucker();
-			if(res){
-				this.luckerArr = res.list;
-			}
-		},
-		async getLotteryRank(needClear = true){
-			if(this.loading) return;
-			let obj = {
-				is_past: this.isShowPastRound,
-				page: this.nowPage
-			}
-			if(needClear){
-				this.rankListObj.list = [];
-			}
-			this.loading = true;
-			let data = await Http.getLotteryRank(obj);
-			this.loading = false;
-			if(data){
-				this.rankListObj = data;
-			}
-		},
-		async getMyLotteryData(needClear = false){
-			this.myAddr = await Wallet.ETH.getAccount();
-			if(needClear){
-				this.myLotteryData.ticket_number_start = "-";
-			}
-			// this.myAddr = "0x212e0955DdA4B206adBE9D49E7C4c599C1d80F4A";
-			let data = await Http.getMyLotteryRank(this.myAddr, this.isShowPastRound);
-			if(data){
-				this.myLotteryData = { ...this.myLotteryData, ...data};
-			}
-		},
-		onPageChange(page){
-			if(page == this.nowPage) return;
-			this.nowPage = page;
-			this.getLotteryRank();
-		}
 	}
 }
 </script>
@@ -353,16 +148,5 @@ export default {
 <style scoped>
 	.adv-panel:before{
 		background: linear-gradient(145deg,#ac2f2d 0%, #000  100%);
-	}
-	@media (max-width: 768px) {
-		#round-info .aveage-box {
-			display: block;
-		}
-		#round-info .ly-input {
-			width: 100%;
-		}
-		.pet_item{
-			width: 350px !important;
-		}
 	}
 </style>

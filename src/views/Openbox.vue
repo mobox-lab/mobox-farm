@@ -241,18 +241,20 @@ export default {
 			openLottie: null,
 			showOpenBoxCard: [],
 
-			petDataArr:[
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '50080',quality: 5,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 4,specialty: 0,tokenId:0,vType: 4, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-					// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-				],
+			testArr: [
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '50080',quality: 5,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 4,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+			],
+
+			petDataArr:[],
 
 			posArr:[
 				{line1:0,line2:0,line3:0, flexNum:0},
@@ -305,7 +307,7 @@ export default {
 					openBoxTemp.splice(index, 1);
 					//显示开箱子
 					console.log("start show");
-					// this.petDataArr = [];
+					this.petDataArr = [];
 					let showArr = [];
 					let {tokenIds, ids, tokens, amounts} = historyObj[item.tx];
 
@@ -597,12 +599,17 @@ export default {
 
 		//开箱子动画
 		openAnime(){
-			this.isAnimation = true;
-			document.getElementById("openbox-anime").classList.remove("animation-box-start");
-			window.$("#openbox-anime").hide();
-			window.$("#openbox-anime-new").show();
-			window.$(".show-card-item").addClass("animation");
-			if(this.openLottie) this.openLottie.goToAndPlay(0);
+			// this.petDataArr = [];
+			// this.testArr[0].vType = this.testArr[0].vType == 4?5:4;
+			// this.petDataArr = this.testArr;
+			// this.$nextTick(()=>{
+				this.isAnimation = true;
+				document.getElementById("openbox-anime").classList.remove("animation-box-start");
+				window.$("#openbox-anime").hide();
+				window.$("#openbox-anime-new").show();
+				window.$(".show-card-item").addClass("animation");
+				if(this.openLottie) this.openLottie.goToAndPlay(0);
+			// })
 		},
 
 		initCardAnime(){

@@ -3,27 +3,27 @@
 	<Dialog id="gemBag-dialog" :top="100" :width="450" :animation="isApprove">
 		<ul class="gem-tab">
 			<li v-for="item in gemType" :key="item" :class="['border_'+item, {active: item == selectGemType}]" class="tab-menu" @click="selectGemLv=1;needCompNum=1;selectGemType = item">
-				<img :src="require(`@/assets/market/${item+1}.png`)" alt=""  height="100%">
+				<img :src="require(`@/assets/gem/${item+1}.png`)" alt=""  height="100%">
 			</li>
 		</ul>
 		<div class="ly-input-content por">
 			<div class="aveage-box" v-for="item in [0, 4, 8]" :key="item">
 				<div v-for="item2 in [1,2,3, 4]" :key="item + item2" style="padding:5px" >
 					<div v-if="item + item2 <= 9" class="gem-item gem-border" :class="[{active: selectGemLv == item+item2},  'border_'+selectGemType, {'opa-6': gemBag[Number(selectGemType)+item + item2] <= 0}]" @click="selectGemLv = item+item2">
-						<img :src="require(`@/assets/market/${Number(selectGemType)+item + item2}.png`)" alt=""  width="100%">
+						<img :src="require(`@/assets/gem/${Number(selectGemType)+item + item2}.png`)" alt=""  width="100%">
 						<span class="gem-num stroke bold">{{gemBag[Number(selectGemType)+item + item2]}}</span>
 					</div>
 				</div>	
 			</div>
 		</div>
-		<div v-if="selectGemLv < nowMaxLv" class="ly-input-content mgt-10">
+		<div v-if="selectGemLv <= 4" class="ly-input-content mgt-10">
 			<div class="small opa-6 mgt-10">
 				{{$t("Gemstone_34")}}
 			</div>
 			<div class="mgt-20 aveage-box" >
 				<div class="tar">
 					<div class="gem-item dib" style=" width:70px;height:70px">
-						<img :src="require(`@/assets/market/${Number(selectGemType)+selectGemLv}.png`)" alt="" width="100%">
+						<img :src="require(`@/assets/gem/${Number(selectGemType)+selectGemLv}.png`)" alt="" width="100%">
 						<span class="gem-num stroke bold">{{getCompObj.consumeNum}}/3</span>
 					</div>
 				</div>
@@ -44,7 +44,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-else-if="selectGemLv == nowMaxLv"  class="ly-input-content mgt-10">
+		<div v-else-if="selectGemLv == 5"  class="ly-input-content mgt-10">
 			{{$t("Gemstone_35")}}
 		</div>
 		<div v-else  class="ly-input-content mgt-10">{{$t("Gemstone_36")}}</div>
@@ -55,7 +55,7 @@ import { Dialog, SelectNum, StatuButton } from '@/components';
 import { mapState } from 'vuex';
 import { Wallet } from '@/utils';
 import { CommonMethod } from '@/mixin';
-import { WalletConfig, ConstantConfig } from '@/config';
+import { WalletConfig } from '@/config';
 
 export default {
 	mixins: [CommonMethod],
@@ -67,7 +67,6 @@ export default {
 			selectGemType: 100,
 			needCompNum: 1,
 			hasApprove: -1,
-			nowMaxLv: ConstantConfig.NOW_MAX_GEM_LEVEL, //当前宝石开放最大等级
 		})
 	},
 	watch: {

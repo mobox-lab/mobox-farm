@@ -11,7 +11,7 @@ import Market from '../views/Market/Market.vue'
 import AuctionView from '../views/AuctionView.vue'
 import AuctionGemView from '../views/AuctionGemView.vue'
 import RentView from '../views/RentView.vue'
-import GemBuy from '../views/Gem/GemBuy.vue'
+import Activity from "../views/Activity/Activity.vue"
 
 Vue.use(VueRouter)
 
@@ -37,7 +37,7 @@ const routes = [
 		component: Market,
 	},
 	{
-		path: '/mypet',
+		path: '/mypet/:tabPos?',
 		name: 'Mypet',
 		component: Mypet
 	},
@@ -57,9 +57,9 @@ const routes = [
 		component: Rule
 	},
 	{
-		path: '/gemBuy/',
-		name: 'GemBuy',
-		component: GemBuy
+		path: '/activity/',
+		name: 'Activity',
+		component: Activity
 	},
 	{
 		path: '/auctionView/:petInfo',

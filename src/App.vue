@@ -47,12 +47,12 @@
 						<span>{{ $t("Menu_01") }}</span>
 					</li>
 				</router-link>
-				<router-link to="/gemBuy">
-					<li :class="this.$route.path == '/gemBuy' ? 'active' : ''">
+				<router-link to="/activity">
+					<li :class="this.$route.path == '/activity' ? 'active' : ''">
 						<span class="per-icon vertical-children">
-							<img src="./assets/icon/gem_menu_icon.png" alt="" width="25" />
+							<img src="./assets/icon/huodong.png" alt="" width="25" />
 						</span>
-						<span>{{$t("Gemstone_01")}}</span>
+						<span>活动</span>
 					</li>
 				</router-link>
 				<router-link to="/openbox">
@@ -64,7 +64,7 @@
 					</li>
 				</router-link>
 				<router-link to="/mypet">
-					<li :class="this.$route.path == '/mypet' ? 'active' : ''">
+					<li :class="this.$route.path.indexOf('/mypet') != -1  ? 'active' : ''">
 						<span class="per-icon vertical-children">
 							<img src="./assets/icon/mypet.png" alt="" height="30" />
 						</span>
@@ -156,12 +156,12 @@
 						<span  class="mgt-5">{{ $t("Menu_01") }}</span>
 					</li>
 				</router-link>
-				<router-link to="/gemBuy">
-					<li :class="this.$route.path == '/gemBuy' ? 'active' : ''">
+				<router-link to="/activity">
+					<li :class="this.$route.path == '/activity' ? 'active' : ''">
 						<span class="per-icon vertical-children">
-							<img src="./assets/icon/gem_menu_icon.png" alt="" width="60" />
+							<img src="./assets/icon/huodong.png" alt="" width="60" />
 						</span>
-						<span>{{$t("Gemstone_01")}}</span>
+						<span>活动</span>
 					</li>
 				</router-link>
 				<router-link to="/openbox">
@@ -347,7 +347,7 @@
 <script>
 import Pancake from "./views/Airdrop/Pancake";
 import QuickBuy from "./views/Market/Momo/QuickBuy";
-import GemBag from "./views/Gem/GemBag";
+import GemBag from "./views/Activity/Gem/GemBag";
 
 import {Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
 import { InitEth, InitTron, CommonMethod } from "@/mixin";

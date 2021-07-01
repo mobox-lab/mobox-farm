@@ -56,16 +56,12 @@
 		</div>
 		
 		<div class="mgt-50">
-			<span v-if="$parent.getCountDown  > 8640000 ">{{$t("Gemstone_50")}}</span>
-			<template v-else>
-				<p v-if="!isStartApply">{{$t("Gemstone_22")}}<span class="dotting"></span></p>
-				<p v-if="isHightAndIsMax && isStartApply">{{$t("Gemstone_26")}}</p>
-				<div class="tac" v-if="Number(inputNum) > 0 && isCanApply">
-					<p v-if="getCanUseTemMbox > 0">{{$t("Gemstone_11").replace("#0#",getCanUseTemMbox > getNeedPayMbox? getNeedPayMbox: getCanUseTemMbox)}}</p>
-					<p >{{$t("Gemstone_12").replace("#0#", getCanUseTemMbox > getNeedPayMbox? 0 : numFloor(getNeedPayMbox -   getCanUseTemMbox, 1e3))}}</p>
-				</div>
-			</template>
-
+			<p v-if="!isStartApply">{{$t("Gemstone_22")}}<span class="dotting"></span></p>
+			<p v-if="isHightAndIsMax && isStartApply">{{$t("Gemstone_26")}}</p>
+			<div class="tac" v-if="Number(inputNum) > 0 && isCanApply">
+				<p v-if="getCanUseTemMbox > 0">{{$t("Gemstone_11").replace("#0#",getCanUseTemMbox > getNeedPayMbox? getNeedPayMbox: getCanUseTemMbox)}}</p>
+				<p >{{$t("Gemstone_12").replace("#0#", getCanUseTemMbox > getNeedPayMbox? 0 : numFloor(getNeedPayMbox -   getCanUseTemMbox, 1e3))}}</p>
+			</div>
 			<div  :class="{'btn-group': mboxAllownceToApply == 0}">
 				<StatuButton :isLoading="lockBtn.mboxApproveToApplyLock > 0" data-step="1" class="mgt-10" style="width:70%" :onClick="approve" v-if="mboxAllownceToApply == 0">{{$t("Air-drop_16")}} MBOX</StatuButton>
 				<StatuButton :isLoading="lockBtn.applyGemLock > 0" :isDisable="mboxAllownceToApply <= 0 || !isCanApply" data-step="2" class="mgt-10" style="width:70%"  :onClick="()=>applyForGem(dialog_tab_pos == 0?'normal':'high')">
@@ -177,7 +173,7 @@ export default {
 			//没有输入
 			if(Number(this.inputNum) <= 0) isCanApply = false;
 			//余额不足
-			// if(this.getNeedPayMbox > Number(this.coinArr["MBOX"].balance) + this.getCanUseTemMbox) isCanApply = false;
+			if(this.getNeedPayMbox > Number(this.coinArr["MBOX"].balance) + this.getCanUseTemMbox) isCanApply = false;
 
 			//申购已结束
 			// if(this.gemApplyEndCountDown <= 0) isCanApply = false;
@@ -220,11 +216,6 @@ export default {
 			}
 		},
 		async applyForGem(type){
-			if(this.getNeedPayMbox > Number(this.coinArr["MBOX"].balance) + this.getCanUseTemMbox){
-				this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox())
-				return
-			}
-
 			if(Number(this.inputNum) <= 0) return;
 			let hash = await Wallet.ETH.applyForGem(type, this.inputNum, ()=>{
 				this.$parent.getUserApplyInfo();

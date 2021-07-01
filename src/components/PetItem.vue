@@ -12,11 +12,14 @@
 			</div>
 		</div>
 
+		
+
 		<!-- 抽卡特效 -->
 		<div v-if="data.item.isOpenCard">
-			<div id="light-shadow" ref="lightShadow" v-if="data.item.vType >= 4"></div>
-			<div id="light-border-show" class="v5b" v-if="data.item.vType == 5"></div>
-			<div id="light-border-show" class="v6b" v-if="data.item.vType == 6"></div>
+			<!-- <div id="light-border-show" class="v5b" v-show="data.item.vType == 5"></div> -->
+			<!-- <div id="light-border-show" class="v6b" v-show="data.item.vType == 6"></div> -->
+			<div class="light-shadow" ref="lightShadowV4" v-show="data.item.vType == 4"></div>
+			<div class="light-shadow" ref="lightShadowV5" v-show="data.item.vType == 5"></div>
 		</div>
 
 		<img class="pet_img" :src="require(`../assets/pet/${data.item.prototype}.png`)" alt="" width="120" height="120" />
@@ -70,23 +73,34 @@ export default {
 	},
 
 	async mounted() {
-		if(this.data.item.vType >= 4 && this.data.item.isOpenCard){
-			lottie.loadAnimation({
-				container: this.$refs.lightShadow, // the dom element that will contain the animation
-				renderer: 'svg',
-				loop: true,
-				autoplay: true,
-				path: `./animation/lightShadow/v${this.data.item.vType}.json` // the path to the animation json
-			});
-		}
-
+		this.loadBorderLight();
 		await Common.sleep(Common.getRandomNum(200, 1000));
 		if (this.$refs.anime && this.data.item.location == "stake") {
 			this.$refs.anime.classList.add("animation-harmer");
 		}
-
-		
 	},
+
+	methods: {
+		loadBorderLight(){
+			if(this.data.item.vType >= 4 && this.data.item.isOpenCard){
+				console.log("loadBorderLight");
+				lottie.loadAnimation({
+					container: this.$refs.lightShadowV4, // the dom element that will contain the animation
+					renderer: 'svg',
+					loop: true,
+					autoplay: true,
+					path: `./animation/lightShadow/v4.json` ,// the path to the animation json
+				});
+				lottie.loadAnimation({
+					container: this.$refs.lightShadowV5, // the dom element that will contain the animation
+					renderer: 'svg',
+					loop: true,
+					autoplay: true,
+					path: `./animation/lightShadow/v5.json` ,// the path to the animation json
+				});
+			}
+		}
+	}
 };
 </script>
 
@@ -126,7 +140,7 @@ export default {
 	top:50%;
 	transform: translate(-50%, -50%) scale(1.07,0.96);
 }
-#light-shadow{
+.light-shadow{
 	position: absolute;
 	left: 0px;
 	right: 0px;

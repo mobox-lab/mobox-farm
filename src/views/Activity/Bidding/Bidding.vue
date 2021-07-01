@@ -4,20 +4,20 @@
 			<section class="col-md-7" style="padding:10px">
 				<div class="adv-panel">
 					<h1 class="vertical-children">
-						<span>传说MOMO竞拍</span>
+						<span>传说MOMO竞拍{{getNowRound}}</span>
 						<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="30">
 					</h1>
 					<div class="tac mgt-10">
 						<template >
-							<p v-if="getCountDown >0">{{$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
+							<p v-if="Number(bidInfo.bidEndTime - nowTs) >0">{{$t("Gemstone_21")}}: {{getLeftTime(bidInfo.bidEndTime - nowTs)}}</p>
 							<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
 						</template>
 
-						<div style="height:280px">
-							<PetItem v-bind:data="{ item: momoDatas[nowRound] }" />
+						<div>
+							<PetItem v-bind:data="{ item: momoDatas[getNowRound] }" />
 						</div>
 						<router-link to="/mypet/2">
-							<p class="cur-point small">查看升级预览 >> </p>
+							<p class="cur-point small mgt-10">查看升级预览 >> </p>
 						</router-link>
 					</div>
 				</div>
@@ -27,17 +27,24 @@
 					<div class="aveage-box tal" style="border-bottom: 1px solid #162340;padding-bottom:20px">
 						<div>
 							<p class="small opa-6">当前竞拍人</p>
-							<h4>0xe8...be13</h4>
+							<h4 v-if="bidInfo.currBidder == '-' " >
+								<Loading />
+							</h4>
+							<h4 v-else>{{shorAddress(bidInfo.currBidder)}}</h4>
 						</div>
 						<div >
 							<p class="small opa-6">竞拍价</p>
-							<h4 class="vertical-children">
+							<h4 v-if="bidInfo.currBidder == '-' " >
+								<Loading />
+							</h4>
+							<h4 class="vertical-children" v-else>
 								<img src="@/assets/coin/MBOX.png" alt="" height="20">
-								<span class="mgl-5">1000000 MBOX</span>
+								<span class="mgl-5">{{bidInfo.currPrice}} MBOX</span>
 							</h4>
 						</div>
 						<div class="tac">
-							<button class="btn-primary">我要竞拍</button>
+							<StatuButton :btnType="'btn-success'" v-if="bidInfo.toClaimTokenId != '-' && Number(bidInfo.toClaimTokenId) > 0 " :isDisable="bidInfo.currPrice =='-' " :isLoading="lockBtn.bidLock > 0" :onClick="takeMOMO">领取MOMO</StatuButton>
+							<StatuButton v-else  :isDisable="bidInfo.currPrice =='-' " :onClick="()=>{oprDialog('bid-momo-dialog', 'block')}" >我要竞拍</StatuButton>
 						</div>
 					</div>
 					<div class="mgt-30 tal">
@@ -109,12 +116,47 @@
 			</div>
 
 		</div>
+		<Dialog id="bid-momo-dialog" :top="100" :width="400">
+			<div class="tal mgt-10">
+				<div class="tab-menu active" >竞拍</div>
+			</div>
+			<div class="tab-body">
+				<div class="tab-content">
+					<div class="aveage-box">
+						<p class="tal small opa-6">输入竞拍价格({{ '≥' + getNowNeedPrice}})</p>
+					</div>
+					<div class="mgt-10 por">
+						<div class="ly-input-pre-icon" style="zoom: 0.75">
+							<img src="@/assets/coin/MBOX.png" height="40" alt="" />
+						</div>
+						<input type="text" class="ly-input tac" style="width:100%;padding: 0px 50px" v-model="inputValue" v-number :placeholder="  '≥' + getNowNeedPrice " >
+					</div>
+					<div class="aveage-box mgt-10">
+						<p class="tal small">{{$t("Air-drop_11")}}</p>
+						<div class="tar small">
+							<p>{{coinArr['MBOX'].balance}} MBOX</p>
+						</div>
+					</div>
+					
+					<div :class="coinArr['MBOX'].allowanceToBid == 0 ?'btn-group':''"  style="width:280px;margin:10px auto">
+						<StatuButton  data-step="1" v-if="coinArr['MBOX'].allowanceToBid == 0" class="mgt-10" style="width:80%" :onClick="approve" :isLoading="coinArr['MBOX'].isApproving">{{$t("Air-drop_16")}} MBOX</StatuButton>
+						<StatuButton  data-step="2" :isDisable="!(coinArr['MBOX'].allowanceToBid > 0) || Number(inputValue) < getNowNeedPrice || Number(inputValue) > coinArr['MBOX'].balance" class="mgt-10" style="width:80%" :onClick="goBid" :isLoading="lockBtn.bidLock > 0">
+							竞拍
+						</StatuButton>
+					</div>
+
+				</div>
+			</div>
+		</Dialog>
 	</div>
 </template>
 
 <script>
-import { PetItem } from '@/components';
+import { PetItem, Dialog, StatuButton, Loading } from '@/components';
 import CommonMethod from '@/mixin/CommonMethod';
+import { Wallet, Common } from '@/utils';
+import { mapState } from 'vuex';
+import { WalletConfig, PancakeConfig } from '@/config';
 
 const baseAttr = {
 	num: 1,
@@ -131,19 +173,113 @@ const baseAttr = {
 }
 
 export default {
-	components: {PetItem},
+	components: {PetItem, Dialog, StatuButton, Loading},
 	mixins: [CommonMethod],
 	data(){
 		return({
 			getCountDown: 5000,
-			nowRound: 1,
+			inputValue: "",
 			momoDatas: [0,
-				{...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243"},
-				{...baseAttr, tokenId: 22, prototype: 60002, tokenName: "Name_242"},
-				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241"},
+				{...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243", block: 8982661, ts: 1625760000},
+				{...baseAttr, tokenId: 22, prototype: 60002, tokenName: "Name_242", block: 9184261, ts: 1626364800},
+				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241", block: 9385861, ts: 1626969600},
 			],
 			rankList: [],
+			bidInfo: {
+				state: "-",
+				bidTs: "-",
+				tokenId: "-",
+				currPrice: "-",
+				currBidder: "-",
+				bidEndTime: 0,
+				bidStartTime: "-",
+				toClaimTokenId: "-",
+			}
 		})
+	},
+	computed: {
+		...mapState({
+			coinArr: (state) => state.bnbState.data.coinArr,
+			lockBtn: (state) => state.globalState.data.lockBtn,
+			nowTs: (state) => state.globalState.data.nowTs,
+		}),
+		getNowNeedPrice(){
+			let price = 1000 * 1.2;
+			if(Number(this.bidInfo.currPrice) * 1.2 > price){
+				price = this.numFloor(Number(this.bidInfo.currPrice) * 1.2);
+			}
+			return price;
+		},
+		getNowRound(){
+			let returnRound = 3;
+			if(this.momoDatas[3].ts > this.nowTs) returnRound = 3;
+			if(this.momoDatas[2].ts > this.nowTs) returnRound = 2;
+			if(this.momoDatas[1].ts > this.nowTs) returnRound = 1;
+			return returnRound;
+		}
+	},
+	async created(){
+		this.getBidInfo();
+		await Wallet.ETH.getAccount();
+		//查询授权情况
+		await this.viewAllowance();
+	},
+	methods: {
+		async viewAllowance(){
+			let coinKey = "MBOX";
+			if(this.coinArr[coinKey].allowanceToRent > 0) return;
+
+			let allowanceToBid = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, WalletConfig.ETH.momoBid, false);
+			if(allowanceToBid){
+				this.coinArr[coinKey].allowanceToBid = Number(allowanceToBid);
+				this.coinArr.ts = new Date().valueOf();
+				this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+			}
+		},
+		//授权
+		async approve(){
+			let coinKey = "MBOX";
+			let {allowanceToBid, isApproving} = this.coinArr[coinKey];
+			if(allowanceToBid > 0 || isApproving) return;
+
+			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr,
+			WalletConfig.ETH.momoBid, {coinKey, type: "allowanceToBid"});
+			if (hash) {
+				this.coinArr[coinKey].isApproving = true;
+			}
+		},
+		async getBidInfo(){
+			let address = await Wallet.ETH.getAccount();
+			let res = await Wallet.ETH.getBidInfo(address);
+			console.log("getBidInfo", res);
+			if(res){
+				res.currPrice = this.numFloor(res.currPrice/1e18, 2);
+				this.bidInfo = res;
+			}
+		},
+		//竞拍momo
+		async goBid(){
+			let obj = {
+				amount: Number(this.inputValue),
+				tokenId: this.bidInfo.tokenId
+			}
+			let hash = await Wallet.ETH.bidMomo(obj, ()=>{
+				this.getBidInfo();
+			});
+			if(hash){
+				this.inputValue = "";
+				Common.app.lockBtnMethod("bidLock");
+			}
+		},
+		//领取momo
+		async takeMOMO(){
+			let hash = await Wallet.ETH.withdraw721(()=>{
+				this.getBidInfo();
+			});
+			if(hash){
+				Common.app.lockBtnMethod("bidLock");
+			}
+		}
 	}
 }
 </script>

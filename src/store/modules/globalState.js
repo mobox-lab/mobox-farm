@@ -44,6 +44,7 @@ const state = () => ({
 			mboxApproveToVeMboxLock:0,//mbox授权给veMbox合约锁
 			moveVeMboxLock: 0,
 			joinStakeLock: 0,
+			bidLock: 0,
 		},
 		walletStatus: {
 			status: 1, //1,等待中，2，reject，3，success

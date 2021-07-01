@@ -8,8 +8,8 @@
 			<img :src=" require(`../assets/icon/${ category_img[petData.category] }.png`) " alt="" width="10" height="10" />
 		</p>
 		<div class="pet-min-hover" ref="petMinHover">
-			<PetItem :data="{item: petData}" :class="petData.vType >= 4?'market':'' " >
-				<div class="vertical-children mgt-10" style="font-size: 18px" v-if="petData.vType >= 4">
+			<PetItem :data="{item: petData}" :class="petData.vType >= 4 && !petData.noPrice?'market':'' " >
+				<div class="vertical-children mgt-10" style="font-size: 18px" v-if="petData.vType >= 4 && !petData.noPrice">
 					<img v-if="petData.isRent" src="../assets/coin/MBOX.png" alt="" height="20"/>&nbsp;
 					<img v-else src="../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
 					<span>{{numFloor(petData.bidPrice/1e9, 10000)}}</span>

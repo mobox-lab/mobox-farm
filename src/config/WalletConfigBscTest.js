@@ -24,10 +24,12 @@ export default class WalletConfig {
 				decimals: 1e18,
 			}
 		},
+		momoBid: "0x0d7ABEd534a2Ddce9fd9B20ac0049F53721543eb",//v6竞拍
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",
 		view_tx_url: "https://bscscan.com/tx/",
+		view_block_url: "https://bscscan.com/block/",
 
 		MAX_ORDER: 128, //质押拍卖最大上架数量
 	}

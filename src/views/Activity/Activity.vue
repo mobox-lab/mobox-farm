@@ -10,8 +10,8 @@
 			</div>
 		</section>
 		<section>
-			<Lottery v-if="tabKey == tabArr[0].key " />
-			<Bidding v-if="tabKey == tabArr[1].key " />
+			<Bidding v-if="tabKey == tabArr[0].key " />
+			<Lottery v-if="tabKey == tabArr[1].key " />
 			<GemBuy v-if="tabKey == tabArr[2].key " />
 		</section>
 	</div>
@@ -26,10 +26,10 @@ export default {
 	components: {GemBuy, Lottery, Bidding},
 	data(){
 		return({
-			tabKey: 'chouJiang',
+			tabKey: 'jinPai',
 			tabArr: [
-				{icon: require("@/assets/icon/choujiang.png"), text: "抽奖", key: "chouJiang"},
 				{icon: require("@/assets/icon/momobidicon.png"), text: "竞拍", key: "jinPai"},
+				{icon: require("@/assets/icon/choujiang.png"), text: "抽奖", key: "chouJiang"},
 				{icon: require("@/assets/icon/yellow_icon.png"), text: "宝石申购", key: "shenGou"},
 			]
 		})

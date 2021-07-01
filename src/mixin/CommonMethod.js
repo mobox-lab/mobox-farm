@@ -32,6 +32,9 @@ const CommonMethod = {
 		getTxUrl(tx) {
 			return WalletConfig.ETH.view_tx_url + tx;
 		},
+		getBlockUrl(block){
+			return WalletConfig.ETH.view_block_url + block;
+		},
 		hackReloadMethod(){
 			this.hackReload =  "page_"+new Date().valueOf();
 		},
@@ -81,6 +84,10 @@ const CommonMethod = {
 		shorAddress(address) {
 			if (!address) return ""
 			return address.substring(0, 4).concat("...").concat(address.substring(address.length - 4, address.length));
+		},
+		shortHash(hash) {
+			if (!hash) return ""
+			return hash.substring(0, 6).concat("...").concat(hash.substring(hash.length - 6, hash.length));
 		},
 		shortStr(name) {
 			if (!name) return ""

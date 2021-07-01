@@ -3,8 +3,8 @@ import {EventBus} from "@/utils";
 import {EventConfig} from '@/config';
 export default class HTTP {
 	// static serverNode = "https://nfttestapi.mobox.io"; //测试
-	static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
-	// static serverNode = "http://192.168.5.78:3000"; // 测试
+	// static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
+	static serverNode = "http://192.168.5.78:3000"; // 测试
 
 	static async post(url, sendData) {
 		try {
@@ -228,4 +228,19 @@ export default class HTTP {
 		let { data } = await this.get(`/gem/apply_result/`, {taker: addr, roundIndex});
 		return data;
 	}
+
+	//获取抽奖排名
+	static async getLotteryRank({is_past, page}){
+		let { data } = await this.get(`/vemobox/lottery/rank/`, {is_past, page});
+		return data;
+	}
+	static async getMyLotteryRank(address){
+		let { data } = await this.get(`/vemobox/lottery/self/`, {address});
+		return data;
+	}
+	static async getlotteryLucker(){
+		let { data } = await this.get(`/vemobox/lottery/luckers`,);
+		return data;
+	}
+
 }

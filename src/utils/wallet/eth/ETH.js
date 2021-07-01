@@ -43,6 +43,15 @@ export default class ETH {
 			return res.result;
 		}
 	}
+	static async getBlockNumber(){
+		let res = await this.web3.eth.getBlockNumber();
+		return res;
+	}
+	static async getBlockInfo(blockNumber){
+		let res = await this.web3.eth.getBlock(blockNumber);
+		console.log("getBlockInfo", res, blockNumber);
+		return res;
+	}
 	//初始化合约
 	static initContract() {
 		this.boxTokenContract = new this.web3.eth.Contract([
@@ -2614,6 +2623,95 @@ export default class ETH {
 					console.log("joinStake success!!!!!");
 					Common.app.unLockBtn("joinStakeLock");
 					await Common.app.getPoolsEarns();
+				}
+			)
+		});
+
+	}
+
+	//获取用户可以领取的信息(包括已经结束的, 但是未领取的)
+	static async getBidInfo(address){
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "getBidInfo",
+				"type": "function",
+				"inputs": [
+					{"name": "bider","type": "address"},
+				],
+				"outputs": [
+					{"name": "currBidder","type": "address"},
+					{"name": "bidTs","type": "uint256"},
+					{"name": "tokenId","type": "uint256"},
+					{"name": "state","type": "uint256"},
+					{"name": "currPrice","type": "uint256"},
+					{"name": "bidStartTime","type": "uint256"},
+					{"name": "bidEndTime","type": "uint256"},
+					{"name": "toClaimTokenId","type": "uint256"},
+				],
+			}
+		], WalletConfig.ETH.momoBid);
+
+		return new Promise(resolve => {
+			contract.methods.getBidInfo(address).call().then(data => {
+				resolve(data);
+			})
+		});
+	}
+
+	static async bidMomo({amount, tokenId}, recipt){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "bid",
+				"type": "function",
+				"inputs": [
+					{"name": "amount","type": "uint256"},
+					{"name": "tokenId","type": "uint256"},
+				],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.momoBid);
+
+		amount =  this.numToHex(BigNumber(amount).times(BigNumber(1e18)));
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.bid(amount,tokenId), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					console.log("bidMomo success!!!!!");
+					Common.app.unLockBtn("bidLock");
+					recipt();
+				}
+			)
+		});
+
+	}
+	//领取MOMO
+	static async withdraw721(recipt){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "withdraw721",
+				"type": "function",
+				"inputs": [],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.momoBid);
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.withdraw721(), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					console.log("withdraw721 success!!!!!");
+					Common.app.unLockBtn("bidLock");
+					Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
+					recipt();
 				}
 			)
 		});

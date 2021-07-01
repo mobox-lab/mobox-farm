@@ -625,7 +625,7 @@ svg {
 
 .ly-input {
 	border-radius: 8px;
-	height:40px;
+	height:35px;
 	outline: none;
 	background: #2A2F35;
 	border: none;
@@ -1232,6 +1232,7 @@ svg {
 	border-radius: 40px;
 	padding: 2px 8px;
 	font-size: 12px;
+	min-width: 28px;
 }
 .rank-icon.active{
 	background:#E46B2B;

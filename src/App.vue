@@ -52,7 +52,7 @@
 						<span class="per-icon vertical-children">
 							<img src="./assets/icon/huodong.png" alt="" width="25" />
 						</span>
-						<span>活动</span>
+						<span>{{$t('Auction_01')}}</span>
 					</li>
 				</router-link>
 				<router-link to="/openbox">
@@ -161,7 +161,7 @@
 						<span class="per-icon vertical-children">
 							<img src="./assets/icon/huodong.png" alt="" width="60" />
 						</span>
-						<span>活动</span>
+						<span>{{$t("Auction_01")}}</span>
 					</li>
 				</router-link>
 				<router-link to="/openbox">
@@ -294,6 +294,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8)">
 					<div >
+						<h3 class="tac">{{$t("Notice_17")}}</h3>
+						<span v-html="$t('Notice_16')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_15")}}</h3>
 						<span v-html="$t('Notice_14')" ></span>
 					</div>
@@ -440,7 +444,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "1.3"
+			noticeVersion: "1.4"
 		};
 	},
 	watch: {

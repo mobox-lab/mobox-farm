@@ -40,15 +40,15 @@
 		</div>
 		<div :class="marketRents.list.length < 4 ? 'tal' : ''"  class="mgt-10 vertical-children" style="min-height:500px">
 			<router-link :to="'/rentView/'+ item.tokenId"  v-for="item in marketRents.list" :key="item.tx + item.index">
-				<PetItem  v-bind:data="{item: item}" class="market " :class="{'opa-6': nowTs -item.uptime <=  600}" v-if="item.tokenId != 0 " >
+				<PetItem  v-bind:data="{item: item}" class="market " :class="{'opa-6': nowTs -item.uptime <=  120}" v-if="item.tokenId != 0 " >
 					<div class="aveage-box" style="color:#fff">
 						<div class="vertical-children  tal" style="font-size: 18px;flex:1">
 							<img src="@/assets/icon/rent_time.png" alt="" height="20"/>&nbsp;
 							<span>{{item.rentDays}} <sub class="small">{{$t("Hire_46")}}</sub></span>
 						</div>
-						<div v-if="nowTs -item.uptime <=  600" class=" mgt-10 small" style="position: absolute;right: 15px;top: -100px;transform: translateY(-50%);">
+						<div v-if="nowTs -item.uptime <=  120" class=" mgt-10 small" style="position: absolute;right: 15px;top: -100px;transform: translateY(-50%);">
 							<p class="small">{{$t("Market_30")}}<span class="dotting"></span></p>
-							<p >{{getLeftTime(Number(item.uptime)+600- nowTs)}}</p>
+							<p >{{getLeftTime(Number(item.uptime)+120- nowTs)}}</p>
 						</div>
 						<div class="vertical-children tar" style="font-size: 18px;flex:2">
 							<img src="@/assets/coin/MBOX.png" alt="" height="20"/>&nbsp;

@@ -1,11 +1,11 @@
 <style src="./activity.css"></style>
 <template>
 	<div class="center-box ">
-		<section style="padding:10px">
+		<section style="padding:10px" id="activity-type">
 			<div style="text-align: left;border-bottom: 1px solid #162340" class="mgt-10">
 				<div class="activity-type-list-item vertical-children " v-for="item in tabArr" :key="item.key" :class="{active: tabKey == item.key}" @click="tabKey = item.key">
 					<img :src="item.icon" alt="" height="30">&nbsp;
-					<span>{{item.text}}</span>
+					<span>{{$t(item.text)}}</span>
 				</div>
 			</div>
 		</section>
@@ -28,9 +28,9 @@ export default {
 		return({
 			tabKey: 'jinPai',
 			tabArr: [
-				{icon: require("@/assets/icon/momobidicon.png"), text: "竞拍", key: "jinPai"},
-				{icon: require("@/assets/icon/choujiang.png"), text: "抽奖", key: "chouJiang"},
-				{icon: require("@/assets/icon/yellow_icon.png"), text: "宝石申购", key: "shenGou"},
+				{icon: require("@/assets/icon/momobidicon.png"), text: "Auction_03", key: "jinPai"},
+				{icon: require("@/assets/icon/choujiang.png"), text: "Auction_02", key: "chouJiang"},
+				{icon: require("@/assets/icon/yellow_icon.png"), text: "Gemstone_01", key: "shenGou"},
 			]
 		})
 	}

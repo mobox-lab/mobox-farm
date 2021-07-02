@@ -24,7 +24,7 @@ export default class WalletConfig {
 				decimals: 1e18,
 			}
 		},
-		momoBid: "0x0d7ABEd534a2Ddce9fd9B20ac0049F53721543eb",//v6竞拍
+		momoBid: "0xFaE911aa353e598908DD2cFd6e88E35dE588974f",//v6竞拍
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

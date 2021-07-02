@@ -116,10 +116,10 @@
 							<p >{{$t("Hire_21")}}</p>
 							<div :class="coinArr['MBOX'].allowanceToRent == 0 ?'btn-group':''"  style="width:280px;margin:10px auto">
 								<StatuButton  data-step="1" v-if="coinArr['MBOX'].allowanceToRent == 0" class="mgt-10" style="width:80%" :onClick="approve" :isLoading="coinArr['MBOX'].isApproving">{{$t("Air-drop_16")}} MBOX</StatuButton>
-								<StatuButton  data-step="2" :isDisable="!(coinArr['MBOX'].allowanceToRent > 0) || nowTs - statusObj.startTime <= 600" class="mgt-10" style="width:80%" :onClick="rentPet" :isLoading="lockBtn.rentLock > 0">
-									<template v-if="nowTs - statusObj.startTime <= 600">
+								<StatuButton  data-step="2" :isDisable="!(coinArr['MBOX'].allowanceToRent > 0) || nowTs - statusObj.startTime <= 120" class="mgt-10" style="width:80%" :onClick="rentPet" :isLoading="lockBtn.rentLock > 0">
+									<template v-if="nowTs - statusObj.startTime <= 120">
 										<img src="@/assets/icon/lock.png" alt="" height="20" style="position:absolute;left:10px;top:6px">
-										<span>{{getLeftTime(Number(statusObj.startTime) + 600 - nowTs)}}</span>
+										<span>{{getLeftTime(Number(statusObj.startTime) + 120 - nowTs)}}</span>
 									</template>
 									<span v-else>{{$t("Hire_44")}}</span>
 								</StatuButton>

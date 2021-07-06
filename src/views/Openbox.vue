@@ -10,13 +10,16 @@
 					<br />
 					<div class="por box"  style="height:300px;width:300px; margin:0px auto; ">
 						<div id="openbox-anime-new" class="hide"></div>
-						<div class="animation-box mgt-50" id="openbox-anime"></div>
+						<!-- <div class="animation-box mgt-50 hide" id="openbox-anime"></div> -->
+						<div class="box-show" @click="playBoxAnime2">
+							<div id="box-spine"></div>
+						</div>
 					</div>
 					<div id="show-card" class="hide" @click="initCardAnime">
 						<div id="show-card-cont" class="animate__animated  animate__zoomIn">
 							<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
 							<div v-if="posArr[petDataArr.length].line1" class="card-cont-row"  id="show-card-cont-row1">
-								<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line1" :key="key+10" v-on:animationend="animationend">
+								<div class="show-card-item dib cur-point" v-for="key in posArr[petDataArr.length].line1" :key="key+10" v-on:animationend="animationend" @click="openCard">
 									<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
 									<div class="front">
 										<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
@@ -27,7 +30,7 @@
 								</div>
 							</div>
 							<div v-if="posArr[petDataArr.length].line2" class="card-cont-row "   id="show-card-cont-row2">
-								<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line2" :key="key+20" v-on:animationend="animationend">
+								<div class="show-card-item dib cur-point" v-for="key in posArr[petDataArr.length].line2" :key="key+20" v-on:animationend="animationend" @click="openCard">
 									<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
 									<div class="front">
 										<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
@@ -38,7 +41,7 @@
 								</div>
 							</div>
 							<div v-if="posArr[petDataArr.length].line3" class="card-cont-row"   id="show-card-cont-row3" >
-								<div class="show-card-item dib " v-for="key in posArr[petDataArr.length].line3" :key="key+30" v-on:animationend="animationend">
+								<div class="show-card-item dib cur-point " v-for="key in posArr[petDataArr.length].line3" :key="key+30" v-on:animationend="animationend" @click="openCard">
 									<img style="opacity:0" src="../assets/momo-back.png" width="252" height="180" alt=""/>
 									<div class="front">
 										<img src="../assets/momo-back.png" width="252" height="180" alt=""/>
@@ -53,8 +56,11 @@
 					</div>
 					<br />
 
-					<button class="btn-primary hide" @click="playBoxAnime">test animation</button>
-					<button class="btn-primary hide" @click="openAnime">test Open</button>
+					<button class="btn-primary " @click="playBoxAnime">抖动 1</button>
+					<button class="btn-primary mgl-5" @click="openAnime">打开 1</button>
+
+					<button class="btn-primary mgl-10" @click="playBoxAnime2">抖动 2</button>
+					<button class="btn-primary mgl-5" @click="openAnime2">打开 2</button>
 				</div>
 			</section>
 
@@ -268,7 +274,9 @@ export default {
 				{line1:2,line2:4,line3:2, flexNum:0},
 				{line1:3,line2:3,line3:3, flexNum:0},
 				{line1:3,line2:4,line3:3, flexNum:0},
-			]
+			],
+
+			boxSpine: null,
 		};
 	},
 	computed: {
@@ -421,8 +429,6 @@ export default {
 	},
 
 	mounted() {
-		EventBus.$on(EventConfig.OpenBoxConfirm, this.stopBoxAnime);
-		EventBus.$on(EventConfig.OpenBoxFail, this.stopBoxAnime);
 		EventBus.$emit(EventConfig.OpenBoxHistory, { chain: "eth" });
 
 		timer = setInterval(() => {
@@ -444,6 +450,22 @@ export default {
 			document.querySelector("#show-card").classList.remove("hide");
 		}
 
+		this.boxSpine = new window.spine.SpineWidget("box-spine", {
+			json: "/animation/boxV2/baoxiang.json",
+			atlas: "/animation/boxV2/baoxiang.atlas",
+			backgroundColor: "#00000000",
+			animation: "daiji",
+			loop: true,
+			fitToCanvas: false,
+			scale:0.5,
+			x:350,
+			y: 0,
+			success: ()=>{
+				this.boxSpine.state.timeScale = 0.8;
+			}
+		});
+
+
 		//如果有临时开箱子数据就让箱子继续晃动
 		if(this.isOpening){
 			document.getElementById("openbox-anime").classList.add("animation-box-start");
@@ -451,8 +473,6 @@ export default {
 
 	},
 	beforeDestroy() {
-		EventBus.$off(EventConfig.OpenBoxConfirm, this.stopBoxAnime);
-		EventBus.$off(EventConfig.OpenBoxFail, this.stopBoxAnime);
 		if (timer != null) clearInterval(timer);
 	},
 	methods: {
@@ -464,11 +484,6 @@ export default {
 		showOpenBox(){
 			this.oprDialog('open-box-dialog', 'block'); 
 			this.openBox = this.canOpenBox > this.maxOpenOne ? this.maxOpenOne : this.canOpenBox || 1;
-		},
-		//开箱子合约确认
-		async stopBoxAnime() {
-			
-			// document.getElementById("openbox-anime").classList.remove("animation-box-start");
 		},
 
 		getTxUrl(tx) {
@@ -599,17 +614,47 @@ export default {
 
 		//开箱子动画
 		openAnime(){
-			// this.petDataArr = [];
-			// this.testArr[0].vType = this.testArr[0].vType == 4?5:4;
-			// this.petDataArr = this.testArr;
-			// this.$nextTick(()=>{
+			this.petDataArr = [];
+			this.testArr[0].vType = this.testArr[0].vType == 4?5:4;
+			this.petDataArr = this.testArr;
+			this.$nextTick(()=>{
 				this.isAnimation = true;
 				document.getElementById("openbox-anime").classList.remove("animation-box-start");
 				window.$("#openbox-anime").hide();
 				window.$("#openbox-anime-new").show();
 				window.$(".show-card-item").addClass("animation");
 				if(this.openLottie) this.openLottie.goToAndPlay(0);
-			// })
+			})
+		},
+
+		//箱子抖动
+		playBoxAnime2(){
+			window.$(".box-show").removeClass("box-show-open");
+			this.boxSpine.config.loop = true;
+			this.boxSpine.setAnimation("doudong", true);
+		},
+		//箱子打开
+		openAnime2(){
+			this.petDataArr = [];
+			this.testArr[0].vType = this.testArr[0].vType == 4?5:4;
+			this.petDataArr = [...this.testArr];
+			this.$nextTick(()=>{
+				this.isAnimation = true;
+				// window.$(".show-card-item").addClass("animation");
+				//开始spine动画
+				window.$(".box-show").addClass("box-show-open");
+				this.boxSpine.config.loop = false;
+				this.boxSpine.setAnimation("baoxiangdakai", {
+					complete: ()=>{
+						document.querySelector("#show-card").classList.remove("hide");
+					}
+				});
+			})
+		},
+
+		openCard(e){
+			e.stopPropagation();
+			window.$(e.currentTarget).addClass("animation");
 		},
 
 		initCardAnime(){
@@ -619,6 +664,10 @@ export default {
 			window.$("#openbox-anime-new").hide();
 			window.$(".show-card-item").removeClass("animation");
 
+			window.$(".box-show").removeClass("box-show-open");
+			this.boxSpine.config.loop = false;
+			this.boxSpine.setAnimation("daiji", true);
+
 		}
 		
 	},
@@ -626,6 +675,35 @@ export default {
 </script>
 
 <style >
+.box-show{
+	position: absolute;
+	top: 160px;
+	left: 190px;
+}
+.box-show-open{
+	position: fixed;
+	top: 0px;
+	width: 100vw;
+	height: 100vh;
+	z-index: 999998;
+	background: rgba(0,0,0,0.8);
+	left: 0px;
+}
+#box-spine{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	height: 100vh;
+	width: 800px;
+	padding-bottom: calc(50vh - 100px);
+	zoom: 1;
+}
+#box-spine canvas{
+	width: 100% !important;
+	height: 100% !important;
+	/* background: red; */
+}
 .buy-key-btn{
 	height: 25px;
 	background: rgb(73, 73, 73);
@@ -679,6 +757,18 @@ export default {
 .show-card-item.animation{
 	animation: heartBeatMy forwards, shakeX forwards, flipX forwards; ;
 	animation-duration: 0.6s, 0.6s,0.6s;
+	animation-delay: 0, 0.6s, 1.2s;
+
+	-webkit-animation: heartBeatMy forwards, shakeX forwards, flipX forwards;
+	-webkit-animation-duration: 0.6s, 0.6s,0.6s;
+	-webkit-animation-delay: 0, 0.6s, 1.2s;
+
+	transform: rotateX(0deg);
+	-webkit-transform: rotateX(0deg);
+}
+/* .show-card-item.animation{
+	animation: flipX forwards; ;
+	animation-duration: 0.6s, 0.6s,0.6s;
 	animation-delay: 0.6s, 1.2s, 1.8s;
 
 	-webkit-animation: heartBeatMy forwards, shakeX forwards, flipX forwards;
@@ -687,7 +777,7 @@ export default {
 
 	transform: rotateX(0deg);
 	-webkit-transform: rotateX(0deg);
-}
+} */
 
 .front,
 .back {
@@ -802,11 +892,14 @@ export default {
 	#show-card-cont{
 		width: 100% !important;
 	}
-	.box {
-		zoom: 0.5;
-	}
+	
 	.table-his td{
 		padding: 5px;
+	}
+	#box-spine{
+		zoom: 0.5 !important;
+		height: 200vh !important;
+		padding-bottom: calc(100vh - 100px) !important;
 	}
 }
 

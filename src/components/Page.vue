@@ -31,10 +31,12 @@
 </template>
 
 <script >
+import {Common} from "@/utils";
 export default {
 	data() {
 		return {
 			nowPage: 0,
+			ts: 0,
 		};
 	},
 	props: ["defaultPage", "totalPage", "onChange"],
@@ -44,15 +46,17 @@ export default {
 		},
 	},
 	watch: {
-		nowPage: function (newVal, oldVal) {
+		nowPage: Common.debounce(function (newVal, oldVal) {
 			if (newVal > this.totalPage || newVal == "" || isNaN(Number(newVal)) || newVal == oldVal) return;
 			if (typeof this.onChange == "function") this.onChange(this.nowPage);
-		},
+		}, 800),
 	},
 	created() {
 		this.nowPage = this.defaultPage;
 	},
 	methods: {
+		
+
 		changePage(type) {
 			switch (type) {
 				case "next":

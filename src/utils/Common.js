@@ -3,6 +3,17 @@ export default class Common {
 	static store = null;
 	static walletConnectConnector = null;
 
+	static debounce (fun, waitTime = 500) {
+		let timeout = null;
+		return function () {
+			const self = this;
+			clearTimeout(timeout);
+			timeout = setTimeout(() => {
+				fun.apply(self, Array.prototype.slice.call(arguments));
+			}, waitTime);
+		};
+	}
+
 	static getUrlParms(name) {
 		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
 		var r = window.location.search.substr(1).match(reg);

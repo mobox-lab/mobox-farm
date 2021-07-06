@@ -28,10 +28,10 @@
 					</div>
 					<div :class="coinArr['BUSD'].allowanceToAuction == 0 ?'btn-group':''" style="zoom:0.9">
 						<StatuButton :onClick="approve.bind(this)" data-step="1"  v-if="coinArr['BUSD'].allowanceToAuction == 0" :isDisable="coinArr['BUSD'].allowanceToAuction > 0" :isLoading="coinArr['BUSD'].isApproving" style="width:80%">{{$t("Air-drop_16")}} BUSD</StatuButton>
-						<StatuButton :onClick="buyPet.bind(this, item)" data-step="2" :isDisable="coinArr['BUSD'].allowanceToAuction <=0 || (nowTs - item.uptime) <= 600" :isLoading="lockBtn.buyMomoLock > 0" class="mgt-10"  style="width:80%;">
-							<template v-if="nowTs -item.uptime <= 600">
+						<StatuButton :onClick="buyPet.bind(this, item)" data-step="2" :isDisable="coinArr['BUSD'].allowanceToAuction <=0 || (nowTs - item.uptime) <= 120" :isLoading="lockBtn.buyMomoLock > 0" class="mgt-10"  style="width:80%;">
+							<template v-if="nowTs -item.uptime <= 120">
 								<img src="@/assets/icon/lock.png" alt="" height="20" style="position:absolute;left:10px;top:6px">
-								<span>{{getLeftTime(Number(item.uptime) + 600 - nowTs)}}</span>
+								<span>{{getLeftTime(Number(item.uptime) + 120 - nowTs)}}</span>
 							</template>
 							<span v-else>{{$t("Market_22")}}</span>
 						</StatuButton>

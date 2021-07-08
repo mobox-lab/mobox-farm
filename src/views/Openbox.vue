@@ -10,10 +10,10 @@
 					<br />
 					<div class="por box"  style="height:300px;width:300px; margin:0px auto; ">
 						<div id="openbox-anime-new" class="hide"></div>
-						<!-- <div class="animation-box mgt-50 hide" id="openbox-anime"></div> -->
-						<div class="box-show" @click="playBoxAnime2">
+						<div class="animation-box mgt-50" id="openbox-anime"></div>
+						<!-- <div class="box-show" @click="playBoxAnime2">
 							<div id="box-spine"></div>
-						</div>
+						</div> -->
 					</div>
 					<div id="show-card" class="hide" @click="initCardAnime">
 						<div id="show-card-cont" class="animate__animated  animate__zoomIn">
@@ -56,11 +56,11 @@
 					</div>
 					<br />
 
-					<button class="btn-primary " @click="playBoxAnime">抖动 1</button>
-					<button class="btn-primary mgl-5" @click="openAnime">打开 1</button>
+					<!-- <button class="btn-primary " @click="playBoxAnime">抖动 1</button>
+					<button class="btn-primary mgl-5" @click="testOpenAnime">打开 1</button>
 
 					<button class="btn-primary mgl-10" @click="playBoxAnime2">抖动 2</button>
-					<button class="btn-primary mgl-5" @click="openAnime2">打开 2</button>
+					<button class="btn-primary mgl-5" @click="openAnime2">打开 2</button> -->
 				</div>
 			</section>
 
@@ -450,20 +450,20 @@ export default {
 			document.querySelector("#show-card").classList.remove("hide");
 		}
 
-		this.boxSpine = new window.spine.SpineWidget("box-spine", {
-			json: "/animation/boxV2/baoxiang.json",
-			atlas: "/animation/boxV2/baoxiang.atlas",
-			backgroundColor: "#00000000",
-			animation: "daiji",
-			loop: true,
-			fitToCanvas: false,
-			scale:0.5,
-			x:350,
-			y: 0,
-			success: ()=>{
-				this.boxSpine.state.timeScale = 0.8;
-			}
-		});
+		// this.boxSpine = new window.spine.SpineWidget("box-spine", {
+		// 	json: "/animation/boxV2/baoxiang.json",
+		// 	atlas: "/animation/boxV2/baoxiang.atlas",
+		// 	backgroundColor: "#00000000",
+		// 	animation: "daiji",
+		// 	loop: true,
+		// 	fitToCanvas: false,
+		// 	scale:0.5,
+		// 	x:350,
+		// 	y: 0,
+		// 	success: ()=>{
+		// 		this.boxSpine.state.timeScale = 0.8;
+		// 	}
+		// });
 
 
 		//如果有临时开箱子数据就让箱子继续晃动
@@ -614,6 +614,14 @@ export default {
 
 		//开箱子动画
 		openAnime(){
+			this.isAnimation = true;
+			document.getElementById("openbox-anime").classList.remove("animation-box-start");
+			window.$("#openbox-anime").hide();
+			window.$("#openbox-anime-new").show();
+			window.$(".show-card-item").addClass("animation");
+			if(this.openLottie) this.openLottie.goToAndPlay(0);
+		},
+		testOpenAnime(){
 			this.petDataArr = [];
 			this.testArr[0].vType = this.testArr[0].vType == 4?5:4;
 			this.petDataArr = this.testArr;
@@ -640,7 +648,6 @@ export default {
 			this.petDataArr = [...this.testArr];
 			this.$nextTick(()=>{
 				this.isAnimation = true;
-				// window.$(".show-card-item").addClass("animation");
 				//开始spine动画
 				window.$(".box-show").addClass("box-show-open");
 				this.boxSpine.config.loop = false;
@@ -757,11 +764,12 @@ export default {
 .show-card-item.animation{
 	animation: heartBeatMy forwards, shakeX forwards, flipX forwards; ;
 	animation-duration: 0.6s, 0.6s,0.6s;
-	animation-delay: 0, 0.6s, 1.2s;
+	animation-delay: 0.6s, 1.2s, 1.8s;
+
 
 	-webkit-animation: heartBeatMy forwards, shakeX forwards, flipX forwards;
 	-webkit-animation-duration: 0.6s, 0.6s,0.6s;
-	-webkit-animation-delay: 0, 0.6s, 1.2s;
+	-webkit-animation-delay: 0.6s, 1.2s, 1.8s;
 
 	transform: rotateX(0deg);
 	-webkit-transform: rotateX(0deg);

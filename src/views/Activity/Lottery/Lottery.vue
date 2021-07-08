@@ -14,13 +14,16 @@
 							<span v-else>{{getNowBlock}}</span>
 						</p>
 
-						<template >
-							<p class="small opa-6" v-if="momoDatas[getNowRound - isShowPastRound].ts - nowTs >0">{{$t("Auction_04")}}: {{getLeftTime(momoDatas[getNowRound - isShowPastRound].ts - nowTs)}}</p>
+						<template v-if="getNowBlock != '-' ">
+							<p class="small opa-6" v-if="momoDatas[getNowRound - isShowPastRound].block > Number(getNowBlock)">{{$t("Auction_04")}}: {{getLeftTime(momoDatas[getNowRound - isShowPastRound].ts - nowTs)}}</p>
 							<p v-else>{{$t("Auction_24")}}</p>
 						</template>
 
-						<div class="mgt-10">
+						<div class="mgt-10" v-if="getNowBlock != '-'">
 							<PetItem v-bind:data="{ item: momoDatas[getNowRound- isShowPastRound] }" />
+						</div>
+						<div v-else style="height:250px">
+							<Loading style="margin-top:100px" />
 						</div>
 						<p class=" small mgt-10" style="margin-bottom:10px">
 							<router-link to="/mypet/2">
@@ -44,10 +47,13 @@
 						</div>
 						<div >
 							<p class="small opa-6">{{$t("Auction_21")}}</p>
-							<h4  class="notice-color" v-if="momoDatas[getNowRound - isShowPastRound].ts - 3600 - nowTs > 0">-</h4>
+							<div v-if="myLotteryData.ticket_number_start == '-' "><Loading /></div>
 							<template v-else>
-								<h4 class="notice-color" v-if="myLotteryData.lottery_ticket < 1">-</h4>
-								<h4 v-else class="notice-color">{{myLotteryData.ticket_number_start}}-{{myLotteryData.ticket_number_end}}</h4>
+								<h4  class="notice-color" v-if="momoDatas[getNowRound - isShowPastRound].ts - 3600 - nowTs > 0">-</h4>
+								<template v-else>
+									<h4 class="notice-color" v-if="myLotteryData.lottery_ticket < 1">-</h4>
+									<h4 v-else class="notice-color">{{myLotteryData.ticket_number_start}}-{{myLotteryData.ticket_number_end}}</h4>
+								</template>
 							</template>
 						</div>
 						
@@ -100,8 +106,8 @@
 			</section>
 			<div class="col-md-12 por" style="padding:10px;">
 				<div class="tal mgt-10" v-if="getNowRound > 1">
-					<div class="tab-menu" :class="{active: isShowPastRound == 1}" style="margin-left:20px" @click="isShowPastRound=1;getLotteryRank()">{{$t("Auction_12")}}</div>
-					<div class="tab-menu" :class="{active: isShowPastRound == 0}" @click="isShowPastRound=0;getLotteryRank()">{{$t("Auction_13")}}</div>
+					<div class="tab-menu" :class="{active: isShowPastRound == 1}" style="margin-left:20px" @click="isShowPastRound=1;getLotteryRank();getMyLotteryData(true);">{{$t("Auction_12")}}</div>
+					<div class="tab-menu" :class="{active: isShowPastRound == 0}" @click="isShowPastRound=0;getLotteryRank();getMyLotteryData(true)">{{$t("Auction_13")}}</div>
 				</div>
 				<section id="round-info" style="padding:10px 15px;background:#13181F;border-radius:20px;">
 					<div class="aveage-box">
@@ -225,8 +231,8 @@ export default {
 			momoDatas: [0,
 				// {...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243", block: 8776006, ts: 1625141100, hash: "-"},
 				{...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243", block: 8981888, ts: 1625760000, hash:"-"},
-				{...baseAttr, tokenId: 22, prototype: 60002, tokenName: "Name_242", block: 9183488, ts: 1626364800, hash:"-"},
-				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241", block: 9385088, ts: 1626969600, hash:"-"},
+				{...baseAttr, tokenId: 22, prototype: 60002, tokenName: "Name_242", block: 9167888, ts: 1626321600, hash:"-"},
+				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241", block: 9369488, ts: 1626926400, hash:"-"},
 			],
 			rankListObj: {
 				list: [],
@@ -236,21 +242,20 @@ export default {
 			nowPage: 1,
 			myAddr: "",
 			loading: false,
-			getNowBlock: "-",
 			luckerArr: [],
 			myLotteryData: {
 				total_vemobox: 0,
 				lottery_ticket: 0,
-				ticket_number_start: 0,
+				ticket_number_start: "-",
 				ticket_number_end: 0,
 			}
 		})
 	},
 	async created(){
+		await this.setNowBlockNumber();
 		await this.getlotteryLucker();
 		await this.getLotteryRank();
 		await this.getMyLotteryData();
-		await this.setNowBlockNumber();
 		await this.setBlockHash();
 		if(t) clearInterval(t);
 		t = setInterval(async ()=>{
@@ -271,12 +276,17 @@ export default {
 	computed:{
 		...mapState({
 			nowTs: (state) => state.globalState.data.nowTs,
+			getNowBlock: (state) => state.globalState.data.getNowBlock,
 		}),
 		getNowRound(){
-			let returnRound = 3;
-			if(this.momoDatas[3].ts > this.nowTs) returnRound = 3;
-			if(this.momoDatas[2].ts > this.nowTs) returnRound = 2;
-			if(this.momoDatas[1].ts > this.nowTs) returnRound = 1;
+			let returnRound = 1;
+			// if(this.momoDatas[3].ts > this.nowTs) returnRound = 3;
+			// if(this.momoDatas[2].ts > this.nowTs) returnRound = 2;
+			// if(this.momoDatas[1].ts > this.nowTs) returnRound = 1;
+			let nowBlock = Number(this.getNowBlock);
+			if(nowBlock < this.momoDatas[3].block) returnRound  = 3;
+			if(nowBlock < this.momoDatas[2].block) returnRound  = 2;
+			if(nowBlock < this.momoDatas[1].block) returnRound  = 1;
 			return returnRound;
 		}
 	},
@@ -291,7 +301,7 @@ export default {
 		},
 		async setNowBlockNumber(){
 			let  res =  await Wallet.ETH.getBlockNumber();
-			this.getNowBlock = res;
+			this.$store.commit("globalState/setData", {getNowBlock: res});
 		},
 		async getlotteryLucker(){
 			let res = await Http.getlotteryLucker();
@@ -315,10 +325,13 @@ export default {
 				this.rankListObj = data;
 			}
 		},
-		async getMyLotteryData(){
+		async getMyLotteryData(needClear = false){
 			this.myAddr = await Wallet.ETH.getAccount();
+			if(needClear){
+				this.myLotteryData.ticket_number_start = "-";
+			}
 			// this.myAddr = "0x212e0955DdA4B206adBE9D49E7C4c599C1d80F4A";
-			let data = await Http.getMyLotteryRank(this.myAddr);
+			let data = await Http.getMyLotteryRank(this.myAddr, this.isShowPastRound);
 			if(data){
 				this.myLotteryData = { ...this.myLotteryData, ...data};
 			}

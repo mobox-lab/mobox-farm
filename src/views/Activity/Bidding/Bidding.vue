@@ -198,9 +198,9 @@ export default {
 			getCountDown: 5000,
 			inputValue: "",
 			momoDatas: [0,
-				{...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243", block: 8981888, ts: 1625760000},
-				{...baseAttr, tokenId: 22, prototype: 60002, tokenName: "Name_242", block: 9183488, ts: 1626364800},
-				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241", block: 9385088, ts: 1626969600},
+				{...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243",ts: 1625760000},
+				{...baseAttr, tokenId: 22, prototype: 60002, tokenName: "Name_242", ts: 1626364800},
+				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241", ts: 1626969600},
 			],
 			bidInfo: {
 				state: "-",
@@ -240,9 +240,19 @@ export default {
 		}),
 		getNowNeedPrice(){
 			let price = 1000;
-			if(Number(this.bidInfo.currPrice) * 1.2 > price){
-				price = Math.ceil(this.numFloor(Number(this.bidInfo.currPrice) * 1.2, 10));
+			if(this.getNowRound == 1){
+				if(Number(this.bidInfo.currPrice) * 1.2 > price){
+					price = Math.ceil(this.numFloor(Number(this.bidInfo.currPrice) * 1.2, 10));
+				}
+			}else{
+				if(Number(this.bidInfo.currPrice) * 1.02 > price){
+					price = Math.ceil(this.numFloor(Number(this.bidInfo.currPrice) * 1.02, 10));
+				}
+				if(Number(this.bidInfo.currPrice) * 0.02 > 1000){
+					price = Number(this.bidInfo.currPrice) + 1000;
+				}
 			}
+
 			return price;
 		},
 		getNowRound(){

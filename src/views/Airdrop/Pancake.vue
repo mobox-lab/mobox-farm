@@ -4,8 +4,9 @@
 			<!-- TabMenu -->
 			<div class="tal mgt-10">
 				<div @click="dialog_tab_pos =  0"  :class="dialog_tab_pos == 0?'active':''" class="tab-menu " >{{$t("Air-drop_29")}}</div>
-				<div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  v-if="oprData.isLP">{{$t("Air-drop_30")}}</div>
-				<div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  v-if="!oprData.isLP">{{$t("Air-drop_07")}}</div>
+				<!-- <div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''" class="tab-menu " v-if="oprData.isLP">闪兑</div> -->
+				<div @click="dialog_tab_pos =  2"  :class="dialog_tab_pos == 2?'active':''"  class="tab-menu"  v-if="oprData.isLP">{{$t("Air-drop_30")}}</div>
+				<div @click="dialog_tab_pos =  2"  :class="dialog_tab_pos == 2?'active':''"  class="tab-menu"  v-if="!oprData.isLP">{{$t("Air-drop_07")}}</div>
 				<a href="https://www.binance.org/cn/bridge" target="_blank" class="tab-menu ">{{$t("Air-drop_31")}}</a>
 			</div>
 			<!-- TabBody -->
@@ -22,7 +23,10 @@
 				<div v-show="dialog_tab_pos == 0">
 					<PancakeSwap ref="pancakeSwap" :oprData="oprData" />
 				</div>
-				<div v-show="dialog_tab_pos == 1">
+				<div v-if="dialog_tab_pos == 1">
+					<QuickSwap ref="quickSwap" :oprData="oprData" />
+				</div>
+				<div v-show="dialog_tab_pos == 2">
 					<PancakeLiquidity ref="pancakeLiquidity" :oprData="oprData" />
 				</div>
 			</div>
@@ -61,6 +65,7 @@ import {CommonMethod} from '@/mixin';
 import SelectCoin from '@/views/Airdrop/SelectCoin' ;
 import PancakeSwap from '@/views/Airdrop/PancakeSwap';
 import PancakeLiquidity from '@/views/Airdrop/PancakeLiquidity';
+import QuickSwap from '@/views/Airdrop/QuickSwap'
 import Setting from '@/views/Airdrop/Setting';
 import { mapState } from 'vuex'
 import {PancakeConfig} from "@/config";
@@ -68,7 +73,7 @@ import {PancakeConfig} from "@/config";
 export default {
 	name: "Pancake",
 	mixins: [CommonMethod],
-	components: {Dialog, SelectCoin, PancakeSwap, PancakeLiquidity, Setting},
+	components: {Dialog, SelectCoin, PancakeSwap, PancakeLiquidity, Setting, QuickSwap},
 	computed: {
 		...mapState({
 			setting: (state) => state.bnbState.data.setting,

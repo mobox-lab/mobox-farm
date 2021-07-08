@@ -23,6 +23,7 @@ const baseCoinAttr = {
 	totalSupply: 0,
 	allowanceToPool: -1,
 	allowanceToSwap: -1,
+	allowanceToQuickSwap: -1,
 	allowanceToAuction: -1,
 	allowanceToGemAuction: -1,
 	allowanceToRent: -1,
@@ -122,6 +123,7 @@ const state = () => ({
 		veMboxLogs: [],//veMbox想操作日志
 		avglockdays: 0,//平均质押时长
 		totalStakeMbox: 0,//共质押的MBOX
+		veMboxTotal:0,//共质押的vembox
 	},
 })
 

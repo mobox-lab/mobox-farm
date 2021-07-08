@@ -1,6 +1,7 @@
 export default class PancakeConfig {
 	static SwapRouterAddr = "0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F";
 	static SwapRouterAddrV2 = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
+	static QuickSwapAddr = "0x50aEdfA05bbC474E53BB45B6Ed0aD3aE7Fb54B0f";
 	static SelectCoin = {
 		"MBOX": {
 			omit: 1e2,

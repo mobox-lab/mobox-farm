@@ -93,6 +93,7 @@ const InitEth = {
 	},
 	methods: {
 		async initBaseData() {
+			this.setNowBlockNumber();
 			let account = await Wallet.ETH.getAccount();
 			clearInterval(this.timer);
 			if (account) {
@@ -173,6 +174,10 @@ const InitEth = {
 			//获取总打开箱子数
 			await this.setTotalOpenBox();
 		},
+		async setNowBlockNumber(){
+			let  res =  await Wallet.ETH.getBlockNumber();
+			this.$store.commit("globalState/setData", {getNowBlock: res});
+		},
 		async getPoolsEarns(){
 			let res = await Wallet.ETH.getPoolsEarns();
 			if(res){
@@ -219,7 +224,7 @@ const InitEth = {
 				coinObj.addAllocPoint = poolAllocPoints[pos] / 100 - PancakeConfig.StakeLP[coinKey].allocPoint;
 			});
 			this.coinArr["ts"] = new Date().valueOf();
-			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+			this.$store.commit("bnbState/setData", {coinArr: this.coinArr, veMboxTotal});
 		},
 		//获取质押VeMobox
 		async getVeMboxStakeInfo(){
@@ -294,7 +299,7 @@ const InitEth = {
 		async getBuyBack(){
 			let res = await Http.buybackpool(this.buyBackType);
 			if(res){
-				this.buyBack.amount = Common.numFloor(res.amount, 1e2);
+				this.buyBack.amount = Common.numFloor(res.amount, 1);
 				this.buyBack.avgPrice = Common.numFloor(res.avgPrice, 1e4);
 				this.buyBack.moboxBurn = Common.numFloor(res.moboxBurn/ 1e18, 1);
 				this.buyBack.circulating = Common.numFloor(res.circulating/ 1e18, 1);

@@ -248,7 +248,7 @@
 								<div class="tal mgt-20">
 									<p class="por mgt-10">
 										<span class="opa-6 ">{{ $t("Air-drop_02") }}</span>
-										<span class="suffix">${{ numFloor(item.totalSupply, 100).toLocaleString() }}</span>
+										<span class="suffix">${{ numFloor(item.totalSupply, 1).toLocaleString() }}</span>
 									</p>
 								</div>
 
@@ -297,7 +297,7 @@
 												Number(coinArr[item.coinKey].veMbox.orderIndexs[0].veMboxNum)
 												+ Number(coinArr[item.coinKey].veMbox.orderIndexs[1].veMboxNum)
 												+ Number(coinArr[item.coinKey].veMbox.orderIndexs[2].veMboxNum)
-												) /1e18, 1e6) || "0" }}
+												) /1e18, 1e4) || "0" }}
 											<span class="notice-color" v-if="coinArr[item.coinKey].veMbox.mul > 100">({{numFloor(coinArr[item.coinKey].veMbox.mul/100, 100)}}x)</span>
 										</span>
 									</p>
@@ -379,7 +379,7 @@
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_190")}}</p>
-					<input type="text" readonly class="ly-input mgt-10 tac" :value="numFloor(getPledgeList[0].veMboxTotal / 1e18,1).toLocaleString()" />
+					<input type="text" readonly class="ly-input mgt-10 tac" :value="numFloor(veMboxTotal/1e18, 1)" />
 				</div>
 				<div style="padding:10px">
 					<p class="small opa-6 tac" >{{$t("Air-drop_191")}}</p>
@@ -599,6 +599,7 @@ export default {
 			pledgeType: (state) => state.bnbState.data.pledgeType,
 			avglockdays: (state) => state.bnbState.data.avglockdays,
 			totalStakeMbox: (state) => state.bnbState.data.totalStakeMbox,
+			veMboxTotal: (state) => state.bnbState.data.veMboxTotal,
 			nowTs: (state) => state.globalState.data.nowTs,
 			buyBackType: (state) => state.globalState.data.buyBackType,
 		}),
@@ -608,7 +609,7 @@ export default {
 			Object.keys(PancakeConfig.StakeLP).map(coinKey=>{
 				num += Number(this.coinArr[coinKey].totalSupply);
 			});
-			return this.numFloor(num, 100);
+			return this.numFloor(num, 1);
 		},
 
 		getPledgeList(){

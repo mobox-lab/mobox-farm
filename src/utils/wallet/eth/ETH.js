@@ -49,7 +49,6 @@ export default class ETH {
 	}
 	static async getBlockInfo(blockNumber){
 		let res = await this.web3.eth.getBlock(blockNumber);
-		console.log("getBlockInfo", res, blockNumber);
 		return res;
 	}
 	//初始化合约

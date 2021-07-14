@@ -5,8 +5,8 @@
 			<div class="tal mgt-10">
 				<div @click="dialog_tab_pos =  0"  :class="dialog_tab_pos == 0?'active':''" class="tab-menu " >{{$t("Air-drop_29")}}</div>
 				<!-- <div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''" class="tab-menu " v-if="oprData.isLP">闪兑</div> -->
-				<div @click="dialog_tab_pos =  2"  :class="dialog_tab_pos == 2?'active':''"  class="tab-menu"  v-if="oprData.isLP">{{$t("Air-drop_30")}}</div>
-				<div @click="dialog_tab_pos =  2"  :class="dialog_tab_pos == 2?'active':''"  class="tab-menu"  v-if="!oprData.isLP">{{$t("Air-drop_07")}}</div>
+				<div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  v-if="oprData.isLP">{{$t("Air-drop_30")}}</div>
+				<div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  v-if="!oprData.isLP">{{$t("Air-drop_07")}}</div>
 				<a href="https://www.binance.org/cn/bridge" target="_blank" class="tab-menu ">{{$t("Air-drop_31")}}</a>
 			</div>
 			<!-- TabBody -->
@@ -23,11 +23,11 @@
 				<div v-show="dialog_tab_pos == 0">
 					<PancakeSwap ref="pancakeSwap" :oprData="oprData" />
 				</div>
-				<div v-if="dialog_tab_pos == 1">
-					<QuickSwap ref="quickSwap" :oprData="oprData" />
-				</div>
-				<div v-show="dialog_tab_pos == 2">
+				<div v-show="dialog_tab_pos == 1">
 					<PancakeLiquidity ref="pancakeLiquidity" :oprData="oprData" />
+				</div>
+				<div v-if="dialog_tab_pos == 2">
+					<QuickSwap ref="quickSwap" :oprData="oprData" />
 				</div>
 			</div>
 		</Dialog>

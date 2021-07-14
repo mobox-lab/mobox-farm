@@ -279,7 +279,7 @@
 				</div>
 				<p class="small tal small mgt-10"> 
 					{{ $t("Fetters_11") }}:
-					<span style="color: #aaf45a" >{{ (getTotalPercent.maxAdd * 100).toFixed(0) }}%</span>
+					<span style="color: #aaf45a" >{{ numFloor(getTotalPercent.maxAdd * 100, 100) }}%</span>
 				</p>
 			</div>
 		</Dialog>

@@ -92,9 +92,23 @@ const state = () => ({
 
 		balancePool: {
 			"BANANA": {
+				coinName: "BANANA",
+				website: "https://apeswap.finance",
+				des: "ApeSwap",
+				color: "#FFD54F",
 				version: "-",
 				amount: "-",
+				dayDrop: 1551
 			},
+			// "RABBIT": {
+			// 	coinName: "RABBIT",
+			// 	website: "https://www.rabbitfinance.io",
+			// 	des: "Rabbit Finance",
+			// 	color: "#E7A28A",
+			// 	version: "-",
+			// 	amount: "-",
+			// 	dayDrop: 652125
+			// },
 			"ts": 0,
 		},
 		

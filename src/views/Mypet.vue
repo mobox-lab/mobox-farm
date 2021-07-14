@@ -358,7 +358,7 @@ export default {
 		onPageChange(page) {
 			this.$store.commit("globalState/setMyPetPage", page);
 			this.$nextTick(()=>{
-				this.$refs.page.initPage();
+				this.$refs.page && this.$refs.page.initPage();
 			})
 		},
 		onTabChange(tab) {

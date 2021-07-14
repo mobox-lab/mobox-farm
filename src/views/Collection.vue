@@ -21,15 +21,15 @@
 			</div>
 			<div class="col-xs-12 col-md-8 tal mgt-10" style="padding:10px">
 				<h3>{{$t('Air-drop_208')}}</h3>
-				<div class="mgt-20">
+				<div class="mgt-20 col-md-4 col-xs-6 other-balance " v-for="item in getBalanceArr" :key="item.coinName">
 					<div style="padding-top:10px" >
-						<div class="dib coin-adv small" style="border-color:#FFD54F">
-							<img src="@/assets/coin/BANANA.png" alt="">
+						<div class="dib coin-adv small" :style="{borderColor: item.color}">
+							<img :src="require(`@/assets/coin/${item.coinName}.png`)" alt="">
 						</div>
 						<div class="dib mgl-10">
-							<h3>1551 BANANA</h3>
-							<p class="opa-6">
-								<a href="https://apeswap.finance/" target="_blank" style="text-decoration:underline">ApeSwap</a>
+							<h3>{{item.dayDrop}} {{item.coinName}}</h3>
+							<p class="opa-6 small">
+								<a :href="item.website" target="_blank" style="text-decoration:underline">{{item.des}}</a>
 							</p>
 						</div>
 					</div>
@@ -79,20 +79,20 @@
 							</p>
 						</div>
 					</div>
-					<div class=" col-md-4 mgt-10" style="padding:0px">
+					<div class="col-md-4 mgt-10" style="padding:0px" v-for="item in getBalanceArr" :key="item.coinName">
 						<div  class="dib speed-show">
-							<p class="small opa-6"><span class="tac">100 {{ $t("Mine_14") }}≈{{ numFloor(Number(eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 100, 100 )) * 1551 / 200000, 1e4) }} BANANA/DAY</span></p>
+							<p class="small opa-6"><span class="tac">100 {{ $t("Mine_14") }}≈{{ numFloor(Number(eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 100, 100 )) * item.dayDrop / 200000, 1e4) }} {{item.coinName}}/DAY</span></p>
 							<p class="vertical-children mgt-10" style="height:25px">
-								<img src="@/assets/coin/BANANA.png" alt="" height="20">
+								<img :src="require(`@/assets/coin/${item.coinName}.png`)" alt="" height="20">
 								<span class="mgl-5 bold vertical-children">
-									<span v-if="balancePool['BANANA'].amount != '-' ">{{numFloor(balancePool['BANANA'].amount, 1e4)}}</span>
+									<span v-if="item.amount != '-' ">{{numFloor(item.amount, 1e4)}}</span>
 									<span v-else class="vertical-children">
 										<span v-if="balancePool['ts'] == 0"><Loading  /></span>
 										<span v-else>-</span>
 									</span>
-									<span class="mgl-5">BANANA</span>
+									<span class="mgl-5">{{item.coinName}}</span>
 								</span>
-								<StatuButton v-if="balancePool['BANANA'].version == '-' && balancePool['ts'] != 0 " class="btn-small mgl-10" :isDisable="Number(eth_myHashrate) < 0" :isLoading="lockBtn.joinStakeLock > 0" :onClick="joinStake">{{$t('Air-drop_209')}}</StatuButton>
+								<StatuButton v-if="item.version == '-' && balancePool['ts'] != 0 " class="btn-small mgl-10" :isDisable="Number(eth_myHashrate) < 0" :isLoading="lockBtn.joinStakeLock > 0" :onClick="joinStake">{{$t('Air-drop_209')}}</StatuButton>
 							</p>
 						</div>
 					</div>
@@ -151,6 +151,15 @@ export default {
 			let addP = this.$parent.getTotalPercent.maxAdd;
 			return this.numFloor(myHashrate - (myHashrate / (1 + addP) - staticAddHashrate),1);
 		},
+		getBalanceArr(){
+			let arr = [];
+			for (const key in this.balancePool) {
+				if(key != "ts"){
+					arr.push(this.balancePool[key]);
+				}
+			}
+			return arr;
+		}
 	},
 	async created(){
 		await Wallet.ETH.getAccount();
@@ -379,6 +388,10 @@ export default {
 	background: #1C222C;
 }
 @media (max-width: 768px) {
+	.other-balance{
+		zoom: 0.7;
+		margin-top: 0px;
+	}
 	#take-btn{
 		width: 100% !important;
 	}

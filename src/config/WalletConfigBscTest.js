@@ -22,7 +22,11 @@ export default class WalletConfig {
 			"0X2072FE4E74C6ECCFE3F86071E255E0D5568C58B9": {
 				name: "BANANA",
 				decimals: 1e18,
-			}
+			},
+			"0X2838202E86C515BDEECF14485578CE9A2A6058FA": {
+				name: "RABBIT",
+				decimals: 1e18,
+			},
 		},
 		momoBid: "0x0d7ABEd534a2Ddce9fd9B20ac0049F53721543eb",//v6竞拍
 

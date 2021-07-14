@@ -57,10 +57,10 @@
 					<br />
 
 					<!-- <button class="btn-primary " @click="playBoxAnime">抖动 1</button>
-					<button class="btn-primary mgl-5" @click="testOpenAnime">打开 1</button>
+					<button class="btn-primary mgl-5" @click="testOpenAnime">打开 1</button>-->
 
-					<button class="btn-primary mgl-10" @click="playBoxAnime2">抖动 2</button>
-					<button class="btn-primary mgl-5" @click="openAnime2">打开 2</button> -->
+					<!-- <button class="btn-primary mgl-10" @click="playBoxAnime2">抖动 2</button>
+					<button class="btn-primary mgl-5" @click="openAnime2">打开 2</button>  -->
 				</div>
 			</section>
 
@@ -461,7 +461,7 @@ export default {
 		// 	x:350,
 		// 	y: 0,
 		// 	success: ()=>{
-		// 		this.boxSpine.state.timeScale = 0.8;
+		// 		this.boxSpine.state.timeScale = 0.2;
 		// 	}
 		// });
 
@@ -651,9 +651,9 @@ export default {
 				//开始spine动画
 				window.$(".box-show").addClass("box-show-open");
 				this.boxSpine.config.loop = false;
-				this.boxSpine.setAnimation("baoxiangdakai", {
+				this.boxSpine.setAnimation("baoxiangdakai2", {
 					complete: ()=>{
-						document.querySelector("#show-card").classList.remove("hide");
+						// document.querySelector("#show-card").classList.remove("hide");
 					}
 				});
 			})

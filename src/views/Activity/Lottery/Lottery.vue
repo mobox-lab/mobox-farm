@@ -232,7 +232,7 @@ export default {
 				// {...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243", block: 8776006, ts: 1625141100, hash: "-"},
 				{...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243", block: 8981888, ts: 1625760000, hash:"-"},
 				{...baseAttr, tokenId: 22, prototype: 60002, tokenName: "Name_242", block: 9167888, ts: 1626321600, hash:"-"},
-				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241", block: 9369488, ts: 1626926400, hash:"-"},
+				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241", block: 9369488, ts: 1626969600, hash:"-"},
 			],
 			rankListObj: {
 				list: [],
@@ -280,13 +280,13 @@ export default {
 		}),
 		getNowRound(){
 			let returnRound = 1;
-			// if(this.momoDatas[3].ts > this.nowTs) returnRound = 3;
-			// if(this.momoDatas[2].ts > this.nowTs) returnRound = 2;
-			// if(this.momoDatas[1].ts > this.nowTs) returnRound = 1;
 			let nowBlock = Number(this.getNowBlock);
 			if(nowBlock < this.momoDatas[3].block) returnRound  = 3;
 			if(nowBlock < this.momoDatas[2].block) returnRound  = 2;
 			if(nowBlock < this.momoDatas[1].block) returnRound  = 1;
+
+			//最后一期结束了
+			if(nowBlock > this.momoDatas[3].block) returnRound = 3;
 			return returnRound;
 		}
 	},

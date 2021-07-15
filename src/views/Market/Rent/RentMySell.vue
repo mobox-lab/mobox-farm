@@ -219,7 +219,6 @@ export default {
 		border-bottom: none;
 	}
 	#rentList{
-		max-width: 1400px;
 		margin: 0px auto;
 		margin-top: 20px;
 	}

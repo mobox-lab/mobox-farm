@@ -461,7 +461,7 @@ export default {
 		// 	x:350,
 		// 	y: 0,
 		// 	success: ()=>{
-		// 		this.boxSpine.state.timeScale = 0.2;
+		// 		this.boxSpine.state.timeScale = 1;
 		// 	}
 		// });
 
@@ -653,7 +653,7 @@ export default {
 				this.boxSpine.config.loop = false;
 				this.boxSpine.setAnimation("baoxiangdakai2", {
 					complete: ()=>{
-						// document.querySelector("#show-card").classList.remove("hide");
+						document.querySelector("#show-card").classList.remove("hide");
 					}
 				});
 			})
@@ -765,7 +765,6 @@ export default {
 	animation: heartBeatMy forwards, shakeX forwards, flipX forwards; ;
 	animation-duration: 0.6s, 0.6s,0.6s;
 	animation-delay: 0.6s, 1.2s, 1.8s;
-
 
 	-webkit-animation: heartBeatMy forwards, shakeX forwards, flipX forwards;
 	-webkit-animation-duration: 0.6s, 0.6s,0.6s;

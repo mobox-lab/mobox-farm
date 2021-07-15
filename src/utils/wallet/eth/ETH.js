@@ -1235,7 +1235,7 @@ export default class ETH {
 			Contract.bid,
 		], WalletConfig.ETH.moMoStakeAuction);
 
-		_price = BigNumber(_price).times(BigNumber(1e9));
+		_price = BigNumber(Number(_price) + 0.0001).times(BigNumber(1e9));
 
 		return new Promise(resolve => {
 			this.sendMethod(

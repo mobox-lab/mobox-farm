@@ -22,7 +22,8 @@
 			<div class="light-shadow" ref="lightShadowV5" v-show="data.item.vType == 5"></div>
 		</div>
 
-		<img class="pet_img" :src="require(`../assets/pet/${data.item.prototype}.png`)" alt="" width="120" height="120" />
+		<img class="pet_img" v-if="Number(data.item.prototype) > 60000" :src="require(`../assets/pet/${data.item.prototype}.gif`)" alt="" width="120" height="120" />
+		<img class="pet_img" v-else :src="require(`../assets/pet/${data.item.prototype}.png`)" alt="" width="120" height="120" />
 		<div style="position: absolute; width: 100%; bottom: 100px; left: 0px;right:0px;z-index:5">
 			<div class="vertical-children pet_num" v-if="data.item.vType < 4 && data.item.num > 1" >
 				x{{ data.item.num }}

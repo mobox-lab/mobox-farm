@@ -8,13 +8,13 @@
 			<div class="col-md-6 mgt-10">
 				<div class="panel">
 					<div id="upgrade-lv" class="vertical-children">
-						<img :src=" require(`../assets/icon/${ category_img[this.getNowPetItem.category] }.png`)" alt="" width="20" height="20" />&nbsp;
+						<img :src=" require(`@/assets/icon/${ category_img[this.getNowPetItem.category] }.png`)" alt="" width="20" height="20" />&nbsp;
 						<span>LV {{ this.getNowPetItem.level }}</span>
 					</div>
-					<img v-if="isLock" class="upgrade-lock" src="../assets/icon/lock.png" alt="">
+					<img v-if="isLock" class="upgrade-lock" src="@/assets/icon/lock.png" alt="">
 					<div id="upgrade-power" class="vertical-children">
 						<div class="gka-harmer por  dib" style="top: -8px;right:-10px" :class="this.getNowPetItem.location == 'wallet'?'': 'animation-harmer'">
-							<img src="../assets/anime/sleep.gif" class="sleep-harmer" v-if="this.getNowPetItem.location == 'wallet'" alt="" />
+							<img src="@/assets/anime/sleep.gif" class="sleep-harmer" v-if="this.getNowPetItem.location == 'wallet'" alt="" />
 						</div>
 						<span  :class="getHashrateColor( this.getNowPetItem)">
 							{{ this.getNowPetItem.lvHashrate }}
@@ -22,7 +22,7 @@
 					</div>
 					<div id="upgrade-power-lv1" class="vertical-children" v-if="this.getNowPetItem.level > 1">
 						Lv. 1
-						<img src="../assets/icon/airdrop.png" alt="" height="15" />&nbsp;
+						<img src="@/assets/icon/airdrop.png" alt="" height="15" />&nbsp;
 						<span :class="getHashrateColor( this.getNowPetItem)">
 							{{ this.getNowPetItem.hashrate }}
 						</span>
@@ -31,9 +31,9 @@
 					<div class="por" id="show-pet-view" style="margin-top: 100px" >
 						<PetView v-bind:prototype="this.getNowPetItem.prototype" />
 						<div class="vertical-children" id="upgrade-name">
-							<img :src=" require(`../assets/icon/${this.getNowPetItem.chain}.png`) " height="25" alt="" />&nbsp;
+							<img :src=" require(`@/assets/icon/${this.getNowPetItem.chain}.png`) " height="25" alt="" />&nbsp;
 							<span>{{ hasSetName ? shortStr(this.getNowPetItem.tokenName) : $t(this.getNowPetItem.tokenName) }}</span>
-							<img v-if="this.hasEditNameSkill && getNowPetItem.location=='stake'" src="../assets/icon/edit.png" class="edit-btn" alt="" @click="oprDialog('setName-dialog', 'block')" />
+							<img v-if="this.hasEditNameSkill && getNowPetItem.location=='stake'" src="@/assets/icon/edit.png" class="edit-btn" alt="" @click="oprDialog('setName-dialog', 'block')" />
 						</div>
 					</div>
 				</div>
@@ -44,7 +44,7 @@
 					<div v-if="getNowPetItem.tokenId != 0 && getNowPetItem.location=='stake'">
 						<h3 >
 							{{ $t("MOMO_22") }}
-							<img class="mgl-5 cur-point" @click="oprDialog('upgrade-des-dialog','block')" src="../assets/icon/help.png" alt="" height="20"/>
+							<img class="mgl-5 cur-point" @click="oprDialog('upgrade-des-dialog','block')" src="@/assets/icon/help.png" alt="" height="20"/>
 						</h3>
 						<div class="tac" style="margin-bottom:20px">
 							<div v-if="getUpgradeInfo.length == 0" class="mgt-20">
@@ -72,10 +72,10 @@
 									</button>
 								</div> -->
 								<div class="vertical-children mgt-20" style="font-size: 18px" >
-									<img src="../assets/icon/airdrop.png" height="25" alt="" />&nbsp;
+									<img src="@/assets/icon/airdrop.png" height="25" alt="" />&nbsp;
 									<span>{{ this.getNowPetItem.lvHashrate }}</span>
-									<img src="../assets/icon/upgradejt.png" alt="" class="mgl-10" />
-									<img src="../assets/icon/airdrop.png" alt="" class="mgl-10" height="25" />&nbsp;
+									<img src="@/assets/icon/upgradejt.png" alt="" class="mgl-10" />
+									<img src="@/assets/icon/airdrop.png" alt="" class="mgl-10" height="25" />&nbsp;
 									<span style="color: #85f34a">{{ this.getNowPetItemNextLvHashRate }}</span>
 								</div>
 								<div>
@@ -105,7 +105,7 @@
 					<p class="small tal">{{ $t("BOX_16") }} ({{nowLen}}/32)</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="../assets/icon/bnb.png" alt="" />
+							<img  src="@/assets/icon/bnb.png" alt="" />
 						</div>
 						<input v-model="inputName" class="ly-input" type="text" style=" background: #0f172a; text-align: center; width: 100%; border-radius: 5px; padding-left:40px" :placeholder="$t('BOX_17')" />
 					</div>

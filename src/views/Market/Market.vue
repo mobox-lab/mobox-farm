@@ -142,6 +142,9 @@ export default {
 		}
 	},
 	async created(){
+		let marketTypePos = this.$route.query.tab || 0;
+		this.$store.commit('marketState/setData', {marketTypePos});
+
 		this.myAccount = await Wallet.ETH.getAccount();
 		this.getCoinValue();
 		this.$refs.momoHistory && this.$refs.momoHistory.getMyHistory(this.myAccount);

@@ -56,6 +56,7 @@ const state = () => ({
 		nowTs: parseInt(new Date().valueOf()/1000),
 		buyBackType: 0,
 		getNowBlock: "-",
+		momoNumObj: {},
 	},
 })
 

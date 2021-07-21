@@ -163,7 +163,7 @@ export default {
 			}else{
 				if(BaseConfig.NftCfg[prototype] == undefined) return;
 			}
-			this.$store.commit("marketState/setFilter", {filterName:"marketSearch",type: "pType", value: prototype});
+			this.$store.commit("marketState/setFilter", {filterName:"marketSearch",type: "pType", value: prototype, marketPage: 1});
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketPage, true);
 			})

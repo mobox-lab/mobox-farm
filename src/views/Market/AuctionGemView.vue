@@ -1,16 +1,14 @@
 <template>
-	<div id="upgrade" style="margin-top:10px">
-		<router-link to="/market">
-			<span  class="cur-point text-big">
-				<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;{{ $t("MOMO_19") }}
-			</span>
-		</router-link>
+	<div id="upgrade">
+		<span @click="$router.back(-1)" class="cur-point text-big">
+			<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;{{ $t("MOMO_19") }}
+		</span>
 		<div class="tac row mgt-10">
 			<div class="col-md-6">
 				<div class="panel" >
 					<div v-for="item in getShowList" :key="item.id" :class="'pet_hover_lv3' " class="shop-car-item  vertical-children por mgt-10">
-					<img class="pet-img mgl-10" :src="require(`@/assets/market/${item.id}.png`)" alt="" height="80" />
-					<div class="dib mgl-5" v-if="Number(item.id) > 100">
+					<img class="pet-img" :src="require(`@/assets/gem/${item.id}.png`)" alt="" />
+					<div class="dib mgl-5">
 						<h3 class="mgl-5"> Lv.{{ item.level }} </h3>
 					</div>
 					<div class="absolute-r tar" style="right: 20px; top: 5px;bottom:5px;display:flex; align-items: center;">
@@ -27,34 +25,28 @@
 						<h3 >{{$t("Market_17")}}</h3>
 						<div class="tac">
 							<div id="price" class="vertical-children">
-								<img :src="require(`@/assets/coin/${oprCoin}.png`)" height="25" alt="">&nbsp;
-								<span class="money">{{numFloor( this.getNowPetItem.price/ 1e9, 1e2).toLocaleString()}}</span>
+								<img src="@/assets/coin/MBOX.png" height="25" alt="">&nbsp;
+								<span>{{numFloor( this.getNowPetItem.price/ 1e9, 1e4)}}</span>
 							</div>
 							
 							<div v-if="!isMyPet" class="mgt-30">
-								<div ::class="{'btn-group': needApprove}">
-									<!-- <div v-if="needApprove">
-										<button data-step="1"  :class="(!coinArr[oprCoin].isApproving && coinArr[oprCoin].allowanceToGemAuction == 0)?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="approve">
-											<Loading class="btn-loading" v-if="coinArr[oprCoin].isApproving" />
-											{{$t("Air-drop_16")}} {{oprCoin}}
+								<div :class="coinArr['MBOX'].allowanceToGemAuction == 0 ?'btn-group':''">
+									<div v-if="coinArr['MBOX'].allowanceToGemAuction == 0">
+										<button data-step="1"  :class="(!coinArr['MBOX'].isApproving && coinArr['MBOX'].allowanceToGemAuction == 0)?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="approve">
+											<Loading class="btn-loading" v-if="coinArr['MBOX'].isApproving" />
+											{{$t("Air-drop_16")}} MBOX
 										</button>
-									</div> -->
-									<div v-if="needApprove">
-										<StatuButton data-step="1" style="width:200px" :isLoading="coinArr[oprCoin].isApproving" :onClick="approve">{{$t("Air-drop_16")}} {{oprCoin}}</StatuButton>
 									</div>
 									<div class="mgt-10">
-										<!-- <button data-step="2" :class="(coinArr[oprCoin].allowanceToGemAuction > 0 && lockBtn.buyMomoLock <= 0 )?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="oprDialog('confirm-gem-buy-dialog','block')">
+										<button data-step="2" :class="(coinArr['MBOX'].allowanceToGemAuction > 0 && lockBtn.buyMomoLock <= 0 )?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="oprDialog('confirm-gem-buy-dialog','block')">
 											<Loading class="btn-loading" v-if="lockBtn.buyMomoLock > 0" />
 											{{$t("Market_22")}}
-										</button> -->
-										<StatuButton data-step="2" style="width:200px" :isDisable="needApprove || lockBtn.buyMomoLock > 0"  :onClick="()=>oprDialog('confirm-gem-buy-dialog','block')">
-											{{$t("Market_22")}}
-										</StatuButton>
+										</button>
 									</div>
 								</div>
 							</div>
 							<div  v-if="isMyPet" class="mgt-20">
-								<StatuButton v-if="this.getNowPetItem.currency == 2" :onClick="setChangePriceData.bind(this, true)" :isLoading="lockBtn.changePriceLock > 0">{{$t("Market_20")}}</StatuButton>&nbsp;&nbsp;
+								<StatuButton :onClick="setChangePriceData.bind(this, true)" :isLoading="lockBtn.changePriceLock > 0">{{$t("Market_20")}}</StatuButton>&nbsp;&nbsp;
 								<button class="btn-primary vertical-children mgl-5" style="background: #384a7a !important" @click="cancelAuction">
 									{{$t("Market_21")}}
 								</button>
@@ -70,52 +62,41 @@
 		<Dialog id="changePrice-dialog" :top="200" :width="400">
 				<h2 class="mgt-10">{{$t("Market_10")}}</h2>
 			<div class="mgt-20">
-				<div class="ly-input-content mgt-10" v-if="!isGem">
-					<p class="small tal opa-6">{{$t("Market_39")}} ({{oprCoin}})</p>
-					<div class="por mgt-5">
-						<div class="ly-input-pre-icon">
-							<img  :src="require(`@/assets/coin/${oprCoin}.png`)" alt="" />
-						</div>
-						<input v-model="sellObj.onePrice"  class="ly-input sell-input" type="text" :placeholder="$t('Market_39')" v-number  data-max="100000000"/>
-					</div>
-				</div>
 				<div class="ly-input-content mgt-10">
-					<p class="small tal opa-6">{{$t("Market_18")}} ({{oprCoin}})</p>
+					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} (MBOX)</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  :src="require(`@/assets/coin/${oprCoin}.png`)" alt="" />
+							<img  src="@/assets/coin/MBOX.png" alt="" />
 						</div>
-						<input v-if="isGem" v-model="sellObj.startPrice"  class="ly-input sell-input" type="text" :placeholder="$t('Market_18')" v-number  data-max="100000000"/>
-						<input v-else v-model="totalPrice" readonly class="ly-input sell-input opa-6" type="text" :placeholder="$t('Market_18')" v-number  data-max="100000000"/>
+						<input v-model="sellObj.startPrice"   class="ly-input sell-input" type="number" :placeholder="priceTypePos == 1?$t('Market_11'):$t('Market_17')" v-number  data-max="100000000"/>
 					</div>
 				</div>
 				<div v-if="priceTypePos == 1">
 					<div class="ly-input-content mgt-10">
-						<p class="small tal opa-6">{{$t("Market_12")}} ({{oprCoin}})</p>
+						<p class="small tal opa-6">{{$t("Market_12")}} (MBOX)</p>
 						<div class="por mgt-5">
 							<div class="ly-input-pre-icon">
-								<img  :src="require(`@/assets/coin/${oprCoin}.png`)" alt="" />
+								<img  src="@/assets/coin/MBOX.png" alt="" />
 							</div>
-							<input v-model="sellObj.endPrice" class="ly-input sell-input" type="text" :placeholder="$t('Market_12')" v-number data-max="100000000"/>
+							<input v-model="sellObj.endPrice" class="ly-input sell-input" type="number" :placeholder="$t('Market_12')" v-number data-max="100000000"/>
 						</div>
 					</div>
 					<div class="ly-input-content mgt-10">
 						<p class="small tal opa-6">{{$t("Market_13")}}(≥2)</p>
 						<div class="por mgt-5">
-							<input v-model="sellObj.durationDays" class="ly-input sell-input" type="text" v-int :placeholder="$t('Market_13')" data-max="1000" data-min="2"  />
+							<input v-model="sellObj.durationDays" class="ly-input sell-input" type="number" v-int :placeholder="$t('Market_13')" data-max="1000" data-min="2"  />
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="small mgt-10 opa-6" v-if="Number(sellObj.startPrice) > 0 && Number(sellObj.endPrice) > 0 && priceTypePos==1">{{$t("Market_14").replace("#0#", sellObj.durationDays).replace("#1#",sellObj.startPrice).replace("#2#",sellObj.endPrice)}}</div>
-			<p class="color-buy tac mgt-10 small" v-if="Number(totalPrice) < 10">{{$t("Market_77")}}</p>
-			<StatuButton style="width: 200px" class="mgt-10" :onClick="changePrice" :isDisable="Number(totalPrice) < 10">
+			<button style="width: 200px" class="btn-primary mgt-20" :class="!(sellObj.durationDays > 1 && sellObj.startPrice > 0)? 'disable-btn': '' " @click="changePrice">
 				{{$t("Common_03")}}
-			</StatuButton>
+			</button>
 		</Dialog>
 
 		<Dialog id="confirm-gem-buy-dialog"  :top="200" :width="350">
-			<h4 class="mgt-30" v-html="$t('Market_59').replace('#0#', `<span style='color: #49c773' class='money'>${ numFloor( sellObj.startPrice, 1e2).toLocaleString()} ${oprCoin}</span>` )"></h4>
+			<h4 class="mgt-30" v-html="$t('Market_59').replace('#0#', `<span style='color: #49c773'>${sellObj.startPrice} MBOX</span>` )"></h4>
 			<div class="mgt-50">
 				<button class="btn-primary" @click="oprDialog('confirm-gem-buy-dialog', 'none');">{{$t("Common_04")}}</button>
 				<button class="btn-primary mgl-5" @click="oprDialog('confirm-gem-buy-dialog', 'none');buyPet()">{{$t("Common_03")}}</button>
@@ -125,25 +106,23 @@
 	</div>
 </template>
 <script>
-import { Dialog, StatuButton } from '@/components';
+import { Dialog, Loading, StatuButton } from '@/components';
 import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
 import {  Wallet, Common } from '@/utils';
-import { WalletConfig, PancakeConfig, ConstantConfig } from '@/config';
+import { WalletConfig,  PancakeConfig } from '@/config';
 import BigNumber from "bignumber.js";
 
 
 export default {
 	mixins: [CommonMethod],
-	components: { Dialog, StatuButton },
+	components: { Dialog, Loading, StatuButton },
 	data() {
 		return {
 			lockUpgradeTime: 0,
 			hackReload: true,
 			myAccount: "",
 			sellObj: {
-				sellNum: 0,
-				onePrice: "",
 				startPrice: "",
 				endPrice: "",
 				durationDays: 2,
@@ -186,13 +165,13 @@ export default {
 			return this.getNowPetItem.auctor.toLocaleLowerCase() == this.myAccount.toLocaleLowerCase();
 		},
 		getShowList(){
-			let {ids, amounts, erc1155_} = this.getNowPetItem;
+			let {ids, amounts} = this.getNowPetItem;
 			let arr = [];
 			ids.map((id, index)=>{
 				let obj = {};
 				obj.num = amounts[index];
 				obj.level = Number(id) % 100;
-				obj.id = erc1155_ == 4?erc1155_: id;
+				obj.id = id;
 				arr.push(obj);
 			});
 			arr.sort((a,b)=>{
@@ -200,20 +179,6 @@ export default {
 			});
 			return arr;
 		},
-		oprCoin(){
-			return "USDT";
-		},
-		isGem(){
-			return this.getNowPetItem.erc1155_ == 1;
-		},
-		totalPrice(){
-			if(this.isGem) return this.sellObj.startPrice;
-			return this.sellObj.onePrice * this.sellObj.sellNum;
-		},
-		//是否需要授权, 授权额度不足支付
-		needApprove(){
-			return this.coinArr[this.oprCoin].allowanceToGemAuction / 1e18 < Number(this.getNowPetItem.price/ 1e9) && this.coinArr[this.oprCoin].allowanceToGemAuction != -1;
-		}
 	},
 	async created() {
 		this.setPetInfo();
@@ -221,7 +186,7 @@ export default {
 		//查询授权情况
 		await this.viewAllowance();
 		//查询余额
-		let coinKey = this.oprCoin;
+		let coinKey = "MBOX";
 		if(this.coinArr[coinKey].balance == "-"){
 			this.$root.$children[0].setCoinValueByName(coinKey);
 		}
@@ -245,13 +210,10 @@ export default {
 			}
 		},
 		setChangePriceData(isClick = false){
-			let {price, amounts} = this.getNowPetItem;
-			console.log(this.getNowPetItem, "---------------------");
+			let {price} = this.getNowPetItem;
 			this.sellObj.startPrice = price / 1e9;
 			this.sellObj.endPrice = price / 1e9;
 			this.sellObj.durationDays = 2;
-			this.sellObj.sellNum = amounts[0];
-			this.sellObj.onePrice = this.sellObj.startPrice / this.sellObj.sellNum
 			if(isClick){
 				let { uptime } = this.getNowPetItem;
 				let dtTime = parseInt(new Date().valueOf() /1000) - Number(uptime);
@@ -263,9 +225,9 @@ export default {
 			}
 
 		},
-		//获取USDT的授权情况
+		//获取BUSD的授权情况
 		async viewAllowance(){
-			let coinKey = this.oprCoin;
+			let coinKey = "MBOX";
 			if(this.coinArr[coinKey].allowanceToGemAuction > 0) return;
 
 			let allowanceToGemAuction = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, WalletConfig.ETH.common1155Auction, false);
@@ -277,9 +239,9 @@ export default {
 		},
 		//授权
 		async approve(){
-			let coinKey = this.oprCoin;
-			let { isApproving} = this.coinArr[coinKey];
-			if( isApproving) return;
+			let coinKey = "MBOX";
+			let {allowanceToGemAuction, isApproving} = this.coinArr[coinKey];
+			if(allowanceToGemAuction > 0 || isApproving) return;
 
 			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr,
 			WalletConfig.ETH.common1155Auction, {coinKey, type: "allowanceToGemAuction"});
@@ -290,15 +252,10 @@ export default {
 	
 		//购买
 		async buyPet(){
-			await Wallet.ETH.getAccount(true);
-			let coinKey = this.oprCoin;
+			let coinKey = "MBOX"
 			if(this.coinArr[coinKey].allowanceToGemAuction <= 0 || this.lockBtn.buyMomoLock > 0) return
-			if(this.getNowPetItem.price/1e9 > Number(this.coinArr[coinKey].balance)){
-				if(coinKey == "MBOX"){
-					this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox())
-				}else{
-					this.showNotify(this.$t("Market_34"), "error");
-				}
+			if(this.nowPrice/1e9 > Number(this.coinArr[coinKey].balance)){
+				this.showNotify(this.$t("Market_34"), "error");
 				return ;
 			}
 
@@ -336,7 +293,7 @@ export default {
 			let hash = await Wallet.ETH.cancelGemAuction( this.getNowPetItem.orderId);
 			if(hash){
 				//添加一条临时的下架数据
-				this.tempGemMarketCancelTx.push({tx:this.getNowPetItem.tx, nextHash: hash,currency: this.getNowPetItem.currency});
+				this.tempGemMarketCancelTx.push({tx:this.getNowPetItem.tx, nextHash: hash});
 				this.$store.commit("marketState/setData", { tempGemMarketCancelTx: this.tempGemMarketCancelTx});
 				await Common.sleep(1000);
 				this.$router.back(-1);
@@ -352,11 +309,7 @@ export default {
 				return;
 			}
 
-			let { startPrice, endPrice, onePrice, sellNum } = this.sellObj;
-
-			if(!this.isGem){
-				startPrice = onePrice * sellNum;
-			}
+			let { startPrice, endPrice } = this.sellObj;
 
 			//TODO:校验参数正确性
 			if(startPrice <= 0){
@@ -369,8 +322,6 @@ export default {
 				orderId_: this.getNowPetItem.orderId,
 				price_: startPrice
 			}
-
-			console.log(obj, "ssss");
 
 			let data = await this.getPetInfo();
 			if(data.status != 3){
@@ -397,6 +348,7 @@ export default {
 	text-align: left;
 }
 .shop-car-item .pet-img {
+	width: 100px;
 	height: 100px;
 }
 

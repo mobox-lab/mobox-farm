@@ -7,18 +7,18 @@
 			<div class="col-md-6 mgt-10">
 				<div class="panel" v-if="this.getNowPetItem.tokenId != 0">
 					<div id="upgrade-lv" class="vertical-children">
-						<img :src=" require(`../assets/icon/${ category_img[this.getNowPetItem.category] }.png`)" alt="" width="20" height="20" />&nbsp;
+						<img :src=" require(`@/assets/icon/${ category_img[this.getNowPetItem.category] }.png`)" alt="" width="20" height="20" />&nbsp;
 						<span>LV {{ this.getNowPetItem.level }}</span>
 					</div>
 					<div id="upgrade-power" class="vertical-children">
-						<img src="../assets/icon/airdrop.png" alt="" height="30" />&nbsp;
+						<img src="@/assets/icon/airdrop.png" alt="" height="30" />&nbsp;
 						<span class="mgl-5" :class="getHashrateColor( this.getNowPetItem)">
 							{{ this.getNowPetItem.lvHashrate }}
 						</span>
 					</div>
 					<div id="upgrade-power-lv1" class="vertical-children" v-if="this.getNowPetItem.level > 1">
 						Lv. 1
-						<img src="../assets/icon/airdrop.png" alt="" height="15" />&nbsp;
+						<img src="@/assets/icon/airdrop.png" alt="" height="15" />&nbsp;
 						<span :class="getHashrateColor( this.getNowPetItem)">
 							{{ this.getNowPetItem.hashrate }}
 						</span>
@@ -27,7 +27,7 @@
 					<div class="por" id="show-pet-view" style="margin-top: 100px" >
 						<PetView v-bind:prototype="this.getNowPetItem.prototype" />
 						<div class="vertical-children" id="upgrade-name">
-							<img :src=" require(`../assets/icon/${this.getNowPetItem.chain.toLocaleLowerCase()}.png`) " height="25" alt="" />&nbsp;
+							<img :src=" require(`@/assets/icon/${this.getNowPetItem.chain.toLocaleLowerCase()}.png`) " height="25" alt="" />&nbsp;
 							<span>{{ hasSetName ? shortStr(this.getNowPetItem.tokenName) : $t(this.getNowPetItem.tokenName) }}</span>
 						</div>
 					</div>
@@ -35,18 +35,18 @@
 				<div class="panel" v-if="this.getNowPetItem.tokenId == 0">
 
 					<div v-for="item in getShowList" :key="item.prototype" :class="'pet_hover_lv' +item.vType" class="shop-car-item  vertical-children por mgt-10">
-					<img class="pet-img" :src="require(`../assets/pet/${item.prototype}.png`)" alt="" />
+					<img class="pet-img" :src="require(`@/assets/pet/${item.prototype}.png`)" alt="" />
 					<div class="dib small mgl-5">
 						<p class="vertical-children">
-							<img src="../assets/icon/airdrop.png" width="20" alt="" />
+							<img src="@/assets/icon/airdrop.png" width="20" alt="" />
 							<span class="mgl-5 color-w" style="font-size:18px"> {{ item.lvHashrate }} </span>
 						</p>
 						<p class="vertical-children mgt-5">
-							<img :src=" require(`../assets/icon/${ category_img[item.category] }.png`) " width="12" alt="" />&nbsp;
+							<img :src=" require(`@/assets/icon/${ category_img[item.category] }.png`) " width="12" alt="" />&nbsp;
 							<span class="mgl-5"> Lv.{{ item.level }} </span>
 						</p>
 						<p class="vertical-children mgt-5">
-							<img :src=" require(`../assets/icon/bnb.png`) " width="12" alt="" />
+							<img :src=" require(`@/assets/icon/bnb.png`) " width="12" alt="" />
 							<span class="mgl-5"> {{ $t(item.tokenName) }} </span>
 						</p>
 						
@@ -66,7 +66,7 @@
 						<h3 >{{$t("Market_17")}}</h3>
 						<div class="tac">
 							<div id="price" class="vertical-children">
-								<img src="../assets/coin/BUSD.png" height="25" alt="">&nbsp;
+								<img src="@/assets/coin/BUSD.png" height="25" alt="">&nbsp;
 								<span>{{numFloor( this.nowPrice/ 1e9, 1e4)}}</span>
 							</div>
 							<div v-if="this.getNowPetItem.startPrice != this.getNowPetItem.endPrice">
@@ -78,27 +78,27 @@
 									</p>
 									<span class="jdt-bar" :class="this.getWidth == '100%'?'active':''" style="left:auto;right:-5px" ></span>
 									<span class="jdt-startPrice vertical-children">
-										<img src="../assets/coin/BUSD.png" height="18" alt="">&nbsp;
+										<img src="@/assets/coin/BUSD.png" height="18" alt="">&nbsp;
 										<span>{{numFloor( this.getNowPetItem.startPrice/ 1e9, 1e4)}}</span>
 									</span>
 									<span class="jdt-endPrice vertical-children">
-										<img src="../assets/coin/BUSD.png" height="18" alt="">&nbsp;
+										<img src="@/assets/coin/BUSD.png" height="18" alt="">&nbsp;
 										<span>{{numFloor( this.getNowPetItem.endPrice/ 1e9, 1e4)}}</span>
 									</span>
 								</div>
 								<p class="small vertical-children por" style="top: -15px" v-if="this.nowPrice != this.getNowPetItem.endPrice">
 									<span>{{$t('Market_32').replace('#0#', countdown)}}:</span>&nbsp;
-									<img src="../assets/coin/BUSD.png" height="16" alt="">&nbsp;
+									<img src="@/assets/coin/BUSD.png" height="16" alt="">&nbsp;
 									<span>{{numFloor( nextDayPrice/ 1e9, 1e4)}}</span>
 								</p>
 							</div>
 							<div v-if="!isMyPet" class="mgt-30">
-								<div :class="coinArr['BUSD'].allowanceToAuction == 0 ?'btn-group':''">
+								<div :class="coinArr['BUSD'].allowanceToAuction == 0 ?'btn-group':''" class="dib">
 									<div v-if="coinArr['BUSD'].allowanceToAuction == 0">
-										<StatuButton data-step="1" style="width:200px" :isLoading="coinArr['BUSD'].isApproving" :onClick="approve">{{$t("Air-drop_16")}} BUSD</StatuButton>
+										<StatuButton data-step="1" style="width:150px" :isLoading="coinArr['BUSD'].isApproving" :onClick="approve">{{$t("Air-drop_16")}} BUSD</StatuButton>
 									</div>
 									<div class="mgt-10">
-										<StatuButton style="width:200px"  data-step="2" :isLoading="lockBtn.buyMomoLock > 0" :isDisable="coinArr['BUSD'].allowanceToAuction <= 0 || (nowTs - this.getNowPetItem.uptime) <= 120" :onClick="()=>oprDialog('confirm-buy-dialog','block')">
+										<StatuButton style="width:150px"  data-step="2" :isLoading="lockBtn.buyMomoLock > 0" :isDisable="coinArr['BUSD'].allowanceToAuction <= 0 || (nowTs - this.getNowPetItem.uptime) <= 120" :onClick="()=>oprDialog('confirm-buy-dialog','block')">
 											<template v-if="nowTs - this.getNowPetItem.uptime <= 120">
 												<img src="@/assets/icon/lock.png" alt="" height="20" style="position:absolute;left:10px;top:6px">
 												<span>{{getLeftTime(Number(this.getNowPetItem.uptime) + 120 - nowTs)}}</span>
@@ -107,6 +107,8 @@
 										</StatuButton>
 									</div>
 								</div>
+
+								<button v-if="coinArr['BUSD'].allowanceToAuction > 0" style="width:150px"  class="btn-line mgt-10 mgl-10">加入购物车</button>
 							</div>
 							<div  v-if="isMyPet" class="mgt-20">
 								<button class="btn-primary vertical-children por" :class="lockBtn.changePriceLock > 0?'disable-btn':''"   @click="setChangePriceData(true)">
@@ -134,7 +136,7 @@
 					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} (BUSD)</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="../assets/coin/BUSD.png" alt="" />
+							<img  src="@/assets/coin/BUSD.png" alt="" />
 						</div>
 						<input v-model="sellObj.startPrice"   class="ly-input sell-input" type="number" :placeholder="priceTypePos == 1?$t('Market_11'):$t('Market_17')" v-number  data-max="100000000"/>
 					</div>
@@ -144,7 +146,7 @@
 						<p class="small tal opa-6">{{$t("Market_12")}} (BUSD)</p>
 						<div class="por mgt-5">
 							<div class="ly-input-pre-icon">
-								<img  src="../assets/coin/BUSD.png" alt="" />
+								<img  src="@/assets/coin/BUSD.png" alt="" />
 							</div>
 							<input v-model="sellObj.endPrice" class="ly-input sell-input" type="number" :placeholder="$t('Market_12')" v-number data-max="100000000"/>
 						</div>

@@ -7,6 +7,7 @@ export default class WalletConfig {
 		moMoMinter: "0xeCf8c1E91B929D3EeA4940ec8AAF27f60bAd9F80", // 开箱子合约
 		moMoHelper: "0x47D466094A436413b17967E4CAD64e775df8F4f2", //工具合约
 		moMoHelper2: "0x825673F88Ea9B263722b9ffD3eaf89484a1C459F", //工具合约
+		moMoHelper3: "0x2C388d5Ea0048dC68824610cf778fFBF2F0bBC73", //工具合约
 		moMoStake: "0x21353d254bF00E553F17B88b79c45712a886827C", //质押挖矿合约
 		moMoStakeAuction: "0xDbcF89e3B603b57A9f1DfDd7324957Cb8539DACd", //质押拍卖合约
 		common1155Auction: "0x49607116dc7a51A12f9f15Da419Bc46c228Fb27F", //1155普通拍卖

@@ -118,6 +118,8 @@ export default {
 	},
 	components: { Page, Tab },
 	async created() {
+		this.tab_pos = this.$route.query.tab || 0;
+
 		let myAddr = await Wallet.ETH.getAccount();
 		this.getRankList(myAddr || "");
 		if (myAddr == undefined) {

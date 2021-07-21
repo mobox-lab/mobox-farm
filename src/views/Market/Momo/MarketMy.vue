@@ -4,7 +4,7 @@
 			<p class=" dib">{{$t("Market_33")}}({{ getTotalPetNum }})</p>&nbsp;
 
 			<div id="market-pet-fitter">
-				<div class="dib" id="shop-car" @click="oprDialog('shop-car-dialog', 'block')" >
+				<div class="dib" id="shop-car" @click="oprDialog('pack-sell-dialog', 'block')" >
 					<span id="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span>
 					<img src="@/assets/icon/shopcar.png" alt="" height="40" />
 				</div>
@@ -63,7 +63,7 @@
 			<Page ref="page"   :defaultPage="pageNum" :totalPage="getTotalPage" :onChange="onPageChange" v-show="getTotalPage > 1" />
 		</div>
 
-		<Dialog id="shop-car-dialog" :top="20" :width="500">
+		<Dialog id="pack-sell-dialog" :top="20" :width="500">
 			<div class="por tal mgt-10">
 				<p class="opa-6">{{$t("Market_15")}}</p>
 				<p class="cur-point vertical-children" style="position: absolute; right: 0px; top: 0px" @click="shopCar = []" >
@@ -371,7 +371,7 @@ export default {
 			if (hash) {
 				await Common.sleep(200);
 				this.oprDialog("confirm-sell-dialog", "none");
-				this.oprDialog("shop-car-dialog", "none");
+				this.oprDialog("pack-sell-dialog", "none");
 				this.shopCar = [];
 
 				let myAddr = await Wallet.ETH.getAccount();

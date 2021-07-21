@@ -174,14 +174,14 @@ export default {
 			}
 			let coinObj = this.coinArr[this.oprData.coinKey];
 			if(coinObj){
-				let {shareTotal, veMoboxSupply, wantAmount} = coinObj;
-				let y = (this.sliderValue - 1)/2 *(wantAmount * 1e18 / shareTotal);
-				needObj.veMbox = this.numFloor((y*veMoboxSupply/(1-y) - this.getTotalVeMbox*1e18)/1e18, 1e4);
-				if(veMoboxSupply == 0 || veMoboxSupply <= this.getTotalVeMbox * 1e18 || wantAmount * 1e18 >= Number(shareTotal)) {
+				let {shareTotal, veMoboxSupply, myShare} = coinObj;
+				let y = (this.sliderValue - 1)/2 *(myShare / shareTotal);
+				needObj.veMbox = this.numFloor((y*(veMoboxSupply - this.getTotalVeMbox*1e18)/(1-y) - this.getTotalVeMbox*1e18)/1e18, 1e4);
+				if(veMoboxSupply == 0 || veMoboxSupply <= this.getTotalVeMbox * 1e18 || myShare >= Number(shareTotal)) {
 					needObj.veMbox = 0.1;
 				}
 				//如果池子里面都是我的 并且我已经质押过 就不需要质押了
-				if(wantAmount * 1e18 >= Number(shareTotal) && this.getTotalVeMbox > 0){
+				if(myShare >= Number(shareTotal) && this.getTotalVeMbox > 0){
 					needObj.veMbox = 0;
 				}
 				if(Number(needObj.veMbox) < 0) needObj.veMbox = 0;

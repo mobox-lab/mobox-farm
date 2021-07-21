@@ -33,6 +33,10 @@ export default {
 				{icon: require("@/assets/icon/yellow_icon.png"), text: "Gemstone_01", key: "shenGou"},
 			]
 		})
+	},
+	created(){
+		let tabPos = this.$route.query.tab || 0;
+		this.tabKey = this.tabArr[tabPos].key;
 	}
 }
 </script>

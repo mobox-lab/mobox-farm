@@ -853,6 +853,40 @@ export default class ETH {
 		});
 	}
 
+	//查询721产出情况
+	static async getAll721Status(){
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "getLimits",
+				"type": "function",
+				"inputs": [
+					{"name": "protoIdArray_","type": "uint256[]"},
+				],
+				"outputs": [
+					{"name": "limits","type": "uint256[]"},
+				],
+			}
+		], WalletConfig.ETH.moMoHelper3);
+
+		let prototype_721_arr = [];
+		for (const key in BaseConfig.NftCfg) {
+			let {prototype} = BaseConfig.NftCfg[key];
+			if (prototype > 40000 && prototype < 60000) {
+				prototype_721_arr.push(prototype);
+			}
+		}
+
+		return new Promise(resolve => {
+			contract.methods.getLimits(prototype_721_arr).call().then(res => {
+				let returnObj = {};
+				res.map((item, key)=>{
+					returnObj[prototype_721_arr[key]] = item;
+				});
+				resolve(returnObj);
+			});
+		});
+	}
+
 	//获取我的NFT
 	static async getMomosByType(type) {
 		let myAddr = await this.getAccount();

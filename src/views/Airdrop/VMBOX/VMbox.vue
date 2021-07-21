@@ -114,7 +114,10 @@ export default {
 			if(this.oprData.coinKey == "") return;
 			let pIndex = PancakeConfig.StakeLP[this.oprData.coinKey].pIndex;
 			let res = await Wallet.ETH.getPoolVeMobox(pIndex);
+			let apyParam = await Wallet.ETH.getUserPoolsApyParam([pIndex]);
+
 			this.coinArr[this.oprData.coinKey].shareTotal = res.shareTotal;
+			this.coinArr[this.oprData.coinKey].myShare = apyParam.wantShares[0];
 			this.coinArr[this.oprData.coinKey].veMoboxSupply = res.veMoboxSupply;
 			this.coinArr[this.oprData.coinKey]["ts"] = new Date().valueOf();
 		},

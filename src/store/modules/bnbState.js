@@ -50,6 +50,7 @@ const baseCoinAttr = {
 		},
 		notice: false,
 	},
+	myShare: 0, //我在池子质押的份额
 	shareTotal: 0,//池子总质押
 	veMoboxSupply: 0,//池子总质押veMbox
 	veMboxTotal: 0,//所有池子的veMBOX

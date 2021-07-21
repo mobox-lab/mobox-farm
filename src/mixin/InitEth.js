@@ -129,6 +129,8 @@ const InitEth = {
 
 				await this.eth_set1155IsApprovedForStake();
 				await this.eth_set721IsApprovedForStake();
+				let momoNumObj = await Wallet.ETH.getAll721Status();
+				this.$store.commit("globalState/setData", {momoNumObj});
 
 				//我们自己服务器相关的数据
 				await this.eth_setStakeHistory();
@@ -362,18 +364,18 @@ const InitEth = {
 				//达到3还需要的veMbox
 				let maxApyNeedVeMobox = 0;
 				let coinObj = this.coinArr[item.coinKey];
-				let {shareTotal, veMoboxSupply, wantAmount} = coinObj;
+				let {shareTotal, veMoboxSupply} = coinObj;
 
 				let orderIndexs = veMbox.orderIndexs;
-				let totalVeMobox =(Number(orderIndexs[0].veMboxNum) + Number(orderIndexs[1].veMboxNum) + Number(orderIndexs[2].veMboxNum)) /1e18;
+				let totalVeMobox = Number(orderIndexs[0].veMboxNum) + Number(orderIndexs[1].veMboxNum) + Number(orderIndexs[2].veMboxNum);
 
-				let y = (3 - 1)/2 *(wantAmount * 1e18 / shareTotal);
-				maxApyNeedVeMobox = (y*veMoboxSupply/(1-y) - totalVeMobox*1e18)/1e18;
-				if(veMoboxSupply == 0 || veMoboxSupply <= this.getTotalVeMbox * 1e18 || wantAmount * 1e18 >= Number(shareTotal)) {
+				let y = (3 - 1)/2 *(wantShares[0] / shareTotal);
+				maxApyNeedVeMobox = (y*(veMoboxSupply-totalVeMobox)/(1-y) - totalVeMobox)/1e18;
+				if(veMoboxSupply == 0 || veMoboxSupply <= totalVeMobox || wantShares[0] >= Number(shareTotal)) {
 					maxApyNeedVeMobox = 0.1;
 				}
 				//如果池子里面都是我的 并且我已经质押过 就不需要质押了
-				if(wantAmount * 1e18 >= Number(shareTotal) && this.getTotalVeMbox > 0){
+				if(wantShares[0] >= Number(shareTotal) && totalVeMobox > 0){
 					maxApyNeedVeMobox = 0;
 				}
 				if(Number(maxApyNeedVeMobox) < 0) maxApyNeedVeMobox = 0;

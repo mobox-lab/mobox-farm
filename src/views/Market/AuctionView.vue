@@ -108,7 +108,7 @@
 									</div>
 								</div>
 
-								<button v-if="coinArr['BUSD'].allowanceToAuction > 0" style="width:150px"  class="btn-line mgt-10 mgl-10">加入购物车</button>
+								<!-- <button v-if="coinArr['BUSD'].allowanceToAuction > 0" style="width:150px"  class="btn-line mgt-10 mgl-10">加入购物车</button> -->
 							</div>
 							<div  v-if="isMyPet" class="mgt-20">
 								<button class="btn-primary vertical-children por" :class="lockBtn.changePriceLock > 0?'disable-btn':''"   @click="setChangePriceData(true)">

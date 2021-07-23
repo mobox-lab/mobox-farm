@@ -6,8 +6,10 @@
 		</span>
 		<div v-for="item in data" class="dib por tac cur-point" :class="`${ data.length > 1 ? 'col-md-3 col-xs-3' : 'col-md-12' }`" :key="item.prototype" @click="buyMomo(item)">
 			<img :src="require(`../assets/pet/${item.prototype}.png`)" alt="" width="100%" :class="item.num >= 1 ? '' : 'opa-4'" />
-			<span class="pet-count" v-if="item.vType >= 4  && momoNumObj[item.prototype] != undefined " >
-				<span v-if="item.vType != 6">{{momoNumObj[item.prototype]}}/</span>{{item.mmNum}}</span>
+			<span class="pet-count" v-if="item.vType >= 4  && momoNumObj[item.prototype] != undefined && item.vType < 6" >
+				{{momoNumObj[item.prototype]}}/{{item.mmNum}}
+			</span>
+			<span class="pet-count" v-if="item.vType >= 6">{{item.mmNum}}</span>
 			<span class="pet-num" v-if="item.num >= 1">x{{ item.num }}</span>
 			<span class="quick-buy opa-6" v-if="item.num <= 0 && item.vType<=4">
 				<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M867.7 423.8H599.8V155.9c0-49.3-40-89.3-89.3-89.3s-89.3 40-89.3 89.3v267.9H153.3c-49.3 0-89.3 40-89.3 89.3s40 89.3 89.3 89.3h267.9v267.9c0 49.3 40 89.3 89.3 89.3s89.3-40 89.3-89.3V602.4h267.9c49.3 0 89.3-40 89.3-89.3s-40-89.3-89.3-89.3z"  fill="#E1FF17"></path></svg>
@@ -87,7 +89,7 @@ export default {
 	font-size: 12px;
 	color: rgb(0, 0, 0);
 	font-weight: 800;
-	background: rgba(255, 255, 255, 0.4);
+	background: rgba(255, 255, 255, 0.3);
 	border-radius: 10px;
 	padding: 0px 3px;
 	min-width: 30px;

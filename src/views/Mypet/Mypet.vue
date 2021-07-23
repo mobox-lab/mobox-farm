@@ -37,19 +37,19 @@
 			<section id="buy-back" class="mgt-20 por">
 				<div class="aveage-box" style="background:#1C222C;border-radius:10px">
 					<div style="padding:10px">
-						<p class="small opa-6 tac" >已产出史诗MOMO</p>
+						<p class="small opa-6 tac" >{{$t("Fetters_13")}}</p>
 						<input type="text" readonly class="ly-input mgt-10 tac" :value="(getCountMomo.v5 || '-')+'/'+getCountMomo.v5_all " />
 					</div>
 					<div style="padding:10px">
-						<p class="small opa-6 tac" >已产出稀有MOMO</p>
+						<p class="small opa-6 tac" >{{$t("Fetters_14")}}</p>
 						<input type="text" readonly class="ly-input mgt-10 tac" :value="(getCountMomo.v4 || '-')+'/'+getCountMomo.v4_all" />
 					</div>
 					<div style="padding:10px">
-						<p class="small opa-6 tac" >当前固定算力总加成为</p>
+						<p class="small opa-6 tac" >{{$t("Fetters_15")}}</p>
 						<input type="text" readonly class="ly-input mgt-10 tac" :value="$root.$children[0].showPowerUpList.length * 100"  />
 					</div>
 					<div style="padding:10px" >
-						<p class="small opa-6 tac" >当前百分比算力总加成为</p>
+						<p class="small opa-6 tac" >{{$t("Fetters_16")}}</p>
 						<input type="text" readonly class="ly-input mgt-10 tac" :value="numFloor($root.$children[0].getTotalPercent.maxAdd * 100, 100)+'%'" />
 					</div>
 				</div>
@@ -429,7 +429,7 @@ export default {
 	padding: 10px;
 }
 #buy-back {
-	padding: 20px 30px;
+	padding: 20px;
 	background: #13181F;
 	border-radius: 20px;
 	margin: 0px auto;

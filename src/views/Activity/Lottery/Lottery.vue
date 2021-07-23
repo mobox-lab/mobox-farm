@@ -232,7 +232,7 @@ export default {
 				// {...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243", block: 8776006, ts: 1625141100, hash: "-"},
 				{...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243", block: 8981888, ts: 1625760000, hash:"-"},
 				{...baseAttr, tokenId: 22, prototype: 60002, tokenName: "Name_242", block: 9167888, ts: 1626321600, hash:"-"},
-				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241", block: 9369488, ts: 1626969600, hash:"-"},
+				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241", block: 9369488, ts: 1626926400, hash:"-"},
 			],
 			rankListObj: {
 				list: [],
@@ -271,6 +271,9 @@ export default {
 				this.getMyLotteryData();
 				this.getLotteryRank(false);
 			}
+		},
+		isShowPastRound: function(){
+			this.setBlockHash();
 		}
 	},
 	computed:{
@@ -292,10 +295,12 @@ export default {
 	},
 	methods:{
 		async setBlockHash(){
-			if(this.getNowRound > 1){
-				let  res =  await Wallet.ETH.getBlockInfo(this.momoDatas[this.getNowRound-this.isShowPastRound-1].block);
+			let pos = this.getNowRound-this.isShowPastRound;
+			if(this.getNowRound > 1 && this.momoDatas[pos].hash == "-"){
+				let  res =  await Wallet.ETH.getBlockInfo(this.momoDatas[pos].block);
 				if(res){
-					this.momoDatas[this.getNowRound-this.isShowPastRound-1].hash = res.hash;
+					this.momoDatas[pos].hash = res.hash;
+					this.$forceUpdate();
 				}
 			}
 		},

@@ -1,8 +1,10 @@
 <template>
 	<div id="upgrade">
-		<span @click="$router.back(-1)" class="cur-point text-big">
-			<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;{{ $t("MOMO_19") }}
-		</span>
+		<router-link to="/market">
+			<span  class="cur-point text-big">
+				<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;{{ $t("MOMO_19") }}
+			</span>
+		</router-link>
 		<div class="tac row mgt-10">
 			<div class="col-md-6">
 				<div class="panel" >

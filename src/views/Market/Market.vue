@@ -142,7 +142,7 @@ export default {
 		}
 	},
 	async created(){
-		let marketTypePos = this.$route.query.tab || 0;
+		let marketTypePos = this.$route.query.tab || this.marketTypePos;
 		this.$store.commit('marketState/setData', {marketTypePos});
 
 		this.myAccount = await Wallet.ETH.getAccount();

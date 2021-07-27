@@ -9,6 +9,10 @@
 					{{ data.lvHashrate }}
 				</span>
 			</div>
+			<div class="pet-item-lv vertical-children" v-if="data.vType >= 4 && data.level" >
+				<span >Lv.{{data.level}}</span>
+			</div>
+			
 			<div class="pet-add-show-img">
 				<img :src="require(`../assets/pet/${data.prototype}.png`)" alt="" width="90%" />
 			</div>
@@ -104,6 +108,15 @@ export default {
 };
 </script>
 <style  scoped>
+.pet-item-lv{
+	position: absolute;
+	bottom: 0px;
+	right: 15px;
+	background-image: linear-gradient(90deg, rgb(24, 24, 24), 50%, rgba(12, 12, 12, 0.4));
+	border-radius: 10px;
+	font-size: 12px;
+	padding: 0px 5px;
+}
 .lock{
 	position: absolute;
 	right: 10px;
@@ -119,7 +132,7 @@ export default {
 }
 .pet-item-hashrate {
 	position: absolute;
-	background-image: linear-gradient(90deg, #000, 50%, rgba(1, 1, 1, 0.1));
+	background-image: linear-gradient(90deg, #000, 50%, rgba(1, 1, 1, 0.4));
 	border-radius: 10px;
 	height: 20px;
 	font-size: 12px;

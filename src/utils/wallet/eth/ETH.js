@@ -1706,6 +1706,32 @@ export default class ETH {
 		});
 	}
 
+	//查询申购状态
+	static async getBoxApplyState(){
+		let contract = new this.web3.eth.Contract([
+			Contract.getRoundInfo,
+		], WalletConfig.ETH.boxApply);
+		return new Promise(resolve => {
+			contract.methods.getRoundInfo().call().then(data => {
+				resolve(data);
+			})
+		});
+	}
+
+	//查询我的申购信息
+	static async getMyBoxApplyInfo(){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+		let contract = new this.web3.eth.Contract([
+			Contract.getBoxUserInfo,
+		], WalletConfig.ETH.boxApply);
+		return new Promise(resolve => {
+			contract.methods.getUserInfo(myAddr).call().then(data => {
+				resolve(data);
+			})
+		});
+	}
+
 	//查询我的申购信息
 	static async getMyApplyInfo(){
 		let myAddr = await this.getAccount();
@@ -1760,6 +1786,43 @@ export default class ETH {
 			)
 		});
 	}
+
+	//申购BOX
+	static async applyForBox(type, applyNum_, recipt){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+		let contract = new this.web3.eth.Contract([
+			{
+				type: "function",
+				name: 'nApplyForBox',
+				inputs: [{type: 'uint256',name: 'applyNum_'}],
+				outputs: [],
+			},
+			{
+				type: "function",
+				name: 'hApplyForBox',
+				inputs: [{type: 'uint256',name: 'applyNum_'}],
+				outputs: [],
+			},
+		], WalletConfig.ETH.boxApply);
+
+		return new Promise(resolve => {
+			let method;
+			if(type == "normal"){
+				method = contract.methods.nApplyForBox(applyNum_);
+			}else{
+				method = contract.methods.hApplyForBox(applyNum_);
+			}
+			this.sendMethod(method, {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					Common.app.unLockBtn("applyBoxLock");
+					Common.app.setCoinValueByName("MBOX");
+					recipt();
+				}
+			)
+		});
+	}
 	//领取宝石
 	static async takeGem(recipt){
 		let myAddr = await this.getAccount();
@@ -1780,7 +1843,53 @@ export default class ETH {
 			)
 		});
 	}
-	//领取多余的MBOX
+	//领取BOX
+	static async takeBox(recipt){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"type": "function",
+				"name": "claimfrozenBox",
+				"inputs": [],
+				"outputs": [],
+				"stateMutability": "nonpayable",
+			}
+		], WalletConfig.ETH.boxApply);
+
+		return new Promise(resolve => {
+			this.sendMethod(contract.methods.claimfrozenBox(), {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					Common.app.unLockBtn("takeBoxLock");
+					recipt();
+				}
+			)
+		});
+	}
+	//领取申购BOX多余的MBOX
+	static async takeMbox_box(recipt){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			Contract.claimfrozenMbox,
+		], WalletConfig.ETH.boxApply);
+
+		return new Promise(resolve => {
+			this.sendMethod(contract.methods.claimfrozenMbox(), {from: myAddr},
+				hash=>resolve(hash),
+				()=>{
+					Common.app.unLockBtn("takeMboxLock");
+					Common.app.setCoinValueByName("MBOX");
+					recipt();
+				}
+			)
+		});
+	}
+
+	//领取申购宝石多余的MBOX
 	static async takeMbox(recipt){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;

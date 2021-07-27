@@ -28,7 +28,7 @@
 		<section class="col-md-5" style="padding:10px">
 			<div class="panel por" style="height:380px;padding:30px">
 				<section style="padding:10px">
-					<div class="aveage-box tal" style="border-bottom:1px solid #5d646c;padding:20px">
+					<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:20px">
 						<div >
 							<p class="small opa-6">{{$t("Gemstone_32")}}</p>
 							<h3>{{applyInfo.nowNormalAmount}}</h3>

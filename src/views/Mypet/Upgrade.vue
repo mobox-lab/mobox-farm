@@ -201,6 +201,7 @@ export default {
 				needNum: 2,
 				needPrototype: false,
 				type: "v1",
+				needLv: 1,
 			},
 			// showCanSelectArr: [],
 			selectAddPetPos: 0,
@@ -234,15 +235,14 @@ export default {
 			upgradeLocks: (state) =>state.ethState.data.upgradeLocks,
 		}),
 		showCanSelectArr(){
-			let { type, needPrototype } = this.needHandleData;
+			let { type, needPrototype, needLv } = this.needHandleData;
 			let needShowArr = [];
 			this.myNFT_stake.map((item) => {
 				//去掉自己
 				let isSelf = type >= 4 && item.tokenId == this.getNowPetItem.tokenId;
-				// item.level >= needLv &&
 				let bookType =  item.prototype % (item.vType * 10000)
 				item.isLock = this.getLockTypes.indexOf(bookType) != -1;
-				if ( "v" + item.vType == type && (!needPrototype || needPrototype == item.prototype) && !isSelf ) {
+				if ( "v" + item.vType == type && (!needPrototype || needPrototype == item.prototype) && !isSelf  && item.level >= needLv  ) {
 					needShowArr.push(item);
 				}
 			});

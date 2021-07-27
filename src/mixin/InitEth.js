@@ -262,6 +262,7 @@ const InitEth = {
 				}
 				
 				let {poolIndexs,orderIndexs, moboxs ,veMoboxs,lockTimeValues} = res;
+				let totalVeMobox = 0;
 				poolIndexs.map((poolIndex, pos)=>{
 					let coinKey = pIndexObj[poolIndex];
 					let orderIndex  = orderIndexs[pos];
@@ -271,9 +272,10 @@ const InitEth = {
 					veMbox.orderIndexs[orderIndex].endTime =  lockTimeValues[pos];
 					let dt =  lockTimeValues[pos] - parseInt(new Date().valueOf()/1000);
 					veMbox.notice = dt <= 0 && Number(moboxs[pos]) > 0;
+					totalVeMobox += Number(veMoboxs[pos]);
 				});
 				this.coinArr["ts"] = new Date().valueOf();
-				this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+				this.$store.commit("bnbState/setData", {coinArr: this.coinArr, myTotalVeMbox: parseInt(totalVeMobox/1e18)});
 			}
 		},
 		async getGemBag(){

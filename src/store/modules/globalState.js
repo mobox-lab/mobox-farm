@@ -45,6 +45,7 @@ const state = () => ({
 			moveVeMboxLock: 0,
 			joinStakeLock: 0,
 			bidLock: 0,
+			applyBoxLock: 0,
 		},
 		walletStatus: {
 			status: 1, //1,等待中，2，reject，3，success
@@ -57,6 +58,7 @@ const state = () => ({
 		buyBackType: 0,
 		getNowBlock: "-",
 		momoNumObj: {},
+		mboxAllownceToBoxApply: -1, //mbox是否授权给Box申购合约
 	},
 })
 

@@ -163,6 +163,56 @@ export default class Contract {
 		outputs: [],
 	}
 
+	static getBoxUserInfo = {
+		type: "function",
+		name: 'getUserInfo',
+		inputs: [{
+			type: "address",
+			name: "owner"
+		}],
+		outputs:[{
+			"components": [
+				{
+					"internalType": "uint128",
+					"type": "uint128"
+				},
+				{
+					"internalType": "uint128",
+					"type": "uint128"
+				}
+			],
+			"internalType": "struct GemMinter.Ticket",
+			"name": "userNormalTicket",
+			"type": "tuple"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint128",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"type": "uint128"
+					}
+				],
+				"internalType": "struct GemMinter.Ticket",
+				"name": "userHighTicket",
+				"type": "tuple"
+			},
+			{
+				"internalType": "uint256",
+				"name": "boxAmount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "frozenBalance",
+				"type": "uint256"
+			}
+		],
+	}
+
 	//查看玩家申购数据(申购合约)
 	static getUserInfo = {
 		type: "function",

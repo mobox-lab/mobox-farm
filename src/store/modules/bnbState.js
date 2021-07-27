@@ -139,6 +139,7 @@ const state = () => ({
 		avglockdays: 0,//平均质押时长
 		totalStakeMbox: 0,//共质押的MBOX
 		veMboxTotal:0,//共质押的vembox
+		myTotalVeMbox: 0, //我的总veMbox
 	},
 })
 

@@ -67,8 +67,7 @@
 			</div>
 
 			<div class="mgt-20 tac">
-				<StatuButton v-if="canShowTransfetBtn" :isDisable="!canTransfer" :onClick="transferVeMbox" :isLoading="lockBtn.moveVeMboxLock > 0">{{$t('Air-drop_177')}}</StatuButton>
-				<p v-else class="color-buy">{{$t("Air-drop_215")}} <span class="cur-point" @click="$root.$children[0].showNotice()">{{$t("Air-drop_216")}}>></span></p>
+				<StatuButton :isDisable="!canTransfer" :onClick="transferVeMbox" :isLoading="lockBtn.moveVeMboxLock > 0">{{$t('Air-drop_177')}}</StatuButton>
 			</div>
 		</div>
 	</div>
@@ -101,7 +100,6 @@ export default {
 			},
 			timer: null,
 			stepTime: 500,
-			
 		})
 	},
 	watch: {
@@ -127,17 +125,13 @@ export default {
 			if(this.to.coinKey == "") isCanTransfer = false;
 
 			return isCanTransfer;
-		},
-		canShowTransfetBtn(){
-			let arr = ["MBOX-BNB", "GOV"]
-			return (this.from.coinName == "" || this.to.coinName == "") || (arr.indexOf(this.to.coinName) != -1);
 		}
 	},
 	methods: {
 		async transferVeMbox(){
 			let orderIndex_ = this.oprOrderIndex;
-			let { orderIndexs } = this.coinArr[this.to.coinKey].veMbox;
-			if(Number(orderIndexs[orderIndex_].endTime) < Date.now() / 1000 && orderIndexs[orderIndex_].stakeMbox > 0){
+			let {orderIndexsCountDown, orderIndexs} = this.coinArr[this.to.coinKey].veMbox;
+			if(orderIndexsCountDown[orderIndex_] <=0 && orderIndexs[orderIndex_].stakeMbox > 0){
 				this.showNotify(this.$t("Air-drop_185"), "error");
 				return;
 			}
@@ -155,9 +149,10 @@ export default {
 			}
 		},
 		openSelectPool(type){
-			this.$parent.$parent.$refs.selectOprPool.setOprData([this.from.coinKey, this.to.coinKey], this.oprOrderIndex,this.onSelectPool.bind(this, type), type).show();
+			this.$parent.$parent.$refs.selectOprPool.setOprData([this.from.coinKey, this.to.coinKey], this.oprOrderIndex,this.onSelectPool.bind(this, type)).show();
 		},
 		onSelectPool(type, coinKey){
+			console.log({type, coinKey});
 			this[type].coinKey = coinKey;
 			this[type].coinName =  this.coinArr[coinKey].coinName;
 			this[type].isLP =  this.coinArr[coinKey].isLP;

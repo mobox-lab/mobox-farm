@@ -237,6 +237,8 @@ const InitEth = {
 					pIndexObj[pIndex] = key;
 				}
 			}
+			//单独增加平台的
+			pIndexObj["100001"] = "GOV";
 			let res = await Wallet.ETH.getVeMboxStakeInfo(Object.keys(pIndexObj));
 			let booster = await Wallet.ETH.getBoosterInfo(Object.keys(pIndexObj));
 
@@ -274,6 +276,7 @@ const InitEth = {
 					veMbox.notice = dt <= 0 && Number(moboxs[pos]) > 0;
 					totalVeMobox += Number(veMoboxs[pos]);
 				});
+				console.log(this.coinArr);
 				this.coinArr["ts"] = new Date().valueOf();
 				this.$store.commit("bnbState/setData", {coinArr: this.coinArr, myTotalVeMbox: parseInt(totalVeMobox/1e18)});
 			}

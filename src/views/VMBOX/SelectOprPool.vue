@@ -43,7 +43,6 @@ export default {
 			nowTs : parseInt(new Date().valueOf()/1000),
 			cb: ()=>{},
 			updataTime: 0,
-			type: "from",
 		});
 	},
 	computed: {
@@ -58,9 +57,7 @@ export default {
 			for (let key in stakeLP) {
 				let {pIndex, isFinish} = stakeLP[key];
 				if(pIndex != -1 && !isFinish){
-					if(this.type == "from" || (this.type == "to" && key == "MBOX-BNB-V2")){
-						arr.push({coinKey: key, ...stakeLP[key], ...coinArr[key]});
-					}
+					arr.push({coinKey: key, ...stakeLP[key], ...coinArr[key]});
 				}
 			}
 			return arr;
@@ -83,11 +80,10 @@ export default {
 			this.oprDialog("select-pool-dialog","none")
 			return this;
 		},
-		setOprData(hasSelectCoin,oprOrderIndex, cb, type){
+		setOprData(hasSelectCoin,oprOrderIndex, cb){
 			this.hasSelectCoin = hasSelectCoin;
 			this.oprOrderIndex = oprOrderIndex;
 			this.cb = cb;
-			this.type = type;
 			return this;
 		},
 		itemClick(item){

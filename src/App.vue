@@ -143,6 +143,7 @@
 			<span class="text-btn por" @click="showNotice">
 				<span class="notice" v-if="!hasReadNotice"></span>
 				<img src="./assets/icon/notice_icon.png" alt="" height="25"/>
+				<span class="bold tac" style="position:absolute;left:0px;zoom:0.7;bottom:0px;height:10px;line-height:20px;color:#ccc;width:100%" >{{$i18n.locale == 'zh-CN' ? $t("Notice_03"): 'Notice'}}</span>
 			</span>
 		</div>
 		<!-- 手机底部导航 -->
@@ -235,6 +236,10 @@
 			<div style="padding: 10px">
 				<h3>{{ $t("Fetters_01") }}</h3>
 				<p class="small opa-6 mgt-10 tal">{{ $t("Fetters_02") }}{{$t("Fetters_12")}}</p>
+				<p class="small tal opa-6">{{$t("MOMO_56")}}</p>
+				<p class="mgt-10">
+					<img src="@/assets/compeg.png" alt="">
+				</p>
 				<p class="mgt-10 tal small vertical-children">
 					{{ $t("Fetters_03") }}:
 					<span style="color: #aaf45a">{{showPowerUpList.length * 100}}</span>
@@ -294,6 +299,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_25")}}</h3>
+						<span v-html="$t('Notice_24')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_23")}}</h3>
 						<span v-html="$t('Notice_22')" ></span>
 					</div>
@@ -354,6 +363,7 @@
 		
 		<div id="fly-dot"></div>
 		<Pancake ref="pancake" />
+		<VMbox ref="vmbox" />
 		<QuickBuy ref="quickBuy" />
 		<GemBag ref="gemBag" />
 		<WalletOprStatus />
@@ -364,6 +374,7 @@
 import Pancake from "./views/Airdrop/Pancake";
 import QuickBuy from "./views/Market/Momo/QuickBuy";
 import GemBag from "./views/Activity/Gem/GemBag";
+import VMbox from "./views/VMBOX/VMbox";
 
 import {Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
 import { InitEth, InitTron, CommonMethod } from "@/mixin";
@@ -375,7 +386,7 @@ let timer = null;
 export default {
 	name: "App",
 	mixins: [InitEth, InitTron, CommonMethod],
-	components: {GemBag, QuickBuy,Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading },
+	components: {GemBag, QuickBuy,Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
 	data() {
 		return {
 			langArr: ["English", "中文"],
@@ -456,7 +467,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "1.7"
+			noticeVersion: "1.8"
 		};
 	},
 	watch: {
@@ -556,6 +567,7 @@ export default {
 		window.addEventListener("message", this.listenPostMsg, false);
 		this.hasReadNotice = Common.getStorageItem("noticeVersion") == this.noticeVersion;
 		
+		
 		this.setLang();
 
 		setTimeout(() => {
@@ -621,6 +633,13 @@ export default {
 				clearTimeout(t);
 				Common.setStorageItem("hasReadFAQ", true);
 				this.oprDialog("momo-des-dialog", "block")
+			}, 1000)
+		}
+		//自动弹出提示
+		if(!this.hasReadNotice){
+			let t = setTimeout(()=>{
+				clearTimeout(t);
+				this.showNotice();
 			}, 1000)
 		}
 	},

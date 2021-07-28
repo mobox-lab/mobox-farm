@@ -5,7 +5,7 @@
 			<div @click="dialog_tab_pos =  1; inputNum = ''"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  >{{$t("Gemstone_28")}}</div>
 		</div>
 		<div class="ly-input-content por">
-			<p class="small tal">{{$t("Gemstone_04").replace("#0#",dialog_tab_pos==0?1:$parent.getMaxApplyTimes)}}</p>
+			<p class="small tal">{{$t("NewBOX_04").replace("#0#",dialog_tab_pos==0?1:$parent.getMaxApplyTimes)}}</p>
 			<div class="por mgt-5">
 				<div class="ly-input-pre-icon">
 					<img src="@/assets/icon/box_icon.png" width="30" alt="">
@@ -19,7 +19,7 @@
 				</div>
 			</div>
 			<div class="mgt-10 aveage-box small">
-				<p class="tal">{{$t("Gemstone_06")}}: {{getNowApplyNum}}</p>
+				<p class="tal">{{$t("NewBOX_06")}}: {{getNowApplyNum}}</p>
 				<p class="vertical-children tar">
 					<span>{{$t("Gemstone_07")}}: {{numFloor(applyInfo.roundPrice / 1e18, 1e4)}}</span>&nbsp;
 					<img src="@/assets/coin/MBOX.png" alt="" height="20"/>

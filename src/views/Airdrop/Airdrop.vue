@@ -330,10 +330,10 @@
 											<img class="cur-point "  width="40" src="../../assets/icon/withdraw_icon.png" alt="" >
 											<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class=" opa-6">{{$t("Air-drop_08")}}</span>
 										</div>
-										<div class="dib por cur-point" style="margin-left:50px;width:50px" @click="$refs.vmbox.setOprData(item).show();">
+										<div class="dib por cur-point" style="margin-left:50px;width:50px" @click="$parent.$refs.vmbox.setOprData(item).show();">
 											<span class="notice" v-if="coinArr[item.coinKey].veMbox.notice"></span>
 											<img   src="@/assets/icon/vembox-icon.png" alt="" height="40" />
-											<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" class="opa-6">{{$t("Air-drop_188")}}</span>
+											<span style="width:150%;position:absolute;bottom:-5px;left:-25%;font-size:12px;color:#fff;zoom:0.8;" class="opa-6">{{$t("Air-drop_188")}}</span>
 										</div>
 									</template>
 									<template v-else>
@@ -385,9 +385,13 @@
 					<p class="small opa-6 tac" >{{$t("Air-drop_191")}}</p>
 					<input type="text" readonly class="ly-input mgt-10 tac" :value="avglockdays"  />
 				</div>
-				<div style="padding:10px" >
+				<div style="padding:10px" class="por">
 					<p class="small opa-6 tac" >{{$t("Air-drop_192")}}</p>
 					<input type="text" readonly class="ly-input mgt-10 tac" :value="getMyTotalVeMbox" />
+					<span class="dib por cur-point" style="width:30px;position:absolute;right:20px;bottom:10px" @click="$root.$children[0].$refs.vmbox.setOprData(coinArr['GOV']).show()">
+						<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
+						<span class="tac opa-6" style="width:120%;position:absolute;bottom:-5px;left:-10%;font-size:12px;color:#fff;zoom:0.7;" >veMBOX</span>
+					</span>
 				</div>
 			</div>
 		</section>
@@ -545,7 +549,6 @@
 		<KeyOpr ref="keyopr" />
 		<Withdraw ref="withdraw" />
 		<Deposit ref="deposit" />
-		<VMbox ref="vmbox" />
 	</div>
 </template>
 <script>
@@ -556,12 +559,11 @@ import { PancakeConfig } from "@/config";
 import KeyOpr from "./KeyOpr";
 import Withdraw from './Withdraw';
 import Deposit from './Deposit';
-import VMbox from "./VMBOX/VMbox";
 import { Dialog, Loading, StatuButton, Dropdown } from '@/components';
 
 export default {
 	mixins: [CommonMethod],
-	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, StatuButton, VMbox, Dropdown},
+	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, StatuButton, Dropdown},
 	data(){
 		return({
 			hasAgreeNotice: false,

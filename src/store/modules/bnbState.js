@@ -60,6 +60,7 @@ const baseCoinAttr = {
 const state = () => ({
 	data: {
 		coinArr: {
+			"GOV": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "GOV",coinKey: "GOV"},
 			"BNB": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "BNB"},
 			"MBOX": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "MBOX"},
 			"BTCB": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "BTCB"},

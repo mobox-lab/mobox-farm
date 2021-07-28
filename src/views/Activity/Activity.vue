@@ -12,27 +12,27 @@
 		<section>
 			<Box v-if="tabKey == tabArr[0].key " />
 			<Bidding v-if="tabKey == tabArr[1].key " />
-			<Lottery v-if="tabKey == tabArr[2].key " />
-			<GemBuy v-if="tabKey == tabArr[3].key " />
+			<!-- <Lottery v-if="tabKey == tabArr[2].key " /> -->
+			<GemBuy v-if="tabKey == tabArr[2].key " />
 		</section>
 	</div>
 </template>
 
 <script>
 import GemBuy from './Gem/GemBuy.vue';
-import Lottery from './Lottery/Lottery.vue';
+// import Lottery from './Lottery/Lottery.vue';
 import Bidding from './Bidding/Bidding.vue';
 import Box from './Box/Box.vue';
 
 export default {
-	components: {GemBuy, Lottery, Bidding, Box},
+	components: {GemBuy, Bidding, Box},
 	data(){
 		return({
 			tabKey: 'jinPai',
 			tabArr: [
-				{icon: require("@/assets/icon/box_icon.png"), text: "Gemstone_01", key: "box"},
+				{icon: require("@/assets/icon/box_icon.png"), text: "NewBOX_01", key: "box"},
 				{icon: require("@/assets/icon/momobidicon.png"), text: "Auction_03", key: "jinPai"},
-				{icon: require("@/assets/icon/choujiang.png"), text: "Auction_02", key: "chouJiang"},
+				// {icon: require("@/assets/icon/choujiang.png"), text: "Auction_02", key: "chouJiang"},
 				{icon: require("@/assets/icon/yellow_icon.png"), text: "Gemstone_01", key: "shenGou"},
 			]
 		})

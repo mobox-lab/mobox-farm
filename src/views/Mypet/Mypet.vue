@@ -4,7 +4,10 @@
 
 		<div class="tal search vertical-children por mgt-10" v-if="tab_pos != 2">
 			<span>{{ $t("Market_33") }}({{ getTotalPetNum }})</span >&nbsp;
-			<img src="@/assets/icon/powerup.png" class="cur-point mgl-5 " alt="" height="40" @click="oprDialog('showPetPowerUp-dialog', 'block')" />
+			<div class="dib por">
+				<img src="@/assets/icon/powerup.png" class="cur-point mgl-5 " alt="" height="40" @click="oprDialog('showPetPowerUp-dialog', 'block')" />
+				<span v-if="$root.$children[0].showPowerUpList.length <= 0" class="pop-notice">{{$t("MOMO_55")}}</span>
+			</div>
 
 			<div id="my-pet-fitter" v-if="tab_pos == 0">
 				<div class="dropdown-group mgl-5" @click="showDrop" tabindex="3">
@@ -417,6 +420,28 @@ export default {
 </script>
 
 <style  scoped>
+.pop-notice{
+	position: absolute;
+	font-size: 12px;
+	width: 100px;
+	border: 1px solid #3054BC;
+	background: #1B222C;
+	border-radius: 8px;
+	padding: 5px 10px;
+	margin-left: 10px;
+}
+.pop-notice::after{
+	content: "";
+	background: #1B222C;
+	border-bottom: 1px solid #3054BC;
+	border-left: 1px solid #3054BC;
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	left: -6px;
+	top: 12px;
+	transform: rotate(45deg);
+}
 #buy-back .info{
 	position: absolute;
 	right: -10px;

@@ -44,13 +44,14 @@
 					<p v-if="Number(inputNum) > 0">{{$t('Air-drop_166')}}: <span class="notice-color">{{getCanFreezeVeMbox}}</span> veMBOX</p>
 					<!-- <StatuButton class="mgt-10" :isDisable="Number(inputNum) <= 0" :isLoading="lockBtn.freezeMboxLock > 0" :onClick="freeze">确定冻结</StatuButton> -->
 
-					<div  :class="{'btn-group': coinArr['MBOX'].allowanceToVeMbox == 0}" v-if="oprData.coinName == 'MBOX-BNB' || oprData.coinName == 'GOV' ">
-						<StatuButton :isLoading="coinArr['MBOX'].isApproving" data-step="1" class="mgt-10" style="width:70%" :onClick="approve.bind(this, 'MBOX')" v-if="coinArr['MBOX'].allowanceToVeMbox == 0">{{$t("Air-drop_16")}} MBOX</StatuButton>
-						<StatuButton :isLoading="lockBtn.freezeMboxLock > 0" :isDisable="coinArr['MBOX'].allowanceToVeMbox <= 0 || Number(inputNum) <= 0" data-step="2" class="mgt-10" style="width:70%"  :onClick="freeze">
-							{{$t('Air-drop_171')}}
-						</StatuButton>
-					</div>
-					<p v-else class="color-buy">{{$t("Air-drop_215")}} <span class="cur-point" @click="$root.$children[0].showNotice()">{{$t("Air-drop_216")}}>></span></p>
+					<div  :class="{'btn-group': coinArr['MBOX'].allowanceToVeMbox == 0}">
+					<StatuButton :isLoading="coinArr['MBOX'].isApproving" data-step="1" class="mgt-10" style="width:70%" :onClick="approve.bind(this, 'MBOX')" v-if="coinArr['MBOX'].allowanceToVeMbox == 0">{{$t("Air-drop_16")}} MBOX</StatuButton>
+					<StatuButton :isLoading="lockBtn.freezeMboxLock > 0" :isDisable="coinArr['MBOX'].allowanceToVeMbox <= 0 || Number(inputNum) <= 0" data-step="2" class="mgt-10" style="width:70%"  :onClick="freeze">
+						{{$t('Air-drop_171')}}
+					</StatuButton>
+				</div>
+
+
 				</div>
 				
 			</div>
@@ -65,6 +66,18 @@
 						{{$t("Air-drop_186")}}
 					</section>
 					<section class="mgt-10 tac" v-else  style="width:90%;margin:10px auto">
+						<!-- <p class="aveage-box">
+							<span class="tal">{{$t('Air-drop_168')}}:</span>
+							<span class="tal mgl-5">{{ getTotalVeMbox }} veMBOX</span>
+						</p>
+						<p class="aveage-box">
+							<span class="tal">{{$t('Air-drop_169').replace("#0#", sliderValue+"x")}}:</span>
+							<span class="tal mgl-5">{{getNeedVeMboxObj.veMbox}} veMBOX</span>
+						</p>
+						<p class="aveage-box">
+							<span class="tal">{{$t('Air-drop_170')}}:</span>
+							<span class="tal mgl-5">{{ getNeedVeMboxObj.mbox }} MBOX</span>
+						</p> -->
 						<table  class="tal mgt-10 my-table small"  style="width:100%;margin:10px auto;border-color:#19233E" border="0" cellpadding="0" cellspacing="0">
 							<tr>
 								<td>{{$t('Air-drop_168')}}:</td>
@@ -220,17 +233,13 @@ export default {
 
 			let amount_ = Number(this.inputNum);
 			if(amount_ <= 0) return;
-			if(amount_ > Number(this.coinArr["MBOX"].balance)){
-				this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox());
-				return;
-			}
-
 			let obj = {
 				poolIndex_:coinKey == "GOV"?100001:PancakeConfig.StakeLP[coinKey].pIndex,
 				amount_,
 				lockTime_: this.freezeConf[this.selectDay].timeIndex, 
 				orderIndex_,
 			}
+			console.log(obj);
 			let hash = await Wallet.ETH.stakeMbox(obj, this.coinArr[coinKey]);
 			if(hash){
 				this.inputNum = "";

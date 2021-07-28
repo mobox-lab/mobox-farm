@@ -4,7 +4,7 @@
 			<section class="col-md-7" style="padding:10px">
 				<div class="adv-panel">
 					<h1 class="vertical-children">
-						<span>BOX申购</span>
+						<span>{{$t("NewBOX_01")}}</span>
 						<img class="mgl-10 cur-point" @click="oprDialog('box-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="30">
 					</h1>
 					<div class="tac mgt-10">
@@ -24,15 +24,21 @@
 			</section>
 
 			<section class="col-md-5" style="padding:10px">
-				<div class="panel por" style="height:380px;padding:20px">
+				<div class="panel por" style="height:380px;padding:10px">
 					<section style="padding:10px">
 						<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:15px">
 							<div >
 								<p class="small opa-6">{{$t("Air-drop_152")}}</p>
-								<h3>{{myTotalVeMbox}}</h3>
+								<h3  class="por">
+									{{myTotalVeMbox}}
+									<span class="dib por cur-point" style="width:30px;position:absolute;right:50px;bottom:0px" @click="jumpVeMBOX">
+										<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
+										<span class="tac opa-6" style="width:120%;position:absolute;bottom:-5px;left:-10%;font-size:12px;color:#fff;zoom:0.7;" >veMBOX</span>
+									</span>
+								</h3>
 							</div>
 							<div>
-								<p class="small opa-6">高级申购上限</p>
+								<p class="small opa-6">{{$t("NewBOX_34")}}</p>
 								<h3>{{getMaxApplyTimes}}</h3>
 							</div>
 						</div>
@@ -61,10 +67,12 @@
 					<div class="mgt-10 aveage-box">
 						<div class="dib por tac">
 							<button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('box-apply-dialog', 'block')">{{$t("Gemstone_14")}}</button>
-							<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('box-rule-dialog','block')">箱子申购规则>></p>
+							<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('box-rule-dialog','block')">{{$t("NewBOX_02")}}>></p>
 						</div>
 						<div class="tac">
-							<StatuButton style="width:80%" :isDisable="this.myApplyInfo.boxAmount<=0" :isLoading="lockBtn.takeBoxLock > 0" :onClick="takeBox">领取{{this.myApplyInfo.boxAmount}}个BOX</StatuButton>
+							<StatuButton style="width:80%" :isDisable="this.myApplyInfo.boxAmount<=0" :isLoading="lockBtn.takeBoxLock > 0" :onClick="takeBox">
+								{{$t("NewBOX_15").replace("#0#", this.myApplyInfo.boxAmount)}}
+							</StatuButton>
 						</div>
 					</div>
 				</div>
@@ -106,45 +114,28 @@
 		
 		<BoxApply :applyInfo="applyInfo" :myApplyInfo="myApplyInfo" />
 		<Dialog id="box-rule-dialog" :top="100" :width="520">
-			<h2>{{$t("Gemstone_02")}}</h2>
-			<p v-html="$t('Gemstone_03')" class="tal mgt-20"></p>
+			<h2>{{$t("NewBOX_02")}}</h2>
+			<p v-html="$t('NewBOX_03')" class="tal mgt-20"></p>
 		</Dialog>
 		<Dialog id="box-num-result-dialig" :top="100" :width="450">
 			<h3>{{$t("Gemstone_17")}}</h3>
 			<div class="tab-body mgt-10">
-				<!-- <div class="aveage-box tab-content " style="padding:8px">
-					<p class="tal opa-6">{{$t("Gemstone_18")}}</p>
-					<p class="tar opa-6">{{$t("Gemstone_19")}}</p>
-				</div> -->
-				<!-- <div v-for="item in getRecordNoArr" :key="item.number">
-					<div class="tab-split"></div>
-					<div class="aveage-box tab-content small" style="padding:8px">
-						<p class="tal">{{item.number}}</p>
-						<p class="tar" v-if="historyDitail.isOver==true">
-							<span v-if="item.isWins"><img :src="require(`@/assets/icon/${item.type}_icon.png`)" alt=""  height="30"></span>
-							<span class="color-danger" v-else>{{$t("Gemstone_20")}}</span>
-						</p>
-						<p v-else-if="historyDitail.isOver == '-'" class="tar">
-							<Loading />
-						</p>
-						<p v-else class="tar">{{$t("Gemstone_30")}}</p>
-					</div>
-				</div> -->
 				<p class="mgt-10  tal" style="height:40px;line-height:38px;padding-left:15px;color:#fff;font-size:12px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">
 					{{$t("Gemstone_18")}}: {{historyDitail.item.ticketStartNo}}
 					<span v-if="historyDitail.item.amountBox > 1">~{{Number(historyDitail.item.ticketStartNo) + Number(historyDitail.item.amountBox-1)}}</span>
 				</p>
 				<p class="mgt-10  tal" style="height:40px;line-height:38px;padding-left:15px;color:#fff;font-size:12px;background: rgba(161,250,64,0.10);border: 2px solid #A1FA40;border-radius:10px">
-					中奖数量: 
+					{{$t("NewBOX_18")}}: 
 					<span v-if="historyDitail.isOver">{{Object.keys(historyDitail.wins).length }}</span>
 					<span v-else-if="historyDitail.isOver == '-' "><Loading /></span>
 					<span v-else>{{$t("Gemstone_30")}}</span>
 				</p>
 				<div style="padding:10px" class="tal">
-					<p class="small">中奖票号</p>
+					<p class="small">{{$t("NewBOX_19")}}</p>
 					<div class="tac mgt-10" style="background:#000;padding:10px 0px;border-radius:10px;max-height:300px; overflow-y:auto">
 						<p v-if="historyDitail.isOver">
-							<span  class="dib small" v-for="item in Object.keys(historyDitail.wins)" :key="item" style="background: #2a2f35;width: 30%;padding:10px 0px;margin:5px;border-radius:10px">
+							<span v-if="Object.keys(historyDitail.wins).length == 0">{{$t("NewBOX_35")}}</span>
+							<span v-else  class="dib small" v-for="item in Object.keys(historyDitail.wins)" :key="item" style="background: #2a2f35;width: 30%;padding:10px 0px;margin:5px;border-radius:10px">
 								{{item}}
 							</span>
 						</p>
@@ -206,24 +197,32 @@ export default {
 			let maxAmount = 0
 			let myTotalVeMbox = this.myTotalVeMbox;
 
-			if (myTotalVeMbox < 1500) {
+			if (myTotalVeMbox < 3000) {
 				maxAmount = 0;
-			} else if (myTotalVeMbox < 7500) {
-				maxAmount = 3;
 			} else if (myTotalVeMbox < 15000) {
-				maxAmount = 15;
+				maxAmount = 3;
 			} else if (myTotalVeMbox < 30000) {
-				maxAmount = 25;
+				maxAmount = 15;
 			} else if (myTotalVeMbox < 75000) {
+				maxAmount = 25;
+			} else if (myTotalVeMbox < 150000) {
 				maxAmount = 40;
-			} else if (myTotalVeMbox < 120000) {
+			} else if (myTotalVeMbox < 300000) {
 				maxAmount = 70;
-			} else if (myTotalVeMbox < 240000) {
+			} else if (myTotalVeMbox < 500000) {
 				maxAmount = 80;
 			} else {
 				maxAmount = 100;
 			}
 			return maxAmount;
+		},
+		hasStake(){
+			let hasStake = false;
+			let plageList = ["MBOX-BNB-V2", "BTCB-BNB-V2", "ETH-BNB-V2", "BUSD-BNB-V2", "USDT-BNB-V2", "USDT-BUSD-V2", "DAI-BUSD-V2","USDC-BUSD-V2","BUSD","USDT","USDC","BNB"];
+			plageList.map(coinKey=>{
+				if(this.coinArr[coinKey].wantAmount > 0) hasStake = true;
+			})
+			return hasStake;
 		},
 	},
 	async created(){
@@ -254,6 +253,14 @@ export default {
 		clearInterval(timer);
 	},
 	methods: {
+		jumpVeMBOX(){
+			if(this.hasStake){
+				// this.$router.replace({ path: '/' })
+				this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();
+			}else{
+				this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();
+			}
+		},
 		async getApplyDetial(item){
 			console.log(item);
 			this.historyDitail.isOver = "-";

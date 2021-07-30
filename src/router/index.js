@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Airdrop from '../views/Airdrop/Airdrop.vue'
-import Openbox from '../views/Openbox.vue'
+import OpenBox from '../views/OpenBox/index.vue'
 import Collection from '../views/Collection.vue'
 import Mypet from '../views/Mypet/Mypet.vue'
 import Upgrade from '../views/Mypet/Upgrade.vue'
@@ -22,8 +22,8 @@ const routes = [
 	},
 	{
 		path: '/openbox',
-		name: 'Openbox',
-		component: Openbox
+		name: 'OpenBox',
+		component: OpenBox
 	},
 	{
 		path: '/collection',

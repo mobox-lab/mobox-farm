@@ -8,9 +8,9 @@
 						{{ totalOpenBoxAmount.bnb }}
 					</h1>
 					<br />
-					<div class="por box"  style="height:322px;width:300px; margin:0px auto; ">
+					<div class="por box"  style="height:300px;width:300px; margin:0px auto; ">
 						<div id="openbox-anime-new" class="hide"></div>
-						<div class="animation-box mgt-20" id="openbox-anime"></div>
+						<div class="animation-box mgt-50" id="openbox-anime"></div>
 						<!-- <div class="box-show" @click="playBoxAnime2">
 							<div id="box-spine"></div>
 						</div> -->
@@ -54,25 +54,10 @@
 							<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
 						</div>
 					</div>
-
-					<div style="padding:10px 0px;position:absolute;bottom:0px;width:100%;left:0px;background:#1F232A;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;" class="tal rate-show">
-						<div class="col-md-1"></div>
-						<div class="col-md-2 col-xs-4 vertical-children mgt-5" v-for="item in $parent.rateObj" :key="item.lv">
-							<div style="height:20px;width:20px;border-radius:20px;padding:2px;" class="dib dot-bg">
-								<div style="width:100%;height:100%;border-radius:20px;border:2px solid #1B1C21" :class="`bg-new${item.lv}`"></div>
-							</div>
-							<div class="dib mgl-5" style="line-height:15px">
-								<p>{{item.rate}}</p>
-								<p class="small opa-6">{{$t(item.lang)}}</p>
-							</div>
-						</div>
-						<div class="col-md-1"></div>
-					</div>
-
 					<br />
 
 					<!-- <button class="btn-primary " @click="playBoxAnime">抖动 1</button>
-					<button class="btn-primary mgl-5" @click="testOpenAnime">打开 1</button> -->
+					<button class="btn-primary mgl-5" @click="testOpenAnime">打开 1</button>-->
 
 					<!-- <button class="btn-primary mgl-10" @click="playBoxAnime2">抖动 2</button>
 					<button class="btn-primary mgl-5" @click="openAnime2">打开 2</button>  -->
@@ -82,50 +67,46 @@
 			<section class="col-md-5" style="padding:10px">
 				<div >
 					<div  >
-						<div class="ly-input-content dib" style="width:100%;padding:30px 20px">
+						<div class="ly-input-content dib" style="width:100%;padding:40px 20px">
 							<p class="tal">{{ $t("BOX_02") }}:</p>
 							<div class="por mgt-10">
 								<div class="ly-input-pre-icon">
 									<img  src="@/assets/coin/KEY.png" alt="" />
 								</div>
-								<input class="ly-input" type="text"
+								<input class="ly-input" type="number"
 									style=" text-align: left; width: 100%; padding-left:65px"
 									readonly="readonly"
 									:value="ethState.box"
 								/>
 							</div>
-							<p class="small opa-6 mgt-10 tal">{{$t("BOX_39")}}</p>
-
 							<div class="aveage-box">
 								<div class="tal">
-									<button class="btn-primary mgt-20" style="width: 90%" @click="setAction(23011);  oprDialog('get-chest-dialog', 'block'); addKey = parseInt(ethState.box)>200?200:parseInt(ethState.box) || 0;">
+									<button class="btn-primary mgt-20" style="width: 90%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; ">
 										{{ $t("BOX_04") }}
 									</button>
 								</div>
 								<div class="tar">
-									<!-- <button class="mgt-20 btn-line" style="width:90%;" @click="setAction(23012);  $root.$children[0].$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
+									<button class="mgt-20 btn-line" style="width:90%;" @click="$root.$children[0].$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
 										{{$t("BOX_33")}}
-									</button> -->
+									</button>
 								</div>
 							</div>
 						</div>
 					</div>
 
 					<div class=" mgt-20" >
-						<div class="ly-input-content dib" style="width:100%;padding:30px 20px">
+						<div class="ly-input-content dib" style="width:100%;padding:40px 20px">
 							<p class="tal">{{ $t("BOX_03") }}:</p>
 							<div class="por mgt-10">
 								<div class="ly-input-pre-icon">
-									<img src="@/assets/icon/box_old.png" alt="" />
+									<img src="@/assets/icon/box.png" alt="" />
 								</div>
-								<input class="ly-input" type="text"
+								<input class="ly-input" type="number"
 									style="text-align: left; width: 100%; padding-left:65px"
 									:value="canOpenBox"
 									readonly="readonly"
 								/>
 							</div>
-							<p class="small opa-6 mgt-10 tal">{{$t("BOX_40")}}</p>
-
 							<div class="aveage-box">
 								<div class="tal">
 									<StatuButton class="mgt-20" style="width: 90%" :isDisable="lockBtn.openBoxLock > 0" :isLoading="lockBtn.openBoxLock > 0" :onClick="showOpenBox.bind(this)">
@@ -174,19 +155,15 @@
 						</td>
 					</tr>
 				</table>
-				<div class="no-show" v-if="getOpenBoxHistory.length == 0">
-					<img src="@/assets/no_items.png" alt="">
-					<p class="opa-6 mgt-10">No items to display</p>
-				</div>
 			</section>
 		</div>
 
-		<Dialog id="open-chest-history-dialog" :top="120" :width="660">
+		<Dialog id="open-box-history-dialog" :top="120" :width="660">
 			<div class="dialog-content tal" style="height: 500px">
 				<PetItemSmall v-for="item in showHistoryArr" :key="item.prototype.toString() + item.tokenId + item.num" :data="item" />
 			</div>
 		</Dialog>
-		<Dialog id="get-chest-dialog" :top="200" :width="400">
+		<Dialog id="get-box-dialog" :top="200" :width="400">
 			<h2 class="mgt-10">{{ $t("BOX_04") }}</h2>
 			<div class="ly-input-content mgt-20">
 				<p class="small tal opa-6">{{ $t("BOX_06") }}:</p>
@@ -195,9 +172,9 @@
 						<img  src="@/assets/coin/KEY.png" alt="" />
 					</div>
 					<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
-						v-int :data-max="parseInt(ethState.box)>200?200:parseInt(ethState.box) || 0" data-min="1" v-model="addKey" />
+						v-int :data-max="parseInt(ethState.box) || 1" data-min="1" v-model="addKey" />
 					<div class="dib" style="width: 30%">
-						<button @click="addKey = parseInt(ethState.box)>200?200:parseInt(ethState.box) || 0" class="btn-primary btn-small" style="width: 80%" >
+						<button @click="addKey = parseInt(ethState.box) || 1" class="btn-primary btn-small" style="width: 80%" >
 							Max
 						</button>
 					</div>
@@ -205,7 +182,7 @@
 			</div>
 			<div class="vertical-children tal mgt-10">
 				<span class="small opa-6"> {{ $t("BOX_07") }}: {{ addKey }} </span>
-				<img src="@/assets/icon/box_old.png" height="20" alt="" />
+				<img src="@/assets/icon/box.png" height="20" alt="" />
 			</div>
 			<div class="mgt-20 tal">
 				<p class="small opa-6" v-html="$t('BOX_08')"></p>
@@ -221,17 +198,17 @@
 			</div>
 			
 		</Dialog>
-		<Dialog id="open-chest-dialog" :top="200" :width="400">
+		<Dialog id="open-box-dialog" :top="200" :width="400">
 			<h2 class="mgt-10">{{ $t("BOX_05") }}</h2>
 			<div class="ly-input-content mgt-20">
 				<p class="small tal opa-6">{{ $t("BOX_10") }}:</p>
 				<div class="por mgt-5">
-					<div class="ly-input-pre-icon"> <img  src="@/assets/icon/box_old.png" alt="" /> </div>
+					<div class="ly-input-pre-icon"> <img  src="@/assets/icon/box.png" alt="" /> </div>
 					<input class="ly-input dib" type="text"
 						style=" text-align: center; width: 70%; padding-left: 50px; "
 						v-int :data-max="maxOpenOne" data-min="1" v-model="openBox" />
 					<div class="dib" style="width: 30%">
-						<button @click=" openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 0 " class="btn-primary btn-small" style="width: 80%" >
+						<button @click=" openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 1 " class="btn-primary btn-small" style="width: 80%" >
 							Max
 						</button>
 					</div>
@@ -266,7 +243,7 @@ export default {
 				AddBox: "BOX_23",
 				MintBox: "BOX_25",
 			},
-			maxOpenOne: 10,
+			maxOpenOne: 1000,
 			openLottie: null,
 			showOpenBoxCard: [],
 
@@ -324,7 +301,6 @@ export default {
 			return canOpenBox;
 		},
 		getOpenBoxHistory() {
-			if(!this.$parent.isActive) return [];
 			let { openBoxTemp, openBoxHistory } = this.ethState;
 			
 			//去重
@@ -338,6 +314,7 @@ export default {
 				}else{
 					openBoxTemp.splice(index, 1);
 					//显示开箱子
+					console.log("start show");
 					this.petDataArr = [];
 					let showArr = [];
 					let {tokenIds, ids, tokens, amounts} = historyObj[item.tx];
@@ -384,11 +361,6 @@ export default {
 								isOpenCard: true,
 							});
 						})
-					});
-
-					//随机排序
-					showArr.sort(()=>{
-						return Math.random() - 0.5;
 					});
 				
 					this.petDataArr = showArr;
@@ -505,14 +477,13 @@ export default {
 	},
 	methods: {
 		animationend(e){
-			if(e.animationName.indexOf("flipX") != -1){
+			if(e.animationName == "flipX"){
 				this.isAnimation = false;
 			}
 		},
 		showOpenBox(){
-			this.setAction(23013);
-			this.oprDialog('open-chest-dialog', 'block'); 
-			this.openBox = this.canOpenBox > this.maxOpenOne ? this.maxOpenOne : this.canOpenBox || 0;
+			this.oprDialog('open-box-dialog', 'block'); 
+			this.openBox = this.canOpenBox > this.maxOpenOne ? this.maxOpenOne : this.canOpenBox || 1;
 		},
 
 		getTxUrl(tx) {
@@ -558,7 +529,7 @@ export default {
 				return b.lvHashrate - a.lvHashrate;
 			});
 			this.showHistoryArr = showHistoryArr;
-			this.oprDialog("open-chest-history-dialog", "block");
+			this.oprDialog("open-box-history-dialog", "block");
 		},
 		getTimeFtt(timeStep) {
 			return Common.dateFtt("yyyy-MM-dd hh:mm:ss",new Date(timeStep * 1000));
@@ -571,14 +542,9 @@ export default {
 			}
 		},
 		async addBox(num) {
-			if(Number(num)  == 0){
-				this.showNotify(this.$t("BOX_28"), "error");
-				return;
-			}
-
 			if(this.needApprove) return;
 
-			if (Number(num) > Number(this.ethState.box)) {
+			if (num > this.ethState.box) {
 				this.showNotify(this.$t("BOX_28"), "error")
 				return;
 			}
@@ -594,8 +560,7 @@ export default {
 			if (Number(allowance_box_to_minter) > Number(num)) {
 				let hash = await Wallet.ETH.addBox(num);
 				if(hash){
-					this.oprDialog("get-chest-dialog", "none");
-					this.showNotify(this.$t("BOX_20"), "success");
+					this.oprDialog("get-box-dialog", "none");
 				}
 			} else {
 				this.approve();
@@ -604,11 +569,6 @@ export default {
 
 		//默认打开并质押
 		async open(num, stake = false) {
-			if(num == 0){
-				this.showNotify(this.$t("BOX_30"), "error");
-				return;
-			}
-
 			if (this.canOpenBox >= num) {
 				let hash;
 				if(stake){
@@ -619,7 +579,7 @@ export default {
 				if (hash) {
 					//播放箱子动画
 					document.getElementById("openbox-anime").classList.add("animation-box-start");
-					this.oprDialog("open-chest-dialog", "none");
+					this.oprDialog("open-box-dialog", "none");
 
 					let myAddr = await Wallet.ETH.getAccount();
 					//临时添加一条记录
@@ -712,6 +672,8 @@ export default {
 			window.$(".show-card-item").removeClass("animation");
 
 			window.$(".box-show").removeClass("box-show-open");
+			this.boxSpine.config.loop = false;
+			this.boxSpine.setAnimation("daiji", true);
 
 		}
 		
@@ -719,7 +681,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 .box-show{
 	position: absolute;
 	top: 160px;
@@ -728,15 +690,13 @@ export default {
 .box-show-open{
 	position: fixed;
 	top: 0px;
-	bottom: 0px;
-	right: 0px;
-	/* width: 100vw;
-	height: 100vh; */
+	width: 100vw;
+	height: 100vh;
 	z-index: 999998;
 	background: rgba(0,0,0,0.8);
 	left: 0px;
 }
-/* #box-spine{
+#box-spine{
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -750,7 +710,7 @@ export default {
 	width: 100% !important;
 	height: 100% !important;
 	/* background: red; */
-
+}
 .buy-key-btn{
 	height: 25px;
 	background: rgb(73, 73, 73);
@@ -906,7 +866,9 @@ export default {
 	font-size: 16px;
 	margin-top: 60px;
 }
-
+#openbox-anime {
+	margin: 50px 0px;
+}
 
 @media (max-width:1000px) {
 	#show-card-cont{
@@ -924,6 +886,7 @@ export default {
 
 	.show-card-item   .pet_item{
 		width: 350px !important;
+		/* zoom: 0.5 !important; */
 		transform: scale(0.42);
 		-webkit-transform-origin: 4% 0%;
 		transform-origin: 4% 0%;
@@ -933,10 +896,6 @@ export default {
 }
 
 @media (max-width: 768px) {
-	.rate-show{
-		zoom: 0.8;
-		padding: 5px 20px !important;
-	}
 	#show-card-cont{
 		width: 100% !important;
 	}

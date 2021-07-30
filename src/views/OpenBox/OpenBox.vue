@@ -1,192 +1,131 @@
 <template>
 	<div id="openbox" class="tac center-box">
 		<div class="clear mgt-10">
-			<!-- 提前加载好图片 -->
-			<template>
-				<div class="card card-v4 pre-load"></div>
-				<div class="card card-v5 pre-load"></div>
-				<div class="card card-v pre-load"></div>
-				<div class="card-v4-loading  pre-load"></div>
-				<div class="card-v5-loading  pre-load"></div>
-			</template>
-			<section class="col-md-7" style="padding:10px" >
-				<div class="adv-panel por box-section" style="padding-bottom:45px">
-					<div class="hide-xs">
-						<p class="opa-6 mgt-20">{{ $t("BOX_01") }}</p>
-						<h1 class="dib mgt-10" style="font-size: 20px">
-							{{ totalOpenBoxAmount.bnb }}
-						</h1>
-					</div>
-					<div class="por box"  style="height:287px; margin:0px auto; ">
-						<img src="@/assets/icon/box_rate.png" alt="" id="show-rate" @click="oprDialog('show-rate-dialog', 'block')">
-						<div class="box-show" >
-							<div class="box-spine" ref="boxSpine" v-show="showOpenAnimation"></div>
-							<div class="box-spine" ref="boxAnimation" v-show="!showOpenAnimation"></div>
+			<section class="col-md-7" style="padding:10px">
+				<div class="adv-panel">
+					<p class="opa-6 mgt-20">{{ $t("BOX_01") }}</p>
+					<h1 class="dib mgt-10" style="font-size: 20px">
+						{{ totalOpenBoxAmount.bnb }}
+					</h1>
+					<br />
+					<div class="por box"  style="height:300px;width:300px; margin:0px auto; ">
+						<div id="openbox-anime-new" class="hide"></div>
+						<div class="box-show" @click="playBoxAnime2">
+							<div id="box-spine"></div>
 						</div>
 					</div>
-
-					<div id="show-card-v2" class="hide " @click.stop="nextOpen" >
-						<div id="show-card-bg"  >
-							<div :class="[{'animate__slideInUp animate__animated animate__faster': !isOpenAll}]"  v-for="(item, pos) in petDataArr.slice(0, openNum-openPos)" 
-							:style="!isOpenAll?`margin-top:-${(openNum-openPos-pos)*15}px; transform: translate(-50%, -50%) scale(${1.5- (openNum-openPos-pos) * 0.02}); `:
-							`transition-delay: ${60*pos}ms; transform: translate(${pointObj[openNum][pos].x}%, ${pointObj[openNum][pos].y}%)`" :key="pos" >
-								<template v-if="(pos == openNum-openPos-1) || !openOne">
-									<div class="open-pet" :class="[{'opa-0': !showResultOnly}]">
-										<OpenPetItem   v-bind:data="{ item }" />
+					<div id="show-card" class="hide" @click="initCardAnime">
+						<div id="show-card-cont" class="animate__animated  animate__zoomIn">
+							<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
+							<div v-if="posArr[petDataArr.length].line1" class="card-cont-row"  id="show-card-cont-row1">
+								<div class="show-card-item dib cur-point" v-for="key in posArr[petDataArr.length].line1" :key="key+10" v-on:animationend="animationend" @click="openCard">
+									<img style="opacity:0" src="@/assets/momo-back2.png" width="252" height="180" alt=""/>
+									<div class="front">
+										<img src="@/assets/momo-back2.png" width="252" height="180" alt=""/>
 									</div>
-									<div @click="cardClick" v-if="!showResultOnly" :id="`card-`+pos"  :data-pos="pos" class="card " :class="`card-v${anieVtype[item.vType]}`"></div>
-								</template>
+									<div class="card-spine"></div>
+									<div class="back">
+										<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key-1] }" />
+									</div>
+								</div>
 							</div>
-						</div>
-						<div id="show-card-btn" class="hide animate__fadeIn animate__animated" v-show="!isOpenAll && !openOne">
-							<button class="btn-primary" @click.stop="openOneCard">{{$t("NewBOX_36")}}</button>
-							<button class="btn-primary mgl-10" @click.stop="openAll">{{$t("NewBOX_37")}}</button>
-						</div>
-					</div>
-					<!-- 概率展示 -->
-					<div style="padding:10px 0px;position:absolute;bottom:0px;width:100%;left:0px;background:#1F232A;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;" class="tal rate-show hide-xs">
-						<div class="col-md-1"></div>
-						<div class="col-md-2 col-xs-4 vertical-children mgt-5" v-for="item in $parent.rateObj" :key="item.lv">
-							<div style="height:20px;width:20px;border-radius:20px;padding:2px;" class="dib dot-bg">
-								<div style="width:100%;height:100%;border-radius:20px;border:2px solid #1B1C21" :class="`bg-new${item.lv}`"></div>
+							<div v-if="posArr[petDataArr.length].line2" class="card-cont-row "   id="show-card-cont-row2">
+								<div class="show-card-item dib cur-point" v-for="key in posArr[petDataArr.length].line2" :key="key+20" v-on:animationend="animationend" @click="openCard">
+									<img style="opacity:0" src="@/assets/momo-back2.png" width="252" height="180" alt=""/>
+									<div class="front">
+										<img src="@/assets/momo-back2.png" width="252" height="180" alt=""/>
+									</div>
+									<div class="card-spine"></div>
+									<div class="back">
+										<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 - 1 ] }" />
+									</div>
+								</div>
 							</div>
-							<div class="dib mgl-5" style="line-height:15px">
-								<p>{{item.rate}}</p>
-								<p class="small opa-6">{{$t(item.lang)}}</p>
+							<div v-if="posArr[petDataArr.length].line3" class="card-cont-row"   id="show-card-cont-row3" >
+								<div class="show-card-item dib cur-point " v-for="key in posArr[petDataArr.length].line3" :key="key+30" v-on:animationend="animationend" @click="openCard">
+									<img style="opacity:0" src="@/assets/momo-back2.png" width="252" height="180" alt=""/>
+									<div class="front">
+										<img src="@/assets/momo-back2.png" width="252" height="180" alt=""/>
+									</div>
+									<div class="card-spine"></div>
+									<div class="back">
+										<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 + posArr[petDataArr.length].line2 -1] }" />
+									</div>
+								</div>
 							</div>
+							<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
 						</div>
-						<div class="col-md-1"></div>
 					</div>
 					<br />
-					<!-- <button class="btn-primary mgl-10" @click="shakeBox">测试抖动</button>
-					<button class="btn-primary mgl-5" @click="testOpenAnime2">测试打开 </button>  -->
+
+					<!-- <button class="btn-primary " @click="playBoxAnime">抖动 1</button>
+					<button class="btn-primary mgl-5" @click="testOpenAnime">打开 1</button>-->
+
+					<button class="btn-primary mgl-10" @click="playBoxAnime2">抖动 2</button>
+					<button class="btn-primary mgl-5" @click="openAnime2">打开 2</button> 
 				</div>
 			</section>
 
 			<section class="col-md-5" style="padding:10px">
 				<div >
 					<div  >
-						<div class="ly-input-content dib" style="width:100%;padding:30px 20px">
-							<p class="tal">{{$t("BOX_35")}}</p>
+						<div class="ly-input-content dib" style="width:100%;padding:40px 20px">
+							<p class="tal">{{ $t("BOX_02") }}:</p>
 							<div class="por mgt-10">
 								<div class="ly-input-pre-icon">
-									<img  src="@/assets/icon/box_view.png" alt="" height="20" />
+									<img  src="@/assets/coin/KEY.png" alt="" />
 								</div>
-								<input class="ly-input" type="text"
+								<input class="ly-input" type="number"
 									style=" text-align: left; width: 100%; padding-left:65px"
 									readonly="readonly"
-									:value="boxNum"
+									:value="ethState.box"
 								/>
 							</div>
-							<p class="small opa-6 mgt-10 tal">{{$t("BOX_39")}}</p>
 							<div class="aveage-box">
 								<div class="tal">
-									<button class="btn-primary mgt-20" style="width: 90%" @click="setAction(23001); oprDialog('get-box-dialog', 'block'); addKey = parseInt(boxNum)>200?200:parseInt(boxNum) || 0; ">
-										{{$t("BOX_36")}}
+									<button class="btn-primary mgt-20" style="width: 90%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; ">
+										{{ $t("BOX_04") }}
 									</button>
 								</div>
 								<div class="tar">
-									<router-link to="/market?tab=4">
-										<button class="mgt-20 btn-line" style="width:90%;" @click="setAction(23002); ">
-											{{$t("BOX_37")}}
-										</button>
-									</router-link>
+									<button class="mgt-20 btn-line" style="width:90%;" @click="$root.$children[0].$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
+										{{$t("BOX_33")}}
+									</button>
 								</div>
 							</div>
-							
 						</div>
 					</div>
 
 					<div class=" mgt-20" >
-						<div class="ly-input-content dib" style="width:100%;padding:30px 20px">
-							<p class="tal">{{$t("BOX_38")}}</p>
+						<div class="ly-input-content dib" style="width:100%;padding:40px 20px">
+							<p class="tal">{{ $t("BOX_03") }}:</p>
 							<div class="por mgt-10">
 								<div class="ly-input-pre-icon">
-									<img src="@/assets/icon/box_icon.png" alt="" height="20" />
+									<img src="@/assets/icon/box.png" alt="" />
 								</div>
-								<input class="ly-input" type="text"
+								<input class="ly-input" type="number"
 									style="text-align: left; width: 100%; padding-left:65px"
 									:value="canOpenBox"
 									readonly="readonly"
 								/>
 							</div>
-							<p class="small opa-6 mgt-10 tal">{{$t("BOX_40")}}</p>
 							<div class="aveage-box">
 								<div class="tal">
 									<StatuButton class="mgt-20" style="width: 90%" :isDisable="lockBtn.openBoxLock > 0" :isLoading="lockBtn.openBoxLock > 0" :onClick="showOpenBox.bind(this)">
-										{{$t("BOX_34")}}
+										{{ $t("BOX_05") }}
 									</StatuButton>
 								</div>
-								<div class="tar">
-									<button class="btn-line mgt-20" style="width: 90%" @click="previewOpen">{{$t("BOX_43")}}</button>
-								</div>
+								<div></div>
 							</div>
-							
 						</div>
 					</div>
 				</div>
 			</section>
 		</div>
 
-		<div class="tab">
-			<ul>
-				<li :class="recordsTabIndex === 0 ? 'active' : null" @click="toggleRecordsTab(0)">{{$t('BOX_44')}}</li>
-				<li :class="recordsTabIndex === 1 ? 'active' : null" @click="toggleRecordsTab(1)">{{$t('BOX_45')}}</li>
-			</ul>
-		</div>
-		<!-- 全网开箱记录 -->
-		<div class="col-md-12 whole-records" style="padding: 0 10px 10px 10px" v-show="recordsTabIndex === 0">
-			<section style="padding:10px 15px;background:#13181F;border-radius:20px">
-				<table class="small  new-table" border="0" frame="void" rules="none" >
-					<tr>
-						<th class="address">{{$t('BOX_46')}}</th>
-						<th class="event">{{$t('BOX_13')}}</th>
-						<th class="result">{{$t('BOX_47')}}</th>
-						<th class="time">{{$t('BOX_12')}}</th>
-					</tr>
-					<tr v-for="(item, index) in wholeNetworkOpenBoxHistory" :key="index">
-						<td class="avatar address">
-							<div :class="['image', avatar[item.address] ? 'hover' : null]" @click="showAvatar(item.address)">
-								<img :src="avatar[item.address] || 'https://img.soulchainz.com/mini_avatar_ori_0.png'" />
-							</div>
-							<!-- <span>{{getShortAddr(item.address)}}</span> -->
-						</td>
-						<td class="event">
-							<img src="@/assets/icon/box.png" width="35" />
-							<span>x{{ item.amount }}</span>
-						</td>
-						<td class="result">
-							<div :class="['momo', `momo-type${item.momos[index].vType}`]" v-for="(_, index) in Math.min(5, item.momos.length)" :key="index">
-								<img :src="require(`@/assets/pet/${item.momos[index].prototype}.png`)" alt="" width="90%" />
-								<div class="type">
-									<img :src=" require(`@/assets/icon/${ category_img[item.momos[index].category] }.png`) " alt="" width="15" height="15" />
-								</div>
-								<div class="preview-info">
-									<PetItem :data="{item: item.momos[index]}" :class="item.momos[index].vType >= 4 && !item.momos[index].noPrice?'market':'' " class="no-search">
-										<!-- <div class="vertical-children mgt-10" style="font-size: 18px" v-if="petData.vType >= 4 && !petData.noPrice">&nbsp;
-											<img v-if="petData.isRent" :src="require(`@/assets/coin/${Number(petData.orderId) >= 5e4?'BUSD':'MBOX'}.png`)" alt="" height="20"/>
-											<img v-else src="../assets/coin/BUSD.png" alt="" height="20"/>
-											<span>{{numFloor(petData.bidPrice/1e9, 10000)}}</span>
-										</div> -->
-									</PetItem>
-								</div>
-							</div>
-							<img @click="showWholeNetworkOpenBoxHistory(item)" height="25" src="@/assets/icon/view.png" alt="" class="cur-point" />
-						</td>
-						<td class="time">
-							<span>{{ getTimeFtt(item.time) }}</span>
-						</td>
-					</tr>
-				</table>
-				<div class="no-show" v-if="wholeNetworkOpenBoxHistory.length == 0">
-					<img src="@/assets/no_items.png" alt="">
-					<p class="opa-6 mgt-10">No items to display</p>
-				</div>
-			</section>
-		</div>
-		<!-- 我的记录 -->
-		<div class="col-md-12" style="padding: 0 10px 10px 10px"  v-show="recordsTabIndex !== 0">
-			<section style="padding:10px 15px;background:#13181F;border-radius:20px">
+		<!-- 记录 -->
+		<div class="col-md-12" style="padding:10px">
+			<section class="mgt-10" style="padding:10px 15px;background:#13181F;border-radius:20px">
 				<table class="small  new-table" border="0" frame="void" rules="none" >
 					<tr>
 						<th width="30%" class="tal">{{ $t("BOX_12") }}</th>
@@ -195,8 +134,8 @@
 						<th width="20%">{{ $t("BOX_27") }}</th>
 						<th width="40%" class="tar">TX</th>
 					</tr>
-					<tr v-for="item in getOpenBoxHistory" :key="item.tx + item.event">
-						<td class="tal">{{ getTimeFtt(item.crtime) }}</td>
+					<tr v-for="item in getOpenBoxHistory" :key="item.tx">
+						<td class="tal tac-xs">{{ getTimeFtt(item.crtime) }}</td>
 						<td class="tal">{{ $t(eventToLang[item.event]) }}</td>
 						<td>x{{ item.amount }}</td>
 						<td class="vertical-children">
@@ -218,10 +157,6 @@
 						</td>
 					</tr>
 				</table>
-				<div class="no-show" v-if="getOpenBoxHistory.length == 0">
-					<img src="@/assets/no_items.png" alt="">
-					<p class="opa-6 mgt-10">No items to display</p>
-				</div>
 			</section>
 		</div>
 
@@ -230,23 +165,18 @@
 				<PetItemSmall v-for="item in showHistoryArr" :key="item.prototype.toString() + item.tokenId + item.num" :data="item" />
 			</div>
 		</Dialog>
-		<Dialog id="avatar-preview" top="50%">
-			<div class="dialog-content tal" style="width:660px; height: 660px">
-				<img style="width: 100%;" :src="avatarPreview" v-if="avatarPreview" />
-			</div>
-		</Dialog>
 		<Dialog id="get-box-dialog" :top="200" :width="400">
-			<h2 class="mgt-10">{{$t("BOX_36")}}</h2>
+			<h2 class="mgt-10">{{ $t("BOX_04") }}</h2>
 			<div class="ly-input-content mgt-20">
-				<p class="small tal opa-6">{{$t("BOX_35")}}</p>
+				<p class="small tal opa-6">{{ $t("BOX_06") }}:</p>
 				<div class="por mgt-5">
 					<div class="ly-input-pre-icon">
-						<img  src="@/assets/icon/box_view.png" alt="" />
+						<img  src="@/assets/coin/KEY.png" alt="" />
 					</div>
 					<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
-						v-int :data-max="parseInt(boxNum)>200?200:parseInt(boxNum)"  v-model="addKey" />
+						v-int :data-max="parseInt(ethState.box) || 1" data-min="1" v-model="addKey" />
 					<div class="dib" style="width: 30%">
-						<button @click="addKey = parseInt(boxNum)>200?200:parseInt(boxNum) || 0" class="btn-primary btn-small" style="width: 80%" >
+						<button @click="addKey = parseInt(ethState.box) || 1" class="btn-primary btn-small" style="width: 80%" >
 							Max
 						</button>
 					</div>
@@ -254,33 +184,33 @@
 			</div>
 			<div class="vertical-children tal mgt-10">
 				<span class="small opa-6"> {{ $t("BOX_07") }}: {{ addKey }} </span>
-				<img src="@/assets/icon/box_icon.png" height="20" alt="" />
+				<img src="@/assets/icon/box.png" height="20" alt="" />
 			</div>
 			<div class="mgt-20 tal">
 				<p class="small opa-6" v-html="$t('BOX_08')"></p>
 			</div>
 
-			<div  :class="newBoxApproveToMinter == false ?'btn-group':''" class="mgt-20">
-				<StatuButton :onClick="approve.bind(this)"  data-step="1" style="width: 80%" v-if="newBoxApproveToMinter == false" :isLoading="lockBtn.approveLock > 0" :isDisable="lockBtn.approveLock > 0">
-					{{ $t("Air-drop_16") }} BOX
+			<div  :class="needApprove?'btn-group':''" class="mgt-20">
+				<StatuButton :onClick="approve.bind(this)"  data-step="1" style="width: 80%" v-if="needApprove" :isLoading="lockBtn.approveLock > 0" :isDisable="lockBtn.approveLock > 0">
+					{{ $t("Air-drop_16") }} KEY
 				</StatuButton>
-				<button data-step="2" @click="addBox(addKey)" class="btn-primary mgt-10 por" style="width: 80%; margin-bottom: 20px" :class="newBoxApproveToMinter == false?'disable-btn':''">
-					{{ $t("BOX_41") }}
+				<button data-step="2" @click="addBox(addKey)" class="btn-primary mgt-10 por" style="width: 80%; margin-bottom: 20px" :class="needApprove?'disable-btn':''">
+					{{ $t("BOX_09") }}
 				</button>
 			</div>
 			
 		</Dialog>
 		<Dialog id="open-box-dialog" :top="200" :width="400">
-			<h2 class="mgt-10">{{$t("BOX_34")}}</h2>
+			<h2 class="mgt-10">{{ $t("BOX_05") }}</h2>
 			<div class="ly-input-content mgt-20">
 				<p class="small tal opa-6">{{ $t("BOX_10") }}:</p>
 				<div class="por mgt-5">
-					<div class="ly-input-pre-icon"> <img  src="@/assets/icon/box_icon.png" alt="" /> </div>
+					<div class="ly-input-pre-icon"> <img  src="@/assets/icon/box.png" alt="" /> </div>
 					<input class="ly-input dib" type="text"
 						style=" text-align: center; width: 70%; padding-left: 50px; "
-						v-int :data-max="maxOpenOne" v-model="openBox" />
+						v-int :data-max="maxOpenOne" data-min="1" v-model="openBox" />
 					<div class="dib" style="width: 30%">
-						<button @click=" openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 0 " class="btn-primary btn-small" style="width: 80%" >
+						<button @click=" openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 1 " class="btn-primary btn-small" style="width: 80%" >
 							Max
 						</button>
 					</div>
@@ -290,137 +220,66 @@
 				{{ $t("BOX_11") }}
 			</button>
 		</Dialog>
-		<Dialog id="show-rate-dialog" :top="200" :width="400">
-			<div style="padding:15px">
-				<div class="pie dib por">
-					<div class="pie-mask">
-						<img src="@/assets/icon/box_view.png" alt="" width="50%">
-					</div>
-				</div>
-				<div class="ovh mgt-20" style="padding-left:35px">
-					<div class="col-md-2 col-xs-4 vertical-children mgt-5 tal" v-for="item in $parent.rateObj" :key="item.lv">
-						<div class="dib mgl-5" style="line-height:15px;">
-							<h2 class="bold2">{{item.rate}}</h2>
-							<p :class="`bg-new${item.lv}`" style="width:40px;height:2px;margin-top:3px"></p>
-							<p class="small opa-6 mgt-5">{{$t(item.lang)}}</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</Dialog>
-		<div class="preview l" v-if="showPreview" @click="showPreview = false">
-			<div class="preview-content adv-panel animate__zoomIn animate__animated animate__faster">
-				<h2>{{$t("BOX_43")}}</h2>
-				<div class="adv-panel-content mgt-10" style="padding:20px" v-if="previewMomo.vType != ''">
-					<div class="vertical-children">
-						<img :src="require(`@/assets/icon/${category_img[previewMomo.category]}.png`)" alt="">
-						<span class="mgl-5 bold2">{{$t(previewMomo.tokenName)}}</span>
-					</div>
-					<div class="momo-show por dib mgt-10">
-						<img src="@/assets/card_v2/previewbg.png" alt="" class="rotate2">
-						<img class="momo-show-momo" :src="require(`@/assets/pet/${previewMomo.prototype}.png`)"/>
-					</div>
-					<h2 :class="`c-lv${previewMomo.vType}`">{{selectVType[previewMomo.vType]}}</h2>
-					<div class="vertical-children">
-						<img src="@/assets/icon/airdrop.png" alt="" height="14px">
-						<span class="mgl-5">{{previewMomo.vType > 3?getStaticHashPower[previewMomo.vType] - getRandomInt(0,20): getStaticHashPower[previewMomo.vType]}} hash power</span>
-					</div>
-				</div>
-				<div class="mgt-20 tac">
-					<button class="btn-primary" @click="showPreview = false">{{$t("Network_12")}}</button>
-				</div>
-			</div>
-		</div>
 	</div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import { Wallet, Common, EventBus, Http } from "@/utils";
-import { Dialog, PetItem, PetItemSmall, StatuButton, Loading, OpenPetItem } from '@/components';
+import { Wallet, Common, EventBus } from "@/utils";
+import { Dialog, PetItemSmall, PetItem, StatuButton, Loading } from '@/components';
 import CommonMethod from "@/mixin/CommonMethod";
 import { BaseConfig, WalletConfig, EventConfig } from "@/config";
+import lottie from "lottie-web";
 const $ = window.$;
 
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { Dialog, PetItem, PetItemSmall, StatuButton, Loading, OpenPetItem },
+	components: { Dialog, PetItemSmall, PetItem, StatuButton, Loading },
 	data() {
 		return {
-			// 头像预览
-			avatarPreview: null,
-			// 开箱计时器
-			openBoxHistoryTimer: null,
-			// 开箱记录头像
-			avatar: {},
-			// 全网开箱记录
-			wholeNetworkOpenBoxHistory: [],
-			recordsTabIndex: 0,
-			// 显示开箱动画
-			showOpenAnimation: false,
-			openPos: 0,
 			showHistoryArr: [],
-			openBox: "",
-			addKey: "",
+			openBox: 1,
+			addKey: 1,
 			eventToLang: {
 				HashBox: "BOX_24",
 				AddBox: "BOX_23",
 				MintBox: "BOX_25",
 			},
-			maxOpenOne: 10,
+			maxOpenOne: 1000,
+			openLottie: null,
 			showOpenBoxCard: [],
 
 			testArr: [
-			// 	{category: 5,hashrate: 120,level: 1,lvHashrate: 120,num: 1,prototype: '50092',quality: 6,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'Name_338',isOpenCard:true},
-			// 	{category: 3,hashrate: 40,level: 1,lvHashrate: 40,num: 1,prototype: '43025',quality: 6,specialty: 0,tokenId:0,vType: 4, chain:'bnb', tokenName:'Name_296',isOpenCard:true},
-			// 	{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '21001',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'Name_1',isOpenCard:true},
-
-			// 	{category: 2,hashrate: 20,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 5,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'7',isOpenCard:true},
-			// 	{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'6',isOpenCard:true},
-				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '33020',quality: 2,specialty: 0,tokenId:0,vType: 3, chain:'bnb', tokenName:'5',isOpenCard:true},
-				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'4',isOpenCard:true},
-				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 4,specialty: 0,tokenId:0,vType: 4, chain:'bnb', tokenName:'3',isOpenCard:true},
-				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '12020',quality: 2,specialty: 0,tokenId:0,vType: 1, chain:'bnb', tokenName:'2',isOpenCard:true},
-				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '24020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'1',isOpenCard:true},
-	
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '50080',quality: 5,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 4,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
 			],
 
 			petDataArr:[],
 
-			pointObj: [
-				{x: 0, y: 0},
-				[{x: -50, y: -50}],
-				[{x: -110, y: -50}, {x:10, y: -50}],
-				[{x: -170, y: -50}, {x: -50, y: -50}, {x: 70, y: -50}],
-				[{x: -110, y: -105}, {x: -110, y: 5}, {x: 10, y: -105},{x:10, y:5}],
-				[{x: -170, y: -105}, {x: -170, y: 5}, {x: -50, y: -50}, {x: 70, y: -105},{x:70, y:5}], // 5
-				[{x: -170, y: -105}, {x: -170, y: 5}, {x: -50, y: -105}, {x: -50, y: 5}, {x: 70, y: -105},{x:70, y:5}], // 6
-				[{x: -170, y: -105}, {x: -170, y: 5}, {x: -50, y: -160},  {x: -50, y: -50},  {x: -50, y: 60}, {x: 70, y: -105},{x:70, y:5}], // 7
-				[{x: -170, y: -105}, {x: -170, y: 5}, {x: -50, y: -215}, {x: -50, y: -105}, {x: -50, y: 5},  {x: -50, y: 115}, {x: 70, y: -105},{x:70, y:5}], // 8
-				[{x: -170, y: -160}, {x: -170, y: -50}, {x: -170, y: 60}, {x: -50, y: -160},  {x: -50, y: -50},  {x: -50, y: 60},  {x: 70, y: -160},{x:70, y: -50},{x:70, y: 60} ], // 9
-				[{x: -170, y: -160}, {x: -170, y: -50}, {x: -170, y: 60},  {x: -50, y: -215}, {x: -50, y: -105}, {x: -50, y: 5},  {x: -50, y: 115},  {x: 70, y: -160},{x:70, y: -50},{x:70, y: 60} ], // 10
+			posArr:[
+				{line1:0,line2:0,line3:0, flexNum:0},
+				{line1:0,line2:1,line3:0, flexNum:2},
+				{line1:1,line2:0,line3:1, flexNum:1},
+				{line1:1,line2:1,line3:1, flexNum:0},
+				{line1:2,line2:0,line3:2, flexNum:1},
+				{line1:2,line2:1,line3:2, flexNum:0},
+				{line1:2,line2:2,line3:2, flexNum:0},
+				{line1:2,line2:3,line3:2, flexNum:0},
+				{line1:2,line2:4,line3:2, flexNum:0},
+				{line1:3,line2:3,line3:3, flexNum:0},
+				{line1:3,line2:4,line3:3, flexNum:0},
 			],
-			anieVtype:["","","","","4","5"],
-			isOpenAll: false,
-			openOne: false,
-			isFinishOpen: false,
-			showResultOnly: false,
-			openAllNeedSleep: 0,
+
 			boxSpine: null,
-			cardSpines: [],
-			newBoxApproveToMinter: "-",
-			showPreview: false,
-			previewMomo: {prototype:"",tokenName:"",category:"", vType: ""},
-			selectVType: [
-				this.$t("MOMO_08"),
-				this.$t("MOMO_09"),
-				this.$t("MOMO_10"),
-				this.$t("MOMO_11"),
-				this.$t("MOMO_12"),
-				this.$t("MOMO_13"),
-				this.$t("MOMO_14"),
-			],
 		};
 	},
 	computed: {
@@ -428,27 +287,7 @@ export default {
 			ethState: (state) => state.ethState.data,
 			totalOpenBoxAmount: (state) => state.globalState.data.totalOpenBoxAmount,
 			lockBtn: (state) => state.globalState.data.lockBtn,
-			boxNum: (state) => state.gemState.data.boxNum,
-			hasLoadSpine: (state) => state.globalState.data.hasLoadSpine,
-			momoSetting: (state) => state.globalState.data.momoSetting,
 		}),
-		getStaticHashPower(){
-			return [0,1,2,3,this.momoSetting.v4_max_upgrade, this.momoSetting.v5_max_upgrade]
-		},
-		getMoMoVType(){
-				let retData = {
-					v1: [],
-					v2: [],
-					v3: [],
-					v4: [],
-					v5: [],
-					v6: [],
-				}
-				Object.keys(BaseConfig.NftCfg).map(item=>{
-					retData[`v${this.getVType(item)}`].push(item);
-				})
-				return retData;
-		},
 		canOpenBox() {
 			let { canOpenBox, orderBlockHash, openBoxTemp } = this.ethState;
 			if (orderBlockHash =="0x0000000000000000000000000000000000000000000000000000000000000001") {
@@ -465,28 +304,21 @@ export default {
 			return canOpenBox;
 		},
 		getOpenBoxHistory() {
-			if(!this.$parent.isActive) return [];
-
 			let { openBoxTemp, openBoxHistory } = this.ethState;
 			
 			//去重
 			let historyObj = {};
 			openBoxHistory.map((item) => {
-				if(item.event == "HashBox"){
-					historyObj[item.tx+"HashBox"] = item;
-				}else{
-					historyObj[item.tx] = item;
-				}
+				historyObj[item.tx] = item;
 			});
 			openBoxTemp.map((item, index) => {
 				if (historyObj[item.tx] == undefined) {
 					historyObj[item.tx] = item;
 				}else{
-					
 					openBoxTemp.splice(index, 1);
 					//显示开箱子
+					console.log("start show");
 					this.petDataArr = [];
-					this.testArr = [];
 					let showArr = [];
 					let {tokenIds, ids, tokens, amounts} = historyObj[item.tx];
 
@@ -533,13 +365,11 @@ export default {
 							});
 						})
 					});
-
-					//随机排序
-					showArr.sort(()=>{
-						return Math.random() - 0.5;
-					});
-					this.testArr = showArr;
-					this.testOpenAnime2();
+				
+					this.petDataArr = showArr;
+					this.$nextTick(()=>{
+						this.openAnime();
+					})
 				}
 			});
 
@@ -598,14 +428,10 @@ export default {
 				if(item.state == 0) isOpening = true;
 			});
 			return isOpening;
-		},
-		openNum(){
-			return this.petDataArr.length;
 		}
 	},
+
 	mounted() {
-		this.getWholeNetworkOpenBoxHistory();
-		this.isApprove();
 		EventBus.$emit(EventConfig.OpenBoxHistory, { chain: "eth" });
 
 		timer = setInterval(() => {
@@ -614,232 +440,53 @@ export default {
 			}
 		}, 2000);
 
-		this.renderBoxSpine();
+
+		this.openLottie = lottie.loadAnimation({
+			container: document.getElementById("openbox-anime-new"), // the dom element that will contain the animation
+			renderer: 'svg',
+			loop: false,
+			autoplay: false,
+			path: './animation/boxAnime/open.json' // the path to the animation json
+		});
+
+		this.openLottie.onComplete = function(){
+			document.querySelector("#show-card").classList.remove("hide");
+		}
+
+		this.boxSpine = new window.spine.SpineWidget("box-spine", {
+			json: "/animation/boxV2/baoxiang.json",
+			atlas: "/animation/boxV2/baoxiang.atlas",
+			backgroundColor: "#00000000",
+			animation: "daiji",
+			loop: true,
+			fitToCanvas: false,
+			scale:0.5,
+			x:350,
+			y: 0,
+			success: ()=>{
+				this.boxSpine.state.timeScale = 1;
+			}
+		});
+
 
 		//如果有临时开箱子数据就让箱子继续晃动
 		if(this.isOpening){
-			this.shakeBox()
+			document.getElementById("openbox-anime").classList.add("animation-box-start");
 		}
 
 	},
 	beforeDestroy() {
-		clearTimeout(this.openBoxHistoryTimer);
 		if (timer != null) clearInterval(timer);
 	},
-	watch:{
-		openAllNeedSleep: async function(val){
-			if(val != 0){
-				await Common.sleep(val);
-				this.isFinishOpen = true;
-				this.openAllNeedSleep = 0;
-			}
-		}
-	},
 	methods: {
-		// 预览头像
-		showAvatar(address) {
-			const avatar = this.avatar[address];
-
-			if (avatar) {
-				this.avatarPreview = avatar;
-				this.oprDialog("avatar-preview", "flex");
+		animationend(e){
+			if(e.animationName == "flipX"){
+				this.isAnimation = false;
 			}
 		},
-		// 根据地址获取头像
-		async getAvatarByAddress(addresss) {
-			const res = await Wallet.ETH.avatarHelper.methods.getFirstAvatar(addresss).call();
-
-			addresss.forEach((item, index) => {
-				const id = res[index];
-
-				if (id !== '0') {
-					this.$set(this.avatar, item, `https://img.soulchainz.com/mini_avatar_ori_${id}.png`);
-				}
-			});
-		},
-		// 显示开箱记录
-		showWholeNetworkOpenBoxHistory(item) {
-			this.showHistoryArr = item.momos;
-			this.oprDialog("open-box-history-dialog", "block");
-		},
-		// 获取全网开箱记录
-		async getWholeNetworkOpenBoxHistory() {
-			try {
-				const res = await Http.getWholeNetworkOpenBoxHistory();
-				const addresss = [];
-
-				this.wholeNetworkOpenBoxHistory = res.map((item) => {
-					const { tokenIds, ids, amounts, tokens } = item;
-					// 生成721数据
-					const token721 = item.tokenIds.map((item, key) => {
-						const { category,hashrate,prototype,quality,specialty } = tokens[key];
-
-						return {
-							prototype,
-							quality,
-							category,
-							level: 1,
-							specialty,
-							hashrate,
-							lvHashrate: hashrate,
-							vType: parseInt(prototype / 1e4),
-							num: 1,
-							tokenId: item,
-							tokenName: '',
-						};
-					});
-					// 生成1155数据
-					const token11555 = item.ids.map((item, key) => {
-						const { quality, category } = BaseConfig.NftCfg[item];
-
-						return {
-							prototype: item,
-							quality,
-							category,
-							level: 1,
-							specialty: 0,
-							hashrate: quality,
-							lvHashrate: quality,
-							vType: parseInt(item / 1e4),
-							num: Number(amounts[key]),
-							tokenId: 0,
-							tokenName: '',
-						};
-					});
-
-					if (addresss.indexOf(item.address) === -1) {
-						addresss.push(item.address);
-					}
-
-					return {
-						address: item.address,
-						tx: item.tx,
-						time: item.crtime,
-						amount: item.amount,
-						momos: [...token721, ...token11555],
-					};
-				});
-
-				await this.getAvatarByAddress(addresss);
-			} catch(_) {
-			}
-
-			this.openBoxHistoryTimer = setTimeout(this.getWholeNetworkOpenBoxHistory.bind(this), 10000);
-		},
-		toggleRecordsTab(value) {
-			this.recordsTabIndex = value;
-		},
-		async cardClick(e){
-			if(!this.isOpenAll && !this.openOne || $(e.target).hasClass("play")) return;
-
-			this.isFinishOpen = false;
-			$(e.target).addClass("play");
-			let delayTs = 600;
-			let data = this.petDataArr[$(e.target).data("pos")];
-			if(data.vType == 4) delayTs = 1900;
-			if(data.vType == 5) delayTs = 2300;
-			// 将需要等最久的时间存起来
-			if(this.openAllNeedSleep < delayTs+1000) this.openAllNeedSleep = delayTs+1000;
-			await Common.sleep(delayTs);
-			$(e.target).prev().removeClass("opa-0");
-			await Common.sleep(1000);
-			$(e.target).remove();
-		},
-		nextOpen(){
-			if(!this.isFinishOpen) return;
-
-			// 开卡结束,初始化开卡状态
-			if(this.showResultOnly || this.isOpenAll){
-				this.initOpenData();
-				return;
-			}
-
-			if(this.openOne && this.openPos == this.openNum-1){
-				if(this.openNum == 1){
-					this.initOpenData();
-				}else{
-					this.showResult();
-				}
-			}
-
-			if(this.openOne && this.openPos < this.openNum-1){
-				this.openPos += 1;
-			}
-
-			this.openOne = false;
-		},
-		initOpenData(){
-			$("#show-card-v2").addClass("hide");
-			$(".box-show").removeClass("box-show-open");
-			this.boxSpine.config.loop = false;
-			this.boxSpine.setAnimation("jingzhen", true);
-			this.showResultOnly = false;
-			this.openOne = false;
-			this.isOpenAll = false;
-			this.isFinishOpen = false;
-			this.petDataArr = [];
-			this.openAllNeedSleep = 0;
-		},
-		async openAll(){
-			this.openPos = 0;
-			this.$nextTick(async ()=>{
-				$(".animate__slideInUp").removeClass("animate__slideInUp").removeClass("animate__animated").removeClass("animate__faster").css("margin-top", 0);
-				await Common.sleep(200);
-				this.isOpenAll = true;
-				await Common.sleep(this.petDataArr.length * 70);
-				$(".card").click();
-			})
-		},
-		showResult(){
-			this.openOne = false;
-			this.openPos = 0;
-			this.showResultOnly = true;
-			this.isOpenAll = true;
-		},
-		openOneCard(){
-			if(this.openOne) return;
-			this.openOne = true;
-			let openPosId = "#card-" + (this.openNum-this.openPos-1);
-			this.cardClick({target: $(openPosId)[0]});
-		},
-		
-		renderBoxSpine(){
-			// 开箱动画
-			this.boxSpine = new window.spine.SpineWidget(this.$refs.boxSpine, {
-				json: "./animation/boxV3/kejixiangzi2.json",
-				atlas: "./animation/boxV3/kejixiangzi2.atlas",
-				backgroundColor: "#00000000",
-				animation: "jingzhen",
-				loop: true,
-				fitToCanvas: false,
-				scale:0.4,
-				x: 280,
-				y: 50,
-				// x: 300,
-				// y: 100,
-				success: ()=>{
-					this.boxSpine.state.timeScale = 1.8;
-				}
-			});
-
-			// 箱子静置动画
-			new window.spine.SpineWidget(this.$refs.boxAnimation, {
-				json: "./animation/box-shake/kjxz437.json",
-				atlas: "./animation/box-shake/kjxz437.atlas",
-				backgroundColor: "#00000000",
-				animation: "open",
-				loop: true,
-				fitToCanvas: false,
-				scale: 0.6,
-				x: 280,
-				y: 50,
-			});
-		},
-		
 		showOpenBox(){
-			this.setAction(23003); 
 			this.oprDialog('open-box-dialog', 'block'); 
-			this.openBox = this.canOpenBox > this.maxOpenOne ? this.maxOpenOne : this.canOpenBox || 0;
+			this.openBox = this.canOpenBox > this.maxOpenOne ? this.maxOpenOne : this.canOpenBox || 1;
 		},
 
 		getTxUrl(tx) {
@@ -847,11 +494,10 @@ export default {
 		},
 		showHistoryDialog(item) {
 			let { tokenIds, ids, amounts, tokens } = item;
-
 			let showHistoryArr = [];
 			//先生成721的数据
 			tokenIds.map((item, key) => {
-				let {category,hashrate,prototype,quality,specialty} = tokens[key];
+				let {category,hashrate,prototype,quality,specialty} = tokens[(item, key)];
 				showHistoryArr.push({
 					prototype,
 					quality,
@@ -891,51 +537,42 @@ export default {
 		getTimeFtt(timeStep) {
 			return Common.dateFtt("yyyy-MM-dd hh:mm:ss",new Date(timeStep * 1000));
 		},
-		//查询宝石合约是被授权
-		async isApprove(){
-			await Wallet.ETH.getAccount();
-			let newBoxApproveToMinter = await Wallet.ETH.isApprovedForAll(WalletConfig.ETH.newBoxToken, WalletConfig.ETH.moMoMinter);
-			if(newBoxApproveToMinter != null){
-				this.newBoxApproveToMinter= newBoxApproveToMinter;
-			}
-		},
-		async approve(){
-			let hash = await Wallet.ETH.approvedForAll(WalletConfig.ETH.newBoxToken, WalletConfig.ETH.moMoMinter, ()=>{
-				this.isApprove();
-			});
-			if(hash){
-				this.lockBtnMethod("approveLock");
+		async approve() {
+			let res = await Wallet.ETH.approveBoxToMinter();
+			if (res) {
+				this.$store.commit("globalState/lockBtn", "approveLock");
+				this.showNotify(this.$t("BOX_20"), "success");
 			}
 		},
 		async addBox(num) {
-			if(Number(num) == 0){
-				this.showNotify(this.$t("BOX_30"), "error");
-				return;
-			}
-			if (Number(num) > Number(this.boxNum)) {
-				this.showNotify(this.$t("BOX_30"), "error")
+			if(this.needApprove) return;
+
+			if (num > this.ethState.box) {
+				this.showNotify(this.$t("BOX_28"), "error")
 				return;
 			}
 			if (this.ethState.canOpenBox > 0) {
 				this.showNotify(this.$t("BOX_29"), "error")
 				return;
 			}
-		
-			let hash = await Wallet.ETH.addMysteryBox(num);
-			if(hash){
-				this.oprDialog("get-box-dialog", "none");
-				this.showNotify(this.$t("BOX_20"), "success");
+			let allowance_box_to_minter = this.ethState.allowance_box_to_minter;
+			if (allowance_box_to_minter == -1) {
+				allowance_box_to_minter = await Wallet.ETH.boxAllowanceToMinter();
+				this.$store.commit("ethState/setData", {allowance_box_to_minter,});
+			}
+			if (Number(allowance_box_to_minter) > Number(num)) {
+				let hash = await Wallet.ETH.addBox(num);
+				if(hash){
+					this.oprDialog("get-box-dialog", "none");
+				}
+			} else {
+				this.approve();
 			}
 		},
 
 		//默认打开并质押
 		async open(num, stake = false) {
-			if(num == 0){
-				this.showNotify(this.$t("BOX_30"), "error");
-				return;
-			}
 			if (this.canOpenBox >= num) {
-				this.showOpenAnimation = true;
 				let hash;
 				if(stake){
 					hash = await Wallet.ETH.openBoxAndStake(num);
@@ -944,7 +581,7 @@ export default {
 				}
 				if (hash) {
 					//播放箱子动画
-					this.shakeBox();
+					document.getElementById("openbox-anime").classList.add("animation-box-start");
 					this.oprDialog("open-box-dialog", "none");
 
 					let myAddr = await Wallet.ETH.getAccount();
@@ -974,281 +611,132 @@ export default {
 			}
 		},
 
-		//箱子抖动
-		shakeBox(){
-			window.$(".box-show").removeClass("box-show-open");
-			this.boxSpine.config.loop = true;
-			this.boxSpine.setAnimation("open1", true);
+		playBoxAnime(){
+			document.getElementById("openbox-anime").classList.add("animation-box-start");
 		},
 
-		testOpenAnime2(){
-			if(this.testArr.length == 0) return;
-			
+		//开箱子动画
+		openAnime(){
+			this.isAnimation = true;
+			document.getElementById("openbox-anime").classList.remove("animation-box-start");
+			window.$("#openbox-anime").hide();
+			window.$("#openbox-anime-new").show();
+			window.$(".show-card-item").addClass("animation");
+			if(this.openLottie) this.openLottie.goToAndPlay(0);
+		},
+		testOpenAnime(){
 			this.petDataArr = [];
+			this.testArr[0].vType = this.testArr[0].vType == 4?5:4;
+			this.petDataArr = this.testArr;
 			this.$nextTick(()=>{
+				this.isAnimation = true;
+				document.getElementById("openbox-anime").classList.remove("animation-box-start");
+				window.$("#openbox-anime").hide();
+				window.$("#openbox-anime-new").show();
+				window.$(".show-card-item").addClass("animation");
+				if(this.openLottie) this.openLottie.goToAndPlay(0);
+			})
+		},
+
+		//箱子抖动
+		playBoxAnime2(){
+			window.$(".box-show").removeClass("box-show-open");
+			this.boxSpine.config.loop = true;
+			this.boxSpine.setAnimation("doudong", true);
+		},
+		//箱子打开
+		openAnime2(){
+			this.petDataArr = [];
+			this.testArr[0].vType = this.testArr[0].vType == 4?5:4;
+			this.petDataArr = [...this.testArr];
+			this.$nextTick(()=>{
+				this.isAnimation = true;
 				//开始spine动画
-				$(".box-show").addClass("box-show-open");
+				window.$(".box-show").addClass("box-show-open");
 				this.boxSpine.config.loop = false;
-				this.boxSpine.setAnimation("open2", {
-					complete: async ()=>{
-						$(".box-show").removeClass("box-show-open");
-						this.boxSpine.setAnimation("jingzhen");
-						document.querySelector("#show-card-v2").classList.remove("hide");
-						//单张直接打开
-						if(this.testArr.length == 1){
-							this.petDataArr = this.testArr;
-							await Common.sleep(400);
-							this.openOneCard();
-						}else{
-							for (let index = 0; index < this.testArr.length; index++) {
-								this.petDataArr.push(this.testArr[index]);
-								await Common.sleep(50);
-							}
-							await Common.sleep(400);
-							$("#show-card-btn").removeClass("hide");
-						}
+				this.boxSpine.setAnimation("baoxiangdakai2", {
+					complete: ()=>{
+						document.querySelector("#show-card").classList.remove("hide");
 					}
 				});
 			})
 		},
 
-		previewOpen(){
-			if(this.petDataArr.length > 0) return;
-			$(".box-show").addClass("box-show-open");
-			this.boxSpine.config.loop = false;
-			this.boxSpine.setAnimation("open2", {
-				complete: async ()=>{
-					$(".box-show").removeClass("box-show-open");
-					this.boxSpine.setAnimation("jingzhen");
-					this.showPreview = true;
-					let num = this.getRandomInt(0, 200);
-					let vType = 0;
-					if(num <= 70){
-						vType = "v1";
-					}
-					if(num <= 120 && num > 70){
-						vType = "v2";
-					}
-					if(num <= 160 && num > 120){
-						vType = "v3";
-					}
-					if(num <= 190 && num > 160){
-						vType = "v4";
-					}
-					if(num > 190){
-						vType = "v5";
-					}
-					let arr = this.getMoMoVType[vType];
-					let pos = this.getRandomInt(0, arr.length-1);
-					let pType = arr[pos];
-					this.previewMomo = BaseConfig.NftCfg[pType];
-					this.previewMomo.vType = this.getVType(pType);
+		openCard(e){
+			e.stopPropagation();
+			let element = $(e.currentTarget).children(".card-spine")[0];
+			// window.$(e.currentTarget).addClass("animation");
+
+			new window.spine.SpineWidget(element, {
+				json: "/animation/cardAnime/Purple/Purple zhengmian.json",
+				atlas: "/animation/cardAnime/Purple/Purple zhengmian.atlas",
+				// json: "/animation/cardAnime/Orange/Orange jieshu.json",
+				// atlas: "/animation/cardAnime/Orange/Orange jieshu.atlas",
+				backgroundColor: "#00000000",
+				animation: "jieshu",
+				loop: false,
+				fitToCanvas: true,
+				scale:0.2,
+				x:200,
+				y: 0,
+				success: ()=>{
+
 				}
-			})
+			});
+
+		},
+
+		initCardAnime(){
+			if(this.isAnimation) return;
+			document.querySelector("#show-card").classList.add("hide");
+			window.$("#openbox-anime").show();
+			window.$("#openbox-anime-new").hide();
+			window.$(".show-card-item").removeClass("animation");
+
+			window.$(".box-show").removeClass("box-show-open");
+			this.boxSpine.config.loop = false;
+			this.boxSpine.setAnimation("daiji", true);
+
 		}
+		
 	},
 };
 </script>
 
-<style lang="less" scoped>
-
-.hover {
-	cursor: pointer;
-}
-
-.momo-show-momo{
-	position: absolute;
-	width: 100%;
-	left: 0px;
-	top: 0px;
-}
-.preview{
-	position: fixed;
-	top: 0px; left: 0px; bottom: 0px; right: 0px;
-	background: rgba(0,0,0,0.8);
-	z-index: 9999;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.preview-content{
-	width: 90%;
-	max-width: 430px;
-	padding: 20px;
-}
-.pie {
-	width: 260px; height: 260px;
-	border-radius: 50%;
-	background: conic-gradient(#80E220 0, #80E220 35%,#618FFC 0, #618FFC 47%, #AE20E2 0, #AE20E2 49.5%, #FD820B 0, #FD820B 50%, #D8D8D8 0);
-}
-.pie-mask{
-	position: absolute;
-	top: 30px; left: 30px; bottom: 30px; right: 30px;
-	background: #1C222C;
-	border-radius: 50%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-#show-rate{
-	position: absolute;
-	right: 0px;
-	top: 0px;
-	display: none;
-	z-index: 99;
-}
-.animate__slideInUp{
-	animation-name: slideInUp !important;
-	position: relative;
-}
-@keyframes slideInUp{
-	0% {
-		top: 100%;
-	}
-	100% {
-		top: 50%;
-	}
-}
-
-.opa-0{
-	opacity: 0;
-}
-
-#show-card-bg{
-	height: 100vh;
-}
-
-@media (max-width: 768px) {
-	#show-rate{
-		display: block;
-	}
-	#show-card-bg{
-		transform: scale(0.7);
-	}
-}
-#show-card-bg img{
-	width: 150px;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	transition: all 0.5s;
-}
-#show-card-bg > div{
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	transition: all 0.2s cubic-bezier(0.5,0.25,0,1);
-	width: 137px;
-	height: 190px;
-}
-.open-pet{
-	height: 100%;
-	position: relative;
-	transition: all 1s;
-}
-#show-card-bg .card{
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%) scale(0.9);
-	opacity: 1;
-	z-index: 999;
-	transition: all 1s;
-}
-
-#show-card-bg .card-v4{
-	top: 55%;
-	transform: translate(-50%, -50%) scale(0.83);
-}
-#show-card-bg .card-v5{
-	top: 50%;
-	transform: translate(-50%, -50%) scale(0.83);
-}
-
-#show-card-btn{
-	position: absolute;
-	bottom: 20%;
-	width: 100%;
-}
-
-#show-card-v2{
-	background: rgba(0,0,0,0.8);
-	position: fixed;
-	left: 0px;
-	top: 0px;
-	width: 100%;
-	height: 100%;
-	z-index: 999999999;
-}
-.back-show-card{
-	position: absolute;
-	/* top:-8px;
-	left: 5px; */
-	top: 2px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
-	z-index: 99998;
-	display: none;
-	text-align: center;
-}
-.back-show-card .pet_item{
-	width: 322px;
-	height: 256px;
-	zoom: 0.68;
-	margin-left: 0px;
-	margin-top: 0px;
-	display: inline-block;
-	margin: 0px auto;
-}
+<style >
 .card-spine{
 	position: absolute;
-	left: -141px;
-	top: -92px;
-	z-index: 99998;
-	height: 360px;
-	width: 504px;
+	left: 0px;
+	right:0px;
+	bottom: 0px;
+	top: 0px;
+	z-index: 998
 }
 .box-show{
 	position: absolute;
-	top: 0px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
+	top: 160px;
+	left: 190px;
 }
 .box-show-open{
 	position: fixed;
 	top: 0px;
-	bottom: 0px;
-	right: 0px;
+	width: 100vw;
+	height: 100vh;
 	z-index: 999998;
 	background: rgba(0,0,0,0.8);
 	left: 0px;
 }
-.box-show-open .box-spine{
-	
-	top: calc(50vh - 150px);
-	position: relative;
-}
-.box-spine{
-	margin: 0px auto;
-	width: 634px;
-	height: 300px;
-	
-	/* position: absolute;
+#box-spine{
+	position: absolute;
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
 	height: 100vh;
-	width: 100%; */
-	/* width: 800px; */
-	/* padding-bottom: calc(50vh - 100px);
-	border: 1px solid red; */
+	width: 800px;
+	padding-bottom: calc(50vh - 100px);
 	zoom: 1;
 }
-.box-spine canvas{
+#box-spine canvas{
 	width: 100% !important;
 	height: 100% !important;
 	/* background: red; */
@@ -1283,8 +771,6 @@ export default {
 
 .show-card-item{
 	width: 100%;
-	width: 220px;
-	height: 180px;
 	margin: 20px 0px;
 	position: relative;
 
@@ -1414,178 +900,43 @@ export default {
 	margin: 50px 0px;
 }
 
-@media (max-width:1200px) {
+@media (max-width:1000px) {
 	#show-card-cont{
 		width: 100% !important;
 	}
 
-	.show-card-item{
-		zoom: 0.5;
-	}
-	.box{
-		zoom: 0.5;
-	}
-
-	/* .show-card-item > img,.show-card-item > .front >img{
-		zoom: 0.45;
-	}
-	.card-spine{
-		zoom: 0.45 !important;
-		left: 89px;
-		border: 1px solid red;
-		width: 100%;
+	.show-card-item > img,.show-card-item > .front >img{
+		width: 105px;
+		height: 75px;
 	}
 
 	.show-card-item {
 		margin: 10px;
-		zoom: 0.5;
 	}
 
 	.show-card-item   .pet_item{
 		width: 350px !important;
-		zoom: 0.3 !important;
-		display: inline-block;
-		margin: 0px auto;
-	} */
-
-	.show-card-item   .pet_item{
-		width: 322px !important;
-		height: 256px;
-		zoom: 0.68;
-		margin-left: 0px;
-		margin-top: 0px;
-		display: inline-block;
-		margin: 0px auto;
+		/* zoom: 0.5 !important; */
+		transform: scale(0.42);
+		-webkit-transform-origin: 4% 0%;
+		transform-origin: 4% 0%;
 	}
+
+
 }
 
 @media (max-width: 768px) {
-	/* #show-card-cont{
+	#show-card-cont{
 		width: 100% !important;
-	} */
-
-	.rate-show{
-		zoom: 0.8;
-		padding: 5px 20px !important;
-	}
-
-	.box-section{
-		padding-bottom: 0px !important;
-		border: none !important;
-		background: none !important;
 	}
 	
 	.table-his td{
 		padding: 5px;
 	}
-	.box-spine{
-		width: 606px;
-		transform: translateX(-50%);
-		left: 50%;
-		top: -30%;
-		position: absolute;
-		zoom: 1.5;
-		/* zoom: 0.5; */
-		/* top: calc(100vh - 300px) !important; */
-	}
-	.box{
-		zoom:0.5;
-	}
-	/* .box-spine{
-		zoom: 0.8 !important;
+	#box-spine{
+		zoom: 0.5 !important;
 		height: 200vh !important;
 		padding-bottom: calc(100vh - 100px) !important;
-		transform: translate(-50%, -50%);
-	} */
-	/* .box-show-open .box-spine{
-		width: 150%;
-		transform: translate(-50%, -50%);
-	} */
-
-	.show-card-item{
-		zoom: 0.4;
-	}
-}
-
-@media(min-width: 1000px) {
-	.tab {
-		ul {
-			padding: 0 50px;
-		}
-	}
-
-	.whole-records {
-		.address {
-			width: 15%;
-			text-align: left;
-		}
-
-		.event {
-			width: 18%;
-			text-align: left;
-		}
-
-		.result {
-			text-align: left;
-		}
-
-		.time {
-			width: 30%;
-			text-align: right;
-		}
-	}
-}
-
-@media(max-width: 1000px) {
-	.tab {
-		ul {
-			justify-content: center;
-		}
-	}
-
-	.whole-records {
-		.address {
-			width: 30%;
-			text-align: left;
-		}
-
-		.event {
-			width: 25%;
-			text-align: left;
-
-			img {
-				width: 30px;
-			}
-		}
-
-		.result {
-			text-align: right;
-
-			.momo {
-				display: none !important;
-
-				&:first-child {
-					display: inline-block !important;
-				}
-
-				.preview-info {
-					left: auto;
-					right: 50%;
-					width: 350px !important;
-				}
-			}
-		}
-
-		.time {
-			display: none;
-		}
-	}
-
-	#avatar-preview {
-		/deep/ .dialog-content {
-			width: 100% !important;
-			height: auto !important;
-		}
 	}
 }
 
@@ -1644,183 +995,5 @@ export default {
 	100% {
 		background-position: -1792px 0px;
 	}
-}
-.adv-panel:before{
-	background: linear-gradient(145deg,#066EFF 0%, #000  100%);
-}
-
-.tab {
-	margin-top: 30px;
-	padding: 0 10px;
-
-	ul {
-		display: flex;
-		align-items: center;
-		list-style: none;
-
-		li {
-			padding: 8px;
-			position: relative;
-			font-weight: bold;
-			margin: 0 26px;
-			font-size: 15px;
-			cursor: pointer;
-			color: rgba(255, 255, 255, 0.5);
-			transition: color .5s;
-
-			&.active,
-			&:hover {
-				color: #ffffff;
-			}
-
-			&.active {
-				&::after {
-					content: '';
-					display: block;
-					position: absolute;
-					left: 0;
-					right: 0;
-					bottom: 0;
-					height: 2px;
-					background: #1751f6;
-					border-radius: 11px;
-				}
-			}
-		}
-	}
-}
-
-.whole-records {
-	img, span, .image {
-		display: inline-block;
-		vertical-align: middle;
-	}
-
-	.avatar {
-		.image {
-			width: 45px;
-			height: 45px;
-			overflow: hidden;
-			border-radius: 10px;
-			margin-right: 10px;
-
-			img {
-				width: 100%;
-				height: auto;
-			}
-		}
-	}
-
-	.event {
-		img {
-			margin-right: 10px;
-		}
-	}
-
-	.time {
-		span, a {
-			display: inline-block;
-			line-height: 1;
-			vertical-align: middle;
-		}
-
-		span {
-			margin-right: 10px;
-		}
-	}
-
-	.result {
-		.momo {
-			width: 45px;
-			height: 45px;
-			box-sizing: border-box;
-			padding-bottom: 5px;
-			border-radius: 100%;
-			vertical-align: middle;
-			margin-right: 10px;
-			position: relative;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-
-			&:hover {
-				.preview-info {
-					display: inline-block;
-				}
-			}
-
-			.type {
-				position: absolute;
-				bottom: 0;
-				left: 50%;
-				transform: translate(-50%, 50%);
-				height: 20px;
-				width: 20px;
-				background: #1a2c50;
-				border: 1px solid #315184;
-				border-radius: 100%;
-				padding: 5px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-
-				img {
-					width: 100%;
-					height: auto;
-				}
-			}
-		}
-
-		.preview-info {
-			display: none;
-			position: absolute;
-			top: 20px;
-			left: 20px;
-			z-index: 9;
-
-			/deep/ .pet_item {
-				margin: 0 !important;
-			}
-		}
-
-		.cur-point {
-			margin-left: 20px;
-		}
-	}
-
-	.momo-type1 {
-		box-shadow: inset 0px 0px 10px 0 #8b8b8bb4;
-		border: 3px solid #8b8b8bb4;
-	}
-
-	.momo-type2 {
-		box-shadow: inset 0px 0px 10px 0 #5b7e2bb4;
-		border: 3px solid #5b7e2bb4;
-	}
-
-	.momo-type3 {
-		box-shadow: inset 0px 0px 10px 0 #3955a0b4;
-		border: 3px solid #3955a0b4;
-	}
-
-	.momo-type4 {
-		box-shadow: inset 0px 0px 10px 0 #793ea8b4;
-		border: 3px solid #793ea8b4;
-	}
-
-	.momo-type5 {
-		box-shadow: inset 0px 0px 10px 0 #97812fb4;
-		border: 3px solid #97812fb4;
-	}
-
-	.momo-type6 {
-		box-shadow: inset 0px 0px 10px 0 #8f3433;
-		border: 3px solid #8f3433;
-	}
-}
-
-#avatar-preview {
-	align-items: center;
-	justify-content: center;
 }
 </style>

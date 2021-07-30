@@ -24,10 +24,10 @@ export default class WalletConfig {
 				name: "BANANA",
 				decimals: 1e18,
 			},
-			"0X95A1199EBA84AC5F19546519E287D43D2F0E1B41": {
-				name: "RABBIT",
-				decimals: 1e18,
-			},
+			// "0X95A1199EBA84AC5F19546519E287D43D2F0E1B41": {
+			// 	name: "RABBIT",
+			// 	decimals: 1e18,
+			// },
 		},
 		momoBid: "0xFaE911aa353e598908DD2cFd6e88E35dE588974f",//v6竞拍
 		newBoxToken: "0xed8711fEff83b446158259981FD97645856e82A5", // 新的box合约

@@ -27,7 +27,7 @@
 				</div>
 			</section>
 			<section class="col-md-5" style="padding:10px">
-				<div class="panel por" style="height:439px;padding:20px">
+				<div class="panel por" id="winList-cont" style="height:439px;padding:20px">
 					<div class="aveage-box tac" style="border-bottom: 1px solid #162340;padding-bottom:10px">
 						<div>
 							<p class="small opa-6">{{$t("Auction_27")}}</p>
@@ -241,11 +241,11 @@ export default {
 		})
 	},
 	watch: {
-		nowTs: function(newTs){
+		nowTs: async function(newTs){
 			if(newTs % 10 == 0){
-				this.getBidInfo();
-				this.getBidderList(false);
-				this.getBidderWinner();
+				await this.getBidInfo();
+				await this.getBidderList(false);
+				await this.getBidderWinner();
 			}
 		}
 	},
@@ -376,6 +376,9 @@ export default {
 		#bid-winlist{
 			height: auto !important;
 			overflow: visible !important;
+		}
+		#winList-cont{
+			height: auto !important;
 		}
 	}
 

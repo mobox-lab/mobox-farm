@@ -2771,6 +2771,25 @@ export default class ETH {
 
 	}
 
+	//获取当前竞拍期数
+	static async getBidRound(){
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "round",
+				"type": "function",
+				"inputs": [],
+				"outputs": [
+					{"name": "round","type": "uint256"},
+				],
+			}
+		], WalletConfig.ETH.momoBid);
+
+		return new Promise(resolve => {
+			contract.methods.round().call().then(data => {
+				resolve(data);
+			})
+		});
+	}
 	//获取用户可以领取的信息(包括已经结束的, 但是未领取的)
 	static async getBidInfo(address){
 		let contract = new this.web3.eth.Contract([

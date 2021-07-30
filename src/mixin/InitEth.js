@@ -112,7 +112,7 @@ const InitEth = {
 				let t = 0;
 				this.timer = setInterval(() => {
 					t++;
-					if(t%20 == 0){
+					if(t%30 == 0){
 						if(Wallet.ETH.myAddr != ""){
 							this.needUpdate();
 						}

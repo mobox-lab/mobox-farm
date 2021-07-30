@@ -4,9 +4,9 @@ import BigNumber from "bignumber.js";
 
 export default class Rpc {
 	// static apiNode = "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161";
-	static apiNode = "https://bsc-dataseed.binance.org/";
+	static apiNode = "https://bsc-dataseed2.binance.org/";
 	// static apiNodeMainNet = "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161";
-	static apiNodeMainNet = "https://bsc-dataseed.binance.org/";
+	static apiNodeMainNet = "https://bsc-dataseed2.binance.org/";
 
 	static async getEthBalance(addr) {
 		try {

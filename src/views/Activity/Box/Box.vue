@@ -9,8 +9,8 @@
 					</h1>
 					<div class="tac mgt-10">
 						<template >
-							<p v-if="getCountDown >0">{{$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
-							<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
+							<p v-if="getCountDown >0">{{$t("NewBOX_20")}}: {{getLeftTime(getCountDown)}}</p>
+							<p v-else>{{$t("NewBOX_21")}}<span class="dotting"></span></p>
 						</template>
 
 						<div style="height:280px" id="gem-apply-type">
@@ -31,7 +31,8 @@
 								<p class="small opa-6">{{$t("Air-drop_152")}}</p>
 								<h3  class="por">
 									{{myTotalVeMbox}}
-									<span class="dib por cur-point" style="width:30px;position:absolute;right:50px;bottom:0px" @click="jumpVeMBOX">
+									<span class="dib por cur-point" style="width:30px;position:absolute;right:20px;bottom:0px" @click="jumpVeMBOX">
+										<span class="notice" style="zoom:0.7" v-if="coinArr['GOV'].veMbox.notice && !hasStake"></span>
 										<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
 										<span class="tac opa-6" style="width:120%;position:absolute;bottom:-5px;left:-10%;font-size:12px;color:#fff;zoom:0.7;" >veMBOX</span>
 									</span>
@@ -44,21 +45,21 @@
 						</div>
 						<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:15px">
 							<div >
-								<p class="small opa-6">{{$t("Gemstone_32")}}</p>
+								<p class="small opa-6">{{$t("NewBOX_30")}}</p>
 								<h3>{{applyInfo.nowNormalAmount}}</h3>
 							</div>
 							<div>
-								<p class="small opa-6">{{$t("Gemstone_24")}}</p>
+								<p class="small opa-6">{{$t("NewBOX_23")}}</p>
 								<h3>{{ numFloor(applyInfo.maxNormalLuckyAmount / (Number(applyInfo.nowNormalAmount) >= Number(applyInfo.maxNormalLuckyAmount)?applyInfo.nowNormalAmount:applyInfo.maxNormalLuckyAmount) * 100, 1e3 ) || "-" }}%</h3>
 							</div>
 						</div>
 						<div class="aveage-box tal" style="padding:15px">
 							<div >
-								<p class="small opa-6">{{$t("Gemstone_33")}}</p>
+								<p class="small opa-6">{{$t("NewBOX_31")}}</p>
 								<h3>{{applyInfo.nowAmount}}/{{applyInfo.maxAmount}}</h3>
 							</div>
 							<div>
-								<p class="small opa-6">{{$t("Gemstone_24")}}</p>
+								<p class="small opa-6">{{$t("NewBOX_23")}}</p>
 								<h3>{{ numFloor(applyInfo.maxLuckyAmount / (Number(applyInfo.nowAmount) >= Number(applyInfo.maxLuckyAmount)?applyInfo.nowAmount:applyInfo.maxLuckyAmount) * 100, 1e3 ) || "-" }}%</h3>
 							</div>
 						</div>
@@ -66,7 +67,7 @@
 				
 					<div class="mgt-10 aveage-box">
 						<div class="dib por tac">
-							<button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('box-apply-dialog', 'block')">{{$t("Gemstone_14")}}</button>
+							<button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('box-apply-dialog', 'block')">{{$t("NewBOX_14")}}</button>
 							<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('box-rule-dialog','block')">{{$t("NewBOX_02")}}>></p>
 						</div>
 						<div class="tac">
@@ -86,20 +87,20 @@
 					<tr>
 						<th width="30%" class="tal tac-xs">{{ $t("BOX_12") }}</th>
 						<th width="20%" class="tal">{{ $t("BOX_26") }}</th>
-						<th width="10%">{{ $t("Gemstone_29") }}</th>
+						<th width="10%">{{ $t("NewBOX_27") }}</th>
 						<th width="20%">{{ $t("BOX_27") }}</th>
 						<th width="40%" class="tar">TX</th>
 					</tr>
 					<tr v-for="item in getHistory" :key="item.tx">
 						<td class="tal tac-xs">{{ dateFtt("yyyy-MM-dd hh:mm:ss" , new Date(item.crtime * 1000)) }}</td>
 						<td class="tal">
-							<span v-if="Number(item.ticketStartNo) > 1e6">{{$t("Gemstone_27")}}</span>
-							<span v-else>{{$t("Gemstone_28")}}</span>
+							<span v-if="Number(item.ticketStartNo) > 1e6">{{$t("NewBOX_25")}}</span>
+							<span v-else>{{$t("NewBOX_26")}}</span>
 						</td>
 						<td>x{{ item.amountBox }}</td>
 						<td class="vertical-children">
-							<span v-if="item.isOver==false" style="color:#49c773">{{$t("Gemstone_30")}}</span>
-							<span v-else>{{$t("Gemstone_31")}}</span>
+							<span v-if="item.isOver==false" style="color:#49c773">{{$t("NewBOX_28")}}</span>
+							<span v-else>{{$t("NewBOX_29")}}</span>
 						</td>
 						<td class="tar">
 							<img  @click="getApplyDetial(item)" src="@/assets/icon/view.png" height="25" alt="" class="cur-point" />&nbsp;
@@ -118,29 +119,29 @@
 			<p v-html="$t('NewBOX_03')" class="tal mgt-20"></p>
 		</Dialog>
 		<Dialog id="box-num-result-dialig" :top="100" :width="450">
-			<h3>{{$t("Gemstone_17")}}</h3>
+			<h3>{{$t("NewBOX_16")}}</h3>
 			<div class="tab-body mgt-10">
 				<p class="mgt-10  tal" style="height:40px;line-height:38px;padding-left:15px;color:#fff;font-size:12px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">
-					{{$t("Gemstone_18")}}: {{historyDitail.item.ticketStartNo}}
+					{{$t("NewBOX_17")}}: {{historyDitail.item.ticketStartNo}}
 					<span v-if="historyDitail.item.amountBox > 1">~{{Number(historyDitail.item.ticketStartNo) + Number(historyDitail.item.amountBox-1)}}</span>
 				</p>
-				<p class="mgt-10  tal" style="height:40px;line-height:38px;padding-left:15px;color:#fff;font-size:12px;background: rgba(161,250,64,0.10);border: 2px solid #A1FA40;border-radius:10px">
-					{{$t("NewBOX_18")}}: 
-					<span v-if="historyDitail.isOver">{{Object.keys(historyDitail.wins).length }}</span>
+				<p class="mgt-10  tal vertical-children" style="height:40px;line-height:38px;padding-left:15px;color:#fff;font-size:12px;background: rgba(161,250,64,0.10);border: 2px solid #A1FA40;border-radius:10px">
+					<span>{{$t("NewBOX_18")}}: </span>
+					<span v-if="historyDitail.isOver == true">{{Object.keys(historyDitail.wins).length }}</span>
 					<span v-else-if="historyDitail.isOver == '-' "><Loading /></span>
-					<span v-else>{{$t("Gemstone_30")}}</span>
+					<span v-else>{{$t("NewBOX_28")}}</span>
 				</p>
-				<div style="padding:10px" class="tal">
+				<div style="padding:10px" class="tal vertical-children">
 					<p class="small">{{$t("NewBOX_19")}}</p>
 					<div class="tac mgt-10" style="background:#000;padding:10px 0px;border-radius:10px;max-height:300px; overflow-y:auto">
-						<p v-if="historyDitail.isOver">
+						<p v-if="historyDitail.isOver == true">
 							<span v-if="Object.keys(historyDitail.wins).length == 0">{{$t("NewBOX_35")}}</span>
 							<span v-else  class="dib small" v-for="item in Object.keys(historyDitail.wins)" :key="item" style="background: #2a2f35;width: 30%;padding:10px 0px;margin:5px;border-radius:10px">
 								{{item}}
 							</span>
 						</p>
 						<span v-else-if="historyDitail.isOver == '-' "><Loading /></span>
-						<span v-else>{{$t("Gemstone_30")}}</span>
+						<span v-else>{{$t("NewBOX_28")}}</span>
 					</div>
 				</div>
 
@@ -154,13 +155,13 @@ import { CommonMethod } from '@/mixin';
 import BoxApply from './BoxApply.vue';
 import { mapState } from 'vuex';
 import { Wallet, Http } from '@/utils';
-import {  StatuButton, Dialog } from '@/components';
+import {  StatuButton, Dialog, Loading } from '@/components';
 
 let  timer = null;
 
 export default {
 	mixins: [CommonMethod],
-	components: {BoxApply, StatuButton, Dialog},
+	components: {BoxApply, StatuButton, Dialog, Loading},
 	data(){
 		return({
 			applyInfo: {
@@ -208,7 +209,7 @@ export default {
 			} else if (myTotalVeMbox < 150000) {
 				maxAmount = 40;
 			} else if (myTotalVeMbox < 300000) {
-				maxAmount = 70;
+				maxAmount = 60;
 			} else if (myTotalVeMbox < 500000) {
 				maxAmount = 80;
 			} else {
@@ -255,8 +256,8 @@ export default {
 	methods: {
 		jumpVeMBOX(){
 			if(this.hasStake){
-				// this.$router.replace({ path: '/' })
-				this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();
+				this.$router.replace({ path: '/' })
+				// this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();
 			}else{
 				this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();
 			}

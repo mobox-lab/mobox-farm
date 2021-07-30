@@ -12,9 +12,11 @@
 							<p v-if="Number(bidInfo.state) != 1">{{$t("Auction_25")}}: {{getLeftTime(bidInfo.bidEndTime - nowTs)}}</p>
 							<p v-else>{{$t("Auction_26")}}</p>
 						</template>
-
-						<div class="mgt-10">
-							<PetItem v-bind:data="{ item: momoDatas[getNowRound] }" />
+						<div style="height:290px" id="momo-view">
+							<div class="mgt-10" v-if="getNowRound != '-' ">
+								<PetItem v-bind:data="{ item: momoDatas[getNowRound] }" />
+							</div>
+							<Loading v-else  style="margin-top:50px"/>
 						</div>
 						<p class=" small mgt-10" style="margin-bottom:10px">
 							<router-link to="/mypet/2">
@@ -25,7 +27,7 @@
 				</div>
 			</section>
 			<section class="col-md-5" style="padding:10px">
-				<div class="panel por" style="height:420px;padding:20px">
+				<div class="panel por" style="height:439px;padding:20px">
 					<div class="aveage-box tac" style="border-bottom: 1px solid #162340;padding-bottom:10px">
 						<div>
 							<p class="small opa-6">{{$t("Auction_27")}}</p>
@@ -47,45 +49,52 @@
 					</div>
 					<div class="tac mgt-10">
 						<StatuButton style="width: 50%" :btnType="'btn-success'" v-if="bidInfo.toClaimTokenId != '-' && Number(bidInfo.toClaimTokenId) > 0 " :isDisable="bidInfo.currPrice =='-' " :isLoading="lockBtn.bidLock > 0" :onClick="takeMOMO">{{$t("Auction_35")}}</StatuButton>
-						<StatuButton style="width: 50%" v-else  :isDisable="bidInfo.currPrice =='-' " :onClick="()=>{oprDialog('bid-momo-dialog', 'block')}" >{{$t("Auction_29")}}</StatuButton>
+						<StatuButton style="width: 50%" v-else  :isDisable="bidInfo.currPrice =='-' || Number(bidInfo.state) == 1 " :onClick="()=>{oprDialog('bid-momo-dialog', 'block')}" >{{$t("Auction_29")}}</StatuButton>
 					</div>
 					<div class="mgt-10 tal">
 						<h4>{{$t("Auction_30")}}</h4>
 						<table class="small  new-table tac" >
 							<tr class="small opa-6">
-								<td class="tal">MOMO</td>
-								<td>{{$t("BOX_12")}}</td>
-								<td>{{$t("Auction_31")}}</td>
+								<td class="tal" style="width:15%">MOMO</td>
+								<td style="width:20%">{{$t("BOX_12")}}</td>
+								<td style="width:30%">{{$t("Auction_31")}}</td>
 								<td>{{$t("Auction_28")}}</td>
-								<td class="tar">TX</td>
+								<td class="tac" style="width:15%">TX</td>
 							</tr>
-							
-							<tr v-for="item in winnerList" :key="item.issue_number">
-								<td class="tal"><PetItemMin :data="momoDatas[item.round]" /></td>
-								<td >
-									<p>{{dateFtt('yyyy-MM-dd',new Date(item.crtime*1000))}}</p>
-									<p>{{dateFtt('hh:mm:ss',new Date(item.crtime*1000))}}</p>
-								</td>
-								<td>{{ shorAddress(item.bidder) }}</td>
-								<td>
-									<span class="mgl-5">{{ numFloor(item.amount/1e18, 100) }} MBOX</span>
-								</td>
-								<td>
-									<a style="text-decoration:underline"  :href="getTxUrl(item.txId)" target="_blank">
-										<img src="@/assets/icon/viewTx.png" alt="" class="cur-point" height="25" />
-									</a>
-								</td>
-							</tr>
-
-							<tr v-if="winnerList.length < 3">
-								<td class="tal"><PetItemMin :data="momoDatas[getNowRound]" /></td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td class="tar">-</td>
-							</tr>
-							
 						</table>
+						<div style="height: 226px;overflow: auto" id="bid-winlist" >
+							<table class="small  new-table tac" >
+								<tbody >
+									<tr v-if="Number(bidInfo.state) != 1 && getNowRound != '-' ">
+										<td class="tal"><PetItemMin :data="momoDatas[getNowRound]" /></td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td class="tac">-</td>
+									</tr>
+									
+									<tr v-for="item in winnerList" :key="item.round + 'a' ">
+										<td class="tal"  style="width:15%"><PetItemMin :data="momoDatas[item.round]" /></td>
+										<td style="width:20%">
+											<p>{{dateFtt('yyyy-MM-dd',new Date(item.crtime*1000))}}</p>
+											<p>{{dateFtt('hh:mm:ss',new Date(item.crtime*1000))}}</p>
+										</td>
+										<td style="width:30%">{{ shorAddress(item.bidder) }}</td>
+										<td>
+											<span class="mgl-5">{{ numFloor(item.amount/1e18, 100) }} MBOX</span>
+										</td>
+										<td style="width:15%">
+											<a style="text-decoration:underline"  :href="getTxUrl(item.txId)" target="_blank">
+												<img src="@/assets/icon/viewTx.png" alt="" class="cur-point" height="25" />
+											</a>
+										</td>
+									</tr>
+
+								</tbody>
+
+								
+							</table>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -198,10 +207,19 @@ export default {
 			getCountDown: 5000,
 			inputValue: "",
 			momoDatas: [0,
-				{...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243",ts: 1625760000},
-				{...baseAttr, tokenId: 22, prototype: 60002, tokenName: "Name_242", ts: 1626321600},
-				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241", ts: 1626926400},
+				{...baseAttr, tokenId: 17, prototype: 60003, tokenName: "Name_243", round: 1},
+				{...baseAttr, tokenId: 22, prototype: 60002, tokenName: "Name_242", round: 2},
+				{...baseAttr, tokenId: 27, prototype: 60001, tokenName: "Name_241",round: 3},
+
+				//新的一期
+				{...baseAttr, tokenId: 14, prototype: 60006, tokenName: "Name_246",round: 4},
+				{...baseAttr, tokenId: 4, prototype: 60004, tokenName: "Name_244",round: 5},
+				{...baseAttr, tokenId: 9, prototype: 60005, tokenName: "Name_245",round: 6},
+				{...baseAttr, tokenId: 15, prototype: 60006, tokenName: "Name_246",round: 7},
+				{...baseAttr, tokenId: 5, prototype: 60004, tokenName: "Name_244",round: 8},
+				{...baseAttr, tokenId: 10, prototype: 60005, tokenName: "Name_245",round: 9},
 			],
+			
 			bidInfo: {
 				state: "-",
 				bidTs: "-",
@@ -219,15 +237,14 @@ export default {
 			},
 			winnerList: [],
 			loading: false,
+			getNowRound: "-"
 		})
 	},
 	watch: {
 		nowTs: function(newTs){
-			if(newTs % 5 == 0){
+			if(newTs % 10 == 0){
 				this.getBidInfo();
 				this.getBidderList(false);
-			}
-			if(newTs % 10 == 0){
 				this.getBidderWinner();
 			}
 		}
@@ -240,31 +257,19 @@ export default {
 		}),
 		getNowNeedPrice(){
 			let price = 1000;
-			if(this.getNowRound == 1){
-				if(Number(this.bidInfo.currPrice) * 1.2 > price){
-					price = Math.ceil(this.numFloor(Number(this.bidInfo.currPrice) * 1.2, 10));
-				}
-			}else{
-				if(Number(this.bidInfo.currPrice) * 1.02 > price){
-					price = Math.ceil(this.numFloor(Number(this.bidInfo.currPrice) * 1.02, 10));
-				}
-				if(Number(this.bidInfo.currPrice) * 0.02 > 1000){
-					price = Number(this.bidInfo.currPrice) + 1000;
-				}
+
+			if(Number(this.bidInfo.currPrice) * 1.02 > price){
+				price = Math.ceil(this.numFloor(Number(this.bidInfo.currPrice) * 1.02, 10));
+			}
+			if(Number(this.bidInfo.currPrice) * 0.02 > 1000){
+				price = Number(this.bidInfo.currPrice) + 1000;
 			}
 
 			return price;
 		},
-		getNowRound(){
-			let returnRound = 3;
-			if(this.momoDatas[3].ts > this.nowTs) returnRound = 3;
-			if(this.momoDatas[2].ts > this.nowTs) returnRound = 2;
-			if(this.momoDatas[1].ts > this.nowTs) returnRound = 1;
-			return returnRound;
-		}
 	},
 	async created(){
-		this.getBidInfo();
+		await this.getBidInfo();
 		await this.getBidderWinner();
 		await this.getBidderList();
 		await Wallet.ETH.getAccount();
@@ -275,7 +280,7 @@ export default {
 		async getBidderWinner(){
 			let data = await Http.getBidderWinner();
 			if(data){
-				this.winnerList = data.list;
+				this.winnerList = data.list.reverse();
 			}
 		},
 		async getBidderList(needClear = true){
@@ -317,6 +322,8 @@ export default {
 		async getBidInfo(){
 			let address = await Wallet.ETH.getAccount();
 			let res = await Wallet.ETH.getBidInfo(address);
+			let round = await Wallet.ETH.getBidRound();
+			this.getNowRound = Number(round) + 1;
 			if(res){
 				res.currPrice = this.numFloor(res.currPrice/1e18, 100);
 				this.bidInfo = res;
@@ -358,10 +365,19 @@ export default {
 	.adv-panel:before{
 		background: linear-gradient(145deg,#ac2f2d 0%, #000  100%);
 	}
+	
 	@media (max-width: 768px) {
 		.pet_item{
 			width: 350px !important;
 		}
+		#momo-view{
+			height: 150px !important;
+		}
+		#bid-winlist{
+			height: auto !important;
+			overflow: visible !important;
+		}
 	}
 
 </style>
+

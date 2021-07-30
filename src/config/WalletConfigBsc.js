@@ -30,8 +30,8 @@ export default class WalletConfig {
 			},
 		},
 		momoBid: "0xFaE911aa353e598908DD2cFd6e88E35dE588974f",//v6竞拍
-		newBoxToken: "0x52d2dB74f8FC3836e94D7DC953C4eC91443d4D96", // 新的box合约
-		boxApply: "0x351AfcFafD306c65F395219d190008017EAcB800", //box申购
+		newBoxToken: "0xed8711fEff83b446158259981FD97645856e82A5", // 新的box合约
+		boxApply: "0xAe5F14A9aed2b56121fb964A84a9DFf114296563", //box申购
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

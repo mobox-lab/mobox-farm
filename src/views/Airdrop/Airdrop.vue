@@ -389,6 +389,7 @@
 					<p class="small opa-6 tac" >{{$t("Air-drop_192")}}</p>
 					<input type="text" readonly class="ly-input mgt-10 tac" :value="getMyTotalVeMbox" />
 					<span class="dib por cur-point" style="width:30px;position:absolute;right:20px;bottom:10px" @click="$root.$children[0].$refs.vmbox.setOprData(coinArr['GOV']).show()">
+						<span class="notice" style="zoom:0.7" v-if="coinArr['GOV'].veMbox.notice "></span>
 						<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
 						<span class="tac opa-6" style="width:120%;position:absolute;bottom:-5px;left:-10%;font-size:12px;color:#fff;zoom:0.7;" >veMBOX</span>
 					</span>

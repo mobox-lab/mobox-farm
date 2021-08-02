@@ -3,14 +3,14 @@
 	<Dialog id="gemBag-dialog" :top="100" :width="450" :animation="isApprove">
 		<ul class="gem-tab">
 			<li v-for="item in gemType" :key="item" :class="['border_'+item, {active: item == selectGemType}]" class="tab-menu" @click="selectGemLv=1;needCompNum=1;selectGemType = item">
-				<img :src="require(`@/assets/gem/${item+1}.png`)" alt=""  height="100%">
+				<img :src="require(`@/assets/market/${item+1}.png`)" alt=""  height="100%">
 			</li>
 		</ul>
 		<div class="ly-input-content por">
 			<div class="aveage-box" v-for="item in [0, 4, 8]" :key="item">
 				<div v-for="item2 in [1,2,3, 4]" :key="item + item2" style="padding:5px" >
 					<div v-if="item + item2 <= 9" class="gem-item gem-border" :class="[{active: selectGemLv == item+item2},  'border_'+selectGemType, {'opa-6': gemBag[Number(selectGemType)+item + item2] <= 0}]" @click="selectGemLv = item+item2">
-						<img :src="require(`@/assets/gem/${Number(selectGemType)+item + item2}.png`)" alt=""  width="100%">
+						<img :src="require(`@/assets/market/${Number(selectGemType)+item + item2}.png`)" alt=""  width="100%">
 						<span class="gem-num stroke bold">{{gemBag[Number(selectGemType)+item + item2]}}</span>
 					</div>
 				</div>	
@@ -23,7 +23,7 @@
 			<div class="mgt-20 aveage-box" >
 				<div class="tar">
 					<div class="gem-item dib" style=" width:70px;height:70px">
-						<img :src="require(`@/assets/gem/${Number(selectGemType)+selectGemLv}.png`)" alt="" width="100%">
+						<img :src="require(`@/assets/market/${Number(selectGemType)+selectGemLv}.png`)" alt="" width="100%">
 						<span class="gem-num stroke bold">{{getCompObj.consumeNum}}/3</span>
 					</div>
 				</div>

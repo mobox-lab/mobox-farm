@@ -8,7 +8,7 @@
 					<span class="mgl-5">Lv. {{ item.level }}</span>
 				</div>
 
-				<img class="pet_img" :src="require(`@/assets/gem/${item.imgName}.png`)" alt="" width="170" height="170" />
+				<img class="pet_img" :src="require(`@/assets/market/${item.imgName}.png`)" alt="" width="170" />
 
 				<div style="position: absolute; width: 100%; bottom: 80px; left: 0px">
 					<div class="vertical-children pet_num"  >

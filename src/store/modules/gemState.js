@@ -2,6 +2,8 @@ const state = () => ({
 	data: {
 		gemBag: {},
 		mboxAllownceToApply: -1, //mbox是否授权给申购合约
+
+		boxNum: 0, //新箱子的数量
 	},
 })
 

@@ -60,6 +60,7 @@ export default class ETH {
 		this.moMoMinterContract = new this.web3.eth.Contract([
 			Contract.buyBox,
 			Contract.addBox,
+			Contract.addMysteryBox,
 			Contract.mint,
 			Contract.getOrder
 		], WalletConfig.ETH.moMoMinter);
@@ -446,7 +447,7 @@ export default class ETH {
 				()=>{
 					console.log("getRewardKey success");
 					Common.app.getStakeValueAndEarndKey();
-					Common.app.eth_setBox();
+					Common.setCoinValueByName("MBOX");
 					Common.app.unLockBtn("getKeyLock");
 				}
 			)
@@ -676,6 +677,19 @@ export default class ETH {
 		});
 	}
 
+	//添加box
+	static async addMysteryBox(amount) {
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+		if (!this.moMoMinterContract) return;
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				this.moMoMinterContract.methods.addMysteryBox(myAddr, amount), {from: myAddr},
+				hash=>resolve(hash),
+			)
+		});
+	}
 	//添加box
 	static async addBox(amount) {
 		let myAddr = await this.getAccount();
@@ -1643,6 +1657,24 @@ export default class ETH {
 		});
 	}
 
+	//获取1155的数量
+	static async get1155Num(tokenAddr, ids){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+		let contract = new this.web3.eth.Contract([
+			Contract.balanceOfOneBatch,
+		], tokenAddr);
+		return new Promise(resolve => {
+			contract.methods.balanceOfOneBatch(myAddr, ids).call().then(data => {
+				let retObj = {};
+				ids.map((id, pos)=>{
+					retObj[id] = data[pos];
+				})
+				resolve(retObj);
+			})
+		});
+	}
+
 	//宝石相关
 	//获取背包宝石数量
 	static async getMyGemNum(){
@@ -1660,9 +1692,7 @@ export default class ETH {
 		return new Promise(resolve => {
 			contract.methods.balanceOfOneBatch(myAddr, ids).call().then(data => {
 				let retObj = {};
-				// let colorToNum = [0, "red", "green", "blue","yellow"];
 				ids.map((id, pos)=>{
-					// let colorId = colorToNum[parseInt(id / 100)] +"_"+(id % 100);
 					retObj[id] = data[pos];
 				})
 				resolve(retObj);

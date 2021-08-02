@@ -9,7 +9,7 @@
 			<div class="col-md-6">
 				<div class="panel" >
 					<div v-for="item in getShowList" :key="item.id" :class="'pet_hover_lv3' " class="shop-car-item  vertical-children por mgt-10">
-					<img class="pet-img" :src="require(`@/assets/gem/${item.id}.png`)" alt="" />
+					<img class="pet-img mgl-5" :src="require(`@/assets/market/${item.id}.png`)" alt="" height="80" />
 					<div class="dib mgl-5">
 						<h3 class="mgl-5"> Lv.{{ item.level }} </h3>
 					</div>
@@ -350,7 +350,6 @@ export default {
 	text-align: left;
 }
 .shop-car-item .pet-img {
-	width: 100px;
 	height: 100px;
 }
 

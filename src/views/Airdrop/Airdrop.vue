@@ -23,14 +23,14 @@
 					</div>
 					<div class="dib por tac" id="oneday-key" style="padding:0px 10px">
 						<h3 class="opa-6 mgt-10 small ">{{ $t("Air-drop_21") }}</h3>
-						<h3 class="mgt-5">{{(pledgeType == 'v1' && !(airdropCountDown > 0))?"-": totalAirdropKey}} KEY</h3>
+						<h3 class="mgt-5">{{(pledgeType == 'v1' && !(airdropCountDown > 0))?"-": totalAirdropKey}} MBOX</h3>
 					</div>
 					
 					<div class="dib tac" id="my-key" style="padding:0px 10px">
 						<h3 class="opa-6 mgt-10 small">{{ $t("Air-drop_05") }}</h3>
 						<div class="mgt-5">
 							<button class="btn-success btn-small por"  @click="$refs.keyopr.showAll()">
-								{{getTotalKey}} KEY
+								{{getTotalKey}} MBOX
 							</button>
 						</div>
 					</div>
@@ -84,42 +84,6 @@
 												</p>
 												
 											</div>
-											<!-- <div class=" tal mgt-5 close vertical-children point-block por"   @click="getApyObj(item);toggleClass($event, {isLP: true})">
-												<span class="show-point-block mgl-5">
-													<span style="font-size:14px">APY: {{ item.apy }}</span>
-													<svg  viewBox="0 0 24 24" class="rotate-arrow"  height="20px" ><path fill="#838689" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
-												</span>
-
-												<div  class="mgt-10 small toggle-item" style="background:#13181F;padding:5px;border-radius:10px">
-													<div class="aveage-box vertical-children por" style="padding:2px"  >
-														<p class="dib">KEY</p>
-														<p class="dib tar" >
-															<span v-if="item.myApy.key != '-'" class="vertical-children">
-																<span>{{numFloor(item.allKeyApy*100, 100)}}%</span>
-																<span :class="Number(item.allKeyApy) < Number(item.myApy.key) ?'color-sell':'color-buy' " v-if="item.myApy.key">
-																	<span v-if="Number(item.allKeyApy) < Number(item.myApy.key) ">+</span>
-																	<span v-else>-</span>
-																	<span>{{numFloor(Math.abs(item.allKeyApy - item.myApy.key)*100, 100)}}%</span>
-																</span>
-															</span>
-															<Loading v-else />
-														</p>
-													</div>
-													<div v-if="item.isLP" class="aveage-box vertical-children por" style="padding:2px"  >
-														<p class="dib">CAKE</p>
-														<p class="dib tar" >
-															<span v-if="item.myApy.cake != '-'">{{numFloor(item.myApy.cake*100, 100)}}%</span>
-															<Loading v-else />
-														</p>
-													</div>
-													<div v-else class="aveage-box vertical-children por" style="padding:2px"  >
-														<p class="dib">XVS</p>
-														<p class="dib tar" >
-															<span>{{item.myApy.xvs}}%</span>
-														</p>
-													</div>
-												</div>
-											</div> -->
 										</div>
 									</div>
 
@@ -179,15 +143,9 @@
 
 									<div  class="mgt-10 small toggle-item" style="background:#13181F;padding:5px;border-radius:10px">
 										<div class="aveage-box vertical-children por" style="padding:2px"  >
-											<p class="dib">KEY</p>
+											<p class="dib">MBOX</p>
 											<p class="dib tar" >
 												<span v-if="item.myApy.key != '-'" class="vertical-children">
-													<!-- <span>{{numFloor(item.allKeyApy*100, 100)}}%</span>
-													<span :class="Number(item.allKeyApy) < Number(item.myApy.key) ?'color-sell':'color-buy' " v-if="item.myApy.key">
-														<span v-if="Number(item.allKeyApy) < Number(item.myApy.key) ">+</span>
-														<span v-else>-</span>
-														<span>{{numFloor(Math.abs(item.allKeyApy - item.myApy.key)*100, 100)}}%</span>
-													</span> -->
 													<span v-if="item.wantAmount > 0 ">
 														{{numFloor(item.myApy.key*100, 100)}}%
 													</span>
@@ -309,7 +267,7 @@
 										<span class="suffix">
 											<button class="btn-success btn-small por"  :class="lockBtn.getKeyLock > 0 ||  item.earnedKey == 0?'disable-btn':''" @click="$refs.keyopr.setCheckCoin(item.coinKey).show()">
 												<Loading class="btn-loading" v-if="lockBtn.getKeyLock > 0" />
-												{{ item.earnedKey }} KEY
+												{{ item.earnedKey }} MBOX
 											</button>
 										</span>
 									</p>

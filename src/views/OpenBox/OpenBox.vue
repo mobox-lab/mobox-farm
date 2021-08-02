@@ -19,9 +19,9 @@
 							<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
 							<div v-if="posArr[petDataArr.length].line1" class="card-cont-row"  id="show-card-cont-row1">
 								<div class="show-card-item dib cur-point" v-for="key in posArr[petDataArr.length].line1" :key="key+10" v-on:animationend="animationend" @click="openCard">
-									<img style="opacity:0" src="@/assets/momo-back2.png" width="252" height="180" alt=""/>
+									<img style="opacity:0" src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
 									<div class="front">
-										<img src="@/assets/momo-back2.png" width="252" height="180" alt=""/>
+										<img src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
 									</div>
 									<div class="card-spine"></div>
 									<div class="back">
@@ -31,9 +31,9 @@
 							</div>
 							<div v-if="posArr[petDataArr.length].line2" class="card-cont-row "   id="show-card-cont-row2">
 								<div class="show-card-item dib cur-point" v-for="key in posArr[petDataArr.length].line2" :key="key+20" v-on:animationend="animationend" @click="openCard">
-									<img style="opacity:0" src="@/assets/momo-back2.png" width="252" height="180" alt=""/>
+									<img style="opacity:0" src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
 									<div class="front">
-										<img src="@/assets/momo-back2.png" width="252" height="180" alt=""/>
+										<img src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
 									</div>
 									<div class="card-spine"></div>
 									<div class="back">
@@ -43,9 +43,9 @@
 							</div>
 							<div v-if="posArr[petDataArr.length].line3" class="card-cont-row"   id="show-card-cont-row3" >
 								<div class="show-card-item dib cur-point " v-for="key in posArr[petDataArr.length].line3" :key="key+30" v-on:animationend="animationend" @click="openCard">
-									<img style="opacity:0" src="@/assets/momo-back2.png" width="252" height="180" alt=""/>
+									<img style="opacity:0" src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
 									<div class="front">
-										<img src="@/assets/momo-back2.png" width="252" height="180" alt=""/>
+										<img src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
 									</div>
 									<div class="card-spine"></div>
 									<div class="back">
@@ -70,26 +70,26 @@
 				<div >
 					<div  >
 						<div class="ly-input-content dib" style="width:100%;padding:40px 20px">
-							<p class="tal">{{ $t("BOX_02") }}:</p>
+							<p class="tal">未解锁的BOX:</p>
 							<div class="por mgt-10">
 								<div class="ly-input-pre-icon">
-									<img  src="@/assets/coin/KEY.png" alt="" />
+									<img  src="@/assets/icon/box_view.png" alt="" height="20" />
 								</div>
 								<input class="ly-input" type="number"
 									style=" text-align: left; width: 100%; padding-left:65px"
 									readonly="readonly"
-									:value="ethState.box"
+									:value="boxNum"
 								/>
 							</div>
 							<div class="aveage-box">
 								<div class="tal">
-									<button class="btn-primary mgt-20" style="width: 90%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; ">
-										{{ $t("BOX_04") }}
+									<button class="btn-primary mgt-20" style="width: 90%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(boxNum) || 1; ">
+										解锁BOX
 									</button>
 								</div>
 								<div class="tar">
 									<button class="mgt-20 btn-line" style="width:90%;" @click="$root.$children[0].$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
-										{{$t("BOX_33")}}
+										购买BOX
 									</button>
 								</div>
 							</div>
@@ -98,10 +98,10 @@
 
 					<div class=" mgt-20" >
 						<div class="ly-input-content dib" style="width:100%;padding:40px 20px">
-							<p class="tal">{{ $t("BOX_03") }}:</p>
+							<p class="tal">可以打开的BOX:</p>
 							<div class="por mgt-10">
 								<div class="ly-input-pre-icon">
-									<img src="@/assets/icon/box.png" alt="" />
+									<img src="@/assets/icon/box_icon.png" alt="" height="20" />
 								</div>
 								<input class="ly-input" type="number"
 									style="text-align: left; width: 100%; padding-left:65px"
@@ -112,7 +112,7 @@
 							<div class="aveage-box">
 								<div class="tal">
 									<StatuButton class="mgt-20" style="width: 90%" :isDisable="lockBtn.openBoxLock > 0" :isLoading="lockBtn.openBoxLock > 0" :onClick="showOpenBox.bind(this)">
-										{{ $t("BOX_05") }}
+										打开BOX
 									</StatuButton>
 								</div>
 								<div></div>
@@ -166,17 +166,17 @@
 			</div>
 		</Dialog>
 		<Dialog id="get-box-dialog" :top="200" :width="400">
-			<h2 class="mgt-10">{{ $t("BOX_04") }}</h2>
+			<h2 class="mgt-10">解锁BOX</h2>
 			<div class="ly-input-content mgt-20">
-				<p class="small tal opa-6">{{ $t("BOX_06") }}:</p>
+				<p class="small tal opa-6">未解锁的BOX:</p>
 				<div class="por mgt-5">
 					<div class="ly-input-pre-icon">
-						<img  src="@/assets/coin/KEY.png" alt="" />
+						<img  src="@/assets/icon/box_view.png" alt="" />
 					</div>
 					<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
-						v-int :data-max="parseInt(ethState.box) || 1" data-min="1" v-model="addKey" />
+						v-int :data-max="parseInt(boxNum) || 1" data-min="1" v-model="addKey" />
 					<div class="dib" style="width: 30%">
-						<button @click="addKey = parseInt(ethState.box) || 1" class="btn-primary btn-small" style="width: 80%" >
+						<button @click="addKey = parseInt(boxNum) || 1" class="btn-primary btn-small" style="width: 80%" >
 							Max
 						</button>
 					</div>
@@ -184,7 +184,7 @@
 			</div>
 			<div class="vertical-children tal mgt-10">
 				<span class="small opa-6"> {{ $t("BOX_07") }}: {{ addKey }} </span>
-				<img src="@/assets/icon/box.png" height="20" alt="" />
+				<img src="@/assets/icon/box_icon.png" height="20" alt="" />
 			</div>
 			<div class="mgt-20 tal">
 				<p class="small opa-6" v-html="$t('BOX_08')"></p>
@@ -201,11 +201,11 @@
 			
 		</Dialog>
 		<Dialog id="open-box-dialog" :top="200" :width="400">
-			<h2 class="mgt-10">{{ $t("BOX_05") }}</h2>
+			<h2 class="mgt-10">打开BOX</h2>
 			<div class="ly-input-content mgt-20">
 				<p class="small tal opa-6">{{ $t("BOX_10") }}:</p>
 				<div class="por mgt-5">
-					<div class="ly-input-pre-icon"> <img  src="@/assets/icon/box.png" alt="" /> </div>
+					<div class="ly-input-pre-icon"> <img  src="@/assets/icon/box_icon.png" alt="" /> </div>
 					<input class="ly-input dib" type="text"
 						style=" text-align: center; width: 70%; padding-left: 50px; "
 						v-int :data-max="maxOpenOne" data-min="1" v-model="openBox" />
@@ -287,6 +287,7 @@ export default {
 			ethState: (state) => state.ethState.data,
 			totalOpenBoxAmount: (state) => state.globalState.data.totalOpenBoxAmount,
 			lockBtn: (state) => state.globalState.data.lockBtn,
+			boxNum: (state) => state.gemState.data.boxNum,
 		}),
 		canOpenBox() {
 			let { canOpenBox, orderBlockHash, openBoxTemp } = this.ethState;
@@ -547,7 +548,7 @@ export default {
 		async addBox(num) {
 			if(this.needApprove) return;
 
-			if (num > this.ethState.box) {
+			if (num > this.boxNum) {
 				this.showNotify(this.$t("BOX_28"), "error")
 				return;
 			}
@@ -561,7 +562,7 @@ export default {
 				this.$store.commit("ethState/setData", {allowance_box_to_minter,});
 			}
 			if (Number(allowance_box_to_minter) > Number(num)) {
-				let hash = await Wallet.ETH.addBox(num);
+				let hash = await Wallet.ETH.addMysteryBox(num);
 				if(hash){
 					this.oprDialog("get-box-dialog", "none");
 				}
@@ -665,22 +666,23 @@ export default {
 		openCard(e){
 			e.stopPropagation();
 			let element = $(e.currentTarget).children(".card-spine")[0];
+			let $front = $(e.currentTarget).children(".front")
 			// window.$(e.currentTarget).addClass("animation");
 
 			new window.spine.SpineWidget(element, {
-				json: "/animation/cardAnime/Purple/Purple zhengmian.json",
-				atlas: "/animation/cardAnime/Purple/Purple zhengmian.atlas",
+				json: "/animation/cardAnime/Orange/Orange.json",
+				atlas: "/animation/cardAnime/Orange/Orange.atlas",
 				// json: "/animation/cardAnime/Orange/Orange jieshu.json",
 				// atlas: "/animation/cardAnime/Orange/Orange jieshu.atlas",
 				backgroundColor: "#00000000",
-				animation: "jieshu",
+				animation: "xuanzhuan",
 				loop: false,
-				fitToCanvas: true,
+				fitToCanvas: false,
 				scale:0.2,
-				x:200,
-				y: 0,
+				x: 250,
+				y: 90,
 				success: ()=>{
-
+					$front.hide();
 				}
 			});
 
@@ -706,11 +708,11 @@ export default {
 <style >
 .card-spine{
 	position: absolute;
-	left: 0px;
-	right:0px;
-	bottom: 0px;
-	top: 0px;
-	z-index: 998
+	left: -85px;
+	top: -92px;
+	z-index: 99998;
+	height: 360px;
+	width: 504px;
 }
 .box-show{
 	position: absolute;

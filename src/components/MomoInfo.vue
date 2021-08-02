@@ -7,7 +7,7 @@
 				<div class="aveage-box tac mgt-10 "  id="gem-show">
 					<div  v-for="(item, index) in [100,200,300,400]" :key="item"  class="tac">
 						<div class="gem-item por" style="max-width:80px" @click="showGemBag(index)">
-							<img :class="{'opa-3': Number(data.gems[index]) == 0}" :src="require(`@/assets/gem/${data.gems[index]==0?item+1:data.gems[index]}.png`)" alt="" width="100%">
+							<img :class="{'opa-3': Number(data.gems[index]) == 0}" :src="require(`@/assets/market/${data.gems[index]==0?item+1:data.gems[index]}.png`)" alt="" width="100%">
 							<template v-if="getNowPetItem.location =='stake'  && !isMarket">
 								<svg v-if="Number(data.gems[index]) == 0 " style="position:absolute;right:3px;top:3px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
 									<path  fill="#E1FF17" d="M867.7 423.8H599.8V155.9c0-49.3-40-89.3-89.3-89.3s-89.3 40-89.3 89.3v267.9H153.3c-49.3 0-89.3 40-89.3 89.3s40 89.3 89.3 89.3h267.9v267.9c0 49.3 40 89.3 89.3 89.3s89.3-40 89.3-89.3V602.4h267.9c49.3 0 89.3-40 89.3-89.3s-40-89.3-89.3-89.3z" ></path>
@@ -178,7 +178,7 @@
 				<div class="aveage-box" v-for="item in [0, 4, 8]" :key="item">
 					<div v-for="item2 in [1,2,3, 4]" :key="item + item2" style="padding:5px" >
 						<div v-if="item + item2 <= 9" class="gem-item gem-border" :class="[{active: selectGemLv == item+item2},  'border_'+selectGemType, {'opa-6': Number(gemBag[selectGemType+(item + item2)]) <= 0}]" @click="selectGemLv = item+item2">
-							<img :src="require(`@/assets/gem/${selectGemType+item + item2}.png`)" alt=""  width="100%">
+							<img :src="require(`@/assets/market/${selectGemType+item + item2}.png`)" alt=""  width="100%">
 							<span class="gem-num stroke bold">{{gemBag[selectGemType+(item + item2)]}}</span>
 						</div>
 					</div>	

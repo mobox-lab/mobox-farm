@@ -47,5 +47,5 @@ export {
 	WalletConnectDialog,
 	StatuButton,
 	PetItemMin,
-	GemSellItem
+	GemSellItem,
 }

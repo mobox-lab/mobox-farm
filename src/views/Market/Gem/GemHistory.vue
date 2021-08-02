@@ -14,7 +14,7 @@
 					<div class="shop-history-pet" style="flex:2;top:-18px">
 						<span v-for="(item2, index) in item.ids" :key="item2+index" style="margin:0px 2px;zoom:0.9" class="por">
 							<template v-if="item2 > 0">
-								<img  :src="require(`@/assets/gem/${item2}.png`)" alt="" height="50">
+								<img  :src="require(`@/assets/market/${item2}.png`)" alt="" height="50">
 								<span style="position:absolute;bottom:10px;width:80%;left:10%;background:rgba(0,0,0,0.5);border-radius:5px;zoom:0.8" class="tac small">x{{item.amounts[index]}}</span>
 							</template>
 						</span>

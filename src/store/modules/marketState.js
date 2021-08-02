@@ -51,7 +51,7 @@ const state = () => ({
 		marketGemPage: 1,
 		marketGemMySellPage: 1,
 		//筛选
-		marketGemSearch: {type: 0,level: 0,sort: 0,},
+		marketGemSearch: {type: 0,level: 0,sort: 0,filter:"all"},
 		myGemMarketSellFilter: {type: 0,level: 0,},
 		//记录
 		marketGems: {limit: 1,list: [],page: 1,total: 0,},

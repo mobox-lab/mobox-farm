@@ -448,6 +448,18 @@ export default class Contract {
 			name: '_amount'
 		}],
 	}
+	//添加box--MomoMinter
+	static addMysteryBox = {
+		name: 'addMysteryBox',
+		type: "function",
+		inputs: [{
+			type: 'address',
+			name: '_to'
+		}, {
+			type: 'uint256',
+			name: '_amount'
+		}],
+	}
 	//打开箱子--MomoMinter
 	static mint = {
 		name: 'mint',

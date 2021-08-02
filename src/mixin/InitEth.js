@@ -105,6 +105,7 @@ const InitEth = {
 				}
 
 				this.setBalance();
+			
 
 				this.needUpdate();
 				this.setOrder();
@@ -125,6 +126,7 @@ const InitEth = {
 				this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
 
+				await this.getNewBoxNum();
 				
 
 				await this.eth_set1155IsApprovedForStake();
@@ -175,6 +177,11 @@ const InitEth = {
 
 			//获取总打开箱子数
 			await this.setTotalOpenBox();
+		},
+		//获取新箱子的数量
+		async getNewBoxNum(){
+			let  boxNum =  await Wallet.ETH.get1155Num(WalletConfig.ETH.newBoxToken, [1]);
+			this.$store.commit("gemState/setData", {boxNum: boxNum[1]});
 		},
 		async setNowBlockNumber(){
 			let  res =  await Wallet.ETH.getBlockNumber();

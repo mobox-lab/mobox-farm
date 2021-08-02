@@ -7,8 +7,8 @@
 
 		<div class="jewel" v-if="data.item.vType >= 4">
 			<div v-for="(item, index) in [100,200,300,400 ]" :key="JSON.stringify(item.gems)" class="gem-item-little">
-				<img v-if="data.item.gems == undefined || data.item.gems[index] == 0" :src="require(`../assets/gem/${item+1}.png`)" class="opa-3 gray" alt="" title="jewel"/>
-				<img v-else :src="require(`../assets/gem/${data.item.gems[index]}.png`)" alt="">
+				<img v-if="data.item.gems == undefined || data.item.gems[index] == 0" :src="require(`../assets/market/${item+1}.png`)" class="opa-3 gray" alt="" title="jewel"/>
+				<img v-else :src="require(`../assets/market/${data.item.gems[index]}.png`)" alt="">
 			</div>
 		</div>
 

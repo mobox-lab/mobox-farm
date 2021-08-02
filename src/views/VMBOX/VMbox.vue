@@ -106,6 +106,7 @@ export default {
 		async getLog(){
 			if(this.myAddr == "") return;
 			let log = await Http.getVeMboxLog(this.myAddr);
+			console.log("getLog",log);
 			if(log){
 				this.$store.commit("bnbState/setData", {veMboxLogs: log.list});
 			}

@@ -112,7 +112,7 @@
 				<div v-for="item2 in [0,1,2,3]" :key="item + item2" style="padding:5px" >
 					<div class="gem-item " style="height:65px" >
 						<template v-if="getTakeArr[item + item2] != undefined">
-							<img :src="require(`@/assets/gem/${gemTypeToNum[getTakeArr[item + item2].type] + getTakeArr[item + item2].level}.png`)" alt=""  width="100%">
+							<img :src="require(`@/assets/market/${gemTypeToNum[getTakeArr[item + item2].type] + getTakeArr[item + item2].level}.png`)" alt=""  width="100%">
 							<span class="gem-num stroke bold">{{getTakeArr[item + item2].num}}</span>
 						</template>
 					</div>

@@ -25,6 +25,17 @@
 
 		<div :class="getMyGem.length < 4 ? 'tal' : 'tac'" >
 			<div class="clear mgt-20">
+				<GemSellItem v-for="item in get1155SellItems" :key="item.key" :data="{item: item}">
+					<div class="tac "  >
+						<SelectNum :maxNum="item.num" v-show="getSelectNum(item.key) > 0" :defaultNum="getSelectNum(item.key)" :data="item" :onChange="onNumChange" />
+						<button class="btn-primary btn-small" @click="sell1155Direct(item)" v-show="getSelectNum(item.key) == 0">
+							<span>{{$t("Market_57")}}</span>
+						</button>
+						<button class="btn-primary mgl-5 btn-small" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.key) == 0">
+							<span>{{$t("Market_08")}}</span>
+						</button>
+					</div>
+				</GemSellItem>
 				<GemSellItem v-for="item in getMyGem" :key="item.key" :data="{item: item}">
 					<div class="tac "  >
 						<SelectNum :maxNum="item.num" v-show="getSelectNum(item.key) > 0" :defaultNum="getSelectNum(item.key)" :data="item" :onChange="onNumChange" />
@@ -53,8 +64,8 @@
 			</div>
 			<div class="dialog-content mgt-10" id="shop-car-content">
 				<div v-for="item in shopCar" :key="item.prototype" :class="'pet_hover_lv3'" class="shop-car-item  vertical-children por mgt-10">
-					<div class="dib por">
-						<img  :src="require(`@/assets/gem/${item.key}.png`)" alt="" width="100" height="100" />
+					<div class="dib por mgt-10">
+						<img  :src="require(`@/assets/market/${item.key}.png`)" alt="" height="80" />
 						<p style="position:absolute;bottom:5px;width:100%;text-align:center">
 							<span style="background:rgba(0,0,0,0.5);padding:2px 10px;font-size:12px;border-radius:10px">x{{item.num}}</span>
 						</p>
@@ -116,7 +127,7 @@
 			<h2 class="mgt-10">{{$t("Market_10")}}</h2>
 			<div class="mgt-10">
 				<span v-for="item in sellObj.sellData" :key="item.key" style="background:rgba(0,0,0,0.8);border-radius:10px;height:90px;margin:5px" class="dib por">
-					<img :src="require(`@/assets/gem/${item.key}.png`)" alt="" height="100%">
+					<img :src="require(`@/assets/market/${item.key}.png`)" alt="" height="100%">
 					<span class="tar" style="position:absolute;right:3px;bottom:3px">x{{item.sellNum}}</span>
 				</span>
 			</div>
@@ -150,11 +161,11 @@
 			</div>
 			<div class="small mgt-10 opa-6" v-if="Number(sellObj.startPrice) > 0 && Number(sellObj.endPrice) > 0 && priceTypePos==1">{{$t("Market_14").replace("#0#", sellObj.day).replace("#1#",sellObj.startPrice).replace("#2#",sellObj.endPrice)}}</div>
 			
-			<div class="mgt-20" :class="{'btn-group': !hasApprove && hasApprove != -1}">
-				<StatuButton v-if="hasApprove != -1 && !hasApprove" data-step="1" :onClick="approve.bind(this)" :isLoading="lockBtn.approveLock > 0" style="width:70%" >
+			<div class="mgt-20" :class="{'btn-group': !hasApprove[needApproveTokenType] && hasApprove[needApproveTokenType] != -1}">
+				<StatuButton v-if="hasApprove[needApproveTokenType] != -1 && !hasApprove[needApproveTokenType]" data-step="1" :onClick="approve.bind(this, sellObj)" :isLoading="lockBtn.approveLock > 0" style="width:70%" >
 					{{$t("Air-drop_16")}}
 				</StatuButton>
-				<StatuButton data-step="2" class="mgt-10" :onClick="confirmSubmit.bind(this)" style="width:70%" :isDisable="!hasApprove || Number(sellObj.startPrice) <= 0" >
+				<StatuButton data-step="2" class="mgt-10" :onClick="confirmSubmit.bind(this)" style="width:70%" :isDisable="!hasApprove[needApproveTokenType] || Number(sellObj.startPrice) <= 0" >
 					{{$t("Common_03")}}
 				</StatuButton>
 			</div>
@@ -184,13 +195,22 @@ export default {
 				day: 2,
 				sellType: "", //721,shopCar
 				sellData: null,
+				tokenType: 1,
 			},
 			parabola: null,
 			priceTypePos: 0,
 			gemNameToId: {"red":100,"green":200,"blue":300,"yellow": 400},
-			hasApprove: -1,
+			hasApprove: {
+				1: -1,
+				2: -1
+			},
 			fitter: {
 				type: 0, level: 0
+			},
+			needApproveTokenType: 1, //需要被授权的1155的tokenid
+			tokenTypeToAddr: {
+				1: WalletConfig.ETH.momoGemToken,
+				2: WalletConfig.ETH.newBoxToken
 			}
 		};
 	},
@@ -201,6 +221,7 @@ export default {
 			historyNotice: (state) => state.marketState.data.historyNotice,
 			tempGemSells: (state) => state.marketState.data.tempGemSells,
 			gemBag: (state) => state.gemState.data.gemBag,
+			boxNum: (state) => state.gemState.data.boxNum,
 			lockBtn: (state) => state.globalState.data.lockBtn,
 		}),
 		getMyGem(){
@@ -216,12 +237,24 @@ export default {
 						key,
 						num,
 						level: key % 100,
+						tokenType: 1,
 					})
 				}
 			}
 			arr.sort((a,b)=>{
 				return b.level - a.level;
 			});
+			return arr;
+		},
+		get1155SellItems(){
+			let arr = [];
+			arr.push({
+				ids: [1],
+				amounts: [this.boxNum],
+				key: 1,
+				num: this.boxNum,
+				tokenType: 2,
+			})
 			return arr;
 		},
 		getShopCarTotalSelectNum() {
@@ -251,21 +284,23 @@ export default {
 		if(timer) clearInterval(timer);
 	},
 	async created(){
-		await Wallet.ETH.getAccount();
-		this.isApprove();
+		// this.isApprove();
 	},
 	methods: {
 		//查询宝石合约是被授权
-		async isApprove(){
-			let isApprove = await Wallet.ETH.isApprovedForAll(WalletConfig.ETH.momoGemToken, WalletConfig.ETH.common1155Auction);
+		async isApprove(item, isForce = false){
+			await Wallet.ETH.getAccount();
+			this.needApproveTokenType = item.tokenType;
+			if(this.hasApprove[item.tokenType] != -1 && !isForce) return;
+			let isApprove = await Wallet.ETH.isApprovedForAll(this.tokenTypeToAddr[item.tokenType], WalletConfig.ETH.common1155Auction);
 			if(isApprove != null){
-				this.hasApprove = isApprove;
+				this.hasApprove[item.tokenType] = isApprove;
 			}
 		},
-		async approve(){
-			let hash = await Wallet.ETH.approvedForAll(WalletConfig.ETH.momoGemToken, WalletConfig.ETH.common1155Auction, ()=>{
+		async approve(item){
+			let hash = await Wallet.ETH.approvedForAll(this.tokenTypeToAddr[item.tokenType], WalletConfig.ETH.common1155Auction, ()=>{
 				console.log("approve recipt");
-				this.isApprove();
+				this.isApprove(item, true);
 			});
 			if(hash){
 				this.lockBtnMethod("approveLock");
@@ -280,6 +315,10 @@ export default {
 		//设置价格确认
 		confirmSetPrice(event) {
 			if(Number(this.inputPrice) <=0 ) return;
+			if(this.shopCar[0] && this.setPriceItem.tokenType != this.shopCar[0].tokenType){
+				this.showNotify("不同类型的物品不能一起打包出售", "error");
+				return
+			}
 			//编辑1155的价格
 			this.setPriceItem.sellPrice = Number(this.inputPrice);
 			if(this.setPriceItem.isFirstAdd){
@@ -332,7 +371,9 @@ export default {
 		sell1155Direct(item){
 			this.sellObj.sellData = [{key: item.key, sellNum: 1}];
 			this.sellObj.sellType = "shopCar";
+			this.sellObj.tokenType = item.tokenType;
 			this.initSellObjInput();
+			this.isApprove(item);
 			this.oprDialog("confirm-sell-dialog", "block");
 		},
 		initSellObjInput(){
@@ -379,12 +420,14 @@ export default {
 			this.sellObj.day = 2;
 			this.sellObj.sellType = "shopCar";
 			this.sellObj.sellData = this.shopCar;
+			this.sellObj.tokenType = this.shopCar[0].tokenType;
 			this.setShopCarPrice();
 		},
 		//编辑shopCar的价格
 		setShopCarPrice() {
 			this.sellObj.sellData = this.shopCar;
 			this.sellObj.sellType = "shopCar";
+			this.isApprove(this.shopCar[0]);
 			this.oprDialog("confirm-sell-dialog", "block");
 		},
 		confirmSubmit(){
@@ -396,13 +439,13 @@ export default {
 			}
 		},
 		async confirmSell() {
-			let { startPrice, sellData, } = this.sellObj;
+			let { startPrice, sellData, tokenType } = this.sellObj;
 
 			let auctionObj = {
 				price_: Number(startPrice),
 				suggestIndex_: 0,
 				currency_: 1, 
-				erc1155_ : 1,
+				erc1155_ : tokenType,
 				ids_: [],
 				amounts_: []
 			}

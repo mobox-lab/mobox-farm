@@ -129,8 +129,8 @@
 				<span>{{ eth_myHashrate }}</span>
 			</p>
 			<p class="vertical-children">
-				<img src="./assets/icon/box.png" alt="" height="25" />&nbsp;
-				<span>{{ canOpenBoxTrue }}</span>
+				<img src="./assets/icon/box_icon.png" alt="" height="22" />&nbsp;
+				<span>{{ boxNum }}</span>
 			</p>
 			<p class="vertical-children">
 				<img src="./assets/coin/MBOX.png" alt="" height="25" />&nbsp;
@@ -490,6 +490,7 @@ export default {
 			testBUSD: (state) => state.ethState.data.testBUSD,
 			historyNotice: (state) => state.marketState.data.historyNotice,
 			coinArr: (state) => state.bnbState.data.coinArr,
+			boxNum: (state) => state.gemState.data.boxNum,
 		}),
 		isMoboxWallet(){
 			return window.SHOW_APP_BAR != undefined;

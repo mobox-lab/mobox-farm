@@ -23,7 +23,14 @@
 					</div>
 					<div class="dib por tac" id="oneday-key" style="padding:0px 10px">
 						<h3 class="opa-6 mgt-10 small ">{{ $t("Air-drop_21") }}</h3>
-						<h3 class="mgt-5">{{(pledgeType == 'v1' && !(airdropCountDown > 0))?"-": totalAirdropKey}} MBOX</h3>
+						<h3 class="mgt-5 vertical-children">
+							<span>
+								{{(pledgeType == 'v1' && !(airdropCountDown > 0))?"-": totalAirdropKey}} MBOX
+							</span>
+							<span class="mgl-5 cur-point dib" style="height:25px" @click="oprDialog('mbox-drop-des-dialog','block')">
+								<svg width="20" height="25" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path style="fill:none" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+							</span>
+						</h3>
 					</div>
 					
 					<div class="dib tac" id="my-key" style="padding:0px 10px">
@@ -182,12 +189,6 @@
 										<div v-if="item.wantAmount > 0 && item.maxApyNeedVeMobox != '-' " class="tac mgt-10">
 											<p v-if="item.veMbox.mul < 300">
 												<span v-html="$t('Air-drop_203').replace('#0#', `<span class='color-sell'>${numFloor(item.maxApyNeedVeMobox, 1e2)}</span>` )"></span>&nbsp;
-												<!-- <span>{{numFloor(item.allKeyApy*100, 100)}}%</span>
-												<span :class="Number(item.allKeyApy) < Number(item.maxKeyApy) ?'color-sell':'color-buy' " v-if="item.maxKeyApy != '-' ">
-													<span v-if="Number(item.allKeyApy) < Number(item.maxKeyApy) ">+</span>
-													<span v-else>-</span>
-													<span>{{numFloor(Math.abs(item.allKeyApy - item.maxKeyApy)*100, 100)}}%</span>
-												</span> -->
 												<span v-if="item.wantAmount > 0 " class="color-sell">
 													{{numFloor((Number(item.maxKeyApy)+Number(item.myApy.cake))*100, 100)}}%
 												</span>
@@ -504,6 +505,24 @@
 				{{$t("Air-drop_198")}}
 			</div>
 		</Dialog>
+		<Dialog id="mbox-drop-des-dialog" :top="100" :width="400">
+			<h3>{{$t("Air-drop_211")}}</h3>
+			<div class="ly-input-content mgt-20">
+				<div class="aveage-box small opa-6">
+					<p class="tac">{{$t("Air-drop_212")}}</p>
+					<p class="tac">{{$t("Air-drop_21")}}(MBOX)</p>
+				</div>
+				<div class="aveage-box"  style="border-bottom:1px solid #333;padding:5px" v-for="(item, pos) in mboxDropConfig" :key="pos">
+					<p class="tac">
+						<span v-if="item.max != -1">≤ {{item.max }}</span>
+						<span v-else>> {{item.min }}</span>
+					</p>
+					<p class="tac">
+						{{item.num}}
+					</p>
+				</div>
+			</div>
+		</Dialog>
 
 		<KeyOpr ref="keyopr" />
 		<Withdraw ref="withdraw" />
@@ -544,6 +563,16 @@ export default {
 				{min: 0.2, max:0.4, mul: 6},
 				{min: 0.4, max:0.75, mul: 7},
 				{min: 0.75, max:1, mul: 8},
+			],
+			mboxDropConfig: [
+				{min: 0, max: 0.5, num: 5e4},
+				{min: 0.5, max: 1, num: 10e4},
+				{min: 1, max: 1.5, num: 15e4},
+				{min: 1.5, max: 2, num: 20e4},
+				{min: 2, max: 3, num: 25e4},
+				{min: 3, max: 4, num: 30e4},
+				{min: 4, max: 6, num: 40e4},
+				{min: 6, max: -1, num: 50e4},
 			],
 			burnTypeList: [this.$t('Air-drop_49'), this.$t('Air-drop_132'), this.$t('Air-drop_133')]
 		});

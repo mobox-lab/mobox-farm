@@ -3,14 +3,14 @@
 	<div ref="container" class="swiper-container dib " :id="data.item.tx">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide " v-for="item in getShowList" :key="item.id">
-				<div class="pet-lv vertical-children">
+				<div class="pet-lv vertical-children" v-if="Number(item.imgName) > 100">
 					<img :src="require(`../assets/icon/${item.chain.toLocaleLowerCase()}.png`)" alt="" width="15" />&nbsp;
 					<span class="mgl-5">Lv. {{ item.level }}</span>
 				</div>
 
 				<img class="pet_img" :src="require(`@/assets/market/${item.imgName}.png`)" alt="" width="170" />
 
-				<div style="position: absolute; width: 100%; bottom: 80px; left: 0px">
+				<div style="position: absolute; width: 100%; bottom: 70px; left: 0px">
 					<div class="vertical-children pet_num"  >
 						x{{ item.num }}
 					</div>
@@ -115,7 +115,7 @@ export default {
 }
 .slot{
 	position: absolute;
-	bottom: 10px;
+	bottom: 15px;
 	z-index: 9999;
 	text-align: center;
 	width: 100%;

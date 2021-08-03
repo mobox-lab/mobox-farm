@@ -9,7 +9,6 @@
 					</h1>
 					<br />
 					<div class="por box"  style="height:300px;width:300px; margin:0px auto; ">
-						<div id="openbox-anime-new" class="hide"></div>
 						<div class="box-show" @click="playBoxAnime2">
 							<div id="box-spine"></div>
 						</div>
@@ -24,8 +23,8 @@
 										<img src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
 									</div>
 									<div class="card-spine"></div>
-									<div class="back">
-										<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key-1] }" />
+									<div class="back-show-card">
+										<PetItem  v-bind:data="{ item: petDataArr[key-1] }" />
 									</div>
 								</div>
 							</div>
@@ -36,8 +35,8 @@
 										<img src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
 									</div>
 									<div class="card-spine"></div>
-									<div class="back">
-										<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 - 1 ] }" />
+									<div class="back-show-card">
+										<PetItem  v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 - 1 ] }" />
 									</div>
 								</div>
 							</div>
@@ -48,8 +47,8 @@
 										<img src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
 									</div>
 									<div class="card-spine"></div>
-									<div class="back">
-										<PetItem style="zoom:0.72" v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 + posArr[petDataArr.length].line2 -1] }" />
+									<div class="back-show-card">
+										<PetItem  v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 + posArr[petDataArr.length].line2 -1] }" />
 									</div>
 								</div>
 							</div>
@@ -190,11 +189,11 @@
 				<p class="small opa-6" v-html="$t('BOX_08')"></p>
 			</div>
 
-			<div  :class="needApprove?'btn-group':''" class="mgt-20">
-				<StatuButton :onClick="approve.bind(this)"  data-step="1" style="width: 80%" v-if="needApprove" :isLoading="lockBtn.approveLock > 0" :isDisable="lockBtn.approveLock > 0">
-					{{ $t("Air-drop_16") }} KEY
+			<div  :class="newBoxApproveToMinter == false ?'btn-group':''" class="mgt-20">
+				<StatuButton :onClick="approve.bind(this)"  data-step="1" style="width: 80%" v-if="newBoxApproveToMinter == false" :isLoading="lockBtn.approveLock > 0" :isDisable="lockBtn.approveLock > 0">
+					{{ $t("Air-drop_16") }} BOX
 				</StatuButton>
-				<button data-step="2" @click="addBox(addKey)" class="btn-primary mgt-10 por" style="width: 80%; margin-bottom: 20px" :class="needApprove?'disable-btn':''">
+				<button data-step="2" @click="addBox(addKey)" class="btn-primary mgt-10 por" style="width: 80%; margin-bottom: 20px" :class="newBoxApproveToMinter == false?'disable-btn':''">
 					{{ $t("BOX_09") }}
 				</button>
 			</div>
@@ -229,7 +228,6 @@ import { Wallet, Common, EventBus } from "@/utils";
 import { Dialog, PetItemSmall, PetItem, StatuButton, Loading } from '@/components';
 import CommonMethod from "@/mixin/CommonMethod";
 import { BaseConfig, WalletConfig, EventConfig } from "@/config";
-import lottie from "lottie-web";
 const $ = window.$;
 
 let timer = null;
@@ -247,7 +245,6 @@ export default {
 				MintBox: "BOX_25",
 			},
 			maxOpenOne: 1000,
-			openLottie: null,
 			showOpenBoxCard: [],
 
 			testArr: [
@@ -280,6 +277,8 @@ export default {
 			],
 
 			boxSpine: null,
+
+			newBoxApproveToMinter: "-",
 		};
 	},
 	computed: {
@@ -369,7 +368,7 @@ export default {
 				
 					this.petDataArr = showArr;
 					this.$nextTick(()=>{
-						this.openAnime();
+						this.openAnime2();
 					})
 				}
 			});
@@ -433,6 +432,7 @@ export default {
 	},
 
 	mounted() {
+		this.isApprove();
 		EventBus.$emit(EventConfig.OpenBoxHistory, { chain: "eth" });
 
 		timer = setInterval(() => {
@@ -442,37 +442,24 @@ export default {
 		}, 2000);
 
 
-		this.openLottie = lottie.loadAnimation({
-			container: document.getElementById("openbox-anime-new"), // the dom element that will contain the animation
-			renderer: 'svg',
-			loop: false,
-			autoplay: false,
-			path: './animation/boxAnime/open.json' // the path to the animation json
-		});
-
-		this.openLottie.onComplete = function(){
-			document.querySelector("#show-card").classList.remove("hide");
-		}
-
 		this.boxSpine = new window.spine.SpineWidget("box-spine", {
-			json: "/animation/boxV2/baoxiang.json",
-			atlas: "/animation/boxV2/baoxiang.atlas",
+			json: "/animation/boxV3/kejixiangzi.json",
+			atlas: "/animation/boxV3/kejixiangzi.atlas",
 			backgroundColor: "#00000000",
-			animation: "daiji",
+			animation: "jingzhen",
 			loop: true,
 			fitToCanvas: false,
-			scale:0.5,
-			x:350,
-			y: 0,
+			scale:0.4,
+			x:320,
+			y:30,
 			success: ()=>{
-				this.boxSpine.state.timeScale = 1;
+				this.boxSpine.state.timeScale = 1.3;
 			}
 		});
 
-
 		//如果有临时开箱子数据就让箱子继续晃动
 		if(this.isOpening){
-			document.getElementById("openbox-anime").classList.add("animation-box-start");
+			this.playBoxAnime2();
 		}
 
 	},
@@ -538,11 +525,21 @@ export default {
 		getTimeFtt(timeStep) {
 			return Common.dateFtt("yyyy-MM-dd hh:mm:ss",new Date(timeStep * 1000));
 		},
-		async approve() {
-			let res = await Wallet.ETH.approveBoxToMinter();
-			if (res) {
-				this.$store.commit("globalState/lockBtn", "approveLock");
-				this.showNotify(this.$t("BOX_20"), "success");
+		//查询宝石合约是被授权
+		async isApprove(){
+			await Wallet.ETH.getAccount();
+			let newBoxApproveToMinter = await Wallet.ETH.isApprovedForAll(WalletConfig.ETH.newBoxToken, WalletConfig.ETH.moMoMinter);
+			if(newBoxApproveToMinter != null){
+				this.newBoxApproveToMinter= newBoxApproveToMinter;
+			}
+		},
+		async approve(){
+			let hash = await Wallet.ETH.approvedForAll(WalletConfig.ETH.newBoxToken, WalletConfig.ETH.moMoMinter, ()=>{
+				console.log("approve recipt");
+				this.isApprove();
+			});
+			if(hash){
+				this.lockBtnMethod("approveLock");
 			}
 		},
 		async addBox(num) {
@@ -582,7 +579,7 @@ export default {
 				}
 				if (hash) {
 					//播放箱子动画
-					document.getElementById("openbox-anime").classList.add("animation-box-start");
+					this.playBoxAnime2();
 					this.oprDialog("open-box-dialog", "none");
 
 					let myAddr = await Wallet.ETH.getAccount();
@@ -612,38 +609,11 @@ export default {
 			}
 		},
 
-		playBoxAnime(){
-			document.getElementById("openbox-anime").classList.add("animation-box-start");
-		},
-
-		//开箱子动画
-		openAnime(){
-			this.isAnimation = true;
-			document.getElementById("openbox-anime").classList.remove("animation-box-start");
-			window.$("#openbox-anime").hide();
-			window.$("#openbox-anime-new").show();
-			window.$(".show-card-item").addClass("animation");
-			if(this.openLottie) this.openLottie.goToAndPlay(0);
-		},
-		testOpenAnime(){
-			this.petDataArr = [];
-			this.testArr[0].vType = this.testArr[0].vType == 4?5:4;
-			this.petDataArr = this.testArr;
-			this.$nextTick(()=>{
-				this.isAnimation = true;
-				document.getElementById("openbox-anime").classList.remove("animation-box-start");
-				window.$("#openbox-anime").hide();
-				window.$("#openbox-anime-new").show();
-				window.$(".show-card-item").addClass("animation");
-				if(this.openLottie) this.openLottie.goToAndPlay(0);
-			})
-		},
-
 		//箱子抖动
 		playBoxAnime2(){
 			window.$(".box-show").removeClass("box-show-open");
 			this.boxSpine.config.loop = true;
-			this.boxSpine.setAnimation("doudong", true);
+			this.boxSpine.setAnimation("open1", true);
 		},
 		//箱子打开
 		openAnime2(){
@@ -655,9 +625,15 @@ export default {
 				//开始spine动画
 				window.$(".box-show").addClass("box-show-open");
 				this.boxSpine.config.loop = false;
-				this.boxSpine.setAnimation("baoxiangdakai2", {
-					complete: ()=>{
-						document.querySelector("#show-card").classList.remove("hide");
+				this.boxSpine.setAnimation("open", {
+					complete: async ()=>{
+						// document.querySelector("#show-card").classList.remove("hide");
+						// let $cards = $(".show-card-item");
+						// for (let index = 0; index < $cards.length; index++) {
+						// 	const $element = $cards[index];
+						// 	await Common.sleep(500);
+						// 	$element.click();
+						// }
 					}
 				});
 			})
@@ -666,14 +642,12 @@ export default {
 		openCard(e){
 			e.stopPropagation();
 			let element = $(e.currentTarget).children(".card-spine")[0];
-			let $front = $(e.currentTarget).children(".front")
-			// window.$(e.currentTarget).addClass("animation");
+			let $front = $(e.currentTarget).children(".front");
+			let $backCard = $(e.currentTarget).children(".back-show-card");
 
 			new window.spine.SpineWidget(element, {
 				json: "/animation/cardAnime/Orange/Orange.json",
 				atlas: "/animation/cardAnime/Orange/Orange.atlas",
-				// json: "/animation/cardAnime/Orange/Orange jieshu.json",
-				// atlas: "/animation/cardAnime/Orange/Orange jieshu.atlas",
 				backgroundColor: "#00000000",
 				animation: "xuanzhuan",
 				loop: false,
@@ -683,21 +657,41 @@ export default {
 				y: 90,
 				success: ()=>{
 					$front.hide();
-				}
+					setTimeout(()=>{
+						this.renderEndAnime(element, $backCard);
+					}, 750)
+				},
 			});
 
+		},
+
+		renderEndAnime(element, $backCard){
+			$(element).css("zIndex", 999999);
+			new window.spine.SpineWidget(element, {
+				json: "/animation/cardAnime/Orange/Orange jieshu.json",
+				atlas: "/animation/cardAnime/Orange/Orange jieshu.atlas",
+				backgroundColor: "#00000000",
+				animation: "jieshu",
+				loop: false,
+				fitToCanvas: false,
+				scale:0.2,
+				x: 250,
+				y: 90,
+				success: ()=>{
+					$backCard.show();
+				}
+			});
 		},
 
 		initCardAnime(){
 			if(this.isAnimation) return;
 			document.querySelector("#show-card").classList.add("hide");
 			window.$("#openbox-anime").show();
-			window.$("#openbox-anime-new").hide();
 			window.$(".show-card-item").removeClass("animation");
 
 			window.$(".box-show").removeClass("box-show-open");
 			this.boxSpine.config.loop = false;
-			this.boxSpine.setAnimation("daiji", true);
+			this.boxSpine.setAnimation("open1", true);
 
 		}
 		
@@ -705,7 +699,28 @@ export default {
 };
 </script>
 
-<style >
+<style scoped>
+.back-show-card{
+	position: absolute;
+	/* top:-8px;
+	left: 5px; */
+	top: 2px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	z-index: 99998;
+	display: none;
+	text-align: center;
+}
+.back-show-card .pet_item{
+	width: 322px;
+	height: 256px;
+	zoom: 0.68;
+	margin-left: 0px;
+	margin-top: 0px;
+	display: inline-block;
+	margin: 0px auto;
+}
 .card-spine{
 	position: absolute;
 	left: -85px;
@@ -936,9 +951,14 @@ export default {
 		padding: 5px;
 	}
 	#box-spine{
-		zoom: 0.5 !important;
+		zoom: 0.8 !important;
 		height: 200vh !important;
 		padding-bottom: calc(100vh - 100px) !important;
+		transform: translate(-50%, -50%);
+	}
+	.box-show-open #box-spine{
+		width: 150%;
+		transform: translate(-50%, -50%);
 	}
 }
 

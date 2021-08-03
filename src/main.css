@@ -148,7 +148,7 @@ svg {
 	bottom: -1px;
 	right: -1px;
 	z-index: -2;
-	border-radius: 16px;
+	border-radius: 20px;
 }
 .pet_hover_lv1::before{
 	content: "";
@@ -159,7 +159,7 @@ svg {
 	bottom: 0px;
 	right: 0px;
 	z-index: 1;
-	border-radius: 16px;
+	border-radius: 20px;
 }
 
 .pet_hover_lv2 {
@@ -176,7 +176,7 @@ svg {
 	bottom: -1px;
 	right: -1px;
 	z-index: -2;
-	border-radius: 16px;
+	border-radius: 20px;
 }
 .pet_hover_lv2::before{
 	content: "";
@@ -187,7 +187,7 @@ svg {
 	bottom: 0px;
 	right: 0px;
 	z-index: 1;
-	border-radius: 16px;
+	border-radius: 20px;
 }
 
 .pet_hover_lv3 {
@@ -204,7 +204,7 @@ svg {
 	bottom: -1px;
 	right: -1px;
 	z-index: -2;
-	border-radius: 16px;
+	border-radius: 20px;
 }
 .pet_hover_lv3::before{
 	content: "";
@@ -215,7 +215,7 @@ svg {
 	bottom: 0px;
 	right: 0px;
 	z-index: 1;
-	border-radius: 16px;
+	border-radius: 20px;
 }
 
 .pet_hover_lv4 {
@@ -232,7 +232,7 @@ svg {
 	bottom: -1px;
 	right: -1px;
 	z-index: -2;
-	border-radius: 16px;
+	border-radius: 20px;
 }
 .pet_hover_lv4::before{
 	content: "";
@@ -243,7 +243,7 @@ svg {
 	bottom: 0px;
 	right: 0px;
 	z-index: 1;
-	border-radius: 16px;
+	border-radius: 20px;
 }
 
 .pet_hover_lv5 {
@@ -260,7 +260,7 @@ svg {
 	bottom: -1px;
 	right: -1px;
 	z-index: -2;
-	border-radius: 16px;
+	border-radius: 20px;
 }
 .pet_hover_lv5::before{
 	content: "";
@@ -271,7 +271,7 @@ svg {
 	bottom: 0px;
 	right: 0px;
 	z-index: 1;
-	border-radius: 16px;
+	border-radius: 20px;
 }
 
 .pet_hover_lv6 {
@@ -288,7 +288,7 @@ svg {
 	bottom: -1px;
 	right: -1px;
 	z-index: -2;
-	border-radius: 16px;
+	border-radius: 20px;
 }
 .pet_hover_lv6::before{
 	content: "";
@@ -299,7 +299,7 @@ svg {
 	bottom: 0px;
 	right: 0px;
 	z-index: 1;
-	border-radius: 16px;
+	border-radius: 20px;
 }
 
 .pet_id {

@@ -54,7 +54,10 @@
 						<p class="mgt-10 bold" style="width:80%;height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">{{eth_totalHashrate}}</p>
 					</div>
 					<div class="col-md-12 mgt-20">
-						<p class="small opa-6">{{ $t("Mine_03") }}</p>
+						<p class="small vertical-children">
+							<span class="opa-6">{{ $t("Mine_03") }}</span>
+							<StatuButton style="zoom: 0.8" v-if="needShowAdd " class="btn-small mgl-10" :isLoading="lockBtn.joinStakeLock > 0" :onClick="joinStake">{{$t('Mine_15')}}</StatuButton>
+						</p>
 						<div class="por dib mgt-10" style="width:80%">
 							<p class="por bold" style="height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">
 								<span>{{eth_myHashrate}}</span>
@@ -98,7 +101,7 @@
 					</div>
 				</div>
 				<div class="mgt-20">
-					<button id="take-btn" class="btn-primary por" :class="(eth_earnedMbox > 0 && lockBtn.getMboxLock <= 0)? '':'disable-btn' " style="min-width: 200px;margin-top:3px" @click="takeEarnedMbox('eth')" >
+					<button id="take-btn" class="btn-primary por mgl-10" :class="(eth_earnedMbox > 0 && lockBtn.getMboxLock <= 0)? '':'disable-btn' " style="min-width: 200px;margin-top:3px" @click="takeEarnedMbox('eth')" >
 						<Loading class="btn-loading" v-if="lockBtn.getMboxLock > 0" />
 						{{$t("Mine_04")}}
 					</button>
@@ -120,7 +123,10 @@ export default {
 	components: { JumpPet,  Loading, StatuButton},
 	mixins: [CommonMethod],
 	data() {
-		return { inputBox: 1 };
+		return { 
+			inputBox: 1,
+			needShowAdd: false,
+		};
 	},
 	computed: {
 		...mapState({
@@ -146,7 +152,7 @@ export default {
 		},
 		//获取加成
 		eth_getAddHashrate() {
-			let staticAddHashrate = this.$parent.showPowerUpList.length * 100;
+			let staticAddHashrate = this.$parent.showPowerUpList.length * 300;
 			let myHashrate = this.eth_myHashrate;
 			let addP = this.$parent.getTotalPercent.maxAdd;
 			return this.numFloor(myHashrate - (myHashrate / (1 + addP) - staticAddHashrate),1);
@@ -164,10 +170,17 @@ export default {
 	async created(){
 		await Wallet.ETH.getAccount();
 		await Common.app.getPoolsEarns();
+		await this.getGroupV4();	
 	},
 	methods: {
+		async getGroupV4(){
+			let num = await Wallet.ETH.getGroupV4();
+			this.needShowAdd = num == 0;
+		},
 		async joinStake(){
-			let hash = await Wallet.ETH.joinStake();
+			let hash = await Wallet.ETH.joinStake(async ()=>{
+				await this.getGroupV4();
+			});
 			if(hash){
 				this.lockBtnMethod("joinStakeLock")
 			}

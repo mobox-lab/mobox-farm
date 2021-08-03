@@ -49,7 +49,7 @@
 					</div>
 					<div style="padding:10px">
 						<p class="small opa-6 tac" >{{$t("Fetters_15")}}</p>
-						<input type="text" readonly class="ly-input mgt-10 tac" :value="$root.$children[0].showPowerUpList.length * 100"  />
+						<input type="text" readonly class="ly-input mgt-10 tac" :value="$root.$children[0].showPowerUpList.length * 300"  />
 					</div>
 					<div style="padding:10px" >
 						<p class="small opa-6 tac" >{{$t("Fetters_16")}}</p>

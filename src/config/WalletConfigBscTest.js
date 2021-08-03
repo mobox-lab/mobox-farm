@@ -10,7 +10,7 @@ export default class WalletConfig {
 		moMoHelper3: "0x2C388d5Ea0048dC68824610cf778fFBF2F0bBC73", //工具合约
 		moMoStake: "0x21353d254bF00E553F17B88b79c45712a886827C", //质押挖矿合约
 		moMoStakeAuction: "0xDbcF89e3B603b57A9f1DfDd7324957Cb8539DACd", //质押拍卖合约
-		common1155Auction: "0x49607116dc7a51A12f9f15Da419Bc46c228Fb27F", //1155普通拍卖
+		common1155Auction: "0x4b1B5ed2BDcb4e34B5c5fBaDd0C07aC3d0bB6B0D", //1155普通拍卖
 		mboxToken: "0xD32d0f8b13Bf084f3fBA2CAe0763a71eBa7e08EF", //mbox的合约地址
 		momoFarm: "0x6807782C95ab7289214Cf60F28103d5E7539b03B",
 		momoGemApply: "0x42C054F6641512cB7436F520C3A6E4e26c35C4A5",//宝石申购合约

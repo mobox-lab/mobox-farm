@@ -9,8 +9,8 @@
 			<div class="col-md-6">
 				<div class="panel" >
 					<div v-for="item in getShowList" :key="item.id" :class="'pet_hover_lv3' " class="shop-car-item  vertical-children por mgt-10">
-					<img class="pet-img mgl-5" :src="require(`@/assets/market/${item.id}.png`)" alt="" height="80" />
-					<div class="dib mgl-5">
+					<img class="pet-img mgl-10" :src="require(`@/assets/market/${item.id}.png`)" alt="" height="80" />
+					<div class="dib mgl-5" v-if="Number(item.id) > 100">
 						<h3 class="mgl-5"> Lv.{{ item.level }} </h3>
 					</div>
 					<div class="absolute-r tar" style="right: 20px; top: 5px;bottom:5px;display:flex; align-items: center;">
@@ -198,6 +198,7 @@ export default {
 		//从链上取最新的状态
 		async getPetInfo(){
 			let data = await Wallet.ETH.getGemMarketOrder(this.getNowPetItem.orderId);
+			console.log("getPetInfo", data, this.getNowPetItem.orderId);
 			return data;
 		},
 		async setPetInfo(){

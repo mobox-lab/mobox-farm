@@ -15,12 +15,12 @@
 		
 
 		<!-- 抽卡特效 -->
-		<div v-if="data.item.isOpenCard">
+		<!-- <div v-if="data.item.isOpenCard"> -->
 			<!-- <div id="light-border-show" class="v5b" v-show="data.item.vType == 5"></div> -->
 			<!-- <div id="light-border-show" class="v6b" v-show="data.item.vType == 6"></div> -->
-			<div class="light-shadow" ref="lightShadowV4" v-show="data.item.vType == 4"></div>
-			<div class="light-shadow" ref="lightShadowV5" v-show="data.item.vType == 5"></div>
-		</div>
+			<!-- <div class="light-shadow" ref="lightShadowV4" v-show="data.item.vType == 4"></div>
+			<div class="light-shadow" ref="lightShadowV5" v-show="data.item.vType == 5"></div> -->
+		<!-- </div> -->
 
 		<img class="pet_img" v-if="Number(data.item.prototype) > 60000" :src="require(`../assets/pet/${data.item.prototype}.gif`)" alt="" width="120" height="120" />
 		<img class="pet_img" v-else :src="require(`../assets/pet/${data.item.prototype}.png`)" alt="" width="120" height="120" />
@@ -203,7 +203,7 @@ export default {
 }
 .pet_item {
 	width: 350px;
-	border-radius: 16px;
+	border-radius: 50px;
 	text-align: center;
 	position: relative;
 	display: inline-block;

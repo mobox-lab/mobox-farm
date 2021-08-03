@@ -47,7 +47,7 @@
 			
 		</div>
 		
-		<p class="small opa-6 tal mgt-10" v-html="$t('Air-drop_14')" ></p>
+		<!-- <p class="small opa-6 tal mgt-10" v-html="$t('Air-drop_14')" ></p> -->
 
 		<!-- <StatuButton class="mgt-20" :onClick="exchangeToBox" :isLoading="lockBtn.getKeyLock > 0" :isDisable="!isCanExchangeToBox || lockBtn.getKeyLock > 0" style="width: 70%;">
 			{{ $t("Air-drop_15").replace("#0#", parseInt(getSelectAllKey)) }}

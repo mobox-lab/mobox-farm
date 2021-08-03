@@ -2084,7 +2084,8 @@ export default class ETH {
 				},
 				async ()=>{
 					console.log("gemCreateAuction success");
-					Common.app.getGemBag();
+					await Common.app.getGemBag();
+					await Common.app.getNewBoxNum();
 				},
 				()=>{
 					EventBus.$emit(EventConfig.CreateAuctionError, {chain: "eth", hash: saveHash});
@@ -2213,10 +2214,11 @@ export default class ETH {
 			this.sendMethod(
 				contract.methods.bid(auctor_, orderId_, amount_), {from: myAddr},
 				hash=>resolve(hash),
-				()=>{
+				async ()=>{
 					console.log("buyGemMarketPet success!!!!!");
 					Common.app.setCoinValueByName(coinKey);
-					Common.app.getGemBag();
+					await Common.app.getGemBag();
+					await Common.app.getNewBoxNum();
 				}
 			)
 		});
@@ -2771,7 +2773,7 @@ export default class ETH {
 	}
 
 	//参与挖矿
-	static async joinStake(){
+	static async joinStake(recipt){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
 
@@ -2779,11 +2781,8 @@ export default class ETH {
 			{
 				"name": "updateReward",
 				"type": "function",
-				"inputs": [
-
-				],
-				"outputs": [
-				],
+				"inputs": [],
+				"outputs": [],
 			}
 		], WalletConfig.ETH.moMoStake);
 
@@ -2794,6 +2793,8 @@ export default class ETH {
 				async ()=>{
 					console.log("joinStake success!!!!!");
 					Common.app.unLockBtn("joinStakeLock");
+					recipt();
+					await Common.app.eth_setMyHashrate();
 					await Common.app.getPoolsEarns();
 				}
 			)
@@ -2909,6 +2910,30 @@ export default class ETH {
 
 	}
 
+	static async getGroupV4(){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return null;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "getGroupV4",
+				"type": "function",
+				"inputs": [
+					{"name": "user","type": "address"},
+				],
+				"outputs": [
+					{"name": "num","type": "uint256"},
+				],
+			}
+		], WalletConfig.ETH.moMoStake);
+
+
+		return new Promise(resolve => {
+			contract.methods.getGroupV4(myAddr).call().then(data => {
+				resolve(data);
+			});
+		});
+	}
 
 
 }

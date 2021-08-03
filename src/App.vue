@@ -242,7 +242,7 @@
 				</p>
 				<p class="mgt-10 tal small vertical-children">
 					{{ $t("Fetters_03") }}:
-					<span style="color: #aaf45a">{{showPowerUpList.length * 100}}</span>
+					<span style="color: #aaf45a">{{showPowerUpList.length * 300}}</span>
 					<img v-if="showPowerUpList.length > 0" height="25" src="./assets/icon/view.png" class="mgl-5 cur-point" alt="" @click="showPowerPet = !showPowerPet" />
 				</p>
 				<div :class="showPowerPet ? 'dialog-content mgt-10' : 'hide'" style="max-height: 300px" >

@@ -53,7 +53,7 @@
 		<!-- 购物车 -->
 		<Dialog id="shop-car-dialog" :top="20" :width="500">
 			<div class="por tal mgt-10">
-				<p class="opa-6">{{$t("Market_15")}}gem</p>
+				<p class="opa-6">{{$t("Market_15")}}</p>
 				<p class="cur-point vertical-children" style="position: absolute; right: 0px; top: 0px" @click="shopCar = []" >
 					<span class="opa-6"> {{$t("Market_16")}} </span>
 					<svg viewBox="0 0 1024 1024" width="20" height="20">
@@ -64,7 +64,7 @@
 			</div>
 			<div class="dialog-content mgt-10" id="shop-car-content">
 				<div v-for="item in shopCar" :key="item.prototype" :class="'pet_hover_lv3'" class="shop-car-item  vertical-children por mgt-10">
-					<div class="dib por mgt-10">
+					<div class="dib por mgt-10 mgl-10">
 						<img  :src="require(`@/assets/market/${item.key}.png`)" alt="" height="80" />
 						<p style="position:absolute;bottom:5px;width:100%;text-align:center">
 							<span style="background:rgba(0,0,0,0.5);padding:2px 10px;font-size:12px;border-radius:10px">x{{item.num}}</span>
@@ -248,13 +248,15 @@ export default {
 		},
 		get1155SellItems(){
 			let arr = [];
-			arr.push({
-				ids: [1],
-				amounts: [this.boxNum],
-				key: 1,
-				num: this.boxNum,
-				tokenType: 2,
-			})
+			if(this.boxNum > 0){
+				arr.push({
+					ids: [1],
+					amounts: [this.boxNum],
+					key: 1,
+					num: this.boxNum,
+					tokenType: 2,
+				})
+			}
 			return arr;
 		},
 		getShopCarTotalSelectNum() {
@@ -316,7 +318,7 @@ export default {
 		confirmSetPrice(event) {
 			if(Number(this.inputPrice) <=0 ) return;
 			if(this.shopCar[0] && this.setPriceItem.tokenType != this.shopCar[0].tokenType){
-				this.showNotify("不同类型的物品不能一起打包出售", "error");
+				this.showNotify(this.$t("Market_64"), "error");
 				return
 			}
 			//编辑1155的价格

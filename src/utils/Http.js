@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {EventBus} from "@/utils";
 import {EventConfig} from '@/config';
+import ConstantConfig from '../config/ConstantConfig';
 export default class HTTP {
 	// static serverNode = "https://nfttestapi.mobox.io"; //测试
 	// static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
@@ -110,6 +111,11 @@ export default class HTTP {
 	}
 	static async getAuctionListGem(chain, page = 1, limit = 15, search = {}){
 		let params = {...search};
+		//处理类型筛选:1:宝石，2：箱子
+		if(params.type == 0)  params.filter = ConstantConfig.Market_1155_filter.ALL;
+		if(params.type > 0 && params.type < 5) params.filter = ConstantConfig.Market_1155_filter.GEM;
+		if(params.type == 5) params.filter = ConstantConfig.Market_1155_filter.BOX;
+
 		if(params.type == 0) params.type = "";
 		if(params.level == 0) params.level = "";
 		if(params.sort != undefined) params.sort = this.sortPosToName[params.sort];
@@ -144,10 +150,9 @@ export default class HTTP {
 	}
 	//获取交易历史记录
 	static async getMyGemAuctionHistory(address, page=1,limit=50) {
-		let { data } = await this.get(`/gem_auction/logs/${address}?&page=${page}&limit=${limit}`);
+		let { data } = await this.get(`/gem_auction/logs/${address}?&page=${page}&limit=${limit}`, {filter: 0});
 		return data;
 	}
-	//获取交易历史记录
 	static async getMyRentHistory(address, page=1,limit=50) {
 		let { data } = await this.get(`/momo_renter/logs/${address}?&page=${page}&limit=${limit}`);
 		return data;
@@ -184,7 +189,7 @@ export default class HTTP {
 	}
 	//获取gem交易历史记录
 	static async getGemAuctionHistoryAll() {
-		let { data } = await this.get(`/gem_auction/logs?&page=1&limit=50`);
+		let { data } = await this.get(`/gem_auction/logs?&page=1&limit=50`,  {filter: 0});
 		return data;
 	}
 	//获取gem交易历史记录

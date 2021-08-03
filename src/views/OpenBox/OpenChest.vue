@@ -696,7 +696,7 @@ export default {
 	background: rgba(0,0,0,0.8);
 	left: 0px;
 }
-#box-spine{
+/* #box-spine{
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -710,7 +710,7 @@ export default {
 	width: 100% !important;
 	height: 100% !important;
 	/* background: red; */
-}
+
 .buy-key-btn{
 	height: 25px;
 	background: rgb(73, 73, 73);

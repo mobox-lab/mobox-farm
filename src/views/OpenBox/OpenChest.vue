@@ -681,7 +681,7 @@ export default {
 };
 </script>
 
-<style >
+<style scoped>
 .box-show{
 	position: absolute;
 	top: 160px;
@@ -690,8 +690,10 @@ export default {
 .box-show-open{
 	position: fixed;
 	top: 0px;
-	width: 100vw;
-	height: 100vh;
+	bottom: 0px;
+	right: 0px;
+	/* width: 100vw;
+	height: 100vh; */
 	z-index: 999998;
 	background: rgba(0,0,0,0.8);
 	left: 0px;
@@ -886,7 +888,6 @@ export default {
 
 	.show-card-item   .pet_item{
 		width: 350px !important;
-		/* zoom: 0.5 !important; */
 		transform: scale(0.42);
 		-webkit-transform-origin: 4% 0%;
 		transform-origin: 4% 0%;

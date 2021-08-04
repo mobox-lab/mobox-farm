@@ -4,7 +4,7 @@
 		<h2>{{$t("Market_24")}}</h2>
 		<div class="mgt-10" style="background:#000912;border-radius:10px;padding:8px;">
 			<div class="aveage-box opa-6 small tal" style="padding: 0px 8px">
-				<div class="hide-xs" style="flex:2">{{$t("Gemstone_44")}}/BOX</div>
+				<div class="hide-xs" style="flex:2">{{$t("Gemstone_44")}}</div>
 				<div>{{$t("Market_25")}}</div>
 				<div>{{$t("Market_26")}}</div>
 				<div class="tar" >{{$t("Market_17")}}</div>

@@ -25,8 +25,8 @@ export default {
 		return({
 			tabKey: 'box',
 			tabArr: [
-				{icon: require("@/assets/icon/box_icon.png"), text: "打开BOX", key: "box"},
-				{icon: require("@/assets/icon/box.png"), text: "打开Chest", key: "chest"},
+				{icon: require("@/assets/icon/box.png"), text: "BOX_34", key: "box"},
+				{icon: require("@/assets/icon/box_old.png"), text: "BOX_05", key: "chest"},
 			]
 		})
 	},

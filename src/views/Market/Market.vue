@@ -11,7 +11,7 @@
 					<span>{{$t("Hire_01")}}</span>
 				</div>
 				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 2}" @click="$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0})">
-					<img src="../../assets/icon/gem_box_icon.png" alt="" height="30">&nbsp;
+					<img src="../../assets/icon/yellow_icon.png" alt="" height="30">&nbsp;
 					<span>{{$t("Gemstone_44")}}</span>
 				</div>
 			</section>
@@ -114,7 +114,7 @@ export default {
 				this.$t("MOMO_13"),
 				this.$t("MOMO_14"),
 			],
-			gemType:[this.$t("Market_60"),this.$t("Gemstone_45"), this.$t("Gemstone_46"), this.$t("Gemstone_47"),this.$t("Gemstone_48"),"BOX"],
+			gemType:[this.$t("Market_60"),this.$t("Gemstone_45"), this.$t("Gemstone_46"), this.$t("Gemstone_47"),this.$t("Gemstone_48")],
 			gemLv:[this.$t("Gemstone_49"), "Lv.1", "Lv.2", "Lv.3","Lv.4","Lv.5","Lv.6","Lv.7","Lv.8","Lv.9"],
 			myAccount: "",
 		};

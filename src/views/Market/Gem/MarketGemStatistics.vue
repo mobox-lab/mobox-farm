@@ -44,7 +44,7 @@
 
 				<table class="mgt-20" style="width:100%; border-collapse:collapse;border: none;">
 					<tr class="opa-6 tal">
-						<th class="list-item-momo" style="padding-left:10px">{{$t("Gemstone_44")}}/BOX</th>
+						<th class="list-item-momo" style="padding-left:10px">{{$t("Gemstone_44")}}</th>
 						<th>{{$t("Market_25")}}</th>
 						<th>{{$t("Market_26")}}</th>
 						<th>{{$t("Market_17")}}</th>

@@ -25,7 +25,7 @@
 
 		<div :class="getMyGem.length < 4 ? 'tal' : 'tac'" >
 			<div class="clear mgt-20">
-				<GemSellItem v-for="item in get1155SellItems" :key="item.key" :data="{item: item}">
+				<!-- <GemSellItem v-for="item in get1155SellItems" :key="item.key" :data="{item: item}">
 					<div class="tac "  >
 						<SelectNum :maxNum="item.num" v-show="getSelectNum(item.key) > 0" :defaultNum="getSelectNum(item.key)" :data="item" :onChange="onNumChange" />
 						<button class="btn-primary btn-small" @click="sell1155Direct(item)" v-show="getSelectNum(item.key) == 0">
@@ -35,7 +35,7 @@
 							<span>{{$t("Market_08")}}</span>
 						</button>
 					</div>
-				</GemSellItem>
+				</GemSellItem> -->
 				<GemSellItem v-for="item in getMyGem" :key="item.key" :data="{item: item}">
 					<div class="tac "  >
 						<SelectNum :maxNum="item.num" v-show="getSelectNum(item.key) > 0" :defaultNum="getSelectNum(item.key)" :data="item" :onChange="onNumChange" />

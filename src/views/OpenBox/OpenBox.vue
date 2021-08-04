@@ -8,45 +8,41 @@
 						{{ totalOpenBoxAmount.bnb }}
 					</h1>
 					<br />
-					<div class="por box"  style="height:300px;width:300px; margin:0px auto; ">
-						<div class="box-show" @click="playBoxAnime2">
+					<div class="por box"  style="height:300px; margin:0px auto; ">
+						<div class="box-show" >
 							<div id="box-spine"></div>
 						</div>
 					</div>
+					<div class="card-spine"></div>
 					<div id="show-card" class="hide" @click="initCardAnime">
 						<div id="show-card-cont" class="animate__animated  animate__zoomIn">
 							<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
 							<div v-if="posArr[petDataArr.length].line1" class="card-cont-row"  id="show-card-cont-row1">
-								<div class="show-card-item dib cur-point" v-for="key in posArr[petDataArr.length].line1" :key="key+10" v-on:animationend="animationend" @click="openCard">
-									<img style="opacity:0" src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
+								<div class="show-card-item dib cur-point" v-for="key in posArr[petDataArr.length].line1" :key="key+10"  :data-key="key" @click="openCard">
 									<div class="front">
 										<img src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
 									</div>
-									<div class="card-spine"></div>
+									<!-- <div class="card-spine"></div> -->
 									<div class="back-show-card">
 										<PetItem  v-bind:data="{ item: petDataArr[key-1] }" />
 									</div>
 								</div>
 							</div>
 							<div v-if="posArr[petDataArr.length].line2" class="card-cont-row "   id="show-card-cont-row2">
-								<div class="show-card-item dib cur-point" v-for="key in posArr[petDataArr.length].line2" :key="key+20" v-on:animationend="animationend" @click="openCard">
-									<img style="opacity:0" src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
+								<div class="show-card-item dib cur-point" v-for="key in posArr[petDataArr.length].line2" :key="key+20"  @click="openCard">
 									<div class="front">
 										<img src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
 									</div>
-									<div class="card-spine"></div>
 									<div class="back-show-card">
 										<PetItem  v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 - 1 ] }" />
 									</div>
 								</div>
 							</div>
 							<div v-if="posArr[petDataArr.length].line3" class="card-cont-row"   id="show-card-cont-row3" >
-								<div class="show-card-item dib cur-point " v-for="key in posArr[petDataArr.length].line3" :key="key+30" v-on:animationend="animationend" @click="openCard">
-									<img style="opacity:0" src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
+								<div class="show-card-item dib cur-point " v-for="key in posArr[petDataArr.length].line3" :key="key+30"  @click="openCard">
 									<div class="front">
 										<img src="@/assets/momo-back2.png" width="225" height="180" alt=""/>
 									</div>
-									<div class="card-spine"></div>
 									<div class="back-show-card">
 										<PetItem  v-bind:data="{ item: petDataArr[key + posArr[petDataArr.length].line1 + posArr[petDataArr.length].line2 -1] }" />
 									</div>
@@ -60,16 +56,16 @@
 					<!-- <button class="btn-primary " @click="playBoxAnime">抖动 1</button>
 					<button class="btn-primary mgl-5" @click="testOpenAnime">打开 1</button>-->
 
-					<button class="btn-primary mgl-10" @click="playBoxAnime2">抖动 2</button>
-					<button class="btn-primary mgl-5" @click="openAnime2">打开 2</button> 
+					<!-- <button class="btn-primary mgl-10" @click="shakeBox">抖动 2</button>
+					<button class="btn-primary mgl-5" @click="testOpenAnime2">打开 2</button>  -->
 				</div>
 			</section>
 
 			<section class="col-md-5" style="padding:10px">
 				<div >
 					<div  >
-						<div class="ly-input-content dib" style="width:100%;padding:40px 20px">
-							<p class="tal">未解锁的BOX:</p>
+						<div class="ly-input-content dib" style="width:100%;padding:30px 20px">
+							<p class="tal">{{$t("BOX_35")}}</p>
 							<div class="por mgt-10">
 								<div class="ly-input-pre-icon">
 									<img  src="@/assets/icon/box_view.png" alt="" height="20" />
@@ -80,24 +76,28 @@
 									:value="boxNum"
 								/>
 							</div>
+							<p class="small opa-6 mgt-10 tal">{{$t("BOX_39")}}</p>
 							<div class="aveage-box">
 								<div class="tal">
 									<button class="btn-primary mgt-20" style="width: 90%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(boxNum) || 1; ">
-										解锁BOX
+										{{$t("BOX_36")}}
 									</button>
 								</div>
 								<div class="tar">
-									<button class="mgt-20 btn-line" style="width:90%;" @click="$root.$children[0].$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
-										购买BOX
-									</button>
+									<!-- <router-link to="/market?tab=2">
+										<button class="mgt-20 btn-line" style="width:90%;">
+											{{$t("BOX_37")}}
+										</button>
+									</router-link> -->
 								</div>
 							</div>
+							
 						</div>
 					</div>
 
 					<div class=" mgt-20" >
-						<div class="ly-input-content dib" style="width:100%;padding:40px 20px">
-							<p class="tal">可以打开的BOX:</p>
+						<div class="ly-input-content dib" style="width:100%;padding:30px 20px">
+							<p class="tal">{{$t("BOX_38")}}</p>
 							<div class="por mgt-10">
 								<div class="ly-input-pre-icon">
 									<img src="@/assets/icon/box_icon.png" alt="" height="20" />
@@ -108,14 +108,16 @@
 									readonly="readonly"
 								/>
 							</div>
+							<p class="small opa-6 mgt-10 tal">{{$t("BOX_40")}}</p>
 							<div class="aveage-box">
 								<div class="tal">
 									<StatuButton class="mgt-20" style="width: 90%" :isDisable="lockBtn.openBoxLock > 0" :isLoading="lockBtn.openBoxLock > 0" :onClick="showOpenBox.bind(this)">
-										打开BOX
+										{{$t("BOX_34")}}
 									</StatuButton>
 								</div>
 								<div></div>
 							</div>
+							
 						</div>
 					</div>
 				</div>
@@ -165,9 +167,9 @@
 			</div>
 		</Dialog>
 		<Dialog id="get-box-dialog" :top="200" :width="400">
-			<h2 class="mgt-10">解锁BOX</h2>
+			<h2 class="mgt-10">{{$t("BOX_36")}}</h2>
 			<div class="ly-input-content mgt-20">
-				<p class="small tal opa-6">未解锁的BOX:</p>
+				<p class="small tal opa-6">{{$t("BOX_35")}}</p>
 				<div class="por mgt-5">
 					<div class="ly-input-pre-icon">
 						<img  src="@/assets/icon/box_view.png" alt="" />
@@ -194,13 +196,13 @@
 					{{ $t("Air-drop_16") }} BOX
 				</StatuButton>
 				<button data-step="2" @click="addBox(addKey)" class="btn-primary mgt-10 por" style="width: 80%; margin-bottom: 20px" :class="newBoxApproveToMinter == false?'disable-btn':''">
-					{{ $t("BOX_09") }}
+					{{ $t("BOX_41") }}
 				</button>
 			</div>
 			
 		</Dialog>
 		<Dialog id="open-box-dialog" :top="200" :width="400">
-			<h2 class="mgt-10">打开BOX</h2>
+			<h2 class="mgt-10">{{$t("BOX_34")}}</h2>
 			<div class="ly-input-content mgt-20">
 				<p class="small tal opa-6">{{ $t("BOX_10") }}:</p>
 				<div class="por mgt-5">
@@ -277,6 +279,7 @@ export default {
 			],
 
 			boxSpine: null,
+			cardSpines: [],
 
 			newBoxApproveToMinter: "-",
 		};
@@ -368,7 +371,7 @@ export default {
 				
 					this.petDataArr = showArr;
 					this.$nextTick(()=>{
-						this.openAnime2();
+						this.openAnime();
 					})
 				}
 			});
@@ -441,25 +444,11 @@ export default {
 			}
 		}, 2000);
 
-
-		this.boxSpine = new window.spine.SpineWidget("box-spine", {
-			json: "/animation/boxV3/kejixiangzi.json",
-			atlas: "/animation/boxV3/kejixiangzi.atlas",
-			backgroundColor: "#00000000",
-			animation: "jingzhen",
-			loop: true,
-			fitToCanvas: false,
-			scale:0.4,
-			x:320,
-			y:30,
-			success: ()=>{
-				this.boxSpine.state.timeScale = 1.3;
-			}
-		});
+		this.renderBoxSpine();
 
 		//如果有临时开箱子数据就让箱子继续晃动
 		if(this.isOpening){
-			this.playBoxAnime2();
+			this.shakeBox()
 		}
 
 	},
@@ -467,11 +456,23 @@ export default {
 		if (timer != null) clearInterval(timer);
 	},
 	methods: {
-		animationend(e){
-			if(e.animationName == "flipX"){
-				this.isAnimation = false;
-			}
+		renderBoxSpine(){
+			this.boxSpine = new window.spine.SpineWidget("box-spine", {
+				json: "/animation/boxV3/kejixiangzi.json",
+				atlas: "/animation/boxV3/kejixiangzi.atlas",
+				backgroundColor: "#00000000",
+				animation: "jingzhen",
+				loop: true,
+				fitToCanvas: false,
+				scale:0.4,
+				x:280,
+				y:30,
+				success: ()=>{
+					this.boxSpine.state.timeScale = 1.8;
+				}
+			});
 		},
+		
 		showOpenBox(){
 			this.oprDialog('open-box-dialog', 'block'); 
 			this.openBox = this.canOpenBox > this.maxOpenOne ? this.maxOpenOne : this.canOpenBox || 1;
@@ -610,30 +611,57 @@ export default {
 		},
 
 		//箱子抖动
-		playBoxAnime2(){
+		shakeBox(){
 			window.$(".box-show").removeClass("box-show-open");
 			this.boxSpine.config.loop = true;
 			this.boxSpine.setAnimation("open1", true);
 		},
 		//箱子打开
-		openAnime2(){
+		openAnime(){
+			this.isAnimation = true;
+			//开始spine动画
+			window.$(".box-show").addClass("box-show-open");
+			this.boxSpine.config.loop = false;
+			this.boxSpine.setAnimation("open", {
+				complete: async ()=>{
+					document.querySelector("#show-card").classList.remove("hide");
+					let $cards = $(".show-card-item");
+
+					setTimeout(()=>{
+						this.isAnimation = false;
+					}, 880 * $cards.length)
+
+					for (let index = 0; index < $cards.length; index++) {
+						const $element = $cards[index];
+						await Common.sleep(800);
+						$element.click();
+					}
+				}
+			});
+		},
+		testOpenAnime2(){
 			this.petDataArr = [];
-			this.testArr[0].vType = this.testArr[0].vType == 4?5:4;
-			this.petDataArr = [...this.testArr];
 			this.$nextTick(()=>{
+				this.testArr[0].vType = this.testArr[0].vType == 4?5:4;
+				this.petDataArr = [...this.testArr];
 				this.isAnimation = true;
 				//开始spine动画
 				window.$(".box-show").addClass("box-show-open");
 				this.boxSpine.config.loop = false;
 				this.boxSpine.setAnimation("open", {
 					complete: async ()=>{
-						// document.querySelector("#show-card").classList.remove("hide");
-						// let $cards = $(".show-card-item");
-						// for (let index = 0; index < $cards.length; index++) {
-						// 	const $element = $cards[index];
-						// 	await Common.sleep(500);
-						// 	$element.click();
-						// }
+						document.querySelector("#show-card").classList.remove("hide");
+						let $cards = $(".show-card-item");
+
+						setTimeout(()=>{
+							this.isAnimation = false;
+						}, 880 * $cards.length)
+
+						for (let index = 0; index < $cards.length; index++) {
+							const $element = $cards[index];
+							await Common.sleep(800);
+							$element.click();
+						}
 					}
 				});
 			})
@@ -641,35 +669,54 @@ export default {
 
 		openCard(e){
 			e.stopPropagation();
-			let element = $(e.currentTarget).children(".card-spine")[0];
 			let $front = $(e.currentTarget).children(".front");
-			let $backCard = $(e.currentTarget).children(".back-show-card");
+			if($front.css("display") == "none"){
+				if(this.isAnimation == false){
+					this.initCardAnime();
+				}
+				return;
+			}
 
-			new window.spine.SpineWidget(element, {
-				json: "/animation/cardAnime/Orange/Orange.json",
-				atlas: "/animation/cardAnime/Orange/Orange.atlas",
+			// let element = $(e.currentTarget).children(".card-spine")[0];
+			let element = $(".card-spine")[0];
+			let $backCard = $(e.currentTarget).children(".back-show-card");
+			let pet_item_vtype = $backCard.children(".pet_item").data("vtype");
+
+			let spineName = "v" + pet_item_vtype;
+
+			$(e.currentTarget).append(element);
+			$(".card-spine").hide();
+			
+			let sp = new window.spine.SpineWidget(element, {
+				json: `/animation/cardAnime/${spineName}/${spineName}.json`,
+				atlas: `/animation/cardAnime/${spineName}/${spineName}.atlas`,
 				backgroundColor: "#00000000",
-				animation: "xuanzhuan",
+				animation: "zhuandong",
 				loop: false,
 				fitToCanvas: false,
 				scale:0.2,
 				x: 250,
 				y: 90,
-				success: ()=>{
+				success: (play)=>{
+					play.state.timeScale = 2;
+					$(".card-spine").show();
 					$front.hide();
 					setTimeout(()=>{
-						this.renderEndAnime(element, $backCard);
-					}, 750)
+						this.renderEndAnime(element, $backCard, spineName);
+					}, 300)
 				},
 			});
 
+			this.cardSpines.push(sp);
+
 		},
 
-		renderEndAnime(element, $backCard){
+		renderEndAnime(element, $backCard, spineName){
 			$(element).css("zIndex", 999999);
-			new window.spine.SpineWidget(element, {
-				json: "/animation/cardAnime/Orange/Orange jieshu.json",
-				atlas: "/animation/cardAnime/Orange/Orange jieshu.atlas",
+
+			let sp = new window.spine.SpineWidget(element, {
+				json: `/animation/cardAnime/${spineName}/end.json`,
+				atlas: `/animation/cardAnime/${spineName}/end.atlas`,
 				backgroundColor: "#00000000",
 				animation: "jieshu",
 				loop: false,
@@ -677,22 +724,25 @@ export default {
 				scale:0.2,
 				x: 250,
 				y: 90,
-				success: ()=>{
+				success: (play)=>{
+					if(spineName == "v5") play.state.timeScale = 2;
 					$backCard.show();
 				}
 			});
+			this.cardSpines.push(sp);
 		},
 
 		initCardAnime(){
 			if(this.isAnimation) return;
+			$(".card-spine").appendTo("#openbox");
 			document.querySelector("#show-card").classList.add("hide");
-			window.$("#openbox-anime").show();
-			window.$(".show-card-item").removeClass("animation");
+			$(".back-show-card").hide();
+			$(".front").show();
 
-			window.$(".box-show").removeClass("box-show-open");
+			$(".box-show").removeClass("box-show-open");
+			this.petDataArr = [];
 			this.boxSpine.config.loop = false;
-			this.boxSpine.setAnimation("open1", true);
-
+			this.boxSpine.setAnimation("jingzhen", true);
 		}
 		
 	},
@@ -723,7 +773,7 @@ export default {
 }
 .card-spine{
 	position: absolute;
-	left: -85px;
+	left: -141px;
 	top: -92px;
 	z-index: 99998;
 	height: 360px;
@@ -731,26 +781,39 @@ export default {
 }
 .box-show{
 	position: absolute;
-	top: 160px;
-	left: 190px;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 .box-show-open{
 	position: fixed;
 	top: 0px;
-	width: 100vw;
-	height: 100vh;
+	bottom: 0px;
+	right: 0px;
 	z-index: 999998;
 	background: rgba(0,0,0,0.8);
 	left: 0px;
 }
+.box-show-open #box-spine{
+	
+	top: calc(50vh - 150px);
+	position: relative;
+}
 #box-spine{
-	position: absolute;
+	margin: 0px auto;
+	width: 634px;
+	height: 300px;
+	
+	/* position: absolute;
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
 	height: 100vh;
-	width: 800px;
-	padding-bottom: calc(50vh - 100px);
+	width: 100%; */
+	/* width: 800px; */
+	/* padding-bottom: calc(50vh - 100px);
+	border: 1px solid red; */
 	zoom: 1;
 }
 #box-spine canvas{
@@ -788,6 +851,8 @@ export default {
 
 .show-card-item{
 	width: 100%;
+	width: 220px;
+	height: 180px;
 	margin: 20px 0px;
 	position: relative;
 
@@ -917,49 +982,85 @@ export default {
 	margin: 50px 0px;
 }
 
-@media (max-width:1000px) {
+@media (max-width:1200px) {
 	#show-card-cont{
 		width: 100% !important;
 	}
 
-	.show-card-item > img,.show-card-item > .front >img{
-		width: 105px;
-		height: 75px;
+	.show-card-item{
+		zoom: 0.5;
+	}
+	.box{
+		zoom: 0.5;
+	}
+
+	/* .show-card-item > img,.show-card-item > .front >img{
+		zoom: 0.45;
+	}
+	.card-spine{
+		zoom: 0.45 !important;
+		left: 89px;
+		border: 1px solid red;
+		width: 100%;
 	}
 
 	.show-card-item {
 		margin: 10px;
+		zoom: 0.5;
 	}
 
 	.show-card-item   .pet_item{
 		width: 350px !important;
-		/* zoom: 0.5 !important; */
-		transform: scale(0.42);
-		-webkit-transform-origin: 4% 0%;
-		transform-origin: 4% 0%;
+		zoom: 0.3 !important;
+		display: inline-block;
+		margin: 0px auto;
+	} */
+
+	.show-card-item   .pet_item{
+		width: 322px !important;
+		height: 256px;
+		zoom: 0.68;
+		margin-left: 0px;
+		margin-top: 0px;
+		display: inline-block;
+		margin: 0px auto;
 	}
 
 
 }
 
 @media (max-width: 768px) {
-	#show-card-cont{
+	/* #show-card-cont{
 		width: 100% !important;
-	}
+	} */
 	
 	.table-his td{
 		padding: 5px;
 	}
 	#box-spine{
+		width: 606px;
+		/* zoom: 0.5; */
+		/* top: calc(100vh - 300px) !important; */
+	}
+	.box{
+		zoom:0.5;
+		
+	}
+	/* #box-spine{
 		zoom: 0.8 !important;
 		height: 200vh !important;
 		padding-bottom: calc(100vh - 100px) !important;
 		transform: translate(-50%, -50%);
-	}
-	.box-show-open #box-spine{
+	} */
+	/* .box-show-open #box-spine{
 		width: 150%;
 		transform: translate(-50%, -50%);
+	} */
+
+	.show-card-item{
+		zoom: 0.4;
 	}
+
 }
 
 .animation-box {

@@ -1,5 +1,5 @@
 <template>
-	<div :class="' pet_item pet_hover_lv' + data.item.vType">
+	<div :class="' pet_item pet_hover_lv' + data.item.vType" :data-vType="data.item.vType">
 		<div class="pet-lv vertical-children">
 			<img :src="require(`../assets/icon/${data.item.chain.toLocaleLowerCase()}.png`)" alt="" width="15" />&nbsp;
 			<span class="mgl-5">Lv. {{ data.item.level }}</span>

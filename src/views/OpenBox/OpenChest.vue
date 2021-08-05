@@ -57,7 +57,7 @@
 					<br />
 
 					<!-- <button class="btn-primary " @click="playBoxAnime">抖动 1</button>
-					<button class="btn-primary mgl-5" @click="testOpenAnime">打开 1</button>-->
+					<button class="btn-primary mgl-5" @click="testOpenAnime">打开 1</button> -->
 
 					<!-- <button class="btn-primary mgl-10" @click="playBoxAnime2">抖动 2</button>
 					<button class="btn-primary mgl-5" @click="openAnime2">打开 2</button>  -->
@@ -99,7 +99,7 @@
 							<p class="tal">{{ $t("BOX_03") }}:</p>
 							<div class="por mgt-10">
 								<div class="ly-input-pre-icon">
-									<img src="@/assets/icon/box.png" alt="" />
+									<img src="@/assets/icon/box_old.png" alt="" />
 								</div>
 								<input class="ly-input" type="number"
 									style="text-align: left; width: 100%; padding-left:65px"
@@ -182,7 +182,7 @@
 			</div>
 			<div class="vertical-children tal mgt-10">
 				<span class="small opa-6"> {{ $t("BOX_07") }}: {{ addKey }} </span>
-				<img src="@/assets/icon/box.png" height="20" alt="" />
+				<img src="@/assets/icon/box_old.png" height="20" alt="" />
 			</div>
 			<div class="mgt-20 tal">
 				<p class="small opa-6" v-html="$t('BOX_08')"></p>
@@ -203,7 +203,7 @@
 			<div class="ly-input-content mgt-20">
 				<p class="small tal opa-6">{{ $t("BOX_10") }}:</p>
 				<div class="por mgt-5">
-					<div class="ly-input-pre-icon"> <img  src="@/assets/icon/box.png" alt="" /> </div>
+					<div class="ly-input-pre-icon"> <img  src="@/assets/icon/box_old.png" alt="" /> </div>
 					<input class="ly-input dib" type="text"
 						style=" text-align: center; width: 70%; padding-left: 50px; "
 						v-int :data-max="maxOpenOne" data-min="1" v-model="openBox" />
@@ -243,7 +243,7 @@ export default {
 				AddBox: "BOX_23",
 				MintBox: "BOX_25",
 			},
-			maxOpenOne: 1000,
+			maxOpenOne: 10,
 			openLottie: null,
 			showOpenBoxCard: [],
 
@@ -477,7 +477,7 @@ export default {
 	},
 	methods: {
 		animationend(e){
-			if(e.animationName == "flipX"){
+			if(e.animationName.indexOf("flipX") != -1){
 				this.isAnimation = false;
 			}
 		},
@@ -544,7 +544,7 @@ export default {
 		async addBox(num) {
 			if(this.needApprove) return;
 
-			if (num > this.ethState.box) {
+			if (Number(num) > Number(this.ethState.box)) {
 				this.showNotify(this.$t("BOX_28"), "error")
 				return;
 			}
@@ -561,6 +561,7 @@ export default {
 				let hash = await Wallet.ETH.addBox(num);
 				if(hash){
 					this.oprDialog("get-box-dialog", "none");
+					this.showNotify(this.$t("BOX_20"), "success");
 				}
 			} else {
 				this.approve();
@@ -672,8 +673,6 @@ export default {
 			window.$(".show-card-item").removeClass("animation");
 
 			window.$(".box-show").removeClass("box-show-open");
-			this.boxSpine.config.loop = false;
-			this.boxSpine.setAnimation("daiji", true);
 
 		}
 		

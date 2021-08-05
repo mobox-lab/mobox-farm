@@ -225,7 +225,6 @@ export default {
 		async getGemAuctionStatistics(){
 			this.$store.commit("marketState/setData", {marketLoading: true});
 			let res = await Http.getGemAuctionStatistics(this.daySelect);
-			console.log("getGemAuctionStatistics", res);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			if(res){
 				this.statistics = res.data;

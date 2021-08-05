@@ -687,6 +687,9 @@ export default class ETH {
 			this.sendMethod(
 				this.moMoMinterContract.methods.addMysteryBox(myAddr, amount), {from: myAddr},
 				hash=>resolve(hash),
+				()=>{
+					Common.app.getNewBoxNum()
+				}
 			)
 		});
 	}
@@ -1893,6 +1896,7 @@ export default class ETH {
 				hash=>resolve(hash),
 				()=>{
 					Common.app.unLockBtn("takeBoxLock");
+					Common.app.getNewBoxNum();
 					recipt();
 				}
 			)

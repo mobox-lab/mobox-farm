@@ -283,7 +283,6 @@ const InitEth = {
 					veMbox.notice = dt <= 0 && Number(moboxs[pos]) > 0;
 					totalVeMobox += Number(veMoboxs[pos]);
 				});
-				console.log(this.coinArr);
 				this.coinArr["ts"] = new Date().valueOf();
 				this.$store.commit("bnbState/setData", {coinArr: this.coinArr, myTotalVeMbox: parseInt(totalVeMobox/1e18)});
 			}
@@ -353,7 +352,7 @@ const InitEth = {
 			let res = await Wallet.ETH.getUserPoolsApyParam([item.pIndex]);
 			if(res){
 				let {keyPerDays,wantShares,workingSupply, totalShares} = res;
-				let keyUsdt = await this.getCoinUsdt("KEY");
+				let keyUsdt = await this.getCoinUsdt("MBOX");
 				let {veMbox, totalSupply, allKeyApy, apy, myApy} = this.coinArr[item.coinKey];
 				let mul = Number(veMbox.mul)/100;
 				let myKeyPerDay = keyPerDays[0] * (wantShares[0]* mul / workingSupply[0]) / 1e18;

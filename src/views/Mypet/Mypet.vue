@@ -182,8 +182,6 @@ export default {
 		}
 		this.$parent.eth_setLockList();
 		this.search();
-
-		console.log(this.$root.$children[0]);
 	},
 	computed: {
 		...mapState({

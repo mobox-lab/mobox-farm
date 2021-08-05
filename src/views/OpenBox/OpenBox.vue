@@ -1,6 +1,7 @@
 <template>
 	<div id="openbox" class="tac center-box">
 		<div class="clear mgt-10">
+			<div class="hide" id="tmp"></div>
 			<section class="col-md-7" style="padding:10px">
 				<div class="adv-panel">
 					<p class="opa-6 mgt-20">{{ $t("BOX_01") }}</p>
@@ -13,7 +14,7 @@
 							<div id="box-spine"></div>
 						</div>
 					</div>
-					<div class="card-spine"></div>
+					<div class="card-spine hide"></div>
 					<div id="show-card" class="hide" @click="initCardAnime">
 						<div id="show-card-cont" class="animate__animated  animate__zoomIn">
 							<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
@@ -246,7 +247,7 @@ export default {
 				AddBox: "BOX_23",
 				MintBox: "BOX_25",
 			},
-			maxOpenOne: 1000,
+			maxOpenOne: 10,
 			showOpenBoxCard: [],
 
 			testArr: [
@@ -290,6 +291,7 @@ export default {
 			totalOpenBoxAmount: (state) => state.globalState.data.totalOpenBoxAmount,
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			boxNum: (state) => state.gemState.data.boxNum,
+			hasLoadSpine: (state) => state.globalState.data.hasLoadSpine,
 		}),
 		canOpenBox() {
 			let { canOpenBox, orderBlockHash, openBoxTemp } = this.ethState;
@@ -435,6 +437,7 @@ export default {
 	},
 
 	mounted() {
+		this.preLoadRes();
 		this.isApprove();
 		EventBus.$emit(EventConfig.OpenBoxHistory, { chain: "eth" });
 
@@ -456,10 +459,35 @@ export default {
 		if (timer != null) clearInterval(timer);
 	},
 	methods: {
+		preLoadRes(){
+			let arr = ["v1/v1","v2/v2","v3/v3","v4/v4","v5/v5","v1/end","v4/end","v5/end"];
+			let pos = 0;
+			if(this.hasLoadSpine) return;
+			let t = setInterval(()=>{
+				if(pos >= arr.length-1){
+					clearInterval(t);
+					this.$store.commit("globalState/setData", {hasLoadSpine: true});
+				}
+				let spineName = arr[pos];
+				try {
+					new window.spine.SpineWidget("tmp", {
+						json: `./animation/cardAnime/${spineName}.json`,
+						atlas: `./animation/cardAnime/${spineName}.atlas`,
+						backgroundColor: "#00000000",
+						loop: false,
+						fitToCanvas: false,
+						animation: spineName.indexOf("end") != -1?"jieshu":"zhuandong",
+					});
+				} catch (error) {
+					clearInterval(t);
+				}
+				pos++;
+			}, 1000)
+		},
 		renderBoxSpine(){
 			this.boxSpine = new window.spine.SpineWidget("box-spine", {
-				json: "/animation/boxV3/kejixiangzi.json",
-				atlas: "/animation/boxV3/kejixiangzi.atlas",
+				json: "./animation/boxV3/kejixiangzi.json",
+				atlas: "./animation/boxV3/kejixiangzi.atlas",
 				backgroundColor: "#00000000",
 				animation: "jingzhen",
 				loop: true,
@@ -544,28 +572,19 @@ export default {
 			}
 		},
 		async addBox(num) {
-			if(this.needApprove) return;
-
-			if (num > this.boxNum) {
-				this.showNotify(this.$t("BOX_28"), "error")
+			if (Number(num) > Number(this.boxNum)) {
+				this.showNotify(this.$t("BOX_30"), "error")
 				return;
 			}
 			if (this.ethState.canOpenBox > 0) {
 				this.showNotify(this.$t("BOX_29"), "error")
 				return;
 			}
-			let allowance_box_to_minter = this.ethState.allowance_box_to_minter;
-			if (allowance_box_to_minter == -1) {
-				allowance_box_to_minter = await Wallet.ETH.boxAllowanceToMinter();
-				this.$store.commit("ethState/setData", {allowance_box_to_minter,});
-			}
-			if (Number(allowance_box_to_minter) > Number(num)) {
-				let hash = await Wallet.ETH.addMysteryBox(num);
-				if(hash){
-					this.oprDialog("get-box-dialog", "none");
-				}
-			} else {
-				this.approve();
+		
+			let hash = await Wallet.ETH.addMysteryBox(num);
+			if(hash){
+				this.oprDialog("get-box-dialog", "none");
+				this.showNotify(this.$t("BOX_20"), "success");
 			}
 		},
 
@@ -580,7 +599,7 @@ export default {
 				}
 				if (hash) {
 					//播放箱子动画
-					this.playBoxAnime2();
+					this.shakeBox();
 					this.oprDialog("open-box-dialog", "none");
 
 					let myAddr = await Wallet.ETH.getAccount();
@@ -678,7 +697,7 @@ export default {
 			}
 
 			// let element = $(e.currentTarget).children(".card-spine")[0];
-			let element = $(".card-spine")[0];
+			let element = $(".card-spine").show()[0];
 			let $backCard = $(e.currentTarget).children(".back-show-card");
 			let pet_item_vtype = $backCard.children(".pet_item").data("vtype");
 
@@ -688,8 +707,8 @@ export default {
 			$(".card-spine").hide();
 			
 			let sp = new window.spine.SpineWidget(element, {
-				json: `/animation/cardAnime/${spineName}/${spineName}.json`,
-				atlas: `/animation/cardAnime/${spineName}/${spineName}.atlas`,
+				json: `./animation/cardAnime/${spineName}/${spineName}.json`,
+				atlas: `./animation/cardAnime/${spineName}/${spineName}.atlas`,
 				backgroundColor: "#00000000",
 				animation: "zhuandong",
 				loop: false,
@@ -713,10 +732,11 @@ export default {
 
 		renderEndAnime(element, $backCard, spineName){
 			$(element).css("zIndex", 999999);
+			if(Number(spineName[1]) < 4) spineName = "v1";
 
 			let sp = new window.spine.SpineWidget(element, {
-				json: `/animation/cardAnime/${spineName}/end.json`,
-				atlas: `/animation/cardAnime/${spineName}/end.atlas`,
+				json: `./animation/cardAnime/${spineName}/end.json`,
+				atlas: `./animation/cardAnime/${spineName}/end.atlas`,
 				backgroundColor: "#00000000",
 				animation: "jieshu",
 				loop: false,
@@ -734,7 +754,7 @@ export default {
 
 		initCardAnime(){
 			if(this.isAnimation) return;
-			$(".card-spine").appendTo("#openbox");
+			$(".card-spine").hide().appendTo("#openbox");
 			document.querySelector("#show-card").classList.add("hide");
 			$(".back-show-card").hide();
 			$(".front").show();
@@ -1118,5 +1138,8 @@ export default {
 	100% {
 		background-position: -1792px 0px;
 	}
+}
+.adv-panel:before{
+	background: linear-gradient(145deg,#066EFF 0%, #000  100%);
 }
 </style>

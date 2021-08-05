@@ -56,7 +56,7 @@
 					<div class="col-md-12 mgt-20">
 						<p class="small vertical-children">
 							<span class="opa-6">{{ $t("Mine_03") }}</span>
-							<StatuButton style="zoom: 0.8" v-if="needShowAdd " class="btn-small mgl-10" :isLoading="lockBtn.joinStakeLock > 0" :onClick="joinStake">{{$t('Mine_15')}}</StatuButton>
+							<StatuButton style="zoom: 0.8" v-if="needShowAdd &&  $root.$children[0].showPowerUpList.length > 0" class="btn-small mgl-10" :isLoading="lockBtn.joinStakeLock > 0" :onClick="joinStake">{{$t('Mine_15')}}</StatuButton>
 						</p>
 						<div class="por dib mgt-10" style="width:80%">
 							<p class="por bold" style="height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">
@@ -170,7 +170,7 @@ export default {
 	async created(){
 		await Wallet.ETH.getAccount();
 		await Common.app.getPoolsEarns();
-		await this.getGroupV4();	
+		await this.getGroupV4();
 	},
 	methods: {
 		async getGroupV4(){

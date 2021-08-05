@@ -284,7 +284,6 @@ export default {
 		},
 		async getBoxApplyHistory(){
 			let result = await Http.getBoxApplyHistory(this.account);
-			console.log("getBoxApplyHistory",result);
 			if(result){
 				this.getHistory = result.list;
 			}

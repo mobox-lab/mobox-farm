@@ -59,6 +59,7 @@ const state = () => ({
 		getNowBlock: "-",
 		momoNumObj: {},
 		mboxAllownceToBoxApply: -1, //mbox是否授权给Box申购合约
+		hasLoadSpine: false,
 	},
 })
 

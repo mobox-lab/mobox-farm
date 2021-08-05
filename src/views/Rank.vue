@@ -149,7 +149,6 @@ export default {
 			let hashrateRankList = await Http.getHashrateRankList(myAddr);
 			hashrateRankList.self.address = myAddr;
 			this.hashrateRankList = hashrateRankList;
-			console.log({hashrateRankList});
 
 			let mboxRankList = await Http.getMboxRankList(myAddr);
 			mboxRankList.self.address = myAddr;

@@ -1,5 +1,5 @@
 import Common from "../utils/Common";
-import {WalletConfig} from "@/config";
+import {WalletConfig, ConstantConfig} from "@/config";
 
 const $ = window.$;
 
@@ -18,6 +18,9 @@ const CommonMethod = {
 		})
 	},
 	methods: {
+		getCurrencyName(currency){
+			return ConstantConfig.CurrencyTypeName[currency]
+		},
 		showDrop(e) {
 			if(e.target.className != "dropdown-group-value por") return;
 			e.stopPropagation();

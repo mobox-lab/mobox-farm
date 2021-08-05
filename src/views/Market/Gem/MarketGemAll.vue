@@ -13,8 +13,8 @@
 						{{$t("Market_63")}} ▼
 					</div>
 					<div class="dropdown-group-list hide">
-						<Dropdown :list="$parent.gemType" :defaultSelectPos="marketGemSearch.type" :onChange="onSelectTypeChange" />&nbsp;
-						<Dropdown :list="$parent.gemLv" :defaultSelectPos="marketGemSearch.level" :onChange="onSelectLevelChange" />&nbsp;
+						<Dropdown v-if="marketTypePos != 4" :list="$parent.gemType" :defaultSelectPos="marketGemSearch.type" :onChange="onSelectTypeChange" />&nbsp;
+						<Dropdown v-if="marketTypePos != 4" :list="$parent.gemLv" :defaultSelectPos="marketGemSearch.level" :onChange="onSelectLevelChange" />&nbsp;
 						<Dropdown :list="sortArr" :defaultSelectPos="marketGemSearch.sort" :onChange="onSortChange" />&nbsp;
 					</div>
 				</div>
@@ -24,8 +24,8 @@
 			<router-link :to="'/auctionGemView/'+ item.tx"  v-for="item in marketGems.list" :key="item.tx + item.index">
 				<GemSellItem  :key="item.orderId" :data="{item: item}">
 					<div class="vertical-children mgt-10" style="font-size: 18px">
-						<img src="@/assets/coin/MBOX.png" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.price/1e9, 10000)}} <sub class="small">MBOX</sub></span>
+						<img :src="require(`@/assets/coin/${showCoin}.png`)" alt="" height="20"/>&nbsp;
+						<span>{{numFloor(item.price/1e9, 10000)}} <sub class="small">{{showCoin}}</sub></span>
 					</div>
 				</GemSellItem>
 			</router-link>
@@ -60,16 +60,22 @@ export default {
 			marketGemSearch: (state) => state.marketState.data.marketGemSearch,
 			marketLoading: (state) => state.marketState.data.marketLoading,
 			historyNotice: (state) => state.marketState.data.historyNotice,
+			marketTypePos: (state) => state.marketState.data.marketTypePos,
 		}),
+		showCoin(){
+			return this.marketTypePos == 4 ? "BUSD": "MBOX"
+		}
 
 	},
 	created(){
-	
-		this.getAuctionAll(this.marketGemPage, true);
-		if(timer) clearInterval(timer);
-		timer = setInterval(()=>{
-			this.getAuctionAll(this.marketGemPage);
-		}, 10000);
+
+		this.$nextTick(()=>{
+			this.getAuctionAll(this.marketGemPage, true);
+			if(timer) clearInterval(timer);
+			timer = setInterval(()=>{
+				this.getAuctionAll(this.marketGemPage);
+			}, 10000);
+		})
 	},
 	
 	beforeDestroy(){

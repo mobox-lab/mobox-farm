@@ -11,7 +11,7 @@
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-				<div class="dropdown-group " @click="showDrop" tabindex="3">
+				<div class="dropdown-group " @click="showDrop" tabindex="3" v-if="marketTypePos != 4">
 					<div class="dropdown-group-value por">
 						{{$t("Market_63")}} ▼
 					</div>
@@ -23,30 +23,34 @@
 			</div>
 		</div>
 
-		<div :class="getMyGem.length < 4 ? 'tal' : 'tac'" >
+		<div :class="getMyGem.length < 4 || marketTypePos == 4  ? 'tal' : 'tac'" >
 			<div class="clear mgt-20">
-				<!-- <GemSellItem v-for="item in get1155SellItems" :key="item.key" :data="{item: item}">
-					<div class="tac "  >
-						<SelectNum :maxNum="item.num" v-show="getSelectNum(item.key) > 0" :defaultNum="getSelectNum(item.key)" :data="item" :onChange="onNumChange" />
-						<button class="btn-primary btn-small" @click="sell1155Direct(item)" v-show="getSelectNum(item.key) == 0">
-							<span>{{$t("Market_57")}}</span>
-						</button>
-						<button class="btn-primary mgl-5 btn-small" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.key) == 0">
-							<span>{{$t("Market_08")}}</span>
-						</button>
-					</div>
-				</GemSellItem> -->
-				<GemSellItem v-for="item in getMyGem" :key="item.key" :data="{item: item}">
-					<div class="tac "  >
-						<SelectNum :maxNum="item.num" v-show="getSelectNum(item.key) > 0" :defaultNum="getSelectNum(item.key)" :data="item" :onChange="onNumChange" />
-						<button class="btn-primary btn-small" @click="sell1155Direct(item)" v-show="getSelectNum(item.key) == 0">
-							<span>{{$t("Market_57")}}</span>
-						</button>
-						<button class="btn-primary mgl-5 btn-small" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.key) == 0">
-							<span>{{$t("Market_08")}}</span>
-						</button>
-					</div>
-				</GemSellItem>
+				<template v-if="marketTypePos == 4">
+					<GemSellItem v-for="item in get1155SellItems" :key="item.key" :data="{item: item}">
+						<div class="tac "  >
+							<SelectNum :maxNum="item.num" v-show="getSelectNum(item.key) > 0" :defaultNum="getSelectNum(item.key)" :data="item" :onChange="onNumChange" />
+							<button class="btn-primary btn-small" @click="sell1155Direct(item)" v-show="getSelectNum(item.key) == 0">
+								<span>{{$t("Market_57")}}</span>
+							</button>
+							<button class="btn-primary mgl-5 btn-small" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.key) == 0">
+								<span>{{$t("Market_08")}}</span>
+							</button>
+						</div>
+					</GemSellItem>
+				</template>
+				<template v-else>
+					<GemSellItem v-for="item in getMyGem" :key="item.key" :data="{item: item}">
+						<div class="tac "  >
+							<SelectNum :maxNum="item.num" v-show="getSelectNum(item.key) > 0" :defaultNum="getSelectNum(item.key)" :data="item" :onChange="onNumChange" />
+							<button class="btn-primary btn-small" @click="sell1155Direct(item)" v-show="getSelectNum(item.key) == 0">
+								<span>{{$t("Market_57")}}</span>
+							</button>
+							<button class="btn-primary mgl-5 btn-small" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.key) == 0">
+								<span>{{$t("Market_08")}}</span>
+							</button>
+						</div>
+					</GemSellItem>
+				</template>
 			</div>
 		</div>
 
@@ -74,7 +78,7 @@
 					<div class="absolute-r tar" style="right: 20px; top: 5px">
 						<span class="small">{{$t("Market_39")}}</span>
 						<p class="vertical-children mgt-5">
-							<img src="@/assets/coin/MBOX.png" height="25" alt="" />
+							<img :src="require(`@/assets/coin/${sellCoin}.png`)" height="25" alt="" />
 							<span style="font-size: 16px" class="color-w mgl-5" >{{ item.sellPrice }}</span >&nbsp;
 							<img @click="edit1155Price(item)" class="mgl-5 cur-point" src="@/assets/icon/edit.png" height="24" alt="" />
 						</p>
@@ -93,8 +97,8 @@
 				<div class="dib tal" style="margin-left: 12px">
 					<span class="small opa-6">{{$t("Market_18")}}</span>
 					<p class="vertical-children mgt-5">
-						<img src="@/assets/coin/MBOX.png" height="25" alt="" />
-						<span style="font-size: 20px" class="color-w mgl-5">{{ getShopCarTotalPrice }} <small style="font-size:12px">MBOX</small></span>
+						<img :src="require(`@/assets/coin/${sellCoin}.png`)" height="25" alt="" />
+						<span style="font-size: 20px" class="color-w mgl-5">{{ getShopCarTotalPrice }} <small style="font-size:12px">{{sellCoin}}</small></span>
 					</p>
 					<button @click="confirmSellShopCar" :class="`btn-primary  ${ shopCar.length == 0 ? 'disable-btn' : '' }`" style="position: absolute; right: 0px; top: 10px" >
 						{{$t("Market_19")}}
@@ -109,7 +113,7 @@
 					<p class="small tal opa-6">{{$t("Market_39")}}</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="@/assets/coin/MBOX.png" alt="" />
+							<img  :src="require(`@/assets/coin/${sellCoin}.png`)" alt="" />
 						</div>
 						<input v-model="inputPrice" class="ly-input" type="number"
 							style=" background: #0f172a; text-align: center; width: 100%; "
@@ -133,20 +137,20 @@
 			</div>
 			<div class="mgt-10">
 				<div class="ly-input-content mgt-10">
-					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} (MBOX)</p>
+					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} ({{sellCoin}})</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="@/assets/coin/MBOX.png" alt="" />
+							<img  :src="require(`@/assets/coin/${sellCoin}.png`)" alt="" />
 						</div>
 						<input v-model="sellObj.startPrice"   class="ly-input sell-input" type="number" :placeholder="priceTypePos == 1?$t('Market_11'):$t('Market_17')" v-number  data-max="100000000"/>
 					</div>
 				</div>
 				<div v-if="priceTypePos == 1">
 					<div class="ly-input-content mgt-10">
-						<p class="small tal opa-6">{{$t("Market_12")}} (MBOX)</p>
+						<p class="small tal opa-6">{{$t("Market_12")}} ({{sellCoin}})</p>
 						<div class="por mgt-5">
 							<div class="ly-input-pre-icon">
-								<img  src="@/assets/coin/MBOX.png" alt="" />
+								<img  :src="require(`@/assets/coin/${sellCoin}.png`)" alt="" />
 							</div>
 							<input v-model="sellObj.endPrice" class="ly-input sell-input" type="number" :placeholder="$t('Market_12')" v-number data-max="100000000"/>
 						</div>
@@ -211,7 +215,7 @@ export default {
 			tokenTypeToAddr: {
 				1: WalletConfig.ETH.momoGemToken,
 				2: WalletConfig.ETH.newBoxToken
-			}
+			},
 		};
 	},
 	components: { GemSellItem, SelectNum, Dialog, StatuButton, Dropdown },
@@ -223,6 +227,7 @@ export default {
 			gemBag: (state) => state.gemState.data.gemBag,
 			boxNum: (state) => state.gemState.data.boxNum,
 			lockBtn: (state) => state.globalState.data.lockBtn,
+			marketTypePos: (state) => state.marketState.data.marketTypePos,
 		}),
 		getMyGem(){
 			let arr = [];
@@ -275,7 +280,11 @@ export default {
 			this.getMyGem.map(item=>{
 				num += item.num;
 			});
+			if(this.marketTypePos == 4) num = this.boxNum;
 			return num;
+		},
+		sellCoin(){
+			return this.marketTypePos == 4 ? "BUSD": "MBOX"
 		}
 	},
 
@@ -446,7 +455,7 @@ export default {
 			let auctionObj = {
 				price_: Number(startPrice),
 				suggestIndex_: 0,
-				currency_: 1, 
+				currency_: tokenType, 
 				erc1155_ : tokenType,
 				ids_: [],
 				amounts_: []

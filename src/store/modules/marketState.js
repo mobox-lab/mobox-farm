@@ -51,12 +51,16 @@ const state = () => ({
 		marketGemPage: 1,
 		marketGemMySellPage: 1,
 		//筛选
-		marketGemSearch: {type: 0,level: 0,sort: 0,filter: 0},
+		marketGemSearch: {type: 0,level: 0,sort: 0},
 		myGemMarketSellFilter: {type: 0,level: 0,},
 		//记录
 		marketGems: {limit: 1,list: [],page: 1,total: 0,},
 		marketGemMy: {limit: 1,list: [],page: 1,total: 0,},
 		marketGemHistory: {list: [], total: 0, uptime: 0},
+
+		marketGemFilter: 1,
+		gemHisTs: 0,
+		boxHisTs: 0,
 
 		//批量购买MOMO的购物车
 		shopCar: [],
@@ -70,6 +74,13 @@ const mutations = {
 	},
 	setFilter(state, {type, value, filterName}){
 		state.data[filterName][type] = value;
+	},
+	initGemMarket(state){
+		state.data.marketGemPage = 1
+		state.data.marketGemMySellPage = 1
+		state.data.marketGemSearch = {type: 0,level: 0,sort: 0,filter: 0}
+		state.data.myGemMarketSellFilter = {type: 0,level: 0,}
+		state.data.marketGems = {limit: 1,list: [],page: 1,total: 0,}
 	}
 };
 

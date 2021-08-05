@@ -27,20 +27,20 @@
 						<h3 >{{$t("Market_17")}}</h3>
 						<div class="tac">
 							<div id="price" class="vertical-children">
-								<img src="@/assets/coin/MBOX.png" height="25" alt="">&nbsp;
+								<img :src="require(`@/assets/coin/${oprCoin}.png`)" height="25" alt="">&nbsp;
 								<span>{{numFloor( this.getNowPetItem.price/ 1e9, 1e4)}}</span>
 							</div>
 							
 							<div v-if="!isMyPet" class="mgt-30">
-								<div :class="coinArr['MBOX'].allowanceToGemAuction == 0 ?'btn-group':''">
-									<div v-if="coinArr['MBOX'].allowanceToGemAuction == 0">
-										<button data-step="1"  :class="(!coinArr['MBOX'].isApproving && coinArr['MBOX'].allowanceToGemAuction == 0)?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="approve">
-											<Loading class="btn-loading" v-if="coinArr['MBOX'].isApproving" />
-											{{$t("Air-drop_16")}} MBOX
+								<div :class="coinArr[oprCoin].allowanceToGemAuction == 0 ?'btn-group':''">
+									<div v-if="coinArr[oprCoin].allowanceToGemAuction == 0">
+										<button data-step="1"  :class="(!coinArr[oprCoin].isApproving && coinArr[oprCoin].allowanceToGemAuction == 0)?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="approve">
+											<Loading class="btn-loading" v-if="coinArr[oprCoin].isApproving" />
+											{{$t("Air-drop_16")}} {{oprCoin}}
 										</button>
 									</div>
 									<div class="mgt-10">
-										<button data-step="2" :class="(coinArr['MBOX'].allowanceToGemAuction > 0 && lockBtn.buyMomoLock <= 0 )?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="oprDialog('confirm-gem-buy-dialog','block')">
+										<button data-step="2" :class="(coinArr[oprCoin].allowanceToGemAuction > 0 && lockBtn.buyMomoLock <= 0 )?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="oprDialog('confirm-gem-buy-dialog','block')">
 											<Loading class="btn-loading" v-if="lockBtn.buyMomoLock > 0" />
 											{{$t("Market_22")}}
 										</button>
@@ -65,20 +65,20 @@
 				<h2 class="mgt-10">{{$t("Market_10")}}</h2>
 			<div class="mgt-20">
 				<div class="ly-input-content mgt-10">
-					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} (MBOX)</p>
+					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} ({{oprCoin}})</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="@/assets/coin/MBOX.png" alt="" />
+							<img  :src="require(`@/assets/coin/${oprCoin}.png`)" alt="" />
 						</div>
 						<input v-model="sellObj.startPrice"   class="ly-input sell-input" type="number" :placeholder="priceTypePos == 1?$t('Market_11'):$t('Market_17')" v-number  data-max="100000000"/>
 					</div>
 				</div>
 				<div v-if="priceTypePos == 1">
 					<div class="ly-input-content mgt-10">
-						<p class="small tal opa-6">{{$t("Market_12")}} (MBOX)</p>
+						<p class="small tal opa-6">{{$t("Market_12")}} ({{oprCoin}})</p>
 						<div class="por mgt-5">
 							<div class="ly-input-pre-icon">
-								<img  src="@/assets/coin/MBOX.png" alt="" />
+								<img  :src="require(`@/assets/coin/${oprCoin}.png`)" alt="" />
 							</div>
 							<input v-model="sellObj.endPrice" class="ly-input sell-input" type="number" :placeholder="$t('Market_12')" v-number data-max="100000000"/>
 						</div>
@@ -98,7 +98,7 @@
 		</Dialog>
 
 		<Dialog id="confirm-gem-buy-dialog"  :top="200" :width="350">
-			<h4 class="mgt-30" v-html="$t('Market_59').replace('#0#', `<span style='color: #49c773'>${sellObj.startPrice} MBOX</span>` )"></h4>
+			<h4 class="mgt-30" v-html="$t('Market_59').replace('#0#', `<span style='color: #49c773'>${sellObj.startPrice} ${oprCoin}</span>` )"></h4>
 			<div class="mgt-50">
 				<button class="btn-primary" @click="oprDialog('confirm-gem-buy-dialog', 'none');">{{$t("Common_04")}}</button>
 				<button class="btn-primary mgl-5" @click="oprDialog('confirm-gem-buy-dialog', 'none');buyPet()">{{$t("Common_03")}}</button>
@@ -112,7 +112,7 @@ import { Dialog, Loading, StatuButton } from '@/components';
 import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
 import {  Wallet, Common } from '@/utils';
-import { WalletConfig,  PancakeConfig } from '@/config';
+import { WalletConfig, PancakeConfig, ConstantConfig } from '@/config';
 import BigNumber from "bignumber.js";
 
 
@@ -181,6 +181,9 @@ export default {
 			});
 			return arr;
 		},
+		oprCoin(){
+			return ConstantConfig.CurrencyTypeName[this.getNowPetItem.currency]
+		}
 	},
 	async created() {
 		this.setPetInfo();
@@ -188,7 +191,7 @@ export default {
 		//查询授权情况
 		await this.viewAllowance();
 		//查询余额
-		let coinKey = "MBOX";
+		let coinKey = this.oprCoin;
 		if(this.coinArr[coinKey].balance == "-"){
 			this.$root.$children[0].setCoinValueByName(coinKey);
 		}
@@ -198,7 +201,6 @@ export default {
 		//从链上取最新的状态
 		async getPetInfo(){
 			let data = await Wallet.ETH.getGemMarketOrder(this.getNowPetItem.orderId);
-			console.log("getPetInfo", data, this.getNowPetItem.orderId);
 			return data;
 		},
 		async setPetInfo(){
@@ -230,7 +232,7 @@ export default {
 		},
 		//获取BUSD的授权情况
 		async viewAllowance(){
-			let coinKey = "MBOX";
+			let coinKey = this.oprCoin;
 			if(this.coinArr[coinKey].allowanceToGemAuction > 0) return;
 
 			let allowanceToGemAuction = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, WalletConfig.ETH.common1155Auction, false);
@@ -242,7 +244,7 @@ export default {
 		},
 		//授权
 		async approve(){
-			let coinKey = "MBOX";
+			let coinKey = this.oprCoin;
 			let {allowanceToGemAuction, isApproving} = this.coinArr[coinKey];
 			if(allowanceToGemAuction > 0 || isApproving) return;
 
@@ -255,7 +257,7 @@ export default {
 	
 		//购买
 		async buyPet(){
-			let coinKey = "MBOX"
+			let coinKey = this.oprCoin;
 			if(this.coinArr[coinKey].allowanceToGemAuction <= 0 || this.lockBtn.buyMomoLock > 0) return
 			if(this.nowPrice/1e9 > Number(this.coinArr[coinKey].balance)){
 				this.showNotify(this.$t("Market_34"), "error");

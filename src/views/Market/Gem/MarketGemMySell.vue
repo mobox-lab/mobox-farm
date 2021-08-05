@@ -8,7 +8,7 @@
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
 				
-				<div class="dropdown-group " @click="showDrop" tabindex="3">
+				<div class="dropdown-group " @click="showDrop" tabindex="3" v-if="marketTypePos != 4">
 					<div class="dropdown-group-value por">
 						{{$t("Market_63")}} ▼
 					</div>
@@ -23,8 +23,8 @@
 			<router-link :to=" item.orderId >= 0 ? ('/auctionGemView/'+ item.tx):'###'" :class="item.orderId >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime">
 				<GemSellItem  :key="item.orderId" :data="{item: item}">
 					<div class="vertical-children mgt-10" style="font-size: 18px" v-if="item.orderId >= 0">
-						<img src="@/assets/coin/MBOX.png" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.price/1e9, 10000)}} <sub class="small">MBOX</sub></span>
+						<img :src="require(`@/assets/coin/${showCoin}.png`)" alt="" height="20"/>&nbsp;
+						<span>{{numFloor(item.price/1e9, 10000)}} <sub class="small">{{showCoin}}</sub></span>
 					</div>
 					<div class="vertical-children mgt-10" v-else style="font-size: 18px;">
 						<Loading/> &nbsp;
@@ -67,6 +67,8 @@ export default {
 			tempGemMarketCancelTx: (state) => state.marketState.data.tempGemMarketCancelTx,
 			marketGemMySellPage: (state) => state.marketState.data.marketGemMySellPage,
 			historyNotice: (state) => state.marketState.data.historyNotice,
+			marketTypePos: (state) => state.marketState.data.marketTypePos,
+
 		}),
 		getSellList() {
 			let totalPet = [];
@@ -99,6 +101,9 @@ export default {
 				this.onePageCount * (this.marketGemMySellPage - 1),
 				this.onePageCount * this.marketGemMySellPage
 			);
+		},
+		showCoin(){
+			return this.marketTypePos == 4 ? "BUSD": "MBOX"
 		}
 	},
 	async created(){

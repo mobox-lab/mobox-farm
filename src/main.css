@@ -656,6 +656,10 @@ svg {
 	display: none;
 }
 
+.hide-v{
+	display: none !important;
+}
+
 .flip-x {
 	transform: rotate(180deg);
 }

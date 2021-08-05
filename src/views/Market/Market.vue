@@ -6,11 +6,17 @@
 					<img src="../../assets/icon/momo_icon.png" alt="" height="30">&nbsp;
 					<span>MOMO</span>
 				</div>
+				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 4}" 
+					@click="gemMarketKey = 'box'+Date.now();$store.commit('marketState/initGemMarket');$store.commit('marketState/setData', {marketTypePos: 4, marketTabPos: 0, marketGemFilter: 2});">
+					<img src="../../assets/icon/box_icon.png" alt="" width="30">&nbsp;
+					<span>BOX</span>
+				</div>
 				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 1}" @click="$store.commit('marketState/setData', {marketTypePos: 1, marketTabPos: 0})">
 					<img src="../../assets/icon/rent_icon.png" alt="" height="30">&nbsp;
 					<span>{{$t("Hire_01")}}</span>
 				</div>
-				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 2}" @click="$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0})">
+				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 2}" 
+					@click="gemMarketKey = 'gem'+Date.now();$store.commit('marketState/initGemMarket');$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0, marketGemFilter: 1});">
 					<img src="../../assets/icon/yellow_icon.png" alt="" height="30">&nbsp;
 					<span>{{$t("Gemstone_44")}}</span>
 				</div>
@@ -35,7 +41,7 @@
 					<RentMySell ref="rentMySell" v-show="marketTabPos == 2" />
 					<RentStatistics v-if="marketTabPos == 3" />
 				</div>
-				<div v-else class="mgt-10">
+				<div v-else class="mgt-10" :key="gemMarketKey">
 					<div class="tal">
 						<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempGemSells.length + tempGemMarketCancelTx.length]"  />
 					</div>
@@ -94,6 +100,7 @@ export default {
 	},
 	data() {
 		return {
+			gemMarketKey: "gem",
 			tabList: [this.$t('Market_01'), this.$t("Market_02"), this.$t("Market_03"), this.$t("Market_53")],
 			rentTabList:[this.$t('Market_01'), this.$t("Hire_02"),this.$t("Hire_03"),this.$t("Market_53")],
 			tabPos: 0,
@@ -118,6 +125,11 @@ export default {
 			gemLv:[this.$t("Gemstone_49"), "Lv.1", "Lv.2", "Lv.3","Lv.4","Lv.5","Lv.6","Lv.7","Lv.8","Lv.9"],
 			myAccount: "",
 		};
+	},
+	watch: {
+		gemMarketKey: function (){
+			this.$refs.gemHistory &&  this.$refs.gemHistory.getMyHistory(this.myAccount);
+		}
 	},
 	computed: {
 		...mapState({
@@ -152,8 +164,8 @@ export default {
 
 		if(timer) clearInterval(timer);
 		timer = setInterval(async ()=>{
-			await this.$refs.momoHistory && this.$refs.momoHistory.getMyHistory(this.myAccount);
-			await this.$refs.gemHistory &&  this.$refs.gemHistory.getMyHistory(this.myAccount);
+			// await this.$refs.momoHistory && this.$refs.momoHistory.getMyHistory(this.myAccount);
+			// await this.$refs.gemHistory &&  this.$refs.gemHistory.getMyHistory(this.myAccount);
 		}, 10000)
 
 	},

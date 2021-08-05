@@ -25,6 +25,11 @@ export default class ConstantConfig {
 		BOX: 2
 	}
 
+	static  CurrencyTypeName = {
+		1: "MBOX",
+		2: "BUSD"
+	}
+
 	static BTN_LOCK_MAX_TIME = 30;
 
 	//当前宝石最大等级

@@ -85,11 +85,11 @@
 									</button>
 								</div>
 								<div class="tar">
-									<!-- <router-link to="/market?tab=2">
+									<router-link to="/market?tab=4">
 										<button class="mgt-20 btn-line" style="width:90%;">
 											{{$t("BOX_37")}}
 										</button>
-									</router-link> -->
+									</router-link>
 								</div>
 							</div>
 							

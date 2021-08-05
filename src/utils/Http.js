@@ -1,11 +1,10 @@
 import axios from 'axios';
-import {EventBus} from "@/utils";
+import {EventBus, Common} from "@/utils";
 import {EventConfig} from '@/config';
-import ConstantConfig from '../config/ConstantConfig';
 export default class HTTP {
 	// static serverNode = "https://nfttestapi.mobox.io"; //测试
-	static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
-	// static serverNode = "http://192.168.5.78:3000"; // 测试
+	// static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
+	static serverNode = "http://192.168.5.78:3000"; // 测试
 
 	static async post(url, sendData) {
 		try {
@@ -111,11 +110,7 @@ export default class HTTP {
 	}
 	static async getAuctionListGem(chain, page = 1, limit = 15, search = {}){
 		let params = {...search};
-		//处理类型筛选:1:宝石，2：箱子
-		if(params.type == 0)  params.filter = ConstantConfig.Market_1155_filter.ALL;
-		if(params.type > 0 && params.type < 5) params.filter = ConstantConfig.Market_1155_filter.GEM;
-		if(params.type == 5) params.filter = ConstantConfig.Market_1155_filter.BOX;
-
+		params.filter = Common.store.state.marketState.data.marketGemFilter;
 		if(params.type == 0) params.type = "";
 		if(params.level == 0) params.level = "";
 		if(params.sort != undefined) params.sort = this.sortPosToName[params.sort];
@@ -135,7 +130,7 @@ export default class HTTP {
 	}
 	//获取交易市场上我的NFT
 	static async getMyGemAuctionList(chain, address) {
-		let { data } = await this.get(`/gem_auction/list/${chain}/${address}?sort=-time&page=1&limit=128`);
+		let { data } = await this.get(`/gem_auction/list/${chain}/${address}?sort=-time&page=1&limit=128`, {filter: Common.store.state.marketState.data.marketGemFilter});
 		return data;
 	}
 	//获取交易市场上我的NFT
@@ -150,7 +145,7 @@ export default class HTTP {
 	}
 	//获取交易历史记录
 	static async getMyGemAuctionHistory(address, page=1,limit=50) {
-		let { data } = await this.get(`/gem_auction/logs/${address}?&page=${page}&limit=${limit}`, {filter: 0});
+		let { data } = await this.get(`/gem_auction/logs/${address}?&page=${page}&limit=${limit}`, {filter: Common.store.state.marketState.data.marketGemFilter});
 		return data;
 	}
 	static async getMyRentHistory(address, page=1,limit=50) {
@@ -169,12 +164,12 @@ export default class HTTP {
 	}
 	//获取gem交易历史记录24小时top50
 	static async geGemAuctionRankHistory24() {
-		let { data } = await this.get(`/gem_auction/transactions/top50?ago=1`);
+		let { data } = await this.get(`/gem_auction/transactions/top50?ago=1`, {filter: Common.store.state.marketState.data.marketGemFilter});
 		return data;
 	}
 	//获取gem交易历史记录24小时top50
 	static async getRentRankHistory24() {
-		let { data } = await this.get(`/momo_renter/transactions/top50?ago=1`);
+		let { data } = await this.get(`/momo_renter/transactions/top50?ago=1` );
 		return data;
 	}
 	//获取momo交易历史记录top50
@@ -189,7 +184,7 @@ export default class HTTP {
 	}
 	//获取gem交易历史记录
 	static async getGemAuctionHistoryAll() {
-		let { data } = await this.get(`/gem_auction/logs?&page=1&limit=50`,  {filter: 0});
+		let { data } = await this.get(`/gem_auction/logs?&page=1&limit=50`, {filter: Common.store.state.marketState.data.marketGemFilter});
 		return data;
 	}
 	//获取gem交易历史记录
@@ -200,7 +195,7 @@ export default class HTTP {
 
 	//拍卖统计
 	static async getGemAuctionStatistics(time) {
-		let { data } = await this.get(`/gem_auction/transactions?&ago=${time}`);
+		let { data } = await this.get(`/gem_auction/transactions?&ago=${time}`, {filter: Common.store.state.marketState.data.marketGemFilter});
 		return data;
 	}
 	//拍卖统计

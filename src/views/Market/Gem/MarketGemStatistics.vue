@@ -19,7 +19,7 @@
 						</div>
 					</div>
 					<div class="vertical-children tac">
-						<img src="@/assets/coin/MBOX.png" height="50" alt="">
+						<img :src="require(`@/assets/coin/${showCoin}.png`)" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
 							<p class="opa-6">{{$t("Market_45")}}</p>
 							<h1 class="color-w tac">{{numFloor(statistics.volume / 1e9, 1e2).toLocaleString()}} </h1>
@@ -39,12 +39,15 @@
 					<li @click="tableDataPos = 'recent';getTargetHistory('recent') " :class="tableDataPos == 'recent'?'active':''" class="opa-6">{{$t("Market_40")}}</li>
 					<li @click="tableDataPos = 'last24';getTargetHistory('last24')" :class="tableDataPos == 'last24'?'active':''" class="opa-6">{{$t("Market_55")}}</li>
 					<!-- <li @click="tableDataPos = 'last';getTargetHistory('last')" :class="tableDataPos == 'last'?'active':''" class="opa-6">{{$t('Market_56')}}</li> -->
-					<li @click="tableDataPos = 'myHistory';getTargetHistory('myHistory')" :class="tableDataPos == 'myHistory'?'active':''" class="opa-6">{{$t("Market_54")}}({{marketGemHistory.total}})</li>
+					<li @click="tableDataPos = 'myHistory';getTargetHistory('myHistory')" :class="tableDataPos == 'myHistory'?'active':''" class="opa-6">{{$t("Market_54")}}({{tableData.myHistoryTotal}})</li>
 				</ul>
 
 				<table class="mgt-20" style="width:100%; border-collapse:collapse;border: none;">
 					<tr class="opa-6 tal">
-						<th class="list-item-momo" style="padding-left:10px">{{$t("Gemstone_44")}}</th>
+						<th class="list-item-momo" style="padding-left:10px">
+							<span v-if="marketTypePos == 4">BOX</span>
+							<span v-else>{{$t("Gemstone_44")}}</span>
+						</th>
 						<th>{{$t("Market_25")}}</th>
 						<th>{{$t("Market_26")}}</th>
 						<th>{{$t("Market_17")}}</th>
@@ -66,7 +69,7 @@
 							</span>
 						</div>
 						<tr><td colspan="5" style="height:5px"></td></tr>
-						<tr class="list-item">
+						<tr class="list-item" >
 							<td style="width:350px;" class="list-item-momo">
 								<span v-for="(item2, index) in item.ids" :key="item2+index" style="margin:0px 2px" class="por">
 									<template v-if="item2 > 0">
@@ -79,11 +82,11 @@
 							<td class="addr">{{getShortAddr(item.auctor)}}</td>
 							<td class="vertical-children">
 								<span :class="item.isBuy?'color-buy':'color-sell'" v-if="tableDataPos == 'myHistory' ">
-									{{item.isBuy?"-":"+"}}{{numFloor((item.price / 1e9) * (item.isBuy?1:0.95), 10000)}} MBOX
+									{{item.isBuy?"-":"+"}}{{numFloor((item.price / 1e9) * (item.isBuy?1:0.95), 10000)}}  {{getCurrencyName(item.currency)}}
 								</span>
 								<span v-else>
-									<img  class="hide-xs" src="@/assets/coin/MBOX.png" height="25" alt="">
-									{{numFloor(item.price / 1e9, 1e2)}} MBOX
+									<img  class="hide-xs" :src="require(`@/assets/coin/${getCurrencyName(item.currency)}.png`)" height="25" alt="">
+									{{numFloor(item.price / 1e9, 1e2)}}  {{getCurrencyName(item.currency)}}
 								</span>
 							</td>
 							<td class="tar" >
@@ -121,7 +124,7 @@ export default {
 				volume: 0,
 			},
 			daySelect: 1,
-			tableData:{"recent":[], "last24":[],"last":[],"myHistory":[]}, 
+			tableData:{"recent":[], "last24":[],"last":[],"myHistory":[],"myHistoryTotal": 0,}, 
 			tableDataPos: "recent",
 			myHistoryPage:1,
 		});
@@ -129,7 +132,12 @@ export default {
 	computed:{
 		...mapState({
 			marketGemHistory: (state) => state.marketState.data.marketGemHistory,
+			marketTypePos: (state) => state.marketState.data.marketTypePos,
+			marketGemFilter: (state) => state.marketState.data.marketGemFilter,
 		}),
+		showCoin(){
+			return this.marketTypePos == 4 ? "BUSD": "MBOX"
+		}
 	},
 	watch:{
 		marketGemHistory:function(newData){
@@ -139,9 +147,12 @@ export default {
 		}
 	},
 	async created(){
-		this.tableData.myHistory = this.marketGemHistory.list;
+
 		await this.getGemAuctionStatistics();
 		await this.getGemAuctionHistoryAll();
+
+		this.myHistoryPage = 1;
+		this.getMyAuctionHistory();
 	},
 	methods: {
 		async getTargetHistory(type){
@@ -168,6 +179,7 @@ export default {
 		async getGemAuctionHistoryAll(){
 			this.$store.commit("marketState/setData", {marketLoading: true});
 			let res = await Http.getGemAuctionHistoryAll();
+			console.log(res,"getGemAuctionHistoryAll");
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			if(res){
 				this.setData(res, "recent");
@@ -195,11 +207,11 @@ export default {
 		async getMyAuctionHistory(){
 			let myAccount = await Wallet.ETH.getAccount();
 			if(myAccount == "") return;
-			if(this.myHistoryPage == 1){
-				this.tableData.myHistory = this.marketGemHistory.list;
-				this.scrollToTop(400);
-				return
-			}
+			// if(this.myHistoryPage == 1){
+			// 	this.tableData.myHistory = this.marketGemHistory.list;
+			// 	this.scrollToTop(400);
+			// 	return
+			// }
 			this.$store.commit("marketState/setData", {marketLoading: true});
 			this.tableData.myHistory = [];
 			let data = await Http.getMyGemAuctionHistory(myAccount, this.myHistoryPage);
@@ -210,6 +222,7 @@ export default {
 					item.isBuy =  item.bidder.toLocaleLowerCase() == myAccount.toLocaleLowerCase();
 				});
 				this.tableData.myHistory = data.list;
+				this.tableData.myHistoryTotal = data.total;
 			}
 		},
 		scrollToTop(time){

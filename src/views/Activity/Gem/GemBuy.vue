@@ -9,8 +9,8 @@
 					<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="30">
 				</h1>
 				<div class="tac mgt-10">
-					<!-- <span v-if="gemApplyEndCountDown <=0 ">{{$t("Gemstone_50")}}</span> -->
-					<template >
+					<span v-if="getCountDown  > 8640000 ">{{$t("Gemstone_50")}}</span>
+					<template v-else>
 						<p v-if="getCountDown >0">{{$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
 						<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
 					</template>

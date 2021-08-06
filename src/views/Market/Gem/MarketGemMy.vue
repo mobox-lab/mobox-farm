@@ -491,11 +491,11 @@ export default {
 					uptime: parseInt(new Date().valueOf()/1000),
 					orderId: -1,
 					tx: hash,
+					currency: tokenType, 
 					chain: "bnb",
 					ids:  [...auctionObj.ids_],
 					amounts:  [...auctionObj.amounts_],
 				}
-
 	
 				console.log("tempData",obj);
 				this.tempGemSells.unshift(obj);

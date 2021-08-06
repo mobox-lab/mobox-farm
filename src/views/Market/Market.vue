@@ -7,7 +7,7 @@
 					<span>MOMO</span>
 				</div>
 				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 4}" 
-					@click="gemMarketKey = 'box'+Date.now();$store.commit('marketState/initGemMarket');$store.commit('marketState/setData', {marketTypePos: 4, marketTabPos: 0, marketGemFilter: 2});">
+					@click="gemMarketKey = 'box'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2});$store.commit('marketState/setData', {marketTypePos: 4, marketTabPos: 0, marketGemFilter: 2});">
 					<img src="../../assets/icon/box_icon.png" alt="" width="30">&nbsp;
 					<span>BOX</span>
 				</div>
@@ -16,7 +16,7 @@
 					<span>{{$t("Hire_01")}}</span>
 				</div>
 				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 2}" 
-					@click="gemMarketKey = 'gem'+Date.now();$store.commit('marketState/initGemMarket');$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0, marketGemFilter: 1});">
+					@click="gemMarketKey = 'gem'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 0});$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0, marketGemFilter: 1});">
 					<img src="../../assets/icon/yellow_icon.png" alt="" height="30">&nbsp;
 					<span>{{$t("Gemstone_44")}}</span>
 				</div>
@@ -43,11 +43,11 @@
 				</div>
 				<div v-else class="mgt-10" :key="gemMarketKey">
 					<div class="tal">
-						<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempGemSells.length + tempGemMarketCancelTx.length]"  />
+						<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,getGemTemNum]"  />
 					</div>
 					<MarketGemAll v-show="marketTabPos == 0" />
 					<MarketGemMy v-show="marketTabPos == 1" />
-					<MarketGemMySell v-if="marketTabPos == 2" />
+					<MarketGemMySell v-show="marketTabPos == 2" />
 					<MarketGemStatistics v-if="marketTabPos == 3" />
 				</div>
 
@@ -140,6 +140,7 @@ export default {
 			tempGemSells: (state) => state.marketState.data.tempGemSells,
 			tempGemMarketCancelTx: (state) => state.marketState.data.tempGemMarketCancelTx,
 			marketTypePos: (state) => state.marketState.data.marketTypePos,
+			marketGemFilter: (state) => state.marketState.data.marketGemFilter,
 			marketRentOrderList: (state) => state.marketState.data.marketRentOrderList,
 			coinArr: (state) => state.bnbState.data.coinArr,
 		}),
@@ -151,10 +152,24 @@ export default {
 				}
 			})
 			return arr;
+		},
+		getGemTemNum(){
+			let num = 0;
+			this.tempGemSells.map(item=>{
+				if(item.currency == this.marketGemFilter) num++;
+			});
+			this.tempGemMarketCancelTx.map(item=>{
+				if(item.currency == this.marketGemFilter) num++;
+			});
+			return num;
 		}
 	},
 	async created(){
 		let marketTypePos = this.$route.query.tab || this.marketTypePos;
+		if(marketTypePos == 4){
+			this.gemMarketKey = "box" + Date.now();
+			this.$store.commit('marketState/initGemMarket', {defaultSort: 2});
+		}
 		this.$store.commit('marketState/setData', {marketTypePos});
 
 		this.myAccount = await Wallet.ETH.getAccount();
@@ -164,8 +179,8 @@ export default {
 
 		if(timer) clearInterval(timer);
 		timer = setInterval(async ()=>{
-			// await this.$refs.momoHistory && this.$refs.momoHistory.getMyHistory(this.myAccount);
-			// await this.$refs.gemHistory &&  this.$refs.gemHistory.getMyHistory(this.myAccount);
+			await this.$refs.momoHistory && this.$refs.momoHistory.getMyHistory(this.myAccount);
+			await this.$refs.gemHistory &&  this.$refs.gemHistory.getMyHistory(this.myAccount);
 		}, 10000)
 
 	},

@@ -259,7 +259,7 @@ export default {
 		async buyPet(){
 			let coinKey = this.oprCoin;
 			if(this.coinArr[coinKey].allowanceToGemAuction <= 0 || this.lockBtn.buyMomoLock > 0) return
-			if(this.nowPrice/1e9 > Number(this.coinArr[coinKey].balance)){
+			if(this.getNowPetItem.price/1e9 > Number(this.coinArr[coinKey].balance)){
 				this.showNotify(this.$t("Market_34"), "error");
 				return ;
 			}
@@ -298,7 +298,7 @@ export default {
 			let hash = await Wallet.ETH.cancelGemAuction( this.getNowPetItem.orderId);
 			if(hash){
 				//添加一条临时的下架数据
-				this.tempGemMarketCancelTx.push({tx:this.getNowPetItem.tx, nextHash: hash});
+				this.tempGemMarketCancelTx.push({tx:this.getNowPetItem.tx, nextHash: hash,currency: this.getNowPetItem.currency});
 				this.$store.commit("marketState/setData", { tempGemMarketCancelTx: this.tempGemMarketCancelTx});
 				await Common.sleep(1000);
 				this.$router.back(-1);

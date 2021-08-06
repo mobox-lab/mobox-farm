@@ -15,6 +15,11 @@
 						x{{ item.num }}
 					</div>
 				</div>
+				<div style="position: absolute; width: 100%; top: -10px; left: 0px" v-if="item.currency == 2">
+					<div class="vertical-children pet_num small"  >
+						<span>{{$t('Market_39')}}: {{ numFloor(item.price / item.num /1e9, 100) }} {{getCurrencyName(item.currency)}}</span>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div ref="pagination" class="swiper-pagination"></div>
@@ -39,7 +44,7 @@ export default {
 	},
 	computed: {
 		getShowList(){
-			let {ids, amounts} = this.data.item;
+			let {ids, amounts,price, currency} = this.data.item;
 			let arr = [];
 			ids.map((id, index)=>{
 				let obj = {};
@@ -47,6 +52,8 @@ export default {
 				obj.level = Number(id) % 100;
 				obj.imgName = id;
 				obj.chain = "bnb";
+				obj.price = price;
+				obj.currency = currency;
 				arr.push(obj);
 			});
 
@@ -55,7 +62,9 @@ export default {
 			});
 			return arr;
 		},
-
+		showCoin(){
+			return this.marketTypePos == 4 ? "BUSD": "MBOX"
+		}
 	},
 	async mounted(){
 		let that = this;
@@ -191,7 +200,6 @@ export default {
 	display: inline-block;
 	border-radius: 30px;
 	padding: 2px 15px;
-	font-size: 12px;
 	background: rgba(0, 0, 0, 0.3);
 	text-align: center;
 	margin-top: 20px;

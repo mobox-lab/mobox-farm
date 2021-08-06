@@ -63,6 +63,7 @@ export default {
 		...mapState({
 			marketGemMy: (state) => state.marketState.data.marketGemMy,
 			myGemMarketSellFilter: (state) => state.marketState.data.myGemMarketSellFilter,
+			marketGemFilter: (state) => state.marketState.data.marketGemFilter,
 			tempGemSells: (state) => state.marketState.data.tempGemSells,
 			tempGemMarketCancelTx: (state) => state.marketState.data.tempGemMarketCancelTx,
 			marketGemMySellPage: (state) => state.marketState.data.marketGemMySellPage,
@@ -96,8 +97,12 @@ export default {
 			this.tempGemMarketCancelTx.map(item=>cancelTx.push(item.tx));
 			list.map(item=>{
 				if(cancelTx.indexOf(item.tx) != -1) item.orderId = -2;
-			})
-			return   [...this.tempGemSells,...list].slice(
+			});
+			let temSell = this.tempGemSells.filter(item=>{
+				return item.currency == this.marketGemFilter
+			});
+
+			return   [...temSell,...list].slice(
 				this.onePageCount * (this.marketGemMySellPage - 1),
 				this.onePageCount * this.marketGemMySellPage
 			);
@@ -143,7 +148,7 @@ export default {
 
 			//删除临时下架的数据
 			this.tempGemMarketCancelTx.map((item, index)=>{
-				if(hashArr.indexOf(item.tx) == -1){
+				if(hashArr.indexOf(item.tx) == -1 && item.currency == this.marketGemFilter){
 					this.tempGemMarketCancelTx.splice(index, 1);
 				}
 			})

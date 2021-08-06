@@ -2142,9 +2142,10 @@ export default class ETH {
 					saveHash = hash;
 					resolve(hash);
 				},
-				()=>{
+				async ()=>{
 					console.log("cancelAuction success!!!!!");
-					Common.app.getGemBag();
+					await Common.app.getNewBoxNum();
+					await Common.app.getGemBag();
 				},
 				()=>{
 					console.log(saveHash);
@@ -2220,7 +2221,7 @@ export default class ETH {
 				hash=>resolve(hash),
 				async ()=>{
 					console.log("buyGemMarketPet success!!!!!");
-					Common.app.setCoinValueByName(coinKey);
+					await Common.app.setCoinValueByName(coinKey);
 					await Common.app.getGemBag();
 					await Common.app.getNewBoxNum();
 				}

@@ -245,7 +245,6 @@ export default {
 	display: inline-block;
 	border-radius: 30px;
 	padding: 2px 15px;
-	font-size: 12px;
 	background: rgba(0, 0, 0, 0.3);
 	text-align: center;
 }

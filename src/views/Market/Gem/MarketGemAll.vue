@@ -8,7 +8,8 @@
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-				<div class="dropdown-group " @click="showDrop" tabindex="3">
+				<Dropdown v-if="marketTypePos == 4" :list="sortArr" :defaultSelectPos="marketGemSearch.sort" :onChange="onSortChange" style="margin-top:0px" />
+				<div class="dropdown-group " @click="showDrop" tabindex="3" v-else>
 					<div class="dropdown-group-value por">
 						{{$t("Market_63")}} ▼
 					</div>

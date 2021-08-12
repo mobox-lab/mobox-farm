@@ -1,7 +1,7 @@
 <template>
 	<div id="aridorp" class="tac">
 		<div class="mgt-10"></div>
-		<section  v-if="needMigrate">
+		<section  v-if="needMigrate || $route.query.old == 1">
 			<div class="tac mgt-10"  id="airdorp-top-menu">
 				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v2'})"  :class="pledgeType == 'v2'?'active':''"  class="tab-menu"   >{{$t("Air-drop_135")}}</div>
 				<div @click="$store.commit('bnbState/setData', {pledgeType: 'v1'});"  :class="pledgeType == 'v1'?'active':''" class="tab-menu por" >
@@ -505,7 +505,7 @@
 				{{$t("Air-drop_198")}}
 			</div>
 		</Dialog>
-		<Dialog id="mbox-drop-des-dialog" :top="100" :width="400">
+		<Dialog id="mbox-drop-des-dialog" :top="100" :width="420">
 			<h3>{{$t("Air-drop_211")}}</h3>
 			<div class="ly-input-content mgt-20">
 				<div class="aveage-box small opa-6">
@@ -522,6 +522,7 @@
 					</p>
 				</div>
 			</div>
+			<div class="small opa-6 mgt-10 tal">{{$t("Air-drop_213")}}</div>
 		</Dialog>
 
 		<KeyOpr ref="keyopr" />

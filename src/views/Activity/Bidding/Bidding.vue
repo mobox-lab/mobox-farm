@@ -162,7 +162,7 @@
 					
 					<div :class="coinArr['MBOX'].allowanceToBid == 0 ?'btn-group':''"  style="width:280px;margin:10px auto">
 						<StatuButton  data-step="1" v-if="coinArr['MBOX'].allowanceToBid == 0" class="mgt-10" style="width:80%" :onClick="approve" :isLoading="coinArr['MBOX'].isApproving">{{$t("Air-drop_16")}} MBOX</StatuButton>
-						<StatuButton  data-step="2" :isDisable="!(coinArr['MBOX'].allowanceToBid > 0) || Number(inputValue) < getNowNeedPrice || Number(inputValue) > coinArr['MBOX'].balance" class="mgt-10" style="width:80%" :onClick="goBid" :isLoading="lockBtn.bidLock > 0">
+						<StatuButton  data-step="2" :isDisable="!(coinArr['MBOX'].allowanceToBid > 0) || Number(inputValue) < getNowNeedPrice " class="mgt-10" style="width:80%" :onClick="goBid" :isLoading="lockBtn.bidLock > 0">
 							{{$t("Auction_29")}}
 						</StatuButton>
 					</div>
@@ -331,6 +331,10 @@ export default {
 		},
 		//竞拍momo
 		async goBid(){
+			if(Number(this.inputValue) > this.coinArr['MBOX'].balance){
+				this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox())
+				return
+			} 
 			let obj = {
 				amount: Number(this.inputValue),
 				tokenId: this.bidInfo.tokenId

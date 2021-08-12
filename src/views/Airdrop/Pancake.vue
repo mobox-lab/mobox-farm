@@ -7,7 +7,8 @@
 				<!-- <div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''" class="tab-menu " v-if="oprData.isLP">闪兑</div> -->
 				<div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  v-if="oprData.isLP">{{$t("Air-drop_30")}}</div>
 				<div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  v-if="!oprData.isLP">{{$t("Air-drop_07")}}</div>
-				<a href="https://www.binance.org/cn/bridge" target="_blank" class="tab-menu ">{{$t("Air-drop_31")}}</a>
+				<a href="https://www.binance.org/cn/bridge" target="_blank" class="tab-menu " v-if="$i18n.locale == 'zh-CN' ">{{$t("Air-drop_31")}}</a>
+				<a href="https://www.binance.org/en/bridge" target="_blank" class="tab-menu " v-else>{{$t("Air-drop_31")}}</a>
 			</div>
 			<!-- TabBody -->
 			<div class="por">

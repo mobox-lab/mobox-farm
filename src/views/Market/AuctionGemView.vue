@@ -160,6 +160,7 @@ export default {
 			if(petObj.oldTime == undefined){
 				petObj.oldTime = petObj.uptime;
 			}
+			console.log({petObj});
 			return petObj;
 		},
 		//是否是我的拍卖
@@ -260,7 +261,11 @@ export default {
 			let coinKey = this.oprCoin;
 			if(this.coinArr[coinKey].allowanceToGemAuction <= 0 || this.lockBtn.buyMomoLock > 0) return
 			if(this.getNowPetItem.price/1e9 > Number(this.coinArr[coinKey].balance)){
-				this.showNotify(this.$t("Market_34"), "error");
+				if(coinKey == "MBOX"){
+					this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox())
+				}else{
+					this.showNotify(this.$t("Market_34"), "error");
+				}
 				return ;
 			}
 

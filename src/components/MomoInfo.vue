@@ -278,7 +278,6 @@ export default {
 			return speciality == 2 || speciality == 3
 		},
 		getNowPetItem(){
-			console.log("getNowPetItem-------",this.data);
 			return this.data;
 		},
 		needApprove() {

@@ -10,6 +10,7 @@ import PetItemSmall from "@/components/PetItemSmall";
 import PetItemScroll from "@/components/PetItemScroll";
 import PetView from "@/components/PetView";
 import Dialog from "@/components/Dialog";
+import ConfirmDialog from "@/components/ConfirmDialog";
 import Tab from "@/components/Tab";
 import SelectNum from "@/components/SelectNum";
 import JumpPet from "@/components/JumpPet";
@@ -34,6 +35,7 @@ export {
 	PetItemScroll,
 	PetView,
 	Dialog,
+	ConfirmDialog,
 	Tab,
 	SelectNum,
 	JumpPet,

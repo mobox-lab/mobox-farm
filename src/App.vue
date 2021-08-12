@@ -299,6 +299,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_29")}}</h3>
+						<span v-html="$t('Notice_28')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_27")}}</h3>
 						<span v-html="$t('Notice_26')" ></span>
 					</div>
@@ -366,10 +370,11 @@
 		</Dialog>
 		
 		<div id="fly-dot"></div>
-		<Pancake ref="pancake" />
 		<VMbox ref="vmbox" />
+		<Pancake ref="pancake" />
 		<QuickBuy ref="quickBuy" />
 		<GemBag ref="gemBag" />
+		<ConfirmDialog ref=confirmDialog />
 		<WalletOprStatus />
 		<WalletConnectDialog />
 	</div>
@@ -380,7 +385,7 @@ import QuickBuy from "./views/Market/Momo/QuickBuy";
 import GemBag from "./views/Activity/Gem/GemBag";
 import VMbox from "./views/VMBOX/VMbox";
 
-import {Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
+import {Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
 import { InitEth, InitTron, CommonMethod } from "@/mixin";
 import { mapState } from "vuex";
 import { Common, Http, Wallet } from "@/utils";
@@ -390,7 +395,7 @@ let timer = null;
 export default {
 	name: "App",
 	mixins: [InitEth, InitTron, CommonMethod],
-	components: {GemBag, QuickBuy,Notification, NotificationTrans, Dialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
+	components: {GemBag, QuickBuy,Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
 	data() {
 		return {
 			langArr: ["English", "中文"],
@@ -471,7 +476,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "1.9"
+			noticeVersion: "2.0"
 		};
 	},
 	watch: {

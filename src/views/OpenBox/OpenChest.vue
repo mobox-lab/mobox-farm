@@ -10,7 +10,7 @@
 					<br />
 					<div class="por box"  style="height:300px;width:300px; margin:0px auto; ">
 						<div id="openbox-anime-new" class="hide"></div>
-						<div class="animation-box mgt-50" id="openbox-anime"></div>
+						<div class="animation-box mgt-20" id="openbox-anime"></div>
 						<!-- <div class="box-show" @click="playBoxAnime2">
 							<div id="box-spine"></div>
 						</div> -->
@@ -54,6 +54,21 @@
 							<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
 						</div>
 					</div>
+
+					<div style="padding:10px 0px;position:absolute;bottom:0px;width:100%;left:0px;background:#1F232A;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;" class="tal rate-show">
+						<div class="col-md-1"></div>
+						<div class="col-md-2 col-xs-4 vertical-children mgt-5" v-for="item in $parent.rateObj" :key="item.lv">
+							<div style="height:20px;width:20px;border-radius:20px;padding:2px;" class="dib dot-bg">
+								<div style="width:100%;height:100%;border-radius:20px;border:2px solid #1B1C21" :class="`bg-new${item.lv}`"></div>
+							</div>
+							<div class="dib mgl-5" style="line-height:15px">
+								<p>{{item.rate}}</p>
+								<p class="small opa-6">{{$t(item.lang)}}</p>
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+
 					<br />
 
 					<!-- <button class="btn-primary " @click="playBoxAnime">抖动 1</button>
@@ -867,9 +882,7 @@ export default {
 	font-size: 16px;
 	margin-top: 60px;
 }
-#openbox-anime {
-	margin: 50px 0px;
-}
+
 
 @media (max-width:1000px) {
 	#show-card-cont{
@@ -896,6 +909,10 @@ export default {
 }
 
 @media (max-width: 768px) {
+	.rate-show{
+		zoom: 0.8;
+		padding: 5px 20px !important;
+	}
 	#show-card-cont{
 		width: 100% !important;
 	}

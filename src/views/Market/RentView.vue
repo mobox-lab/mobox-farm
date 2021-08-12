@@ -294,7 +294,11 @@ export default {
 		},
 		//租赁
 		async rentPet(){
-			console.log(this.statusObj);
+			if(this.statusObj.currentRentPrice / 1e18 > Number(this.coinArr["MBOX"].balance)){
+				this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox());
+				return;
+			}
+
 			let obj = {
 				tokenId_: this.getNowPetItem.tokenId, 
 				orderId_: this.statusObj.orderId,

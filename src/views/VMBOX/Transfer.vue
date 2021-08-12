@@ -130,8 +130,8 @@ export default {
 	methods: {
 		async transferVeMbox(){
 			let orderIndex_ = this.oprOrderIndex;
-			let {orderIndexsCountDown, orderIndexs} = this.coinArr[this.to.coinKey].veMbox;
-			if(orderIndexsCountDown[orderIndex_] <=0 && orderIndexs[orderIndex_].stakeMbox > 0){
+			let { orderIndexs } = this.coinArr[this.to.coinKey].veMbox;
+			if(Number(orderIndexs[orderIndex_].endTime) < Date.now() / 1000 && orderIndexs[orderIndex_].stakeMbox > 0){
 				this.showNotify(this.$t("Air-drop_185"), "error");
 				return;
 			}

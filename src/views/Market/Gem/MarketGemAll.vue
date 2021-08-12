@@ -19,6 +19,7 @@
 						<Dropdown :list="sortArr" :defaultSelectPos="marketGemSearch.sort" :onChange="onSortChange" />&nbsp;
 					</div>
 				</div>
+				<Dropdown v-if="marketTypePos == 4" id="busd" class="mgl-5" style="margin-top:0px" :list="$parent.getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="$parent.onCoinChange" />
 			</div>
 		</div>
 		<div :class="marketGems.list.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
@@ -176,5 +177,13 @@ export default {
 		#market-pet-fitter{
 			zoom: 0.8;
 		}
+
+		/* #busd{
+			margin-top: 10px !important;
+			margin-left: 0px !important;
+			position: absolute;
+			right: 0px;
+			top: 40px;
+		} */
 	}
 </style>

@@ -3,12 +3,11 @@
 		<div class="clear mgt-10">
 			<div class="hide" id="tmp"></div>
 			<section class="col-md-7" style="padding:10px">
-				<div class="adv-panel">
+				<div class="adv-panel por box-section" style="padding-bottom:45px">
 					<p class="opa-6 mgt-20">{{ $t("BOX_01") }}</p>
 					<h1 class="dib mgt-10" style="font-size: 20px">
 						{{ totalOpenBoxAmount.bnb }}
 					</h1>
-					<br />
 					<div class="por box"  style="height:300px; margin:0px auto; ">
 						<div class="box-show" >
 							<div id="box-spine"></div>
@@ -51,6 +50,20 @@
 							</div>
 							<div :style="`flex: ${posArr[petDataArr.length].flexNum}`"></div>
 						</div>
+					</div>
+
+					<div style="padding:10px 0px;position:absolute;bottom:0px;width:100%;left:0px;background:#1F232A;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;" class="tal rate-show">
+						<div class="col-md-1"></div>
+						<div class="col-md-2 col-xs-4 vertical-children mgt-5" v-for="item in $parent.rateObj" :key="item.lv">
+							<div style="height:20px;width:20px;border-radius:20px;padding:2px;" class="dib dot-bg">
+								<div style="width:100%;height:100%;border-radius:20px;border:2px solid #1B1C21" :class="`bg-new${item.lv}`"></div>
+							</div>
+							<div class="dib mgl-5" style="line-height:15px">
+								<p>{{item.rate}}</p>
+								<p class="small opa-6">{{$t(item.lang)}}</p>
+							</div>
+						</div>
+						<div class="col-md-1"></div>
 					</div>
 					<br />
 
@@ -283,6 +296,8 @@ export default {
 			cardSpines: [],
 
 			newBoxApproveToMinter: "-",
+
+			
 		};
 	},
 	computed: {
@@ -486,15 +501,15 @@ export default {
 		},
 		renderBoxSpine(){
 			this.boxSpine = new window.spine.SpineWidget("box-spine", {
-				json: "./animation/boxV3/kejixiangzi.json",
-				atlas: "./animation/boxV3/kejixiangzi.atlas",
+				json: "./animation/boxV3/kejixiangzi2.json",
+				atlas: "./animation/boxV3/kejixiangzi2.atlas",
 				backgroundColor: "#00000000",
 				animation: "jingzhen",
 				loop: true,
 				fitToCanvas: false,
 				scale:0.4,
-				x:280,
-				y:30,
+				x: 280,
+				y: 50,
 				success: ()=>{
 					this.boxSpine.state.timeScale = 1.8;
 				}
@@ -667,7 +682,7 @@ export default {
 				//开始spine动画
 				window.$(".box-show").addClass("box-show-open");
 				this.boxSpine.config.loop = false;
-				this.boxSpine.setAnimation("open", {
+				this.boxSpine.setAnimation("open2", {
 					complete: async ()=>{
 						document.querySelector("#show-card").classList.remove("hide");
 						let $cards = $(".show-card-item");
@@ -1053,6 +1068,15 @@ export default {
 	/* #show-card-cont{
 		width: 100% !important;
 	} */
+
+	.rate-show{
+		zoom: 0.8;
+		padding: 5px 20px !important;
+	}
+
+	.box-section{
+		padding-bottom: 30px;
+	}
 	
 	.table-his td{
 		padding: 5px;

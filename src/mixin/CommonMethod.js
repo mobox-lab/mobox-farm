@@ -18,6 +18,12 @@ const CommonMethod = {
 		})
 	},
 	methods: {
+		getConfirmDialog(){
+			return this.$root.$children[0].$refs.confirmDialog;
+		},
+		showSwapBox(){
+			this.$root.$children[0].$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap');
+		},
 		getCurrencyName(currency){
 			return ConstantConfig.CurrencyTypeName[currency]
 		},

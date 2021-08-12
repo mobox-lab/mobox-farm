@@ -27,6 +27,13 @@ export default {
 			tabArr: [
 				{icon: require("@/assets/icon/box.png"), text: "BOX_34", key: "box"},
 				{icon: require("@/assets/icon/box_old.png"), text: "BOX_05", key: "chest"},
+			],
+			rateObj: [
+				{lv:1, rate: '50%', lang: 'MOMO_09'},
+				{lv:2, rate: '35%', lang: 'MOMO_10'},
+				{lv:3, rate: '12%', lang: 'MOMO_11'},
+				{lv:4, rate: '2.5%', lang: 'MOMO_12'},
+				{lv:5, rate: '0.5%', lang: 'MOMO_13'},
 			]
 		})
 	},

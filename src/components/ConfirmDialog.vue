@@ -1,8 +1,8 @@
 <template>
-	<Dialog  id="confirm-dialog" :top="100" :width="350">
-		<h4 class="mgt-20 tac" v-html="showMsg"></h4>
+	<Dialog  id="confirm-dialog" :top="100" :width="300">
+		<h4 class="mgt-20" v-html="showMsg"></h4>
 		<div class="mgt-50">
-			<button v-if="!hideCancel" class="btn-default" @click="close">{{$t("Common_04")}}</button>
+			<button class="btn-default" @click="close">{{$t("Common_04")}}</button>
 			<button class="btn-primary mgl-5" @click="confirmCb && confirmCb(); close()">{{$t("Common_03")}}</button>
 		</div>
 	</Dialog>
@@ -19,14 +19,12 @@ export default {
 		return ({
 			showMsg: "",
 			confirmCb: null,
-			hideCancel: false,
 		})
 	},
 	methods: {
-		show(showMsg, confirmCb = null, hideCancel = false){
+		show(showMsg, confirmCb = null){
 			this.showMsg = showMsg;
 			this.confirmCb = confirmCb;
-			this.hideCancel = hideCancel;
 			this.oprDialog("confirm-dialog","block");
 			return this;
 		},

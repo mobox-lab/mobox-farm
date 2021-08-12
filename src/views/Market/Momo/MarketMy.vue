@@ -151,7 +151,10 @@
 		</Dialog>
 		<Dialog id="confirm-sell-dialog" :top="200" :width="400">
 			<h2 class="mgt-10">{{$t("Market_10")}}</h2>
-			<div class="mgt-20">
+			<span style="zoom: 0.7">
+				<PetItem style="margin:10px 0px"  v-bind:data="{item: sellObj.sellData}" v-if="sellObj.sellData && sellObj.sellType == '721' "></PetItem>
+			</span>
+			<div class="mgt-10">
 				<Tab :list="[$t('Market_36'),$t('Market_37')]" style="zoom:0.8"  :defaultSelectPos="priceTypePos" :onChange="onTabChange"  ref="priceTypeTab" :notice="[]"/>
 				<div class="ly-input-content mgt-10">
 					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} (BUSD)</p>
@@ -186,8 +189,16 @@
 			</button>
 		</Dialog>
 		<Dialog id="confirm-submit-dialog"  :top="200" :width="350">
-			<h4 class="mgt-30" v-html="$t('Market_58').replace('#0#', `<span style='color: #49c773'>${sellObj.startPrice} BUSD</span>` )"></h4>
-			<div class="mgt-50">
+			<span style="zoom: 0.7">
+				<PetItem style="margin:10px 0px"  v-bind:data="{item: sellObj.sellData}" v-if="sellObj.sellData && sellObj.sellType == '721' " class="market" >
+					<div class="vertical-children mgt-10" style="font-size: 18px">
+						<img src="@/assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
+						<span>{{sellObj.startPrice}} <sub class="small">BUSD</sub></span>
+					</div>
+				</PetItem>
+			</span>
+			<h4 class="mgt-10" v-html="$t('Market_58').replace('#0#', `<span style='color: #49c773'>${sellObj.startPrice} BUSD</span>` )"></h4>
+			<div class="mgt-30">
 				<button class="btn-primary" @click="oprDialog('confirm-submit-dialog', 'none');">{{$t("Common_04")}}</button>
 				<button class="btn-primary mgl-5" @click="oprDialog('confirm-submit-dialog', 'none');confirmSell()">{{$t("Common_03")}}</button>
 			</div>

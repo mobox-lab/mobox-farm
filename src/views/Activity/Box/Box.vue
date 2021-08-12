@@ -2,7 +2,7 @@
 	<div class="tac center-box">
 		<div class="por clear mgt-10">
 			<section class="col-md-7" style="padding:10px">
-				<div class="adv-panel">
+				<div class="adv-panel por">
 					<h1 class="vertical-children">
 						<span>{{$t("NewBOX_01")}}</span>
 						<img class="mgl-10 cur-point" @click="oprDialog('box-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="30">
@@ -19,6 +19,19 @@
 							</p>
 						</div>
 						
+					</div>
+					<div style="padding:10px 0px;position:absolute;bottom:0px;width:100%;left:0px;background:#1F232A;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;" class="tal rate-show">
+						<div class="col-md-1"></div>
+						<div class="col-md-2 col-xs-4 vertical-children mgt-5" v-for="item in rateObj" :key="item.lv">
+							<div style="height:20px;width:20px;border-radius:20px;padding:2px;" class="dib dot-bg">
+								<div style="width:100%;height:100%;border-radius:20px;border:2px solid #1B1C21" :class="`bg-new${item.lv}`"></div>
+							</div>
+							<div class="dib mgl-5" style="line-height:15px">
+								<p>{{item.rate}}</p>
+								<p class="small opa-6">{{$t(item.lang)}}</p>
+							</div>
+						</div>
+						<div class="col-md-1"></div>
 					</div>
 				</div>
 			</section>
@@ -71,9 +84,14 @@
 							<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('box-rule-dialog','block')">{{$t("NewBOX_02")}}>></p>
 						</div>
 						<div class="tac">
-							<StatuButton style="width:80%" :isDisable="this.myApplyInfo.boxAmount<=0" :isLoading="lockBtn.takeBoxLock > 0" :onClick="takeBox">
+							<StatuButton v-if="this.myApplyInfo.boxAmount > 0" style="width:80%" :isDisable="this.myApplyInfo.boxAmount<=0" :isLoading="lockBtn.takeBoxLock > 0" :onClick="takeBox">
 								{{$t("NewBOX_15").replace("#0#", this.myApplyInfo.boxAmount)}}
 							</StatuButton>
+							<router-link to="/market?tab=4" v-else>
+								<button class="btn-line" style="width:90%;">
+									{{$t("BOX_37")}}
+								</button>
+							</router-link>
 						</div>
 					</div>
 				</div>
@@ -186,6 +204,13 @@ export default {
 			getHistory: [],
 			getRecordNoArr: [],
 			historyDitail: {isOver: "-", wins: {}, item:{}, ticketStartNo:0 },
+			rateObj: [
+				{lv:1, rate: '50%', lang: 'MOMO_09'},
+				{lv:2, rate: '35%', lang: 'MOMO_10'},
+				{lv:3, rate: '12%', lang: 'MOMO_11'},
+				{lv:4, rate: '2.5%', lang: 'MOMO_12'},
+				{lv:5, rate: '0.5%', lang: 'MOMO_13'},
+			]
 		})
 	},
 	computed:{
@@ -319,5 +344,15 @@ export default {
 <style scoped>
 .adv-panel:before{
 	background: linear-gradient(145deg,#066EFF 0%, #000  100%);
+}
+
+@media (max-width: 768px) {
+	.rate-show{
+		zoom: 0.8;
+		padding: 5px 20px !important;
+	}
+	.adv-panel{
+		padding-bottom: 40px;
+	}
 }
 </style>

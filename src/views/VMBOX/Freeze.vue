@@ -233,6 +233,11 @@ export default {
 
 			let amount_ = Number(this.inputNum);
 			if(amount_ <= 0) return;
+			if(amount_ > Number(this.coinArr["MBOX"].balance)){
+				this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox());
+				return;
+			}
+
 			let obj = {
 				poolIndex_:coinKey == "GOV"?100001:PancakeConfig.StakeLP[coinKey].pIndex,
 				amount_,

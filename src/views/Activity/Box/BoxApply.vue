@@ -71,7 +71,7 @@
 					</template>
 				</StatuButton>
 			</div>
-			<p class="small mgt-5 opa-6">
+			<p class="small mgt-5 ">
 				{{$t("Air-drop_11")}}: {{Number(coinArr["MBOX"].balance) || 0}}MBOX
 			</p>
 			<p class="small opa-6 mgt-10">{{$t("NewBOX_13")}}</p>
@@ -152,7 +152,7 @@ export default {
 			//没有输入
 			if(Number(this.inputNum) <= 0) isCanApply = false;
 			//余额不足
-			if(this.getNeedPayMbox > Number(this.coinArr["MBOX"].balance) + this.getCanUseTemMbox) isCanApply = false;
+			// if(this.getNeedPayMbox > Number(this.coinArr["MBOX"].balance) + this.getCanUseTemMbox) isCanApply = false;
 
 			//申购已结束
 
@@ -192,6 +192,10 @@ export default {
 			}
 		},
 		async applyForBox(type){
+			if(this.getNeedPayMbox > Number(this.coinArr["MBOX"].balance) + this.getCanUseTemMbox){
+				this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox())
+				return
+			} 
 			if(Number(this.inputNum) <= 0) return;
 			let hash = await Wallet.ETH.applyForBox(type, this.inputNum, ()=>{
 				this.$parent.getUserApplyInfo();

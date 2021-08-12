@@ -487,7 +487,7 @@ export default {
 				//临时创建一条数据 
 				let obj = {
 					auctor: myAddr,
-					price: startPrice * 1e18,
+					price: startPrice * 1e9,
 					uptime: parseInt(new Date().valueOf()/1000),
 					orderId: -1,
 					tx: hash,

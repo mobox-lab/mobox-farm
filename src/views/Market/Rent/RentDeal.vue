@@ -118,7 +118,8 @@ export default {
 	components: {Dialog, StatuButton,Loading},
 	computed: {
 		...mapState({
-			lockBtn: (state) => state.globalState.data.lockBtn
+			lockBtn: (state) => state.globalState.data.lockBtn,
+			coinArr: (state) => state.bnbState.data.coinArr,
 		}),
 		//上架租赁
 		isCanPutRent(){
@@ -179,10 +180,16 @@ export default {
 		},
 		//续租订单
 		async reRent(isNewDeal = false){
+			let price = isNewDeal?this.statusObj.nextRentPrice: this.statusObj.currentRentPrice;
+			if(price / 1e18 > Number(this.coinArr["MBOX"].balance)){
+				this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox());
+				return;
+			}
+
 			let obj = {
 				tokenId_: this.tokenId, 
 				orderId_: this.statusObj.orderId, 
-				price_: isNewDeal?this.statusObj.nextRentPrice: this.statusObj.currentRentPrice
+				price_: price
 			}
 			let hash = await Wallet.ETH.reRent(obj, ()=>{
 				this.getDealInfo();

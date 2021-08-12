@@ -105,6 +105,30 @@ svg {
 	background: #8f3433 !important;
 }
 
+.bg-new1 {
+	background: #D8D8D8;
+}
+
+.bg-new2 {
+	background: #80E220 !important;
+}
+
+.bg-new3 {
+	background: #618FFC !important;
+}
+
+.bg-new4 {
+	background: #AE20E2 !important;
+}
+
+.bg-new5 {
+	background: #FD820B !important;
+}
+
+.bg-new6 {
+	background: #8f3433 !important;
+}
+
 .c-lv1 {
 	color: #ffffff;
 	font-weight: bold;
@@ -398,7 +422,9 @@ svg {
 	text-decoration-color: #FE4B40 !important;
 	color: #FE4B40 !important;
 }
-
+.color-orange{
+	color: orange;
+}
 .small {
 	font-size: 12px;
 }
@@ -1345,6 +1371,10 @@ svg {
 .no-dropdown-bg .dropdown-value{
 	background: none;
 	padding: 0px !important;
+}
+
+.dot-bg{
+	background: linear-gradient(139deg,#636363 0%, rgba(0,0,0,0.6) 100%);
 }
 
 

@@ -173,7 +173,7 @@ export default {
 			//没有输入
 			if(Number(this.inputNum) <= 0) isCanApply = false;
 			//余额不足
-			if(this.getNeedPayMbox > Number(this.coinArr["MBOX"].balance) + this.getCanUseTemMbox) isCanApply = false;
+			// if(this.getNeedPayMbox > Number(this.coinArr["MBOX"].balance) + this.getCanUseTemMbox) isCanApply = false;
 
 			//申购已结束
 			// if(this.gemApplyEndCountDown <= 0) isCanApply = false;
@@ -216,6 +216,11 @@ export default {
 			}
 		},
 		async applyForGem(type){
+			if(this.getNeedPayMbox > Number(this.coinArr["MBOX"].balance) + this.getCanUseTemMbox){
+				this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox())
+				return
+			}
+
 			if(Number(this.inputNum) <= 0) return;
 			let hash = await Wallet.ETH.applyForGem(type, this.inputNum, ()=>{
 				this.$parent.getUserApplyInfo();

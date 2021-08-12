@@ -19,9 +19,9 @@
 				</div>
 				<div class="aveage-box vertical-children mgt-10" >
 					<div  style="flex:1 1 auto">
-						<input style="width:100%" type="text" placeholder="0.0" v-model="from.inputValue" v-number @keyup="inputValueChange('from')">
+						<input style="width:100%" type="text" placeholder="0.0" v-model="from.inputValue" v-number @keydown="oneToValue = '-';" @keyup="inputValueChange('from')">
 					</div>
-					<p class="text-btn tac"  v-if="from.coinName != ''" @click="maxInputFrom();inputValueChange('from')">Max</p>
+					<p class="text-btn tac"  v-if="from.coinName != ''" @click="oneToValue = '-';maxInputFrom();inputValueChange('from')">Max</p>
 					<p class="tar cur-point text-btn vertical-children" @click="openSelectCoin('from')">
 					<!-- <p class="tar cur-point text-btn vertical-children" > -->
 						<span  v-if="from.coinName != '' ">
@@ -50,7 +50,7 @@
 				</div>
 				<div class="aveage-box vertical-children mgt-10">
 					<div style="flex:1 1 auto;">
-						<input style="width:100%" type="text" placeholder="0.0" v-model="to.inputValue" v-number @keyup="inputValueChange('to')">
+						<input style="width:100%" type="text" placeholder="0.0" v-model="to.inputValue" v-number @keydown="oneToValue = '-';" @keyup="inputValueChange('to')">
 					</div>
 					<p class="tar text-btn vertical-children" @click="openSelectCoin('to')">
 					<!-- <p class="tar text-btn vertical-children" > -->
@@ -64,11 +64,33 @@
 				</div>
 			</div>
 			<!-- Des -->
-			<div class="aveage-box mgt-10 opa-6" v-if="canCalcPerPrice">
+			<div class="aveage-box mgt-20 " v-if="canCalcPerPrice">
 				<p class="tal small">{{$t("Air-drop_51")}}</p>
-				<p class="tar small">{{numFloor(from.inputValue/ to.inputValue, 1e8)}} {{from.coinName}}/{{to.coinName}}</p>
+				<p class="tar" v-if="oneToValue == '-' " >
+					<Loading />
+				</p>
+				<p class="tar small" v-else>{{numFloor(from.inputValue/ to.inputValue, 1e8)}} {{from.coinName}}/{{to.coinName}}</p>
 			</div>
-			<div class="aveage-box mgt-10 opa-6">
+		
+			<div class="aveage-box  mgt-5" v-if="to.isEstimated">
+				<p class="tal small">{{$t("Air-drop_53")}}</p>
+				<p class="tar small">{{numFloor(to.inputValue * (1-getSlippage/100), 1e8)}} {{to.coinName}}</p>
+			</div>
+			<div class="aveage-box  mgt-5" v-if="from.isEstimated">
+				<p class="tal small">{{$t("Air-drop_94")}}</p>
+				<p class="tar small">{{numFloor(from.inputValue * (1+getSlippage/100), 1e8)}} {{from.coinName}}</p>
+			</div>
+			<div class="aveage-box mgt-5 " v-if="canCalcPerPrice">
+				<p class="tal small">{{$t("Air-drop_214")}}</p>
+				<p class="tar" v-if="oneToValue == '-' " >
+					<Loading />
+				</p>
+				<template v-else>
+					<p class="tar small color-sell" v-if="getPriceImpact <= 0.01"> &lt;0.01%</p>
+					<p class="tar small" :class="[{'color-orange': getPriceImpact > 3 && getPriceImpact < 5}, {'color-danger': getPriceImpact > 5}]"  v-else>{{getPriceImpact}}%</p>
+				</template>
+			</div>
+			<div class="aveage-box mgt-5 ">
 				<p class="tal small">{{$t("Air-drop_39")}}</p>
 				<p class="tar small">{{getSlippage}}%</p>
 			</div>
@@ -156,11 +178,13 @@ export default {
 			timer: null,
 			stepTime: 500,
 			lastType: "from",
+			oneToValue: "-",
 		})
 	},
 	watch: {
 		oprData: function(newData, oldData){
 			if(newData.coinName != oldData.coinName){
+				this.oneToValue = "-";
 				this.initData();
 			}
 		}
@@ -200,7 +224,13 @@ export default {
 		},
 		getSlippage(){
 			return Number(this.setting.slippage) || 0.5;
-		}
+		},
+		getPriceImpact(){
+			if(this.oneToValue == "-") return 0;
+			let num = Number(this.numFloor((this.from.inputValue/ this.to.inputValue - this.oneToValue)/this.oneToValue * 100, 100));
+			if(num > 99) num = 99;
+			return num;
+		},
 	},
 	created(){
 		clearInterval(timerInterval);
@@ -240,6 +270,7 @@ export default {
 					if(Number(sendData.amountIn) <= 0) return;
 					this[otherType].loading = true;
 					let res = await SwapHttp.post("/pair/price",sendData);
+					this.getOneToValue();
 					this[otherType].loading = false;
 					let {data, code} = res.data;
 					if(code == 200){
@@ -263,6 +294,7 @@ export default {
 						}
 					}
 				}, stepTime);
+				
 			}else{
 				this[otherType].inputValue = "";
 			}
@@ -272,10 +304,12 @@ export default {
 		},
 		onSelectCoin(type, coinName){
 			if(this.from.loading || this.to.loading) return;
+			this.oneToValue = "-"
 
 			this[type].coinName = coinName;
 			this.setCoinAllowance();
 			let otherType = type == "from"?"to":"from";
+			this.getOneToValue();
 			if(Number(this[otherType].inputValue) <= 0) return;
 			this[type].inputValue = "";
 			this[type].isEstimated = false;
@@ -318,8 +352,10 @@ export default {
 				loading: false,
 			};
 			this.path = [];
+			this.getOneToValue();
 		},
 		exchangeFromAndTo(){
+			this.oneToValue = "-"
 			if(this.from.loading || this.to.loading) return;
 			let resultFrom = {...this.to};
 			let resultTo = {...this.from};
@@ -340,6 +376,19 @@ export default {
 			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr, routerAddr, {coinKey, type: "allowanceToSwap"});
 			if(hash){
 				this.coinArr[coinKey].isApproving = true;
+			}
+		},
+		async getOneToValue(){
+			let sendData = {
+				from: this.to.coinName,
+				to: this.from.coinName,
+				amountIn: 1,
+				exactTo: true,
+				version: "V2"
+			}
+			let res = await SwapHttp.post("/pair/price",sendData);
+			if(res.data.code == 200){
+				this.oneToValue = res.data.data.amountOut / 0.997;
 			}
 		}
 	}

@@ -23,7 +23,10 @@ const routes = [
 	{
 		path: '/openbox',
 		name: 'OpenBox',
-		component: OpenBox
+		component: OpenBox,
+		meta: {
+			keepAlive: true // 不需要被缓存
+		}
 	},
 	{
 		path: '/collection',

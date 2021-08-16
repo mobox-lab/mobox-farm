@@ -1,7 +1,7 @@
 <template>
 	<div id="openbox" class="tac center-box">
 		<div class="clear mgt-10">
-			<div class="hide" id="tmp"></div>
+			<div class="hide" id="tmp" ref="tmp"></div>
 			<section class="col-md-7" style="padding:10px">
 				<div class="adv-panel por box-section" style="padding-bottom:45px">
 					<p class="opa-6 mgt-20">{{ $t("BOX_01") }}</p>
@@ -10,7 +10,7 @@
 					</h1>
 					<div class="por box"  style="height:300px; margin:0px auto; ">
 						<div class="box-show" >
-							<div id="box-spine"></div>
+							<div id="box-spine" ref="boxSpine"></div>
 						</div>
 					</div>
 					<div class="card-spine hide"></div>
@@ -69,8 +69,8 @@
 
 					<!-- <button class="btn-primary " @click="playBoxAnime">抖动 1</button>
 					<button class="btn-primary mgl-5" @click="testOpenAnime">打开 1</button>-->
-
-					<!-- <button class="btn-primary mgl-10" @click="shakeBox">抖动 2</button>
+<!-- 
+					<button class="btn-primary mgl-10" @click="shakeBox">抖动 2</button>
 					<button class="btn-primary mgl-5" @click="testOpenAnime2">打开 2</button>  -->
 				</div>
 			</section>
@@ -324,6 +324,8 @@ export default {
 			return canOpenBox;
 		},
 		getOpenBoxHistory() {
+			if(!this.$parent.isActive) return [];
+
 			let { openBoxTemp, openBoxHistory } = this.ethState;
 			
 			//去重
@@ -335,6 +337,7 @@ export default {
 				if (historyObj[item.tx] == undefined) {
 					historyObj[item.tx] = item;
 				}else{
+					
 					openBoxTemp.splice(index, 1);
 					//显示开箱子
 					console.log("start show");
@@ -385,7 +388,11 @@ export default {
 							});
 						})
 					});
-				
+
+					//随机排序
+					showArr.sort(()=>{
+						return Math.random() - 0.5;
+					});
 					this.petDataArr = showArr;
 					this.$nextTick(()=>{
 						this.openAnime();
@@ -451,6 +458,8 @@ export default {
 		}
 	},
 
+
+
 	mounted() {
 		this.preLoadRes();
 		this.isApprove();
@@ -473,6 +482,7 @@ export default {
 	beforeDestroy() {
 		if (timer != null) clearInterval(timer);
 	},
+	
 	methods: {
 		preLoadRes(){
 			let arr = ["v1/v1","v2/v2","v3/v3","v4/v4","v5/v5","v1/end","v4/end","v5/end"];
@@ -485,7 +495,7 @@ export default {
 				}
 				let spineName = arr[pos];
 				try {
-					new window.spine.SpineWidget("tmp", {
+					new window.spine.SpineWidget(this.$refs.tmp, {
 						json: `./animation/cardAnime/${spineName}.json`,
 						atlas: `./animation/cardAnime/${spineName}.atlas`,
 						backgroundColor: "#00000000",
@@ -500,7 +510,7 @@ export default {
 			}, 1000)
 		},
 		renderBoxSpine(){
-			this.boxSpine = new window.spine.SpineWidget("box-spine", {
+			this.boxSpine = new window.spine.SpineWidget(this.$refs.boxSpine, {
 				json: "./animation/boxV3/kejixiangzi2.json",
 				atlas: "./animation/boxV3/kejixiangzi2.atlas",
 				backgroundColor: "#00000000",

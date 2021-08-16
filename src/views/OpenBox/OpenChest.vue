@@ -316,6 +316,7 @@ export default {
 			return canOpenBox;
 		},
 		getOpenBoxHistory() {
+			if(!this.$parent.isActive) return [];
 			let { openBoxTemp, openBoxHistory } = this.ethState;
 			
 			//去重
@@ -376,6 +377,11 @@ export default {
 								isOpenCard: true,
 							});
 						})
+					});
+
+					//随机排序
+					showArr.sort(()=>{
+						return Math.random() - 0.5;
 					});
 				
 					this.petDataArr = showArr;

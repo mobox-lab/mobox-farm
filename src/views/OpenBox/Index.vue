@@ -9,7 +9,7 @@
 			</div>
 		</section>
 		<section>
-			<OpenBox v-if="tabKey == tabArr[0].key " />
+			<OpenBox v-show="tabKey == tabArr[0].key " />
 			<OpenChest v-if="tabKey == tabArr[1].key " />
 		</section>
 	</div>
@@ -34,12 +34,23 @@ export default {
 				{lv:3, rate: '12%', lang: 'MOMO_11'},
 				{lv:4, rate: '2.5%', lang: 'MOMO_12'},
 				{lv:5, rate: '0.5%', lang: 'MOMO_13'},
-			]
+			],
+			isActive: false,
 		})
 	},
 	created(){
 		let tabPos = this.$route.query.tab || 0;
 		this.tabKey = this.tabArr[tabPos].key;
-	}
+	},
+	beforeRouteLeave(to, from, next) {
+		this.isActive = false;
+		next()
+	},
+
+	beforeRouteEnter(to, from, next) {
+		next(vm => {
+			vm.isActive = true;
+		})
+	},
 }
 </script>

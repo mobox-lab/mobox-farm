@@ -229,7 +229,13 @@
 				</div>
 			</router-link>
 		</div>
-		<router-view />
+		<keep-alive>
+			<router-view v-if="$route.meta.keepAlive">
+			</router-view>
+		</keep-alive>
+
+		<router-view v-if="!$route.meta.keepAlive"></router-view>
+
 		<Notification />
 		<NotificationTrans />
 		<Dialog id="showPetPowerUp-dialog" :top="100" :width="420" :animation="scorllToTargetPos" >

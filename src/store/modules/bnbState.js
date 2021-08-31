@@ -29,6 +29,7 @@ const baseCoinAttr = {
 	allowanceToRent: -1,
 	allowanceToVeMbox: -1,
 	allowanceToBid: -1,
+	allowanceToOrderBook: -1, //授权给订单部市场合约
 	totalAirdrop: 0,
 	perFullShare: 0,
 	isApproving: false, //是否授权中

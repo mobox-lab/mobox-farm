@@ -19,7 +19,7 @@
 						</div>
 					</div>
 					<div class="vertical-children tac">
-						<img src="@/assets/coin/USDT.png" height="50" alt="">
+						<img src="@/assets/coin/BUSD.png" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
 							<p class="opa-6">{{$t("Market_45")}}</p>
 							<h1 class="color-w tac">{{numFloor(statistics.totalAmount / 1e6, 1e2).toLocaleString()}} </h1>
@@ -71,11 +71,11 @@
 							<td class="addr">{{getShortAddr(item.auctor)}}</td>
 							<td class="vertical-children">
 								<span :class="item.isBuy?'color-buy':'color-sell'" v-if="tableDataPos == 'myHistory' ">
-									{{item.isBuy?"-":"+"}}{{numFloor((item.bidPrice / 1e9) * (item.isBuy?1:0.95), 10000)}} USDT
+									{{item.isBuy?"-":"+"}}{{numFloor((item.bidPrice / 1e9) * (item.isBuy?1:0.95), 10000)}} BUSD
 								</span>
 								<span v-else>
-									<img  class="hide-xs" src="@/assets/coin/USDT.png" height="25" alt="">
-									{{numFloor(item.bidPrice / 1e9, 1e2)}} USDT
+									<img  class="hide-xs" src="@/assets/coin/BUSD.png" height="25" alt="">
+									{{numFloor(item.bidPrice / 1e9, 1e2)}} BUSD
 								</span>
 							</td>
 							<td class="tar" >

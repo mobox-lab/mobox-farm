@@ -56,7 +56,7 @@
 						</td>
 					</tr>
 					<tr><td colspan="5" style="height:10px"></td></tr>
-					<tbody v-for="item in tableData[tableDataPos]" :key="item.tx" class="por tal">
+					<tbody v-for="(item, pos) in tableData[tableDataPos]" :key="item.tx + item.prototype + item.bidPrice + pos" class="por tal">
 						<div class="list-item-momo-mobile" >
 							<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px">
 								<PetItemMin :data="item2" />&nbsp;

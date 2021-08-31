@@ -101,7 +101,7 @@
 					</div>
 				</div>
 				<div class="mgt-20">
-					<button id="take-btn" class="btn-primary por mgl-10" :class="(eth_earnedMbox > 0 && lockBtn.getMboxLock <= 0)? '':'disable-btn' " style="min-width: 200px;margin-top:3px" @click="takeEarnedMbox('eth')" >
+					<button id="take-btn" class="btn-primary por mgl-10" :class="(eth_earnedMbox > 0 && lockBtn.getMboxLock <= 0)? '':'disable-btn' " style="min-width: 200px;margin-top:3px" @click="setAction(25001);takeEarnedMbox('eth')" >
 						<Loading class="btn-loading" v-if="lockBtn.getMboxLock > 0" />
 						{{$t("Mine_04")}}
 					</button>

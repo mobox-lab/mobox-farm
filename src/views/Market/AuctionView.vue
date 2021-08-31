@@ -110,7 +110,12 @@
 									</div>
 								</div>
 
-								<!-- <button v-if="coinArr['BUSD'].allowanceToAuction > 0" style="width:150px"  class="btn-line mgt-10 mgl-10">加入购物车</button> -->
+								<template v-if="coinArr['BUSD'].allowanceToAuction > 0 && nowTs - this.getNowPetItem.uptime > 120 && isMatchShopCar">
+									<button  @click="addToShopCar" style="width:150px"  class=" mgt-10 mgl-10" :class="isInShopCar?'btn-danger':'btn-line' ">
+										<span v-if="isInShopCar">{{$t("Market_70")}}</span>
+										<span v-else>{{$t("Market_69")}}</span>
+									</button>
+								</template>
 							</div>
 							<div  v-if="isMyPet" class="mgt-20">
 								<button class="btn-primary vertical-children por" :class="lockBtn.changePriceLock > 0?'disable-btn':''"   @click="setChangePriceData(true)">
@@ -125,6 +130,11 @@
 					</div>
 
 					<MomoInfo :data="this.getNowPetItem" :isMarket="true" />
+
+					<div style="position:absolute;right:15px;top:15px" class="cur-point" @click="$refs.momoShopCar.show()" v-if="isMatchShopCar">
+						<span v-if="shopCar.length >0" class="shop-car-num">{{shopCar.length}}</span>
+						<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
+					</div>
 					
 				</div>
 			</div>
@@ -175,6 +185,8 @@
 			</div>
 		</Dialog>
 
+		<ShopCar ref="momoShopCar" />
+
 	</div>
 </template>
 <script>
@@ -184,12 +196,12 @@ import { CommonMethod } from "@/mixin";
 import {  Wallet, EventBus, Common } from '@/utils';
 import { WalletConfig, EventConfig, BaseConfig, PancakeConfig } from '@/config';
 import BigNumber from "bignumber.js";
-
+import ShopCar from './ShopCar.vue'
 
 let updatePriceTimer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { PetView, Dialog, MomoInfo, Tab, Loading, StatuButton },
+	components: { PetView, Dialog, MomoInfo, Tab, Loading, StatuButton, ShopCar },
 	data() {
 		return {
 			lockUpgradeTime: 0,
@@ -215,8 +227,13 @@ export default {
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			marketPets: (state) => state.marketState.data.marketPets,
 			marketPetsMy: (state) => state.marketState.data.marketPetsMy,
+			shopCar: (state) => state.marketState.data.shopCar,
 			nowTs: (state) => state.globalState.data.nowTs
 		}),
+		//是否符合加入购物车条件
+		isMatchShopCar(){
+			return this.getNowPetItem.tokenId != 0 || (this.getShowList.length == 1 && Number(this.getShowList[0].num) <= 1)
+		},
 		getNowPetItem(){
 			let petObj;
 			let tx = this.$route.params.petInfo;
@@ -261,6 +278,13 @@ export default {
 			});
 			return arr;
 		},
+		isInShopCar(){
+			let isInShopCar = false;
+			this.shopCar.map(item=>{
+				if(item.tx == this.getNowPetItem.tx) isInShopCar = true;
+			});
+			return isInShopCar;
+		}
 	},
 	async created() {
 		this.setNowPrice();
@@ -284,6 +308,19 @@ export default {
 		EventBus.$off(EventConfig.ChangePriceSuccess, this.setPetInfo);
 	},
 	methods: {
+		async addToShopCar(){
+			
+			let data = await this.getPetInfo();
+			let {oldTime} = this.getNowPetItem;
+
+			if(data.status != 3 || data.startTime != oldTime){
+				this.showNotify(this.$t("Market_35"), "error");
+				this.$router.replace("/market");
+				return;
+			}
+
+			this.$store.commit("marketState/addToShopCar", {...this.getNowPetItem,...this.getShowList[0]});
+		},
 		onTabChange(pos){
 			this.sellObj.endPrice = this.sellObj.startPrice;
 			this.priceTypePos = pos;
@@ -309,7 +346,6 @@ export default {
 		},
 		setNowPrice(){
 			let {endPrice, startPrice, durationDays, uptime} = this.getNowPetItem;
-			console.log(this.getNowPetItem);
 			let endTime = Number(uptime) + durationDays * 86400;
 			let nowTime = parseInt(new Date().valueOf() / 1000);
 			let nowPrice = endPrice;

@@ -29,7 +29,7 @@
 					{{$t("Air-drop_08")}}
 				</StatuButton>
 
-				<p v-if="feeRate > 0 && getFee > 0" class="mgt-20 small tal" v-html="getShowNotice"></p>
+				<p v-if="oprData.wantAmount > 0" class="mgt-20 small tal" v-html="getShowNotice"></p>
 			</div>
 		</div>
 	</Dialog>
@@ -90,6 +90,9 @@ export default {
 				}
 			});
 			this.feeRate = rate;
+			if(newData.coinName != "MBOX-BNB"){
+				this.feeRate = 0;
+			}
 			this.stakeTime = stakeTime;
 			this.inputPercent = 0;
 		},

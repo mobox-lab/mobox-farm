@@ -19,7 +19,7 @@
 			</div>
 		</div>
 		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children">
-			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ item.tx):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime">
+			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ item.tx):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime + item.tokenId+item.ids[0]">
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
 						<img src="@/assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
@@ -151,6 +151,9 @@ export default {
 						needGetNameArr.push(item.tokenId);
 					}
 					needGetGemArr.push(Number(item.tokenId));
+					hashArr.push(item.tx + item.tokenId);
+				}else{
+					hashArr.push(item.tx + item.ids[0])
 				}
 				//计算当前价格
 				let endTime = Number(item.uptime) + item.durationDays * 86400;
@@ -162,7 +165,7 @@ export default {
 				}
 				item.nowPrice = nowPrice;
 				hashArr.push(item.tx);
-				
+				item.tx = item.tx.toString() + item.auctor.toString() + item.index;
 			});
 
 			//删除临时出售的数据

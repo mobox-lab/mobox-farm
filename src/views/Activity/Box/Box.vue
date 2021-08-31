@@ -88,7 +88,7 @@
 								{{$t("NewBOX_15").replace("#0#", this.myApplyInfo.boxAmount)}}
 							</StatuButton>
 							<router-link to="/market?tab=4" v-else>
-								<button class="btn-line" style="width:90%;">
+								<button class="btn-line" style="width:90%;" @click="setAction(22002);">
 									{{$t("BOX_37")}}
 								</button>
 							</router-link>
@@ -284,6 +284,7 @@ export default {
 				this.$router.replace({ path: '/' })
 				// this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();
 			}else{
+				this.setAction(21005);
 				this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();
 			}
 		},

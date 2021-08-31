@@ -18,30 +18,43 @@ const routes = [
 	{
 		path: '/',
 		name: 'Airdrop',
-		component: Airdrop
+		component: Airdrop,
+		meta: {
+			actionId: 21000,
+		}
 	},
 	{
 		path: '/openbox',
 		name: 'OpenBox',
 		component: OpenBox,
 		meta: {
-			keepAlive: true // 不需要被缓存
+			keepAlive: true, // 不需要被缓存
+			actionId: 23000,
 		}
 	},
 	{
 		path: '/collection',
 		name: 'Collection',
-		component: Collection
+		component: Collection,
+		meta: {
+			actionId: 25000,
+		}
 	},
 	{
 		path: '/market',
 		name: 'Market',
 		component: Market,
+		meta: {
+			actionId: 26000,
+		}
 	},
 	{
 		path: '/mypet/:tabPos?',
 		name: 'Mypet',
-		component: Mypet
+		component: Mypet,
+		meta: {
+			actionId: 24000,
+		}
 	},
 	{
 		path: '/upgrade/:petId',
@@ -51,12 +64,18 @@ const routes = [
 	{
 		path: '/rank/',
 		name: 'Rank',
-		component: Rank
+		component: Rank,
+		meta: {
+			actionId: 27000,
+		}
 	},
 	{
 		path: '/activity/',
 		name: 'Activity',
-		component: Activity
+		component: Activity,
+		meta: {
+			actionId: 22000,
+		}
 	},
 	{
 		path: '/auctionView/:petInfo',

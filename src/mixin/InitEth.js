@@ -104,9 +104,8 @@ const InitEth = {
 					this.$store.commit("bnbState/setData", {pancakeHistory: histoyJSON});
 				}
 
+				this.getRefund();
 				this.setBalance();
-			
-
 				this.needUpdate();
 				this.setOrder();
 
@@ -177,6 +176,16 @@ const InitEth = {
 
 			//获取总打开箱子数
 			await this.setTotalOpenBox();
+		},
+		async getRefund(){
+			let refundData = await Wallet.ETH.getRefund();
+			console.log(refundData);
+			let {short, middle, long} = refundData;
+			refundData.short = this.numFloor(short / 1e18, 1e2);
+			refundData.middle = this.numFloor(middle / 1e18, 1e2);
+			refundData.long = this.numFloor(long / 1e18, 1e2);
+			refundData.total = this.numFloor(Number(refundData.short) + Number(refundData.middle) + Number(refundData.long), 1e2);
+			this.$store.commit("globalState/setData", {refundData});
 		},
 		//获取新箱子的数量
 		async getNewBoxNum(){
@@ -284,7 +293,7 @@ const InitEth = {
 					totalVeMobox += Number(veMoboxs[pos]);
 				});
 				this.coinArr["ts"] = new Date().valueOf();
-				this.$store.commit("bnbState/setData", {coinArr: this.coinArr, myTotalVeMbox: parseInt(totalVeMobox/1e18)});
+				this.$store.commit("bnbState/setData", {coinArr: this.coinArr, myTotalVeMbox: parseInt(totalVeMobox/1e18 + 0.00001)});
 			}
 		},
 		async getGemBag(){

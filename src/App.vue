@@ -300,11 +300,49 @@
 				<span v-html="$t('MOMO_36')" class="small tal" style="font-weight:200"></span>
 			</div>
 		</Dialog>
+		
+		<Dialog id="momo-des-dialog" :top="100" :width="390">
+			<div class="tab-body tal" style="max-height:500px;overflow-x:auto">
+				<div class="tab-panel">
+					<span class="mgt-20 dib">{{$t("Common_26")}}</span>
+					<div class="mgt-50 tac" >
+						<button class="btn-primary mgt-10" style="width:90%" @click="goToFAQ">{{$t("Common_27")}}</button>
+						<button class="btn-primary mgt-10" style="width:90%" @click="setStorageItem('hasReadFAQ', true);oprDialog('momo-des-dialog', 'none')">{{$t("Common_28")}}</button>
+					</div>
+				</div>
+			</div>
+		</Dialog>
+		
+		<div id="fly-dot"></div>
+		<VMbox ref="vmbox" />
+		<Pancake ref="pancake" />
+		<QuickBuy ref="quickBuy" />
+		<GemBag ref="gemBag" />
+		<ConfirmDialog ref=confirmDialog />
+		<WalletOprStatus />
+		<WalletConnectDialog />
+
 		<Dialog id="showNotice-dialog" :top="100" :width="520">
 			<h2>{{$t("Notice_03")}}</h2>
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_37")}}</h3>
+						<span v-html="$t('Notice_36')" ></span>
+					</div>
+					<div class="mgt-20">
+						<h3 class="tac">{{$t("Notice_35")}}</h3>
+						<span v-html="$t('Notice_34')" ></span>
+					</div>
+					<div class="mgt-20">
+						<h3 class="tac">{{$t("Notice_33")}}</h3>
+						<span v-html="$t('Notice_32')" ></span>
+					</div>
+					<div class="mgt-20">
+						<h3 class="tac">{{$t("Notice_31")}}</h3>
+						<span v-html="$t('Notice_30')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_29")}}</h3>
 						<span v-html="$t('Notice_28')" ></span>
 					</div>
@@ -363,26 +401,6 @@
 				</div>
 			</div>
 		</Dialog>
-		<Dialog id="momo-des-dialog" :top="100" :width="390">
-			<div class="tab-body tal" style="max-height:500px;overflow-x:auto">
-				<div class="tab-panel">
-					<span class="mgt-20 dib">{{$t("Common_26")}}</span>
-					<div class="mgt-50 tac" >
-						<button class="btn-primary mgt-10" style="width:90%" @click="goToFAQ">{{$t("Common_27")}}</button>
-						<button class="btn-primary mgt-10" style="width:90%" @click="setStorageItem('hasReadFAQ', true);oprDialog('momo-des-dialog', 'none')">{{$t("Common_28")}}</button>
-					</div>
-				</div>
-			</div>
-		</Dialog>
-		
-		<div id="fly-dot"></div>
-		<VMbox ref="vmbox" />
-		<Pancake ref="pancake" />
-		<QuickBuy ref="quickBuy" />
-		<GemBag ref="gemBag" />
-		<ConfirmDialog ref=confirmDialog />
-		<WalletOprStatus />
-		<WalletConnectDialog />
 	</div>
 </template>
 <script>
@@ -482,13 +500,16 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "2.0"
+			noticeVersion: "2.5"
 		};
 	},
 	watch: {
 		$route(to, from){
 			if(to.path != from.path){
 				this.showMoreMenu = false;
+			}
+			if(this.$route.meta.actionId){
+				this.setAction(this.$route.meta.actionId);
 			}
 		}
 	},

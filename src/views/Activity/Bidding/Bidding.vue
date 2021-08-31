@@ -49,7 +49,7 @@
 					</div>
 					<div class="tac mgt-10">
 						<StatuButton style="width: 50%" :btnType="'btn-success'" v-if="bidInfo.toClaimTokenId != '-' && Number(bidInfo.toClaimTokenId) > 0 " :isDisable="bidInfo.currPrice =='-' " :isLoading="lockBtn.bidLock > 0" :onClick="takeMOMO">{{$t("Auction_35")}}</StatuButton>
-						<StatuButton style="width: 50%" v-else  :isDisable="bidInfo.currPrice =='-' || Number(bidInfo.state) == 1 " :onClick="()=>{oprDialog('bid-momo-dialog', 'block')}" >{{$t("Auction_29")}}</StatuButton>
+						<StatuButton style="width: 50%" v-else  :isDisable="bidInfo.currPrice =='-' || Number(bidInfo.state) == 1 " :onClick="()=>{setAction(22011);oprDialog('bid-momo-dialog', 'block')}" >{{$t("Auction_29")}}</StatuButton>
 					</div>
 					<div class="mgt-10 tal">
 						<h4>{{$t("Auction_30")}}</h4>

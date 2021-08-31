@@ -26,7 +26,7 @@ export default {
 	methods:{
 		btnClick(){
 			if(this.isDisable || this.isLoading) return;
-			this.onClick(); 
+			this.onClick();
 		}
 	}
 }

@@ -5,9 +5,9 @@
 				<div class="panel noRadius-right-xs" style="padding-bottom: 30px;">
 					<section id="trade-head">
 						<div class="aveage-box small opa-6">
-							<p class="tal">价格<span class="dpblock-xs small">(USDT)</span></p>
+							<p class="tal">价格<span class="dpblock-xs small">(BUSD)</span></p>
 							<p class="tar-xs">数量<span class="dpblock-xs small">(BOX)</span></p>
-							<p class="tar hide-xs">总价<span>(USDT)</span></p>
+							<p class="tar hide-xs">总价<span>(BUSD)</span></p>
 						</div>
 					</section>
 					<div class="mgt-20" id="sell">
@@ -24,9 +24,9 @@
 					</div>
 				
 					<section class="trade-price vertical-children mgt-20" >
-						<img src="@/assets/coin/USDT.png" alt="" height="26" class="hide-xs">
+						<img src="@/assets/coin/BUSD.png" alt="" height="26" class="hide-xs">
 						<span class="mgl-5">{{tradeData.lastPrice}} </span>
-						<span class="hide-xs">USDT</span>
+						<span class="hide-xs">BUSD</span>
 					</section>
 
 					<div class="mgt-20" id="buy">
@@ -53,9 +53,9 @@
 						<p class="tal">价格</p>
 						<div class="por mgt-10">
 							<div class="ly-input-pre-icon">
-								<img  src="@/assets/coin/USDT.png" alt="" height="20" />
+								<img  src="@/assets/coin/BUSD.png" alt="" height="20" />
 							</div>
-							<input class="ly-input" type="text" style=" text-align: left; width: 100%; padding-left:50px" v-model="price" v-number />
+							<input class="ly-input" type="number" style=" text-align: left; width: 100%; padding-left:50px" v-model="price" v-number />
 						</div>
 					</section>
 					<section class="mgt-20">
@@ -64,7 +64,7 @@
 							<div class="ly-input-pre-icon">
 								<img  src="@/assets/coin/BOX.png" alt="" width="30" />
 							</div>
-							<input class="ly-input" type="text" style=" text-align: left; width: 100%; padding-left:50px" v-model="boxNum" v-int />
+							<input class="ly-input" type="number" style=" text-align: left; width: 100%; padding-left:50px" v-model="boxNum" v-int />
 							<div class="ly-input-after">
 								<span v-if="Number(boxNum) > 0" id="numOpr">
 									<img class="cur-point"  src="@/assets/icon/reduce.png" alt="" height="30" @click="boxNum > 0?boxNum--:'' ">
@@ -78,25 +78,25 @@
 						<p class="tal">总计价格</p>
 						<div class="por mgt-10">
 							<div class="ly-input-pre-icon">
-								<img  src="@/assets/coin/USDT.png" alt="" height="20" />
+								<img  src="@/assets/coin/BUSD.png" alt="" height="20" />
 							</div>
-							<input class="ly-input" type="text" :value="getToTalValue" readonly="readonly" style=" text-align: left; width: 100%; padding-left:65px;background:#070d14" />
+							<input class="ly-input" type="number" :value="getToTalValue" readonly="readonly" style=" text-align: left; width: 100%; padding-left:65px;background:#070d14" />
 							
 						</div>
 					</section>
 					<p class="mgt-30 vertical-children" v-if="oprType == 'buy'">
-						<span>可用: {{coinArr["USDT"].balance}} USDT</span>
-						<img class="mgl-5" src="@/assets/coin/USDT.png" alt="" height="20" />
+						<span>可用: {{coinArr["BUSD"].balance}} BUSD</span>
+						<img class="mgl-5" src="@/assets/coin/BUSD.png" alt="" height="20" />
 					</p>
 					<p class="mgt-30 vertical-children" v-if="oprType == 'sell'">
 						<span>可用: {{myBoxNum}} BOX</span>
 						<img class="mgl-5" src="@/assets/coin/BOX.png" alt="" height="20" />
 					</p>
 					<section class="mgt-10" style="margin-bottom: 10px">
-						<div v-if="oprType == 'buy'" :class="coinArr['USDT'].allowanceToOrderBook == 0 ?'btn-group':''">
-							<StatuButton style="min-width:150px" v-if="coinArr['USDT'].allowanceToOrderBook == 0" data-step="1" :isLoading="coinArr['USDT'].isApproving" :onClick="()=>approve('USDT')">{{$t("Air-drop_16")}} USDT</StatuButton>
+						<div v-if="oprType == 'buy'" :class="coinArr['BUSD'].allowanceToOrderBook == 0 ?'btn-group':''">
+							<StatuButton style="min-width:150px" v-if="coinArr['BUSD'].allowanceToOrderBook == 0" data-step="1" :isLoading="coinArr['BUSD'].isApproving" :onClick="()=>approve('BUSD')">{{$t("Air-drop_16")}} BUSD</StatuButton>
 							<br/>
-							<StatuButton style="min-width:150px" class="mgt-10" data-step="2" :isLoading="lockBtn.makeBidOrderLock > 0" :isDisable="coinArr['USDT'].allowanceToOrderBook <= 0 || !inputCheckOk" :onClick="buyBox">Buy Box</StatuButton>
+							<StatuButton style="min-width:150px" class="mgt-10" data-step="2" :isLoading="lockBtn.makeBidOrderLock > 0" :isDisable="coinArr['BUSD'].allowanceToOrderBook <= 0 || !inputCheckOk" :onClick="buyBox">Buy Box</StatuButton>
 						</div>
 						<div v-if="oprType == 'sell'" :class="boxHasApproved != -1 && !boxHasApproved ?'btn-group':''">
 							<StatuButton style="min-width:150px" v-if="boxHasApproved != -1 && !boxHasApproved" data-step="1" :isLoading="lockBtn.approveLock > 0" :onClick="approveBox">{{$t("Air-drop_16")}} BOX</StatuButton>
@@ -163,7 +163,7 @@ export default {
 		this.getPrices();
 
 		await Wallet.ETH.getAccount();
-		await this.viewAllowance("USDT");
+		await this.viewAllowance("BUSD");
 		await this.isApproveBox();
 	},
 	methods: {
@@ -171,7 +171,7 @@ export default {
 			if(this.oprType == "sell"){
 				this.boxNum = this.myBoxNum
 			}else{
-				this.boxNum = parseInt(this.coinArr["USDT"].balance / this.price);
+				this.boxNum = parseInt(this.coinArr["BUSD"].balance / this.price);
 			}
 		},
 		async viewAllowance(coinKey){
@@ -214,11 +214,12 @@ export default {
 			return res;
 		},
 		async buyBox(){
-			if(Number(this.getToTalValue) > Number(this.coinArr["USDT"].balance)){
+			if(Number(this.getToTalValue) > Number(this.coinArr["BUSD"].balance)){
 				this.showNotify(this.$t("Market_34"), "error")
 			}
 	
 			let res = await this.getIndex({type: "bid", price: this.price, count: this.boxNum});
+			console.log(res);
 			if(res.data.code == 200){
 				let param = [ Number(this.price), res.data.data.storeIndex, 1, 1, 1, Number(this.boxNum), res.data.data.indexes, ];
 				let hash = await Wallet.ETH.orderBookOpr(param, "makeBidOrder");
@@ -236,6 +237,7 @@ export default {
 			}
 	
 			let res = await this.getIndex({type: "ask", price: this.price, count: this.boxNum});
+			console.log(res);
 			if(res.data.code == 200){
 				let param = [ Number(this.price), res.data.data.storeIndex, 1, 1, 1, Number(this.boxNum), res.data.data.indexes, ];
 				let hash = await Wallet.ETH.orderBookOpr(param, "makeAskOrder")

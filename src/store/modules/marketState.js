@@ -64,6 +64,8 @@ const state = () => ({
 
 		//批量购买MOMO的购物车
 		shopCar: [],
+		//批量出售车
+		groupSellCar: [],
 		
 	},
 })
@@ -82,6 +84,57 @@ const mutations = {
 		state.data.myGemMarketSellFilter = {type: 0,level: 0,}
 		state.data.marketGems = {limit: 1,list: [],page: 1,total: 0,}
 		state.data.marketGemFilter = defaultSort;
+	},
+	addToShopCar(state, newItem){
+		let shopCar = state.data.shopCar;
+		let needPush = true;
+		shopCar.map((item, index)=>{
+			if(item.tx == newItem.tx) {
+				needPush = false;
+				shopCar.splice(index, 1);
+			}
+		});
+		//将momo添加到购物车
+		//如果超出六个不添加
+		if(needPush){
+			if(shopCar.length >= 6 ){
+				this.commit("globalState/addNotify", {msg:"Market_64", type:"error", isLangName: true});
+			}else{
+				shopCar.unshift(newItem);
+			}
+		} 
+	},
+	emptyShopCar(state){
+		state.data.shopCar = [];
+	},
+	addToGroupSellCar(state, newItem){
+		let groupSellCar = state.data.groupSellCar;
+		let needPush = true;
+		groupSellCar.map((item, index)=>{
+			if(item.prototype == newItem.prototype) {
+				needPush = false;
+				item.inGroupSellCar = false;
+				item.groupSellPrice = "";
+				groupSellCar.splice(index, 1);
+			}
+		});
+		//将momo添加到购物车
+		//如果超出六个不添加
+		if(needPush){
+			if(groupSellCar.length >= 6 ){
+				this.commit("globalState/addNotify", {msg:"Market_65", type:"error", isLangName: true});
+			}else{
+				newItem.inGroupSellCar = true;
+				groupSellCar.unshift(newItem);
+			}
+		} 
+	},
+	emptyGroupSellCar(state){
+		state.data.groupSellCar.map(item=>{
+			item.inGroupSellCar = false;
+			item.groupSellPrice = "";
+		})
+		state.data.groupSellCar = [];
 	}
 };
 

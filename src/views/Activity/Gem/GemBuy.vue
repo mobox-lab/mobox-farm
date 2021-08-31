@@ -52,11 +52,11 @@
 			
 				<div class="mgt-10 aveage-box">
 					<div class="dib por tac">
-						<button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('gem-apply-dialog', 'block')">{{$t("Gemstone_14")}}</button>
+						<button class="btn-primary" style="margin:10px;width:80%" @click="setAction(22021);oprDialog('gem-apply-dialog', 'block')">{{$t("Gemstone_14")}}</button>
 						<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('gem-rule-dialog','block')">{{$t("Gemstone_02")}}>></p>
 					</div>
 					<div class="tac">
-						<button class="btn-primary por" style="width:80%" @click="oprDialog('gem-take-dialog', 'block')">
+						<button class="btn-primary por" style="width:80%" @click="setAction(22001);oprDialog('gem-take-dialog', 'block')">
 							<span class="notice" v-if="gemToTakeNum > 0"></span>
 							{{$t("Gemstone_15")}}
 						</button>

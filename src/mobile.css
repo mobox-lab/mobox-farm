@@ -39,6 +39,9 @@
  }
 
 @media (max-width: 768px) {
+	.shop-car-btn{
+		zoom: 0.8;
+	}
 	.search {
 		font-size: 16px;
 		line-height: 30px;

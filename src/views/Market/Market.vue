@@ -6,6 +6,11 @@
 					<img src="../../assets/icon/momo_icon.png" alt="" height="30">&nbsp;
 					<span>MOMO</span>
 				</div>
+				<!-- <div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 5}" 
+					@click="$store.commit('marketState/setData', {marketTypePos: 5, marketTabPos: 0});">
+					<img src="../../assets/icon/box_icon.png" alt="" width="30">&nbsp;
+					<span>Order BOX</span>
+				</div> -->
 				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 4}" 
 					@click="gemMarketKey = 'box'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2});$store.commit('marketState/setData', {marketTypePos: 4, marketTabPos: 0, marketGemFilter: 2});">
 					<img src="../../assets/icon/box_icon.png" alt="" width="30">&nbsp;
@@ -24,8 +29,12 @@
 
 			<div class="mgt-20">
 				<div class="mgt-10" v-if="marketTypePos==0">
-					<div class="tal">
+					<div class="tal vertical-children">
 						<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempSells.length + tempMarketCancelTx.length]"  />
+						<div  class="cur-point dib por mgl-10 shop-car-btn" @click="$refs.momoShopCar.show()" v-if="shopCar.length > 0 && marketTabPos == 0 ">
+							<span v-if="shopCar.length >0" class="shop-car-num">{{shopCar.length}}</span>
+							<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
+						</div>
 					</div>
 					<MarketAll v-show="marketTabPos == 0" />
 					<MarketMy v-show="marketTabPos == 1" />
@@ -41,7 +50,7 @@
 					<RentMySell ref="rentMySell" v-show="marketTabPos == 2" />
 					<RentStatistics v-if="marketTabPos == 3" />
 				</div>
-				<div v-else class="mgt-10" :key="gemMarketKey">
+				<div v-else-if="marketTypePos == 4 || marketTypePos == 2" class="mgt-10" :key="gemMarketKey">
 					<div class="tal">
 						<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,getGemTemNum]"  />
 					</div>
@@ -49,6 +58,14 @@
 					<MarketGemMy v-show="marketTabPos == 1" />
 					<MarketGemMySell v-show="marketTabPos == 2" />
 					<MarketGemStatistics v-if="marketTabPos == 3" />
+				</div>
+				<div v-else-if="marketTypePos == 5">
+					<div class="tal">
+						<Tab :list="OrderBookTabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" />
+					</div>
+					<Trade v-show="marketTabPos == 0" />
+					<OrderList v-show="marketTabPos == 1" />
+					<Statistics v-show="marketTabPos == 2" />
 				</div>
 
 				<div class="loading" v-show="marketLoading">
@@ -60,6 +77,7 @@
 		<MomoHistory ref="momoHistory" />
 		<GemHistory ref="gemHistory" />
 		<RentDeal ref="rentDeal" />
+		<ShopCar ref="momoShopCar" />
 	</div>
 </template>
 
@@ -71,6 +89,7 @@ import MarketMy from './Momo/MarketMy.vue'
 import MarketMySell from './Momo/MarketMySell.vue'
 import MomoHistory from './Momo/MomoHistory.vue'
 import MarketStatistics from './Momo/MarketStatistics.vue'
+import ShopCar from './ShopCar.vue'
 // GEM
 import MarketGemAll from './Gem/MarketGemAll.vue'
 import MarketGemMy from './Gem/MarketGemMy.vue'
@@ -84,6 +103,11 @@ import RentMySell from './Rent/RentMySell.vue'
 import RentDeal from './Rent/RentDeal.vue'
 import RentStatistics from './Rent/RentStatistics.vue'
 
+//orderBook
+import Trade from './OrderBook/Trade'
+import OrderList from './OrderBook/OrderList'
+import Statistics from './OrderBook/Statistics'
+
 import { mapState } from "vuex";
 import { PancakeConfig } from '@/config';
 import { Wallet, Common} from "@/utils";
@@ -96,12 +120,14 @@ export default {
 		Tab , Loading,
 		MarketAll, MarketMy, MarketMySell ,MarketStatistics,MomoHistory,
 		MarketGemAll,MarketGemMy,MarketGemMySell, MarketGemStatistics,GemHistory,
-		RentAll,RentMy,RentMySell, RentDeal, RentStatistics
+		RentAll,RentMy,RentMySell, RentDeal, RentStatistics, ShopCar,
+		Trade,OrderList, Statistics
 	},
 	data() {
 		return {
 			gemMarketKey: "gem",
 			tabList: [this.$t('Market_01'), this.$t("Market_02"), this.$t("Market_03"), this.$t("Market_53")],
+			OrderBookTabList: [this.$t('Market_01'), "我的订单", this.$t("Market_53")],
 			rentTabList:[this.$t('Market_01'), this.$t("Hire_02"),this.$t("Hire_03"),this.$t("Market_53")],
 			tabPos: 0,
 			selectCategory: [
@@ -124,11 +150,21 @@ export default {
 			gemType:[this.$t("Market_60"),this.$t("Gemstone_45"), this.$t("Gemstone_46"), this.$t("Gemstone_47"),this.$t("Gemstone_48")],
 			gemLv:[this.$t("Gemstone_49"), "Lv.1", "Lv.2", "Lv.3","Lv.4","Lv.5","Lv.6","Lv.7","Lv.8","Lv.9"],
 			myAccount: "",
+			marketTypePosToAction: {
+				"0": 26101,
+				"1": 26301,
+				"2": 26401,
+				"4": 26201,
+				"5": 26201,
+			}
 		};
 	},
 	watch: {
 		gemMarketKey: function (){
 			this.$refs.gemHistory &&  this.$refs.gemHistory.getMyHistory(this.myAccount);
+		},
+		marketTypePos: function(newVal){
+			this.setAction(this.marketTypePosToAction[newVal]);
 		}
 	},
 	computed: {
@@ -143,6 +179,7 @@ export default {
 			marketGemFilter: (state) => state.marketState.data.marketGemFilter,
 			marketRentOrderList: (state) => state.marketState.data.marketRentOrderList,
 			coinArr: (state) => state.bnbState.data.coinArr,
+			shopCar: (state) => state.marketState.data.shopCar,
 		}),
 		getSelectCoinArr(){
 			let arr = [];
@@ -166,7 +203,7 @@ export default {
 	},
 	async created(){
 		let marketTypePos = this.$route.query.tab || this.marketTypePos;
-		if(marketTypePos == 4){
+		if(marketTypePos == 4 ){
 			this.gemMarketKey = "box" + Date.now();
 			this.$store.commit('marketState/initGemMarket', {defaultSort: 2});
 		}
@@ -238,6 +275,7 @@ export default {
 	right: 0px;
 	bottom: 0px;
 	text-align: center;
+	z-index: 99999
 }
 .loading svg{
 	margin-top: 300px;

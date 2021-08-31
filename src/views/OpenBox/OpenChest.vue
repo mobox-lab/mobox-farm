@@ -96,12 +96,12 @@
 							</div>
 							<div class="aveage-box">
 								<div class="tal">
-									<button class="btn-primary mgt-20" style="width: 90%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(ethState.box) || 1; ">
+									<button class="btn-primary mgt-20" style="width: 90%" @click="setAction(23011);  oprDialog('get-chest-dialog', 'block'); addKey = parseInt(ethState.box) || 0; ">
 										{{ $t("BOX_04") }}
 									</button>
 								</div>
 								<div class="tar">
-									<button class="mgt-20 btn-line" style="width:90%;" @click="$root.$children[0].$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
+									<button class="mgt-20 btn-line" style="width:90%;" @click="setAction(23012);  $root.$children[0].$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
 										{{$t("BOX_33")}}
 									</button>
 								</div>
@@ -173,12 +173,12 @@
 			</section>
 		</div>
 
-		<Dialog id="open-box-history-dialog" :top="120" :width="660">
+		<Dialog id="open-chest-history-dialog" :top="120" :width="660">
 			<div class="dialog-content tal" style="height: 500px">
 				<PetItemSmall v-for="item in showHistoryArr" :key="item.prototype.toString() + item.tokenId + item.num" :data="item" />
 			</div>
 		</Dialog>
-		<Dialog id="get-box-dialog" :top="200" :width="400">
+		<Dialog id="get-chest-dialog" :top="200" :width="400">
 			<h2 class="mgt-10">{{ $t("BOX_04") }}</h2>
 			<div class="ly-input-content mgt-20">
 				<p class="small tal opa-6">{{ $t("BOX_06") }}:</p>
@@ -187,9 +187,9 @@
 						<img  src="@/assets/coin/KEY.png" alt="" />
 					</div>
 					<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
-						v-int :data-max="parseInt(ethState.box) || 1" data-min="1" v-model="addKey" />
+						v-int :data-max="parseInt(ethState.box) || 0" data-min="1" v-model="addKey" />
 					<div class="dib" style="width: 30%">
-						<button @click="addKey = parseInt(ethState.box) || 1" class="btn-primary btn-small" style="width: 80%" >
+						<button @click="addKey = parseInt(ethState.box) || 0" class="btn-primary btn-small" style="width: 80%" >
 							Max
 						</button>
 					</div>
@@ -213,7 +213,7 @@
 			</div>
 			
 		</Dialog>
-		<Dialog id="open-box-dialog" :top="200" :width="400">
+		<Dialog id="open-chest-dialog" :top="200" :width="400">
 			<h2 class="mgt-10">{{ $t("BOX_05") }}</h2>
 			<div class="ly-input-content mgt-20">
 				<p class="small tal opa-6">{{ $t("BOX_10") }}:</p>
@@ -223,7 +223,7 @@
 						style=" text-align: center; width: 70%; padding-left: 50px; "
 						v-int :data-max="maxOpenOne" data-min="1" v-model="openBox" />
 					<div class="dib" style="width: 30%">
-						<button @click=" openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 1 " class="btn-primary btn-small" style="width: 80%" >
+						<button @click=" openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 0 " class="btn-primary btn-small" style="width: 80%" >
 							Max
 						</button>
 					</div>
@@ -503,8 +503,9 @@ export default {
 			}
 		},
 		showOpenBox(){
-			this.oprDialog('open-box-dialog', 'block'); 
-			this.openBox = this.canOpenBox > this.maxOpenOne ? this.maxOpenOne : this.canOpenBox || 1;
+			this.setAction(23013);
+			this.oprDialog('open-chest-dialog', 'block'); 
+			this.openBox = this.canOpenBox > this.maxOpenOne ? this.maxOpenOne : this.canOpenBox || 0;
 		},
 
 		getTxUrl(tx) {
@@ -550,7 +551,7 @@ export default {
 				return b.lvHashrate - a.lvHashrate;
 			});
 			this.showHistoryArr = showHistoryArr;
-			this.oprDialog("open-box-history-dialog", "block");
+			this.oprDialog("open-chest-history-dialog", "block");
 		},
 		getTimeFtt(timeStep) {
 			return Common.dateFtt("yyyy-MM-dd hh:mm:ss",new Date(timeStep * 1000));
@@ -563,6 +564,11 @@ export default {
 			}
 		},
 		async addBox(num) {
+			if(Number(num)  == 0){
+				this.showNotify(this.$t("BOX_28"), "error");
+				return;
+			}
+
 			if(this.needApprove) return;
 
 			if (Number(num) > Number(this.ethState.box)) {
@@ -581,7 +587,7 @@ export default {
 			if (Number(allowance_box_to_minter) > Number(num)) {
 				let hash = await Wallet.ETH.addBox(num);
 				if(hash){
-					this.oprDialog("get-box-dialog", "none");
+					this.oprDialog("get-chest-dialog", "none");
 					this.showNotify(this.$t("BOX_20"), "success");
 				}
 			} else {
@@ -591,6 +597,11 @@ export default {
 
 		//默认打开并质押
 		async open(num, stake = false) {
+			if(num == 0){
+				this.showNotify(this.$t("BOX_30"), "error");
+				return;
+			}
+
 			if (this.canOpenBox >= num) {
 				let hash;
 				if(stake){
@@ -601,7 +612,7 @@ export default {
 				if (hash) {
 					//播放箱子动画
 					document.getElementById("openbox-anime").classList.add("animation-box-start");
-					this.oprDialog("open-box-dialog", "none");
+					this.oprDialog("open-chest-dialog", "none");
 
 					let myAddr = await Wallet.ETH.getAccount();
 					//临时添加一条记录

@@ -121,8 +121,8 @@ export default {
 			this.coinArr[this.oprData.coinKey].veMoboxSupply = res.veMoboxSupply;
 			this.coinArr[this.oprData.coinKey]["ts"] = new Date().valueOf();
 		},
-		show(){
-			this.dialog_tab_pos = 0;
+		show(pos = 0){
+			this.dialog_tab_pos = pos;
 			this.oprDialog("vmbox-dialog","block");
 			this.getPoolVeMobox();
 			return this;

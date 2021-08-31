@@ -1,5 +1,7 @@
 import Common from "../utils/Common";
-import {WalletConfig, ConstantConfig} from "@/config";
+import {WalletConfig, ConstantConfig, } from "@/config";
+import {Wallet} from '@/utils'
+import axios from 'axios';
 
 const $ = window.$;
 
@@ -18,6 +20,15 @@ const CommonMethod = {
 		})
 	},
 	methods: {
+		async setAction(actionId){
+			let sendData = {
+				actionId: actionId.toString(),
+				platform:"web",
+				version:"1.0",
+				fd: Wallet.ETH.myAddr
+			}
+			axios.post("https://accountapi.bitsplus.cn/app/action", sendData);
+		},
 		getConfirmDialog(){
 			return this.$root.$children[0].$refs.confirmDialog;
 		},

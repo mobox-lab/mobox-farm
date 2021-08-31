@@ -69,8 +69,8 @@
 
 					<!-- <button class="btn-primary " @click="playBoxAnime">抖动 1</button>
 					<button class="btn-primary mgl-5" @click="testOpenAnime">打开 1</button>-->
-<!-- 
-					<button class="btn-primary mgl-10" @click="shakeBox">抖动 2</button>
+
+					<!-- <button class="btn-primary mgl-10" @click="shakeBox">抖动 2</button>
 					<button class="btn-primary mgl-5" @click="testOpenAnime2">打开 2</button>  -->
 				</div>
 			</section>
@@ -93,13 +93,13 @@
 							<p class="small opa-6 mgt-10 tal">{{$t("BOX_39")}}</p>
 							<div class="aveage-box">
 								<div class="tal">
-									<button class="btn-primary mgt-20" style="width: 90%" @click=" oprDialog('get-box-dialog', 'block'); addKey = parseInt(boxNum) || 1; ">
+									<button class="btn-primary mgt-20" style="width: 90%" @click="setAction(23001); oprDialog('get-box-dialog', 'block'); addKey = parseInt(boxNum) || 0; ">
 										{{$t("BOX_36")}}
 									</button>
 								</div>
 								<div class="tar">
 									<router-link to="/market?tab=4">
-										<button class="mgt-20 btn-line" style="width:90%;">
+										<button class="mgt-20 btn-line" style="width:90%;" @click="setAction(23002); ">
 											{{$t("BOX_37")}}
 										</button>
 									</router-link>
@@ -189,9 +189,9 @@
 						<img  src="@/assets/icon/box_view.png" alt="" />
 					</div>
 					<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
-						v-int :data-max="parseInt(boxNum) || 1" data-min="1" v-model="addKey" />
+						v-int :data-max="parseInt(boxNum) || 0"  v-model="addKey" />
 					<div class="dib" style="width: 30%">
-						<button @click="addKey = parseInt(boxNum) || 1" class="btn-primary btn-small" style="width: 80%" >
+						<button @click="addKey = parseInt(boxNum) || 0" class="btn-primary btn-small" style="width: 80%" >
 							Max
 						</button>
 					</div>
@@ -223,9 +223,9 @@
 					<div class="ly-input-pre-icon"> <img  src="@/assets/icon/box_icon.png" alt="" /> </div>
 					<input class="ly-input dib" type="text"
 						style=" text-align: center; width: 70%; padding-left: 50px; "
-						v-int :data-max="maxOpenOne" data-min="1" v-model="openBox" />
+						v-int :data-max="maxOpenOne" v-model="openBox" />
 					<div class="dib" style="width: 30%">
-						<button @click=" openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 1 " class="btn-primary btn-small" style="width: 80%" >
+						<button @click=" openBox = canOpenBox > maxOpenOne ? maxOpenOne : canOpenBox || 0 " class="btn-primary btn-small" style="width: 80%" >
 							Max
 						</button>
 					</div>
@@ -253,8 +253,8 @@ export default {
 	data() {
 		return {
 			showHistoryArr: [],
-			openBox: 1,
-			addKey: 1,
+			openBox: "",
+			addKey: "",
 			eventToLang: {
 				HashBox: "BOX_24",
 				AddBox: "BOX_23",
@@ -527,8 +527,9 @@ export default {
 		},
 		
 		showOpenBox(){
+			this.setAction(23003); 
 			this.oprDialog('open-box-dialog', 'block'); 
-			this.openBox = this.canOpenBox > this.maxOpenOne ? this.maxOpenOne : this.canOpenBox || 1;
+			this.openBox = this.canOpenBox > this.maxOpenOne ? this.maxOpenOne : this.canOpenBox || 0;
 		},
 
 		getTxUrl(tx) {
@@ -597,6 +598,10 @@ export default {
 			}
 		},
 		async addBox(num) {
+			if(Number(num) == 0){
+				this.showNotify(this.$t("BOX_30"), "error");
+				return;
+			}
 			if (Number(num) > Number(this.boxNum)) {
 				this.showNotify(this.$t("BOX_30"), "error")
 				return;
@@ -615,6 +620,10 @@ export default {
 
 		//默认打开并质押
 		async open(num, stake = false) {
+			if(num == 0){
+				this.showNotify(this.$t("BOX_30"), "error");
+				return;
+			}
 			if (this.canOpenBox >= num) {
 				let hash;
 				if(stake){

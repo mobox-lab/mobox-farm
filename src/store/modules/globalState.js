@@ -46,6 +46,9 @@ const state = () => ({
 			joinStakeLock: 0,
 			bidLock: 0,
 			applyBoxLock: 0,
+			makeBidOrderLock: 0,
+			makeAskOrderLock: 0,
+			refundMboxLock: 0,
 		},
 		walletStatus: {
 			status: 1, //1,等待中，2，reject，3，success
@@ -60,6 +63,8 @@ const state = () => ({
 		momoNumObj: {},
 		mboxAllownceToBoxApply: -1, //mbox是否授权给Box申购合约
 		hasLoadSpine: false,
+		//补偿数据
+		refundData: {short: 0, middle: 0, long: 0, total: 0, refunded: "-"}
 	},
 })
 

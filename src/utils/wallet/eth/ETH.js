@@ -447,7 +447,7 @@ export default class ETH {
 				()=>{
 					console.log("getRewardKey success");
 					Common.app.getStakeValueAndEarndKey();
-					Common.setCoinValueByName("MBOX");
+					Common.app.setCoinValueByName("MBOX");
 					Common.app.unLockBtn("getKeyLock");
 				}
 			)
@@ -897,7 +897,11 @@ export default class ETH {
 			contract.methods.getLimits(prototype_721_arr).call().then(res => {
 				let returnObj = {};
 				res.map((item, key)=>{
-					returnObj[prototype_721_arr[key]] = item;
+					// if(Number(prototype_721_arr[key]) > 50080 && Number(item) == 0){
+					// 	returnObj[prototype_721_arr[key]] = 50;
+					// }else{
+						returnObj[prototype_721_arr[key]] = item;
+					// }
 				});
 				resolve(returnObj);
 			});
@@ -976,7 +980,9 @@ export default class ETH {
 				lvHashrate: quality,
 				chain: "bnb",
 				location,
-				gems: [0,0,0,0]
+				gems: [0,0,0,0],
+				inGroupSellCar: false,
+				groupSellPrice: "",
 			});
 		});
 
@@ -1002,6 +1008,8 @@ export default class ETH {
 				tokenName: BaseConfig.NftCfg[itemAttr[0]] ? BaseConfig.NftCfg[itemAttr[0]]["tokenName"] : "",
 				location,
 				gems: [0,0,0,0],
+				inGroupSellCar: false,
+				groupSellPrice: "",
 				rent: {
 					orderId: "-",
 					status: "-",
@@ -1273,6 +1281,47 @@ export default class ETH {
 		});
 	}
 
+	//批量创建订单
+	static async createAuctionBatch({suggestIndex_, tokenIds_, prices721_, ids_, prices1155_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "createAuctionBatch",
+				"type": "function",
+				"inputs": [
+					{"name": "suggestIndex_","type": "uint256"},
+					{"name": "tokenIds_","type": "uint256[]"},
+					{"name": "prices721_","type": "uint256[]"},
+					{"name": "ids_","type": "uint256[]"},
+					{"name": "prices1155_","type": "uint256[]"},
+				],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.moMoStakeAuction);
+
+		prices721_.map((item, index)=>prices721_[index] = this.numToHex(BigNumber(Common.numFloor(item, 1e9)).times(BigNumber(1e18))));
+		prices1155_.map((item, index)=>prices1155_[index] = this.numToHex(BigNumber(Common.numFloor(item, 1e9)).times(BigNumber(1e18))));
+
+		let saveHash;
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.createAuctionBatch(suggestIndex_,tokenIds_,prices721_,ids_,prices1155_), {from: myAddr},
+					hash=>{
+						saveHash = hash;
+						resolve(hash);
+					},
+					()=>{
+						Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+					},
+					()=>{
+						EventBus.$emit(EventConfig.CreateAuctionError, {chain: "eth", hash: saveHash});
+					}
+			)
+		});
+	}
+
 	static numToHex(num){
 		return "0x"+BigNumber(num).toString(16);
 	}
@@ -1298,6 +1347,42 @@ export default class ETH {
 					await Common.app.setCoinValueByName(coinKey);
 					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 					Common.app.unLockBtn("buyMomoLock");
+				}
+			)
+		});
+	}
+
+	//批量购买
+	static async buyMarketPets(_auctors, _indexs, coinKey, _startTimes, _prices, ignoreSold){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "bid",
+				"type": "function",
+				"inputs": [
+					{"name": "auctors_","type": "address[]"},
+					{"name": "indexs_","type": "uint256[]"},
+					{"name": "startTimes_","type": "uint256[]"},
+					{"name": "prices_","type": "uint256[]"},
+					{"name": "ignoreSold","type": "bool"},
+				],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.moMoStakeAuction);
+
+		_prices.map((item, index)=>_prices[index] = this.numToHex(BigNumber(Number(item) + 0.0001* 1e9).times(BigNumber(1e9))));
+		console.log({_auctors, _indexs,_startTimes,_prices});
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.bid(_auctors, _indexs, _startTimes, _prices, ignoreSold), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					console.log("buyMarketPets success!!!!!");
+					await Common.app.setCoinValueByName(coinKey);
+					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 				}
 			)
 		});
@@ -2939,6 +3024,135 @@ export default class ETH {
 			});
 		});
 	}
+
+	static async getRefund(){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return null;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "getRefund",
+				"type": "function",
+				"inputs": [
+					{"name": "user","type": "address"},
+				],
+				"outputs": [
+					{"name": "short","type": "uint256"},
+					{"name": "middle","type": "uint256"},
+					{"name": "long","type": "uint256"},
+					{"name": "refunded","type": "bool"},
+				],
+			}
+		], WalletConfig.ETH.refundContract);
+
+		return new Promise(resolve => {
+			contract.methods.getRefund(myAddr).call().then(data => {
+				resolve(data);
+			});
+		});
+	}
+
+	static async refundMbox(){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return null;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "refund",
+				"type": "function",
+				"inputs": [],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.refundContract);
+
+		return new Promise(resolve => {
+			this.sendMethod(
+				contract.methods.refund(), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					Common.app.unLockBtn("refundMboxLock");
+					await Common.app.getRefund();
+					await Common.app.setCoinValueByName("MBOX");
+				}
+			)
+		});
+	}
+
+
+	//订单部相关功能
+	static async orderBookOpr(param, type ){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": type,
+				"type": "function",
+				"inputs": [{
+					"type": "tuple",
+					"name": "param",
+					"components": [
+						{"name": "price_","type": "uint256"},
+						{"name": "storeIndex_","type": "uint256"},
+						{"name": "currency_","type": "uint256"},
+						{"name": "erc1155_","type": "uint256"},
+						{"name": "tokenId_","type": "uint256"},
+						{"name": "count_","type": "uint256"},
+						{"name": "indexes_","type": "uint256[]"},
+					],
+				}],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.orderBookContract);
+
+		param[0] = this.numToHex(BigNumber(param[0]).times(BigNumber(1e18)));
+
+		console.log(param, type);
+
+		return new Promise(resolve => {
+			this.sendMethod( contract.methods[type](param), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					console.log(type, " success!!!!!");
+					Common.app.unLockBtn(type+"Lock");
+					//更新box数量和BUSD数量
+					await Common.app.getNewBoxNum();
+					await Common.app.setCoinValueByName("BUSD");
+				}
+			)
+		});
+
+	}
+
+	//订单部相关功能
+	static async cancelOrderBook({erc1155_, index_, orderId_}){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+
+		let contract = new this.web3.eth.Contract([
+			{
+				"name": "cancelOrder",
+				"type": "function",
+				"inputs": [
+					{"name": "erc1155_","type": "uint256"},
+					{"name": "index_","type": "uint256"},
+					{"name": "orderId_","type": "uint256"},
+				],
+				"outputs": [],
+			}
+		], WalletConfig.ETH.orderBookContract);
+
+		return new Promise(resolve => {
+			this.sendMethod( contract.methods.cancelOrder(erc1155_, index_, orderId_), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					console.log(" cancelOrder success!!!!!");
+				}
+			)
+		});
+
+	}
+
 
 
 }

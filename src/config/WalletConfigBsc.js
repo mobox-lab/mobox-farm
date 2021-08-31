@@ -32,6 +32,8 @@ export default class WalletConfig {
 		momoBid: "0xFaE911aa353e598908DD2cFd6e88E35dE588974f",//v6竞拍
 		newBoxToken: "0xed8711fEff83b446158259981FD97645856e82A5", // 新的box合约
 		boxApply: "0xAe5F14A9aed2b56121fb964A84a9DFf114296563", //box申购
+		orderBookContract: "0xE0d764a7b0DF2404D5b531a23435100967feCc6A", //订单部交易
+		refundContract: "0x70aC5068237AA52B0A29eEb3C55630223Fd5907F", //补偿合约
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

@@ -27,7 +27,7 @@
 				<div>
 					<PercentSelect :selectCB="percent => inputPercent = percent" />
 				</div>
-				<div class="mgt-30 tac" :class="depositNeedApprove?' btn-group':'' " style="margin-bottom:10px">
+				<div class="mgt-30 tac" :class="depositNeedApprove?' btn-group':'' " style="margin-bottom:10px" v-if="oprData.coinName == 'MBOX-BNB' ">
 					<div v-if="depositNeedApprove">
 						<button data-step="1" @click="approveToPool(oprData.coinKey)" class="btn-primary por" style="width:70%;" :class="oprData.coinName != '' && coinArr[oprData.coinKey].allowanceToPool > 1e8 || coinArr[oprData.coinKey].isApproving?'disable-btn':''">
 							<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinKey].isApproving"  style="position:absolute;left:8px;top:9px"/>
@@ -39,6 +39,7 @@
 						{{$t("Air-drop_07")}}
 					</button>
 				</div>
+				<p v-else class="color-buy">{{$t("Air-drop_215")}} <span class="cur-point" @click="$root.$children[0].showNotice()">{{$t("Air-drop_216")}}>></span></p>
 			</div>
 		</div>
 		<div class="tab-body tal mgt-10">

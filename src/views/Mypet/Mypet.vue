@@ -421,7 +421,7 @@ export default {
 .pop-notice{
 	position: absolute;
 	font-size: 12px;
-	width: 100px;
+	width: 135px;
 	border: 1px solid #3054BC;
 	background: #1B222C;
 	border-radius: 8px;
@@ -512,6 +512,9 @@ export default {
 	margin-top: 20px;
 }
 @media (max-width: 768px) {
+	.pop-notice{
+		line-height: 15px;
+	}
 	.content{
 		width: 100%;
 		padding: 0px 10px!important;

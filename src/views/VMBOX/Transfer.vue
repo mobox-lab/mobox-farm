@@ -67,7 +67,8 @@
 			</div>
 
 			<div class="mgt-20 tac">
-				<StatuButton :isDisable="!canTransfer" :onClick="transferVeMbox" :isLoading="lockBtn.moveVeMboxLock > 0">{{$t('Air-drop_177')}}</StatuButton>
+				<StatuButton v-if="canShowTransfetBtn" :isDisable="!canTransfer" :onClick="transferVeMbox" :isLoading="lockBtn.moveVeMboxLock > 0">{{$t('Air-drop_177')}}</StatuButton>
+				<p v-else class="color-buy">{{$t("Air-drop_215")}} <span class="cur-point" @click="$root.$children[0].showNotice()">{{$t("Air-drop_216")}}>></span></p>
 			</div>
 		</div>
 	</div>
@@ -100,6 +101,7 @@ export default {
 			},
 			timer: null,
 			stepTime: 500,
+			
 		})
 	},
 	watch: {
@@ -125,6 +127,10 @@ export default {
 			if(this.to.coinKey == "") isCanTransfer = false;
 
 			return isCanTransfer;
+		},
+		canShowTransfetBtn(){
+			let arr = ["MBOX-BNB", "GOV"]
+			return (this.from.coinName == "" || this.to.coinName == "") || (arr.indexOf(this.to.coinName) != -1);
 		}
 	},
 	methods: {
@@ -149,7 +155,7 @@ export default {
 			}
 		},
 		openSelectPool(type){
-			this.$parent.$parent.$refs.selectOprPool.setOprData([this.from.coinKey, this.to.coinKey], this.oprOrderIndex,this.onSelectPool.bind(this, type)).show();
+			this.$parent.$parent.$refs.selectOprPool.setOprData([this.from.coinKey, this.to.coinKey], this.oprOrderIndex,this.onSelectPool.bind(this, type), type).show();
 		},
 		onSelectPool(type, coinKey){
 			console.log({type, coinKey});

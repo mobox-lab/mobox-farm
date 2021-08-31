@@ -572,11 +572,11 @@ svg {
 	border-radius: 10px;
 	height: 33px;
 	outline: none;
-	background-image: linear-gradient(90deg, #a59336, 50%, #af7800);
+	background-image: linear-gradient(256deg, #e3672a , 50%, #fab531 );
 	color: #fff;
 	border: none;
 	cursor: pointer;
-	font-size: 14px;
+	font-size: 12px;
 	padding: 0px 20px;
 	min-width: 80px;
 	text-align: center;
@@ -584,6 +584,12 @@ svg {
 	display: inline-block;
 }
 
+.btn-danger.btn-small {
+	min-width: auto !important;
+	font-size: 12px;
+	height: 28px;
+	padding: 0px 20px!important;
+}
 .btn-primary.btn-small {
 	min-width: auto !important;
 	font-size: 12px;
@@ -651,12 +657,13 @@ svg {
 
 .ly-input {
 	border-radius: 8px;
-	height:35px;
+	height:40px;
 	outline: none;
 	background: #2A2F35;
 	border: none;
 	color: #fff;
-	font-size: 14px;
+	font-size: 16px;
+	font-weight: 800;
 	padding: 0px 20px;
 }
 
@@ -664,6 +671,14 @@ svg {
 	position: absolute;
 	left: 10px;
 	height: 100%;
+	display: flex;
+	align-items: center;
+}
+.ly-input-after {
+	position: absolute;
+	right: 10px;
+	top: 5px;
+	height: 80%;
 	display: flex;
 	align-items: center;
 }
@@ -1002,7 +1017,7 @@ svg {
 .ly-checkbox{
 	height: 20px;
 	width: 20px;
-	background: #2A2F35;
+	background: #585d64;
 	border-radius: 20px;
 	display: inline-block;
 	cursor: pointer;
@@ -1375,6 +1390,39 @@ svg {
 
 .dot-bg{
 	background: linear-gradient(139deg,#636363 0%, rgba(0,0,0,0.6) 100%);
+}
+
+.shop-car-num{
+	width: 17px;
+	height: 17px;
+	background: red;
+	border-radius: 10px;
+	font-size: 12px;
+	color: #fff;
+	display: inline-block;
+	text-align: center;
+	line-height: 16px;
+	position: absolute;
+	top: 0px;
+	right: -5px;
+}
+
+.tab-type-list-item{
+	display: inline-block;
+	margin-right: 20px;
+	text-align: center;
+	padding-bottom: 5px;
+	cursor: pointer;
+	user-select: none;
+}
+.tab-type-list-item.active{
+	border-bottom: 4px solid #1B54F5;
+}
+
+@media (max-width: 768px) {
+	.tab-type{
+		zoom: 0.8;
+	}
 }
 
 

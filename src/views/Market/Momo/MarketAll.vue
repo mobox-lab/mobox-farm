@@ -145,7 +145,7 @@ export default {
 				let t = setTimeout(()=>{
 					clearTimeout(t);
 					window.$(this.$refs.searchPreview).hide();
-				}, 100);
+				}, 300);
 			})
 			window.$(this.$refs.searchInput).focus(()=>{
 				window.$(this.$refs.searchPreview).show();
@@ -200,6 +200,7 @@ export default {
 					nowPrice = item.startPrice + (diffPrice / item.durationDays * Math.floor((nowTime-item.uptime)/ 86400))
 				}
 				item.nowPrice = nowPrice;
+				item.tx = item.tx.toString() + item.auctor.toString() + item.index;
 			});
 			this.$store.commit("marketState/setData", {marketPets:data});
 			

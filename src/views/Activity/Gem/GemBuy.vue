@@ -3,66 +3,95 @@
 <div class="tac center-box">
 	<div class="por clear mgt-10">
 		<section class="col-md-7" style="padding:10px">
-			<div class="adv-panel">
-				<h1 class="vertical-children">
-					<span>{{$t("Gemstone_01")}}</span>
-					<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="30">
+			<div class="adv-panel" :class="{veapply: tabPos == 1}">
+				<Tab  :list="tabList" :defaultSelectPos="tabPos" :onChange="onTabChange" style="background:#000" />
+				<h1 class="vertical-children mgt-20">
+					<span>{{$t("Gemstone_02")}}</span>
+					<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="25">
 				</h1>
-				<div class="tac mgt-10">
-					<span v-if="getCountDown  > 8640000 ">{{$t("Gemstone_50")}}</span>
+				<div class="tac mgt-20">
+					<span v-if="getCountDown  > 8640000 ">
+						{{$t("Gemstone_53")}}: {{getLeftTime(1630987200 - nowTs)}}
+					</span>
 					<template v-else>
 						<p v-if="getCountDown >0">{{$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
 						<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
 					</template>
 
-					<div style="height:280px" id="gem-apply-type">
+					<!-- <div style="height:280px" id="gem-apply-type">
 						<p v-if="applyInfo.roundIndex != '' ">
 							<img :src="require(`@/assets/icon/gemIcon_${getShowApplyType}.png`)" alt="" height="280px"/>
 						</p>
+					</div> -->
+					<p class="mgt-30">{{$t("Gemstone_54")}}</p>
+					<div class="aveage-box" style="margin-bottom:20px">
+						<div v-for="item in [101,201,301,401]" :key="item" class="gem-apply-item ">
+							<div class="por" >
+								<img :src="require(`@/assets/market/${item}.png`)" alt="" width="100%">
+								<div class="has-apply">
+									<div>
+										<img src="@/assets/icon/hasapply.png" alt="" height="20">
+										<p>已申购</p>
+									</div>
+								</div>
+							</div>
+							<span class="apply-num">{{applyCfg[tabPos].now}}/{{applyCfg[tabPos].max}}</span>
+						</div>
 					</div>
+					<p class="mgt-10 color-buy small">{{$t("Gemstone_13")}}</p>
 					
 				</div>
 			</div>
 		</section>
 
 		<section class="col-md-5" style="padding:10px">
-			<div class="panel por" style="height:380px;padding:30px">
+			<div class="panel por" style="height:410px;padding:10px">
 				<section style="padding:10px">
-					<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:20px">
-						<div >
-							<p class="small opa-6">{{$t("Gemstone_32")}}</p>
-							<h3>{{applyInfo.nowNormalAmount}}</h3>
+						<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:15px">
+							<div >
+								<p class="small opa-6">{{$t("Air-drop_152")}}</p>
+								<h3  class="por">
+									{{canUseVeMbox}}
+									<span class="dib por cur-point" style="width:30px;position:absolute;right:20px;bottom:0px" @click="jumpVeMBOX">
+										<span class="notice" style="zoom:0.7" v-if="coinArr['GOV'].veMbox.notice && !hasStake"></span>
+										<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
+										<span class="tac opa-6" style="width:120%;position:absolute;bottom:-5px;left:-10%;font-size:12px;color:#fff;zoom:0.7;" >veMBOX</span>
+									</span>
+								</h3>
+							</div>
+							<div>
+								<p class="small opa-6">{{$t("Gemstone_56")}}</p>
+								<h3>{{getMaxVeMboxApplyTimes}}</h3>
+							</div>
 						</div>
-						<div>
-							<p class="small opa-6">{{$t("Gemstone_24")}}</p>
-							<h3>{{ numFloor(applyInfo.maxNormalLuckyAmount / (Number(applyInfo.nowNormalAmount) >= Number(applyInfo.maxNormalLuckyAmount)?applyInfo.nowNormalAmount:applyInfo.maxNormalLuckyAmount) * 100, 1e3 ) || "-" }}%</h3>
+						<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:15px">
+							<div >
+								<p class="small opa-6">{{$t('Gemstone_55')}}</p>
+								<h3  class="por">
+									{{eth_myHashrate}}
+								</h3>
+							</div>
+							<div>
+								<p class="small opa-6">{{$t("Gemstone_56")}}</p>
+								<h3>{{getMaxPowerApplyTimes}}</h3>
+							</div>
 						</div>
-					</div>
-					<div class="aveage-box tal" style="padding:20px">
-						<div >
-							<p class="small opa-6">{{$t("Gemstone_33")}}</p>
-							<h3>{{applyInfo.nowAmount}}/{{applyInfo.maxAmount}}</h3>
-						</div>
-						<div>
-							<p class="small opa-6">{{$t("Gemstone_24")}}</p>
-							<h3>{{ numFloor(applyInfo.maxLuckyAmount / (Number(applyInfo.nowAmount) >= Number(applyInfo.maxLuckyAmount)?applyInfo.nowAmount:applyInfo.maxLuckyAmount) * 100, 1e3 ) || "-" }}%</h3>
-						</div>
-					</div>
-				</section>
+					
+					</section>
 			
-				<div class="mgt-10 aveage-box">
+				<div class="mgt-30 aveage-box">
 					<div class="dib por tac">
-						<button class="btn-primary" style="margin:10px;width:80%" @click="setAction(22021);oprDialog('gem-apply-dialog', 'block')">{{$t("Gemstone_14")}}</button>
+						<button class="btn-primary" style="margin:10px;width:80%" @click="setAction(22021);oprDialog('gem-apply2-dialog', 'block')">{{$t("Gemstone_14")}}</button>
 						<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('gem-rule-dialog','block')">{{$t("Gemstone_02")}}>></p>
 					</div>
 					<div class="tac">
-						<button class="btn-primary por" style="width:80%" @click="setAction(22001);oprDialog('gem-take-dialog', 'block')">
+						<button class="btn-line por" style="width:80%" @click="setAction(22001);oprDialog('gem-take-dialog', 'block')">
 							<span class="notice" v-if="gemToTakeNum > 0"></span>
 							{{$t("Gemstone_15")}}
 						</button>
 					</div>
 				</div>
-				<div class="gemBag" @click="oprDialog('gemBag-dialog','block')">
+				<div class="gemBag" @click="oprDialog('gemBag-dialog','block')" style="bottom:10px">
 					<img  src="@/assets/icon/gem_bag_icon.png" alt="">
 					<p class="stroke" :data-text="$t('Gemstone_16')">{{$t("Gemstone_16")}}</p>
 				</div>
@@ -153,16 +182,17 @@
 </div>
 </template>
 <script>
+
 import { CommonMethod } from '@/mixin';
-import GemApply from './GemApply.vue'
+import GemApply from './GemApply2.vue'
 import { Wallet, Http } from '@/utils';
-import { Dialog, StatuButton, Loading } from '@/components';
+import { Dialog, StatuButton, Loading, Tab } from '@/components';
 import { mapState } from 'vuex';
 
 let  timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {GemApply, Dialog, StatuButton, Loading},
+	components: {GemApply, Dialog, StatuButton, Loading, Tab},
 	data(){
 		return({
 			applyInfo: {
@@ -189,13 +219,32 @@ export default {
 			getHistory: [],
 			historyDitail: {isOver: "-", wins: {}, item:{}, ticketStartNo:0, amountGem: 0 },
 			account: "",
+			tabList: [this.$t("Gemstone_51"),this.$t("Gemstone_52")],
+			tabPos: 0,
+			applyCfg: {
+				0: {max: 50, now: 0},
+				1: {max: 100, now: 0},
+			}
 		})
 	},
 	computed:{
 		...mapState({
 			lockBtn: (state) => state.globalState.data.lockBtn,
+			nowTs: (state) => state.globalState.data.nowTs,
+			coinArr: (state) => state.bnbState.data.coinArr,
+			canUseVeMbox: (state) => state.bnbState.data.canUseVeMbox,
+			eth_myHashrate: (state) => state.ethState.data.myHashrate,
 			gemApplyEndCountDown: (state) => state.globalState.data.gemApplyEndCountDown,
 		}),
+
+		hasStake(){
+			let hasStake = false;
+			let plageList = ["MBOX-BNB-V2"];
+			plageList.map(coinKey=>{
+				if(this.coinArr[coinKey].wantAmount > 0) hasStake = true;
+			})
+			return hasStake;
+		},
 
 		getShowApplyType(){
 			return this.gemType[this.applyInfo.roundIndex % 4]
@@ -227,7 +276,47 @@ export default {
 				retArr.push({number, isWins: wins[number]!= undefined, type: this.gemType[item.roundIndex % 4]})
 			} 
 			return retArr;
-		}
+		},
+		getMaxVeMboxApplyTimes(){
+			let maxAmount = 0
+			let myTotalVeMbox = this.canUseVeMbox;
+			if (myTotalVeMbox < 1500) {
+				maxAmount = 0;
+			} else if (myTotalVeMbox < 9000) {
+				maxAmount = 2;
+			} else if (myTotalVeMbox < 45000) {
+				maxAmount = 10;
+			} else if (myTotalVeMbox < 120000) {
+				maxAmount = 20;
+			} else if (myTotalVeMbox < 300000) {
+				maxAmount = 30;
+			} else if (myTotalVeMbox < 600000) {
+				maxAmount = 40;
+			} else {
+				maxAmount = 50;
+			}
+			return maxAmount;
+		},
+		getMaxPowerApplyTimes(){
+			let maxAmount = 0
+			let myData = this.eth_myHashrate;
+			if (myData < 300) {
+				maxAmount = 0;
+			} else if (myData < 1000) {
+				maxAmount = 1;
+			} else if (myData < 3000) {
+				maxAmount = 3;
+			} else if (myData < 10000) {
+				maxAmount = 5;
+			} else if (myData < 20000) {
+				maxAmount = 7;
+			} else if (myData < 50000) {
+				maxAmount = 10;
+			} else {
+				maxAmount = 12;
+			}
+			return maxAmount;
+		},
 	},
 	async created(){
 		console.log("Gembuy")
@@ -255,10 +344,30 @@ export default {
 		await this.getGemApply();
 
 	},
+	mounted(){
+		this.resizeGem();
+		window.$(window).resize(()=>this.resizeGem());
+	},
 	beforeDestroy(){
 		clearInterval(timer);
 	},
 	methods: {
+		jumpVeMBOX(){
+			if(this.hasStake){
+				this.$router.replace({ path: '/' })
+				// this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();
+			}else{
+				this.setAction(21005);
+				this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();
+			}
+		},
+		resizeGem(){
+			window.$(".gem-apply-item").height(window.$(".gem-apply-item").width());
+			window.$(".has-apply").height(window.$(".has-apply").width());
+		},
+		onTabChange(tabPos){
+			this.tabPos = tabPos;
+		},
 		async getApplyDetial(item){
 			this.historyDitail.isOver = "-";
 			this.historyDitail.item = item;
@@ -301,3 +410,68 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+/* .adv-panel{
+	background: #161401;
+} */
+.veapply:before{
+	background: linear-gradient(145deg,#975fff 0%, #000  100%);
+}
+/* .veapply{
+	background: rgb(13, 25, 0);
+} */
+.gem-apply-item{
+	margin: 20px;
+	position: relative;
+}
+.gem-apply-item{
+	border: 1px solid #33363C;
+	border-radius: 20px;
+}
+.gem-apply-item .apply-num{
+	position: absolute;
+	bottom: -30px;
+	left: 50%;
+	transform: translateX(-50%);
+	background: #00000055;
+	border-radius: 15px;
+	font-size: 10px;
+	padding: 2px 10px;
+}
+.has-apply{
+	position: absolute;
+	font-size: 10px;
+	display: none;
+	background: rgba(0,0,0,0.5);
+	width: 100%;
+	bottom: 0px;
+	top: 0px;
+	border-radius: 20px;
+}
+.has-apply div{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	line-height: 12px;
+}
+
+.gem-apply-item.active .has-apply{
+	display: block;
+}
+
+@media (max-width: 768px) {
+	.gem-apply-item{
+		margin: 5px;
+		border-radius: 10px;
+	}
+	.gem-apply-item .apply-num{
+		zoom: 0.8;
+	}
+	.has-apply{
+		zoom: 0.8;
+		border-radius: 10px;
+	}
+}
+</style>

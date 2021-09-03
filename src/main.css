@@ -883,7 +883,7 @@ svg {
 }
 
 .tab-menu {
-	border-radius: 8px 8px 0px 0px;
+	border-radius: 10px 10px 0px 0px;
 	background: #1C222C;
 	display: inline-block;
 	opacity: 0.6;
@@ -894,7 +894,7 @@ svg {
 	user-select: none;
 }
 .tab-menu:nth-child(1){
-	margin-left: 10px;
+	margin-left: 20px;
 }
 
 .tab-menu.active {

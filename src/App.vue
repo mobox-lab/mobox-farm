@@ -71,15 +71,6 @@
 						<span>{{ $t("Menu_03") }}</span>
 					</li>
 				</router-link>
-				<router-link to="/collection">
-					<li :class="this.$route.path == '/collection' ? 'active' : ''">
-						<span class="per-icon vertical-children">
-							<img src="./assets/icon/airdrop.png" alt="" width="30" />
-						</span>
-						<span>{{ $t("Menu_04") }}</span>
-					</li>
-				</router-link>
-				
 				<router-link to="/market">
 				<li :class="this.$route.path == '/market' ? 'active' : ''">
 					<span class="per-icon vertical-children">
@@ -90,6 +81,15 @@
 				</li>
 				</router-link>
 
+				<router-link to="/collection">
+					<li :class="this.$route.path == '/collection' ? 'active' : ''">
+						<span class="per-icon vertical-children">
+							<img src="./assets/icon/airdrop.png" alt="" width="30" />
+						</span>
+						<span>{{ $t("Menu_04") }}</span>
+					</li>
+				</router-link>
+				
 				<router-link to="/rank">
 					<li :class="this.$route.path == '/rank' ? 'active' : ''">
 						<span class="per-icon vertical-children">
@@ -181,13 +181,17 @@
 						<span  class="mgt-5">{{ $t("Menu_03") }}</span>
 					</li>
 				</router-link>
-				<router-link to="/collection">
-					<li :class="this.$route.path == '/collection' ? 'active' : ''">
+
+				<router-link to="/market">
+					<div :class="this.$route.path == '/market' ? 'active' : ''">
 						<p class="per-icon vertical-children">
-							<img src="./assets/icon/airdrop.png" alt="" height="30" />
+							<section class="por dib">
+								<span class="notice" v-if="historyNotice"></span>
+								<img src="./assets/icon/market.png" alt="" height="30" />
+							</section>
 						</p>
-						<span  class="mgt-5">{{ $t("Menu_04") }}</span>
-					</li>
+						<span>{{ $t("Menu_05") }}</span>
+					</div>
 				</router-link>
 
 				<a href="javascript:void(0)"> 
@@ -209,17 +213,15 @@
 					<img v-else src="@/assets/icon/tmaster_en.png" alt="" width="70%" class="cur-point">
 				</span>
 			</div>
-			<router-link to="/market">
-				<div :class="this.$route.path == '/market' ? 'active' : ''">
-					<p class="per-icon vertical-children">
-						<section class="por dib">
-							<span class="notice" v-if="historyNotice"></span>
-							<img src="./assets/icon/market.png" alt="" height="30" />
-						</section>
-					</p>
-					<span>{{ $t("Menu_05") }}</span>
-				</div>
-			</router-link>
+			
+			<router-link to="/collection">
+					<div :class="this.$route.path == '/collection' ? 'active' : ''">
+						<p class="per-icon vertical-children">
+							<img src="./assets/icon/airdrop.png" alt="" height="30" />
+						</p>
+						<span  class="mgt-5">{{ $t("Menu_04") }}</span>
+					</div>
+				</router-link>
 			<router-link to="/rank" >
 				<div :class="this.$route.path == '/rank' ? 'active' : ''" class="mgt-10">
 					<p class="per-icon vertical-children">
@@ -327,6 +329,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_39")}}</h3>
+						<span v-html="$t('Notice_38')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_37")}}</h3>
 						<span v-html="$t('Notice_36')" ></span>
 					</div>
@@ -500,7 +506,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "2.5"
+			noticeVersion: "2.6"
 		};
 	},
 	watch: {

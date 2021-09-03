@@ -142,6 +142,7 @@ const state = () => ({
 		totalStakeMbox: 0,//共质押的MBOX
 		veMboxTotal:0,//共质押的vembox
 		myTotalVeMbox: 0, //我的总veMbox
+		canUseVeMbox: 0,//可以使用的veMbox
 	},
 })
 

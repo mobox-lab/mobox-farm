@@ -77,6 +77,22 @@
 	    min-width: 0px !important;
     }
 
+    .gem-select-item{
+	    margin: 5px;
+	    height: 45px;
+	    
+    }
+
+    .gem-select-item img{
+	border-radius: 16px;
+	height: 45px;
+	width: 45px;
+    }
+
+    .gem-select-item.active img{
+	background: rgba(255,255,255,0.5);
+    }
+
     @media (max-width: 768px) {
 	#gem-apply-type{
 		zoom: 0.6;

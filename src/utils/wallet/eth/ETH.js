@@ -131,6 +131,10 @@ export default class ETH {
 
 	//调起钱包
 	static sendMethod(method,  sendAttr,  onHash, onRecipt, onError = ()=>{}){
+		if(Common.store.state.globalState.data.chainNetwork != 56){
+			Common.app.showNotify(Common.app.$t("Common_23"), "error");
+			return;
+		}
 		Common.store.commit("globalState/setwalletStatus", {status:1});
 		Common.oprDialog("wallet-opr-dialog", "block");
 		method.value = sendAttr.value;

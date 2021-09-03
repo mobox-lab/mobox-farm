@@ -71,7 +71,6 @@ export default {
 }
 .yf-tab {
 	list-style: none;
-	height: 38px;
 	background: #13181F;
 	border-radius: 40px;
 	display: inline-block;

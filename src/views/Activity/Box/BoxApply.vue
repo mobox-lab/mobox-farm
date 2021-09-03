@@ -8,7 +8,7 @@
 			<p class="small tal">{{$t("NewBOX_04").replace("#0#",dialog_tab_pos==0?1:$parent.getMaxApplyTimes)}}</p>
 			<div class="por mgt-5">
 				<div class="ly-input-pre-icon">
-					<img src="@/assets/icon/box_icon.png" width="30" alt="">
+					<img src="@/assets/icon/box_icon.png"  alt="">
 				</div>
 				<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
 					v-int :data-max="dialog_tab_pos==0?1:$parent.getMaxApplyTimes" data-min="1" v-model="inputNum" :placeholder="$t('NewBOX_05')" />

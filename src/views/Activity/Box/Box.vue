@@ -43,7 +43,7 @@
 							<div >
 								<p class="small opa-6">{{$t("Air-drop_152")}}</p>
 								<h3  class="por">
-									{{myTotalVeMbox}}
+									{{canUseVeMbox}}
 									<span class="dib por cur-point" style="width:30px;position:absolute;right:20px;bottom:0px" @click="jumpVeMBOX">
 										<span class="notice" style="zoom:0.7" v-if="coinArr['GOV'].veMbox.notice && !hasStake"></span>
 										<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
@@ -216,12 +216,12 @@ export default {
 	computed:{
 		...mapState({
 			coinArr: (state) => state.bnbState.data.coinArr,
-			myTotalVeMbox: (state) => state.bnbState.data.myTotalVeMbox,
+			canUseVeMbox: (state) => state.bnbState.data.canUseVeMbox,
 			lockBtn: (state) => state.globalState.data.lockBtn,
 		}),
 		getMaxApplyTimes(){
 			let maxAmount = 0
-			let myTotalVeMbox = this.myTotalVeMbox;
+			let myTotalVeMbox = this.canUseVeMbox;
 
 			if (myTotalVeMbox < 3000) {
 				maxAmount = 0;
@@ -244,7 +244,7 @@ export default {
 		},
 		hasStake(){
 			let hasStake = false;
-			let plageList = ["MBOX-BNB-V2", "BTCB-BNB-V2", "ETH-BNB-V2", "BUSD-BNB-V2", "USDT-BNB-V2", "USDT-BUSD-V2", "DAI-BUSD-V2","USDC-BUSD-V2","BUSD","USDT","USDC","BNB"];
+			let plageList = ["MBOX-BNB-V2"];
 			plageList.map(coinKey=>{
 				if(this.coinArr[coinKey].wantAmount > 0) hasStake = true;
 			})

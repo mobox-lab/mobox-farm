@@ -39,6 +39,15 @@
  }
 
 @media (max-width: 768px) {
+	.small-xs{
+		font-size: 10px;
+	}
+	h2{
+		font-size: 16px;
+	}
+	.block-xs{
+		display: block;
+	}
 	.shop-car-btn{
 		zoom: 0.8;
 	}

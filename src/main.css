@@ -42,6 +42,10 @@ input::-webkit-inner-spin-button {
 	margin: 0;
 }
 
+.ovh{
+	overflow: hidden;
+}
+
 
 input {
 	/* font-weight: bold; */
@@ -566,6 +570,25 @@ svg {
 	display: inline-block;
 	position: relative;
 	z-index: 1;
+}
+
+.btn-liling {
+	height: 35px;
+	outline: none;
+	color: #fff;
+	border-radius: 10px;
+	background: #2D3741;
+	border: none;
+	cursor: pointer;
+	font-size: 12px;
+	min-width: 100px;
+	text-align: center;
+	user-select: none;
+	display: inline-block;
+	position: relative;
+	z-index: 1;
+	padding: 0px 15px;
+	border-radius: 20px;
 }
 
 .btn-danger {

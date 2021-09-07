@@ -1,6 +1,6 @@
 <style src="./activity.css"></style>
 <template>
-	<div class="center-box ">
+	<div class="center-content ">
 		<section style="padding:10px" id="activity-type">
 			<div style="text-align: left;border-bottom: 1px solid #162340" class="mgt-10">
 				<div class="activity-type-list-item vertical-children " v-for="item in tabArr" :key="item.key" :class="{active: tabKey == item.key}" @click="tabKey = item.key">

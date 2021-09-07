@@ -1,6 +1,6 @@
 <style src="./style.css"></style>
 <template>
-<div class="tac center-box">
+<div class="tac center-content">
 	<div class="por clear mgt-10">
 		<section class="col-md-7" style="padding:10px">
 			<div class="adv-panel" :class="{veapply: tabPos == 1}">

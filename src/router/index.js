@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Airdrop from '../views/Airdrop/Airdrop.vue'
+import AirdropV2 from '../views/Airdrop/AirdropV2.vue'
 import OpenBox from '../views/OpenBox/index.vue'
 import Collection from '../views/Collection.vue'
 import Mypet from '../views/Mypet/Mypet.vue'
@@ -18,6 +19,14 @@ const routes = [
 	{
 		path: '/',
 		name: 'Airdrop',
+		component: AirdropV2,
+		meta: {
+			actionId: 21000,
+		}
+	},
+	{
+		path: '/old',
+		name: 'AirdropOld',
 		component: Airdrop,
 		meta: {
 			actionId: 21000,

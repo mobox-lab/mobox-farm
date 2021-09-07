@@ -44,7 +44,7 @@
 					<p v-if="Number(inputNum) > 0">{{$t('Air-drop_166')}}: <span class="notice-color">{{getCanFreezeVeMbox}}</span> veMBOX</p>
 					<!-- <StatuButton class="mgt-10" :isDisable="Number(inputNum) <= 0" :isLoading="lockBtn.freezeMboxLock > 0" :onClick="freeze">确定冻结</StatuButton> -->
 
-					<div  :class="{'btn-group': coinArr['MBOX'].allowanceToVeMbox == 0}" v-if="oprData.coinName == 'MBOX-BNB' ">
+					<div  :class="{'btn-group': coinArr['MBOX'].allowanceToVeMbox == 0}" v-if="oprData.coinName == 'MBOX-BNB' || oprData.coinName == 'GOV' ">
 						<StatuButton :isLoading="coinArr['MBOX'].isApproving" data-step="1" class="mgt-10" style="width:70%" :onClick="approve.bind(this, 'MBOX')" v-if="coinArr['MBOX'].allowanceToVeMbox == 0">{{$t("Air-drop_16")}} MBOX</StatuButton>
 						<StatuButton :isLoading="lockBtn.freezeMboxLock > 0" :isDisable="coinArr['MBOX'].allowanceToVeMbox <= 0 || Number(inputNum) <= 0" data-step="2" class="mgt-10" style="width:70%"  :onClick="freeze">
 							{{$t('Air-drop_171')}}

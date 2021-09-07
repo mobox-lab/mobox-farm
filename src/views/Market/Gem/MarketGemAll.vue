@@ -27,7 +27,7 @@
 				<GemSellItem  :key="item.orderId" :data="{item: item}">
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img :src="require(`@/assets/coin/${showCoin}.png`)" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.price/1e9, 10000)}} <sub class="small">{{showCoin}}</sub></span>
+						<span class="money">{{numFloor(item.price/1e9, 100).toLocaleString()}} <sub class="small">{{showCoin}}</sub></span>
 					</div>
 				</GemSellItem>
 			</router-link>

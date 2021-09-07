@@ -234,8 +234,8 @@ export default class HTTP {
 		return data;
 	}
 	//获取号码
-	static async getGemApplyResult(addr, roundIndex){
-		let { data } = await this.get(`/gem/apply_result/`, {taker: addr, roundIndex});
+	static async getGemApplyResult(addr, roundIndex, applyType){
+		let { data } = await this.get(`/gem/apply_result/`, {taker: addr, roundIndex, applyType});
 		return data;
 	}
 

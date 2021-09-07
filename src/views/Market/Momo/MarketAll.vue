@@ -44,7 +44,7 @@
 				<PetItem  v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="@/assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
+						<span class="money">{{numFloor(item.nowPrice/1e9, 100).toLocaleString()}} <sub class="small">BUSD</sub></span>
 					</div>
 					<div v-if="nowTs -item.uptime <=  120" class=" mgt-10 small" style="position: absolute;right: 15px;top: -100px;transform: translateY(-50%);">
 						<p class="small">{{$t("Market_30")}}<span class="dotting"></span></p>
@@ -54,7 +54,7 @@
 				<PetItemScroll v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market" v-if="item.tokenId == 0 ">
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="@/assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
+						<span class="money">{{numFloor(item.nowPrice/1e9, 100).toLocaleString()}} <sub class="small">BUSD</sub></span>
 					</div>
 					<div v-if="nowTs -item.uptime <=  120" class=" mgt-10 small" style="position: absolute;right: 15px;top: -100px;transform: translateY(-50%);">
 						<p class="small">{{$t("Market_30")}}<span class="dotting"></span></p>

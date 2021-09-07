@@ -28,7 +28,7 @@
 						<div class="tac">
 							<div id="price" class="vertical-children">
 								<img :src="require(`@/assets/coin/${oprCoin}.png`)" height="25" alt="">&nbsp;
-								<span>{{numFloor( this.getNowPetItem.price/ 1e9, 1e4)}}</span>
+								<span class="money">{{numFloor( this.getNowPetItem.price/ 1e9, 1e2).toLocaleString()}}</span>
 							</div>
 							
 							<div v-if="!isMyPet" class="mgt-30">
@@ -98,7 +98,7 @@
 		</Dialog>
 
 		<Dialog id="confirm-gem-buy-dialog"  :top="200" :width="350">
-			<h4 class="mgt-30" v-html="$t('Market_59').replace('#0#', `<span style='color: #49c773'>${sellObj.startPrice} ${oprCoin}</span>` )"></h4>
+			<h4 class="mgt-30" v-html="$t('Market_59').replace('#0#', `<span style='color: #49c773' class='money'>${ numFloor( sellObj.startPrice, 1e2).toLocaleString()} ${oprCoin}</span>` )"></h4>
 			<div class="mgt-50">
 				<button class="btn-primary" @click="oprDialog('confirm-gem-buy-dialog', 'none');">{{$t("Common_04")}}</button>
 				<button class="btn-primary mgl-5" @click="oprDialog('confirm-gem-buy-dialog', 'none');buyPet()">{{$t("Common_03")}}</button>

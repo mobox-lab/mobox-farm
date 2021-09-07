@@ -520,6 +520,8 @@ export default {
 				scale:0.4,
 				x: 280,
 				y: 50,
+				// x: 300,
+				// y: 100,
 				success: ()=>{
 					this.boxSpine.state.timeScale = 1.8;
 				}

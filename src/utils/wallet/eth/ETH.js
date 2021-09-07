@@ -5,10 +5,15 @@ import PancakSwapContract from './PancakSwapContract'
 import {EventBus,Common,Http} from "@/utils";
 import {EventConfig,WalletConfig,BaseConfig,ConstantConfig, PancakeConfig} from '@/config';
 import BigNumber from "bignumber.js";
+import Gem from './group/Gem';
 
 export default class ETH {
 	static web3;
 	static web3MainNet;
+
+	static  Group = {
+		Gem,
+	}
 
 	//合约相关
 	static boxTokenContract;

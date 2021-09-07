@@ -884,7 +884,7 @@ svg {
 
 .tab-menu {
 	border-radius: 10px 10px 0px 0px;
-	background: #1C222C;
+	background: #000000;
 	display: inline-block;
 	opacity: 0.6;
 	padding: 5px 15px;
@@ -1423,6 +1423,10 @@ svg {
 	.tab-type{
 		zoom: 0.8;
 	}
+}
+
+.money{
+	font-family: Verdana
 }
 
 

@@ -9,33 +9,33 @@
 					<span>{{$t("Gemstone_02")}}</span>
 					<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="25">
 				</h1>
-				<div class="tac mgt-20">
+				<div class="tac mgt-10">
 					<span v-if="getCountDown  > 8640000 ">
 						{{$t("Gemstone_53")}}: {{getLeftTime(1630987200 - nowTs)}}
 					</span>
 					<template v-else>
-						<p v-if="getCountDown >0">{{$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
+						<p v-if="getCountDown >0">{{Number(applyInfo.startTime) > nowTs?$t("Gemstone_53") :$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
 						<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
 					</template>
 
-					<!-- <div style="height:280px" id="gem-apply-type">
-						<p v-if="applyInfo.roundIndex != '' ">
-							<img :src="require(`@/assets/icon/gemIcon_${getShowApplyType}.png`)" alt="" height="280px"/>
-						</p>
-					</div> -->
-					<p class="mgt-30">{{$t("Gemstone_54")}}</p>
+					<div class="aveage-box mgt-20" id="show-num">
+						<div class="tar">{{tabPos == 0?$t("Gemstone_61"):$t("Gemstone_63")}}: {{getNowApplyCount[0]}}</div>
+						<div class="tal mgl-10">{{tabPos == 0?$t("Gemstone_62"):$t("Gemstone_64")}}: {{getNowApplyCount[1]}}</div>
+					</div>
 					<div class="aveage-box" style="margin-bottom:20px">
-						<div v-for="item in [101,201,301,401]" :key="item" class="gem-apply-item ">
+						<div v-for="item in gemArr" :key="item.id" class="gem-apply-item ">
 							<div class="por" >
-								<img :src="require(`@/assets/market/${item}.png`)" alt="" width="100%">
-								<div class="has-apply">
+								<img :src="require(`@/assets/market/${item.id}.png`)" alt="" width="100%">
+								<div class="has-apply" :class="{active: myApplyGemType[tabPos] == item.id}">
 									<div>
 										<img src="@/assets/icon/hasapply.png" alt="" height="20">
-										<p>已申购</p>
+										<p>{{$t("Gemstone_67")}}</p>
 									</div>
 								</div>
 							</div>
-							<span class="apply-num">{{applyCfg[tabPos].now}}/{{applyCfg[tabPos].max}}</span>
+							<span class="apply-num">{{applyCfg[tabPos].now[item.name]}}/{{applyCfg[tabPos].max}}</span>
+							<span class="apply-rate" v-if="Number(applyCfg[tabPos].now[item.name]) < Number(applyCfg[tabPos].max)"><span class="hide-xs">{{$t("Gemstone_24")}}:</span>100%</span>
+							<span class="apply-rate" v-else><span class="hide-xs">{{$t("Gemstone_24")}}:</span>{{numFloor(Number(applyCfg[tabPos].max) / Number(applyCfg[tabPos].now[item.name]) * 100, 1e2)  }}%</span>
 						</div>
 					</div>
 					<p class="mgt-10 color-buy small">{{$t("Gemstone_13")}}</p>
@@ -45,7 +45,7 @@
 		</section>
 
 		<section class="col-md-5" style="padding:10px">
-			<div class="panel por" style="height:410px;padding:10px">
+			<div class="panel por" style="height:400px;padding:10px">
 				<section style="padding:10px">
 						<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:15px">
 							<div >
@@ -115,8 +115,8 @@
 				<tr v-for="item in getHistory" :key="item.tx">
 					<td class="tal tac-xs">{{ dateFtt("yyyy-MM-dd hh:mm:ss" , new Date(item.crtime * 1000)) }}</td>
 					<td class="tal">
-						<span v-if="Number(item.ticketStartNo) > 1e6">{{$t("Gemstone_27")}}</span>
-						<span v-else>{{$t("Gemstone_28")}}</span>
+						<span v-if="item.applyType == 1">{{$t("Gemstone_51")}}</span>
+						<span v-else>{{$t("Gemstone_52")}}</span>
 					</td>
 					<td>x{{ item.amountGem }}</td>
 					<td class="vertical-children">
@@ -134,7 +134,7 @@
 		</section>
 	</div>
 	
-	<GemApply :applyInfo="applyInfo" :myApplyInfo="myApplyInfo"/>
+	<GemApply :applyInfo="applyInfo" :myApplyInfo="myApplyInfo" :myApplyInfo_old="myApplyInfo_old"/>
 	<Dialog id="gem-take-dialog" :top="100" :width="350">
 		<div class="ly-input-content">
 			<div class="aveage-box" v-for="item in  [0,4,8]" :key="item">
@@ -164,7 +164,7 @@
 				<div class="aveage-box tab-content small" style="padding:8px">
 					<p class="tal">{{item.number}}</p>
 					<p class="tar" v-if="historyDitail.isOver==true">
-						<span v-if="item.isWins"><img :src="require(`@/assets/icon/${item.type}_icon.png`)" alt=""  height="30"></span>
+						<span v-if="item.isWins"><img :src="require(`@/assets/market/${historyDitail.gemId}.png`)" alt=""  height="30"></span>
 						<span class="color-danger" v-else>{{$t("Gemstone_20")}}</span>
 					</p>
 					<p v-else-if="historyDitail.isOver == '-'" class="tar">
@@ -189,13 +189,13 @@ import { Wallet, Http } from '@/utils';
 import { Dialog, StatuButton, Loading, Tab } from '@/components';
 import { mapState } from 'vuex';
 
-let  timer = null;
+let timer = null;
 export default {
 	mixins: [CommonMethod],
 	components: {GemApply, Dialog, StatuButton, Loading, Tab},
 	data(){
 		return({
-			applyInfo: {
+			applyInfo2: {
 				maxAmount: "-",
 				maxLuckyAmount: "-",
 				nowAmount: "-",
@@ -207,24 +207,46 @@ export default {
 				maxNormalLuckyAmount: "-",
 				roundDuration: "-",
 			},
+			applyInfo: {
+				price: "-",
+				round: "-",
+				roundDuration: "-",
+				roundState: "-",
+				startTime: '-'
+			},
 			getCountDown: 0,
 			gemType: ['red', 'green', 'blue', 'yellow'],
 			gemTypeToNum:{"red":100,"green":200,"blue":300,"yellow":400},
 			myApplyInfo: {
 				frozenBalance: 0,
 				gems: [0,0,0,0],
+				veMoboxTicket: [0,0],
+				hashRateTicket: [0,0]
+			},
+			myApplyGemType:{
+				0: "",
+				1: "",
+			},
+			myApplyInfo_old: {
+				frozenBalance: 0,
+				gems: [0,0,0,0],
 				userHighTicket: [0,0],
 				userNormalTicket: [0,0]
 			},
 			getHistory: [],
-			historyDitail: {isOver: "-", wins: {}, item:{}, ticketStartNo:0, amountGem: 0 },
+			historyDitail: {isOver: "-", wins: {}, item:{}, ticketStartNo:0, amountGem: 0, gemId: "101"},
 			account: "",
 			tabList: [this.$t("Gemstone_51"),this.$t("Gemstone_52")],
 			tabPos: 0,
 			applyCfg: {
-				0: {max: 50, now: 0},
-				1: {max: 100, now: 0},
-			}
+				0: {max: 0, now: {"red":0,"green":0,"blue":0,"gold":0},
+					"numCfg":{0:200,1000:400,3000:600,6000:800,12000:1000}
+				},
+				1: {max: 0, now: {"red":0,"green":0,"blue":0,"gold":0},
+					"numCfg":{0:400,5000:800,10000:1200,20000:1600,40000:2000}
+				},
+			},
+			gemArr: [{id:101,name:"red"},{id:201,name:"green"},{id:301,name:"blue"},{id:401,name:"gold"}],
 		})
 	},
 	computed:{
@@ -237,6 +259,20 @@ export default {
 			gemApplyEndCountDown: (state) => state.globalState.data.gemApplyEndCountDown,
 		}),
 
+		getNowApplyCount(){
+			let retArr = [0,0];
+			let obj = this.applyCfg[this.tabPos];
+			Object.values(obj.now).map(item=>{
+				retArr[0] += (Number(item) / 2);
+			});
+			Object.keys(obj.numCfg).map(item=>{
+				if(retArr[0] > item) retArr[1] = obj.numCfg[item];
+			});
+
+			if(retArr[0] == 0) retArr[1] = obj.numCfg[0];
+			return retArr;
+		},
+
 		hasStake(){
 			let hasStake = false;
 			let plageList = ["MBOX-BNB-V2"];
@@ -246,9 +282,7 @@ export default {
 			return hasStake;
 		},
 
-		getShowApplyType(){
-			return this.gemType[this.applyInfo.roundIndex % 4]
-		},
+	
 		//是否有宝石可以领取
 		gemToTakeNum(){
 			let num = 0;
@@ -319,7 +353,6 @@ export default {
 		},
 	},
 	async created(){
-		console.log("Gembuy")
 		this.getApplyInfo();
 		let count = 0;
 		clearInterval(timer);
@@ -336,20 +369,22 @@ export default {
 				await this.getApplyInfo();
 				await this.getUserApplyInfo();
 				await this.getGemApply();
+				await this.getUserApplyInfo_old();
 			}
 		}, 1000);
 
 		this.account = await Wallet.ETH.getAccount();
 		await this.getUserApplyInfo();
 		await this.getGemApply();
+		await this.getUserApplyInfo_old();
 
+	},
+	beforeDestroy(){
+		if(timer) clearInterval(timer)
 	},
 	mounted(){
 		this.resizeGem();
 		window.$(window).resize(()=>this.resizeGem());
-	},
-	beforeDestroy(){
-		clearInterval(timer);
 	},
 	methods: {
 		jumpVeMBOX(){
@@ -372,20 +407,26 @@ export default {
 			this.historyDitail.isOver = "-";
 			this.historyDitail.item = item;
 			this.oprDialog("gem-num-result-dialig", "block");
-			let {roundIndex} = item;
-			let result = await Http.getGemApplyResult(this.account, roundIndex);
+			let {roundIndex, applyType, gemId} = item;
+			let result = await Http.getGemApplyResult(this.account, roundIndex, applyType);
 			this.historyDitail.isOver = result.isOver;
 			this.historyDitail.wins = result.wins;
+			this.historyDitail.gemId = gemId;
 		},
 		async getGemApply(){
 			let result = await Http.getGemApply(this.account);
 			if(result){
 				this.getHistory = result.list;
+				result.list.map(item=>{
+					if(item.roundIndex == this.applyInfo.round){
+						this.myApplyGemType[item.applyType - 1] = item.gemId;
+					}
+				})
 			}
 		},
 		//领取宝石
 		async takeGem(){
-			let hash = await Wallet.ETH.takeGem(()=>{
+			let hash = await Wallet.ETH.Group.Gem.claimfrozenGem(()=>{
 				this.getUserApplyInfo();
 			});
 			if(hash){
@@ -394,12 +435,37 @@ export default {
 		},
 		//获取我的申购信息
 		async getUserApplyInfo(){
-			let result = await Wallet.ETH.getMyApplyInfo();
+			let result = await Wallet.ETH.Group.Gem.getMyApplyInfo();
 			if(result){
 				this.myApplyInfo = result;
 			}
 		},
+		async getUserApplyInfo_old(){
+			let result = await Wallet.ETH.getMyApplyInfo();
+			if(result){
+				this.myApplyInfo_old = result;
+			}
+		},
 		async getApplyInfo(){
+			let result = await Wallet.ETH.Group.Gem.getRoundInfo();
+			if(result){
+				let {maxHashRateLuckyAmount, maxVeMoboxLuckyAmount, nowHashRateAmounts, nowVeMoboxAmounts} = result;
+				this.applyCfg[0].max = maxHashRateLuckyAmount;
+				this.applyCfg[0].now = nowHashRateAmounts;
+				this.applyCfg[1].max = maxVeMoboxLuckyAmount;
+				this.applyCfg[1].now = nowVeMoboxAmounts;
+
+				this.applyInfo = result;
+
+				let dtTime = Number(result.startTime) + Number(result.roundDuration) - parseInt(new Date().valueOf() / 1000);
+				if(Number(result.startTime) > this.nowTs){
+					this.getCountDown = Number(result.startTime) - this.nowTs
+				}else{
+					this.getCountDown = dtTime > 0? dtTime : 0;
+				}
+			}
+		}, 
+		async getApplyInfo2(){
 			let result = await Wallet.ETH.getGemApplyState();
 			if(result){
 				this.applyInfo = result;
@@ -431,13 +497,24 @@ export default {
 }
 .gem-apply-item .apply-num{
 	position: absolute;
-	bottom: -30px;
+	bottom: 5px;
 	left: 50%;
 	transform: translateX(-50%);
 	background: #00000055;
 	border-radius: 15px;
 	font-size: 10px;
 	padding: 2px 10px;
+}
+.gem-apply-item .apply-rate{
+	position: absolute;
+	bottom: -28px;
+	left: 50%;
+	transform: translateX(-50%);
+	background: #00000055;
+	border-radius: 15px;
+	font-size: 10px;
+	padding: 2px;
+	width: 100%;
 }
 .has-apply{
 	position: absolute;
@@ -448,6 +525,9 @@ export default {
 	bottom: 0px;
 	top: 0px;
 	border-radius: 20px;
+}
+.has-apply.active{
+	display: block;
 }
 .has-apply div{
 	position: absolute;
@@ -472,6 +552,12 @@ export default {
 	.has-apply{
 		zoom: 0.8;
 		border-radius: 10px;
+	}
+	#show-num{
+		display: block !important;
+	}
+	#show-num div{
+		text-align: center;
 	}
 }
 </style>

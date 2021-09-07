@@ -69,7 +69,7 @@
 						<div class="tac">
 							<div id="price" class="vertical-children">
 								<img src="@/assets/coin/BUSD.png" height="25" alt="">&nbsp;
-								<span>{{numFloor( this.nowPrice/ 1e9, 1e4)}}</span>
+								<span class="money">{{numFloor( this.nowPrice/ 1e9, 1e2).toLocaleString()}}</span>
 							</div>
 							<div v-if="this.getNowPetItem.startPrice != this.getNowPetItem.endPrice">
 								<div class="jdt">
@@ -178,7 +178,7 @@
 		</Dialog>
 
 		<Dialog id="confirm-buy-dialog"  :top="200" :width="350">
-			<h4 class="mgt-30" v-html="$t('Market_59').replace('#0#', `<span style='color: #49c773'>${numFloor(nowPrice/ 1e9, 1e4)} BUSD</span>` )"></h4>
+			<h4 class="mgt-30" v-html="$t('Market_59').replace('#0#', `<span style='color: #49c773' class='money'>${numFloor(nowPrice/ 1e9, 1e2).toLocaleString()} BUSD</span>` )"></h4>
 			<div class="mgt-50">
 				<button class="btn-primary" @click="oprDialog('confirm-buy-dialog', 'none');">{{$t("Common_04")}}</button>
 				<button class="btn-primary mgl-5" @click="oprDialog('confirm-buy-dialog', 'none');buyPet()">{{$t("Common_03")}}</button>

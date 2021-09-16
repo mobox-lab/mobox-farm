@@ -40,7 +40,7 @@
 			<p class="vertical-children  dib mgt-10">{{$t("Market_33")}}({{ marketPets.total }}) </p>
 		</div>
 		<div :class="marketPets.list.length < 4 ? 'tal' : ''"  class="mgt-10 vertical-children" style="min-height:500px">
-			<router-link :to="'/auctionView/'+ item.tx"  v-for="item in marketPets.list" :key="item.tx + item.index">
+			<a @click="$router.push({ path: `/auctionView/${item.tx}` })"  v-for="item in marketPets.list" :key="item.tx + item.index">
 				<PetItem  v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="@/assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
@@ -49,6 +49,10 @@
 					<div v-if="nowTs -item.uptime <=  120" class=" mgt-10 small" style="position: absolute;right: 15px;top: -100px;transform: translateY(-50%);">
 						<p class="small">{{$t("Market_30")}}<span class="dotting"></span></p>
 						<p >{{getLeftTime(Number(item.uptime)+120- nowTs)}}</p>
+					</div>
+					<div v-else style="position:absolute;right:10px;bottom:0px;">
+						<img src="@/assets/icon/inshopcar.png" v-if="isInShopCar(item)" @click.stop="addToShopCar(item, $event, true)" alt="" height="40" />
+						<img src="@/assets/icon/add2shopcar.png" v-else @click.stop="addToShopCar(item, $event, false)" alt="" height="40" />
 					</div>
 				</PetItem>
 				<PetItemScroll v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market" v-if="item.tokenId == 0 ">
@@ -60,8 +64,14 @@
 						<p class="small">{{$t("Market_30")}}<span class="dotting"></span></p>
 						<p >{{getLeftTime(Number(item.uptime)+120- nowTs)}}</p>
 					</div>
+					<div v-else style="position:absolute;right:10px;bottom:0px;">
+						<template v-if="item.ids.length <= 1 " >
+							<img src="@/assets/icon/inshopcar.png" v-if="isInShopCar(item)" @click.stop="addToShopCar(item, $event, true)" alt="" height="40" />
+							<img src="@/assets/icon/add2shopcar.png" v-else @click.stop="addToShopCar(item, $event, false)" alt="" height="40" />
+						</template>
+					</div>
 				</PetItemScroll>
-			</router-link>
+			</a>
 		</div>
 
 		<div style="margin-top: 30px" >
@@ -88,6 +98,7 @@ export default {
 			selectVType: [],
 			sortArr: [this.$t("Market_47"),this.$t("Market_04"), this.$t("Market_05"), this.$t("Market_06"), this.$t("Market_07")],
 			searchWord: "",
+			parabola: null,
 		});
 	},
 	computed: {
@@ -99,7 +110,9 @@ export default {
 			momoGemsObjs: (state) => state.marketState.data.momoGemsObjs,
 			marketLoading: (state) => state.marketState.data.marketLoading,
 			historyNotice: (state) => state.marketState.data.historyNotice,
-			nowTs: (state) => state.globalState.data.nowTs
+			nowTs: (state) => state.globalState.data.nowTs,
+			shopCar: (state) => state.marketState.data.shopCar,
+			marketTabPos: (state) => state.marketState.data.marketTabPos,
 		}),
 		getLangMap(){
 			let langToName = {};
@@ -139,7 +152,13 @@ export default {
 			this.getAuctionPets(this.marketPage);
 		}, 10000);
 	},
+	watch: {
+		marketTabPos: function(){
+			this.initParabola()
+		}
+	},
 	mounted(){
+		this.initParabola();
 		if(document.body.clientWidth > 1000){
 			window.$(this.$refs.searchInput).blur(()=>{
 				let t = setTimeout(()=>{
@@ -155,7 +174,66 @@ export default {
 	beforeDestroy(){
 		if(timer) clearInterval(timer);
 	},
+	
 	methods: {
+		flyDot(event){
+			let eleFlyElement = document.getElementById("fly-dot");
+			let scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+			scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
+			eleFlyElement.style.left = event.clientX + scrollLeft + "px";
+			eleFlyElement.style.top = event.clientY + scrollTop + "px";
+			eleFlyElement.style.display = "block";
+			eleFlyElement.style.visibility = "visible";
+			this.parabola.position().move();
+		},
+		initParabola(){
+			this.parabola = window.funParabola(document.getElementById("fly-dot"), document.getElementById("buy-car"), {
+				speed:1000,
+				curvature: 0.0008,
+				complete: function () {
+					document.getElementById("fly-dot").style.display = "none";
+				},
+			});
+			this.parabola.init();
+		},
+		isInShopCar(testItem){
+			let isInShopCar = false;
+			this.shopCar.map(item=>{
+				if(item.tx == testItem.tx) isInShopCar = true;
+			});
+			return isInShopCar;
+		},
+		getShowList(item){
+			let {ids, amounts} = item;
+			let arr = [];
+			ids.map((prototype, index)=>{
+				let obj = BaseConfig.NftCfg[prototype];
+				obj.num = amounts[index];
+				obj.vType = parseInt(prototype / 1e4);
+				obj.tokenId = 0;
+				obj.level = 1;
+				obj.chain = "bnb";
+				obj.hashrate = obj.quality;
+				obj.lvHashrate = obj.quality;
+				arr.push(obj);
+			});
+			arr.sort((a,b)=>{
+				return b.vType - a.vType;
+			});
+			return arr;
+		},
+		async addToShopCar(item, $event, isInShopCar=false){
+			let {auctor, index, uptime} = item
+			if(!isInShopCar){
+				let data = await Wallet.ETH.getMarketOrder(auctor, index);
+				if(data.status != 3 || data.startTime != uptime){
+					this.showNotify(this.$t("Market_35"), "error");
+					return;
+				}
+				this.flyDot($event);
+			}
+			this.$store.commit("marketState/addToShopCar", {...item, ...this.getShowList(item)[0]});
+		},
 		goSearch(){
 			let prototype = this.searchWord.split(":")[1];
 			if(this.searchWord == ""){
@@ -292,6 +370,7 @@ export default {
 </script>
 
 <style scoped>
+
 	.search-box{
 	}
 	.search-preview{

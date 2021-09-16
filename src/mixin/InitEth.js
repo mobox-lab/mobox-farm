@@ -179,7 +179,6 @@ const InitEth = {
 		},
 		async getRefund(){
 			let refundData = await Wallet.ETH.getRefund();
-			console.log(refundData);
 			let {short, middle, long} = refundData;
 			refundData.short = this.numFloor(short / 1e18, 1e2);
 			refundData.middle = this.numFloor(middle / 1e18, 1e2);
@@ -368,7 +367,7 @@ const InitEth = {
 			if(res){
 				let {keyPerDays,wantShares,workingSupply, totalShares} = res;
 				let keyUsdt = await this.getCoinUsdt("MBOX");
-				let {veMbox, totalSupply, allKeyApy, apy, myApy} = this.coinArr[item.coinKey];
+				let {veMbox, totalSupply, myApy} = this.coinArr[item.coinKey];
 				let mul = Number(veMbox.mul)/100;
 				let myKeyPerDay = keyPerDays[0] * (wantShares[0]* mul / workingSupply[0]) / 1e18;
 				let myUsdtPerDay = keyUsdt/1e18 * myKeyPerDay;
@@ -384,8 +383,8 @@ const InitEth = {
 
 				this.coinArr[item.coinKey].maxKeyApy = maxmyRealKeyApy;
 				myApy.key = myRealKeyApy;
-				myApy.cake = (Number(apy.split("%")[0]) / 100) - allKeyApy;
-				myApy.xvs = (Number(apy.split("%")[0]) / 100) - allKeyApy;
+				// myApy.cake = (Number(apy.split("%")[0]) / 100) - allKeyApy;
+				// myApy.xvs = (Number(apy.split("%")[0]) / 100) - allKeyApy;
 
 				//达到3还需要的veMbox
 				let maxApyNeedVeMobox = 0;

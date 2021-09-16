@@ -44,17 +44,17 @@
 						<span class="per-icon vertical-children">
 							<img src="./assets/icon/home.png" alt="" width="30" />
 						</span>
-						<span>{{ $t("Menu_01") }}</span>
+						<span>{{ $t("Air-drop_223") }}</span>
 					</li>
 				</router-link>
-				<router-link to="/activity">
+				<!-- <router-link to="/activity">
 					<li :class="this.$route.path == '/activity' ? 'active' : ''">
 						<span class="per-icon vertical-children">
 							<img src="./assets/icon/huodong.png" alt="" width="25" />
 						</span>
 						<span>{{$t('Auction_01')}}</span>
 					</li>
-				</router-link>
+				</router-link> -->
 				<router-link to="/openbox">
 					<li :class="this.$route.path == '/openbox' ? 'active' : ''">
 						<span class="per-icon vertical-children">
@@ -154,17 +154,17 @@
 						<p class="per-icon vertical-children">
 							<img src="./assets/icon/home.png" alt="" height="28" />
 						</p>
-						<span  class="mgt-5">{{ $t("Menu_01") }}</span>
+						<span  class="mgt-5">{{ $t("Air-drop_223") }}</span>
 					</li>
 				</router-link>
-				<router-link to="/activity">
+				<!-- <router-link to="/activity">
 					<li :class="this.$route.path == '/activity' ? 'active' : ''">
 						<span class="per-icon vertical-children">
 							<img src="./assets/icon/huodong.png" alt="" width="60" />
 						</span>
 						<span>{{$t("Auction_01")}}</span>
 					</li>
-				</router-link>
+				</router-link> -->
 				<router-link to="/openbox">
 					<li :class="this.$route.path == '/openbox' ? 'active' : ''">
 						<p class="per-icon vertical-children">
@@ -183,7 +183,7 @@
 				</router-link>
 
 				<router-link to="/market">
-					<div :class="this.$route.path == '/market' ? 'active' : ''">
+					<li :class="this.$route.path == '/market' ? 'active' : ''">
 						<p class="per-icon vertical-children">
 							<section class="por dib">
 								<span class="notice" v-if="historyNotice"></span>
@@ -191,10 +191,28 @@
 							</section>
 						</p>
 						<span>{{ $t("Menu_05") }}</span>
-					</div>
+					</li>
 				</router-link>
 
-				<a href="javascript:void(0)"> 
+				<router-link to="/collection">
+					<li :class="this.$route.path == '/collection' ? 'active' : ''">
+						<p class="per-icon vertical-children">
+							<img src="./assets/icon/airdrop.png" alt="" height="30" />
+						</p>
+						<span  class="mgt-5">{{ $t("Menu_04") }}</span>
+					</li>
+				</router-link>
+
+				<router-link to="/rank" >
+					<li :class="this.$route.path == '/rank' ? 'active' : ''" >
+						<p class="per-icon vertical-children">
+							<img src="./assets/icon/rank.png" alt="" height="25" />
+						</p>
+						<span>{{ $t("Rank_05") }}</span>
+					</li>
+				</router-link>
+
+				<!-- <a href="javascript:void(0)"> 
 					<li @click="showMoreMenu = !showMoreMenu">
 						<svg t="1620618592541" style="fill: #fff"  class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9809" width="30" height="30"><path d="M506 531.42c-11.27 0-22.53-2.02-33.25-6.05l-1.24-0.47-361.09-174.95c-14.36-6.11-23.71-19.92-23.97-35.65-0.26-15.68 8.57-29.77 22.65-36.38L468.49 85.65l1.31-0.54c23-9.55 49.39-9.55 72.39 0l1.31 0.54 1.25 0.67 358.14 191.6c14.08 6.61 22.91 20.7 22.65 36.38-0.26 15.73-9.61 29.54-23.97 35.65L540.49 524.91l-1.24 0.47a94.446 94.446 0 0 1-33.25 6.04z m-11.76-59.95c7.63 2.6 15.89 2.6 23.52 0l327.43-158.65-326.36-174.59c-8.22-3.09-17.45-3.09-25.67 0l-326.35 174.6 327.43 158.64z" p-id="9810"></path>
 							<path d="M506 733.28c-11.27 0-22.53-2.02-33.25-6.05l-1.48-0.56-364.88-184.83c-14.29-7.24-20-24.69-12.77-38.97 7.24-14.29 24.69-20 38.97-12.77l361.86 183.3c7.5 2.51 15.6 2.51 23.1 0L879.4 490.1c14.29-7.24 31.74-1.52 38.97 12.77 7.24 14.29 1.52 31.74-12.77 38.97L540.73 726.67l-1.48 0.56a94.457 94.457 0 0 1-33.25 6.05z" p-id="9811"></path>
@@ -202,7 +220,7 @@
 						</svg>
 						<span class="mgt-5">{{$t("Common_29")}}</span>
 					</li>
-				</a>
+				</a> -->
 
 			</ul>
 		</div>
@@ -214,22 +232,8 @@
 				</span>
 			</div>
 			
-			<router-link to="/collection">
-					<div :class="this.$route.path == '/collection' ? 'active' : ''">
-						<p class="per-icon vertical-children">
-							<img src="./assets/icon/airdrop.png" alt="" height="30" />
-						</p>
-						<span  class="mgt-5">{{ $t("Menu_04") }}</span>
-					</div>
-				</router-link>
-			<router-link to="/rank" >
-				<div :class="this.$route.path == '/rank' ? 'active' : ''" class="mgt-10">
-					<p class="per-icon vertical-children">
-						<img src="./assets/icon/rank.png" alt="" height="25" />
-					</p>
-					<span>{{ $t("Rank_05") }}</span>
-				</div>
-			</router-link>
+			
+			
 		</div>
 		<keep-alive>
 			<router-view v-if="$route.meta.keepAlive">
@@ -319,7 +323,9 @@
 		<VMbox ref="vmbox" />
 		<Pancake ref="pancake" />
 		<QuickBuy ref="quickBuy" />
+		<ShopCar ref="momoShopCar" />
 		<GemBag ref="gemBag" />
+		<BoxBag ref="boxBag" />
 		<ConfirmDialog ref=confirmDialog />
 		<WalletOprStatus />
 		<WalletConnectDialog />
@@ -329,6 +335,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_41")}}</h3>
+						<span v-html="$t('Notice_40')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_39")}}</h3>
 						<span v-html="$t('Notice_38')" ></span>
 					</div>
@@ -412,7 +422,10 @@
 <script>
 import Pancake from "./views/Airdrop/Pancake";
 import QuickBuy from "./views/Market/Momo/QuickBuy";
+import ShopCar from './views/Market/ShopCar.vue'
+
 import GemBag from "./views/Activity/Gem/GemBag";
+import BoxBag from "./views/Activity/BoxBag.vue";
 import VMbox from "./views/VMBOX/VMbox";
 
 import {Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
@@ -425,7 +438,7 @@ let timer = null;
 export default {
 	name: "App",
 	mixins: [InitEth, InitTron, CommonMethod],
-	components: {GemBag, QuickBuy,Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
+	components: {BoxBag,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
 	data() {
 		return {
 			langArr: ["English", "中文"],
@@ -506,7 +519,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "2.6"
+			noticeVersion: "2.7"
 		};
 	},
 	watch: {
@@ -736,13 +749,15 @@ export default {
 		async  getTotalStakeUSDTAndAirdropKEY(){
 			let res = await Http.getKeyDrop();
 			if(res){
-				let {strategyAmounts, keyAmount, apys, keyApys} = res.data;
+				let {strategyAmounts, keyAmount, apys, keyApys, harvestApys, lpFeeApys} = res.data;
 				Object.keys(PancakeConfig.StakeLP).map(coinKey=>{
 					this.coinArr[coinKey].totalSupply = strategyAmounts[coinKey] || 0;
 					let apy =  Common.numFloor(apys[coinKey] * 100 || 0, 100);
 					if(apy == 0) apy = "?";
 					this.coinArr[coinKey].apy = apy + "%";
 					this.coinArr[coinKey].allKeyApy = keyApys[coinKey];
+					this.coinArr[coinKey].myApy.cake = harvestApys[coinKey];
+					this.coinArr[coinKey].myApy.lpFee = lpFeeApys[coinKey];
 				});
 				this.$store.commit("bnbState/setData", {coinArr: this.coinArr, totalAirdropKey: keyAmount || 0});
 			}
@@ -1069,9 +1084,8 @@ export default {
 	margin-left: 20px;
 }
 #app {
-	padding: 20px;
-	padding-left: 280px;
-	padding-top: 70px;
+	padding-left: 260px;
+	padding-top: 50px;
 }
 #nav {
 	user-select: none;

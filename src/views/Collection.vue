@@ -1,5 +1,5 @@
 <template>
-	<div id="aridorp" class="tac">
+	<div id="aridorp" class="tac" style="padding:10px">
 		<section id="airdrop-pool-view" class="panel clear mgt-10">
 			<div class="col-xs-12  col-md-4 tal mgt-10" style="padding:10px">
 				<h3>{{$t('Air-drop_207')}}</h3>

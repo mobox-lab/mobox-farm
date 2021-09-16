@@ -689,6 +689,7 @@ export default class BaseConfig {
 		"60004":{prototype:60004,tokenName:"Name_244",quality:6,category:5,mmNum:5},
 		"60005":{prototype:60005,tokenName:"Name_245",quality:6,category:5,mmNum:5},
 		"60006":{prototype:60006,tokenName:"Name_246",quality:6,category:5,mmNum:5},
+		"60007":{prototype:60007,tokenName:"Name_347",quality:6,category:5,mmNum:5},
 	}
 	static RewardCfg = {
 		"1":{rank:1,usdt:1200,mbox:12000},

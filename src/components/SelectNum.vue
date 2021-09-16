@@ -1,7 +1,7 @@
 <template>
 	<div class="dib yf-select-num vertical-children" :style="`transform: scale(${scale})`">
 		<img src="../assets/icon/reduce.png" class="mgl-5" :class="{'opa-6': getNowNum<=0}" v-if="getNowNum >= 1 || !needHideReduce" @click="reduce($event)" alt="" height="30"/>
-		<div class="dib tac" style="min-width:25px" v-if="getNowNum >= 1 || !needHideReduce">
+		<div class="dib tac" style="min-width:20px" v-if="getNowNum >= 1 || !needHideReduce">
 			<!-- <span class="color-w mgl-5" >{{ getNowNum }}</span> -->
 			<input type="text" class="yf-select-input mgl-5" :value="getNowNum" v-int :data-max="maxNum" @blur="blur">
 		</div>
@@ -75,7 +75,7 @@ export default {
 .yf-select-input{
 	background: #000;
 	border: none;
-	width: 50px;
+	width: 40px;
 	color: #fff;
 	text-align: center;
 	padding:0px 2px;

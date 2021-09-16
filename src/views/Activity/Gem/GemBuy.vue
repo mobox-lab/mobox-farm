@@ -1,7 +1,7 @@
 <style src="./style.css"></style>
 <template>
 <div class="tac center-content">
-	<div class="por clear mgt-10">
+	<div class="por clear mgt-20" style="border:1px solid #5d636f80;border-radius: 30px">
 		<section class="col-md-7" style="padding:10px">
 			<div class="adv-panel" :class="{veapply: tabPos == 1}">
 				<Tab  :list="tabList" :defaultSelectPos="tabPos" :onChange="onTabChange" style="background:#000" />
@@ -100,9 +100,12 @@
 		
 	</div>
 
+	<div class="tac mgt-10">
+		<p class="cur-point" @click="showRank = !showRank">{{$t("Air-drop_243")}} >></p>
+	</div>
 
 	<!-- 记录 -->
-	<div class="col-md-12" style="padding:10px">
+	<div class="col-md-12" :class="{hide: !showRank}">
 		<section class="mgt-10" style="padding:10px 15px;background:#13181F;border-radius:20px">
 			<table class="small  new-table" border="0" frame="void" rules="none" >
 				<tr>
@@ -188,6 +191,7 @@ import GemApply from './GemApply2.vue'
 import { Wallet, Http } from '@/utils';
 import { Dialog, StatuButton, Loading, Tab } from '@/components';
 import { mapState } from 'vuex';
+import {PancakeConfig} from "@/config"
 
 let timer = null;
 export default {
@@ -247,6 +251,7 @@ export default {
 				},
 			},
 			gemArr: [{id:101,name:"red"},{id:201,name:"green"},{id:301,name:"blue"},{id:401,name:"gold"}],
+			showRank: false,
 		})
 	},
 	computed:{
@@ -389,8 +394,10 @@ export default {
 	methods: {
 		jumpVeMBOX(){
 			if(this.hasStake){
-				this.$router.replace({ path: '/' })
-				// this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();
+				let key = "MBOX-BNB-V2";
+				let stakeLP = PancakeConfig.StakeLP;
+				let data = {coinKey: key, ...stakeLP[key], ...this.coinArr[key]}
+				this.$root.$children[0].$refs.vmbox.setOprData(data).show();
 			}else{
 				this.setAction(21005);
 				this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();

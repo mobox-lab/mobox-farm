@@ -1,6 +1,6 @@
 <template>
 	<div class="tac center-content">
-		<div class="por clear mgt-10">
+		<div class="por clear mgt-20" style="border:1px solid #5d636f80;border-radius: 30px">
 			<section class="col-md-7" style="padding:10px">
 				<div class="adv-panel">
 					<h1 class="vertical-children">
@@ -98,45 +98,48 @@
 					</div>
 				</div>
 			</section>
+		</div>
 
-			<div class="col-md-12" style="padding:10px">
-				<section class="mgt-10" style="padding:10px 15px;background:#13181F;border-radius:20px">
-					<div style="min-height:450px;">
-						<table class="small  new-table" >
-							<tr>
-								<th  class="tal" style="width:20%">{{$t("BOX_12")}}</th>
-								<th  class="tac" style="width:40%">{{$t("Auction_32")}}</th>
-								<th style="width:30%" class="tal">{{$t("Auction_28")}}</th>
-								<th class="tar tac-xs">TX</th>
-							</tr>
-							<tr v-for="item in rankListObj.list" :key="item.blockHash">
-								<td class="tal">{{ dateFtt("yyyy-MM-dd hh:mm:ss", new Date(item.crtime*1000)) }}</td>
-								<td class="tac">{{ shorAddress(item.bidder) }}</td>
-								<td class="vertical-children tal" >
-									<img src="@/assets/coin/MBOX.png" alt="" height="20">
-									<span class="mgl-5">{{ numFloor(item.amount/1e18, 100) }} MBOX</span>
-								</td>
-								<td class="tar tac-xs">
-									<a :href="getTxUrl(item.txId)" target="_blank">
-										<img src="@/assets/icon/viewTx.png" alt="" class="cur-point" height="25" />
-									</a>
-								</td>
-							</tr>
-						</table>
-					</div>
-					<table class=" new-table">
-						<tr v-if="rankListObj.total_page > 1">
-							<td colspan="4" style="border:none">
-								<Page :defaultPage="nowPage" :totalPage="rankListObj.total_page" :onChange="onPageChange" />
+		<div class="tac mgt-10">
+			<p class="cur-point" @click="showRank = !showRank">{{$t("Air-drop_244")}} >></p>
+		</div>
+
+		<div class="col-md-12" style="padding:10px" :class="{hide: !showRank}">
+			<section class="mgt-10" style="padding:10px 15px;background:#13181F;border-radius:20px">
+				<div style="min-height:450px;">
+					<table class="small  new-table" >
+						<tr>
+							<th  class="tal" style="width:20%">{{$t("BOX_12")}}</th>
+							<th  class="tac" style="width:40%">{{$t("Auction_32")}}</th>
+							<th style="width:30%" class="tal">{{$t("Auction_28")}}</th>
+							<th class="tar tac-xs">TX</th>
+						</tr>
+						<tr v-for="item in rankListObj.list" :key="item.blockHash">
+							<td class="tal">{{ dateFtt("yyyy-MM-dd hh:mm:ss", new Date(item.crtime*1000)) }}</td>
+							<td class="tac">{{ shorAddress(item.bidder) }}</td>
+							<td class="vertical-children tal" >
+								<img src="@/assets/coin/MBOX.png" alt="" height="20">
+								<span class="mgl-5">{{ numFloor(item.amount/1e18, 100) }} MBOX</span>
+							</td>
+							<td class="tar tac-xs">
+								<a :href="getTxUrl(item.txId)" target="_blank">
+									<img src="@/assets/icon/viewTx.png" alt="" class="cur-point" height="25" />
+								</a>
 							</td>
 						</tr>
 					</table>
-				</section>
-				<div class="loading" v-show="loading">
-					<Loading :width="30" :height="30"  />
 				</div>
+				<table class=" new-table">
+					<tr v-if="rankListObj.total_page > 1">
+						<td colspan="4" style="border:none">
+							<Page :defaultPage="nowPage" :totalPage="rankListObj.total_page" :onChange="onPageChange" />
+						</td>
+					</tr>
+				</table>
+			</section>
+			<div class="loading" v-show="loading">
+				<Loading :width="30" :height="30"  />
 			</div>
-
 		</div>
 		<Dialog id="bid-momo-dialog" :top="100" :width="400">
 			<div class="tal mgt-10">
@@ -218,6 +221,7 @@ export default {
 				{...baseAttr, tokenId: 15, prototype: 60006, tokenName: "Name_246",round: 7},
 				{...baseAttr, tokenId: 5, prototype: 60004, tokenName: "Name_244",round: 8},
 				{...baseAttr, tokenId: 10, prototype: 60005, tokenName: "Name_245",round: 9},
+				{...baseAttr, tokenId: 34, prototype: 60007, tokenName: "Name_347",round: 10},
 			],
 			
 			bidInfo: {
@@ -237,7 +241,8 @@ export default {
 			},
 			winnerList: [],
 			loading: false,
-			getNowRound: "-"
+			getNowRound: "-",
+			showRank: false,
 		})
 	},
 	watch: {

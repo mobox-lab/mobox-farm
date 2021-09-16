@@ -1,5 +1,5 @@
 <template>
-	<div id="market">
+	<div id="market" style="padding:10px ">
 		<div class="center-content">
 			<section id="market-type">
 				<div class="market-type-list-item vertical-children " :class="{active: marketTypePos == 0}" @click="$store.commit('marketState/setData', {marketTypePos: 0, marketTabPos: 0})">
@@ -31,7 +31,7 @@
 				<div class="mgt-10" v-if="marketTypePos==0">
 					<div class="tal vertical-children">
 						<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,tempSells.length + tempMarketCancelTx.length]"  />
-						<div  class="cur-point dib por mgl-10 shop-car-btn" @click="$refs.momoShopCar.show()" v-if="shopCar.length > 0 && marketTabPos == 0 ">
+						<div  class="cur-point dib por mgl-10 shop-car-btn" @click="getMomoShopCar().show()" v-if="marketTabPos == 0 " id="buy-car">
 							<span v-if="shopCar.length >0" class="shop-car-num">{{shopCar.length}}</span>
 							<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
 						</div>
@@ -77,7 +77,6 @@
 		<MomoHistory ref="momoHistory" />
 		<GemHistory ref="gemHistory" />
 		<RentDeal ref="rentDeal" />
-		<ShopCar ref="momoShopCar" />
 	</div>
 </template>
 
@@ -89,7 +88,6 @@ import MarketMy from './Momo/MarketMy.vue'
 import MarketMySell from './Momo/MarketMySell.vue'
 import MomoHistory from './Momo/MomoHistory.vue'
 import MarketStatistics from './Momo/MarketStatistics.vue'
-import ShopCar from './ShopCar.vue'
 // GEM
 import MarketGemAll from './Gem/MarketGemAll.vue'
 import MarketGemMy from './Gem/MarketGemMy.vue'
@@ -120,7 +118,7 @@ export default {
 		Tab , Loading,
 		MarketAll, MarketMy, MarketMySell ,MarketStatistics,MomoHistory,
 		MarketGemAll,MarketGemMy,MarketGemMySell, MarketGemStatistics,GemHistory,
-		RentAll,RentMy,RentMySell, RentDeal, RentStatistics, ShopCar,
+		RentAll,RentMy,RentMySell, RentDeal, RentStatistics,
 		Trade,OrderList, Statistics
 	},
 	data() {
@@ -288,8 +286,16 @@ export default {
 
 #market {
 	text-align: center;
-	padding: 10px 10px;
+	padding: 20px;
 	position: relative;
+	margin-top: 20px;
+}
+
+
+@media (max-width: 768px) {
+	#market {
+		margin-top: 0px;
+	}
 }
 
 </style>

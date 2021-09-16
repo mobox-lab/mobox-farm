@@ -6,13 +6,14 @@ import {EventBus,Common,Http} from "@/utils";
 import {EventConfig,WalletConfig,BaseConfig,ConstantConfig, PancakeConfig} from '@/config';
 import BigNumber from "bignumber.js";
 import Gem from './group/Gem';
+import MdxBox from './group/MdxBox';
 
 export default class ETH {
 	static web3;
 	static web3MainNet;
 
 	static  Group = {
-		Gem,
+		Gem, MdxBox
 	}
 
 	//合约相关
@@ -55,6 +56,16 @@ export default class ETH {
 	static async getBlockInfo(blockNumber){
 		let res = await this.web3.eth.getBlock(blockNumber);
 		return res;
+	}
+	//根据ABI解析事件
+	static parseEvent(data, topic, eventAbi){
+		let targetRaw;
+		Object.values(data.events).map(item=>{
+			if(item.raw.topics[0].toLocaleLowerCase() == topic.toLocaleLowerCase()){
+				targetRaw = item.raw;
+			}
+		});
+		return ETH.web3.eth.abi.decodeLog(eventAbi, targetRaw.data, targetRaw.topics.slice(1));
 	}
 	//初始化合约
 	static initContract() {
@@ -1879,7 +1890,7 @@ export default class ETH {
 		if (!myAddr) return;
 		let contract = new this.web3.eth.Contract([
 			Contract.isHighApplying,
-		], WalletConfig.ETH.momoGemApply);
+		], WalletConfig.ETH.newGemApply);
 		return new Promise(resolve => {
 			contract.methods.isHighApplying(myAddr).call().then(data => {
 				resolve(data);

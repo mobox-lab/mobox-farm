@@ -7,6 +7,7 @@ const baseCoinAttr = {
 		key: "-",
 		xvs: "-",
 		cake: "-",
+		lpFee: "-"
 	},
 	maxKeyApy: "-",
 	maxApyNeedVeMobox: "-",

@@ -34,14 +34,13 @@
 					</p>
 					<p class="vertical-children mgt-5">
 						<img :src=" require(`@/assets/icon/bnb.png`) " width="12" alt="" />
-						<span class="mgl-5"> {{  $t(item.tokenName) }} </span>
+						<span class="mgl-5"> {{  item.tokenName.indexOf("Name_") != -1?$t(item.tokenName):item.tokenName }} </span>
 					</p>
-					
 				</div>
 				<div class="absolute-r tar" style="right: 20px; top:auto; bottom:20px;background: rgba(0,0,0,0.3);border-radius: 50px;padding:3px 15px">
 					<p class="vertical-children">
 						<img src="@/assets/coin/BUSD.png" height="20" alt="" />
-						<span style="font-size: 16px" class="color-w mgl-5" >{{numFloor( item.nowPrice/ 1e9, 1e4) }}</span >&nbsp;
+						<span style="font-size: 16px" class="color-w mgl-5 money" >{{numFloor( item.nowPrice/ 1e9, 1e4).toLocaleString() }}</span >&nbsp;
 					</p>
 				</div>
 				<div @click="deleteItem(item)" class="absolute-r  vertical-children cur-point" style="background: rgba(0,0,0,0.3); border-radius: 0px 14px 0px 14px;right: 0px;padding:3px 15px">
@@ -63,7 +62,7 @@
 				<span class="small opa-6">{{$t("Market_18")}}</span>
 				<p class="vertical-children ">
 					<img src="@/assets/coin/BUSD.png" height="20" alt="" />
-					<span style="font-size: 20px" class="color-w mgl-5">{{ getShopCarTotalPrice }} <small style="font-size:12px">BUSD</small></span>
+					<span style="font-size: 20px" class="color-w mgl-5 money">{{ getShopCarTotalPrice.toLocaleString() }} <small style="font-size:12px">BUSD</small></span>
 				</p>
 				<button @click="confirmBuyShopCar" :class="{'disable-btn': shopCar.length == 0}" class="btn-primary " style="position: absolute; right: 0px; top: 10px" >
 					{{$t("Market_22")}}

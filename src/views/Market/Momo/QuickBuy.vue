@@ -1,8 +1,13 @@
 <template>
 	<Dialog id="market-quick-buy-dialog" :top="100" width="550" >
 		<h2>{{$t("Market_50")}}</h2>
-		<div class="tar mgt-10" style="zoom:0.8">
-			<Dropdown :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
+		<div class="tar mgt-10 vertical-children" style="zoom:0.8">
+			<div  class="cur-point dib por mgt-10  shop-car-btn" @click="getMomoShopCar().show()" >
+				<span v-if="shopCar.length >0" class="shop-car-num">{{shopCar.length}}</span>
+				<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
+			</div>
+
+			<Dropdown class="mgl-10" :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
 			<Dropdown :list="getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="onCoinChange" />&nbsp;
 		</div>
 		<div style="min-height:200px">
@@ -26,6 +31,7 @@
 							<span class="small opa-6">{{$t('Market_32').replace('#0#', item.countdown)}}:{{numFloor( item.nextDayPrice/ 1e9, 1e4)}}</span>
 						</div>
 					</div>
+
 					<div :class="coinArr['BUSD'].allowanceToAuction == 0 ?'btn-group':''" style="zoom:0.9">
 						<StatuButton :onClick="approve.bind(this)" data-step="1"  v-if="coinArr['BUSD'].allowanceToAuction == 0" :isDisable="coinArr['BUSD'].allowanceToAuction > 0" :isLoading="coinArr['BUSD'].isApproving" style="width:80%">{{$t("Air-drop_16")}} BUSD</StatuButton>
 						<StatuButton :onClick="buyPet.bind(this, item)" data-step="2" :isDisable="coinArr['BUSD'].allowanceToAuction <=0 || (nowTs - item.uptime) <= 120" :isLoading="lockBtn.buyMomoLock > 0" class="mgt-10"  style="width:80%;">
@@ -35,6 +41,10 @@
 							</template>
 							<span v-else>{{$t("Market_22")}}</span>
 						</StatuButton>
+						<button v-if="coinArr['BUSD'].allowanceToAuction > 0 && (nowTs - item.uptime) > 120"  @click="addToShopCar(item)" style="zoom:0.9;width:80%;"  class=" mgt-10 " :class="isInShopCar(item)?'btn-danger':'btn-line' ">
+							<span v-if="isInShopCar(item)">{{$t("Market_70")}}</span>
+							<span v-else>{{$t("Market_69")}}</span>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -82,6 +92,7 @@ export default {
 			marketLoading: (state) => state.marketState.data.marketLoading,
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			nowTs: (state) => state.globalState.data.nowTs,
+			shopCar: (state) => state.marketState.data.shopCar,
 		}),
 		getSelectCoinArr(){
 			let arr = [];
@@ -107,6 +118,43 @@ export default {
 		EventBus.$off(EventConfig.BidPetSuccess, this.bitPetSuccess);
 	},
 	methods:{
+		getShowList(item){
+			let {ids, amounts} = item;
+			let arr = [];
+			ids.map((prototype, index)=>{
+				let obj = BaseConfig.NftCfg[prototype];
+				obj.num = amounts[index];
+				obj.vType = parseInt(prototype / 1e4);
+				obj.tokenId = 0;
+				obj.level = 1;
+				obj.chain = "bnb";
+				obj.hashrate = obj.quality;
+				obj.lvHashrate = obj.quality;
+				arr.push(obj);
+			});
+			arr.sort((a,b)=>{
+				return b.vType - a.vType;
+			});
+			return arr;
+		},
+		async addToShopCar(item){
+			let {auctor, index, uptime} = item
+			if(!this.isInShopCar(item)){
+				let data = await Wallet.ETH.getMarketOrder(auctor, index);
+				if(data.status != 3 || data.startTime != uptime){
+					this.showNotify(this.$t("Market_35"), "error");
+					return;
+				}
+			}
+			this.$store.commit("marketState/addToShopCar", {...item, ...this.getShowList(item)[0]});
+		},
+		isInShopCar(testItem){
+			let isInShopCar = false;
+			this.shopCar.map(item=>{
+				if(item.tx == testItem.tx) isInShopCar = true;
+			});
+			return isInShopCar;
+		},
 		bitPetSuccess(){
 			this.getAuctionPets();
 			this.oprDialog("market-quick-buy-dialog","none");

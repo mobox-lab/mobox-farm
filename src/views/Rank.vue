@@ -1,5 +1,5 @@
 <template>
-	<div class="rank tac">
+	<div class="rank tac" style="padding:10px">
 		<div class="mgt-10">
 			<Tab :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" :notice="[]"/>
 		</div>

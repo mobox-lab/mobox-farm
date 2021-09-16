@@ -9,22 +9,16 @@
 						<img class="mgl-10 cur-point" @click="oprDialog('mdx-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="30">
 					</h1>
 					<div class="tac mgt-10">
-						<!-- <template >
+						<template >
+							<!-- <p v-if="getCountDown >0">{{$t("NewBOX_20")}}: {{getLeftTime(getCountDown)}}</p> -->
 							<p v-if="getCountDown >0">{{Number(applyInfo.startTime) > nowTs?$t("Gemstone_53") :$t("NewBOX_20")}}: {{getLeftTime(getCountDown)}}</p>
 							<p v-else>{{$t("NewBOX_21")}}<span class="dotting"></span></p>
-						</template> -->
-						<p >{{$t("Festival_37")}}</p>
+						</template>
+						<!-- <p >{{$t("Gemstone_57")}}: {{getLeftTime(1631678400 - nowTs )}}</p> -->
 
-						<div style="height:280px" id="gem-apply-type" class="por">
+						<div style="height:280px" id="gem-apply-type">
 							<p style="padding-top:20px">
 								<img src="@/assets//box/mdxbox.png" height="200" alt="">
-							</p>
-
-							<p  style="position:absolute;bottom:60px;right:0px;">
-								<a target="_blank" style="text-decoration:underline" href="https://bsc.mdex.co/#/swap?inputCurrency=0x9c65ab58d8d978db963e63f2bfb7121627e3a739&outputCurrency=0xe9e7cea3dedca5984780bafc599bd69add087d56">
-									<img src="@/assets/box/mdxlogo.png" alt="" height="20"> 
-									<!-- MDEX.COM  -->
-								</a>
 							</p>
 						</div>
 						
@@ -64,13 +58,7 @@
 								</h3>
 							</div>
 							<div>
-								<p class="small vertical-children">
-									<span class="opa-6">{{$t("Gemstone_56")}}</span> 
-									<span class="cur-point por dib" v-popMsg  v-if="getHighApplyNum > 0">
-										<img class="mgl-10" src="@/assets/icon/hasapply.png" alt="" height="30">
-										<span class="popMsg left tac" style="min-width:80px;text-align:center" v-html="$t('Gemstone_67')"></span>
-									</span>
-								</p>
+								<p class="small opa-6">{{$t("Gemstone_56")}}</p>
 								<h3>{{getMaxApplyTimes}}</h3>
 							</div>
 						</div>
@@ -86,10 +74,9 @@
 						</div>
 					</section>
 				
-					<div class="mgt-20 aveage-box" >
+					<div class="mgt-30 aveage-box" >
 						<div class="dib por tac">
-							<!-- <button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('mdx-apply-dialog', 'block')">{{$t("NewBOX_14")}}</button> -->
-							<button class="btn-primary disable-btn" style="margin:10px;width:80%" >{{$t("Festival_37")}}</button>
+							<button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('mdx-apply-dialog', 'block')">{{$t("NewBOX_14")}}</button>
 							<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('mdx-rule-dialog','block')">{{$t("Air-drop_236")}}>></p>
 						</div>
 						<div class="tac">
@@ -99,17 +86,10 @@
 						</div>
 					</div>
 
-					<div class="vertical-children mgt-50" style="padding:5px">
-						<span>{{$t("Air-drop_268")}}: {{mdxBalance}} </span>
-						<img src="@/assets/coin/MDX.png" class="mgl-5" alt="" height="20">
-						
-					</div>
-
 				</div>
-				<div class="gemBag " @click="oprDialog('boxBag-dialog','block')" style="bottom:20px">
-					<span class="notice-num " v-if="getTotalBoxNum > 0">{{getTotalBoxNum}}</span>
-					<img  src="@/assets/box/boxbagicon.png" alt="" height="60" class="">
-					<p class="stroke" :data-text="$t('Air-drop_262')">{{$t("Air-drop_262")}}</p>
+				<div class="gemBag" @click="oprDialog('boxBag-dialog','block')" style="bottom:20px">
+					<img  src="@/assets/box/boxbagicon.png" alt="" height="60">
+					<p class="stroke" data-text="礼盒背包">礼盒背包({{getTotalBoxNum}})</p>
 				</div>
 			</section>
 		</div>
@@ -193,7 +173,7 @@ import MdxApply from './MdxApply.vue';
 import { mapState } from 'vuex';
 import { Wallet, Http, Common } from '@/utils';
 import {  StatuButton, Dialog, Loading } from '@/components';
-import { PancakeConfig } from '@/config';
+import {PancakeConfig} from "@/config"
 
 let  timer = null;
 
@@ -241,7 +221,6 @@ export default {
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			nowTs: (state) => state.globalState.data.nowTs,
 			boxList: (state) => state.userState.data.boxList,
-			mdxBalance: (state) => state.userState.data.mdxBalance,
 		}),
 		getMaxApplyTimes(){
 			let maxAmount = 0
@@ -278,14 +257,7 @@ export default {
 				num += Number(item.num)
 			});
 			return num;
-		},
-		getHighApplyNum(){
-			let num = 0;
-			let ticketObj = this.myApplyInfo.userHighTicket;
-			num = ticketObj[1] - ticketObj[0] + 1;
-			if(ticketObj[0] == 0) num = 0;
-			return num; 
-		},
+		}
 	},
 	async created(){
 		this.getApplyInfo();
@@ -310,13 +282,11 @@ export default {
 		this.account = await Wallet.ETH.getAccount();
 		await this.getUserApplyInfo();
 		await this.getApplyHistory();
-		
 	},
 	beforeDestroy(){
 		clearInterval(timer);
 	},
 	methods: {
-		
 		jumpVeMBOX(){
 			if(this.hasStake){
 				let key = "MBOX-BNB-V2";
@@ -334,6 +304,7 @@ export default {
 			this.oprDialog("mdx-num-result-dialig", "block");
 			let {roundIndex} = item;
 			let result = await Http.getMdxBoxApplyResult(this.account, roundIndex);
+			console.log("getApplyDetial", JSON.stringify(result));
 			this.historyDitail.isOver = result.isOver;
 			let h_wins = {};
 			let l_wins = {};
@@ -374,6 +345,7 @@ export default {
 		//领取Box
 		async takeBox(){
 			let hash = await Wallet.ETH.Group.MdxBox.claimfrozenBox(async ()=>{
+				await this.getMyMdxBoxNum();
 				await Common.app.$refs.boxBag.getMyMdxBoxNum();
 				await this.getUserApplyInfo();
 			});
@@ -391,27 +363,13 @@ export default {
 	background: linear-gradient(145deg,#F55755 0%, #000  100%);
 }
 
-.notice-num{
-	min-width: 17px;
-	height: 17px;
-	background: red;
-	border-radius: 10px;
-	font-size: 12px;
-	color: #fff;
-	display: inline-block;
-	text-align: center;
-	line-height: 16px;
-	position: absolute;
-	top: 3px;
-	right: 0px;
-	padding: 0px 2px;
-}
-
 @media (max-width: 768px) {
 	.rate-show{
 		zoom: 0.8;
 		padding: 5px 20px !important;
 	}
-
+	.adv-panel{
+		padding-bottom: 40px;
+	}
 }
 </style>

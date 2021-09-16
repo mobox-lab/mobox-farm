@@ -1,7 +1,7 @@
 <template>
 	<div class="tac center-content">
-		<div class="por clear mgt-10">
-			<section class="col-md-7" style="padding:10px">
+		<div class="por clear mgt-20 " style="border:1px solid #5d636f80;border-radius: 30px">
+			<section class="col-md-7" style="padding:10px;">
 				<div class="adv-panel por">
 					<h1 class="vertical-children">
 						<span>{{$t("NewBOX_01")}}</span>
@@ -14,7 +14,7 @@
 						</template>
 
 						<div style="height:280px" id="gem-apply-type">
-							<p style="padding-top:50px">
+							<p style="padding-top:30px">
 								<img src="@/assets/icon/box_view.png" height="180" alt="">
 							</p>
 						</div>
@@ -98,8 +98,11 @@
 			</section>
 		</div>
 
+		<div class="tac mgt-10">
+			<p class="cur-point" @click="showRank = !showRank">{{$t("Air-drop_243")}} >></p>
+		</div>
 		<!-- 记录 -->
-		<div class="col-md-12" style="padding:10px">
+		<div class="col-md-12" :class="{hide: !showRank}">
 			<section class="mgt-10" style="padding:10px 15px;background:#13181F;border-radius:20px">
 				<table class="small  new-table" border="0" frame="void" rules="none" >
 					<tr>
@@ -174,6 +177,7 @@ import BoxApply from './BoxApply.vue';
 import { mapState } from 'vuex';
 import { Wallet, Http } from '@/utils';
 import {  StatuButton, Dialog, Loading } from '@/components';
+import {PancakeConfig} from "@/config"
 
 let  timer = null;
 
@@ -210,7 +214,8 @@ export default {
 				{lv:3, rate: '12%', lang: 'MOMO_11'},
 				{lv:4, rate: '2.5%', lang: 'MOMO_12'},
 				{lv:5, rate: '0.5%', lang: 'MOMO_13'},
-			]
+			],
+			showRank: false,
 		})
 	},
 	computed:{
@@ -281,8 +286,10 @@ export default {
 	methods: {
 		jumpVeMBOX(){
 			if(this.hasStake){
-				this.$router.replace({ path: '/' })
-				// this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();
+				let key = "MBOX-BNB-V2";
+				let stakeLP = PancakeConfig.StakeLP;
+				let data = {coinKey: key, ...stakeLP[key], ...this.coinArr[key]}
+				this.$root.$children[0].$refs.vmbox.setOprData(data).show();
 			}else{
 				this.setAction(21005);
 				this.$root.$children[0].$refs.vmbox.setOprData(this.coinArr["GOV"]).show();

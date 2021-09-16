@@ -28,6 +28,7 @@ const state = () => ({
 			unStakeLock: 0, //取消质押锁定
 			getMboxLock: 0, //领取mbox锁
 			openBoxLock: 0,//开箱子锁
+			openActivityBoxLock: 0,//开箱子锁
 			compGemLock: 0,//升级宝石锁
 			mboxApproveToApplyLock: 0, //mbox授权给申购合约锁
 			applyGemLock:0,//申购宝石锁
@@ -46,6 +47,8 @@ const state = () => ({
 			joinStakeLock: 0,
 			bidLock: 0,
 			applyBoxLock: 0,
+			applyMdxBoxLock: 0,
+			takeMdxBoxLock: 0,
 			makeBidOrderLock: 0,
 			makeAskOrderLock: 0,
 			refundMboxLock: 0,

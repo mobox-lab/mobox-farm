@@ -248,8 +248,14 @@ export default {
 		};
 	},
 	components: { Dropdown, Page, PetItem, SelectNum, Dialog, Tab, GroupSell },
+	watch: {
+		marketTabPos: function(){
+			this.initParabola()
+		}
+	},
 	computed: {
 		...mapState({
+			marketTabPos: (state) => state.marketState.data.marketTabPos,
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,
 			myMarketPetFilter: (state) => state.marketState.data.myMarketPetFilter,
 			tempSells: (state) => state.marketState.data.tempSells,
@@ -332,12 +338,22 @@ export default {
 			this.sellObj.endPrice = this.sellObj.startPrice;
 			this.priceTypePos = pos;
 		},
+		flyDot(event){
+			let eleFlyElement = document.getElementById("fly-dot");
+			let scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+			scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
+			eleFlyElement.style.left = event.clientX + scrollLeft + "px";
+			eleFlyElement.style.top = event.clientY + scrollTop + "px";
+			eleFlyElement.style.display = "block";
+			eleFlyElement.style.visibility = "visible";
+			this.parabola.position().move();
+		},
 		initParabola(){
 			this.parabola = window.funParabola(document.getElementById("fly-dot"), document.getElementById("shop-car"), {
 				speed:1000,
 				curvature: 0.0008,
 				complete: function () {
-					document.getElementById("fly-dot").style.visibility = "hidden";
+					document.getElementById("fly-dot").style.display = "none";
 				},
 			});
 			this.parabola.init();
@@ -519,15 +535,7 @@ export default {
 			
 		},
 
-		flyDot(event){
-			let eleFlyElement = document.getElementById("fly-dot");
-			let scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft || 0,
-			scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
-			eleFlyElement.style.left = event.clientX + scrollLeft + "px";
-			eleFlyElement.style.top = event.clientY + scrollTop + "px";
-			eleFlyElement.style.visibility = "visible";
-			this.parabola.position().move();
-		},
+		
 		//提交出售
 		confirmSellShopCar() {
 			//先判断有没有没设置价格的

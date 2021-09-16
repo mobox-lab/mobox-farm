@@ -1,11 +1,11 @@
 <template>
-	<div id="upgrade">
+	<div id="upgrade" style="margin-top:10px">
 		<router-link to="/market">
 			<span  class="cur-point text-big">
 				<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;{{ $t("MOMO_19") }}
 			</span>
 		</router-link>
-		<div class="tac row mgt-10">
+		<div class="tac row ">
 			<div class="col-md-6 mgt-10">
 				<div class="panel" v-if="this.getNowPetItem.tokenId != 0">
 					<div id="upgrade-lv" class="vertical-children">
@@ -131,7 +131,7 @@
 
 					<MomoInfo :data="this.getNowPetItem" :isMarket="true" />
 
-					<div style="position:absolute;right:15px;top:15px" class="cur-point" @click="$refs.momoShopCar.show()" v-if="isMatchShopCar">
+					<div style="position:absolute;right:15px;top:15px" class="cur-point" @click="getMomoShopCar().show()" v-if="isMatchShopCar">
 						<span v-if="shopCar.length >0" class="shop-car-num">{{shopCar.length}}</span>
 						<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
 					</div>
@@ -185,8 +185,6 @@
 			</div>
 		</Dialog>
 
-		<ShopCar ref="momoShopCar" />
-
 	</div>
 </template>
 <script>
@@ -196,12 +194,11 @@ import { CommonMethod } from "@/mixin";
 import {  Wallet, EventBus, Common } from '@/utils';
 import { WalletConfig, EventConfig, BaseConfig, PancakeConfig } from '@/config';
 import BigNumber from "bignumber.js";
-import ShopCar from './ShopCar.vue'
 
 let updatePriceTimer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { PetView, Dialog, MomoInfo, Tab, Loading, StatuButton, ShopCar },
+	components: { PetView, Dialog, MomoInfo, Tab, Loading, StatuButton },
 	data() {
 		return {
 			lockUpgradeTime: 0,

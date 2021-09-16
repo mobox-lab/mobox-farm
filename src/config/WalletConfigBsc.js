@@ -35,6 +35,8 @@ export default class WalletConfig {
 		orderBookContract: "0xE0d764a7b0DF2404D5b531a23435100967feCc6A", //订单部交易
 		refundContract: "0x70aC5068237AA52B0A29eEb3C55630223Fd5907F", //补偿合约
 		newGemApply: "0x7B4e53126316DB92e0fAefD1886B4bF988c627C9", //新的宝石申购
+		mdxApply: "0x77f040BD6ED8930830f27B83601b4a35969609d8", //mdx箱子申购
+		openMdxBox: "0x8e987b5A7b55FC1eB3BfcF3CDd3AD3571bca9352", //mdx箱子打开
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

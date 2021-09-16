@@ -21,6 +21,7 @@ const routes = [
 		name: 'Airdrop',
 		component: AirdropV2,
 		meta: {
+			keepAlive: true, // 需要被缓存
 			actionId: 21000,
 		}
 	},
@@ -37,7 +38,7 @@ const routes = [
 		name: 'OpenBox',
 		component: OpenBox,
 		meta: {
-			keepAlive: true, // 不需要被缓存
+			keepAlive: true, // 需要被缓存
 			actionId: 23000,
 		}
 	},

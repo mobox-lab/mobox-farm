@@ -1,5 +1,5 @@
 <template>
-	<div id="aridorp" class="tac">
+	<div id="aridorp" class="tac" style="padding-top:20px">
 		<div class="mgt-10"></div>
 		<section  v-if="needMigrate || $route.query.old == 1">
 			<div class="tac mgt-10"  id="airdorp-top-menu">
@@ -12,8 +12,13 @@
 			</div>
 		</section>
 
+		<div style="max-width:1300px;margin:0px auto;margin-bottom:10px;" class="mgt-20" >
+			<p class="tal">
+				<router-link to="/">&lt;&lt; {{$t("Air-drop_259")}}</router-link>
+			</p>
+		</div>
 		<section id="airdrop-info" class="por ">
-			<img src="@/assets/icon/bnb_icon.png" alt="" height="68" id="airdrop-bnb-icon">
+			<img src="@/assets/icon/bnb_icon.png" class="hide-xs" alt="" height="68" id="airdrop-bnb-icon">
 			<div class="panel" >
 				<div class="aveage-box tal" id="airdrop-cont-info">
 					<div class="dib" id="total-stake" style="padding:0px 10px">
@@ -52,8 +57,12 @@
 				</div>
 			</div>
 		</section>
+
+		
 			
 		<section id="airdrop-cont" class="mgt-20 por">
+			
+
 			<div id="only-show-my" style="position:absolute;left:10px;top:10px" class="vertical-children">
 				<div class="ly-checkbox"  @click="$store.commit('bnbState/setData', {onlyShowPledge:!onlyShowPledge})" :class="onlyShowPledge?'active':'' ">
 					<svg class="hide"  viewBox="0 0 1024 1024" width="20" height="20"><path fill="#A1FA40" d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z" ></path></svg>
@@ -223,18 +232,19 @@
 												<Loading v-else />
 											</p>
 										</div>
-										<div v-else class="aveage-box vertical-children por" style="padding:2px"  >
-											<p class="dib">XVS</p>
+										<div  class="aveage-box vertical-children por" style="padding:2px"  >
+											<p class="dib">LP Fee</p>
 											<p class="dib tar" >
-												<span v-if="item.myApy.xvs != '-'">{{numFloor(item.myApy.xvs*100, 100)}}%</span>
+												<span v-if="item.myApy.lpFee != '-'">{{numFloor(item.myApy.lpFee*100, 100)}}%</span>
 												<Loading v-else />
 											</p>
 										</div>
+										
 										<div class="aveage-box" style="padding:2px" v-if="item.wantAmount > 0">
 											<p class="dib">{{$t("Air-drop_206")}}</p>
 											<p class="dib tar" >
 												<span v-if="item.myApy.key != '-'">
-													{{numFloor((Number(item.myApy.key)+Number(item.myApy.cake))*100, 100)}}%
+													{{numFloor((Number(item.myApy.key)+Number(item.myApy.cake) + Number(item.myApy.lpFee))*100, 100)}}%
 												</span>
 												<Loading v-else />
 											</p>

@@ -167,7 +167,7 @@
 	
 	#app {
 		padding-left: 0px !important;
-		padding: 50px 5px !important;
+		padding: 50px 0px !important;
 	}
 	#mobile-nav {
 		display: block !important;
@@ -210,6 +210,9 @@
 	}
 	.tac-xs {
 		text-align: center !important;
+	}
+	.tal-xs {
+		text-align: left !important;
 	}
 	.tac-xs * {
 		margin: 0px !important;

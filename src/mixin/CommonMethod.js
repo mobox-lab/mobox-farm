@@ -32,6 +32,9 @@ const CommonMethod = {
 		getConfirmDialog(){
 			return this.$root.$children[0].$refs.confirmDialog;
 		},
+		getMomoShopCar(){
+			return this.$root.$children[0].$refs.momoShopCar;
+		},
 		showSwapBox(){
 			this.$root.$children[0].$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap');
 		},

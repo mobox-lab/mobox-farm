@@ -141,7 +141,7 @@ export default {
 				this.shopCar.map(item=>{
 					auctors.push(item.auctor);
 					indexs.push(item.index);
-					startTimes.push(item.oldTime);
+					startTimes.push(item.uptime);
 					prices.push(item.nowPrice)
 				});
 

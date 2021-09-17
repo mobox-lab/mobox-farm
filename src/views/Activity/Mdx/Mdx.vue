@@ -16,9 +16,16 @@
 						</template>
 						<!-- <p >{{$t("Gemstone_57")}}: {{getLeftTime(1631678400 - nowTs )}}</p> -->
 
-						<div style="height:280px" id="gem-apply-type">
+						<div style="height:280px" id="gem-apply-type" class="por">
 							<p style="padding-top:20px">
 								<img src="@/assets//box/mdxbox.png" height="200" alt="">
+							</p>
+
+							<p  style="position:absolute;bottom:60px;right:0px;">
+								<a target="_blank" style="text-decoration:underline" href="https://bsc.mdex.co/#/swap?inputCurrency=0x9c65ab58d8d978db963e63f2bfb7121627e3a739&outputCurrency=0xe9e7cea3dedca5984780bafc599bd69add087d56">
+									<img src="@/assets/box/mdxlogo.png" alt="" height="20"> 
+									<!-- MDEX.COM  -->
+								</a>
 							</p>
 						</div>
 						
@@ -74,7 +81,7 @@
 						</div>
 					</section>
 				
-					<div class="mgt-30 aveage-box" >
+					<div class="mgt-20 aveage-box" >
 						<div class="dib por tac">
 							<button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('mdx-apply-dialog', 'block')">{{$t("NewBOX_14")}}</button>
 							<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('mdx-rule-dialog','block')">{{$t("Air-drop_236")}}>></p>
@@ -84,6 +91,12 @@
 								{{$t("Air-drop_242").replace("#0#", this.myApplyInfo.boxAmount)}}
 							</StatuButton>
 						</div>
+					</div>
+
+					<div class="vertical-children mgt-50" style="padding:5px">
+						<span>我的MDX：0 </span>
+						<img src="@/assets/coin/MDX.png" class="mgl-5" alt="" height="20">
+						
 					</div>
 
 				</div>

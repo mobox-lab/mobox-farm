@@ -94,15 +94,16 @@
 					</div>
 
 					<div class="vertical-children mgt-50" style="padding:5px">
-						<span>我的MDX：0 </span>
+						<span>{{$t("Air-drop_268")}}: {{mdxBalance}} </span>
 						<img src="@/assets/coin/MDX.png" class="mgl-5" alt="" height="20">
 						
 					</div>
 
 				</div>
-				<div class="gemBag" @click="oprDialog('boxBag-dialog','block')" style="bottom:20px">
-					<img  src="@/assets/box/boxbagicon.png" alt="" height="60">
-					<p class="stroke" data-text="礼盒背包">礼盒背包({{getTotalBoxNum}})</p>
+				<div class="gemBag " @click="oprDialog('boxBag-dialog','block')" style="bottom:20px">
+					<span class="notice-num " v-if="getTotalBoxNum > 0">{{getTotalBoxNum}}</span>
+					<img  src="@/assets/box/boxbagicon.png" alt="" height="60" class="">
+					<p class="stroke" :data-text="$t('Air-drop_262')">{{$t("Air-drop_262")}}</p>
 				</div>
 			</section>
 		</div>
@@ -186,7 +187,7 @@ import MdxApply from './MdxApply.vue';
 import { mapState } from 'vuex';
 import { Wallet, Http, Common } from '@/utils';
 import {  StatuButton, Dialog, Loading } from '@/components';
-import {PancakeConfig} from "@/config"
+import { PancakeConfig } from '@/config';
 
 let  timer = null;
 
@@ -234,6 +235,7 @@ export default {
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			nowTs: (state) => state.globalState.data.nowTs,
 			boxList: (state) => state.userState.data.boxList,
+			mdxBalance: (state) => state.userState.data.mdxBalance,
 		}),
 		getMaxApplyTimes(){
 			let maxAmount = 0
@@ -295,11 +297,13 @@ export default {
 		this.account = await Wallet.ETH.getAccount();
 		await this.getUserApplyInfo();
 		await this.getApplyHistory();
+		
 	},
 	beforeDestroy(){
 		clearInterval(timer);
 	},
 	methods: {
+		
 		jumpVeMBOX(){
 			if(this.hasStake){
 				let key = "MBOX-BNB-V2";
@@ -317,7 +321,6 @@ export default {
 			this.oprDialog("mdx-num-result-dialig", "block");
 			let {roundIndex} = item;
 			let result = await Http.getMdxBoxApplyResult(this.account, roundIndex);
-			console.log("getApplyDetial", JSON.stringify(result));
 			this.historyDitail.isOver = result.isOver;
 			let h_wins = {};
 			let l_wins = {};
@@ -358,7 +361,6 @@ export default {
 		//领取Box
 		async takeBox(){
 			let hash = await Wallet.ETH.Group.MdxBox.claimfrozenBox(async ()=>{
-				await this.getMyMdxBoxNum();
 				await Common.app.$refs.boxBag.getMyMdxBoxNum();
 				await this.getUserApplyInfo();
 			});
@@ -374,6 +376,22 @@ export default {
 <style scoped>
 .adv-panel:before{
 	background: linear-gradient(145deg,#F55755 0%, #000  100%);
+}
+
+.notice-num{
+	min-width: 17px;
+	height: 17px;
+	background: red;
+	border-radius: 10px;
+	font-size: 12px;
+	color: #fff;
+	display: inline-block;
+	text-align: center;
+	line-height: 16px;
+	position: absolute;
+	top: 3px;
+	right: 0px;
+	padding: 0px 2px;
 }
 
 @media (max-width: 768px) {

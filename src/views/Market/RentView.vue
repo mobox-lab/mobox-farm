@@ -83,11 +83,14 @@
 								</div>
 							</div>
 						</section>
-						<div class="mgt-20">
+						<!-- <div class="mgt-20">
 							<p v-if="isCanPutRent" style="max-width:350px;margin:0px auto">
 								{{$t("Hire_25").replace("#0#",rentObj.rentPrice+" MBOX").replace("#1#",rentObj.rentDay).replace("#2#",Number(rentObj.rentRound))}}
 							</p>
 							<StatuButton class="btn-primary mgt-10"  :isDisable="!isCanPutRent" :onClick="putRent" :isLoading="lockBtn.putRentLock > 0">{{$t("Hire_19")}}</StatuButton>
+						</div> -->
+						<div class="color-buy mgt-20 tac">
+							{{$t("Hire_47")}}
 						</div>
 					</div>
 					<!-- 挂单中的momo -->
@@ -114,7 +117,10 @@
 						<div v-if="isMyRent" class="tac mgt-20">
 							<StatuButton class="mgt-10" v-if="momoState == 0" :onClick="cancelRent" :isLoading="lockBtn.cancelRentLock > 0">{{$t("Hire_20")}}</StatuButton>
 						</div>
-						<div class="tac mgt-20" v-else>
+						<div v-else class="color-buy mgt-20 tac">
+							{{$t("Hire_47")}}
+						</div>
+						<!-- <div class="tac mgt-20" v-else>
 							<p >{{$t("Hire_21")}}</p>
 							<div :class="coinArr['MBOX'].allowanceToRent == 0 ?'btn-group':''"  style="width:280px;margin:10px auto">
 								<StatuButton  data-step="1" v-if="coinArr['MBOX'].allowanceToRent == 0" class="mgt-10" style="width:80%" :onClick="approve" :isLoading="coinArr['MBOX'].isApproving">{{$t("Air-drop_16")}} MBOX</StatuButton>
@@ -126,7 +132,7 @@
 									<span v-else>{{$t("Hire_44")}}</span>
 								</StatuButton>
 							</div>
-						</div>
+						</div> -->
 					</div>
 
 					<p v-if="momoState == 1" class="tac mgt-20">{{$t("Hire_26")}}<span class="dotting"></span></p>

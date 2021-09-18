@@ -26,6 +26,7 @@ export default class MdxBox {
 			})
 		});
 	}
+	//开箱子
 	static async openBox(amount_, recipt){
 		console.log("openBox", amount_);
 		let myAddr = await ETH.getAccount();

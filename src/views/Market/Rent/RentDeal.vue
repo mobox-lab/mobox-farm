@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<Dialog id="rent-deal-dialog" :top="100" :width="390">
+		<Dialog id="rent-deal-dialog" :top="100" :width="450">
 			<h2>{{$t("Hire_33")}}</h2>
 			<p class="mgt-10" v-if="isRentOther">{{$t("Hire_10")}}: {{shorAddress(statusObj.owner)}}</p>
 			<p class="mgt-10" v-else>{{$t("Hire_09")}}: {{shorAddress(statusObj.renter)}}</p>
@@ -30,10 +30,16 @@
 						<span v-else><Loading /></span>
 					</p>
 				</div>
+
+				<div class="color-buy mgt-20 tac" v-if="Number(statusObj.currentRentRound) > 0 && isRentOther">
+					{{$t("Hire_48")}}
+				</div>
+				
 				<StatuButton :isLoading="lockBtn.rentLock > 0" :onClick="reRent" class="mgt-10" v-if="Number(statusObj.currentRentRound) > 0 && isRentOther" :isDisable="Number(statusObj.leftTs) <= 0">
 					<span v-if="Number(statusObj.leftTs) > 0">{{$t("Hire_35")}}</span>
 					<span v-else>{{$t("Hire_32")}}</span>
 				</StatuButton>
+				
 			</div>
 			<div class="ly-input-content mgt-10">
 				<h3>{{$t("Hire_36")}}</h3>
@@ -53,10 +59,13 @@
 					<p>{{$t("Hire_24")}}</p>
 					<p class="tar">{{Number(statusObj.nextRentRound) > 0 ?  Number(statusObj.nextRentRound)-1 :  "-"}}</p>
 				</div>
-				<button class="mgt-10 btn-primary" @click="oprDialog('new-deal-dialog', 'block')" v-if="!isRentOther && Number(statusObj.nextRentDays) == 0 && Number(statusObj.leftTs) > 0 ">{{$t("Hire_38")}}</button>
+				<!-- <button class="mgt-10 btn-primary" @click="oprDialog('new-deal-dialog', 'block')" v-if="!isRentOther && Number(statusObj.nextRentDays) == 0 && Number(statusObj.leftTs) > 0 ">{{$t("Hire_38")}}</button>
 				<StatuButton :onClick="reRent.bind(this, true)" :isLoading="lockBtn.rentLock > 0" class="mgt-10" v-if="isRentOther && Number(statusObj.nextRentDays) > 0 && Number(statusObj.currentRentRound) == 0 && Number(statusObj.leftTs) > 0">
 					{{$t("Hire_45")}}
-				</StatuButton>
+				</StatuButton> -->
+				<div class="color-buy mgt-20 tac">
+					{{$t("Hire_47")}}
+				</div>
 			</div>
 		</Dialog>
 		<Dialog id="new-deal-dialog" :top="100" :width="390">
@@ -180,23 +189,27 @@ export default {
 		},
 		//续租订单
 		async reRent(isNewDeal = false){
-			let price = isNewDeal?this.statusObj.nextRentPrice: this.statusObj.currentRentPrice;
-			if(price / 1e18 > Number(this.coinArr["MBOX"].balance)){
-				this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox());
-				return;
-			}
 
-			let obj = {
-				tokenId_: this.tokenId, 
-				orderId_: this.statusObj.orderId, 
-				price_: price
-			}
-			let hash = await Wallet.ETH.reRent(obj, ()=>{
-				this.getDealInfo();
-			});
-			if(hash){
-				this.lockBtnMethod("rentLock");
-			}
+			// this.getConfirmDialog().show(this.$t("Hire_48"), async ()=>{
+
+				let price = isNewDeal?this.statusObj.nextRentPrice: this.statusObj.currentRentPrice;
+				if(price / 1e18 > Number(this.coinArr["MBOX"].balance)){
+					this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox());
+					return;
+				}
+
+				let obj = {
+					tokenId_: this.tokenId, 
+					orderId_: this.statusObj.orderId, 
+					price_: price
+				}
+				let hash = await Wallet.ETH.reRent(obj, ()=>{
+					this.getDealInfo();
+				});
+				if(hash){
+					this.lockBtnMethod("rentLock");
+				}
+			// })
 		},
 		
 		async getDealInfo(){

@@ -37,6 +37,7 @@ export default class WalletConfig {
 		newGemApply: "0x7B4e53126316DB92e0fAefD1886B4bF988c627C9", //新的宝石申购
 		mdxApply: "0x77f040BD6ED8930830f27B83601b4a35969609d8", //mdx箱子申购
 		openMdxBox: "0x8e987b5A7b55FC1eB3BfcF3CDd3AD3571bca9352", //mdx箱子打开
+		mdxToken: "0x9c65ab58d8d978db963e63f2bfb7121627e3a739",
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

@@ -83,7 +83,8 @@
 						</div>
 					</div>
 					<div class="col-md-4 mgt-10" style="padding:0px" v-for="item in getBalanceArr" :key="item.coinName">
-						<div  class="dib speed-show">
+						<div  class="dib speed-show" >
+							<div class="over" v-if="item.coinName == 'BANANA' ">{{$t("Air-drop_134")}}</div>
 							<p class="small opa-6"><span class="tac">100 {{ $t("Mine_14") }}≈{{ numFloor(Number(eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 100, 100 )) * item.dayDrop / 200000, 1e4) }} {{item.coinName}}/DAY</span></p>
 							<p class="vertical-children mgt-10" style="height:25px">
 								<img :src="require(`@/assets/coin/${item.coinName}.png`)" alt="" height="20">
@@ -95,7 +96,7 @@
 									</span>
 									<span class="mgl-5">{{item.coinName}}</span>
 								</span>
-								<StatuButton v-if="item.version == '-' && balancePool['ts'] != 0 " class="btn-small mgl-10" :isDisable="Number(eth_myHashrate) < 0" :isLoading="lockBtn.joinStakeLock > 0" :onClick="joinStake">{{$t('Air-drop_209')}}</StatuButton>
+								<!-- <StatuButton v-if="item.version == '-' && balancePool['ts'] != 0 " class="btn-small mgl-10" :isDisable="Number(eth_myHashrate) < 0" :isLoading="lockBtn.joinStakeLock > 0" :onClick="joinStake">{{$t('Air-drop_209')}}</StatuButton> -->
 							</p>
 						</div>
 					</div>
@@ -237,8 +238,27 @@ export default {
 </script>
 
 <style scoped>
+.over{
+	transform: rotate(-320deg);
+	transform-origin: right top;
+	font-family: AvenirNext-Bold;
+	font-size: 10px;
+	color: #c7c7c7;
+	background: #646c74;
+	position: absolute;
+	right: -25px;
+	top: 70px;
+	height: 20px;
+	line-height: 20px;
+	width: 150px;
+	text-align: center;
+	z-index: 998;
+	zoom: 0.8;
+}
 .speed-show{
-	background:#2A2F35;border-radius:10px;padding:10px;width:90%
+	background:#2A2F35;border-radius:10px;padding:10px;width:90%;
+	overflow: hidden;
+	position: relative;
 }
 #airdrop-opr{
 	padding: 10px;

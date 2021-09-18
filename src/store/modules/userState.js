@@ -4,7 +4,8 @@ const state = () => ({
 		aaa: "aaaa",
 		boxList: [
 			{resImg: "box/mdxbox", num: 0, id: 1},
-		]
+		],
+		mdxBalance: 0,
 	},
 })
 

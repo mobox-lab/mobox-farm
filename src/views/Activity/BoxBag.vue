@@ -1,9 +1,9 @@
 <template>
 	<section>
 		<Dialog id="boxBag-dialog" :top="100" :width="430" >
-			<h3>礼盒收藏箱</h3>
+			<h3>{{$t("Air-drop_262")}}</h3>
 			<div class="dib por" style="position:absolute;right:20px; top:18px">
-				<svg @click="oprDialog('open-box-history-dialog','block')" viewBox="0 0 24 24" class="mgl-5 cur-point" width="24px" ><path fill="#838689" d="M13 3C8.03 3 4 7.03 4 12H1L4.89 15.89L4.96 16.03L9 12H6C6 8.13 9.13 5 13 5C16.87 5 20 8.13 20 12C20 15.87 16.87 19 13 19C11.07 19 9.32 18.21 8.06 16.94L6.64 18.36C8.27 19.99 10.51 21 13 21C17.97 21 22 16.97 22 12C22 7.03 17.97 3 13 3ZM12 8V13L16.28 15.54L17 14.33L13.5 12.25V8H12Z" ></path></svg>
+				<svg @click="getMdxBoxHistory();oprDialog('open-box-history-dialog','block')" viewBox="0 0 24 24" class="mgl-5 cur-point" width="24px" ><path fill="#838689" d="M13 3C8.03 3 4 7.03 4 12H1L4.89 15.89L4.96 16.03L9 12H6C6 8.13 9.13 5 13 5C16.87 5 20 8.13 20 12C20 15.87 16.87 19 13 19C11.07 19 9.32 18.21 8.06 16.94L6.64 18.36C8.27 19.99 10.51 21 13 21C17.97 21 22 16.97 22 12C22 7.03 17.97 3 13 3ZM12 8V13L16.28 15.54L17 14.33L13.5 12.25V8H12Z" ></path></svg>
 			</div>
 
 			<div class="ly-input-content por clear mgt-10" style="background:#000;height:240px;overflow:auto;padding:8px">
@@ -25,15 +25,15 @@
 						</div>
 					</div>
 					<div style="flex:3"  class="tac">
-						<p>请选择所要打开礼盒的数量</p>
+						<p>{{$t("Air-drop_264")}}</p>
 						<div class="mgt-20">
 							<button class="btn-primary btn-small" style="min-width:10px" @click="needOpenNum=1">Min</button>&nbsp;
-							<SelectNum :needHideReduce="false" :maxNum="boxList[selectPos].num"  :defaultNum="needOpenNum" :data="{}" :onChange="onNumChange" />&nbsp;
-							<button class="btn-primary btn-small" @click="needOpenNum=boxList[selectPos].num" >Max</button> 
+							<SelectNum :needHideReduce="false" :maxNum="Number(boxList[selectPos].num) > 100?100:boxList[selectPos].num"  :defaultNum="needOpenNum" :data="{}" :onChange="onNumChange" />&nbsp;
+							<button class="btn-primary btn-small" @click="needOpenNum=Number(boxList[selectPos].num) > 100?100:boxList[selectPos].num" >Max</button> 
 						</div>
 						<div class="mgt-10" >
 							<StatuButton data-step="2" class="mgt-10" :onClick="openBox.bind(this)" style="width:70%" :isDisable="needOpenNum <= 0 || needOpenNum > boxList[selectPos].num" :isLoading="lockBtn.openActivityBoxLock > 0">
-								打开
+								{{$t("Air-drop_265")}}
 							</StatuButton>
 						</div>
 					</div>
@@ -41,7 +41,27 @@
 			</div>
 		</Dialog>
 		<Dialog id="open-box-history-dialog" :top="100" :width="430" >
-			<h2>开箱子记录</h2>
+			<div class="mgt-10" style="background:#000912;border-radius:10px;padding:8px;">
+				<div class="aveage-box opa-6 small  tal" style="padding: 0px 8px">
+					<div class="tal" >{{$t("BOX_12")}}</div>
+					<div class="tac">{{$t("BOX_13")}}</div>
+					<div class="tac">{{$t("Air-drop_269")}}</div>
+					<div class="tar" >{{$t("BOX_14")}}</div>
+				</div>
+				<div style="por mgt-10 tal"  >
+					<div class="aveage-box mgt-10 por tal small" v-for="(item, index) in openHistory" :key="item.tx+index" style="background:#13181F;border-radius:15px;padding:10px 8px ;">
+						<div  >
+							<p>{{ dateFtt('yyyy-MM-dd', new Date(item.crtime * 1000)) }}</p> 
+							<p>{{ dateFtt('hh:mm:ss', new Date(item.crtime * 1000)) }}</p> 
+						</div>
+						<div class=" tac">x{{item.amount}}</div>
+						<div class="tac color-sell">{{item.totalValue}}</div>
+						<div class="tar" >
+							<img  @click="showOpenBox(item.luckyAmounts, false)" height="25" src="@/assets/icon/view.png" alt="" class="cur-point" />
+						</div>
+					</div>
+				</div>
+			</div>
 		</Dialog>
 		<div id="showBoxLayer" class="hide">
 			<div ref="boxSpine" id="boxSpineShow"></div>
@@ -51,8 +71,8 @@
 					<div class="vertical-children">
 						<img src="@/assets/box/mdxbox.png" alt="" height="60">
 						<div class="dib tal mgl-10">
-							<h2>开启礼盒数：x{{showReult.length}}</h2>
-							<p class="small">一共获得MDX：300 <img src="@/assets/coin/MDX.png" class="coin-icon" alt="" height="20"  /></p>
+							<h2>{{$t("Air-drop_266")}}: x{{showReult.length}}</h2>
+							<p class="small">{{$t("Air-drop_267")}}: {{getTotalReward}} <img src="@/assets/coin/MDX.png" class="coin-icon" alt="" height="20"  /></p>
 						</div>
 					</div>
 					<div class="ly-input-content ovh mgt-10" style="height:350px;overflow:auto;background:#000">
@@ -72,8 +92,9 @@
 <script>
 import { Dialog, SelectNum, StatuButton } from '@/components';
 import { mapState } from 'vuex';
-import { Wallet } from '@/utils';
+import { Wallet, Http } from '@/utils';
 import { CommonMethod } from '@/mixin';
+import {WalletConfig} from "@/config";
 const $ = window.$
 
 export default {
@@ -84,11 +105,11 @@ export default {
 			needOpenNum: 1,
 			selectPos: -1,
 			boxSpine: null,
-			coinNumToLv: {
-				"2": 1, "3": 2, "5": 3, "10": 4, "20":5
-			},
-			showReult: [5,2,10,2,2,3,2,20],
+			coinNumToLv: {"2": 1, "3": 2, "5": 3, "10": 4, "20":5},
+			showReult: [],
 			isShowResult: false,
+			openHistory: [],
+			myAccount: "",
 		})
 	},
 	computed:{
@@ -96,15 +117,30 @@ export default {
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			boxList: (state) => state.userState.data.boxList,
 		}),
+		getTotalReward(){
+			let reward = 0;
+			this.showReult.map(item=>{
+				reward += Number(item)
+			});
+			return reward;
+		}
 	},
 	async created(){
-		await Wallet.ETH.getAccount();
+		this.myAccount = await Wallet.ETH.getAccount();
 		await this.getMyMdxBoxNum();
+		await this.getMdxBoxHistory();
+		await this.getMdxBalance();
 	},
 	mounted(){
 		this.initBox();
 	},
 	methods:{
+		async getMdxBalance(){
+			let value = await Wallet.ETH.getErc20BalanceByTokenAddr(WalletConfig.ETH.mdxToken, false);
+			if(value){
+				this.$store.commit("userState/setData", {mdxBalance: this.numFloor((Number(value) / 1e18), 1e2)});
+			}
+		},
 		initBox(){
 			this.boxSpine = new window.spine.SpineWidget(this.$refs.boxSpine, {
 				json: "./animation/mdxBox/baoxiang.json",
@@ -121,12 +157,29 @@ export default {
 				}
 			});
 		},
+		async getMdxBoxHistory(){
+			let res = await Http.getMdxBoxHistory(this.myAccount);
+			if(res){
+				this.openHistory = res.list;
+				this.openHistory.map(item=>{
+					let totalValue = 0;
+					item.luckyAmounts.map(item2=>{
+						totalValue += Number(item2);
+					})
+					item.totalValue = totalValue;
+				})
+			}
+		},
 		async getMyMdxBoxNum(){
 			let mdxBoxNum = await Wallet.ETH.Group.MdxBox.getMdxBoxNum();
 			if(mdxBoxNum){
 				this.boxList[0].num = mdxBoxNum;
 				if(mdxBoxNum == 0){
 					this.selectPos = -1;
+				}
+				if(this.needOpenNum > mdxBoxNum){
+					this.needOpenNum = mdxBoxNum;
+					if(this.needOpenNum == 0) this.needOpenNum = 1;
 				}
 				this.$store.commit("userState/setData", {boxList: this.boxList});
 			}
@@ -135,10 +188,9 @@ export default {
 		async openBox(){
 			if(this.needOpenNum <= 0 || this.needOpenNum > this.boxList[this.selectPos].num) return;
 			let hash = await Wallet.ETH.Group.MdxBox.openBox(this.needOpenNum, async (data)=>{
+				this.showOpenBox(data.luckyAmounts);
 				await this.getMyMdxBoxNum();
-				this.needOpenNum = 1;
-				console.log("openBox", data);
-				this.showOpenBox(data.luckyAmounts)
+				await this.getMdxBalance();
 			});
 			if(hash){
 				this.lockBtnMethod("openActivityBoxLock");
@@ -157,7 +209,6 @@ export default {
 				$("#boxSpineShow").hide();
 				this.isShowResult = true;
 			}
-			console.log(arr);
 		},
 		closeResult(){
 			this.isShowResult = false;

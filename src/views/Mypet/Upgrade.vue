@@ -52,7 +52,7 @@
 							</div>
 							<div v-if="getUpgradeInfo.length != 0">
 								<div style="margin-top: 30px">
-									<span @click="showSelectNftDialog(item, handPos)" v-for="(item, handPos) in this.getUpgradeInfo" :key="JSON.stringify(item)" >
+									<span @click="showSelectNftDialog(item, handPos)" v-for="(item, handPos) in this.getUpgradeInfo" :key="JSON.stringify(item)" class="dib mgt-10">
 										<PetAddItem
 											v-bind:vType="item.type"
 											v-bind:needNum="item.needNum"
@@ -120,7 +120,7 @@
 		<Dialog id="selectNft-dialog" :top="30" :width="540">
 			<h2 class="mgt-10">{{ $t("BOX_18") }}</h2>
 			<div class="mgt-20">
-				<span @click="showSelectNftDialog(item, handPos, true)" v-for="(item, handPos) in this.getUpgradeInfo" :key="JSON.stringify(item)" >
+				<span @click="showSelectNftDialog(item, handPos, true)" v-for="(item, handPos) in this.getUpgradeInfo" :key="JSON.stringify(item)"  >
 					<PetAddItem
 						class="need-notice"
 						v-bind:vType="item.type"
@@ -134,7 +134,7 @@
 				</span>
 			</div>
 			<p class="mgt-20 small tal por ">
-				<span class="type_change vertical-children">
+				<span class="type_change vertical-children" v-if="needHandleData.type != 'v5' ">
 					<Tab :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" v-if="hackReload" :notice="[]" />
 					<div class="dib sort-btn" @click="bookSortTurn = !bookSortTurn" :class="tab_pos == 0?'opa-6 gray':''">
 						<svg viewBox="0 0 1024 1024" version="1.1" width="20" height="20">
@@ -304,16 +304,23 @@ export default {
 			if (Object.keys(retObj).length == 3) {
 				this.$router.replace("/mypet");
 			}
+			// retObj.level = 34;
 			return retObj;
 		},
 		hasSelectPetPrototype() {
+			console.log(this.selectProtoTypes, "hasSelectPetPrototype");
 			let prototype = 0;
-			for (let key in this.selectProtoTypes) {
-				if (this.selectProtoTypes[key].length != 0) {
-					prototype = (this.selectProtoTypes[key][0] % 10000) + 40000;
-					break;
+			["v1","v2","v3","v4"].map(item=>{
+				if (this.selectProtoTypes[item].length != 0) {
+					prototype = (this.selectProtoTypes[item][0] % 10000) + 40000;
 				}
-			}
+			})
+			// for (let key in this.selectProtoTypes) {
+			// 	if (this.selectProtoTypes[key].length != 0) {
+			// 		prototype = (this.selectProtoTypes[key][0] % 10000) + 40000;
+			// 		break;
+			// 	}
+			// }
 			return prototype;
 		},
 		//获取当前升级信息
@@ -349,7 +356,7 @@ export default {
 
 			let arr = [];
 			//处理其他材料
-			[1, 2, 3, 4, 5].map((item) => {
+			[1, 2, 3, 4].map((item) => {
 				let needNum = lvUpgradeConfig["v" + item];
 				if (needNum) {
 					//高级的将最高级的限制的类型给到他
@@ -375,6 +382,18 @@ export default {
 					});
 				}
 			});
+			//单独处理消耗v5的逻辑
+			if(lvUpgradeConfig["v5"] > 0){
+				arr.push({
+					category: 0,
+					needLv: 1,
+					needNum: lvUpgradeConfig["v5"],
+					needPrototype: false,
+					type: "v5"
+				})
+			}
+
+			console.log(arr, "getUpgradeInfo");
 			//处理需要自己的材料
 			let selfNum = lvUpgradeConfig["self"];
 			if (selfNum > 0) {
@@ -748,7 +767,13 @@ export default {
 		},
 		//打开选择面板
 		showSelectNftDialog(needHandleData, index, isTabChange = false) {
-			if(this.lockUpgradeTime > 0) return;
+			if(this.lockUpgradeTime > 0  ) return;
+
+			//如果是图鉴模式并且切换v5 变成单选模式
+			if(needHandleData.type == "v5"){
+				this.tab_pos = 0;
+			}
+
 			// let { type, needPrototype } = needHandleData;
 			// let needShowArr = [];
 			// this.myNFT_stake.map((item) => {
@@ -764,7 +789,7 @@ export default {
 			// this.showCanSelectArr = needShowArr;
 			this.needHandleData = needHandleData;
 			//momo每次升整5倍数等级的时候默认升级界面在图鉴模式
-			if(!isTabChange && (this.getNowPetItem.level +1) % 5 == 0){
+			if(!isTabChange && (this.getNowPetItem.level +1) % 5 == 0 && needHandleData.type != "v5"){
 				let t = setTimeout(()=>{
 					clearTimeout(t);
 					this.hasLoadBook = true;

@@ -50,7 +50,7 @@ export default class PancakeConfig {
 		},
 	}
 	static StakeLP = {
-		"MBOX-BNB":{
+		"MBOX-BNB-V2":{
 			pIndex: 1,
 			addr: "0xc2A3baBbe53d662C0a5D16513908aB53C6f1df24",
 			allocPoint: 10,

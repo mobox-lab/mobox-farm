@@ -115,7 +115,11 @@
 								<span class="cl-item-lv" v-if="item.upgradeCfg.v4Lv > 1">Lv. {{item.upgradeCfg.v4Lv}}</span>
 								<img v-if="(item.level+1)%5 == 0" src="@/assets/icon/preview-icon.png" alt="" @click="oprDialog('upgrade-des-dialog','block')"/>
 							</span>
-							<span v-if="item.level == 30">{{$t("BOX_15")}}</span>
+							<span v-if="item.upgradeCfg.v5 > 0" class="cl-item bg-lv5">x{{item.upgradeCfg.v5}}
+								<!-- <span class="cl-item-lv" v-if="item.upgradeCfg.v4Lv > 1">Lv. {{item.upgradeCfg.v4Lv}}</span> -->
+								<!-- <img v-if="(item.level+1)%5 == 0" src="@/assets/icon/preview-icon.png" alt="" @click="oprDialog('upgrade-des-dialog','block')"/> -->
+							</span>
+							<span v-if="item.level == 40">{{$t("BOX_15")}}</span>
 						</p>
 					</div>
 					<div class="split-hr mgt-10"></div>
@@ -160,7 +164,7 @@ export default {
 			perviewVTypeSelectPos: 2,
 			inputLvHashRate: 120,
 			perviewLvHashRate: "",
-			inputRange: [{min: 10, max: 40}, {min: 50, max: 120}],
+			inputRange: [{min: 10, max: 80}, {min: 50, max: 150}],
 			//v6算力查看
 			hashSelectArr: [180,200,220,240,260],
 			hashSelectPos: 0,
@@ -224,7 +228,7 @@ export default {
 			let hashRate = Number(this.perviewLvHashRate);
 			if(hashRate == 0) return report;
 
-			for (let index = 1; index <= 30; index++) {
+			for (let index = 1; index <= 40; index++) {
 				let level = index;
 				let lvHashRate = hashRate;
 				//计算加成
@@ -463,9 +467,11 @@ export default {
 	top: -10px;
 	font-size: 12px;
 	background: rgba(255,255,255,0.2);
-	padding: 0px 5px;
+	padding: 0px 2px;
 	border-radius: 10px;
+	width: 120%;
 	zoom: 0.8;
+	text-align: center;
 }
 .cl-item img{
 	position: absolute;
@@ -475,7 +481,7 @@ export default {
 }
 .cl-item{
 	width: 30px;
-	height: 30px;
+	height: 25px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;

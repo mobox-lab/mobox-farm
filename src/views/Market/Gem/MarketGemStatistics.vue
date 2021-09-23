@@ -14,22 +14,29 @@
 					<div class="vertical-children tac">
 						<img src="@/assets/icon/awd.png" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
-							<p class="opa-6">{{$t("Market_44")}}</p>
+							<p class="opa-6 small">{{$t("Market_44")}}</p>
 							<h1 class="color-w tac">{{statistics.sale}}</h1>
 						</div>
 					</div>
 					<div class="vertical-children tac">
 						<img :src="require(`@/assets/coin/${showCoin}.png`)" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
-							<p class="opa-6">{{$t("Market_45")}}</p>
+							<p class="opa-6 small">{{$t("Market_45")}}</p>
 							<h1 class="color-w tac">{{numFloor(statistics.volume / 1e9, 1e2).toLocaleString()}} </h1>
 						</div>
 					</div>
 					<div class="vertical-children tac">
 						<img src="@/assets/icon/evage-icon.png" height="50" alt="">
 						<div class="dib mgl-10 statistics-value">
-							<p class="opa-6">{{$t("Market_46")}}</p>
+							<p class="opa-6 small">{{$t("Market_46")}}</p>
 							<h1 class="color-w tac">{{numFloor(statistics.avgPrice / 1e9, 1e2)}}</h1>
+						</div>
+					</div>
+					<div class="vertical-children tac">
+						<img src="@/assets/icon/evaprice.png" height="50" alt="">
+						<div class="dib mgl-10 statistics-value">
+							<p class="opa-6 small">{{$t("Market_75")}}</p>
+							<h1 class="color-w tac">{{numFloor(statistics.sevenPrice, 1e2)}}</h1>
 						</div>
 					</div>
 				</div>
@@ -119,6 +126,7 @@ export default {
 		return({
 			historyList: [],
 			statistics: {
+				sevenPrice: 0,
 				avgPrice: 0,
 				sale: 0,
 				volume: 0,

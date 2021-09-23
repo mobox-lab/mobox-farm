@@ -1147,6 +1147,8 @@ export default class ETH {
 			protosV1V2V3.map((item, index) => protosV1V2V3[index] = Number(item));
 			tokensV4V5.map((item, index) => tokensV4V5[index] = Number(item));
 
+			console.log({protosV1V2V3}, {amountsV1V2V3}, {tokensV4V5});
+
 			this.sendMethod(
 				this.momoStakeContract.methods.levelUp(tokenId, protosV1V2V3, amountsV1V2V3, tokensV4V5), {from: myAddr},
 				hash=>resolve(hash),

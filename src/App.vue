@@ -133,6 +133,10 @@
 				<span>{{ boxNum }}</span>
 			</p>
 			<p class="vertical-children">
+				<img src="./assets/coin/CRYSTAL.png" alt="" height="25" />&nbsp;
+				<span>{{ crystalNum }}</span>
+			</p>
+			<p class="vertical-children">
 				<img src="./assets/coin/MBOX.png" alt="" height="25" />&nbsp;
 				<span>{{ Number(coinArr["MBOX"].balance) || 0 }}</span>
 			</p>
@@ -554,6 +558,7 @@ export default {
 			historyNotice: (state) => state.marketState.data.historyNotice,
 			coinArr: (state) => state.bnbState.data.coinArr,
 			boxNum: (state) => state.gemState.data.boxNum,
+			crystalNum: (state) => state.userState.data.crystalNum,
 		}),
 		isMoboxWallet(){
 			return window.SHOW_APP_BAR != undefined;

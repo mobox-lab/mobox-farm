@@ -6,6 +6,7 @@ const state = () => ({
 			{resImg: "box/mdxbox", num: 0, id: 1},
 		],
 		mdxBalance: 0,
+		crystalNum: 0,
 	},
 })
 

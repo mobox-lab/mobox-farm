@@ -38,6 +38,8 @@
 			</div>
 		</div>
 
+		<MomoEnhance :data="this.data" :isMarket="this.isMarket"  />
+
 		<!-- 质押状态 -->
 		<div v-if="!isMarket"  class="mgt-20">
 			<h3 >{{$t("MOMO_41")}}</h3>
@@ -213,12 +215,13 @@
 import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
 import { Loading, Dialog, StatuButton } from '@/components';
-import { WalletConfig } from "@/config";
+import { WalletConfig } from '@/config';
 import { mapState } from 'vuex';
+import MomoEnhance from '@/components/MomoEnhance'
 
 let timer = null;
 export default {
-	components: {StatuButton,Loading, Dialog},
+	components: {StatuButton,Loading, Dialog, MomoEnhance},
 	mixins: [CommonMethod],
 	data() {
 		return {

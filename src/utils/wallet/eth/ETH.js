@@ -7,13 +7,14 @@ import {EventConfig,WalletConfig,BaseConfig,ConstantConfig, PancakeConfig} from 
 import BigNumber from "bignumber.js";
 import Gem from './group/Gem';
 import MdxBox from './group/MdxBox';
+import Enhancer from './group/Enhancer'
 
 export default class ETH {
 	static web3;
 	static web3MainNet;
 
 	static  Group = {
-		Gem, MdxBox
+		Gem, MdxBox, Enhancer
 	}
 
 	//合约相关

@@ -52,6 +52,8 @@ const state = () => ({
 			makeBidOrderLock: 0,
 			makeAskOrderLock: 0,
 			refundMboxLock: 0,
+			addCrystalLock: 0, //添加水晶数量
+			enhanceLock: 0, //升级锁
 		},
 		walletStatus: {
 			status: 1, //1,等待中，2，reject，3，success

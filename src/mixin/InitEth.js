@@ -126,6 +126,7 @@ const InitEth = {
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
 
 				await this.getNewBoxNum();
+				await this.getCrystalNum();
 				
 
 				await this.eth_set1155IsApprovedForStake();
@@ -157,7 +158,7 @@ const InitEth = {
 			await this.getCoinValue();
 
 			await this.eth_setBox();
-			await this.getPoolsEarns();
+			this.getPoolsEarns();
 
 			//宝石相关
 			await this.getGemBag();
@@ -190,6 +191,11 @@ const InitEth = {
 		async getNewBoxNum(){
 			let  boxNum =  await Wallet.ETH.get1155Num(WalletConfig.ETH.newBoxToken, [1]);
 			this.$store.commit("gemState/setData", {boxNum: boxNum[1]});
+		},
+		//获取水晶的数量
+		async getCrystalNum(){
+			let  crystalNum =  await Wallet.ETH.get1155Num(WalletConfig.ETH.crystalToken, [1]);
+			this.$store.commit("userState/setData", {crystalNum: crystalNum[1]});
 		},
 		async setNowBlockNumber(){
 			let  res =  await Wallet.ETH.getBlockNumber();

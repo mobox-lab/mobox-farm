@@ -24,10 +24,6 @@ export default class WalletConfig {
 				name: "BANANA",
 				decimals: 1e18,
 			},
-			// "0X95A1199EBA84AC5F19546519E287D43D2F0E1B41": {
-			// 	name: "RABBIT",
-			// 	decimals: 1e18,
-			// },
 		},
 		momoBid: "0xFaE911aa353e598908DD2cFd6e88E35dE588974f",//v6竞拍
 		newBoxToken: "0xed8711fEff83b446158259981FD97645856e82A5", // 新的box合约
@@ -38,6 +34,8 @@ export default class WalletConfig {
 		mdxApply: "0x77f040BD6ED8930830f27B83601b4a35969609d8", //mdx箱子申购
 		openMdxBox: "0x8e987b5A7b55FC1eB3BfcF3CDd3AD3571bca9352", //mdx箱子打开
 		mdxToken: "0x9c65ab58d8d978db963e63f2bfb7121627e3a739",
+		momoEnhancer: "0x88b459d3Aa740e22Ef37bc9ad9b672EF6A8AAd21", // momo进化
+		crystalToken: "0x6E378A6a2BA2bc25f6f09aCf0791ba5905D8f1Fb", // momo进化水晶token
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

@@ -170,7 +170,7 @@ export default {
 	},
 	async created(){
 		await Wallet.ETH.getAccount();
-		await Common.app.getPoolsEarns();
+		Common.app.getPoolsEarns();
 		await this.getGroupV4();
 	},
 	methods: {

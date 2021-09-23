@@ -1,19 +1,15 @@
 <template>
 	<!-- 进化相关功能 -->
 	<div class="mgt-20" v-if="getNowPetItem.vType == 4 || getNowPetItem.vType == 5">
-		<h3>
-			{{$t("MOMO_57")}}
-			<img class="mgl-5 cur-point" @click="getRootRefs().ruleDialog.show('MOMO_58','MOMO_59')" src="@/assets/icon/help.png" alt="" height="20"/>
-		</h3> 
-		<div v-if="isMaxEnhance" class="mgt-10 ly-input-content tac">{{$t("MOMO_66")}}</div>
-		<div v-else class="ly-input-content mgt-10" style="padding-bottom:20px">
-			<p class="small opa-6">{{$t("MOMO_60")}}(LV.1)</p>
+		<h3>进化</h3> 
+		<div class="ly-input-content mgt-10" style="padding-bottom:20px">
+			<p class="small opa-6">初始算力(LV.1)</p>
 			<div class="mgt-10" style="font-size:18px">
 				<img src="@/assets/icon/airdrop.png" height="25" alt="" />&nbsp;
 				<span>{{ getNowPetItem.hashrate }}</span>
 				<img src="@/assets/icon/upgradejt.png" alt="" class="mgl-10" />
 				<img src="@/assets/icon/airdrop.png" alt="" class="mgl-10" height="25" />&nbsp;
-				<span style="color: #85f34a">{{ getCanEnhaceObj.min }}-{{ getCanEnhaceObj.max }}</span>
+				<span style="color: #85f34a">{{ getNowPetItem.hashrate+1 }}-{{ getNowPetItem.hashrate+5 }}</span>
 			</div>
 			<div class="ovh bold aveage-box tac mgt-10"  style="background:rgba(0,0,0,0.3);border-radius: 15px;padding:10px;font-size:14px; display:flex">
 				<div class="vertical-children" v-for="item in 5" :key="item">
@@ -28,50 +24,50 @@
 				</div>
 			</div>
 			<template v-if="getNowPetItem.level > 1">
-				<p class="small opa-6 mgt-20">{{$t("MOMO_61")}}(LV.{{getNowPetItem.level}})</p>
+				<p class="small opa-6 mgt-20">当前算力(LV.{{getNowPetItem.level}})</p>
 				<div class="mgt-10"  style="font-size:18px">
 					<img src="@/assets/icon/airdrop.png" height="25" alt="" />&nbsp;
 					<span>{{ getNowPetItem.lvHashrate }}</span>
 					<img src="@/assets/icon/upgradejt.png" alt="" class="mgl-10" />
 					<img src="@/assets/icon/airdrop.png" alt="" class="mgl-10" height="25" />&nbsp;
-					<span style="color: #85f34a">{{ getTargetLevelHashPower(getCanEnhaceObj.min) }}-{{ getTargetLevelHashPower(getCanEnhaceObj.max) }}</span>
+					<span style="color: #85f34a">{{ getTargetLevelHashPower(getNowPetItem.hashrate+1) }}-{{ getTargetLevelHashPower(getNowPetItem.hashrate+5) }}</span>
 				</div>
 			</template>
-			<p class="small opa-6 mgt-20">{{$t("MOMO_62")}}</p>
+			<p class="small opa-6 mgt-20">本次进化需要先注入</p>
 			<div class=" mgt-10" style="background:rgba(0,0,0,0.3);border-radius: 15px;padding:10px;font-size:18px; display:flex">
 				<div class="dib vertical-childrem" style="flex:1;color:#fff">
 					<div>
 						<img src="@/assets/coin/CRYSTAL.png" class="mgl-5" alt="" height="25" />
 						{{getNowEnhanceCfg.crystal}} <sub class="small">MEC</sub> 
-						<!-- <span style="color:#12D2E7;" class="mgl-5">+</span>
+						<span style="color:#12D2E7;" class="mgl-5">+</span>
 						<img src="@/assets/coin/MBOX.png" class="mgl-5" alt="" height="25" />
-						<span class="mgl-5">{{getNowEnhanceCfg.mbox}} <sub class="small">MBOX</sub></span>  -->
+						<span class="mgl-5">{{getNowEnhanceCfg.mbox}} <sub class="small">MBOX</sub></span> 
 					</div>
 					<div class="mgt-10">
-						<StatuButton class="btn-small" :onClick="approveMEC" :isLoading="lockBtn.approveLock > 0" v-if="needApproveMec">{{$t("Air-drop_16")}} MEC</StatuButton>
-						<!-- <StatuButton class="mgl-10 btn-small" :onClick="approveMbox" v-if="needApproveMbox" :isLoading="coinArr['MBOX'].isApproving">{{$t("Air-drop_16")}} MBOX</StatuButton> -->
+						<StatuButton class="btn-small" :onClick="approveMEC" :isLoading="lockBtn.approveLock > 0" v-if="needApproveMec">授权MEC</StatuButton>
+						<StatuButton class="mgl-10 btn-small" :onClick="approveMbox" v-if="needApproveMbox" :isLoading="coinArr['MBOX'].isApproving">授权MBOX</StatuButton>
 					</div>
 					
 				</div>
 				<div class="dib">
-					<StatuButton class="btn-line btn-small" :onClick="addCrystal" :isLoading="lockBtn.addCrystalLock > 0" :isDisable="Number(enhanceHash) >= 2">
-						<span v-if="Number(enhanceHash) >= 2">{{$t("MOMO_63")}}</span>
-						<span v-else>{{$t("MOMO_63")}}</span>
+					<StatuButton class="btn-line btn-small" :onClick="addCrystal" :isDisable="Number(enhanceHash) >= 2">
+						<span v-if="Number(enhanceHash) == 2">已注入</span>
+						<span v-else>注入</span>
 					</StatuButton>
 
 				</div>
 			</div>
 			<div class="mgt-20 tac">
-				<!-- <p class="tac small opa-6 hide" v-if="Number(enhanceHash) >= 2">
+				<p class="tac small opa-6" v-if="Number(enhanceHash) >= 2">
 					进化Hash：
 					<span v-if="Number(enhanceHash) > 2">{{shortHash(enhanceHash)}}</span>
 					<span v-else>等待设置Hash</span>
-				</p> -->
+				</p>
 				
 				<div>
 					<StatuButton :onClick="enhance" class="mgt-10" style="min-width:150px" :isDisable="Number(enhanceHash) < 2" :isLoading="Number(enhanceHash) == 2 || lockBtn.enhanceLock > 0">
-						<span v-if="Number(enhanceHash) == 2">{{$t("MECBOX_48")}}</span>
-						<span v-else>{{$t("MOMO_65")}}</span>
+						<span v-if="Number(enhanceHash) == 2">等待设置Hash</span>
+						<span v-else>开始进化</span>
 					</StatuButton>
 				</div>
 			</div>
@@ -104,24 +100,6 @@ export default {
 			crystalNum: (state) => state.userState.data.crystalNum,
 			nowTs: (state) => state.globalState.data.nowTs,
 		}),
-		getCanEnhaceObj(){
-			let obj = {min: 0, max: 0};
-			let {vType, hashrate} = this.getNowPetItem;
-			obj.min = hashrate+1;
-			obj.max = hashrate+5;
-			if(vType == 4){
-				if(obj.max > 80) obj.max = 80;
-			}
-			if(vType == 5){
-				if(obj.max > 150) obj.max = 150;
-			}
-			return obj;
-		},
-		//已经达到最大进化值
-		isMaxEnhance(){
-			let {vType, hashrate} = this.getNowPetItem;
-			return (vType == 4 && hashrate == 80) || (vType == 5 && hashrate == 150);
-		},
 		getNowPetItem(){
 			return this.data;
 		},
@@ -197,50 +175,47 @@ export default {
 				this.lockBtnMethod("enhanceLock")
 			}
 		},
-		
 		//注入水晶和mobox
 		async addCrystal(){
-			// if(this.needApproveMbox){
-			// 	this.showNotify(this.$t("MECBOX_44") ,"error");
-			// 	return
-			// }
+			if(this.needApproveMbox){
+				this.showNotify("请先授权MBOX" ,"error");
+				return
+			}
 			if(this.needApproveMec){
-				this.showNotify(this.$t("MECBOX_45") ,"error");
+				this.showNotify("请先授权MEC" ,"error");
 				return
 			}
 			if(Number(this.crystalNum) < Number(this.getNowEnhanceCfg.crystal)){
-				this.showNotify(this.$t("MECBOX_46") ,"error");
+				this.showNotify("MEC数量不足" ,"error");
 				return
 			}
-			// if(Number(this.coinArr["MBOX"].balance) < Number(this.getNowEnhanceCfg.mbox)){
-			// 	this.showNotify(this.$t("MECBOX_47") ,"error");
-			// 	return
-			// }
+			if(Number(this.coinArr["MBOX"].balance) < Number(this.getNowEnhanceCfg.mbox)){
+				this.showNotify("MBOX数量不足" ,"error");
+				return
+			}
 			console.log(this.getNowPetItem);
 			let obj = {
 				tokenId_: this.getNowPetItem.tokenId,
 				hrOriginal_: this.getNowPetItem.hashrate, 
 				crystalAmount_: this.getNowEnhanceCfg.crystal, 
-				mbox_: 0
+				mbox_: this.getNowEnhanceCfg.mbox
 			}
 			let hash = await Wallet.ETH.Group.Enhancer.addCrystal(obj, ()=>{
-				this.getEnhanceHash();
+
 			});
 			if(hash){
 				this.lockBtnMethod("addCrystalLock")
 			}
 		},
 		//查询宝石合约是被授权
-		async viewMECApproved(address){
-			address = address || WalletConfig.ETH.momoEnhancer;
-			let isApprove = await Wallet.ETH.isApprovedForAll(WalletConfig.ETH.crystalToken, address);
+		async viewMECApproved(){
+			let isApprove = await Wallet.ETH.isApprovedForAll(WalletConfig.ETH.crystalToken, WalletConfig.ETH.momoEnhancer);
 			if(isApprove != null){
 				this.isMECApproved = isApprove;
 			}
 		},
-		async approveMEC(address){
-			address = address || WalletConfig.ETH.momoEnhancer;
-			let hash = await Wallet.ETH.approvedForAll(WalletConfig.ETH.crystalToken, address, ()=>{
+		async approveMEC(){
+			let hash = await Wallet.ETH.approvedForAll(WalletConfig.ETH.crystalToken, WalletConfig.ETH.momoEnhancer, ()=>{
 				this.viewMECApproved();
 			});
 			if(hash){

@@ -31,6 +31,7 @@ const baseCoinAttr = {
 	allowanceToVeMbox: -1,
 	allowanceToBid: -1,
 	allowanceToOrderBook: -1, //授权给订单部市场合约
+	allowanceToMomoEnhancer: -1, //授权给momo进化合约
 	totalAirdrop: 0,
 	perFullShare: 0,
 	isApproving: false, //是否授权中
@@ -101,7 +102,7 @@ const state = () => ({
 				des: "ApeSwap",
 				color: "#FFD54F",
 				version: "-",
-				amount: "-",
+				amount: 0,
 				dayDrop: 1551
 			},
 			// "RABBIT": {

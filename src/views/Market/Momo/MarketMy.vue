@@ -426,7 +426,8 @@ export default {
 					uptime: parseInt(new Date().valueOf()/1000),
 					index: -1,
 					tx: hash,
-					chain: "bnb"
+					chain: "bnb",
+					ids:[],
 				}
 
 				if(sellType == "721"){

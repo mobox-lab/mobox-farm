@@ -3,8 +3,8 @@ import {EventBus, Common} from "@/utils";
 import {EventConfig} from '@/config';
 export default class HTTP {
 	// static serverNode = "https://nfttestapi.mobox.io"; //测试
-	static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
-	// static serverNode = "http://192.168.5.78:3000"; // 测试
+	// static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
+	static serverNode = "http://192.168.5.78:3000"; // 测试
 
 	static async post(url, sendData) {
 		try {
@@ -25,6 +25,10 @@ export default class HTTP {
 	}
 	static async getMdxBoxHistory(owner){
 		let { data } = await this.get(`/mdx/open_logs?address=${owner}`);
+		return data;
+	}
+	static async getEnhanceLog(tokenId){
+		let { data } = await this.get(`/momo/enhance/logs?tokenId=${tokenId}`);
 		return data;
 	}
 	static async buybackpool(type = 0){
@@ -227,9 +231,19 @@ export default class HTTP {
 		let { data } = await this.get(`/box/applications/`,{taker: addr});
 		return data;
 	}
+	//获取申购记录
+	static async getMecBoxApplyHistory(addr){
+		let { data } = await this.get(`/crystal/box/applications/`,{taker: addr});
+		return data;
+	}
 	//获取号码
 	static async getBoxApplyResult(addr, roundIndex){
 		let { data } = await this.get(`/box/apply_result/`, {taker: addr, roundIndex});
+		return data;
+	}
+	//获取号码
+	static async getMecBoxApplyResult(addr, roundIndex){
+		let { data } = await this.get(`/crystal/box/apply_result/`, {taker: addr, roundIndex});
 		return data;
 	}
 	//获取MDX申购记录

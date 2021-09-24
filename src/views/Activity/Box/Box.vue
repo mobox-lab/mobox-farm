@@ -3,10 +3,10 @@
 		<div class="por clear mgt-20 " style="border:1px solid #5d636f80;border-radius: 30px">
 			<section class="col-md-7" style="padding:10px;">
 				<div class="adv-panel por">
-					<h1 class="vertical-children">
-						<span>{{$t("NewBOX_01")}}</span>
+					<div class="vertical-children">
+						<h2 class="dib">{{$t("NewBOX_01")}}</h2>
 						<img class="mgl-10 cur-point" @click="oprDialog('box-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="30">
-					</h1>
+					</div>
 					<div class="tac mgt-10">
 						<template >
 							<p v-if="getCountDown >0">{{$t("NewBOX_20")}}: {{getLeftTime(getCountDown)}}</p>

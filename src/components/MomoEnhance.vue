@@ -126,9 +126,9 @@ export default {
 		await Wallet.ETH.getAccount();
 		await this.viewMboxAllowance();
 		await this.viewMECApproved();
-		await this.getEnhanceHash();
 	},
 	methods: {
+		
 		getGrowup(vType, hashrate) {
 			let obj = {
 				staticPower: 0,

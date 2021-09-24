@@ -127,7 +127,6 @@ const InitEth = {
 
 				await this.getNewBoxNum();
 				await this.getCrystalNum();
-				
 
 				await this.eth_set1155IsApprovedForStake();
 				await this.eth_set721IsApprovedForStake();
@@ -189,8 +188,9 @@ const InitEth = {
 		},
 		//获取新箱子的数量
 		async getNewBoxNum(){
-			let  boxNum =  await Wallet.ETH.get1155Num(WalletConfig.ETH.newBoxToken, [1]);
+			let  boxNum =  await Wallet.ETH.get1155Num(WalletConfig.ETH.newBoxToken, [1,2]);
 			this.$store.commit("gemState/setData", {boxNum: boxNum[1]});
+			this.$store.commit("userState/setData", {mecBoxNum: boxNum[2]});
 		},
 		//获取水晶的数量
 		async getCrystalNum(){

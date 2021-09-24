@@ -38,7 +38,7 @@
 			</div>
 		</div>
 
-		<MomoEnhance :data="this.data" :isMarket="this.isMarket"  />
+		<MomoEnhance :data="this.data"  v-if="!this.isMarket"  />
 
 		<!-- 质押状态 -->
 		<div v-if="!isMarket"  class="mgt-20">
@@ -70,13 +70,15 @@
 		</div>
 
 		<!-- 升级记录 -->
-		<div v-if="levelUpInfo.length > 0 "  class="mgt-20 ly-input-content">
-			<h3 class="por">{{$t("MOMO_34")}}
-				<span class="refrash" @click="getLevelupInfo">
+		<div v-if="levelUpInfo.length > 0 || enhanceHistory.length > 0"  class="mgt-20 ly-input-content">
+			<div class="por">
+				<h3 class="dib cur-point " :class="{tabActive: historyTab == 0}" @click="historyTab=0">{{$t("MOMO_34")}}</h3>
+				<h3 class="dib cur-point mgl-10" :class="{tabActive: historyTab == 1}" @click="historyTab=1">进化历史</h3>
+				<span class="refrash" @click="getLevelupInfo();getEnhanceLog()">
 					<Loading :width="20" :height="20" :isRotate="loading.upgrade" />
 				</span>
-			</h3>
-			<div style="max-height: 300px; overflow-y: auto" class="mgt-10">
+			</div>
+			<div v-if="historyTab == 0" style="max-height: 300px; overflow-y: auto" class="mgt-10">
 				<div class=" por pet-des" v-for="item in levelUpInfo" :key="item.crtime" >
 					<div style=" position: absolute; top: 0px; left: 0px; width: 100%; padding: 5px 10px; " >
 						<table style="width: 100%" class="small">
@@ -98,6 +100,34 @@
 						<img src="../assets/icon/airdrop.png" alt="" class="mgl-10" height="25" />&nbsp;
 						<span style="color: #85f34a">
 							{{ item.curHashrate }}
+						</span>
+					</div>
+				</div>
+			</div>
+			<div v-if="historyTab == 1" style="max-height: 300px; overflow-y: auto" class="mgt-10">
+				<div class=" por pet-des" v-for="item in enhanceHistory" :key="item.crtime" >
+					<div style=" position: absolute; top: 0px; left: 0px; width: 100%; padding: 5px 10px; " >
+						<table style="width: 100%" class="small">
+							<tr>
+								<td class="tal">{{ shorAddress(item.owner) }}</td>
+								<td class="tar">{{ dateFtt( "yyyy-MM-dd hh:mm:ss", new Date( item.crtime * 1000) ) }}</td>
+							</tr>
+						</table>
+					</div>
+					<div class="tac">
+						<p class="vertical-children tac mgt-10 small dib" style="background:rgba(0,0,0,0.3);border-radius:15px;padding:5px 10px">
+							<span class="c-lv1" v-if="item.newHashrate - item.oldHashrate <= 3">普通进化</span>
+							<span class="c-lv4" v-if="item.newHashrate - item.oldHashrate == 4">高级进化</span>
+							<span class="c-lv5" v-if="item.newHashrate - item.oldHashrate == 5">超级进化</span>
+						</p>
+					</div>
+					<div class="vertical-children mgt-10 tac" style="font-size: 18px" >
+						<img src="../assets/icon/airdrop.png" height="25" alt="" />&nbsp;
+						<span>{{ item.oldHashrate }}</span>
+						<img src="../assets/icon/upgradejt.png" alt="" class="mgl-10" />
+						<img src="../assets/icon/airdrop.png" alt="" class="mgl-10" height="25" />&nbsp;
+						<span style="color: #85f34a">
+							{{ item.newHashrate }}
 						</span>
 					</div>
 				</div>
@@ -225,7 +255,9 @@ export default {
 	mixins: [CommonMethod],
 	data() {
 		return {
+			historyTab: 0,
 			tradeHistory: [],
+			enhanceHistory: [],
 			levelUpInfo: [],
 			storyList: [],
 			inputStory: "",
@@ -239,6 +271,7 @@ export default {
 			gemWearPos: 0,
 			selectGemLv: 0,
 			hasApprove: -1,
+
 		};
 	},
 	watch: {
@@ -257,6 +290,7 @@ export default {
 		await this.getLevelupInfo();
 		await this.getStory();
 		await this.getMomoTradeHistory();
+		await this.getEnhanceLog();
 		
 		if(timer) clearInterval(timer);
 		timer = setInterval(()=>{
@@ -330,6 +364,16 @@ export default {
 		}
 	},
 	methods: {
+		async getEnhanceLog(){
+			if(this.getNowPetItem.tokenId == 0 || this.loading.trade) return;
+			this.loading.upgrade = true;
+			let data = await Http.getEnhanceLog(this.getNowPetItem.tokenId);
+			this.loading.upgrade = false;
+			if (data) {
+				console.log(data, "getEnhanceLog");
+				this.enhanceHistory = data.list;
+			}
+		},
 		//
 		showGemBag(index){
 			if(this.getNowPetItem.location != "stake") return;
@@ -491,6 +535,9 @@ export default {
 </script>
 
 <style scoped>
+.tabActive{
+	border-bottom: 2px solid #1b65f5;
+}
 .gem-item{
 	display: inline-block;
 	width: 100%;

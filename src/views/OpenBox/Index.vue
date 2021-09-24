@@ -11,6 +11,7 @@
 		<section>
 			<OpenBox v-show="tabKey == tabArr[0].key " />
 			<OpenChest v-if="tabKey == tabArr[1].key " />
+			<OpenMecBox v-if="tabKey == tabArr[2].key " />
 		</section>
 	</div>
 </template>
@@ -18,15 +19,17 @@
 <script>
 import OpenChest from './OpenChest.vue';
 import OpenBox from './OpenBox.vue';
+import OpenMecBox from './OpenMecBox.vue';
 
 export default {
-	components: {OpenChest, OpenBox},
+	components: {OpenChest, OpenBox, OpenMecBox},
 	data(){
 		return({
 			tabKey: 'box',
 			tabArr: [
 				{icon: require("@/assets/icon/box.png"), text: "BOX_34", key: "box"},
 				{icon: require("@/assets/icon/box_old.png"), text: "BOX_05", key: "chest"},
+				{icon: require("@/assets/box/mecbox.png"), text: "BOX_34", key: "mecbox"},
 			],
 			rateObj: [
 				{lv:1, rate: '50%', lang: 'MOMO_09'},

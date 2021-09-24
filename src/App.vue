@@ -133,6 +133,10 @@
 				<span>{{ boxNum }}</span>
 			</p>
 			<p class="vertical-children">
+				<img src="./assets/box/mecbox.png" alt="" height="22" />&nbsp;
+				<span>{{ mecBoxNum }}</span>
+			</p>
+			<p class="vertical-children">
 				<img src="./assets/coin/CRYSTAL.png" alt="" height="25" />&nbsp;
 				<span>{{ crystalNum }}</span>
 			</p>
@@ -559,6 +563,7 @@ export default {
 			coinArr: (state) => state.bnbState.data.coinArr,
 			boxNum: (state) => state.gemState.data.boxNum,
 			crystalNum: (state) => state.userState.data.crystalNum,
+			mecBoxNum: (state) => state.userState.data.mecBoxNum,
 		}),
 		isMoboxWallet(){
 			return window.SHOW_APP_BAR != undefined;
@@ -1049,7 +1054,7 @@ export default {
 }
 #top-res p {
 	display: inline-block;
-	margin-right: 20px;
+	margin-right: 15px;
 }
 #top-res {
 	height: 60px;

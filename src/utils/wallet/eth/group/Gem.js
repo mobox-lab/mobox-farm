@@ -93,7 +93,7 @@ export default class Gem {
 		}], WalletConfig.ETH.newGemApply);
 		return new Promise(resolve => {
 			ETH.sendMethod(
-				contract.methods.[fcName](gemType_, applyNum_), {from: myAddr},
+				contract.methods[fcName](gemType_, applyNum_), {from: myAddr},
 				hash=>resolve(hash),
 				async ()=>{
 					console.log("hashRateApplyForGem success");

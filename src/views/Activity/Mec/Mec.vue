@@ -15,11 +15,11 @@
 
 						<div class="aveage-box mgt-10" id="show-num">
 							<div class="tar">{{$t("Gemstone_61")}}: {{getHashApplyCount[0]}}</div>
-							<div class="tal mgl-10">{{$t("Gemstone_62")}}: {{getHashApplyCount[1]}}</div>
+							<div class="tal mgl-10">{{$t("Gemstone_62")}}: {{Number(applyCfg[0].max)}}</div>
 						</div>
 						<div class="aveage-box mgt-5" id="show-num">
 							<div class="tar">{{$t("Gemstone_63")}}: {{getVeMboxApplyCount[0]}}</div>
-							<div class="tal mgl-10">{{$t("Gemstone_64")}}: {{getVeMboxApplyCount[1]}}</div>
+							<div class="tal mgl-10">{{$t("Gemstone_64")}}: {{Number(applyCfg[1].max)}}</div>
 						</div>
 
 						<div style="height:230px" id="gem-apply-type">
@@ -37,7 +37,10 @@
 							</div>
 							<div class="dib mgl-5" style="line-height:15px">
 								<p>{{item.rate}}</p>
-								<p class="small opa-6">{{$t(item.lang)}}</p>
+								<p class="small  vertical-children">
+									<span>{{item.lang}}</span>
+									<img class="mgl-5" src="@/assets/coin/CRYSTAL.png" alt="" height="20">
+								</p>
 							</div>
 						</div>
 						<div class="col-md-1"></div>
@@ -227,11 +230,11 @@ export default {
 			getRecordNoArr: [],
 			historyDitail: {isOver: "-", wins: {}, item:{}, ticketStartNo:0 },
 			rateObj: [
-				{lv:1, rate: '50%', lang: 'MOMO_09'},
-				{lv:2, rate: '35%', lang: 'MOMO_10'},
-				{lv:3, rate: '12%', lang: 'MOMO_11'},
-				{lv:4, rate: '2.5%', lang: 'MOMO_12'},
-				{lv:5, rate: '0.5%', lang: 'MOMO_13'},
+				{lv:1, rate: '47%', lang: '2-10'},
+				{lv:2, rate: '32%', lang: '11-20'},
+				{lv:3, rate: '16%', lang: '21-50'},
+				{lv:4, rate: '4%', lang: '100-200'},
+				{lv:5, rate: '1%', lang: '500-999'},
 			],
 			applyCfg: {
 				0: {max: 0, now: 0, "numCfg":{0:1600,2e4:3200,4e4:4800,6e4:6400,12e4:8000} },

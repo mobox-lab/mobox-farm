@@ -3,7 +3,7 @@ import {EventBus, Common} from "@/utils";
 import {EventConfig} from '@/config';
 export default class HTTP {
 	// static serverNode = "https://nfttestapi.mobox.io"; //测试
-	// static serverNode = "https://nftapi.bitsplus.cn"; // 新合约的 （公测版）
+	// static serverNode = "https://nftapi.mobox.io"; // 新合约的 （公测版）
 	static serverNode = "http://192.168.5.78:3000"; // 测试
 
 	static async post(url, sendData) {
@@ -22,6 +22,10 @@ export default class HTTP {
 			console.error("http error", e);
 			EventBus.$emit(EventConfig.HttpError);
 		}
+	}
+	static async getMecBoxHistory(owner){
+		let { data } = await this.get(`/crystal/minter_logs?address=${owner}`);
+		return data;
 	}
 	static async getMdxBoxHistory(owner){
 		let { data } = await this.get(`/mdx/open_logs?address=${owner}`);

@@ -57,7 +57,7 @@
 						<div class=" tac">x{{item.amount}}</div>
 						<div class="tac color-sell">{{item.totalValue}}</div>
 						<div class="tar" >
-							<img  @click="showOpenBox(item.luckyAmounts, false)" height="25" src="@/assets/icon/view.png" alt="" class="cur-point" />
+							<img  @click="showOpenBox('mdx',item.luckyAmounts, false)" height="25" src="@/assets/icon/view.png" alt="" class="cur-point" />
 						</div>
 					</div>
 				</div>
@@ -69,18 +69,18 @@
 				<div id="box-result" class="animate__animated animate__zoomIn animate__faster por">
 					<img   class="close-btn" @click="closeResult" src="@/assets/icon/close.png" alt="" width="30" />
 					<div class="vertical-children">
-						<img src="@/assets/box/mdxbox.png" alt="" height="60">
+						<img :src="require(`@/assets/${getNowTypeObj.boxRes}.png`)" alt="" height="60">
 						<div class="dib tal mgl-10">
 							<h2>{{$t("Air-drop_266")}}: x{{showReult.length}}</h2>
-							<p class="small">{{$t("Air-drop_267")}}: {{getTotalReward}} <img src="@/assets/coin/MDX.png" class="coin-icon" alt="" height="20"  /></p>
+							<p class="small">{{$t("Air-drop_267")}}: {{getTotalReward}} <img :src="require(`@/assets/${getNowTypeObj.iconName}.png`)" class="coin-icon" alt="" height="20"  /></p>
 						</div>
 					</div>
 					<div class="ly-input-content ovh mgt-10" style="height:350px;overflow:auto;background:#000">
 						<div class="col-md-3 col-xs-4 box-result-item tac" v-for="(item,pos) in showReult" :key="pos">
-							<img :src="require(`@/assets/box/openboxbg${coinNumToLv[item]}.png`)" alt="" width="100%"/>
+							<img :src="require(`@/assets/box/openboxbg${getBgLvByNum(item)}.png`)" alt="" width="100%"/>
 							<div class="vertical-children2" style="position:absolute;top:0px;width:100%;height:100%;left:0px;">
-								<img src="@/assets/coin/MDX.png" class="coin-icon" alt="" height="30"  />
-								<span class="coin-num mgl-5" :class="`color`+ coinNumToLv[item]">{{item}}</span>
+								<img :src="require(`@/assets/${getNowTypeObj.iconName}.png`)" class="coin-icon" alt="" height="30"  />
+								<span class="coin-num mgl-5" :class="`color`+ getBgLvByNum(item)">{{item}}</span>
 							</div>
 						</div>
 					</div>
@@ -92,7 +92,7 @@
 <script>
 import { Dialog, SelectNum, StatuButton } from '@/components';
 import { mapState } from 'vuex';
-import { Wallet, Http } from '@/utils';
+import { Wallet, Http, Common } from '@/utils';
 import { CommonMethod } from '@/mixin';
 import {WalletConfig} from "@/config";
 const $ = window.$
@@ -105,11 +105,25 @@ export default {
 			needOpenNum: 1,
 			selectPos: -1,
 			boxSpine: null,
-			coinNumToLv: {"2": 1, "3": 2, "5": 3, "10": 4, "20":5},
 			showReult: [],
 			isShowResult: false,
 			openHistory: [],
 			myAccount: "",
+			openBoxType: "mec",
+			openBoxTypeObj: {
+				"mdx": {
+					iconName: "coin/MDX",
+					boxSpineRes: "mdxBox/baoxiang",
+					boxRes: "box/mdxbox",
+					coinNumToLv: {"2": 1, "3": 2, "5": 3, "10": 4, "20":5},
+				},
+				"mec": {
+					iconName: "coin/CRYSTAL",
+					boxSpineRes: "shuijign/shuijign",
+					boxRes: "box/mecbox_a",
+					coinNumToLv: {"2": 1, "11": 2, "21": 3, "100": 4, "500":5},
+				}
+			}
 		})
 	},
 	computed:{
@@ -123,6 +137,9 @@ export default {
 				reward += Number(item)
 			});
 			return reward;
+		},
+		getNowTypeObj(){
+			return this.openBoxTypeObj[this.openBoxType];
 		}
 	},
 	async created(){
@@ -132,30 +149,44 @@ export default {
 		await this.getMdxBalance();
 	},
 	mounted(){
-		this.initBox();
+		this.preLoadRes();
 	},
 	methods:{
+		getBgLvByNum(num){
+			let retLv = 1;
+			let coinNumToLv = this.getNowTypeObj.coinNumToLv;
+			if(this.openBoxType == "mdx"){
+				retLv = coinNumToLv[num]
+			}else{
+				for (const key in coinNumToLv) {
+					if(Number(num) >= Number(key)) retLv = coinNumToLv[key];
+				}
+			}
+			return retLv
+		},
 		async getMdxBalance(){
 			let value = await Wallet.ETH.getErc20BalanceByTokenAddr(WalletConfig.ETH.mdxToken, false);
 			if(value){
 				this.$store.commit("userState/setData", {mdxBalance: this.numFloor((Number(value) / 1e18), 1e2)});
 			}
 		},
-		initBox(){
-			this.boxSpine = new window.spine.SpineWidget(this.$refs.boxSpine, {
-				json: "./animation/mdxBox/baoxiang.json",
-				atlas: "./animation/mdxBox/baoxiang.atlas",
-				backgroundColor: "#00000000",
-				animation: "jinzheng",
-				loop: false,
-				fitToCanvas: true,
-				scale:0.5,
-				x: 0,
-				y: 0,
-				success: ()=>{
-					this.boxSpine.state.timeScale = 1.8;
+		async preLoadRes(){
+			for (const key in this.openBoxTypeObj) {
+				let boxSpineRes = this.openBoxTypeObj[key].boxSpineRes;
+				try {
+					new window.spine.SpineWidget(this.$refs.boxSpine, {
+						json: `./animation/${boxSpineRes}.json`,
+						atlas: `./animation/${boxSpineRes}.atlas`,
+						backgroundColor: "#00000000",
+						loop: false,
+						fitToCanvas: true,
+						animation: "jinzheng",
+					});
+					await Common.sleep(2000);
+				} catch (error) {
+					console.log(error);
 				}
-			});
+			}
 		},
 		async getMdxBoxHistory(){
 			let res = await Http.getMdxBoxHistory(this.myAccount);
@@ -188,7 +219,7 @@ export default {
 		async openBox(){
 			if(this.needOpenNum <= 0 || this.needOpenNum > this.boxList[this.selectPos].num) return;
 			let hash = await Wallet.ETH.Group.MdxBox.openBox(this.needOpenNum, async (data)=>{
-				this.showOpenBox(data.luckyAmounts);
+				this.showOpenBox("mdx",data.luckyAmounts);
 				await this.getMyMdxBoxNum();
 				await this.getMdxBalance();
 			});
@@ -196,26 +227,52 @@ export default {
 				this.lockBtnMethod("openActivityBoxLock");
 			}
 		},
-		showOpenBox(arr, needShowBox = true){
+
+		showOpenBox(type, arr, needShowBox = true){
+			if(this.openBoxTypeObj[type]){
+				this.openBoxType = type;
+			}
 			this.showReult = arr;
 			$("#showBoxLayer").show();
 			if(needShowBox){
-				this.boxSpine.setAnimation("dakai", {
-					complete: ()=>{
-						this.isShowResult = true;
-					}
-				})
+				this.initBoxAndOpen();
 			}else{
 				$("#boxSpineShow").hide();
 				this.isShowResult = true;
 			}
+		},
+		initBoxAndOpen(){
+			console.log(this.getNowTypeObj.boxSpineRes);
+			$("#boxSpineShow").hide();
+			this.boxSpine = new window.spine.SpineWidget(this.$refs.boxSpine, {
+				json: `./animation/${this.getNowTypeObj.boxSpineRes}.json`,
+				atlas: `./animation/${this.getNowTypeObj.boxSpineRes}.atlas`,
+				backgroundColor: "#00000000",
+				animation: "jinzheng",
+				loop: false,
+				fitToCanvas: true,
+				scale:0.8,
+				x: 0,
+				y: 0,
+				success: ()=>{
+					$("#boxSpineShow").show();
+					this.boxSpine.state.timeScale = 2;
+					this.boxSpine.setAnimation("dakai", {
+						complete: ()=>{
+							this.isShowResult = true;
+						}
+					})
+				}
+			});
 		},
 		closeResult(){
 			this.isShowResult = false;
 			$("#showBoxLayer").hide();
 			this.showReult = [];
 			$("#boxSpineShow").show();
-			this.boxSpine.setAnimation("jinzheng", false)
+			if(this.boxSpine){
+				this.boxSpine.setAnimation("jinzheng", false)
+			}
 		},
 		onNumChange(data, num){
 			this.needOpenNum = Number(this.needOpenNum) + num;

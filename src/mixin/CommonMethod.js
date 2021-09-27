@@ -27,7 +27,7 @@ const CommonMethod = {
 				version:"1.0",
 				fd: Wallet.ETH.myAddr
 			}
-			axios.post("https://accountapi.bitsplus.cn/app/action", sendData);
+			axios.post("https://accountapi.mobox.io/app/action", sendData);
 		},
 		getConfirmDialog(){
 			return this.$root.$children[0].$refs.confirmDialog;

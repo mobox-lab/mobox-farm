@@ -239,8 +239,8 @@ export default {
 				if(hashRate < 20) quality = 4;
 				if(hashRate >= 80) quality = 6;
 				if(hashRate>= 20 && hashRate < 30) quality = 5;
-				if(hashRate>= 30 && hashRate <= 40) quality = 6;
-				if(hashRate >= 50 && hashRate < 80) quality = 5;
+				if(hashRate>= 30) quality = 6;
+				if(hashRate >= 50 && hashRate < 80 && this.perviewVTypeSelectPos == 1) quality = 5;
 
 				report.push({
 					level,

@@ -4,7 +4,7 @@
 			<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;
 			{{ $t("MOMO_19") }}
 		</span>
-		<div class="tac row mgt-10">
+		<div class="tac row ">
 			<div class="col-md-6 mgt-10">
 				<div class="panel">
 					<div id="upgrade-lv" class="vertical-children">
@@ -960,6 +960,7 @@ export default {
 	margin: 0px auto;
 	overflow: hidden;
 	position: relative;
+	margin-top: 10px;
 }
 </style>
 

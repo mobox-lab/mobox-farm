@@ -4,6 +4,89 @@ import {Common} from '@/utils/'
 import BigNumber from "bignumber.js";
 
 export default class Enhancer {
+	static async getMecBoxOrder(){
+		let myAddr = await ETH.getAccount();
+		if (!myAddr) return;
+		let contract = new ETH.web3.eth.Contract([
+			{
+				"name": "getOrder",
+				"type": "function",
+				"inputs": [
+					{"name": "addr_","type": "address"},
+				],
+				"outputs": [
+					{"name": "boxAmount","type": "uint256"},
+					{"name": "blockHash","type": "bytes32"},
+				]
+			}
+		],WalletConfig.ETH.mecBoxMinter);
+		return new Promise(resolve => {
+			contract.methods.getOrder(myAddr).call().then(data => {
+				resolve(data);
+			})
+		});
+	}
+	//打开水晶箱子
+	static async mecBoxmint(amount_,recipt){
+		console.log(amount_);
+		let myAddr = await ETH.getAccount();
+		if (!myAddr) return;
+		let contract = new ETH.web3.eth.Contract([
+			{
+				"name": "mint",
+				"type": "function",
+				"inputs": [
+					{"name": "mint","type": "uint256"},
+				],
+			}
+		],WalletConfig.ETH.mecBoxMinter);
+		return new Promise(resolve => {
+			ETH.sendMethod(
+				contract.methods.mint(amount_), {from: myAddr},
+				hash=>resolve(hash),
+				async (data)=>{
+					console.log("mecBoxmint success", data);
+					Common.app.unLockBtn("openMecBoxLock");
+
+					let topic = "0x3b47c811ba1d2521c9cd69be0de54739ab4b43cdbe22214bf6dcd2c46a7eeba5";
+					let eventAbi = [
+							{ "indexed": true, "internalType": "address", "name": "user", "type": "address" },
+							{ "indexed": false, "internalType": "uint256[]", "name": "crystalAmounts", "type": "uint256[]" },
+					]
+
+					Common.app.$refs.boxBag.showOpenBox('mec',ETH.parseEvent(data, topic, eventAbi).crystalAmounts);
+					Common.app.getCrystalNum();
+					recipt();
+				}
+			)
+		});
+	}
+	//解锁水晶箱子
+	static async addMysteryBox(amount_, recipt){
+		let myAddr = await ETH.getAccount();
+		if (!myAddr) return;
+		let contract = new ETH.web3.eth.Contract([
+			{
+				"name": "addMysteryBox",
+				"type": "function",
+				"inputs": [
+					{"name": "amount_","type": "uint256"},
+				],
+			}
+		],WalletConfig.ETH.mecBoxMinter);
+		return new Promise(resolve => {
+			ETH.sendMethod(
+				contract.methods.addMysteryBox(amount_), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					console.log("addMysteryBox success");
+					Common.app.unLockBtn("unlockMecBoxLock");
+					await Common.app.getNewBoxNum();
+					recipt();
+				}
+			)
+		});
+	}
 	//查询我的申购信息
 	static async getMyApplyInfo(){
 		let myAddr = await ETH.getAccount();
@@ -178,9 +261,9 @@ export default class Enhancer {
 				hash=>resolve(hash),
 				async ()=>{
 					console.log("enhance success");
-					Common.app.unLockBtn("enhanceLock");
 					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 					await Common.app.eth_setMyHashrate();
+					Common.app.unLockBtn("enhanceLock");
 					recipt();
 				}
 			)

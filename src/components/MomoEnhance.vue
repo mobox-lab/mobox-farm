@@ -1,15 +1,19 @@
 <template>
 	<!-- 进化相关功能 -->
 	<div class="mgt-20" v-if="getNowPetItem.vType == 4 || getNowPetItem.vType == 5">
-		<h3>进化</h3> 
-		<div class="ly-input-content mgt-10" style="padding-bottom:20px">
+		<h3>
+			进化
+			<img class="mgl-5 cur-point" @click="oprDialog('upgrade-des-dialog','block')" src="@/assets/icon/help.png" alt="" height="20"/>
+		</h3> 
+		<div v-if="isMaxEnhance" class="mgt-10 ly-input-content tac">已达到最大进化值</div>
+		<div v-else class="ly-input-content mgt-10" style="padding-bottom:20px">
 			<p class="small opa-6">初始算力(LV.1)</p>
 			<div class="mgt-10" style="font-size:18px">
 				<img src="@/assets/icon/airdrop.png" height="25" alt="" />&nbsp;
 				<span>{{ getNowPetItem.hashrate }}</span>
 				<img src="@/assets/icon/upgradejt.png" alt="" class="mgl-10" />
 				<img src="@/assets/icon/airdrop.png" alt="" class="mgl-10" height="25" />&nbsp;
-				<span style="color: #85f34a">{{ getNowPetItem.hashrate+1 }}-{{ getNowPetItem.hashrate+5 }}</span>
+				<span style="color: #85f34a">{{ getCanEnhaceObj.min }}-{{ getCanEnhaceObj.max }}</span>
 			</div>
 			<div class="ovh bold aveage-box tac mgt-10"  style="background:rgba(0,0,0,0.3);border-radius: 15px;padding:10px;font-size:14px; display:flex">
 				<div class="vertical-children" v-for="item in 5" :key="item">
@@ -30,7 +34,7 @@
 					<span>{{ getNowPetItem.lvHashrate }}</span>
 					<img src="@/assets/icon/upgradejt.png" alt="" class="mgl-10" />
 					<img src="@/assets/icon/airdrop.png" alt="" class="mgl-10" height="25" />&nbsp;
-					<span style="color: #85f34a">{{ getTargetLevelHashPower(getNowPetItem.hashrate+1) }}-{{ getTargetLevelHashPower(getNowPetItem.hashrate+5) }}</span>
+					<span style="color: #85f34a">{{ getTargetLevelHashPower(getCanEnhaceObj.min) }}-{{ getTargetLevelHashPower(getCanEnhaceObj.max) }}</span>
 				</div>
 			</template>
 			<p class="small opa-6 mgt-20">本次进化需要先注入</p>
@@ -50,8 +54,8 @@
 					
 				</div>
 				<div class="dib">
-					<StatuButton class="btn-line btn-small" :onClick="addCrystal" :isDisable="Number(enhanceHash) >= 2">
-						<span v-if="Number(enhanceHash) == 2">已注入</span>
+					<StatuButton class="btn-line btn-small" :onClick="addCrystal" :isLoading="lockBtn.addCrystalLock > 0" :isDisable="Number(enhanceHash) >= 2">
+						<span v-if="Number(enhanceHash) >= 2">已注入</span>
 						<span v-else>注入</span>
 					</StatuButton>
 
@@ -100,6 +104,24 @@ export default {
 			crystalNum: (state) => state.userState.data.crystalNum,
 			nowTs: (state) => state.globalState.data.nowTs,
 		}),
+		getCanEnhaceObj(){
+			let obj = {min: 0, max: 0};
+			let {vType, hashrate} = this.getNowPetItem;
+			obj.min = hashrate+1;
+			obj.max = hashrate+5;
+			if(vType == 4){
+				if(obj.max > 80) obj.max = 80;
+			}
+			if(vType == 5){
+				if(obj.max > 150) obj.max = 150;
+			}
+			return obj;
+		},
+		//已经达到最大进化值
+		isMaxEnhance(){
+			let {vType, hashrate} = this.getNowPetItem;
+			return (vType == 4 && hashrate == 80) || (vType == 5 && hashrate == 150);
+		},
 		getNowPetItem(){
 			return this.data;
 		},
@@ -126,9 +148,9 @@ export default {
 		await Wallet.ETH.getAccount();
 		await this.viewMboxAllowance();
 		await this.viewMECApproved();
+		await this.getEnhanceHash();
 	},
 	methods: {
-		
 		getGrowup(vType, hashrate) {
 			let obj = {
 				staticPower: 0,
@@ -161,6 +183,7 @@ export default {
 		},
 		async getEnhanceHash(){
 			let res = await Wallet.ETH.Group.Enhancer.getEnhanceHash(this.getNowPetItem.tokenId);
+			console.log("getEnhanceHash", res);
 			if(res){
 				this.enhanceHash = res;
 				this.needGetHash = Number(res) == 2;
@@ -201,7 +224,7 @@ export default {
 				mbox_: this.getNowEnhanceCfg.mbox
 			}
 			let hash = await Wallet.ETH.Group.Enhancer.addCrystal(obj, ()=>{
-
+				this.getEnhanceHash();
 			});
 			if(hash){
 				this.lockBtnMethod("addCrystalLock")

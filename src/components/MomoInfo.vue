@@ -38,7 +38,7 @@
 			</div>
 		</div>
 
-		<MomoEnhance :data="this.data"  v-if="!this.isMarket"  />
+		<MomoEnhance :data="this.data"  v-if="!this.isMarket && getNowPetItem.location=='stake'"  />
 
 		<!-- 质押状态 -->
 		<div v-if="!isMarket"  class="mgt-20">
@@ -116,9 +116,9 @@
 					</div>
 					<div class="tac">
 						<p class="vertical-children tac mgt-10 small dib" style="background:rgba(0,0,0,0.3);border-radius:15px;padding:5px 10px">
-							<span class="c-lv1" v-if="item.newHashrate - item.oldHashrate <= 3">普通进化</span>
-							<span class="c-lv4" v-if="item.newHashrate - item.oldHashrate == 4">高级进化</span>
-							<span class="c-lv5" v-if="item.newHashrate - item.oldHashrate == 5">超级进化</span>
+							<span class="c-lv1" v-if="item.newHashrate - item.oldHashrate == 1">普通进化 +1</span>
+							<span class="c-lv5" v-else-if="item.newHashrate - item.oldHashrate == 5">超级进化 +5</span>
+							<span :class="`c-lv${item.newHashrate - item.oldHashrate}`" v-else>高级进化 +{{item.newHashrate - item.oldHashrate}}</span>
 						</p>
 					</div>
 					<div class="vertical-children mgt-10 tac" style="font-size: 18px" >

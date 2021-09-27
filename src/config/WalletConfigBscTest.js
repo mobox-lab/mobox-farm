@@ -37,6 +37,7 @@ export default class WalletConfig {
 		momoEnhancer: "0x88b459d3Aa740e22Ef37bc9ad9b672EF6A8AAd21", // momo进化
 		crystalToken: "0x6E378A6a2BA2bc25f6f09aCf0791ba5905D8f1Fb", // momo进化水晶token
 		mecBoxApply: "0x59b514FF2f8ccee595840CE1F1d4f3bE1C0a4D54", //水晶宝箱申购
+		mecBoxMinter: "0xe9b962FbEd34630c3Def91B34B982eB769135F5F", //水晶宝箱打开
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

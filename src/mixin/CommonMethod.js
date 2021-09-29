@@ -29,6 +29,9 @@ const CommonMethod = {
 			}
 			axios.post("https://accountapi.mobox.io/app/action", sendData);
 		},
+		getRootRefs(){
+			return this.$root.$children[0].$refs
+		},
 		getConfirmDialog(){
 			return this.$root.$children[0].$refs.confirmDialog;
 		},

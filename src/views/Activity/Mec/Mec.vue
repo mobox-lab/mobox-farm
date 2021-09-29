@@ -4,24 +4,24 @@
 			<section class="col-md-7" style="padding:10px;">
 				<div class="adv-panel por">
 					<div class="vertical-children">
-						<h2 class="dib">MEC箱子申购</h2>
-						<img class="mgl-10 cur-point" @click="oprDialog('box-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="30">
+						<h2 class="dib">{{$t("MECBOX_01")}}</h2>
+						<img class="mgl-10 cur-point" @click="getRootRefs().ruleDialog.show('MECBOX_02', 'MECBOX_03')" src="@/assets/icon/help.png" alt="" height="30">
 					</div>
 					<div class="tac mgt-10">
 						<template >
-							<p v-if="getCountDown >0">{{$t("NewBOX_20")}}: {{getLeftTime(getCountDown)}}</p>
-							<p v-else>{{$t("NewBOX_21")}}<span class="dotting"></span></p>
+							<!-- <p v-if="getCountDown >0">{{$t("MECBOX_20")}}: {{getLeftTime(getCountDown)}}</p> -->
+							<p v-if="getCountDown >0">{{Number(applyInfo.startTime) > nowTs?$t("MECBOX_38") :$t("MECBOX_20")}}: {{getLeftTime(getCountDown)}}</p>
+
+							<p v-else>{{$t("MECBOX_21")}}<span class="dotting"></span></p>
 						</template>
 
 						<div class="aveage-box mgt-10" id="show-num">
-							<div class="tar">{{$t("Gemstone_61")}}: {{getHashApplyCount[0]}}</div>
-							<div class="tal mgl-10">{{$t("Gemstone_62")}}: {{Number(applyCfg[0].max)}}</div>
+							<div class="tac mgl-10">{{$t("MECBOX_37")}}: {{getVeMboxApplyCount[0]}}/{{Number(applyCfg[1].max)}}</div>
 						</div>
 						<div class="aveage-box mgt-5" id="show-num">
-							<div class="tar">{{$t("Gemstone_63")}}: {{getVeMboxApplyCount[0]}}</div>
-							<div class="tal mgl-10">{{$t("Gemstone_64")}}: {{Number(applyCfg[1].max)}}</div>
+							<div class="tac mgl-10">{{$t("MECBOX_35")}}: {{getHashApplyCount[0]}}/{{Number(applyCfg[0].max)}}</div>
 						</div>
-
+						
 						<div style="height:230px" id="gem-apply-type">
 							<p style="padding-top:10px">
 								<img src="@/assets/box/mecbox.png" height="180" alt="">
@@ -64,7 +64,13 @@
 								</h3>
 							</div>
 							<div>
-								<p class="small opa-6">{{$t("Gemstone_56")}}</p>
+								<p class="small vertical-children">
+									<span class="opa-6">{{$t("MECBOX_32")}}</span> 
+									<span class="cur-point por dib" v-popMsg  v-if="getVeMobxApplyNum > 0">
+										<img class="mgl-10" src="@/assets/icon/hasapply.png" alt="" height="30">
+										<span class="popMsg left tac" style="min-width:80px;text-align:center" v-html="$t('Gemstone_67')"></span>
+									</span>
+								</p>
 								<h3>{{getMaxVeMboxApplyTimes}}</h3>
 							</div>
 						</div>
@@ -76,24 +82,30 @@
 								</h3>
 							</div>
 							<div>
-								<p class="small opa-6">{{$t("Gemstone_56")}}</p>
+								<p class="small vertical-children">
+									<span class="opa-6">{{$t("MECBOX_32")}}</span> 
+									<span class="cur-point por dib" v-popMsg  v-if="getHashRateApplyNum > 0">
+										<img class="mgl-10" src="@/assets/icon/hasapply.png" alt="" height="30">
+										<span class="popMsg left tac" style="min-width:80px;text-align:center" v-html="$t('Gemstone_67')"></span>
+									</span>
+								</p>
 								<h3>{{getMaxPowerApplyTimes}}</h3>
 							</div>
 						</div>
 						<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:15px">
-							<div >
-								<p class="small opa-6">算力中签率</p>
-								<h3  class="por">
-									<span class="apply-rate" v-if="Number(applyCfg[0].now) <= Number(applyCfg[0].max)">100%</span>
-									<span class="apply-rate" v-else>{{numFloor(Number(applyCfg[0].max) / Number(applyCfg[0].now) * 100, 1e2)  }}%</span>
-								</h3>
-							</div>
 							<div>
-								<p class="small opa-6">veMBOX中签率</p>
+								<p class="small opa-6">{{$t("MECBOX_26")}}</p>
 								<h3>
 									<span class="apply-rate" v-if="Number(applyCfg[1].now) <= Number(applyCfg[1].max)">100%</span>
 									<span class="apply-rate" v-else>{{numFloor(Number(applyCfg[1].max) / Number(applyCfg[1].now) * 100, 1e2)  }}%</span>
 								</h3>
+							</div>
+							<div >
+							<p class="small opa-6">{{$t("MECBOX_25")}}</p>
+							<h3  class="por">
+								<span class="apply-rate" v-if="Number(applyCfg[0].now) <= Number(applyCfg[0].max)">100%</span>
+								<span class="apply-rate" v-else>{{numFloor(Number(applyCfg[0].max) / Number(applyCfg[0].now) * 100, 1e2)  }}%</span>
+							</h3>
 							</div>
 						</div>
 					
@@ -101,18 +113,18 @@
 				
 					<div class="mgt-10 aveage-box">
 						<div class="dib por tac">
-							<button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('mecBox-apply-dialog', 'block')">{{$t("NewBOX_14")}}</button>
-							<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('box-rule-dialog','block')">{{$t("NewBOX_02")}}>></p>
+							<button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('mecBox-apply-dialog', 'block')">{{$t("MECBOX_14")}}</button>
+							<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="getRootRefs().ruleDialog.show('MECBOX_02', 'MECBOX_03')">{{$t("MECBOX_02")}}>></p>
 						</div>
 						<div class="tac">
-							<StatuButton v-if="this.myApplyInfo.boxAmount > 0" style="width:80%" :isDisable="this.myApplyInfo.boxAmount<=0" :isLoading="lockBtn.takeBoxLock > 0" :onClick="takeBox">
-								{{$t("NewBOX_15").replace("#0#", this.myApplyInfo.boxAmount)}}
+							<StatuButton v-if="this.myApplyInfo.boxAmount >= 0" style="width:80%" :isDisable="this.myApplyInfo.boxAmount<=0" :isLoading="lockBtn.takeBoxLock > 0" :onClick="takeBox">
+								{{$t("MECBOX_15").replace("#0#", this.myApplyInfo.boxAmount)}}
 							</StatuButton>
-							<router-link to="/market?tab=4" v-else>
+							<!-- <router-link to="/market?tab=4" v-else>
 								<button class="btn-line" style="width:90%;" @click="setAction(22002);">
 									{{$t("BOX_37")}}
 								</button>
-							</router-link>
+							</router-link> -->
 						</div>
 					</div>
 				</div>
@@ -156,25 +168,22 @@
 		</div>
 		
 		<MecApply :applyInfo="applyInfo" :myApplyInfo="myApplyInfo" />
-		<Dialog id="box-rule-dialog" :top="100" :width="520">
-			<h2>{{$t("NewBOX_02")}}</h2>
-			<p v-html="$t('NewBOX_03')" class="tal mgt-20"></p>
-		</Dialog>
+
 		<Dialog id="mecBox-num-result-dialig" :top="100" :width="450">
-			<h3>{{$t("NewBOX_16")}}</h3>
+			<h3>{{$t("MECBOX_16")}}</h3>
 			<div class="tab-body mgt-10">
 				<p class="mgt-10  tal" style="height:40px;line-height:38px;padding-left:15px;color:#fff;font-size:12px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">
-					{{$t("NewBOX_17")}}: {{historyDitail.item.ticketStartNo}}
+					{{$t("MECBOX_17")}}: {{historyDitail.item.ticketStartNo}}
 					<span v-if="historyDitail.item.amountBox > 1">~{{Number(historyDitail.item.ticketStartNo) + Number(historyDitail.item.amountBox-1)}}</span>
 				</p>
 				<p class="mgt-10  tal vertical-children" style="height:40px;line-height:38px;padding-left:15px;color:#fff;font-size:12px;background: rgba(161,250,64,0.10);border: 2px solid #A1FA40;border-radius:10px">
-					<span>{{$t("NewBOX_18")}}: </span>
+					<span>{{$t("MECBOX_18")}}: </span>
 					<span v-if="historyDitail.isOver == true">{{Object.keys(historyDitail.wins).length }}</span>
 					<span v-else-if="historyDitail.isOver == '-' "><Loading /></span>
-					<span v-else>{{$t("NewBOX_28")}}</span>
+					<span v-else>{{$t("MECBOX_28")}}</span>
 				</p>
 				<div style="padding:10px" class="tal vertical-children">
-					<p class="small">{{$t("NewBOX_19")}}</p>
+					<p class="small">{{$t("MECBOX_19")}}</p>
 					<div class="tac mgt-10" style="background:#000;padding:10px 0px;border-radius:10px;max-height:300px; overflow-y:auto">
 						<p v-if="historyDitail.isOver == true">
 							<span v-if="Object.keys(historyDitail.wins).length == 0">{{$t("NewBOX_35")}}</span>
@@ -183,7 +192,7 @@
 							</span>
 						</p>
 						<span v-else-if="historyDitail.isOver == '-' "><Loading /></span>
-						<span v-else>{{$t("NewBOX_28")}}</span>
+						<span v-else>{{$t("MECBOX_28")}}</span>
 					</div>
 				</div>
 
@@ -213,7 +222,7 @@ export default {
 				nowAmount: "-",
 				roundIndex: "",
 				roundPrice: "-",
-				roundStartTime: "-",
+				startTime: "-",
 				roundState: "-",
 				nowNormalAmount: "-",
 				maxNormalLuckyAmount: "-",
@@ -248,6 +257,7 @@ export default {
 			coinArr: (state) => state.bnbState.data.coinArr,
 			canUseVeMbox: (state) => state.bnbState.data.canUseVeMbox,
 			lockBtn: (state) => state.globalState.data.lockBtn,
+			nowTs: (state) => state.globalState.data.nowTs,
 			eth_myHashrate: (state) => state.ethState.data.myHashrate,
 		}),
 		getHashApplyCount(){
@@ -270,6 +280,20 @@ export default {
 			if(retArr[0] == 0) retArr[1] = numCfg[0];
 			return retArr;
 		},
+		getVeMobxApplyNum(){
+			let num = 0;
+			let ticketObj = this.myApplyInfo.veMoboxTicket;
+			num = ticketObj[1] - ticketObj[0] + 1;
+			if(ticketObj[0] == 0) num = 0;
+			return num; 
+		},
+		getHashRateApplyNum(){
+			let num = 0;
+			let ticketObj = this.myApplyInfo.hashRateTicket;
+			num = ticketObj[1] - ticketObj[0] + 1;
+			if(ticketObj[0] == 0) num = 0;
+			return num; 
+		},
 		getMaxVeMboxApplyTimes(){
 			let maxAmount = 0
 			let myTotalVeMbox = this.canUseVeMbox;
@@ -288,7 +312,6 @@ export default {
 			} else {
 				maxAmount = 150;
 			}
-			maxAmount = 30;
 			return maxAmount;
 		},
 		getMaxPowerApplyTimes(){
@@ -402,7 +425,13 @@ export default {
 
 				this.applyInfo = result;
 				let dtTime = Number(result.startTime) + Number(result.roundDuration) - parseInt(new Date().valueOf() / 1000);
-				this.getCountDown = dtTime > 0? dtTime : 0;
+
+				if(Number(result.startTime) > this.nowTs){
+					this.getCountDown = Number(result.startTime) - this.nowTs
+				}else{
+					this.getCountDown = dtTime > 0? dtTime : 0;
+				}
+
 			}
 		},
 		//领取Box

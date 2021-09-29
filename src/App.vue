@@ -101,8 +101,7 @@
 			</ul>
 			<div class="tac mgt-30">
 				<span @click="jumpToTokenMaster">
-					<img v-if="$i18n.locale == 'zh-CN' " src="@/assets/icon/tmaster_zh.png" alt="" width="35%" class="cur-point">
-					<img v-else src="@/assets/icon/tmaster_en.png" alt="" width="35%" class="cur-point">
+					<img src="@/assets/icon/tmaster_en.png" alt="" width="35%" class="cur-point">
 				</span>
 			</div>
 			<div id="our-parice-pc">
@@ -235,12 +234,9 @@
 		<div  id="nav-mobile-more" v-if="showMoreMenu">
 			<div v-if="!isMoboxWallet">
 				<span @click="jumpToTokenMaster">
-					<img v-if="$i18n.locale == 'zh-CN' " src="@/assets/icon/tmaster_zh.png" alt="" width="70%" class="cur-point">
-					<img v-else src="@/assets/icon/tmaster_en.png" alt="" width="70%" class="cur-point">
+					<img  src="@/assets/icon/tmaster_en.png" alt="" width="70%" class="cur-point">
 				</span>
 			</div>
-			
-			
 			
 		</div>
 		<keep-alive>
@@ -308,12 +304,6 @@
 				</p>
 			</div>
 		</Dialog>
-		<Dialog id="upgrade-des-dialog" :width="450" :top="100">
-			<h3 class="mgt-10">{{$t("MOMO_35")}}</h3>
-			<div class="dialog-content mgt-10 tal">
-				<span v-html="$t('MOMO_36')" class="small tal" style="font-weight:200"></span>
-			</div>
-		</Dialog>
 		
 		<Dialog id="momo-des-dialog" :top="100" :width="390">
 			<div class="tab-body tal" style="max-height:500px;overflow-x:auto">
@@ -335,6 +325,7 @@
 		<GemBag ref="gemBag" />
 		<BoxBag ref="boxBag" />
 		<ConfirmDialog ref=confirmDialog />
+		<RuleDialog ref=ruleDialog />
 		<WalletOprStatus />
 		<WalletConnectDialog />
 
@@ -343,6 +334,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_47")}}</h3>
+						<span v-html="$t('Notice_46')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_45")}}</h3>
 						<span v-html="$t('Notice_44')" ></span>
 					</div>
@@ -444,7 +439,7 @@ import GemBag from "./views/Activity/Gem/GemBag";
 import BoxBag from "./views/Activity/BoxBag.vue";
 import VMbox from "./views/VMBOX/VMbox";
 
-import {Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
+import {Notification, NotificationTrans, Dialog, ConfirmDialog,RuleDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
 import { InitEth, InitTron, CommonMethod } from "@/mixin";
 import { mapState } from "vuex";
 import { Common, Http, Wallet } from "@/utils";
@@ -454,7 +449,7 @@ let timer = null;
 export default {
 	name: "App",
 	mixins: [InitEth, InitTron, CommonMethod],
-	components: {BoxBag,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
+	components: {RuleDialog, BoxBag,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
 	data() {
 		return {
 			langArr: ["English", "中文"],
@@ -535,7 +530,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "2.9"
+			noticeVersion: "3.0"
 		};
 	},
 	watch: {

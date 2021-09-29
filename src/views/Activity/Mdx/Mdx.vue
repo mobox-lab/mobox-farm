@@ -65,7 +65,13 @@
 								</h3>
 							</div>
 							<div>
-								<p class="small opa-6">{{$t("Gemstone_56")}}</p>
+								<p class="small vertical-children">
+									<span class="opa-6">{{$t("Gemstone_56")}}</span> 
+									<span class="cur-point por dib" v-popMsg  v-if="getHighApplyNum > 0">
+										<img class="mgl-10" src="@/assets/icon/hasapply.png" alt="" height="30">
+										<span class="popMsg left tac" style="min-width:80px;text-align:center" v-html="$t('Gemstone_67')"></span>
+									</span>
+								</p>
 								<h3>{{getMaxApplyTimes}}</h3>
 							</div>
 						</div>
@@ -272,7 +278,14 @@ export default {
 				num += Number(item.num)
 			});
 			return num;
-		}
+		},
+		getHighApplyNum(){
+			let num = 0;
+			let ticketObj = this.myApplyInfo.userHighTicket;
+			num = ticketObj[1] - ticketObj[0] + 1;
+			if(ticketObj[0] == 0) num = 0;
+			return num; 
+		},
 	},
 	async created(){
 		this.getApplyInfo();

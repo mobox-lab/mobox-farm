@@ -4,7 +4,13 @@
 	<div class="por clear mgt-20" style="border:1px solid #5d636f80;border-radius: 30px">
 		<section class="col-md-7" style="padding:10px">
 			<div class="adv-panel" :class="{veapply: tabPos == 1}">
-				<Tab  :list="tabList" :defaultSelectPos="tabPos" :onChange="onTabChange" style="background:#000" />
+				<!-- <Tab  :list="tabList" :defaultSelectPos="tabPos" :onChange="onTabChange" style="background:#000" /> -->
+
+				<div class="tal  dib" style="background:#000;border-radius:30px">
+					<div @click="tabPos =  1 "  :class="tabPos == 1?'active':''"  class="tab-new-menu"  >{{$t("Gemstone_52")}}</div>
+					<div @click="tabPos =  0 "  :class="tabPos == 0?'active':''" class="tab-new-menu " >{{$t("Gemstone_51")}}</div>
+				</div>
+
 				<h1 class="vertical-children mgt-20">
 					<span>{{$t("Gemstone_02")}}</span>
 					<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="25">
@@ -18,9 +24,8 @@
 						<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
 					</template>
 
-					<div class="aveage-box mgt-20" id="show-num">
-						<div class="tar">{{tabPos == 0?$t("Gemstone_61"):$t("Gemstone_63")}}: {{getNowApplyCount[0]}}</div>
-						<div class="tal mgl-10">{{tabPos == 0?$t("Gemstone_62"):$t("Gemstone_64")}}: {{getNowApplyCount[1]}}</div>
+					<div class="aveage-box mgt-10 " id="show-num">
+						<div class="mgl-10 tac">{{tabPos == 0?$t("Gemstone_62"):$t("Gemstone_64")}}: {{getNowApplyCount[0]}}/{{getNowApplyCount[1]}}</div>
 					</div>
 					<div class="aveage-box" style="margin-bottom:20px">
 						<div v-for="item in gemArr" :key="item.id" class="gem-apply-item ">
@@ -28,7 +33,7 @@
 								<img :src="require(`@/assets/market/${item.id}.png`)" alt="" width="100%">
 								<div class="has-apply" :class="{active: myApplyGemType[tabPos] == item.id}">
 									<div>
-										<img src="@/assets/icon/hasapply.png" alt="" height="20">
+										<img src="@/assets/icon/hasapply.png" alt="" height="30">
 										<p>{{$t("Gemstone_67")}}</p>
 									</div>
 								</div>
@@ -60,7 +65,13 @@
 								</h3>
 							</div>
 							<div>
-								<p class="small opa-6">{{$t("Gemstone_56")}}</p>
+								<p class="small vertical-children">
+									<span class="opa-6">{{$t("Gemstone_56")}}</span> 
+									<span class="cur-point por dib" v-popMsg  v-if="myApplyGemType[1]!= '' ">
+										<img class="mgl-10" src="@/assets/icon/hasapply.png" alt="" height="30">
+										<span class="popMsg left tac" style="min-width:80px;text-align:center" v-html="$t('Gemstone_67')"></span>
+									</span>
+								</p>
 								<h3>{{getMaxVeMboxApplyTimes}}</h3>
 							</div>
 						</div>
@@ -72,7 +83,13 @@
 								</h3>
 							</div>
 							<div>
-								<p class="small opa-6">{{$t("Gemstone_56")}}</p>
+								<p class="small vertical-children">
+									<span class="opa-6">{{$t("Gemstone_56")}}</span> 
+									<span class="cur-point por dib" v-popMsg  v-if="myApplyGemType[0]!= '' ">
+										<img class="mgl-10" src="@/assets/icon/hasapply.png" alt="" height="30">
+										<span class="popMsg left tac" style="min-width:80px;text-align:center" v-html="$t('Gemstone_67')"></span>
+									</span>
+								</p>
 								<h3>{{getMaxPowerApplyTimes}}</h3>
 							</div>
 						</div>
@@ -189,14 +206,14 @@
 import { CommonMethod } from '@/mixin';
 import GemApply from './GemApply2.vue'
 import { Wallet, Http } from '@/utils';
-import { Dialog, StatuButton, Loading, Tab } from '@/components';
+import { Dialog, StatuButton, Loading } from '@/components';
 import { mapState } from 'vuex';
 import {PancakeConfig} from "@/config"
 
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {GemApply, Dialog, StatuButton, Loading, Tab},
+	components: {GemApply, Dialog, StatuButton, Loading},
 	data(){
 		return({
 			applyInfo2: {
@@ -241,7 +258,7 @@ export default {
 			historyDitail: {isOver: "-", wins: {}, item:{}, ticketStartNo:0, amountGem: 0, gemId: "101"},
 			account: "",
 			tabList: [this.$t("Gemstone_51"),this.$t("Gemstone_52")],
-			tabPos: 0,
+			tabPos: 1,
 			applyCfg: {
 				0: {max: 0, now: {"red":0,"green":0,"blue":0,"gold":0},
 					"numCfg":{0:200,1000:400,3000:600,6000:800,12000:1000}
@@ -424,6 +441,8 @@ export default {
 			let result = await Http.getGemApply(this.account);
 			if(result){
 				this.getHistory = result.list;
+				this.myApplyGemType[0] = "";
+				this.myApplyGemType[1] = "";
 				result.list.map(item=>{
 					if(item.roundIndex == this.applyInfo.round){
 						this.myApplyGemType[item.applyType - 1] = item.gemId;
@@ -485,6 +504,19 @@ export default {
 </script>
 
 <style scoped>
+.tab-new-menu{
+	background: #000;
+	border-radius: 30px;
+	height: 40px;
+	line-height: 40px;
+	display: inline-block;
+	padding: 0px 20px;
+	cursor: pointer;
+}
+.tab-new-menu.active{
+	background: #42464c;
+	border: 1px solid #1b4ff5;
+}
 /* .adv-panel{
 	background: #161401;
 } */

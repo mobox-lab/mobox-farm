@@ -78,11 +78,11 @@ svg {
 
 #dark {
 	background: #070D14;
-	color: rgba(255, 255, 255, 0.8);
+	color: rgba(255, 255, 255, 0.9);
 }
 
 #dark a {
-	color: rgba(255, 255, 255, 0.8);
+	color: rgba(255, 255, 255, 0.9);
 }
 
 .bg-lv1 {
@@ -987,7 +987,7 @@ svg {
 .popMsg.left{
 	transform: translate(-100%, -20%);
 	top: 0px;
-	left: -10px;
+	left: -5px;
 }
 .popMsg.left-top{
 	transform: translate(-100%, -50%);
@@ -995,9 +995,9 @@ svg {
 	left: -10px;
 }
 .popMsg.left::after{
-	top: 20%;
+	top: 21%;
 	left: auto;
-	right: 3px;
+	right: 2px;
 	transform: rotate(45deg) translate(50%, -50%);
 }
 .popMsg{
@@ -1014,6 +1014,7 @@ svg {
 	left: 7px;
 	display: none;
 	user-select: none;
+	border:1px solid #2D4DA6;
 }
 .popMsg::after{
 	content: "";
@@ -1025,6 +1026,8 @@ svg {
 	top: 0px;
 	left: 50%;
 	transform: rotate(45deg) translate(-50%);
+	border-right:1px solid #2D4DA6;
+	border-top:1px solid #2D4DA6;
 }
 .double-img img:nth-child(1){
 	position: absolute;

@@ -71,8 +71,8 @@
 					<div class="vertical-children">
 						<img :src="require(`@/assets/${getNowTypeObj.boxRes}.png`)" alt="" height="60">
 						<div class="dib tal mgl-10">
-							<h2>{{$t("Air-drop_266")}}: x{{showReult.length}}</h2>
-							<p class="small">{{$t("Air-drop_267")}}: {{getTotalReward}} <img :src="require(`@/assets/${getNowTypeObj.iconName}.png`)" class="coin-icon" alt="" height="20"  /></p>
+							<h2>{{$t("MECBOX_41")}}: x{{showReult.length}}</h2>
+							<p class="small">{{$t("MECBOX_42")}}: {{getTotalReward}} <img :src="require(`@/assets/${getNowTypeObj.iconName}.png`)" class="coin-icon" alt="" height="20"  /></p>
 						</div>
 					</div>
 					<div class="ly-input-content ovh mgt-10" style="height:350px;overflow:auto;background:#000">

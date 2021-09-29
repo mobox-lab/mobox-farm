@@ -35,7 +35,7 @@ export default {
 			tabKey: 'jinPai',
 			tabArr: [
 				{icon: require("@/assets/icon/box_icon.png"), text: "NewBOX_01", key: "box"},
-				{icon: require("@/assets/box/mecbox.png"), text: "NewBOX_01", key: "mec"},
+				{icon: require("@/assets/box/mecbox.png"), text: "MECBOX_01", key: "mec"},
 				{icon: require("@/assets/icon/yellow_icon.png"), text: "Gemstone_01", key: "shenGou"},
 				{icon: require("@/assets/icon/mdx_icon.png"), text: "Air-drop_235", key: "mdx"},
 				{icon: require("@/assets/icon/momobidicon.png"), text: "Auction_03", key: "jinPai"},

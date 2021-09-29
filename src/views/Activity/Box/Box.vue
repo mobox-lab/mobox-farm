@@ -52,24 +52,38 @@
 								</h3>
 							</div>
 							<div>
-								<p class="small opa-6">{{$t("NewBOX_34")}}</p>
+								<p class="small vertical-children">
+									<span class="opa-6">{{$t("NewBOX_34")}}</span> 
+									<span class="cur-point por dib" v-popMsg  v-if="getHighApplyNum > 0">
+										<img class="mgl-10" src="@/assets/icon/hasapply.png" alt="" height="30">
+										<span class="popMsg left tac" style="min-width:80px;text-align:center" v-html="$t('Gemstone_67')"></span>
+									</span>
+								</p>
 								<h3>{{getMaxApplyTimes}}</h3>
 							</div>
 						</div>
 						<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:15px">
-							<div >
+							<div class="por">
 								<p class="small opa-6">{{$t("NewBOX_30")}}</p>
 								<h3>{{applyInfo.nowNormalAmount}}</h3>
+								<div style="position:absolute;right:10px;top:0px">
+								</div>
 							</div>
 							<div>
-								<p class="small opa-6">{{$t("NewBOX_23")}}</p>
+								<p class="small vertical-children">
+									<span class="opa-6">{{$t("NewBOX_23")}}</span> 
+									<span class="cur-point por dib" v-popMsg  v-if="getNormalApplyNum > 0">
+										<img class="mgl-10" src="@/assets/icon/hasapply.png" alt="" height="30">
+										<span class="popMsg left tac" style="min-width:80px;text-align:center" v-html="$t('Gemstone_67')"></span>
+									</span>
+								</p>
 								<h3>{{ numFloor(applyInfo.maxNormalLuckyAmount / (Number(applyInfo.nowNormalAmount) >= Number(applyInfo.maxNormalLuckyAmount)?applyInfo.nowNormalAmount:applyInfo.maxNormalLuckyAmount) * 100, 1e3 ) || "-" }}%</h3>
 							</div>
 						</div>
 						<div class="aveage-box tal" style="padding:15px">
 							<div >
 								<p class="small opa-6">{{$t("NewBOX_31")}}</p>
-								<h3>{{applyInfo.nowAmount}}/{{applyInfo.maxAmount}}</h3>
+								<h3>{{applyInfo.nowAmount}}/{{applyInfo.maxLuckyAmount}}</h3>
 							</div>
 							<div>
 								<p class="small opa-6">{{$t("NewBOX_23")}}</p>
@@ -254,6 +268,20 @@ export default {
 				if(this.coinArr[coinKey].wantAmount > 0) hasStake = true;
 			})
 			return hasStake;
+		},
+		getNormalApplyNum(){
+			let num = 0;
+			let ticketObj = this.myApplyInfo.userNormalTicket;
+			num = ticketObj[1] - ticketObj[0] + 1;
+			if(ticketObj[0] == 0) num = 0;
+			return num; 
+		},
+		getHighApplyNum(){
+			let num = 0;
+			let ticketObj = this.myApplyInfo.userHighTicket;
+			num = ticketObj[1] - ticketObj[0] + 1;
+			if(ticketObj[0] == 0) num = 0;
+			return num; 
 		},
 	},
 	async created(){

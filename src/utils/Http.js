@@ -3,8 +3,8 @@ import {EventBus, Common} from "@/utils";
 import {EventConfig} from '@/config';
 export default class HTTP {
 	// static serverNode = "https://nfttestapi.mobox.io"; //测试
-	// static serverNode = "https://nftapi.mobox.io"; // 新合约的 （公测版）
-	static serverNode = "http://192.168.5.78:3000"; // 测试
+	static serverNode = "https://nftapi.mobox.io"; // 新合约的 （公测版）
+	// static serverNode = "http://192.168.5.78:3000"; // 测试
 
 	static async post(url, sendData) {
 		try {
@@ -223,6 +223,11 @@ export default class HTTP {
 	//获取总共开启box的数量
 	static async getTotalOpenBox() {
 		let { data } = await this.get("/box/amounts");
+		return data;
+	}
+	//获取总共开启mecbox的数量
+	static async getTotalOpenMecBox() {
+		let { data } = await this.get("/crystal/box/amounts");
 		return data;
 	}
 	//获取故事列表

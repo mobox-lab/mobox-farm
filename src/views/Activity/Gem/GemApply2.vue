@@ -2,8 +2,8 @@
 <template>
 	<Dialog id="gem-apply2-dialog" :top="100" :width="400">
 		<div class="tal mgt-10">
-			<div @click="$parent.tabPos =  0;inputNum = '' "  :class="dialog_tab_pos == 0?'active':''" class="tab-menu " >{{$t("Gemstone_51")}}</div>
 			<div @click="$parent.tabPos =  1; inputNum = ''"  :class="dialog_tab_pos == 1?'active':''"  class="tab-menu"  >{{$t("Gemstone_52")}}</div>
+			<div @click="$parent.tabPos =  0;inputNum = '' "  :class="dialog_tab_pos == 0?'active':''" class="tab-menu " >{{$t("Gemstone_51")}}</div>
 		</div>
 		<div class="ly-input-content por">
 			<div class="tac">

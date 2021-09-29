@@ -3,9 +3,9 @@
 		<div class="clear mgt-10">
 			<section class="col-md-7" style="padding:10px">
 				<div class="adv-panel por box-section" style="padding-bottom:45px">
-					<p class="opa-6 mgt-20">总共打开的箱子</p>
+					<p class="opa-6 mgt-20">{{$t("MECBOX_40")}}</p>
 					<h1 class="dib mgt-10" style="font-size: 20px">
-						{{ totalOpenBoxAmount.bnb }}
+						{{ totalOpen }}
 					</h1>
 					<div class="por box "  style="margin:20px auto; ">
 						<div class="box-show" >
@@ -55,12 +55,13 @@
 										{{$t("BOX_36")}}
 									</button>
 								</div>
+								
 								<div class="tar">
-									<router-link to="/market?tab=4">
+									<!-- <router-link to="/market?tab=4">
 										<button class="mgt-20 btn-line" style="width:90%;" @click="setAction(23002); ">
 											{{$t("BOX_37")}}
 										</button>
-									</router-link>
+									</router-link> -->
 								</div>
 							</div>
 							
@@ -83,7 +84,7 @@
 							<div class="aveage-box">
 								<div class="tal">
 									<StatuButton class="mgt-20" style="width: 90%" :isDisable="lockBtn.openBoxLock > 0" :isLoading="lockBtn.openBoxLock > 0" :onClick="showOpenBox.bind(this)">
-										{{$t("BOX_34")}}
+										{{$t("MECBOX_39")}}
 									</StatuButton>
 								</div>
 								<div></div>
@@ -154,7 +155,7 @@
 
 			<div  :class="approveToMinter == false ?'btn-group':''" class="mgt-20">
 				<StatuButton :onClick="approve.bind(this)"  data-step="1" style="width: 80%" v-if="approveToMinter == false" :isLoading="lockBtn.approveLock > 0" :isDisable="lockBtn.approveLock > 0">
-					{{ $t("Air-drop_16") }} BOX
+					{{ $t("Air-drop_16") }} MEC BOX
 				</StatuButton>
 				<StatuButton :onClick="addBox.bind(this, unlockBoxNum)" data-step="2" :isDisable="approveToMinter == false"  class="mgt-10 por" style="width: 80%; margin-bottom: 20px" >
 					{{ $t("BOX_41") }}
@@ -163,9 +164,9 @@
 			
 		</Dialog>
 		<Dialog id="open-mec-box-dialog" :top="200" :width="400">
-			<h2 class="mgt-10">{{$t("BOX_34")}}</h2>
+			<h2 class="mgt-10">{{$t("MECBOX_39")}}</h2>
 			<div class="ly-input-content mgt-20">
-				<p class="small tal opa-6">{{ $t("BOX_10") }}:</p>
+				<p class="small tal opa-6">{{ $t("BOX_42") }}:</p>
 				<div class="por mgt-5">
 					<div class="ly-input-pre-icon"> <img  src="@/assets/box/mecbox_a.png" alt="" /> </div>
 					<input class="ly-input dib" type="text"
@@ -179,7 +180,7 @@
 				</div>
 			</div>
 			<StatuButton :isDisable="!canSubmitOpen" :isLoading="lockBtn.openMecBoxLock > 0" :onClick="mecBoxmint.bind(this,openBoxNum, true)" class=" mgt-30" style="width: 70%;" >
-				打开箱子
+				{{$t("MECBOX_39")}}
 			</StatuButton>
 		</Dialog>
 	</div>
@@ -205,7 +206,7 @@ export default {
 				AddBox: "BOX_23",
 				MintBox: "BOX_25",
 			},
-			maxOpenOne: 100,
+			maxOpenOne: 50,
 			approveToMinter: "-",
 			getOpenBoxHistory: [],
 			rateObj: [
@@ -220,12 +221,12 @@ export default {
 				boxAmount:0,
 			},
 			needGetHash: false,
+			totalOpen: 0,
 		};
 	},
 	computed: {
 		...mapState({
 			ethState: (state) => state.ethState.data,
-			totalOpenBoxAmount: (state) => state.globalState.data.totalOpenBoxAmount,
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			mecBoxNum: (state) => state.userState.data.mecBoxNum,
 			hasLoadSpine: (state) => state.globalState.data.hasLoadSpine,
@@ -243,12 +244,13 @@ export default {
 		}
 	},
 	watch:{
-		nowTs: function(ts){
+		nowTs: async function(ts){
 			if(ts % 5 == 0 && this.needGetHash){
 				this.getMecBoxOrder();
 			}
 			if(ts % 10 == 0){
-				this.getMecBoxHistory();
+				await this.getMecBoxHistory();
+				await this.getTotalOpenMecBox();
 			}
 		}
 	},
@@ -257,6 +259,7 @@ export default {
 		await this.isApprove();
 		await this.getMecBoxOrder();
 		await this.getMecBoxHistory();
+		await this.getTotalOpenMecBox();
 	},
 	mounted() {
 
@@ -266,6 +269,13 @@ export default {
 	},
 	
 	methods: {
+		async getTotalOpenMecBox(){
+			let res = await Http.getTotalOpenMecBox();
+			if(res){
+				console.log(res, "getTotalOpenMecBox");
+				this.totalOpen = res.bnb.MintBox;
+			}
+		},
 		showHistoryDialog(item){
 			Common.app.$refs.boxBag.showOpenBox('mec',item.crystalAmounts, false);
 		},
@@ -328,7 +338,7 @@ export default {
 			if(hash){
 				this.oprDialog("unlock-mec-box-dialog", "none");
 				// this.showNotify(this.$t("BOX_20"), "success");
-				this.getConfirmDialog().show("解锁箱子提交成功，等待上传解锁哈希", null, true);
+				this.getConfirmDialog().show(this.$t("MECBOX_43"), null, true);
 			}
 		},
 

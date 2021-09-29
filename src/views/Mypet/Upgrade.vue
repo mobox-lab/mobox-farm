@@ -44,7 +44,7 @@
 					<div v-if="getNowPetItem.tokenId != 0 && getNowPetItem.location=='stake'">
 						<h3 >
 							{{ $t("MOMO_22") }}
-							<img class="mgl-5 cur-point" @click="oprDialog('upgrade-des-dialog','block')" src="@/assets/icon/help.png" alt="" height="20"/>
+							<img class="mgl-5 cur-point" @click="getRootRefs().ruleDialog.show('MOMO_35','MOMO_36')" src="@/assets/icon/help.png" alt="" height="20"/>
 						</h3>
 						<div class="tac" style="margin-bottom:20px">
 							<div v-if="getUpgradeInfo.length == 0" class="mgt-20">

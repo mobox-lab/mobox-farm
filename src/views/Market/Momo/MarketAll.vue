@@ -132,7 +132,9 @@ export default {
 			for (let key in nftConfig) {
 				let item =nftConfig[key];
 				let realName = langMap[item.tokenName];
-				if(realName.toLowerCase().indexOf(searchWord.toLowerCase()) != -1){
+				if(realName.toLowerCase().indexOf(searchWord.toLowerCase()) != -1 
+				|| item.cnName.toLowerCase().indexOf(searchWord.toLowerCase()) != -1
+				){
 					item.realName = realName;
 					item.vType = parseInt(item.prototype / 1e4);
 					retArr.push(item);

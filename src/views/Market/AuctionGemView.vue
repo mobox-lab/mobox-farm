@@ -1,5 +1,5 @@
 <template>
-	<div id="upgrade">
+	<div id="upgrade" style="margin-top:10px">
 		<router-link to="/market">
 			<span  class="cur-point text-big">
 				<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;{{ $t("MOMO_19") }}

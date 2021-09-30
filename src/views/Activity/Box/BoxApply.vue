@@ -62,9 +62,9 @@
 				<p v-if="getCanUseTemMbox > 0">{{$t("NewBOX_11").replace("#0#",getCanUseTemMbox > getNeedPayMbox? getNeedPayMbox: getCanUseTemMbox)}}</p>
 				<p >{{$t("NewBOX_12").replace("#0#", getCanUseTemMbox > getNeedPayMbox? 0 : numFloor(getNeedPayMbox -   getCanUseTemMbox, 1e3))}}</p>
 			</div>
-			<div  :class="{'btn-group': mboxAllownceToBoxApply == 0}">
-				<StatuButton :isLoading="lockBtn.mboxApproveToApplyLock > 0" data-step="1" class="mgt-10" style="width:70%" :onClick="approve" v-if="mboxAllownceToBoxApply == 0">{{$t("Air-drop_16")}} MBOX</StatuButton>
-				<StatuButton :isLoading="lockBtn.applyBoxLock > 0" :isDisable="mboxAllownceToBoxApply <= 0 || !isCanApply" data-step="2" class="mgt-10" style="width:70%"  :onClick="()=>applyForBox(dialog_tab_pos == 0?'normal':'high')">
+			<div  :class="{'btn-group': needApprove}">
+				<StatuButton :isLoading="lockBtn.mboxApproveToApplyLock > 0" data-step="1" class="mgt-10" style="width:70%" :onClick="approve" v-if="needApprove">{{$t("Air-drop_16")}} MBOX</StatuButton>
+				<StatuButton :isLoading="lockBtn.applyBoxLock > 0" :isDisable="needApprove || !isCanApply" data-step="2" class="mgt-10" style="width:70%"  :onClick="()=>applyForBox(dialog_tab_pos == 0?'normal':'high')">
 					<template >
 						<span v-if="dialog_tab_pos == 0">{{$t("NewBOX_25")}}</span>
 						<span v-else>{{$t("NewBOX_26")}}</span>
@@ -140,6 +140,9 @@ export default {
 		},
 		getNeedPayMbox(){
 			return Number(this.numFloor(this.applyInfo.roundPrice / 1e18, 1e4) * Number(this.inputNum));
+		},
+		needApprove(){
+			return Number(this.mboxAllownceToBoxApply)/1e18 < this.getNeedPayMbox
 		},
 		isCanApply(){
 			let isCanApply = true;

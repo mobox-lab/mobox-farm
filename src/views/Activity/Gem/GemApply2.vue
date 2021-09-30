@@ -87,9 +87,9 @@
 				</div>
 			</template>
 
-			<div  :class="{'btn-group': mboxAllownceToApply == 0}">
-				<StatuButton :isLoading="lockBtn.mboxApproveToApplyLock > 0" data-step="1" class="mgt-10" style="width:70%" :onClick="approve" v-if="mboxAllownceToApply == 0">{{$t("Air-drop_16")}} MBOX</StatuButton>
-				<StatuButton :isLoading="lockBtn.applyGemLock > 0" :isDisable="mboxAllownceToApply <= 0 || !isCanApply" data-step="2" class="mgt-10" style="width:70%"  :onClick="()=>applyForGem(dialog_tab_pos == 0?'hashRateApplyForGem':'veMoboxApplyForGem')">
+			<div  :class="{'btn-group': needApprove}">
+				<StatuButton :isLoading="lockBtn.mboxApproveToApplyLock > 0" data-step="1" class="mgt-10" style="width:70%" :onClick="approve" v-if="needApprove">{{$t("Air-drop_16")}} MBOX</StatuButton>
+				<StatuButton :isLoading="lockBtn.applyGemLock > 0" :isDisable="needApprove || !isCanApply" data-step="2" class="mgt-10" style="width:70%"  :onClick="()=>applyForGem(dialog_tab_pos == 0?'hashRateApplyForGem':'veMoboxApplyForGem')">
 					<!-- <span v-if="gemApplyEndCountDown <=0">{{$t("Gemstone_50")}}</span> -->
 					<template >
 						<span v-if="dialog_tab_pos == 0">{{$t("Gemstone_51")}}</span>
@@ -183,6 +183,9 @@ export default {
 		},
 		getNeedPayMbox(){
 			return Number(this.numFloor(this.applyInfo.price / 1e18, 1e4) * Number(this.inputNum));
+		},
+		needApprove(){
+			return Number(this.mboxAllownceToApply)/1e18 < this.getNeedPayMbox
 		},
 		//获取当前是否可以发起申购
 		isCanApply(){

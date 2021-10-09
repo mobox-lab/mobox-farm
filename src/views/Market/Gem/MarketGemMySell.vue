@@ -99,7 +99,7 @@ export default {
 				if(cancelTx.indexOf(item.tx) != -1) item.orderId = -2;
 			});
 			let temSell = this.tempGemSells.filter(item=>{
-				return item.currency == this.marketGemFilter
+				return item.erc1155_ == this.marketGemFilter
 			});
 
 			return   [...temSell,...list].slice(
@@ -108,7 +108,7 @@ export default {
 			);
 		},
 		showCoin(){
-			return this.marketTypePos == 4 ? "BUSD": "MBOX"
+			return "BUSD"
 		}
 	},
 	async created(){
@@ -137,6 +137,7 @@ export default {
 
 			data.list.map(item=>{
 				hashArr.push(item.tx);
+				item.erc1155_ = item.type;
 			});
 
 			//删除临时出售的数据

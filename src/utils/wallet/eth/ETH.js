@@ -2198,6 +2198,7 @@ export default class ETH {
 					console.log("gemCreateAuction success");
 					await Common.app.getGemBag();
 					await Common.app.getNewBoxNum();
+					await Common.app.getCrystalNum();
 				},
 				()=>{
 					EventBus.$emit(EventConfig.CreateAuctionError, {chain: "eth", hash: saveHash});
@@ -2252,8 +2253,10 @@ export default class ETH {
 				},
 				async ()=>{
 					console.log("cancelAuction success!!!!!");
-					await Common.app.getNewBoxNum();
 					await Common.app.getGemBag();
+					await Common.app.getNewBoxNum();
+					await Common.app.getCrystalNum();
+					
 				},
 				()=>{
 					console.log(saveHash);
@@ -2332,6 +2335,7 @@ export default class ETH {
 					await Common.app.setCoinValueByName(coinKey);
 					await Common.app.getGemBag();
 					await Common.app.getNewBoxNum();
+					await Common.app.getCrystalNum();
 				}
 			)
 		});

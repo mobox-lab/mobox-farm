@@ -8,18 +8,18 @@
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-				<Dropdown v-if="marketTypePos == 4" :list="sortArr" :defaultSelectPos="marketGemSearch.sort" :onChange="onSortChange" style="margin-top:0px" />
+				<Dropdown v-if="marketTypePos != 2" :list="sortArr" :defaultSelectPos="marketGemSearch.sort" :onChange="onSortChange" style="margin-top:0px" />
 				<div class="dropdown-group " @click="showDrop" tabindex="3" v-else>
 					<div class="dropdown-group-value por">
 						{{$t("Market_63")}} ▼
 					</div>
 					<div class="dropdown-group-list hide">
-						<Dropdown v-if="marketTypePos != 4" :list="$parent.gemType" :defaultSelectPos="marketGemSearch.type" :onChange="onSelectTypeChange" />&nbsp;
-						<Dropdown v-if="marketTypePos != 4" :list="$parent.gemLv" :defaultSelectPos="marketGemSearch.level" :onChange="onSelectLevelChange" />&nbsp;
+						<Dropdown :list="$parent.gemType" :defaultSelectPos="marketGemSearch.type" :onChange="onSelectTypeChange" />&nbsp;
+						<Dropdown :list="$parent.gemLv" :defaultSelectPos="marketGemSearch.level" :onChange="onSelectLevelChange" />&nbsp;
 						<Dropdown :list="sortArr" :defaultSelectPos="marketGemSearch.sort" :onChange="onSortChange" />&nbsp;
 					</div>
 				</div>
-				<Dropdown v-if="marketTypePos == 4" id="busd" class="mgl-5" style="margin-top:0px" :list="$parent.getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="$parent.onCoinChange" />
+				<Dropdown  id="busd" class="mgl-5" style="margin-top:0px" :list="$parent.getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="$parent.onCoinChange" />
 			</div>
 		</div>
 		<div :class="marketGems.list.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
@@ -65,7 +65,7 @@ export default {
 			marketTypePos: (state) => state.marketState.data.marketTypePos,
 		}),
 		showCoin(){
-			return this.marketTypePos == 4 ? "BUSD": "MBOX"
+			return "BUSD"
 		}
 
 	},
@@ -88,6 +88,9 @@ export default {
 		async getAuctionAll(page, needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
 			let data = await Http.getAuctionListGem("BNB", page, this.onePageCount, this.marketGemSearch);
+			data.list.map(item=>{
+				item.erc1155_ = item.type;
+			});
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			this.$store.commit("marketState/setData", {marketGems:data});
 		},

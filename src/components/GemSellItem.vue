@@ -15,7 +15,7 @@
 						x{{ item.num }}
 					</div>
 				</div>
-				<div style="position: absolute; width: 100%; top: -10px; left: 0px" v-if="item.currency == 2">
+				<div style="position: absolute; width: 100%; top: -10px; left: 0px" v-if="item.erc1155_ != 1 && item.currency == 2">
 					<div class="vertical-children pet_num small"  >
 						<span>{{$t('Market_39')}}: {{ numFloor(item.price / item.num /1e9, 100) }} {{getCurrencyName(item.currency)}}</span>
 					</div>
@@ -44,16 +44,18 @@ export default {
 	},
 	computed: {
 		getShowList(){
-			let {ids, amounts,price, currency} = this.data.item;
+			let {ids, amounts,price, currency, erc1155_} = this.data.item;
 			let arr = [];
 			ids.map((id, index)=>{
 				let obj = {};
 				obj.num = amounts[index];
 				obj.level = Number(id) % 100;
-				obj.imgName = id;
+				//erc1155_=4为水晶，但是id跟box重复了都是1，所以这里特殊处理一下
+				obj.imgName = erc1155_ == 4? erc1155_ : id;
 				obj.chain = "bnb";
 				obj.price = price;
 				obj.currency = currency;
+				obj.erc1155_ = erc1155_;
 				arr.push(obj);
 			});
 
@@ -200,7 +202,7 @@ export default {
 	display: inline-block;
 	border-radius: 30px;
 	padding: 2px 15px;
-	background: rgba(0, 0, 0, 0.3);
+	background: rgba(0, 0, 0, 0.6);
 	text-align: center;
 	margin-top: 20px;
 }

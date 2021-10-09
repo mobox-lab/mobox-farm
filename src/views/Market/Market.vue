@@ -6,8 +6,8 @@
 					<img src="../../assets/icon/momo_icon.png" alt="" height="30">&nbsp;
 					<span>MOMO</span>
 				</div>
-				<!-- <div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 5}" 
-					@click="$store.commit('marketState/setData', {marketTypePos: 5, marketTabPos: 0});">
+				<!-- <div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 6}" 
+					@click="$store.commit('marketState/setData', {marketTypePos: 6, marketTabPos: 0});">
 					<img src="../../assets/icon/box_icon.png" alt="" width="30">&nbsp;
 					<span>Order BOX</span>
 				</div> -->
@@ -16,14 +16,24 @@
 					<img src="../../assets/icon/box_icon.png" alt="" width="30">&nbsp;
 					<span>BOX</span>
 				</div>
-				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 1}" @click="$store.commit('marketState/setData', {marketTypePos: 1, marketTabPos: 0})">
-					<img src="../../assets/icon/rent_icon.png" alt="" height="30">&nbsp;
-					<span>{{$t("Hire_01")}}</span>
+				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 3}" 
+					@click="gemMarketKey = 'mecbox'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2});$store.commit('marketState/setData', {marketTypePos: 3, marketTabPos: 0, marketGemFilter: 3});">
+					<img src="../../assets/box/mecbox.png" alt="" height="20">&nbsp;
+					<span>MEC BOX</span>
+				</div>
+				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 5}" 
+					@click="gemMarketKey = 'mec'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2});$store.commit('marketState/setData', {marketTypePos: 5, marketTabPos: 0, marketGemFilter: 4});">
+					<img src="../../assets/coin/CRYSTAL.png" alt="" height="30">&nbsp;
+					<span>MEC</span>
 				</div>
 				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 2}" 
 					@click="gemMarketKey = 'gem'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 0});$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0, marketGemFilter: 1});">
 					<img src="../../assets/icon/yellow_icon.png" alt="" height="30">&nbsp;
 					<span>{{$t("Gemstone_44")}}</span>
+				</div>
+				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 1}" @click="$store.commit('marketState/setData', {marketTypePos: 1, marketTabPos: 0})">
+					<img src="../../assets/icon/rent_icon.png" alt="" height="30">&nbsp;
+					<span>{{$t("Hire_01")}}</span>
 				</div>
 			</section>
 
@@ -50,7 +60,7 @@
 					<RentMySell ref="rentMySell" v-show="marketTabPos == 2" />
 					<RentStatistics v-if="marketTabPos == 3" />
 				</div>
-				<div v-else-if="marketTypePos == 4 || marketTypePos == 2" class="mgt-10" :key="gemMarketKey">
+				<div v-else-if="[2,3,4,5].indexOf(marketTypePos) != -1" class="mgt-10" :key="gemMarketKey">
 					<div class="tal">
 						<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,getGemTemNum]"  />
 					</div>
@@ -59,7 +69,7 @@
 					<MarketGemMySell v-show="marketTabPos == 2" />
 					<MarketGemStatistics v-if="marketTabPos == 3" />
 				</div>
-				<div v-else-if="marketTypePos == 5">
+				<div v-else-if="marketTypePos == 6">
 					<div class="tal">
 						<Tab :list="OrderBookTabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" />
 					</div>
@@ -152,6 +162,7 @@ export default {
 				"0": 26101,
 				"1": 26301,
 				"2": 26401,
+				"3": 26201,
 				"4": 26201,
 				"5": 26201,
 			}
@@ -191,10 +202,10 @@ export default {
 		getGemTemNum(){
 			let num = 0;
 			this.tempGemSells.map(item=>{
-				if(item.currency == this.marketGemFilter) num++;
+				if(item.erc1155_ == this.marketGemFilter) num++;
 			});
 			this.tempGemMarketCancelTx.map(item=>{
-				if(item.currency == this.marketGemFilter) num++;
+				if(item.erc1155_ == this.marketGemFilter) num++;
 			});
 			return num;
 		}

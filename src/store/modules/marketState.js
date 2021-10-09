@@ -59,9 +59,12 @@ const state = () => ({
 		marketGemHistory: {list: [], total: 0, uptime: 0},
 
 		marketGemFilter: 1,
-		gemHisTs: 0,
-		boxHisTs: 0,
-
+		erc1155HisTs:{
+			1: 0,
+			2: 0,
+			3: 0,
+			4: 0
+		},
 		//批量购买MOMO的购物车
 		shopCar: [],
 		//批量出售车

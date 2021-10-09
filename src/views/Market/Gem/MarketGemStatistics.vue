@@ -52,8 +52,7 @@
 				<table class="mgt-20" style="width:100%; border-collapse:collapse;border: none;">
 					<tr class="opa-6 tal">
 						<th class="list-item-momo" style="padding-left:10px">
-							<span v-if="marketTypePos == 4">BOX</span>
-							<span v-else>{{$t("Gemstone_44")}}</span>
+							<span>{{typeToName[marketGemFilter]}}</span>
 						</th>
 						<th>{{$t("Market_25")}}</th>
 						<th>{{$t("Market_26")}}</th>
@@ -70,7 +69,7 @@
 						<div class="list-item-momo-mobile" >
 							<span v-for="(item2, index) in item.ids" :key="item2 + index" style="margin:0px 2px" class="por">
 								<template v-if="item2 > 0">
-									<img  :src="require(`@/assets/market/${item2}.png`)" alt="" height="50">
+									<img  :src="require(`@/assets/market/${item.erc1155_ == 4?item.erc1155_:item2}.png`)" alt="" height="50">
 									<span style="position:absolute;bottom:0px;width:80%;left:10%;background:rgba(0,0,0,0.5);border-radius:5px;zoom:0.8" class="tac small">x{{item.amounts[index]}}</span>
 								</template>
 							</span>
@@ -80,7 +79,7 @@
 							<td style="width:350px;" class="list-item-momo">
 								<span v-for="(item2, index) in item.ids" :key="item2+index" style="margin:0px 2px" class="por">
 									<template v-if="item2 > 0">
-										<img  :src="require(`@/assets/market/${item2}.png`)" alt="" height="50">
+										<img  :src="require(`@/assets/market/${item.erc1155_ == 4?item.erc1155_:item2}.png`)" alt="" height="50">
 										<span style="position:absolute;bottom:0px;width:80%;left:10%;background:rgba(0,0,0,0.5);border-radius:5px;zoom:0.8" class="tac small">x{{item.amounts[index]}}</span>
 									</template>
 								</span>
@@ -135,6 +134,12 @@ export default {
 			tableData:{"recent":[], "last24":[],"last":[],"myHistory":[],"myHistoryTotal": 0,}, 
 			tableDataPos: "recent",
 			myHistoryPage:1,
+			typeToName: {
+				1: this.$t("Gemstone_44"),
+				2: "BOX",
+				3: "MEC BOX",
+				4: "MEC"
+			}
 		});
 	},
 	computed:{
@@ -144,7 +149,7 @@ export default {
 			marketGemFilter: (state) => state.marketState.data.marketGemFilter,
 		}),
 		showCoin(){
-			return this.marketTypePos == 4 ? "BUSD": "MBOX"
+			return "BUSD"
 		}
 	},
 	watch:{
@@ -240,7 +245,11 @@ export default {
 			}, time)
 		},
 		async setData(res,type){
-			this.tableData[type] = res.list;
+			let arr = res.list;
+			arr.map(item=>{
+				item.erc1155_ = item.type;
+			})
+			this.tableData[type] = arr;
 		},
 		//获取统计分析
 		async getGemAuctionStatistics(){

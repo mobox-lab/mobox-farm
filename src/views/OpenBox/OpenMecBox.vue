@@ -272,7 +272,6 @@ export default {
 		async getTotalOpenMecBox(){
 			let res = await Http.getTotalOpenMecBox();
 			if(res){
-				console.log(res, "getTotalOpenMecBox");
 				this.totalOpen = res.bnb.MintBox;
 			}
 		},
@@ -283,14 +282,12 @@ export default {
 			let account = await Wallet.ETH.getAccount();
 			let res = await Http.getMecBoxHistory(account);
 			if(res){
-				console.log(res, "getMecBoxHistory");
 				this.getOpenBoxHistory = res.list;
 			}
 		},
 		async getMecBoxOrder(){
 			let res = await Wallet.ETH.Group.Enhancer.getMecBoxOrder();
 			if(res){
-				console.log(res, "getMecBoxOrder");
 				let {blockHash, boxAmount} = res;
 				this.needGetHash = Number(blockHash) == 1 && boxAmount > 0;
 				this.orderObj.boxAmount = Number(boxAmount);
@@ -311,7 +308,6 @@ export default {
 					this.getMecBoxOrder();
 				});
 				if(hash){
-					console.log(hash);
 					this.lockBtnMethod("openMecBoxLock")
 				}
 			}
@@ -351,7 +347,6 @@ export default {
 		},
 		async approve(){
 			let hash = await Wallet.ETH.approvedForAll(WalletConfig.ETH.newBoxToken, WalletConfig.ETH.mecBoxMinter, ()=>{
-				console.log("approve recipt");
 				this.isApprove();
 			});
 			if(hash){

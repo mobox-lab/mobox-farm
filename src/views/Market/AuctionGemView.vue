@@ -64,13 +64,23 @@
 		<Dialog id="changePrice-dialog" :top="200" :width="400">
 				<h2 class="mgt-10">{{$t("Market_10")}}</h2>
 			<div class="mgt-20">
-				<div class="ly-input-content mgt-10">
-					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} ({{oprCoin}})</p>
+				<div class="ly-input-content mgt-10" v-if="!isGem">
+					<p class="small tal opa-6">{{$t("Market_39")}} ({{oprCoin}})</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
 							<img  :src="require(`@/assets/coin/${oprCoin}.png`)" alt="" />
 						</div>
-						<input v-model="sellObj.startPrice"   class="ly-input sell-input" type="number" :placeholder="priceTypePos == 1?$t('Market_11'):$t('Market_17')" v-number  data-max="100000000"/>
+						<input v-model="sellObj.onePrice"  class="ly-input sell-input" type="number" :placeholder="$t('Market_39')" v-number  data-max="100000000"/>
+					</div>
+				</div>
+				<div class="ly-input-content mgt-10">
+					<p class="small tal opa-6">{{$t("Market_18")}} ({{oprCoin}})</p>
+					<div class="por mgt-5">
+						<div class="ly-input-pre-icon">
+							<img  :src="require(`@/assets/coin/${oprCoin}.png`)" alt="" />
+						</div>
+						<input v-if="isGem" v-model="sellObj.startPrice"  class="ly-input sell-input" type="number" :placeholder="$t('Market_18')" v-number  data-max="100000000"/>
+						<input v-else v-model="totalPrice" readonly class="ly-input sell-input opa-6" type="number" :placeholder="$t('Market_18')" v-number  data-max="100000000"/>
 					</div>
 				</div>
 				<div v-if="priceTypePos == 1">
@@ -92,9 +102,13 @@
 				</div>
 			</div>
 			<div class="small mgt-10 opa-6" v-if="Number(sellObj.startPrice) > 0 && Number(sellObj.endPrice) > 0 && priceTypePos==1">{{$t("Market_14").replace("#0#", sellObj.durationDays).replace("#1#",sellObj.startPrice).replace("#2#",sellObj.endPrice)}}</div>
-			<button style="width: 200px" class="btn-primary mgt-20" :class="!(sellObj.durationDays > 1 && sellObj.startPrice > 0)? 'disable-btn': '' " @click="changePrice">
+			<!-- <button style="width: 200px" class="btn-primary mgt-20" :class="!(sellObj.durationDays > 1 && sellObj.startPrice > 0)? 'disable-btn': '' " @click="changePrice">
 				{{$t("Common_03")}}
-			</button>
+			</button> -->
+			<p class="color-buy tac mgt-10 small" v-if="Number(totalPrice) < 10">出售总价至少10BUSD</p>
+			<StatuButton style="width: 200px" class="mgt-10" :onClick="changePrice" :isDisable="Number(totalPrice) < 10">
+				{{$t("Common_03")}}
+			</StatuButton>
 		</Dialog>
 
 		<Dialog id="confirm-gem-buy-dialog"  :top="200" :width="350">
@@ -125,6 +139,8 @@ export default {
 			hackReload: true,
 			myAccount: "",
 			sellObj: {
+				sellNum: 0,
+				onePrice: "",
 				startPrice: "",
 				endPrice: "",
 				durationDays: 2,
@@ -168,13 +184,13 @@ export default {
 			return this.getNowPetItem.auctor.toLocaleLowerCase() == this.myAccount.toLocaleLowerCase();
 		},
 		getShowList(){
-			let {ids, amounts} = this.getNowPetItem;
+			let {ids, amounts, erc1155_} = this.getNowPetItem;
 			let arr = [];
 			ids.map((id, index)=>{
 				let obj = {};
 				obj.num = amounts[index];
 				obj.level = Number(id) % 100;
-				obj.id = id;
+				obj.id = erc1155_ == 4?erc1155_: id;
 				arr.push(obj);
 			});
 			arr.sort((a,b)=>{
@@ -184,6 +200,13 @@ export default {
 		},
 		oprCoin(){
 			return ConstantConfig.CurrencyTypeName[this.getNowPetItem.currency]
+		},
+		isGem(){
+			return this.getNowPetItem.erc1155_ == 1;
+		},
+		totalPrice(){
+			if(this.isGem) return this.sellObj.startPrice;
+			return this.sellObj.onePrice * this.sellObj.sellNum;
 		}
 	},
 	async created() {
@@ -216,10 +239,13 @@ export default {
 			}
 		},
 		setChangePriceData(isClick = false){
-			let {price} = this.getNowPetItem;
+			let {price, amounts} = this.getNowPetItem;
+			console.log(this.getNowPetItem, "---------------------");
 			this.sellObj.startPrice = price / 1e9;
 			this.sellObj.endPrice = price / 1e9;
 			this.sellObj.durationDays = 2;
+			this.sellObj.sellNum = amounts[0];
+			this.sellObj.onePrice = this.sellObj.startPrice / this.sellObj.sellNum
 			if(isClick){
 				let { uptime } = this.getNowPetItem;
 				let dtTime = parseInt(new Date().valueOf() /1000) - Number(uptime);
@@ -319,7 +345,11 @@ export default {
 				return;
 			}
 
-			let { startPrice, endPrice } = this.sellObj;
+			let { startPrice, endPrice, onePrice, sellNum } = this.sellObj;
+
+			if(!this.isGem){
+				startPrice = onePrice * sellNum;
+			}
 
 			//TODO:校验参数正确性
 			if(startPrice <= 0){
@@ -332,6 +362,8 @@ export default {
 				orderId_: this.getNowPetItem.orderId,
 				price_: startPrice
 			}
+
+			console.log(obj, "ssss");
 
 			let data = await this.getPetInfo();
 			if(data.status != 3){

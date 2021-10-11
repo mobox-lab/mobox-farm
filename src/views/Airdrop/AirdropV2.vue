@@ -198,8 +198,10 @@
 											<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" >{{$t("Air-drop_08")}}</span>
 										</div>
 										<div class="dib tac por cur-point"  @click="setAction(21005);$parent.$refs.vmbox.setOprData(item).show();">
-											<span class="notice" v-if="coinArr[item.coinKey].veMbox.notice"></span>
-											<img   src="@/assets/icon/vembox-icon.png" alt="" height="40" />
+											<span class="por dib" style="height:100%;">
+												<span class="notice" v-if="coinArr[item.coinKey].veMbox.notice"></span>
+												<img   src="@/assets/icon/vembox-icon.png" alt="" height="40" />
+											</span>
 											<span style="width:150%;position:absolute;bottom:-5px;left:-25%;font-size:12px;color:#fff;zoom:0.8;" >{{$t("Air-drop_188")}}</span>
 										</div>
 									</div>

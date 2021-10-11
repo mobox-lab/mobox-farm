@@ -1,5 +1,5 @@
 <template>
-	<div id="upgrade">
+	<div id="upgrade" style="margin-top:10px">
 		<router-link to="/market">
 			<span  class="cur-point text-big">
 				<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;{{ $t("MOMO_19") }}
@@ -45,86 +45,84 @@
 					<!-- 我的momo并且可以出租 -->
 					<div class="tac mgt-30"  v-if="isMyPet && momoState == -1 ">
 						<section>
-							<p >{{$t("Hire_13")}}</p>
+							<p >请设置单天价格</p>
 							<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
-								<p class="small tal opa-6">{{$t("Hire_22")}}(MBOX)</p>
+								<p class="small tal">单天价格(BUSD)</p>
 								<div class="por mgt-5">
 									<div class="ly-input-pre-icon">
-										<img  src="@/assets/coin/MBOX.png" alt="" />
+										<img  src="@/assets/coin/BUSD.png" alt="" />
 									</div>
 									<input v-model="rentObj.rentPrice" class="ly-input" type="number" v-number
 										style=" background: #0f172a; text-align: center; width: 100%; "
-										:placeholder="$t('Hire_13')"
+										placeholder="请设置单天价格"
 									/>
 								</div>
 							</div>
 						</section>
 						<section class="mgt-20">
-							<p >{{$t("Hire_14")}}</p>
+							<p >请设置最大出租天数</p>
 							<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
-								<p class="small tal opa-6">{{$t("Hire_15")}}</p>
+								<p class="small tal" :class="{'color-buy':Number(rentObj.rentDay) < 7 && Number(rentObj.rentDay) > 0}">出租天数(7~30)</p>
 								<div class="por mgt-5">
-									<input v-model="rentObj.rentDay" class="ly-input" type="number" v-int data-max="7" data-min="1"
+									<input v-model="rentObj.rentDay" class="ly-input" type="number" v-int data-max="30" 
 										style=" background: #0f172a; text-align: center; width: 100%; "
-										:placeholder="$t('Hire_14')"
+										placeholder="请设置最大出租天数"
 									/>
 								</div>
 							</div>
 						</section>
-						<section class="mgt-20">
-							<p >{{$t("Hire_16")}}</p>
-							<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
-								<p class="small tal opa-6">{{$t("Hire_17")}}</p>
-								<div class="por mgt-5">
-									<input v-model="rentObj.rentRound" class="ly-input" type="number" v-int data-max="3"
-										style=" background: #0f172a; text-align: center; width: 100%; "
-										:placeholder="0"
-									/>
-								</div>
-							</div>
-						</section>
-						<!-- <div class="mgt-20">
+						
+						<div class="mgt-20">
 							<p v-if="isCanPutRent" style="max-width:350px;margin:0px auto">
-								{{$t("Hire_25").replace("#0#",rentObj.rentPrice+" MBOX").replace("#1#",rentObj.rentDay).replace("#2#",Number(rentObj.rentRound))}}
+								{{$t("Hire_25").replace("#0#",rentObj.rentPrice+" BUSD").replace("#1#",1).replace("#2#",Number(rentObj.rentDay))}}
 							</p>
 							<StatuButton class="btn-primary mgt-10"  :isDisable="!isCanPutRent" :onClick="putRent" :isLoading="lockBtn.putRentLock > 0">{{$t("Hire_19")}}</StatuButton>
-						</div> -->
-						<div class="color-buy mgt-20 tac">
-							{{$t("Hire_47")}}
 						</div>
+					
 					</div>
 					<!-- 挂单中的momo -->
 					<div  v-if="momoState == 0">
 						<div id="rent-info-panel">
 							<div class="aveage-box">
-								<p>{{$t("Hire_22")}}</p>
+								<p>单天价格</p>
 								<h3 class="tar vertical-children">
-									<img src="@/assets/coin/MBOX.png" alt="" height="20">&nbsp;
-									<span>{{numFloor(statusObj.currentRentPrice / 1e18, 1e4)}}</span>
+									<span>{{numFloor(statusObj.rentPrice / 1e18, 1e4)}}</span>&nbsp;
+									<img src="@/assets/coin/BUSD.png" alt="" height="20">
 								</h3>
 							</div>
 							<div class="tab-split"></div>
 							<div class="aveage-box">
-								<p>{{$t("Hire_23")}}</p>
-								<h3 class="tar">{{statusObj.currentRentDays}} {{$t("Hire_46")}}</h3>
-							</div>
-							<div class="tab-split"></div>
-							<div class="aveage-box">
-								<p>{{$t("Hire_24")}}</p>
-								<h3 class="tar">{{Number(statusObj.currentRentRound) - 1}}</h3>
+								<p>最大可租赁天数</p>
+								<h3 class="tar">{{statusObj.rentDays}} {{$t("Hire_46")}}</h3>
 							</div>
 						</div>
 						<div v-if="isMyRent" class="tac mgt-20">
 							<StatuButton class="mgt-10" v-if="momoState == 0" :onClick="cancelRent" :isLoading="lockBtn.cancelRentLock > 0">{{$t("Hire_20")}}</StatuButton>
 						</div>
-						<div v-else class="color-buy mgt-20 tac">
-							{{$t("Hire_47")}}
-						</div>
-						<!-- <div class="tac mgt-20" v-else>
-							<p >{{$t("Hire_21")}}</p>
-							<div :class="coinArr['MBOX'].allowanceToRent == 0 ?'btn-group':''"  style="width:280px;margin:10px auto">
-								<StatuButton  data-step="1" v-if="coinArr['MBOX'].allowanceToRent == 0" class="mgt-10" style="width:80%" :onClick="approve" :isLoading="coinArr['MBOX'].isApproving">{{$t("Air-drop_16")}} MBOX</StatuButton>
-								<StatuButton  data-step="2" :isDisable="!(coinArr['MBOX'].allowanceToRent > 0) || nowTs - statusObj.startTime <= 120" class="mgt-10" style="width:80%" :onClick="rentPet" :isLoading="lockBtn.rentLock > 0">
+						<div class="tac mgt-20" v-else>
+							<section class="tal">
+								<div class="ly-input-content" style="margin:0px auto;margin-top:10px">
+									<p >起租天数(1~{{statusObj.rentDays}})</p>
+									<p class="small  color-buy">您可以先租1天，之后再续租剩余天数</p>
+									<div class="por mgt-5">
+										<input v-model="inputRentDays" class="ly-input" type="number" v-number :data-max="statusObj.rentDays"
+											style=" background: #0f172a; text-align: center; width: 100%; "
+											placeholder="请输入起租天数"
+										/>
+									</div>
+									<div class="aveage-box mgt-10" v-if="Number(inputRentDays) > 0">
+										<p>总价</p>
+										<h3 class="tar vertical-children">
+											<span>{{numFloor(statusObj.rentPrice * inputRentDays / 1e18, 1e4)}}</span>&nbsp;
+											<img src="@/assets/coin/BUSD.png" alt="" height="20">
+										</h3>
+									</div>
+								</div>
+							</section>
+							<p class="mgt-10">{{$t("Hire_21")}}</p>
+							<div :class="coinArr['BUSD'].allowanceToRent == 0 ?'btn-group':''"  style="width:280px;margin:0px auto">
+								<StatuButton  data-step="1" v-if="coinArr['BUSD'].allowanceToRent == 0" class="mgt-10" style="width:80%" :onClick="approve" :isLoading="coinArr['BUSD'].isApproving">{{$t("Air-drop_16")}} BUSD</StatuButton>
+								<StatuButton  data-step="2" :isDisable="!isCanRent" class="mgt-10" style="width:80%" :onClick="rentPet" :isLoading="lockBtn.rentLock > 0">
 									<template v-if="nowTs - statusObj.startTime <= 120">
 										<img src="@/assets/icon/lock.png" alt="" height="20" style="position:absolute;left:10px;top:6px">
 										<span>{{getLeftTime(Number(statusObj.startTime) + 120 - nowTs)}}</span>
@@ -132,7 +130,7 @@
 									<span v-else>{{$t("Hire_44")}}</span>
 								</StatuButton>
 							</div>
-						</div> -->
+						</div>
 					</div>
 
 					<p v-if="momoState == 1" class="tac mgt-20">{{$t("Hire_26")}}<span class="dotting"></span></p>
@@ -163,19 +161,17 @@ export default {
 			},
 			statusObj: {
 				orderId: "-",
-				currentRentDays: "-",
-				currentRentPrice: "-",
-				currentRentRound: "-",
-				gameId: "-",
-				nextRentDays: "-",
-				nextRentPrice: "-",
-				nextRentRound: "-",
+				status: "-",
+				rentDays: "-",
 				owner: "-",
+				startTime: 0,
+				bidEndTime: "-",
 				rentTime: "-",
 				renter: "-",
-				status: "-",
-				startTime: 0,
+				bidPrice: "-",
+				rentPrice: "-",
 			},
+			inputRentDays: "",
 		};
 	},
 	computed: {
@@ -228,12 +224,18 @@ export default {
 		//上架租赁
 		isCanPutRent(){
 			let {rentPrice, rentDay} = this.rentObj;
-			return Number(rentPrice) > 0 && Number(rentDay) >= 1;
+			return Number(rentPrice) > 0 && Number(rentDay) >= 7 && Number(rentDay) <= 30;
+		},
+		//是否可以租
+		isCanRent(){
+			let {startTime, rentDays} = this.statusObj
+			return this.coinArr['BUSD'].allowanceToRent > 0 && this.nowTs - startTime > 120 
+					&& Number(this.inputRentDays) >= 1 &&  Number(this.inputRentDays) <= Number(rentDays);
 		},
 		momoState(){
-			let {currentRentDays, status, rentTime} = this.statusObj;
-			if(currentRentDays == "-") return -2;//未请求状态
-			if(currentRentDays == 0 ) return -1; //未上架
+			let {startTime, status, rentTime} = this.statusObj;
+			if(startTime == "-") return -2;//未请求状态
+			if(startTime == 0 ) return -1; //未上架
 			if(status == 0){
 				return 0;//挂单中
 			}else{
@@ -251,17 +253,17 @@ export default {
 		//查询授权情况
 		await this.viewAllowance();
 		//查询余额
-		let coinKey = "MBOX";
+		let coinKey = "BUSD";
 		if(this.coinArr[coinKey].balance == "-"){
 			this.$root.$children[0].setCoinValueByName(coinKey);
 		}
 	},
 	methods: {
 		async viewAllowance(){
-			let coinKey = "MBOX";
+			let coinKey = "BUSD";
 			if(this.coinArr[coinKey].allowanceToRent > 0) return;
 
-			let allowanceToRent = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, WalletConfig.ETH.momoRent, false);
+			let allowanceToRent = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, WalletConfig.ETH.momoRentV2, false);
 			if(allowanceToRent){
 				this.coinArr[coinKey].allowanceToRent = Number(allowanceToRent);
 				this.coinArr.ts = new Date().valueOf();
@@ -270,12 +272,12 @@ export default {
 		},
 		//授权
 		async approve(){
-			let coinKey = "MBOX";
+			let coinKey = "BUSD";
 			let {allowanceToRent, isApproving} = this.coinArr[coinKey];
 			if(allowanceToRent > 0 || isApproving) return;
 
 			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr,
-			WalletConfig.ETH.momoRent, {coinKey, type: "allowanceToRent"});
+			WalletConfig.ETH.momoRentV2, {coinKey, type: "allowanceToRent"});
 			if (hash) {
 				this.coinArr[coinKey].isApproving = true;
 			}
@@ -284,34 +286,28 @@ export default {
 		//从链上取最新的状态
 		async getPetInfo(){
 			if(!this.getNowPetItem.tokenId) return;
-			// let res = await Wallet.ETH.getMomoRentInfo(this.getNowPetItem.tokenId);
-			let res = await Wallet.ETH.getMomoRentInfoExt(this.getNowPetItem.tokenId);
+			let res = await Wallet.ETH.Group.Rent.getMomoRentInfo(this.getNowPetItem.tokenId);
+			console.log("getPetInfo--------", res);
 			if(res){
-				this.statusObj = res;
-			}
-		},
-		async getPetInfoExt(){
-			if(!this.getNowPetItem.tokenId) return;
-			let res = await Wallet.ETH.getMomoRentInfoExt(this.getNowPetItem.tokenId);
-			if(res){
-				console.log("getPetInfoExt",res);
 				this.statusObj = res;
 			}
 		},
 		//租赁
 		async rentPet(){
-			if(this.statusObj.currentRentPrice / 1e18 > Number(this.coinArr["MBOX"].balance)){
-				this.getConfirmDialog().show(this.$t('Common_30'), ()=>this.showSwapBox());
+			let totalPrice = this.statusObj.rentPrice / 1e18 * this.inputRentDays;
+			if(totalPrice > Number(this.coinArr["BUSD"].balance)){
+				this.showNotify(this.$t("Market_34"), "error");
 				return;
 			}
 
 			let obj = {
 				tokenId_: this.getNowPetItem.tokenId, 
 				orderId_: this.statusObj.orderId,
-				gameId_:1, 
-				price_: this.statusObj.currentRentPrice
+				price_: totalPrice + 0.000001 ,
+				days_: Number(this.inputRentDays)
 			}
-			let hash = await Wallet.ETH.rentMomo(obj);
+			console.log(obj, "rentPet");
+			let hash = await Wallet.ETH.Group.Rent.rent(obj);
 			if(hash){
 				this.lockBtnMethod("rentLock");
 				await Common.sleep(1000);
@@ -324,11 +320,10 @@ export default {
 			console.log(this.rentObj);
 			let obj = {
 				tokenId_: this.getNowPetItem.tokenId,
-				curRentDays_: this.rentObj.rentDay, 
-				curRentRound_: Number(this.rentObj.rentRound) + 1,
-				curRentPrice_:this.rentObj.rentPrice
+				rentDays_: this.rentObj.rentDay, 
+				rentPrice_:this.rentObj.rentPrice
 			}
-			let hash = await Wallet.ETH.createRent(obj, ()=>{
+			let hash = await Wallet.ETH.Group.Rent.createRent(obj, ()=>{
 				this.getPetInfo();
 			});
 			if(hash){
@@ -337,16 +332,12 @@ export default {
 		},
 		//取消租赁
 		async cancelRent(){
-			let res = await Wallet.ETH.cancelPutRent({tokenId_: this.getNowPetItem.tokenId, orderId_: this.statusObj.orderId }, ()=>{
+			let res = await Wallet.ETH.Group.Rent.cancelRent({tokenId_: this.getNowPetItem.tokenId, orderId_: this.statusObj.orderId }, ()=>{
 				this.getPetInfo();
 			});
 			if(res){
 				this.lockBtnMethod("cancelRentLock");
 			}
-		},
-		//修改租赁价格
-		async changePrice(){
-	
 		},
 	},
 };

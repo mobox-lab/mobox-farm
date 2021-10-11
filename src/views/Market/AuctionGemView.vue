@@ -48,7 +48,7 @@
 								</div>
 							</div>
 							<div  v-if="isMyPet" class="mgt-20">
-								<StatuButton :onClick="setChangePriceData.bind(this, true)" :isLoading="lockBtn.changePriceLock > 0">{{$t("Market_20")}}</StatuButton>&nbsp;&nbsp;
+								<StatuButton v-if="this.getNowPetItem.currency == 2" :onClick="setChangePriceData.bind(this, true)" :isLoading="lockBtn.changePriceLock > 0">{{$t("Market_20")}}</StatuButton>&nbsp;&nbsp;
 								<button class="btn-primary vertical-children mgl-5" style="background: #384a7a !important" @click="cancelAuction">
 									{{$t("Market_21")}}
 								</button>

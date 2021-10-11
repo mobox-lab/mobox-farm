@@ -147,17 +147,15 @@ export default {
 			},
 			statusObj: {
 				orderId: "-",
-				currentRentDays: "-",
-				currentRentPrice: "-",
-				currentRentRound: "-",
-				gameId: "-",
-				nextRentDays: "-",
-				nextRentPrice: "-",
-				nextRentRound: "-",
+				status: "-",
+				rentDays: "-",
 				owner: "-",
+				startTime: 0,
+				bidEndTime: "-",
 				rentTime: "-",
 				renter: "-",
-				status: "-",
+				bidPrice: "-",
+				rentPrice: "-",
 				leftTs: "-",
 			},
 		})
@@ -214,7 +212,7 @@ export default {
 		
 		async getDealInfo(){
 			if(this.tokenId == 0) return;
-			let res = await Wallet.ETH.getMomoRentInfo(this.tokenId);
+			let res = await Wallet.ETH.Group.Rent.getMomoRentInfo(this.tokenId);
 			if(res){
 				this.statusObj = res;
 				let nowTs = parseInt(new Date().valueOf()/1000);
@@ -230,17 +228,15 @@ export default {
 			};
 			this.statusObj = {
 				orderId: "-",
-				currentRentDays: "-",
-				currentRentPrice: "-",
-				currentRentRound: "-",
-				gameId: "-",
-				nextRentDays: "-",
-				nextRentPrice: "-",
-				nextRentRound: "-",
+				status: "-",
+				rentDays: "-",
 				owner: "-",
+				startTime: 0,
+				bidEndTime: "-",
 				rentTime: "-",
 				renter: "-",
-				status: "-",
+				bidPrice: "-",
+				rentPrice: "-",
 				leftTs: "-",
 			},
 			this.getDealInfo();

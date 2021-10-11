@@ -22,15 +22,20 @@
 		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children">
 			<router-link :to=" item.orderId >= 0 ? ('/auctionGemView/'+ item.tx):'###'" :class="item.orderId >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime">
 				<GemSellItem  :key="item.orderId" :data="{item: item}">
-					<div class="vertical-children mgt-10" style="font-size: 18px" v-if="item.orderId >= 0">
-						<img :src="require(`@/assets/coin/${showCoin}.png`)" alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.price/1e9, 10000)}} <sub class="small">{{showCoin}}</sub></span>
-					</div>
-					<div class="vertical-children mgt-10" v-else style="font-size: 18px;">
-						<Loading/> &nbsp;
-						<small v-if="item.orderId == -1">{{$t("Market_30")}}...</small>
-						<small v-if="item.orderId == -2">{{$t("Market_31")}}...</small>
-					</div>
+					<template v-if="item.currency == 2">
+						<div class="vertical-children mgt-10" style="font-size: 18px" v-if="item.orderId >= 0">
+							<img :src="require(`@/assets/coin/${getShowCoin(item)}.png`)" alt="" height="20"/>&nbsp;
+							<span>{{numFloor(item.price/1e9, 10000)}} <sub class="small">{{getShowCoin(item)}}</sub></span>
+						</div>
+						<div class="vertical-children mgt-10" v-else style="font-size: 18px;">
+							<Loading/> &nbsp;
+							<small v-if="item.orderId == -1">{{$t("Market_30")}}...</small>
+							<small v-if="item.orderId == -2">{{$t("Market_31")}}...</small>
+						</div>
+					</template>
+					<span v-else class="color-buy ">
+						已过期
+					</span>
 				</GemSellItem>
 			</router-link>
 		</div>
@@ -107,9 +112,6 @@ export default {
 				this.onePageCount * this.marketGemMySellPage
 			);
 		},
-		showCoin(){
-			return "BUSD"
-		}
 	},
 	async created(){
 		this.myAccount = await Wallet.ETH.getAccount();
@@ -126,6 +128,9 @@ export default {
 		if(timer) clearInterval(timer);
 	},
 	methods: {
+		getShowCoin(item){
+			return item.currency == 1?"MBOX": "BUSD";
+		},
 		//获取市场上的宠物
 		async getAuctionPetsMy(needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});

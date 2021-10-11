@@ -475,12 +475,13 @@ export default {
 			if(sellType == "721"){
 				this.oprDialog("confirm-submit-dialog", "block");
 			}else{
-				this.confirmSell();
+				let { startPrice } = this.sellObj;
+				if(Number(startPrice) < 10) return;
+				this.getConfirmDialog().show(this.$t('Market_58').replace('#0#', `<span style='color: #49c773'>${startPrice} BUSD</span>`), ()=>this.confirmSell())
 			}
 		},
 		async confirmSell() {
 			let { startPrice, sellData, erc1155_ } = this.sellObj;
-
 			if(Number(startPrice) < 10) return;
 
 			let auctionObj = {

@@ -32,7 +32,7 @@
 						<Dropdown :list="sortArr" :defaultSelectPos="marketRentSearch.sort" :onChange="onSortChange" />&nbsp;
 					</div>
 				</div>
-				
+				<Dropdown id="busd" class="mgl-5" style="margin-top:0px" :list="$parent.getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="$parent.onCoinChange" />
 			</div>
 
 			<p class="vertical-children mgt-10 dib">{{$t("Market_33")}}({{ marketRents.total }}) </p>
@@ -51,8 +51,8 @@
 							<p >{{getLeftTime(Number(item.uptime)+120- nowTs)}}</p>
 						</div>
 						<div class="vertical-children tar" style="font-size: 18px;flex:2">
-							<img src="@/assets/coin/MBOX.png" alt="" height="20"/>&nbsp;
-							<span>{{numFloor(item.rentPrice/1e9, 10000)}} <sub class="small">MBOX</sub></span>
+							<img src="@/assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
+							<span>{{numFloor(item.rentPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
 						</div>
 					</div>
 				</PetItem>
@@ -351,10 +351,16 @@ export default {
 		top: 0px;
 	}
 	@media (max-width: 768px) {
-
+		#busd{
+			margin-top: 10px !important;
+			margin-left: 0px !important;
+			position: absolute;
+			right: 0px;
+			top: 40px;
+		}
 		#market-pet-fitter{
 			zoom: 0.8;
-			text-align: left;
+			text-align: right;
 			position: static !important;
 		}
 	}

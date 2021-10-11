@@ -741,24 +741,23 @@ const InitEth = {
 					tokenIds.push(item.tokenId);
 				}
 			});
-			let res = await Wallet.ETH.getRentInfoSimple(tokenIds);
-
+			let res = await Wallet.ETH.Group.Rent.getRentInfoSimple(tokenIds);
 			nftArr.map((item) => {
 				let tokenPos = tokenIds.indexOf(item.tokenId);
 				if (tokenPos != -1) {
 					item.rent.orderId = res.orderIdArray[tokenPos];
 					item.rent.status = res.statusArray[tokenPos];
 					item.rent.rentTime = res.rentTimeArray[tokenPos];
-					item.rent.currentRentDays = res.currentRentDaysArray[tokenPos];
+					item.rent.startTime = res.startTimeArray[tokenPos];
 					item.rent.state = this.getMomoState(item.rent);
 				}
 			});
 		},
 
 		getMomoState(rentInfo){
-			let {currentRentDays, status, rentTime} = rentInfo;
-			if(currentRentDays == "-") return -2;//未请求状态
-			if(currentRentDays == 0 ) return -1; //未上架
+			let {startTime, status, rentTime} = rentInfo;
+			if(startTime == "-") return -2;//未请求状态
+			if(startTime == 0 ) return -1; //未上架
 			if(status == 0){
 				return 0;//挂单中
 			}else{

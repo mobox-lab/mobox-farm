@@ -52,8 +52,8 @@
 							<img v-if="item.leftTs > 0" class="cur-point mgl-5" src="@/assets/icon/view.png" height="25" alt="" @click="$parent.$refs.rentDeal.setOprData(item.tokenId, item.isRentOther).show()">
 						</td>
 						<td class="vertical-children">
-							<img class="hide-xs"  src="@/assets/coin/MBOX.png" alt="" height="25">
-							<span class="mgl-5">{{numFloor(item.price/1e9, 10000)}} MBOX</span>
+							<img class="hide-xs"  src="@/assets/coin/BUSD.png" alt="" height="25">
+							<span class="mgl-5">{{numFloor(item.price/1e9, 10000)}} BUSD</span>
 						</td>
 						<td>{{item.rentDays}}</td>
 						<td  >

@@ -8,13 +8,14 @@ import BigNumber from "bignumber.js";
 import Gem from './group/Gem';
 import MdxBox from './group/MdxBox';
 import Enhancer from './group/Enhancer'
+import Rent from './group/Rent'
 
 export default class ETH {
 	static web3;
 	static web3MainNet;
 
 	static  Group = {
-		Gem, MdxBox, Enhancer
+		Gem, MdxBox, Enhancer, Rent
 	}
 
 	//合约相关

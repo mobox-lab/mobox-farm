@@ -52,7 +52,7 @@
 									<div class="ly-input-pre-icon">
 										<img  src="@/assets/coin/MBOX.png" alt="" />
 									</div>
-									<input v-model="rentObj.rentPrice" class="ly-input" type="text" v-number
+									<input v-model="rentObj.rentPrice" class="ly-input" type="number" v-number
 										style=" background: #0f172a; text-align: center; width: 100%; "
 										:placeholder="$t('Hire_13')"
 									/>
@@ -64,7 +64,7 @@
 							<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
 								<p class="small tal opa-6">{{$t("Hire_15")}}</p>
 								<div class="por mgt-5">
-									<input v-model="rentObj.rentDay" class="ly-input" type="text" v-int data-max="7" data-min="1"
+									<input v-model="rentObj.rentDay" class="ly-input" type="number" v-int data-max="7" data-min="1"
 										style=" background: #0f172a; text-align: center; width: 100%; "
 										:placeholder="$t('Hire_14')"
 									/>
@@ -76,7 +76,7 @@
 							<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
 								<p class="small tal opa-6">{{$t("Hire_17")}}</p>
 								<div class="por mgt-5">
-									<input v-model="rentObj.rentRound" class="ly-input" type="text" v-int data-max="3"
+									<input v-model="rentObj.rentRound" class="ly-input" type="number" v-int data-max="3"
 										style=" background: #0f172a; text-align: center; width: 100%; "
 										:placeholder="0"
 									/>
@@ -271,8 +271,8 @@ export default {
 		//授权
 		async approve(){
 			let coinKey = "MBOX";
-			let {isApproving} = this.coinArr[coinKey];
-			if( isApproving) return;
+			let {allowanceToRent, isApproving} = this.coinArr[coinKey];
+			if(allowanceToRent > 0 || isApproving) return;
 
 			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr,
 			WalletConfig.ETH.momoRent, {coinKey, type: "allowanceToRent"});

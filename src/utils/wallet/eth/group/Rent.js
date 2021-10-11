@@ -6,7 +6,7 @@ import BigNumber from "bignumber.js";
 export default class Rent {
 	//创建出租订单: 注意如果MOMO在老的租赁合约上还在租赁的, 也不能出租
 	static async createRent({tokenId_, rentDays_, rentPrice_}, recipet){
-		let myAddr = await ETH.getAccount(true);
+		let myAddr = await ETH.getAccount();
 		if (!myAddr) return;
 
 		let contract = new ETH.web3.eth.Contract([
@@ -33,7 +33,6 @@ export default class Rent {
 					console.log("createRent success!!!!!");
 					Common.app.unLockBtn("putRentLock");
 					Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
-					Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
 					recipet();
 				}
 			)
@@ -41,7 +40,7 @@ export default class Rent {
 	}
 	//取消出租
 	static async cancelRent({tokenId_, orderId_}, recipet){
-		let myAddr = await ETH.getAccount(true);
+		let myAddr = await ETH.getAccount();
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([
 			{
@@ -61,7 +60,6 @@ export default class Rent {
 					console.log("cancelPutRent success!!!!!");
 					Common.app.unLockBtn("cancelRentLock");
 					Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
-					Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
 					recipet();
 				}
 			)
@@ -69,7 +67,7 @@ export default class Rent {
 	}
 	//租赁
 	static async rent({tokenId_, orderId_, days_, price_}){
-		let myAddr = await ETH.getAccount(true);
+		let myAddr = await ETH.getAccount();
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([
 			{
@@ -96,8 +94,8 @@ export default class Rent {
 		});
 	}
 	//续租
-	static async renewRent({tokenId_, orderId_, days_, price_}, recipet){
-		let myAddr = await ETH.getAccount(true);
+	static async renewRent({tokenId_, orderId_, days_, price_}){
+		let myAddr = await ETH.getAccount();
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([
 			{
@@ -117,12 +115,11 @@ export default class Rent {
 
 		return new Promise(resolve => {
 			ETH.sendMethod(
-				contract.methods.renewRent(Number(tokenId_), Number(orderId_), Number(days_), ETH.numToHex(price_)), {from: myAddr},
+				contract.methods.rent(Number(tokenId_), Number(orderId_), Number(days_), ETH.numToHex(price_)), {from: myAddr},
 				hash=>resolve(hash),
 				()=>{
 					console.log("cancelPutRent success!!!!!");
 					Common.app.unLockBtn("rentLock");
-					recipet();
 				}
 			)
 		});

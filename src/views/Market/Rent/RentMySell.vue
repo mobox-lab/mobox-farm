@@ -49,11 +49,11 @@
 						<td class="vertical-children">
 							<span v-if="item.leftTs < 0">{{$t("Hire_32")}}</span>
 							<span v-else>{{getLeftTime(item.leftTs)}}</span>
-							<img v-if="item.leftTs > 0" class="cur-point mgl-5" src="@/assets/icon/view.png" height="25" alt="" @click="$parent.$refs.rentDeal.setOprData(item.tokenId, item.isRentOther).show()">
+							<img v-if="item.leftTs > 0 && Number(item.orderId) >= 5e4" class="cur-point mgl-5" src="@/assets/icon/view.png" height="25" alt="" @click="$parent.$refs.rentDeal.setOprData(item.tokenId, item.isRentOther).show()">
 						</td>
 						<td class="vertical-children">
-							<img class="hide-xs"  src="@/assets/coin/BUSD.png" alt="" height="25">
-							<span class="mgl-5">{{numFloor(item.price/1e9, 10000)}} BUSD</span>
+							<img class="hide-xs"  :src="require(`@/assets/coin/${Number(item.orderId) >= 5e4?'BUSD':'MBOX'}.png`)" alt="" height="25">
+							<span class="mgl-5">{{numFloor(item.price/1e9, 10000)}}  {{Number(item.orderId) >= 5e4?'BUSD':"MBOX" }}</span>
 						</td>
 						<td>{{item.rentDays}}</td>
 						<td  >

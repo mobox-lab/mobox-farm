@@ -45,28 +45,28 @@
 					<!-- 我的momo并且可以出租 -->
 					<div class="tac mgt-30"  v-if="isMyPet && momoState == -1 ">
 						<section>
-							<p >请设置单天价格</p>
+							<p >{{$t("Hire_50")}}</p>
 							<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
-								<p class="small tal">单天价格(BUSD)</p>
+								<p class="small tal">{{$t("Hire_49")}}(BUSD)</p>
 								<div class="por mgt-5">
 									<div class="ly-input-pre-icon">
 										<img  src="@/assets/coin/BUSD.png" alt="" />
 									</div>
 									<input v-model="rentObj.rentPrice" class="ly-input" type="number" v-number
 										style=" background: #0f172a; text-align: center; width: 100%; "
-										placeholder="请设置单天价格"
+										:placeholder="$t('Hire_50')"
 									/>
 								</div>
 							</div>
 						</section>
 						<section class="mgt-20">
-							<p >请设置最大出租天数</p>
+							<p >{{$t("Hire_52")}}</p>
 							<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
-								<p class="small tal" :class="{'color-buy':Number(rentObj.rentDay) < 7 && Number(rentObj.rentDay) > 0}">出租天数(7~30)</p>
+								<p class="small tal" :class="{'color-buy':Number(rentObj.rentDay) < 7 && Number(rentObj.rentDay) > 0}">{{$t("Hire_51")}}</p>
 								<div class="por mgt-5">
 									<input v-model="rentObj.rentDay" class="ly-input" type="number" v-int data-max="30" 
 										style=" background: #0f172a; text-align: center; width: 100%; "
-										placeholder="请设置最大出租天数"
+										:placeholder="$t('Hire_52')"
 									/>
 								</div>
 							</div>
@@ -84,7 +84,7 @@
 					<div  v-if="momoState == 0">
 						<div id="rent-info-panel">
 							<div class="aveage-box">
-								<p>单天价格</p>
+								<p>{{$t("Hire_49")}}</p>
 								<h3 class="tar vertical-children">
 									<span>{{numFloor(statusObj.rentPrice / 1e18, 1e4)}}</span>&nbsp;
 									<img src="@/assets/coin/BUSD.png" alt="" height="20">
@@ -92,7 +92,7 @@
 							</div>
 							<div class="tab-split"></div>
 							<div class="aveage-box">
-								<p>最大可租赁天数</p>
+								<p>{{$t("Hire_57")}}</p>
 								<h3 class="tar">{{statusObj.rentDays}} {{$t("Hire_46")}}</h3>
 							</div>
 						</div>
@@ -102,16 +102,16 @@
 						<div class="tac mgt-20" v-else>
 							<section class="tal">
 								<div class="ly-input-content" style="margin:0px auto;margin-top:10px">
-									<p >起租天数(1~{{statusObj.rentDays}})</p>
-									<p class="small  color-buy">您可以先租1天，之后再续租剩余天数</p>
+									<p >{{$t('Hire_53').replace('#0#',statusObj.rentDays)}}</p>
+									<p class="small  color-buy">{{$t("Hire_58")}}</p>
 									<div class="por mgt-5">
 										<input v-model="inputRentDays" class="ly-input" type="number" v-number :data-max="statusObj.rentDays"
 											style=" background: #0f172a; text-align: center; width: 100%; "
-											placeholder="请输入起租天数"
+											:placeholder="$t('Hire_54')"
 										/>
 									</div>
 									<div class="aveage-box mgt-10" v-if="Number(inputRentDays) > 0">
-										<p>总价</p>
+										<p>{{$t("Market_18")}}</p>
 										<h3 class="tar vertical-children">
 											<span>{{numFloor(statusObj.rentPrice * inputRentDays / 1e18, 1e4)}}</span>&nbsp;
 											<img src="@/assets/coin/BUSD.png" alt="" height="20">

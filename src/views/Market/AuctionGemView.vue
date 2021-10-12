@@ -102,10 +102,7 @@
 				</div>
 			</div>
 			<div class="small mgt-10 opa-6" v-if="Number(sellObj.startPrice) > 0 && Number(sellObj.endPrice) > 0 && priceTypePos==1">{{$t("Market_14").replace("#0#", sellObj.durationDays).replace("#1#",sellObj.startPrice).replace("#2#",sellObj.endPrice)}}</div>
-			<!-- <button style="width: 200px" class="btn-primary mgt-20" :class="!(sellObj.durationDays > 1 && sellObj.startPrice > 0)? 'disable-btn': '' " @click="changePrice">
-				{{$t("Common_03")}}
-			</button> -->
-			<p class="color-buy tac mgt-10 small" v-if="Number(totalPrice) < 10">出售总价至少10BUSD</p>
+			<p class="color-buy tac mgt-10 small" v-if="Number(totalPrice) < 10">{{$t("Market_77")}}</p>
 			<StatuButton style="width: 200px" class="mgt-10" :onClick="changePrice" :isDisable="Number(totalPrice) < 10">
 				{{$t("Common_03")}}
 			</StatuButton>

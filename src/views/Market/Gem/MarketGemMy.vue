@@ -165,7 +165,7 @@
 				</div>
 			</div>
 			<div class="small mgt-10 opa-6" v-if="Number(sellObj.startPrice) > 0 && Number(sellObj.endPrice) > 0 && priceTypePos==1">{{$t("Market_14").replace("#0#", sellObj.day).replace("#1#",sellObj.startPrice).replace("#2#",sellObj.endPrice)}}</div>
-			<p class="color-buy tac mgt-10 small" v-if="Number(sellObj.startPrice) < 10">出售总价至少10BUSD</p>
+			<p class="color-buy tac mgt-10 small" v-if="Number(sellObj.startPrice) < 10">{{$t("Market_77")}}</p>
 			<div class="mgt-10"  :class="{'btn-group': !hasApprove[needApproveTokenType] && hasApprove[needApproveTokenType] != -1}">
 				<StatuButton v-if="hasApprove[needApproveTokenType] != -1 && !hasApprove[needApproveTokenType]" data-step="1" :onClick="approve.bind(this, sellObj)" :isLoading="lockBtn.approveLock > 0" style="width:70%" >
 					{{$t("Air-drop_16")}}

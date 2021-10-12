@@ -94,7 +94,7 @@ export default class Rent {
 		});
 	}
 	//续租
-	static async renewRent({tokenId_, orderId_, days_, price_}){
+	static async renewRent({tokenId_, orderId_, days_, price_}, recipet){
 		let myAddr = await ETH.getAccount();
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([
@@ -115,11 +115,12 @@ export default class Rent {
 
 		return new Promise(resolve => {
 			ETH.sendMethod(
-				contract.methods.rent(Number(tokenId_), Number(orderId_), Number(days_), ETH.numToHex(price_)), {from: myAddr},
+				contract.methods.renewRent(Number(tokenId_), Number(orderId_), Number(days_), ETH.numToHex(price_)), {from: myAddr},
 				hash=>resolve(hash),
 				()=>{
 					console.log("cancelPutRent success!!!!!");
 					Common.app.unLockBtn("rentLock");
+					recipet();
 				}
 			)
 		});

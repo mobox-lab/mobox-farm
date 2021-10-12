@@ -3,7 +3,7 @@
 		<div class="tal search vertical-children por mgt-20">
 			
 			<div id="market-pet-fitter">
-				<span class="search-box  dib">
+				<!-- <span class="search-box  dib">
 					<div class="dib por" >
 						<div class="dib por">
 							<input class="ly-input" ref="searchInput" style="padding-right:30px;width:150px;border-radius:50px" type="text" :placeholder="$t('BOX_17')" v-model="searchWord" />
@@ -19,14 +19,14 @@
 						</div>
 					</div>
 					<img class="mgl-10 cur-point" :src="require('@/assets/icon/search.png')" alt="" @click="goSearch"  />
-				</span>
+				</span> -->
 
 				<div class="dropdown-group mgl-5" @click="showDrop" tabindex="3">
 					<div class="dropdown-group-value por">
 						{{$t("Market_63")}} ▼
 					</div>
 					<div class="dropdown-group-list hide">
-						<Dropdown :list="selectDays" :defaultSelectPos="marketRentSearch.rentDays" :onChange="onDaysChange" />&nbsp;
+						<!-- <Dropdown :list="selectDays" :defaultSelectPos="marketRentSearch.rentDays" :onChange="onDaysChange" />&nbsp; -->
 						<Dropdown :list="$parent.selectCategory" :defaultSelectPos="marketRentSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
 						<Dropdown :list="selectVType" :defaultSelectPos="marketRentSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
 						<Dropdown :list="sortArr" :defaultSelectPos="marketRentSearch.sort" :onChange="onSortChange" />&nbsp;

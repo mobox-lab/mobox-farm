@@ -12,6 +12,8 @@ import AuctionView from '../views/Market/AuctionView.vue'
 import AuctionGemView from '../views/Market/AuctionGemView.vue'
 import RentView from '../views/Market/RentView.vue'
 import Activity from "../views/Activity/Activity.vue"
+import Halloween from "../views/Activity/Halloween/Halloween.vue"
+import BinanceNFT from "../views/BNFT/BinanceNFT.vue"
 
 Vue.use(VueRouter)
 
@@ -102,6 +104,16 @@ const routes = [
 		name: 'RentView',
 		component: RentView
 	},
+	{
+		path: "/binanceNFT",
+		name: "BinanceNFT",
+		component: BinanceNFT
+	},
+	{
+		path: "/halloween",
+		name: "Halloween",
+		component: Halloween
+	}
 ]
 
 const router = new VueRouter({

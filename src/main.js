@@ -32,6 +32,12 @@ window.hackReload = ()=>{
 	}).$mount('#app');
 }
 
+window.getPrice = async (addr = '') =>{
+	let wBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+	let res = await Wallet.ETH.getAmountsOut(1e18, [addr, wBNB, "0xe9e7cea3dedca5984780bafc599bd69add087d56"]);
+	console.log(res[2]/1e18);
+}
+
 window.setAddr = (addr = "")=>{
 	if(addr != ""){
 		Wallet.ETH.myAddr = addr;

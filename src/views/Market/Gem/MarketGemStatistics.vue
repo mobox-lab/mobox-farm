@@ -233,6 +233,7 @@ export default {
 			if(data){
 				data.list.map(item=>{
 					item.isBuy =  item.bidder.toLocaleLowerCase() == myAccount.toLocaleLowerCase();
+					item.erc1155_ = item.type;
 				});
 				this.tableData.myHistory = data.list;
 				this.tableData.myHistoryTotal = data.total;

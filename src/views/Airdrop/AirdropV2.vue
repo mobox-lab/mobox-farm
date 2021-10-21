@@ -233,6 +233,21 @@
 					<Activity />
 				</div>
 
+				<template v-if="!isMoboxWallet">
+					<div class="tal mgt-30" >
+						<div class="vertical-children">
+							<img src="@/assets/icon/periocn.png" alt="" height="20">
+							<h2 class="dib mgl-10">{{$t("Air-drop_245")}}</h2>
+						</div>
+						<div class="aveage-box block-xs">
+							<p class="small-xs">{{$t("Air-drop_246")}}</p>
+						</div>
+					</div>
+					<div class="mgt-20 sexy" style="overflow: auto">
+						<GamesView />
+					</div>
+				</template>
+
 				<div class="tal mgt-30">
 					<div class="vertical-children">
 						<img src="@/assets/icon/periocn.png" alt="" height="20">
@@ -242,7 +257,6 @@
 						<p class="small-xs">{{$t("Air-drop_256")}}</p>
 					</div>
 				</div>
-
 
 				<section id="buy-back" class="mgt-20 por">
 
@@ -451,10 +465,11 @@ import Withdraw from './Withdraw';
 import Deposit from './Deposit';
 import { Dialog, Loading, Dropdown } from '@/components';
 import Activity from "../Activity/Activity.vue"
+import GamesView from "./GamesView.vue"
 
 export default {
 	mixins: [CommonMethod],
-	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, Dropdown, Activity},
+	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, Dropdown, Activity, GamesView},
 	data(){
 		return({
 			howToPlayPos: 0,
@@ -504,6 +519,11 @@ export default {
 			buyBackType: (state) => state.globalState.data.buyBackType,
 			refundData: (state) => state.globalState.data.refundData,
 		}),
+
+		isMoboxWallet(){
+			return window.SHOW_APP_BAR != undefined;
+		},
+
 		//获取总质押USDT
 		getTotalSupplyUSDT() {
 			let num = this.coinArr["MBOX-BNB-V2"].totalSupply;
@@ -670,6 +690,8 @@ export default {
 </script>
 
 <style scoped>
+
+
 
 #aridorp, #activity{
 	padding: 10px

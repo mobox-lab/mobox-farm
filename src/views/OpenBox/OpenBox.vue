@@ -264,16 +264,20 @@ export default {
 			showOpenBoxCard: [],
 
 			testArr: [
-				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '50080',quality: 5,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 4,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
-				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				{category: 5,hashrate: 120,level: 1,lvHashrate: 120,num: 1,prototype: '50092',quality: 6,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'Name_338',isOpenCard:true},
+				{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '21001',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'Name_1',isOpenCard:true},
+				{category: 3,hashrate: 40,level: 1,lvHashrate: 40,num: 1,prototype: '43025',quality: 6,specialty: 0,tokenId:0,vType: 4, chain:'bnb', tokenName:'Name_296',isOpenCard:true},
+
+				// {category: 2,hashrate: 20,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 5,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '23020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 4,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
+				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'aaa',isOpenCard:true},
 			],
 
 			petDataArr:[],
@@ -697,7 +701,6 @@ export default {
 		testOpenAnime2(){
 			this.petDataArr = [];
 			this.$nextTick(()=>{
-				this.testArr[0].vType = this.testArr[0].vType == 4?5:4;
 				this.petDataArr = [...this.testArr];
 				this.isAnimation = true;
 				//开始spine动画

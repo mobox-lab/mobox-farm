@@ -11,7 +11,7 @@
 		<input
 			type="text"
 			class="ly-input mgl-10"
-			style="width: 60px; text-align: center"
+			style="width: 60px; text-align: center;background: #222;height: 35px"
 			v-int
 			:data-max="totalPage"
 			v-model="nowPage"

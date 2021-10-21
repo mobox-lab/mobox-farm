@@ -228,6 +228,14 @@ export default {
 			}
 		},
 
+		showOpenBoxCb(type, cb){
+			if(this.openBoxTypeObj[type]){
+				this.openBoxType = type;
+			}
+			$("#showBoxLayer").show();
+			this.initBoxAndOpen(cb);
+		},
+
 		showOpenBox(type, arr, needShowBox = true){
 			if(this.openBoxTypeObj[type]){
 				this.openBoxType = type;
@@ -235,13 +243,15 @@ export default {
 			this.showReult = arr;
 			$("#showBoxLayer").show();
 			if(needShowBox){
-				this.initBoxAndOpen();
+				this.initBoxAndOpen(()=>{
+					this.isShowResult = true;
+				});
 			}else{
 				$("#boxSpineShow").hide();
 				this.isShowResult = true;
 			}
 		},
-		initBoxAndOpen(){
+		initBoxAndOpen(cb){
 			console.log(this.getNowTypeObj.boxSpineRes);
 			$("#boxSpineShow").hide();
 			this.boxSpine = new window.spine.SpineWidget(this.$refs.boxSpine, {
@@ -259,7 +269,7 @@ export default {
 					this.boxSpine.state.timeScale = 2;
 					this.boxSpine.setAnimation("dakai", {
 						complete: ()=>{
-							this.isShowResult = true;
+							cb();
 						}
 					})
 				}

@@ -21,7 +21,7 @@
 					</th>
 					<th >{{$t("Hire_22")}}</th>
 					<th >{{$t("Hire_23")}}</th>
-					<th>{{$t("BOX_14")}}</th>
+					<!-- <th>{{$t("BOX_14")}}</th> -->
 				</tr>
 				<tr>
 					<td colspan="6">
@@ -56,13 +56,13 @@
 							<span class="mgl-5">{{numFloor(item.price/1e9, 10000)}}  {{Number(item.orderId) >= 5e4?'BUSD':"MBOX" }}</span>
 						</td>
 						<td>{{item.rentDays}}</td>
-						<td  >
+						<!-- <td  >
 							<span  v-if="item.leftTs < 0">{{$t("Hire_32")}}</span>
 							<p v-else>
 								<span style="color:#ADC202" v-if="item.round > 0">{{$t("Hire_31").replace("#0#", item.round)}}</span>
 								<span style="color: #7388C1" v-else>{{$t("Hire_30")}}</span>
 							</p>
-						</td>
+						</td> -->
 					</tr>
 					<tr><td colspan="6" style="height:5px"></td></tr>
 				</tbody>
@@ -176,6 +176,7 @@ export default {
 						category: item.category,
 						quality: item.quality,
 						isRent: true,
+						orderId: item.orderId,
 					});
 					let nowTs = parseInt(new Date().valueOf()/1000);
 					item.leftTs = Number(item.rentTime) - nowTs;

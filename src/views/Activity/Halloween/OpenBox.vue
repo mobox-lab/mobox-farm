@@ -1,20 +1,19 @@
 <template>
 	<div>
 		<Dialog id="open-halloween-dialog" :top="100" :width="500">
-			<div id="data-view" class="por">
-				<img id="zhizhu2" src="@/assets/halloween/zhizhu-pa.gif" alt=""/>
-				<h3 class="tal">{{$t("Festival_09")}}</h3>
+			<div id="data-view">
+				<h3 class="tal">打开盒子</h3>
 				<div class="data-view-content aveage-box" style="height: 140px;margin-top:50px;padding:20px">
 					<div style="flex:2">
 						<img src="@/assets/halloween/box.png" alt="" width="160"  style="position:relative;top:-20px;left: -20px">
 					</div>
 					<div class="tal" >
-						<p class="small opa-6">{{$t("Festival_10")}}</p>
+						<p class="small opa-6">未打开礼盒数</p>
 						<h2>{{myData.box}}</h2>
 					</div>
 				</div>
 				<div class="mgt-20 data-view-content" style="padding:20px">
-					<div class="tal">{{$t("Festival_12")}}</div>
+					<div class="tal">打开的礼盒数量</div>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
 							<img  src="@/assets/halloween/box.png" alt="" />
@@ -30,7 +29,7 @@
 				</div>
 
 				<div class="btn-halloween mgt-30" @click="openBox">
-					{{$t("Festival_09")}}
+					打开盒子
 				</div>
 			</div>
 		</Dialog>
@@ -43,7 +42,7 @@
 						<div class="vertical-children">
 							<img src="@/assets/halloween/box.png" alt="" height="60">
 							<div class="dib tal mgl-10">
-								<h3>{{$t("Festival_12")}}: x{{getTotalOpenBox}}</h3>
+								<h3>{{$t("MECBOX_41")}}: x{{getTotalOpenBox}}</h3>
 							</div>
 						</div>
 						<div class="data-view-content ovh mgt-10" style="max-height:480px;overflow:auto;padding:10px">
@@ -96,19 +95,16 @@ export default {
 			return this.$parent.itemCfg[id].lv
 		},
 		show(){
-			this.openNum = this.myData.box;
 			this.oprDialog("open-halloween-dialog", "block");
 		},
 		showOpenResult(arr){
 			this.showReult = arr;
 		},
 		async openBox(){
-			if(Number(this.openNum) <= 0) return;
 			let myAddr = await Wallet.ETH.getAccount();
-			let sign = await this.$parent.getSign();
 			let data = {
 				addr: myAddr,
-				sign,
+				sign: "123",
 				num: this.openNum
 			}
 			let res = await axios.post(HttpConfig.Halloween.OpenBox, data);
@@ -116,16 +112,14 @@ export default {
 			if(res.data.code == 200){
 				this.openNum = "";
 				this.$parent.getMyData();
-				this.$parent.getOprLogs();
 				this.showReult = res.data.data.reverse();
 
-				this.oprDialog("open-halloween-dialog", "none");
-
-				Common.app.$refs.boxBag.showOpenBoxCb('halloween',()=>{
+				Common.app.$refs.boxBag.showOpenBoxCb('mec',()=>{
 					this.isShowResult = true;
 					Common.app.$refs.boxBag.closeResult();
 				});
 			}
+			
 		},
 		closeResult(){
 			this.isShowResult = false;
@@ -165,17 +159,5 @@ export default {
 		border: 2px solid #36383A;
 		border-radius: 30px;
 		cursor: pointer;
-	}
-	#zhizhu2{
-		position: absolute !important;
-		transform: rotateY(-180deg);
-		right: 0px;
-		top: 0px;
-		z-index: 1;
-		width: 120px;
-	}
-	#data-view .data-view-content{
-		position: relative;
-		z-index: 2;
 	}
 </style>

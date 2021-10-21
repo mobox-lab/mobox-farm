@@ -98,6 +98,14 @@
 						<span>{{ $t("Rank_05") }}</span>
 					</li>
 				</router-link>
+				<router-link to="/halloween">
+					<li :class="this.$route.path == '/halloween' ? 'active' : ''">
+						<span class="per-icon vertical-children">
+							<img src="./assets/icon/rank.png" alt="" width="25" />
+						</span>
+						<span>halloween</span>
+					</li>
+				</router-link>
 			</ul>
 			<div class="tac mgt-30">
 				<span @click="jumpToTokenMaster">
@@ -1056,13 +1064,13 @@ export default {
 	margin-right: 15px;
 }
 #top-res {
-	height: 60px;
+	height: 50px;
 	position: fixed;
 	top: 0px;
 	width: 100%;
 	left: 0px;
 	padding-left: 280px;
-	line-height: 60px;
+	line-height: 50px;
 	background: #1F252B;
 	z-index: 9998;
 }

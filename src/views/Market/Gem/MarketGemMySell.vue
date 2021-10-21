@@ -34,7 +34,7 @@
 						</div>
 					</template>
 					<span v-else class="color-buy ">
-						已过期
+						{{$t("Market_76")}}
 					</span>
 				</GemSellItem>
 			</router-link>

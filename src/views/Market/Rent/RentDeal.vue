@@ -24,7 +24,7 @@
 					</p>
 				</div>
 		
-				<StatuButton  :onClick="()=>oprDialog('rerent-day-dialog', 'block')" class="mgt-20" v-if="Number(statusObj.rentDays) > 0 && isRentOther" :isDisable="Number(statusObj.leftTs) <= 0">
+				<StatuButton  :onClick="()=>oprDialog('rerent-day-dialog', 'block')" :isLoading="lockBtn.rentLock > 0" class="mgt-20" v-if="Number(statusObj.rentDays) > 0 && isRentOther" :isDisable="Number(statusObj.leftTs) <= 0">
 					<span v-if="Number(statusObj.leftTs) > 0">{{$t("Hire_35")}}</span>
 					<span v-else>{{$t("Hire_32")}}</span>
 				</StatuButton>

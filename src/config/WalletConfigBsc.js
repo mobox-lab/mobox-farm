@@ -17,7 +17,7 @@ export default class WalletConfig {
 		momoGemToken: "0xf91d6e71F6D9E6DBfFE92597ce0fdD76058c49a7", //宝石token， ERC1155
 		momoGemOpr: "0x5Fb3035d07E5d0E1D8Efbc5aE5b7546C15173035", //宝石穿戴操作合约
 		momoRent: "0x689B1fcCF5B8E6f64B9F0e10bE1BfbA3039430Ba", //momo出租
-		momoRentV2: "0x59481Ddf37802A22e1685e2D0E13934674a23a1F", //momo出租V2
+		momoRentV2: "0xAec271A66Feb3d47bDAb54DC38C36231657b007b", //momo出租V2
 		momoVeMbox: "0x5E7Eb57B163b78e93608E773e0F4a88A55d7C28F", //veMbox合约
 		momoMoreMinter: "0x2873d94d21eFa8AF064B02174413966b357C69E7", //多重挖矿合约
 		balanceAddr: {

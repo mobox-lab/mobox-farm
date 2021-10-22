@@ -12,5 +12,6 @@ export default class HttpConfig {
 		Logs: this.ServeNode.Activity +"/event/logs",
 		Bags: this.ServeNode.Activity +"/event/bags",
 		Claim: this.ServeNode.Activity +"/event/claim",
+		Ovdata: this.ServeNode.Activity +"/event/ovdata",
 	}
 }

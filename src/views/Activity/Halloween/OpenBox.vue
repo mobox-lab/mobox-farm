@@ -114,7 +114,7 @@ export default {
 				this.$parent.getMyData();
 				this.showReult = res.data.data.reverse();
 
-				Common.app.$refs.boxBag.showOpenBoxCb('mec',()=>{
+				Common.app.$refs.boxBag.showOpenBoxCb('halloween',()=>{
 					this.isShowResult = true;
 					Common.app.$refs.boxBag.closeResult();
 				});

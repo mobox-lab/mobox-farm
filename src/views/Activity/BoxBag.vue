@@ -122,6 +122,12 @@ export default {
 					boxSpineRes: "shuijign/shuijign",
 					boxRes: "box/mecbox_a",
 					coinNumToLv: {"2": 1, "11": 2, "21": 3, "100": 4, "500":5},
+				},
+				"halloween": {
+					iconName: "coin/CRYSTAL",
+					boxSpineRes: "halloween/WSbaoxaing",
+					boxRes: "box/mecbox_a",
+					coinNumToLv: {"2": 1, "11": 2, "21": 3, "100": 4, "500":5},
 				}
 			}
 		})

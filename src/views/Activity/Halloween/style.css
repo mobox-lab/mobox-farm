@@ -1,3 +1,12 @@
+#take-balance{
+	position: absolute;
+	top:10px;
+	right: 0px;
+	background: #161331;
+	border-radius: 30px 0px 0px 30px;
+	padding: 10px;
+	padding-right: 0px;
+}
 .data-view-content{
 	background: #161331a6;
 	border-radius: 16px;
@@ -20,6 +29,7 @@
 	top: 5px;
 	left: 15%;
 	z-index: 10;
+	cursor: pointer;
 }
 .g-item-num{
 	position: absolute;
@@ -57,6 +67,25 @@
 	color: #fff;
 	cursor: pointer;
 	display: inline-block;
+	user-select: none;
+}
+.btn-halloween2{
+	background: none;
+	background-image: url('../../../assets/halloween/btnbg2.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	height: 25px;
+	width: 63px;
+	line-height: 20px;
+	border: none;
+	font-size: 12px;
+	font-weight: 200;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block;
+	text-align: center;
+	user-select: none;
+
 }
 .btn-halloween3{
 	background: none;
@@ -72,6 +101,8 @@
 	cursor: pointer;
 	line-height: 38px;
 	display: inline-block;
+	user-select: none;
+
 }
 
 #data-box{
@@ -133,8 +164,8 @@
 	border: 2px solid #474747;
 	border-radius: 8px;
 	display: inline-block;
-	width: 45px;
 	height: 36px;
 	line-height: 35px;
 	font-weight: bold;
+	padding: 0px 5px;
 }

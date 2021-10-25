@@ -1,7 +1,8 @@
 <template>
 	<div>
 		<Dialog id="open-halloween-dialog" :top="100" :width="500">
-			<div id="data-view">
+			<div id="data-view" class="por">
+				<img id="zhizhu2" src="@/assets/halloween/zhizhu-pa.gif" alt=""/>
 				<h3 class="tal">打开盒子</h3>
 				<div class="data-view-content aveage-box" style="height: 140px;margin-top:50px;padding:20px">
 					<div style="flex:2">
@@ -95,6 +96,7 @@ export default {
 			return this.$parent.itemCfg[id].lv
 		},
 		show(){
+			this.openNum = this.myData.box;
 			this.oprDialog("open-halloween-dialog", "block");
 		},
 		showOpenResult(arr){
@@ -102,17 +104,22 @@ export default {
 		},
 		async openBox(){
 			let myAddr = await Wallet.ETH.getAccount();
+			let sign = await this.$parent.getSign();
 			let data = {
 				addr: myAddr,
-				sign: "123",
+				sign,
 				num: this.openNum
 			}
+			console.log(data, "openbox");
 			let res = await axios.post(HttpConfig.Halloween.OpenBox, data);
 
 			if(res.data.code == 200){
 				this.openNum = "";
 				this.$parent.getMyData();
+				this.$parent.getOprLogs();
 				this.showReult = res.data.data.reverse();
+
+				this.oprDialog("open-halloween-dialog", "none");
 
 				Common.app.$refs.boxBag.showOpenBoxCb('halloween',()=>{
 					this.isShowResult = true;
@@ -159,5 +166,17 @@ export default {
 		border: 2px solid #36383A;
 		border-radius: 30px;
 		cursor: pointer;
+	}
+	#zhizhu2{
+		position: absolute !important;
+		transform: rotateY(-180deg);
+		right: 0px;
+		top: 0px;
+		z-index: 1;
+		width: 120px;
+	}
+	#data-view .data-view-content{
+		position: relative;
+		z-index: 2;
 	}
 </style>

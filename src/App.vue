@@ -769,6 +769,7 @@ export default {
 				lang = navigator.language||navigator.userLanguage;
 				lang = langMap[lang] || 'en';
 			}
+			if(lang == "zh-CH") lang = "zh-TW";
 			this.$i18n.locale = lang;
 		},
 		async  getTotalStakeUSDTAndAirdropKEY(){

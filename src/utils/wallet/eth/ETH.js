@@ -288,6 +288,47 @@ export default class ETH {
 		});
 	}
 
+	static async signStr(dataToSign){
+		let myAddr = await this.getAccount();
+		if (!myAddr) return;
+		console.log(dataToSign);
+
+		let walletType = Common.getStorageItem("connect-wallet");
+
+		if(walletType == "walletConnect"){
+			let res = await Common.walletConnectConnector.signMessage([myAddr, dataToSign]);
+			return res;
+		}
+
+		if(walletType == "metamask"){
+			let res = await window.ethereum.request({
+					method: 'personal_sign',
+					params: [myAddr, dataToSign],
+				});
+			return res;
+		}
+
+		if(walletType == "binanceChain"){
+			let res = await window.BinanceChain.request({
+				jsonrpc:"2.0",
+				method: 'eth_sign',
+				params: [myAddr, dataToSign]
+			});
+			return res;
+		}
+
+		if(walletType == "mboxWallet"){
+			return new Promise(resolve => {
+				window.mbox.bscWeb3.personal.sign(dataToSign, myAddr, async (err, res)=>{
+					if(!err){
+						resolve(res)
+					}
+				})
+			})
+		}
+		
+	}
+
 	static onReciptNotice(hash, method, type){
 		// console.log({hash, method, type});
 		//当前只记录swap和流动性相关的记录

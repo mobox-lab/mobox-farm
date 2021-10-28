@@ -8,6 +8,7 @@ const state = () => ({
 		mdxBalance: 0,
 		crystalNum: 0,
 		mecBoxNum: 0,
+		halloweenBox: 0,
 	},
 })
 

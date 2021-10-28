@@ -25,7 +25,7 @@
 		<div :class="tab_pos == 0 ? '' : 'hide'" style="padding: 10px">
 			<div :class="getShowPetArr.length < 4 ? 'tal' : ''">
 				<div class="clear">
-					<router-link :to="(item.location=='auction'?'/auctionView/': '/upgrade/') + item.prototype + '-' + item.tokenId" v-for="item in getShowPetArr"
+					<router-link :to="(item.location=='auction'?'/auctionView/': '/upgrade/') + item.prototype + '-' + item.tokenId+'-'+item.location " v-for="item in getShowPetArr"
 						:key=" item.prototype.toString() + item.tokenId + item.num " >
 						<PetItem v-bind:data="{ item: item }" />
 					</router-link>
@@ -254,7 +254,7 @@ export default {
 		getTotalPetNum: function () {
 			let totalPet = 0;
 			this.getTotalPet.map((item) => {
-				totalPet += item.num;
+				totalPet += Number(item.vType) >= 4?1 : Number(item.num);
 			});
 			return totalPet;
 		},
@@ -267,7 +267,7 @@ export default {
 		},
 		getTotalPet() {
 			let totalPet = [];
-			[...this.myNFT_stake, ...this.myNFT_wallet].map((item) => {
+			[...this.myNFT_wallet, ...this.myNFT_stake].map((item) => {
 				//类型的筛选,品质的筛选
 				let isMatchCategory =
 					this.myPetFilter.category == 0 ||
@@ -280,10 +280,16 @@ export default {
 				}
 			});
 
-			totalPet.sort((a, b) =>
-				b.lvHashrate - a.lvHashrate
-			);
-
+			totalPet.sort((a, b) =>{
+				if(b.location == "wallet") {
+					if(a.location == "wallet"){
+						return b.lvHashrate - a.lvHashrate
+					}else{
+						return 1;
+					}
+				}
+				return b.lvHashrate - a.lvHashrate
+			});
 			return totalPet;
 		},
 		getShowPetArr() {

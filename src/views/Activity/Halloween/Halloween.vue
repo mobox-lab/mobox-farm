@@ -5,7 +5,6 @@
 	
 	<svg width="1920.0000000000002" height="1083" xmlns="http://www.w3.org/2000/svg" id="path">
 	<g id="Layer_1">
-	<title>Layer 1</title>
 	<polyline stroke-linecap="round" id="svg_1" points="-57.721572082756325,808.1202416109567 -57.721572082756325,810.6518871589044 -53.92410376083467,813.1835327068524 -50.12663543891301,816.9810010287737 -42.5316987950697,823.3101148986434 -28.607648281356944,829.6392287685127 -7.088661123800904,835.9683426383822 18.227794355676792,841.0316337342776 46.075895383102306,844.8291020561994 78.98728750642329,848.626570378121 109.36703408179653,848.626570378121 143.54424897909144,848.626570378121 177.72146387638637,847.360747604147 205.56956490381185,843.5632792822255 230.88602038328958,839.7658109603038 251.13918476687172,835.9683426383822 271.39234915045387,830.9050515424868 292.91133630801,825.841760446591 316.96196901351374,819.5126465767216 341.0126017190176,811.9177099328783 362.5315888765736,804.322773289035 384.05057603412973,795.4620138712177 403.037917643738,785.3354316794268 427.08855034924176,776.4746722616096 452.40500582871954,762.5506217478969 478.98728408217113,749.8923940081579 508.1012078835705,734.7025207204713 534.6834861370221,718.2468246588106 558.734118842526,704.322774145098 578.987283226108,689.1329008574114 596.7088020617425,672.6772047957509 611.8986753494291,653.6898631861426 624.5569030891679,635.9683443505082 633.4176625069852,619.5126482888477 641.0125991508285,606.8544205491089 646.0758902467239,591.6645472614223 648.6075357946718,576.4746739737357 651.1391813426197,562.550623460023 652.4050041165933,546.0949273983624 654.936649664541,528.373408562728 656.2024724385151,511.91771250106746 657.468295212489,496.72783921338083 661.2657635344106,480.2721431517204 665.0632318563323,465.0822698640338 668.8607001782539,449.89239657634715 672.6581685001757,435.96834606263434 677.7214595960712,419.5126500009739 685.3163962399144,403.05695393931336 691.6455101097838,390.3987261995744 699.2404467536272,375.20885291188785 706.8353833974704,362.550625172149 715.6961428152878,351.15822020638404 722.025256685157,339.7658152406191 729.6201933290004,328.3734102748541 735.9493071988697,319.51265085703693 742.2784210687394,309.38606866524583 752.4050032605303,299.25948647345473 763.7974082262954,290.39872705563755 777.7214587400081,281.5379676378203 791.6455092537208,273.943030993977 808.1012053153813,263.81644880218596 828.3543696989636,254.9556893843687 846.0758885345979,248.62657551449936 867.5948756921539,241.03163887065602 890.3796856236838,233.43670222681274 914.4303183291877,228.37341113091713 934.68348271277,223.3101200350216 954.9366470963521,218.24682893912606 975.1898114799342,215.7151833911783 990.3796847676207,213.1835378432305 1006.8353808292813,211.91771506925664 1020.759431342994,210.65189229528278 1030.8860135347852,209.38606952130885 1041.0125957265764,209.38606952130885 1051.1391779183673,209.38606952130885 1065.0632284320802,209.38606952130885 1080.2531017197668,209.38606952130885 1100.506266103349,210.65189229528278 1119.493607712957,211.91771506925664 1143.544240418461,213.1835378432305 1167.5948731239648,213.1835378432305 1191.6455058294687,213.1835378432305 1215.6961385349725,213.1835378432305 1242.278416788424,210.65189229528278 1268.8606950418757,206.85442397336112 1291.6455049734057,203.05695565143944 1314.4303149049358,197.9936645555439 1341.012593158387,192.93037345964837 1365.063225863891,187.86708236375284 1389.1138585693946,182.80379126785726 1409.3670229529769,179.0063229459356 1424.5568962406635,175.20885462401392 1438.4809467543764,170.14556352811846 1452.4049972680891,166.34809520619677 1466.3290477818018,162.55062688427512 1480.2530982955145,157.48733578837957 1492.9113260352533,153.6898674664579 1506.8353765489662,149.89239914453626 1518.227781514731,146.0949308226146 1530.8860092544699,141.03163972671905 1544.8100597681826,135.96834863082353 1554.936641959974,130.90505753492798 1565.0632241517649,124.57594366505856 1575.189806343556,118.24682979518911 1584.050565761373,113.18353869929359 1592.9113251791903,106.85442482942415 1603.0379073709814,101.7911337335286 1613.1644895627726,94.19619708968528 1620.759426206616,86.60126044584197 1629.620185624433,80.27214657597256 1638.4809450422501,71.41138715815535 1646.0758816860935,62.55062774033817 1653.670818329937,53.689868322520965 1663.797400521728,43.56328613072989 1671.3923371655712,34.702526712912686 1678.9872738094145,24.5759445211216 1685.316387679284,15.715185103304407 1691.6455015491533,6.8544256854872 1697.974615419023,0.5253118156177692 1703.0379065149184,-7.0696248282255425 1706.83537483684,-13.39873869809496 1709.367020384788,-18.46202979399051 1713.1644887067096,-23.52532088988605 1715.6961342546572,-29.854434759755478 1718.227779802605,-34.917725855651014 1725.8227164464483,-19.72785256796439 1729.6201847683697,-0.7405109583561112 1737.2151214122132,25.84176729509548 1749.8733491519522,56.22151387046872 1763.7973996656647,81.53796934994645 1770.1265135355343,105.58860205545028 1770.1265135355343,124.57594366505856 1770.1265135355343,132.17088030890187 1768.8606907615604,133.43670308287574 1768.8606907615604,132.17088030890187 1772.6581590834821,130.90505753492798 1780.2530957273254,127.10758921300632 1786.5822095971946,124.57594366505856 1790.3796779191164,122.04429811711076 1796.708791788986,122.04429811711076 1805.569551206803,122.04429811711076 1815.6961333985944,122.04429811711076 1820.7594244944896,122.04429811711076 1822.0252472684635,122.04429811711076 1824.5568928164114,120.7784753431369 1828.3543611383332,118.24682979518911 1835.9492977821762,114.44936147326746 1844.8100571999937,108.12024760339804 1851.1391710698626,101.7911337335286 1854.9366393917846,96.72784263763306 1857.4682849397325,89.13290599378976 1858.7341077137064,81.53796934994645 1861.2657532616543,75.208855480077 1861.2657532616543,66.34809606225983 1865.0632215835756,58.753159418416516 1866.3290443575495,49.89240000059931 1868.8606899054973,41.0316405827821 1870.1265126794713,33.43670393893879 1871.3923354534452,27.107590069069374 1872.658158227419,22.044298973173824 1873.923981001393,18.246830651252168 1875.1898037753667,15.715185103304407 1875.1898037753667,14.449362329330512 1876.455626549341,11.917716781382753 1876.455626549341,10.651894007408856 1876.455626549341,9.386071233434976 1876.455626549341,8.120248459461095 1876.455626549341,6.8544256854872 1876.455626549341,5.58860291151332 1877.7214493233143,5.58860291151332 1877.7214493233143,4.322780137539439 1878.9872720972883,4.322780137539439 1878.9872720972883,3.0569573635655445 1880.2530948712622,3.0569573635655445 1880.2530948712622,0.5253118156177692 1881.5189176452361,-0.7405109583561112 1881.5189176452361,-2.006333732329992 1881.5189176452361,-3.2721565063038867 1881.5189176452361,-4.537979280277767 1882.78474041921,-7.0696248282255425 1884.0505631931837,-9.601270376173304 1885.3163859671577,-12.132915924121077 1886.582208741132,-14.664561472068852 1889.1138542890797,-17.196207020016615 1890.3796770630536,-19.72785256796439 1891.6454998370275,-22.259498115912166 1892.911322611001,-24.791143663859927 1894.1771453849747,-26.05696643783382 1894.1771453849747,-27.322789211807702 1894.1771453849747,-28.588611985781583 " opacity="NaN" stroke="#000" fill="none"/>
 	</g>
 	</svg>
@@ -17,16 +16,21 @@
 		<img id="zhizhu" src="@/assets/halloween/zhizhu-pa.gif" alt=""/>
 	</div>
 	<div class="tac por" style="padding-bottom: 50px">
-		<h1 style="font-size: 50px;color:#FC8915;line-height:40px" class="t1">HALLOWEEN </h1>
-		<h2 style="font-size: 40px;color:#AFD53D" class="t2">LOTTERY</h2>
+		<h1 style="font-size: 50px;color:#FC8915;line-height:40px" class="t1">{{$t("Festival_01").toLocaleUpperCase()}}</h1>
+		<h2 style="font-size: 40px;color:#AFD53D" class="t2">{{$t("Festival_32").toLocaleUpperCase()}}</h2>
 		<div style="font-size:26px">
-			<p>Countdown</p>
-			<p class="time vertical-children" v-if="1636430400 - nowTs > 0">
-				<span>{{getLeftTime(1636430400 - nowTs).split(":")[0]}}</span> :
-				<span>{{getLeftTime(1636430400 - nowTs).split(":")[1]}}</span> :
-				<span>{{getLeftTime(1636430400 - nowTs).split(":")[2]}}</span> 
-			</p>
-			<p v-else>活动已结束</p>
+			<template  v-if="1636430400 - nowTs > 0">
+				<p class="vertical-children">
+					<span>{{$t("Festival_33")}}</span>
+					<img class="mgl-10 cur-point" @click="getRootRefs().ruleDialog.show('MOMO_58','Festival_02')" src="@/assets/icon/help.png" alt="" height="30">
+				</p>
+				<p class="time vertical-children">
+					<span>{{getLeftTime(1636430400 - nowTs).split(":")[0]}}</span> :
+					<span>{{getLeftTime(1636430400 - nowTs).split(":")[1]}}</span> :
+					<span>{{getLeftTime(1636430400 - nowTs).split(":")[2]}}</span> 
+				</p>
+			</template>
+			<p v-else class="mgt-10 ">{{$t("Festival_37")}}</p>
 		</div>
 		<!-- 开箱子 -->
 		<section class="mgt-30" id="data-view-p">
@@ -50,6 +54,7 @@
 						</div>
 						<img id="data-box" src="@/assets/halloween/box.png" alt="" width="300">
 					</div>
+					<div class="mgt-10 small opa-6 tac">*{{$t("Festival_38")}}</div>
 				</div>
 				<section class="tac ovh"  style="max-width: 800px;margin:0px auto;padding: 20px 0px">
 					<div class="col-md-7" id="rateshow">
@@ -119,7 +124,7 @@
 					</div>
 					<div v-if="tabPos == 2 || tabPos == 3">
 						<div class="mgt-20" style="font-size:26px">
-							<p class="dib hide-xs" v-if="tabPos == 2">{{$t("Festival_28")}}</p>
+							<!-- <p class="dib hide-xs" v-if="tabPos == 2">{{$t("Festival_28")}}</p> -->
 							<p class="time vertical-children dib mgl-10" >
 								<span>{{getLeftTime(cntDown).split(":")[0]}}</span> :
 								<span>{{getLeftTime(cntDown).split(":")[1]}}</span> :
@@ -162,7 +167,7 @@
 							<tr v-if="rankData.length > 1">
 								<td colspan="4" style="border:none">
 									<div class="mgt-10"></div>
-									<Page :defaultPage="1" :totalPage="Math.ceil(rankData.length / 10)" :onChange="onPageChange"/>
+									<Page :defaultPage="rankPage" :totalPage="Math.ceil(rankData.length / 10)" :onChange="onPageChange" ref="page" />
 								</td>
 							</tr>
 							
@@ -174,16 +179,16 @@
 								</td>
 								<td class="tac vertical-children tac-xs">
 									<img src="@/assets/halloween/lg.png" alt="" width="20">&nbsp;
-									<span class="mgl-5">{{meRankData.score}}</span>
+									<span class="mgl-5">{{meRankData.score || 0}}</span>
 								</td>
 								<td class="tar vertical-children" style="border-top-right-radius:12px;border-bottom-right-radius:12px" >
-									<template v-if="meRankData.reward.mec && meRankData.reward.mbox">
+									<template v-if="meRankData.reward.mec || meRankData.reward.mbox">
 										<span style="width: 100px" class="dib tal tac-xs mgt-5">
 											<img src="@/assets/coin/CRYSTAL.png" alt="" width="20">&nbsp;
 											<span class="dib tal mgl-5"> {{meRankData.reward.mec}}</span>
 										</span>
 										<span v-if="tabPos == 3 && meRankData.rank < 3" style="width: 100px" class="dib tac mgt-5">
-											<img src="@/assets/pet/60005.gif" alt="" width="30">
+											<PetItemMin :data="momoDatas[meRankData.rank]" :isLeft="true" :isTop="true" />
 										</span>
 										<span style="width: 100px" class="dib tal tac-xs mgt-5" v-else>
 											<img src="@/assets/coin/MBOX.png" class="mgl-20" alt="" width="20">&nbsp;
@@ -241,8 +246,8 @@
 					<tr>
 						<th width="20%" class="tal tac-xs">{{ $t("BOX_12") }}</th>
 						<th width="20%" class="tal">{{ $t("BOX_26") }}</th>
-						<th width="20%" class="tal">数量</th>
-						<th width="30%" class="tal">收益</th>
+						<th width="20%" class="tal">{{$t("Air-drop_50")}}</th>
+						<th width="30%" class="tal">{{$t("Festival_27")}}</th>
 						<th width="10%" class="tar">TX</th>
 					</tr>
 					<tr v-for="item in oprLogs" :key="item.tx">
@@ -362,6 +367,7 @@ import { HttpConfig } from "@/config";
 import { mapState } from 'vuex';
 
 const $ = window.$;
+let timer = null;
 
 const baseAttr = {
 	num: 1,
@@ -390,12 +396,12 @@ export default {
 			tabList: [this.$t("Festival_13"), this.$t("Festival_14"),this.$t("Festival_15"),this.$t("Festival_16")],
 			tabPos: 0,
 			rateData: [
-				{lv: 1, rate: "30%"},
-				{lv: 2, rate: "30%"},
-				{lv: 3, rate: "25%"},
-				{lv: 4, rate: "10%"},
-				{lv: 5, rate: "5%"},
-				{lv: 6, rate: "1%"},
+				{lv: 1, rate: "72.94%"},
+				{lv: 2, rate: "20%"},
+				{lv: 3, rate: "6%"},
+				{lv: 4, rate: "1%"},
+				{lv: 5, rate: "0.05%"},
+				{lv: 6, rate: "0.01%"},
 			],
 			itemCfg: [
 				{key:1,lv: 1, num: 0, res: "",price: 0.13, isSelect: false},{key:2,lv: 1, num: 0, res: "",price: 0.13, isSelect: false},
@@ -404,7 +410,7 @@ export default {
 				{key:7,lv: 4, num: 0, res: "",price: 2, isSelect: false},{key:8,lv: 4, num: 0, res: "",price: 2, isSelect: false},
 				{key:9,lv: 5, num: 0, res: "",price: 201.2, isSelect: false},{key:10,lv: 6, num: 0, res: "",price: 800, isSelect: false},
 			],
-			suitPrices: { 4: 1.8, 6: 5.88, 8: 15.88, 9: 518.88, 10: 2518.88 },
+			suitPrices: { 4: 1.88, 6: 5.88, 8: 15.88, 9: 518.88, 10: 2518.88 },
 			suitScore: { 4: 1, 6: 3, 8: 10, 9: 400, 10: 2500 },
 			rankData: [],
 			meRankData: {
@@ -423,7 +429,13 @@ export default {
 				"box": 0,
 				"balance": 0
 			},
-			suteData: ["四件套","六件套","八件套","九件套","十件套"],
+			suteData: [
+				this.$t("Festival_19").replace("#0#", 1).replace("#1#",': 1').replace("#2#",4),
+				this.$t("Festival_19").replace("#0#", 2).replace("#1#",': 1').replace("#2#",6),
+				this.$t("Festival_19").replace("#0#", 3).replace("#1#",': 1').replace("#2#",8),
+				this.$t("Festival_19").replace("#0#", 4).replace("#1#",': 1').replace("#2#",9),
+				this.$t("Festival_19").replace("#0#", 5).replace("#1#",': 1').replace("#2#",10),
+				],
 			sutePos: 4,
 			sutePosToId: [4,6,8,9,10],
 			last: 0,
@@ -461,23 +473,27 @@ export default {
 		sutePos: function(value){
 			this.setSuteSelect(value);
 		},
-		nowTs: function(ts){
+		nowTs: async function(ts){
 			if(this.cntDown > 0) this.cntDown--;
 
 			if(ts % 10 == 0){
-				this.getOvData();
+				await this.getMyData();
+				await this.getOvData();
 			}
 		}
 	},
 	async created(){
 		this.setSuteSelect(this.sutePos)
 		this.myAddr = await Wallet.ETH.getAccount();
-		this.getMyData();
-		this.getOvData();
-		this.getOprLogs();
+		await this.getMyData();
+		await this.getOvData();
+		await this.getOprLogs();
 	},
 	mounted(){
 		this.moveSvg();
+	},
+	beforeDestroy(){
+		clearInterval(timer);
 	},
 	methods: {
 		moveSvg(){
@@ -490,15 +506,13 @@ export default {
 			// let prePosition = initPosition;
 			let curPosition = initPosition;
 
-			console.log($gui, initPosition);
-
 			$gui.css({
 				left: initPosition.x,
 				top:initPosition.y,
 				// '-webkit-transform': 'translate(-2px, 0) rotate(' + this.getRotate(curPosition , path.getPointAtLength(1)) +'deg)'
 			}).show()
 
-			setInterval(() => {
+			timer = setInterval(() => {
 				if (curStep != STEP) {
 					curStep++;
 					curPosition = path.getPointAtLength(totalLength/STEP * curStep);
@@ -509,7 +523,9 @@ export default {
 						// '-webkit-transform': 'translate(-2px, 0) rotate('+this.getRotate(prePosition, curPosition)+'deg)'
 					}).show();
 					// prePosition = curPosition;
-				} 
+				}else{
+					clearInterval(timer);
+				}
 			}, 100)
 
 		},
@@ -521,6 +537,7 @@ export default {
 		async getSign(){
 			let now = Math.floor(Date.now() / 3600000);
 			let str = "momo_event_" + now;
+			console.log(str);
 			let signStr =  await Wallet.ETH.signStr(str);
 			return signStr
 		},
@@ -538,7 +555,7 @@ export default {
 		},
 		goExchange(){
 			if(this.getMaxSute <= 0){
-				this.showNotify('数量不足', 'error')
+				this.showNotify(this.$t("Festival_34"), 'error')
 			}else{
 				this.$refs.exchange.show();
 			}
@@ -568,7 +585,10 @@ export default {
 		},
 		async claimMbox(){
 			let amount = Number(this.myData.balance);
-			if(amount <= 0) return;
+			if(!(amount >= 5 && 1636430400 - this.nowTs > 0)){
+				this.getConfirmDialog().show(this.$t("Festival_39"), null, true);
+				return;
+			}
 			let sign = await this.getSign();
 
 			let data = {
@@ -579,7 +599,7 @@ export default {
 			let res = await axios.post(HttpConfig.Halloween.Claim, data);
 			console.log(res);
 			if(res.data.code == 200){
-				this.getConfirmDialog().show("领取成功，等待空投到账", null, true);
+				this.getConfirmDialog().show(this.$t("Festival_36"), null, true);
 
 				this.getMyData();
 				this.getOprLogs();
@@ -595,7 +615,7 @@ export default {
 			});
 			if(num == "all") num = targetItem.num;
 			if(targetItem.num == 0) {
-				this.showNotify("数量不足", "error");
+				this.showNotify(this.$t("Festival_34"), "error");
 				return;
 			}
 
@@ -609,7 +629,7 @@ export default {
 			}
 			let res = await axios.post(HttpConfig.Halloween.Sell, data);
 			if(res.data.code == 1011){
-				this.showNotify("数量不足", "error");
+				this.showNotify(this.$t("Festival_34"), "error");
 			}else{
 				this.setBagsData(res.data.data);
 			}
@@ -641,6 +661,7 @@ export default {
 			let {score, box ,balance, bags} = data;
 			this.myData.score = score;
 			this.myData.box = box;
+			this.$store.commit("userState/setData", {halloweenBox: box});
 			this.myData.balance = balance;
 			bags.map(item=>{
 				this.itemCfg[item.gid - 1].num = item.num;
@@ -657,11 +678,16 @@ export default {
 				this.setSuteSelect(this.sutePos)
 			}
 			if(pos == 2){
+				this.rankPage = 1;
 				this.getDrank();
 			}
 			if(pos == 3){
+				this.rankPage = 1;
 				this.getTrank();
 			}
+			this.$nextTick(()=>{
+				this.$refs.page && this.$refs.page.initPage();
+			})
 		},
 		onPageChange(page){
 			this.rankPage = page;

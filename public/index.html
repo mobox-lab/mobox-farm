@@ -11,6 +11,18 @@
 <script src="./js/jquery.min.js"></script>
 <script src="./js/parabola-min.js"></script>
 <script src="./js/swiper.min.js"></script>
+<!-- <script src="./js/vconsole.min.js"></script>
+<script>
+	// VConsole will be exported to `window.VConsole` by default.
+	var vConsole = new window.VConsole();
+    </script> -->
+<script>
+	$.get("https://accountapi.mobox.io/app/ip/cn").then((res) => {
+		if (res.data.isCn && window.location.host.indexOf("192") == -1) {
+			window.location.href = "https://mobox.io/annoucement.html";
+		}
+	})
+</script>
 <script>
 	function getWindowSize(){
 		var windowWidth=$(window).width();

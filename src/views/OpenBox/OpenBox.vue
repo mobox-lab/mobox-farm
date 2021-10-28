@@ -543,6 +543,8 @@ export default {
 		},
 		showHistoryDialog(item) {
 			let { tokenIds, ids, amounts, tokens } = item;
+			console.log(item);
+
 			let showHistoryArr = [];
 			//先生成721的数据
 			tokenIds.map((item, key) => {
@@ -581,6 +583,7 @@ export default {
 				return b.lvHashrate - a.lvHashrate;
 			});
 			this.showHistoryArr = showHistoryArr;
+			console.log(showHistoryArr);
 			this.oprDialog("open-box-history-dialog", "block");
 		},
 		getTimeFtt(timeStep) {

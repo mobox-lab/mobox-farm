@@ -290,11 +290,11 @@ export default {
 		},
 		//获取当前要显示的NFT的信息
 		getNowPetItem() {
-			let [prototype, tokenId] = this.$route.params.petId.split("-");
+			let [prototype, tokenId, location] = this.$route.params.petId.split("-");
 			let retObj = { prototype, tokenId, chain: "eth" };
 			for (let key in this.getTotalNft) {
 				let item = this.getTotalNft[key];
-				if (item.prototype == prototype && item.tokenId == tokenId) {
+				if (item.prototype == prototype && item.tokenId == tokenId && item.location == location) {
 					retObj = item;
 					break;
 				}

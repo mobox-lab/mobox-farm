@@ -98,19 +98,19 @@
 						<span>{{ $t("Rank_05") }}</span>
 					</li>
 				</router-link>
-				<router-link to="/halloween">
-					<li :class="this.$route.path == '/halloween' ? 'active' : ''">
-						<span class="per-icon vertical-children">
-							<img src="./assets/icon/rank.png" alt="" width="25" />
-						</span>
-						<span>halloween</span>
-					</li>
-				</router-link>
 			</ul>
 			<div class="tac mgt-30">
-				<span @click="jumpToTokenMaster">
-					<img src="@/assets/icon/tmaster_en.png" alt="" width="35%" class="cur-point">
-				</span>
+				<div id="halloween-entry" class="por">
+					<router-link to="/binanceNFT">
+						<img src="@/assets/binaceActivity.png" alt="" height="85" />
+					</router-link>
+				</div>
+				<div id="halloween-entry" class="por">
+					<router-link to="/halloween">
+						<img src="@/assets/halloween/entrybtn.png" alt="" height="85" />
+					</router-link>
+					<span v-if="halloweenBox > 0">{{halloweenBox}}</span>
+				</div>
 			</div>
 			<div id="our-parice-pc">
 				<div class="vertical-children point-block">
@@ -239,14 +239,7 @@
 
 			</ul>
 		</div>
-		<div  id="nav-mobile-more" v-if="showMoreMenu">
-			<div v-if="!isMoboxWallet">
-				<span @click="jumpToTokenMaster">
-					<img  src="@/assets/icon/tmaster_en.png" alt="" width="70%" class="cur-point">
-				</span>
-			</div>
-			
-		</div>
+		
 		<keep-alive>
 			<router-view v-if="$route.meta.keepAlive">
 			</router-view>
@@ -342,6 +335,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_51")}}</h3>
+						<span v-html="$t('Notice_50')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_49")}}</h3>
 						<span v-html="$t('Notice_48')" ></span>
 					</div>
@@ -542,7 +539,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "3.1"
+			noticeVersion: "3.2"
 		};
 	},
 	watch: {
@@ -571,6 +568,7 @@ export default {
 			boxNum: (state) => state.gemState.data.boxNum,
 			crystalNum: (state) => state.userState.data.crystalNum,
 			mecBoxNum: (state) => state.userState.data.mecBoxNum,
+			halloweenBox: (state) => state.userState.data.halloweenBox,
 		}),
 		isMoboxWallet(){
 			return window.SHOW_APP_BAR != undefined;
@@ -836,6 +834,15 @@ export default {
 </script>
 
 <style scoped>
+#halloween-entry span{
+	position: absolute;
+	display: block;
+	padding: 0px 5px;
+	background: red;
+	border-radius: 20px;
+	top: 10px;
+	right: 30px;
+}
 #showNotice-dialog a{
 	text-decoration: underline !important;
 }

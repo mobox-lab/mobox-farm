@@ -72,7 +72,7 @@ export default {
 			return arr;
 		},
 		getNowVType(){
-			return this.getShowList.[this.nowIndex].vType;
+			return this.getShowList[this.nowIndex].vType;
 		}
 
 	},

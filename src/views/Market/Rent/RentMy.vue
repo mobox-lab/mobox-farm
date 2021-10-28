@@ -74,7 +74,7 @@ export default {
 		getTotalPetNum: function () {
 			let totalPet = 0;
 			this.getTotalPet.map((item) => {
-				totalPet += item.num;
+				totalPet += Number(item.vType) >= 4?1 : Number(item.num);
 			});
 			return totalPet;
 		},

@@ -9,13 +9,14 @@ import Gem from './group/Gem';
 import MdxBox from './group/MdxBox';
 import Enhancer from './group/Enhancer'
 import Rent from './group/Rent'
+import BinaceNFT from './group/BinaceNFT'
 
 export default class ETH {
 	static web3;
 	static web3MainNet;
 
 	static  Group = {
-		Gem, MdxBox, Enhancer, Rent
+		Gem, MdxBox, Enhancer, Rent, BinaceNFT
 	}
 
 	//合约相关
@@ -291,8 +292,6 @@ export default class ETH {
 	static async signStr(dataToSign){
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
-		console.log(dataToSign);
-
 		let walletType = Common.getStorageItem("connect-wallet");
 
 		if(walletType == "walletConnect"){

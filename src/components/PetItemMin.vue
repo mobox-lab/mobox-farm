@@ -7,7 +7,7 @@
 		<p class="pet-min-catogry">
 			<img :src=" require(`../assets/icon/${ category_img[petData.category] }.png`) " alt="" width="10" height="10" />
 		</p>
-		<div class="pet-min-hover" ref="petMinHover" :class="{'left': isLeft}">
+		<div class="pet-min-hover" ref="petMinHover" :class="{'left': isLeft, 'top': isTop}">
 			<PetItem :data="{item: petData}" :class="petData.vType >= 4 && !petData.noPrice?'market':'' " >
 				<div class="vertical-children mgt-10" style="font-size: 18px" v-if="petData.vType >= 4 && !petData.noPrice">
 					<img v-if="petData.isRent" :src="require(`@/assets/coin/${Number(petData.orderId) >= 5e4?'BUSD':'MBOX'}.png`)" alt="" height="20"/>&nbsp;
@@ -28,7 +28,7 @@ const $ = window.$;
 export default {
 	mixins: [CommonMethod],
 	components: {PetItem},
-	props: ['data', "isLeft"],
+	props: ['data', "isLeft", "isTop"],
 	data(){
 		return({
 			petData: {...this.data, gems: [0,0,0,0]},
@@ -80,6 +80,9 @@ export default {
 }
 .pet-min-hover.left{
 	right: 0px;
+}
+.pet-min-hover.top{
+	bottom: 0px;
 }
 .pet-min-img img{
 	position: absolute;

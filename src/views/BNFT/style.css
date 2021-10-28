@@ -1,3 +1,12 @@
+.loading{
+	position: absolute !important;
+	width: 100%;
+	height: 100%;
+	z-index: 99999 !important;
+}
+.loading svg{
+	margin-top: 100px;
+}
 #binance{
 	position: absolute;
 	height: 100%;
@@ -20,6 +29,8 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-image: url('../../assets/bnft/bg.jpg');
+	overflow: auto;
+	padding-bottom: 50px;
 }
 
 #title{
@@ -85,7 +96,7 @@
 	color: #EA8000;
 	cursor: pointer;
 }
-.bcbtn{
+.babtn{
 	background: none;
 	background-image: url('../../assets/bnft/bcbtn.png');
 	background-repeat: no-repeat;
@@ -96,6 +107,19 @@
 	font-size: 24px;
 	font-weight: bold;
 	color: #EA8000;
+	cursor: pointer;
+}
+.bcbtn{
+	background: none;
+	background-image: url('../../assets/bnft/claim.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	height: 60px;
+	width: 180px;
+	border: none;
+	font-size: 24px;
+	font-weight: bold;
+	color: #06B283;
 	cursor: pointer;
 }
 .bvbtn{
@@ -156,6 +180,15 @@
 	display: flex;
 	align-items: center;
 	overflow: auto;
+}
+.faq-content{
+	background: #fff6ea;
+	border: 2px solid #ffffff;
+	border-radius: 15px;
+	padding: 20px;
+}
+.faq-content p{
+	color: #363635;
 }
 @media (max-width:1200px) {
 	#binance{

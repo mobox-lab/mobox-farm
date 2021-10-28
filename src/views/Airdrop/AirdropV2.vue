@@ -4,6 +4,22 @@
 		<div id="bg2"></div>
 		<div id="aridorp">
 			<section class="mgt-10 por airdrop-cont">
+				<div class="swiper-container hide" ref="swiper_container" style="padding: 0px 10px;padding-bottom: 15px">
+					<div class="swiper-wrapper">
+						<div id="halloween-entry" class="swiper-slide tac" style="width: 80%;">
+							<router-link to="/binanceNFT">
+								<img src="@/assets/binaceActivity.png" alt="" width="100%" />
+							</router-link>
+						</div>
+						<div id="halloween-entry" class="swiper-slide tac" style="width: 80%">
+							<router-link to="/halloween">
+								<img src="@/assets/halloween/entrybtn.png" alt="" width="100%"  />
+							</router-link>
+							<span v-if="halloweenBox > 0">{{halloweenBox}}</span>
+						</div>
+					</div>
+					<div ref="pagination" class="swiper-pagination"></div>
+				</div>
 				<div class="mgt-10 tal vertical-children tac-xs">
 					<img class="mgt-30 hide-xs" src="@/assets/airdrop_icon.png" width="200" alt="">
 					<div class="dib mgl-10 block-xs">
@@ -518,6 +534,7 @@ export default {
 			nowTs: (state) => state.globalState.data.nowTs,
 			buyBackType: (state) => state.globalState.data.buyBackType,
 			refundData: (state) => state.globalState.data.refundData,
+			halloweenBox: (state) => state.userState.data.halloweenBox,
 		}),
 
 		isMoboxWallet(){
@@ -628,6 +645,32 @@ export default {
 			this.needShowNotice = false;
 		}
 	},
+	mounted(){
+		let that = this;
+		this.mySwiper = new window.Swiper(this.$refs.swiper_container, {
+			direction: "horizontal",
+			slidesPerView: "auto",
+			loop: false,
+			autoplay: {
+				delay: 5000,
+				stopOnLastSlide: false,
+				disableOnInteraction: false,
+			},
+			passiveListeners : false,
+			resistanceRatio: 0,
+			spaceBetween: 30,
+			pagination: {
+				el: this.$refs.pagination,
+				type: 'bullets',
+				clickable: true
+			},
+			on: {
+				slideChangeTransitionEnd: function(){
+					that.nowIndex = this.activeIndex;
+				},
+			}
+		});
+	},
 	methods: {
 		//领取补偿
 		async refundMbox(){
@@ -690,8 +733,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 
 #aridorp, #activity{
 	padding: 10px
@@ -875,6 +916,30 @@ export default {
 
 
 @media (max-width: 768px) {
+	.swiper-container{
+		display: block;
+		--swiper-pagination-color: #fff;
+	}
+	.swiper-pagination{
+		bottom: 0px
+	}
+	
+	#halloween-entry{
+		cursor: pointer;
+		display: inline-block;
+		position: relative;
+	}
+	#halloween-entry span{
+		position: absolute;
+		display: block;
+		padding: 0px 5px;
+		background: red;
+		border-radius: 20px;
+		top: 10px;
+		right: 0px;
+	}
+
+
 	#bg1,#bg2{
 		background-size: 100%;
 	}
@@ -983,4 +1048,16 @@ export default {
 		width: 100%;
 	}
 }
+</style>
+
+<style>
+	.swiper-pagination-bullet-active{
+		background: #fff !important;
+		width: 20px;
+	}
+	.swiper-pagination-bullet{
+		background: #fff;
+		height: 4px;
+		border-radius: 10px;
+	}
 </style>

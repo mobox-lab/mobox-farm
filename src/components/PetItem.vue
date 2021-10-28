@@ -15,12 +15,12 @@
 		
 
 		<!-- 抽卡特效 -->
-		<!-- <div v-if="data.item.isOpenCard"> -->
-			<!-- <div id="light-border-show" class="v5b" v-show="data.item.vType == 5"></div> -->
-			<!-- <div id="light-border-show" class="v6b" v-show="data.item.vType == 6"></div> -->
-			<!-- <div class="light-shadow" ref="lightShadowV4" v-show="data.item.vType == 4"></div>
-			<div class="light-shadow" ref="lightShadowV5" v-show="data.item.vType == 5"></div> -->
-		<!-- </div> -->
+		<!-- <div v-if="data.item.isOpenCard">
+			<div id="light-border-show" class="v5b" v-show="data.item.vType == 5"></div>
+			<div id="light-border-show" class="v6b" v-show="data.item.vType == 6"></div>
+			<div class="light-shadow" ref="lightShadowV4" v-show="data.item.vType == 4"></div>
+			<div class="light-shadow" ref="lightShadowV5" v-show="data.item.vType == 5"></div>
+		</div> -->
 
 		<img class="pet_img" v-if="Number(data.item.prototype) > 60000" :src="require(`../assets/pet/${data.item.prototype}.gif`)" alt=""  height="120" />
 		<img class="pet_img" v-else :src="require(`../assets/pet/${data.item.prototype}.png`)" alt=""  height="120" />
@@ -32,7 +32,7 @@
 
 		<div class="pet-bottom vertical-children mgt-5">
 			<div class="pet-name">
-				<img :src=" require(`../assets/icon/${ category_img[data.item.category] }.png`)" alt="" width="15" height="15" />&nbsp;
+				<img v-if="data.item.category != 0" :src=" require(`../assets/icon/${ category_img[data.item.category] }.png`)" alt="" width="15" height="15" />&nbsp;
 				{{ hasSetName ? shortStr(data.item.tokenName) : $t(data.item.tokenName) }}
 			</div>
 		</div>

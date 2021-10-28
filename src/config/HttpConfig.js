@@ -1,6 +1,7 @@
 export default class HttpConfig {
 	static ServeNode = {
-		Activity: "http://192.168.5.190:9093", // 测试
+		// Activity: "http://192.168.5.190:9093", // 测试
+		Activity: "https://eventapi.mobox.io", 
 	}
 
 	static Halloween = {

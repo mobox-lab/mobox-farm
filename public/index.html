@@ -18,9 +18,9 @@
     </script> -->
 <script>
 	$.get("https://accountapi.mobox.io/app/ip/cn").then((res) => {
-		if (res.data.isCn && window.location.host.indexOf("192") == -1) {
+		if (res.data.isCn && window.location.host.indexOf("mobox.io") != -1 ) {
 			window.location.href = "https://mobox.io/annoucement.html";
-		}
+		} 
 	})
 </script>
 <script>

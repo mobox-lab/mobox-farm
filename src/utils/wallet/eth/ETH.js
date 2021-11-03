@@ -300,11 +300,22 @@ export default class ETH {
 		}
 
 		if(walletType == "metamask"){
-			let res = await window.ethereum.request({
-					method: 'personal_sign',
-					params: [myAddr, dataToSign],
-				});
-			return res;
+			return new Promise(resolve => {
+				try {
+					window.web3.personal.sign(dataToSign, myAddr, async (err, res)=>{
+						if(!err){
+							resolve(res)
+						}
+					})
+				} catch (error) {
+					window.ethereum.request({
+						method: 'personal_sign',
+						params: [myAddr, dataToSign],
+					}).then(res=>{
+						resolve(res)
+					});
+				}
+			})
 		}
 
 		if(walletType == "binanceChain"){
@@ -325,7 +336,6 @@ export default class ETH {
 				})
 			})
 		}
-		
 	}
 
 	static onReciptNotice(hash, method, type){

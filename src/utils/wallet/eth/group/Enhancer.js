@@ -215,6 +215,7 @@ export default class Enhancer {
 			)
 		});
 	}
+
 	//给momo注入水晶
 	static async addCrystal({tokenId_, hrOriginal_, crystalAmount_, mbox_},recipt){
 		let myAddr = await ETH.getAccount();
@@ -228,8 +229,7 @@ export default class Enhancer {
 				{"name": "mbox_","type": "uint256"},
 			],
 		}], WalletConfig.ETH.momoEnhancer);
-		mbox_ = ETH.numToHex(BigNumber(Common.numFloor(mbox_, 1e9)).times(BigNumber(1e18)));
-		console.log({tokenId_, hrOriginal_, crystalAmount_, mbox_});
+		mbox_ = ETH.numToHex(BigNumber(mbox_).times(BigNumber(1e18)));
 		return new Promise(resolve => {
 			ETH.sendMethod(
 				contract.methods.addCrystal(tokenId_, hrOriginal_, crystalAmount_, mbox_), {from: myAddr},

@@ -126,7 +126,6 @@ export default {
 					Common.app.$refs.boxBag.closeResult();
 				});
 			}
-			
 		},
 		closeResult(){
 			this.isShowResult = false;

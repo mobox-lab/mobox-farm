@@ -198,6 +198,7 @@ export default {
 				this.lockBtnMethod("enhanceLock")
 			}
 		},
+		
 		//注入水晶和mobox
 		async addCrystal(){
 			if(this.needApproveMbox){

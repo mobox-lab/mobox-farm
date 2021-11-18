@@ -303,7 +303,7 @@ export default {
 			let obj = {
 				tokenId_: this.getNowPetItem.tokenId, 
 				orderId_: this.statusObj.orderId,
-				price_: totalPrice + 0.000001 ,
+				price_: this.statusObj.rentPrice / 1e18 + 0.000001 ,
 				days_: Number(this.inputRentDays)
 			}
 			console.log(obj, "rentPet");

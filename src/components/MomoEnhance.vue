@@ -183,7 +183,6 @@ export default {
 		},
 		async getEnhanceHash(){
 			let res = await Wallet.ETH.Group.Enhancer.getEnhanceHash(this.getNowPetItem.tokenId);
-			console.log("getEnhanceHash", res);
 			if(res){
 				this.enhanceHash = res;
 				this.needGetHash = Number(res) == 2;

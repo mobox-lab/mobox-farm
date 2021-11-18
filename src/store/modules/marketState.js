@@ -80,13 +80,15 @@ const mutations = {
 	setFilter(state, {type, value, filterName}){
 		state.data[filterName][type] = value;
 	},
-	initGemMarket(state, {defaultSort}){
-		state.data.marketGemPage = 1
-		state.data.marketGemMySellPage = 1
-		state.data.marketGemSearch = {type: 0,level: 0,sort: defaultSort,filter: 0}
-		state.data.myGemMarketSellFilter = {type: 0,level: 0,}
-		state.data.marketGems = {limit: 1,list: [],page: 1,total: 0,}
-		state.data.marketGemFilter = defaultSort;
+	initGemMarket(state, {defaultSort, marketTypePos}){
+		if(state.data.marketTypePos != marketTypePos){
+			state.data.marketGemPage = 1
+			state.data.marketGemMySellPage = 1
+			state.data.marketGemSearch = {type: 0,level: 0,sort: defaultSort,filter: 0}
+			state.data.myGemMarketSellFilter = {type: 0,level: 0,}
+			state.data.marketGems = {limit: 1,list: [],page: 1,total: 0,}
+			state.data.marketGemFilter = defaultSort;
+		}
 	},
 	addToShopCar(state, newItem){
 		let shopCar = state.data.shopCar;

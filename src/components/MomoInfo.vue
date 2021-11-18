@@ -245,7 +245,7 @@
 import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
 import { Loading, Dialog, StatuButton } from '@/components';
-import { WalletConfig } from '@/config';
+import { WalletConfig, ConstantConfig } from '@/config';
 import { mapState } from 'vuex';
 import MomoEnhance from '@/components/MomoEnhance'
 
@@ -353,7 +353,7 @@ export default {
 			let canCompArr = [false, false, false, false];
 			this.getNowPetItem.gems.map((item, index)=>{
 				let gemLv = Number(item) % 100;
-				if(gemLv > 0 && gemLv < 5){
+				if(gemLv > 0 && gemLv < ConstantConfig.NOW_MAX_GEM_LEVEL){
 					canCompArr[index] =  Number(this.gemBag[this.gemPidToPos[index] + gemLv]) >= 2;
 				}
 			});

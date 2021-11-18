@@ -12,22 +12,22 @@
 					<span>Order BOX</span>
 				</div> -->
 				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 4}" ref="menu4"
-					@click="gemMarketKey = 'box'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2});$store.commit('marketState/setData', {marketTypePos: 4, marketTabPos: 0, marketGemFilter: 2});">
+					@click="gemMarketKey = 'box'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2,marketTypePos: 4});$store.commit('marketState/setData', {marketTypePos: 4, marketTabPos: 0, marketGemFilter: 2});">
 					<img src="../../assets/icon/box_icon.png" alt="" width="30">&nbsp;
 					<span>BOX</span>
 				</div>
 				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 3}"  ref="menu3"
-					@click="gemMarketKey = 'mecbox'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2});$store.commit('marketState/setData', {marketTypePos: 3, marketTabPos: 0, marketGemFilter: 3});">
+					@click="gemMarketKey = 'mecbox'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2,marketTypePos: 3});$store.commit('marketState/setData', {marketTypePos: 3, marketTabPos: 0, marketGemFilter: 3});">
 					<img src="../../assets/box/mecbox.png" alt="" height="20">&nbsp;
 					<span>MEC BOX</span>
 				</div>
 				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 5}"  ref="menu5"
-					@click="gemMarketKey = 'mec'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2});$store.commit('marketState/setData', {marketTypePos: 5, marketTabPos: 0, marketGemFilter: 4});">
+					@click="gemMarketKey = 'mec'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2,marketTypePos: 5});$store.commit('marketState/setData', {marketTypePos: 5, marketTabPos: 0, marketGemFilter: 4});">
 					<img src="../../assets/coin/CRYSTAL.png" alt="" height="30">&nbsp;
 					<span>MEC</span>
 				</div>
 				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 2}" ref="menu2"
-					@click="gemMarketKey = 'gem'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 0});$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0, marketGemFilter: 1});">
+					@click="gemMarketKey = 'gem'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 0,marketTypePos: 2});$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0, marketGemFilter: 1});">
 					<img src="../../assets/icon/yellow_icon.png" alt="" height="30">&nbsp;
 					<span>{{$t("Gemstone_44")}}</span>
 				</div>

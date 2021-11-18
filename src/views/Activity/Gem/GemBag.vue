@@ -55,7 +55,7 @@ import { Dialog, SelectNum, StatuButton } from '@/components';
 import { mapState } from 'vuex';
 import { Wallet } from '@/utils';
 import { CommonMethod } from '@/mixin';
-import { WalletConfig } from '@/config';
+import { WalletConfig, ConstantConfig } from '@/config';
 
 export default {
 	mixins: [CommonMethod],
@@ -67,7 +67,7 @@ export default {
 			selectGemType: 100,
 			needCompNum: 1,
 			hasApprove: -1,
-			nowMaxLv: 6, //当前宝石开放最大等级
+			nowMaxLv: ConstantConfig.NOW_MAX_GEM_LEVEL, //当前宝石开放最大等级
 		})
 	},
 	watch: {

@@ -79,7 +79,7 @@
 									<span style="color: #85f34a">{{ this.getNowPetItemNextLvHashRate }}</span>
 								</div>
 								<div>
-									<div class="mgt-10">
+									<div class="mgt-10" v-if="getNowPetItem.prototype != 42036">
 										<!-- <button v-if="allowance_1155_to_721 == 0" @click="approved1155To721" class="btn-advanced vertical-children" style="width: 180px; margin: 5px" >授权</button> -->
 										<button @click="upgrade" :class="lockUpgradeTime > 0?'disable-btn':''" class="btn-primary vertical-children por" style="min-width: 160px; margin: 5px" >
 											<Loading v-if="lockUpgradeTime > 0"  class="btn-loading" />
@@ -88,6 +88,9 @@
 											</svg >&nbsp;
 											{{ $t("MOMO_22") }}
 										</button>
+									</div>
+									<div v-else class="mgt-20">
+										{{$t("MOMO_71")}}
 									</div>
 								</div>
 							</div>

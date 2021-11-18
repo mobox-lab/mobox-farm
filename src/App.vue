@@ -10,12 +10,21 @@
 		<div id="mobile-nav" class="hide">
 			<img src="./assets/logo.png" height="30" alt="" />
 			<div class="dib " style="position:absolute;top:0px;right:160px;zoom:0.8" >
-				<div class="vertical-children dib">
+				<!-- <div class="vertical-children dib">
 					<img src="./assets/coin/KEY.png" height="25" alt=""/>
 					<span  @click="$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2',pancakeVType: 2}).show('swap')">
 						$<span v-if="ourPrice['KEY'] != '-' ">{{ourPrice["KEY"]}}</span>
 						<Loading v-else />
 					</span>
+				</div> -->
+				<div class="vertical-children dib">
+					<img src="./assets/icon/box_icon.png" width="30" alt=""/>
+					<router-link to="/market?tab=4">
+						<span >
+							$<span v-if="ourPrice['BOX'] != '-' ">{{ourPrice["BOX"]}}</span>
+							<Loading v-else />
+						</span>
+					</router-link>
 				</div>
 				<div class="vertical-children  dib mgl-10 ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
@@ -113,12 +122,21 @@
 				</div>
 			</div>
 			<div id="our-parice-pc">
-				<div class="vertical-children point-block">
+				<!-- <div class="vertical-children point-block">
 					<img src="./assets/coin/KEY.png" height="25" alt=""/>
 					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
 						$<span v-if="ourPrice['KEY'] != '-' ">{{ourPrice["KEY"]}}</span>
 						<Loading v-else />
 					</span>
+				</div> -->
+				<div class="vertical-children dib point-block">
+					<img src="./assets/icon/box_icon.png" width="30" alt=""/>
+					<router-link to="/market?tab=4">
+						<span class="mgl-5 bold show-point-block tal">
+							$<span v-if="ourPrice['BOX'] != '-' ">{{ourPrice["BOX"]}}</span>
+							<Loading v-else />
+						</span>
+					</router-link>
 				</div>
 				<div class="vertical-children mgt-10 point-block ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
@@ -330,11 +348,15 @@
 		<WalletOprStatus />
 		<WalletConnectDialog />
 
-		<Dialog id="showNotice-dialog" :top="100" :width="520">
+		<Dialog id="showNotice-dialog" :top="100" :width="600">
 			<h2>{{$t("Notice_03")}}</h2>
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_56")}}</h3>
+						<span v-html="$t('Notice_57')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_54")}}</h3>
 						<span v-html="$t('Notice_55')" ></span>
 					</div>
@@ -475,6 +497,7 @@ export default {
 			ourPrice: {
 				"MBOX": "-",
 				"KEY": "-",
+				"BOX": "-"
 			},
 			powerAddConfig: {
 				v4: [
@@ -547,7 +570,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "3.3"
+			noticeVersion: "3.4"
 		};
 	},
 	watch: {
@@ -701,13 +724,13 @@ export default {
 		
 			count++;
 			if(count % 10 == 0){
-				await this.setOurPrice("KEY");
+				await this.setOurPrice("BOX");
 				await this.setOurPrice("MBOX");
 				await this.getTotalStakeUSDTAndAirdropKEY();
 			}
 		},1000);
 
-		await this.setOurPrice("KEY");
+		await this.setOurPrice("BOX");
 		await this.setOurPrice("MBOX");
 		await this.getTotalStakeUSDTAndAirdropKEY();
 
@@ -797,6 +820,14 @@ export default {
 
 		//
 		async setOurPrice(coinName){
+			if(coinName == "BOX"){
+				let {data} = await Http.get(`/gem_auction/search/BNB?page=1&limit=1&type=&level=&sort=price&filter=2`);
+				if(data){
+					let {price, amounts} = data.list[0];
+					this.ourPrice[coinName] = this.numFloor(price / amounts[0] /1e9, 100).toFixed(2);
+				}
+				return;
+			}
 			let wBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
 			let res = await Wallet.ETH.getAmountsOut(1e18, [PancakeConfig.SelectCoin[coinName].addr, wBNB, PancakeConfig.SelectCoin["USDT"].addr]);
 			this.ourPrice[coinName] = this.numFloor(res[2]/1e18, 1e4);

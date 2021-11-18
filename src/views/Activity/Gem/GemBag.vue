@@ -16,7 +16,7 @@
 				</div>	
 			</div>
 		</div>
-		<div v-if="selectGemLv <= 4" class="ly-input-content mgt-10">
+		<div v-if="selectGemLv < nowMaxLv" class="ly-input-content mgt-10">
 			<div class="small opa-6 mgt-10">
 				{{$t("Gemstone_34")}}
 			</div>
@@ -44,7 +44,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-else-if="selectGemLv == 5"  class="ly-input-content mgt-10">
+		<div v-else-if="selectGemLv == nowMaxLv"  class="ly-input-content mgt-10">
 			{{$t("Gemstone_35")}}
 		</div>
 		<div v-else  class="ly-input-content mgt-10">{{$t("Gemstone_36")}}</div>
@@ -67,6 +67,7 @@ export default {
 			selectGemType: 100,
 			needCompNum: 1,
 			hasApprove: -1,
+			nowMaxLv: 6, //当前宝石开放最大等级
 		})
 	},
 	watch: {

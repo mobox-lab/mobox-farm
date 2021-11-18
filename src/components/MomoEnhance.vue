@@ -43,13 +43,13 @@
 					<div>
 						<img src="@/assets/coin/CRYSTAL.png" class="mgl-5" alt="" height="25" />
 						{{getNowEnhanceCfg.crystal}} <sub class="small">MEC</sub> 
-						<span style="color:#12D2E7;" class="mgl-5">+</span>
+						<!-- <span style="color:#12D2E7;" class="mgl-5">+</span>
 						<img src="@/assets/coin/MBOX.png" class="mgl-5" alt="" height="25" />
-						<span class="mgl-5">{{getNowEnhanceCfg.mbox}} <sub class="small">MBOX</sub></span> 
+						<span class="mgl-5">{{getNowEnhanceCfg.mbox}} <sub class="small">MBOX</sub></span>  -->
 					</div>
 					<div class="mgt-10">
 						<StatuButton class="btn-small" :onClick="approveMEC" :isLoading="lockBtn.approveLock > 0" v-if="needApproveMec">{{$t("Air-drop_16")}} MEC</StatuButton>
-						<StatuButton class="mgl-10 btn-small" :onClick="approveMbox" v-if="needApproveMbox" :isLoading="coinArr['MBOX'].isApproving">{{$t("Air-drop_16")}} MBOX</StatuButton>
+						<!-- <StatuButton class="mgl-10 btn-small" :onClick="approveMbox" v-if="needApproveMbox" :isLoading="coinArr['MBOX'].isApproving">{{$t("Air-drop_16")}} MBOX</StatuButton> -->
 					</div>
 					
 				</div>
@@ -201,10 +201,10 @@ export default {
 		
 		//注入水晶和mobox
 		async addCrystal(){
-			if(this.needApproveMbox){
-				this.showNotify(this.$t("MECBOX_44") ,"error");
-				return
-			}
+			// if(this.needApproveMbox){
+			// 	this.showNotify(this.$t("MECBOX_44") ,"error");
+			// 	return
+			// }
 			if(this.needApproveMec){
 				this.showNotify(this.$t("MECBOX_45") ,"error");
 				return
@@ -213,16 +213,16 @@ export default {
 				this.showNotify(this.$t("MECBOX_46") ,"error");
 				return
 			}
-			if(Number(this.coinArr["MBOX"].balance) < Number(this.getNowEnhanceCfg.mbox)){
-				this.showNotify(this.$t("MECBOX_47") ,"error");
-				return
-			}
+			// if(Number(this.coinArr["MBOX"].balance) < Number(this.getNowEnhanceCfg.mbox)){
+			// 	this.showNotify(this.$t("MECBOX_47") ,"error");
+			// 	return
+			// }
 			console.log(this.getNowPetItem);
 			let obj = {
 				tokenId_: this.getNowPetItem.tokenId,
 				hrOriginal_: this.getNowPetItem.hashrate, 
 				crystalAmount_: this.getNowEnhanceCfg.crystal, 
-				mbox_: this.getNowEnhanceCfg.mbox
+				mbox_: 0
 			}
 			let hash = await Wallet.ETH.Group.Enhancer.addCrystal(obj, ()=>{
 				this.getEnhanceHash();

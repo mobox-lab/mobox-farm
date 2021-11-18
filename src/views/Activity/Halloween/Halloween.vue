@@ -585,10 +585,10 @@ export default {
 		},
 		async claimMbox(){
 			let amount = Number(this.myData.balance);
-			if(!(amount >= 5 && 1636430400 - this.nowTs > 0)){
-				this.getConfirmDialog().show(this.$t("Festival_39"), null, true);
-				return;
-			}
+			// if(!(amount >= 5 && 1636430400 - this.nowTs > 0)){
+			// 	this.getConfirmDialog().show(this.$t("Festival_39"), null, true);
+			// 	return;
+			// }
 			let sign = await this.getSign();
 
 			let data = {

@@ -320,6 +320,7 @@ export default {
 			let nftConfig = BaseConfig.NftCfg;
 			this.lockList.map(item=>lockTypes.push(item.prototype));
 			for (let key in nftConfig) {
+				
 				let item = nftConfig[key];
 				let num = 0;
 				if (getMyPetObj[item.prototype]) {
@@ -331,12 +332,16 @@ export default {
 				if (vType <= 4) {
 					type = item.prototype % (vType * 10000);
 				}
-				if (!typeObj[type]) {
-					typeObj[type] = {};
-				}
+				
 				item.vType = vType;
 				item.isLock = lockTypes.indexOf(type) != -1;
-				typeObj[type][item.prototype] = item;
+				//特殊处理bian蓝帽子
+				if(item.prototype != 42036){
+					if (!typeObj[type]) {
+						typeObj[type] = {};
+					}
+					typeObj[type][item.prototype] = item;
+				}
 			}
 
 			Object.values(typeObj).map((item) => {

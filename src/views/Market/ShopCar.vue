@@ -52,21 +52,29 @@
 				</div>
 			</div>
 		</div>
-		<div class="vertical-children por mgt-10 tal" style="height: 50px">
-			<div class="dib por">
-				<span class="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span >
-				<img src="@/assets/icon/shopcar.png" alt="" height="40" />
+		<div class="vertical-children por mgt-20 tal aveage-box" >
+			<div >
+				<div class="dib por">
+					<span class="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span >
+					<img src="@/assets/icon/shopcar.png" alt="" height="40" />
+				</div>
+
+				<div class="dib tal por" style="margin-left: 12px">
+					<span class="small opa-6">{{$t("Market_18")}}</span>
+					<p class="vertical-children ">
+						<img src="@/assets/coin/BUSD.png" height="20" alt="" />
+						<span style="font-size: 20px" class="color-w mgl-5 money">{{ getShopCarTotalPrice.toLocaleString() }} <small style="font-size:12px">BUSD</small></span>
+					</p>
+				</div>
 			</div>
 
-			<div class="dib tal" style="margin-left: 12px">
-				<span class="small opa-6">{{$t("Market_18")}}</span>
-				<p class="vertical-children ">
-					<img src="@/assets/coin/BUSD.png" height="20" alt="" />
-					<span style="font-size: 20px" class="color-w mgl-5 money">{{ getShopCarTotalPrice.toLocaleString() }} <small style="font-size:12px">BUSD</small></span>
-				</p>
-				<button @click="confirmBuyShopCar" :class="{'disable-btn': shopCar.length == 0}" class="btn-primary " style="position: absolute; right: 0px; top: 10px" >
+			<div :class="{'btn-group': needApproveBUSD}" class="dib tar" style="padding-right:20px">
+				<div v-if="needApproveBUSD">
+					<StatuButton data-step="1" :isLoading="coinArr['BUSD'].isApproving" :onClick="approve">{{$t("Air-drop_16")}} BUSD</StatuButton>
+				</div>
+				<StatuButton class="mgt-10" data-step="2" :onClick="confirmBuyShopCar" :isDisable="shopCar.length == 0 || needApproveBUSD">
 					{{$t("Market_22")}}
-				</button>
+				</StatuButton>
 			</div>
 		</div>
 		<div class="mgt-20">
@@ -83,11 +91,12 @@
 <script>
 import { mapState } from 'vuex';
 import { CommonMethod } from "@/mixin";
-import { Dialog } from '@/components';
+import { Dialog, StatuButton } from '@/components';
 import {  Wallet ,Common} from '@/utils';
+import { PancakeConfig, WalletConfig } from "@/config";
 
 export default {
-	components: {Dialog},
+	components: {Dialog, StatuButton},
 	mixins: [CommonMethod],
 	data(){
 		return({
@@ -117,6 +126,9 @@ export default {
 		getShopCarTotalSelectNum(){
 			return this.shopCar.length;
 		},
+		needApproveBUSD(){
+			return this.coinArr['BUSD'].allowanceToAuction < this.getShopCarTotalPrice*1e18;
+		}
 	},
 	methods:{
 		confirmBuyShopCar(){
@@ -159,6 +171,18 @@ export default {
 		},
 		deleteItem(item){
 			this.getConfirmDialog().show(this.$t("Market_74"), ()=>this.$store.commit("marketState/addToShopCar", item));
+		},
+		//授权
+		async approve(){
+			let coinKey = "BUSD";
+			let {allowanceToAuction, isApproving} = this.coinArr[coinKey];
+			if(allowanceToAuction > 0 || isApproving) return;
+
+			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin["BUSD"].addr,
+			WalletConfig.ETH.moMoStakeAuction, {coinKey, type: "allowanceToAuction"});
+			if (hash) {
+				this.coinArr[coinKey].isApproving = true;
+			}
 		},
 	}
 }

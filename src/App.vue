@@ -114,12 +114,12 @@
 						<img src="@/assets/binaceActivity.png" alt="" height="85" />
 					</router-link>
 				</div>
-				<div id="halloween-entry" class="por">
+				<!-- <div id="halloween-entry" class="por">
 					<router-link to="/halloween">
 						<img src="@/assets/halloween/entrybtn.png" alt="" height="85" />
 					</router-link>
 					<span v-if="halloweenBox > 0">{{halloweenBox}}</span>
-				</div>
+				</div> -->
 			</div>
 			<div id="our-parice-pc">
 				<!-- <div class="vertical-children point-block">

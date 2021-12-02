@@ -95,12 +95,12 @@
 								</p>
 							</div>
 							<div v-if="!isMyPet" class="mgt-30">
-								<div :class="coinArr['BUSD'].allowanceToAuction == 0 ?'btn-group':''" class="dib">
-									<div v-if="coinArr['BUSD'].allowanceToAuction == 0">
+								<div :class="{'btn-group': needApprove}" class="dib">
+									<div v-if="needApprove">
 										<StatuButton data-step="1" style="width:150px" :isLoading="coinArr['BUSD'].isApproving" :onClick="approve">{{$t("Air-drop_16")}} BUSD</StatuButton>
 									</div>
 									<div class="mgt-10">
-										<StatuButton style="width:150px"  data-step="2" :isLoading="lockBtn.buyMomoLock > 0" :isDisable="coinArr['BUSD'].allowanceToAuction <= 0 || (nowTs - this.getNowPetItem.uptime) <= 120" :onClick="()=>oprDialog('confirm-buy-dialog','block')">
+										<StatuButton style="width:150px"  data-step="2" :isLoading="lockBtn.buyMomoLock > 0" :isDisable="needApprove || (nowTs - this.getNowPetItem.uptime) <= 120" :onClick="()=>oprDialog('confirm-buy-dialog','block')">
 											<template v-if="nowTs - this.getNowPetItem.uptime <= 120">
 												<img src="@/assets/icon/lock.png" alt="" height="20" style="position:absolute;left:10px;top:6px">
 												<span>{{getLeftTime(Number(this.getNowPetItem.uptime) + 120 - nowTs)}}</span>
@@ -110,7 +110,7 @@
 									</div>
 								</div>
 
-								<template v-if="coinArr['BUSD'].allowanceToAuction > 0 && nowTs - this.getNowPetItem.uptime > 120 && isMatchShopCar">
+								<template v-if="!needApprove && nowTs - this.getNowPetItem.uptime > 120 && isMatchShopCar">
 									<button  @click="addToShopCar" style="width:150px"  class=" mgt-10 mgl-10" :class="isInShopCar?'btn-danger':'btn-line' ">
 										<span v-if="isInShopCar">{{$t("Market_70")}}</span>
 										<span v-else>{{$t("Market_69")}}</span>
@@ -281,6 +281,10 @@ export default {
 				if(item.tx == this.getNowPetItem.tx) isInShopCar = true;
 			});
 			return isInShopCar;
+		},
+		//是否需要授权, 授权额度不足支付
+		needApprove(){
+			return this.coinArr['BUSD'].allowanceToAuction / 1e18 < Number(this.nowPrice/ 1e9) && this.coinArr['BUSD'].allowanceToAuction !=-1;
 		}
 	},
 	async created() {

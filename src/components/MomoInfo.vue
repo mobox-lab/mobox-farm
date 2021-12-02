@@ -247,7 +247,7 @@ import { Http, Wallet } from '@/utils';
 import { Loading, Dialog, StatuButton } from '@/components';
 import { WalletConfig, ConstantConfig } from '@/config';
 import { mapState } from 'vuex';
-import MomoEnhance from '@/components/MomoEnhance'
+import MomoEnhance from '@/components/MomoEnhanceV2'
 
 let timer = null;
 export default {

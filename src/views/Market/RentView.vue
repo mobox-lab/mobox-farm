@@ -120,8 +120,8 @@
 								</div>
 							</section>
 							<p class="mgt-10">{{$t("Hire_21")}}</p>
-							<div :class="coinArr['BUSD'].allowanceToRent == 0 ?'btn-group':''"  style="width:280px;margin:0px auto">
-								<StatuButton  data-step="1" v-if="coinArr['BUSD'].allowanceToRent == 0" class="mgt-10" style="width:80%" :onClick="approve" :isLoading="coinArr['BUSD'].isApproving">{{$t("Air-drop_16")}} BUSD</StatuButton>
+							<div :class="{'btn-group': needApprove}"  style="width:280px;margin:0px auto">
+								<StatuButton  data-step="1" v-if="needApprove" class="mgt-10" style="width:80%" :onClick="approve" :isLoading="coinArr['BUSD'].isApproving">{{$t("Air-drop_16")}} BUSD</StatuButton>
 								<StatuButton  data-step="2" :isDisable="!isCanRent" class="mgt-10" style="width:80%" :onClick="rentPet" :isLoading="lockBtn.rentLock > 0">
 									<template v-if="nowTs - statusObj.startTime <= 120">
 										<img src="@/assets/icon/lock.png" alt="" height="20" style="position:absolute;left:10px;top:6px">
@@ -229,7 +229,7 @@ export default {
 		//是否可以租
 		isCanRent(){
 			let {startTime, rentDays} = this.statusObj
-			return this.coinArr['BUSD'].allowanceToRent > 0 && this.nowTs - startTime > 120 
+			return !this.needApprove && this.nowTs - startTime > 120 
 					&& Number(this.inputRentDays) >= 1 &&  Number(this.inputRentDays) <= Number(rentDays);
 		},
 		momoState(){
@@ -245,6 +245,10 @@ export default {
 					return 1;//出租中
 				}
 			}
+		},
+		needApprove(){
+			let totalPrice = this.statusObj.rentPrice / 1e18 * this.inputRentDays;
+			return this.coinArr["BUSD"].allowanceToRent / 1e18 < totalPrice && this.coinArr["BUSD"].allowanceToRent != -1;
 		}
 	},
 	async created() {

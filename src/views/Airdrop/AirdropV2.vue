@@ -5,18 +5,18 @@
 		<div id="aridorp">
 			<section class="mgt-10 por airdrop-cont">
 				<div class="swiper-container hide" ref="swiper_container" style="padding: 0px 10px;padding-bottom: 15px">
-					<div class="swiper-wrapper">
-						<div id="halloween-entry" class="swiper-slide tac" style="width: 80%;">
+					<div class="swiper-wrapper tac">
+						<div id="halloween-entry" class="swiper-slide tac" style="width: 80%;margin:0 auto">
 							<router-link to="/binanceNFT">
 								<img src="@/assets/binaceActivity.png" alt="" width="100%" />
 							</router-link>
 						</div>
-						<div id="halloween-entry" class="swiper-slide tac" style="width: 80%">
+						<!-- <div id="halloween-entry" class="swiper-slide tac" style="width: 80%">
 							<router-link to="/halloween">
 								<img src="@/assets/halloween/entrybtn.png" alt="" width="100%"  />
 							</router-link>
 							<span v-if="halloweenBox > 0">{{halloweenBox}}</span>
-						</div>
+						</div> -->
 					</div>
 					<div ref="pagination" class="swiper-pagination"></div>
 				</div>

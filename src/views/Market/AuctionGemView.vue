@@ -32,18 +32,24 @@
 							</div>
 							
 							<div v-if="!isMyPet" class="mgt-30">
-								<div :class="coinArr[oprCoin].allowanceToGemAuction == 0 ?'btn-group':''">
-									<div v-if="coinArr[oprCoin].allowanceToGemAuction == 0">
+								<div ::class="{'btn-group': needApprove}">
+									<!-- <div v-if="needApprove">
 										<button data-step="1"  :class="(!coinArr[oprCoin].isApproving && coinArr[oprCoin].allowanceToGemAuction == 0)?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="approve">
 											<Loading class="btn-loading" v-if="coinArr[oprCoin].isApproving" />
 											{{$t("Air-drop_16")}} {{oprCoin}}
 										</button>
+									</div> -->
+									<div v-if="needApprove">
+										<StatuButton data-step="1" style="width:200px" :isLoading="coinArr[oprCoin].isApproving" :onClick="approve">{{$t("Air-drop_16")}} {{oprCoin}}</StatuButton>
 									</div>
 									<div class="mgt-10">
-										<button data-step="2" :class="(coinArr[oprCoin].allowanceToGemAuction > 0 && lockBtn.buyMomoLock <= 0 )?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="oprDialog('confirm-gem-buy-dialog','block')">
+										<!-- <button data-step="2" :class="(coinArr[oprCoin].allowanceToGemAuction > 0 && lockBtn.buyMomoLock <= 0 )?'':'disable-btn' " style="width:200px" class="btn-primary vertical-children por"  @click="oprDialog('confirm-gem-buy-dialog','block')">
 											<Loading class="btn-loading" v-if="lockBtn.buyMomoLock > 0" />
 											{{$t("Market_22")}}
-										</button>
+										</button> -->
+										<StatuButton data-step="2" style="width:200px" :isDisable="needApprove || lockBtn.buyMomoLock > 0"  :onClick="()=>oprDialog('confirm-gem-buy-dialog','block')">
+											{{$t("Market_22")}}
+										</StatuButton>
 									</div>
 								</div>
 							</div>
@@ -119,7 +125,7 @@
 	</div>
 </template>
 <script>
-import { Dialog, Loading, StatuButton } from '@/components';
+import { Dialog, StatuButton } from '@/components';
 import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
 import {  Wallet, Common } from '@/utils';
@@ -129,7 +135,7 @@ import BigNumber from "bignumber.js";
 
 export default {
 	mixins: [CommonMethod],
-	components: { Dialog, Loading, StatuButton },
+	components: { Dialog, StatuButton },
 	data() {
 		return {
 			lockUpgradeTime: 0,
@@ -173,7 +179,6 @@ export default {
 			if(petObj.oldTime == undefined){
 				petObj.oldTime = petObj.uptime;
 			}
-			console.log({petObj});
 			return petObj;
 		},
 		//是否是我的拍卖
@@ -204,6 +209,10 @@ export default {
 		totalPrice(){
 			if(this.isGem) return this.sellObj.startPrice;
 			return this.sellObj.onePrice * this.sellObj.sellNum;
+		},
+		//是否需要授权, 授权额度不足支付
+		needApprove(){
+			return this.coinArr[this.oprCoin].allowanceToGemAuction / 1e18 < Number(this.getNowPetItem.price/ 1e9);
 		}
 	},
 	async created() {

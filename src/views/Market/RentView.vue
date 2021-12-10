@@ -1,10 +1,8 @@
 <template>
 	<div id="upgrade" style="margin-top:10px">
-		<router-link to="/market">
-			<span  class="cur-point text-big">
-				<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;{{ $t("MOMO_19") }}
-			</span>
-		</router-link>
+		<span  class="cur-point text-big" @click="$router.back(-1)">
+			<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;{{ $t("MOMO_19") }}
+		</span>
 		<div class="tac row mgt-10">
 			<div class="col-md-6 mgt-10">
 				<div class="panel" >
@@ -291,7 +289,6 @@ export default {
 		async getPetInfo(){
 			if(!this.getNowPetItem.tokenId) return;
 			let res = await Wallet.ETH.Group.Rent.getMomoRentInfo(this.getNowPetItem.tokenId);
-			console.log("getPetInfo--------", res);
 			if(res){
 				this.statusObj = res;
 			}

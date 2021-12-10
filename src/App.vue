@@ -353,6 +353,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_58")}}</h3>
+						<span v-html="$t('Notice_59')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_56")}}</h3>
 						<span v-html="$t('Notice_57')" ></span>
 					</div>
@@ -570,7 +574,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "3.4"
+			noticeVersion: "3.5"
 		};
 	},
 	watch: {

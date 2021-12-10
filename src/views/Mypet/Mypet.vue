@@ -336,12 +336,12 @@ export default {
 				item.vType = vType;
 				item.isLock = lockTypes.indexOf(type) != -1;
 				//特殊处理bian蓝帽子
-				if(item.prototype != 42036){
+				// if(item.prototype != 42036){
 					if (!typeObj[type]) {
 						typeObj[type] = {};
 					}
 					typeObj[type][item.prototype] = item;
-				}
+				// }
 			}
 
 			Object.values(typeObj).map((item) => {

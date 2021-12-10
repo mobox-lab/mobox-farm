@@ -9,12 +9,11 @@
 						<img class="mgl-10 cur-point" @click="oprDialog('mdx-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="30">
 					</h1>
 					<div class="tac mgt-10">
-						<template >
-							<!-- <p v-if="getCountDown >0">{{$t("NewBOX_20")}}: {{getLeftTime(getCountDown)}}</p> -->
+						<!-- <template >
 							<p v-if="getCountDown >0">{{Number(applyInfo.startTime) > nowTs?$t("Gemstone_53") :$t("NewBOX_20")}}: {{getLeftTime(getCountDown)}}</p>
 							<p v-else>{{$t("NewBOX_21")}}<span class="dotting"></span></p>
-						</template>
-						<!-- <p >{{$t("Gemstone_57")}}: {{getLeftTime(1631678400 - nowTs )}}</p> -->
+						</template> -->
+						<p >{{$t("Festival_37")}}</p>
 
 						<div style="height:280px" id="gem-apply-type" class="por">
 							<p style="padding-top:20px">
@@ -89,7 +88,8 @@
 				
 					<div class="mgt-20 aveage-box" >
 						<div class="dib por tac">
-							<button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('mdx-apply-dialog', 'block')">{{$t("NewBOX_14")}}</button>
+							<!-- <button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('mdx-apply-dialog', 'block')">{{$t("NewBOX_14")}}</button> -->
+							<button class="btn-primary disable-btn" style="margin:10px;width:80%" >{{$t("Festival_37")}}</button>
 							<p style="position:absolute;width:200%;left:-50%" class="cur-point" @click="oprDialog('mdx-rule-dialog','block')">{{$t("Air-drop_236")}}>></p>
 						</div>
 						<div class="tac">

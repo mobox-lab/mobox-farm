@@ -75,6 +75,9 @@ const state = () => ({
 
 const mutations = {
 	setData(state, newState) {
+		if(newState.marketTypePos != undefined && state.data.marketTypePos == newState.marketTypePos){
+			return;
+		}
 		state.data = Object.assign(state.data, newState);
 	},
 	setFilter(state, {type, value, filterName}){

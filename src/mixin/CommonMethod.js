@@ -82,6 +82,15 @@ const CommonMethod = {
 			}
 			return "c-lv" + (quality - 1);
 		},
+		getHashrateColor2(hashRate, vType){
+			let quality;
+			if(hashRate < 20) quality = 4;
+			if(hashRate >= 80) quality = 6;
+			if(hashRate>= 20 && hashRate < 30) quality = 5;
+			if(hashRate>= 30) quality = 6;
+			if(hashRate >= 50 && hashRate < 80 && vType == 5) quality = 5;
+			return this.getHashrateColor({quality});
+		},
 		async oprDialog(domId, type) {
 			let dom = document.getElementById(domId);
 			if (type == "none") {

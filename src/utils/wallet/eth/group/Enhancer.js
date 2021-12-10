@@ -286,4 +286,33 @@ export default class Enhancer {
 			})
 		});
 	}
+
+	//进化2.0版本
+	static async enhanceV2({tokenId_,hrUp_,crystal_}, recipt){
+		let myAddr = await ETH.getAccount();
+		if (!myAddr) return;
+		let contract = new ETH.web3.eth.Contract([{
+			"name": "enhance", "type": "function",
+			"inputs": [
+				{"name": "tokenId_","type": "uint256"},
+				{"name": "hrUp_","type": "uint256"},
+				{"name": "crystal_","type": "uint256"},
+			],
+		}], WalletConfig.ETH.moMoStake);
+		console.log({tokenId_});
+		return new Promise(resolve => {
+			ETH.sendMethod(
+				contract.methods.enhance(tokenId_,hrUp_,crystal_), {from: myAddr},
+				hash=>resolve(hash),
+				async ()=>{
+					console.log("enhance success");
+					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+					await Common.app.eth_setMyHashrate();
+					await Common.app.getCrystalNum();
+					Common.app.unLockBtn("enhanceLock");
+					recipt();
+				}
+			)
+		});
+	}
 }

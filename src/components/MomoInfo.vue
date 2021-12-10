@@ -69,7 +69,7 @@
 			</div>
 		</div>
 
-		<!-- 升级记录 -->
+		<!-- 升级记录｜进化记录 -->
 		<div v-if="levelUpInfo.length > 0 || enhanceHistory.length > 0"  class="mgt-20 ly-input-content">
 			<div class="por">
 				<h3 class="dib cur-point " :class="{tabActive: historyTab == 0}" @click="historyTab=0">{{$t("MOMO_34")}}</h3>
@@ -116,9 +116,10 @@
 					</div>
 					<div class="tac">
 						<p class="vertical-children tac mgt-10 small dib" style="background:rgba(0,0,0,0.3);border-radius:15px;padding:5px 10px">
-							<span class="c-lv1" v-if="item.newHashrate - item.oldHashrate == 1">{{$t("MOMO_68")}} +1</span>
+							<!-- <span class="c-lv1" v-if="item.newHashrate - item.oldHashrate == 1">{{$t("MOMO_68")}} +1</span>
 							<span class="c-lv5" v-else-if="item.newHashrate - item.oldHashrate == 5">{{$t("MOMO_70")}} +5</span>
-							<span :class="`c-lv${item.newHashrate - item.oldHashrate}`" v-else>{{$t("MOMO_69")}} +{{item.newHashrate - item.oldHashrate}}</span>
+							<span :class="`c-lv${item.newHashrate - item.oldHashrate}`" v-else>{{$t("MOMO_69")}} +{{item.newHashrate - item.oldHashrate}}</span> -->
+							<span class="c-lv1" >{{$t("MOMO_74").replace("#0#",item.newHashrate - item.oldHashrate)}}</span>
 						</p>
 					</div>
 					<div class="vertical-children mgt-10 tac" style="font-size: 18px" >

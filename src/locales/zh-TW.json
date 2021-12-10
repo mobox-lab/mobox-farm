@@ -91,6 +91,8 @@
   "Notice_55":"If you collect a full set of MOMOs (The same MOMO common, uncommon, unique, rare) through the Binance Mystery Boxes, you will have a chance to obtain a limited edition Binance MOMO NFT.(Total amount: 50. First come first served). The MOBOX platform will airdrop the MOMOs within 5 business days after the redemption has  finished.",
   "Notice_56":"November 10th Update Notice",
   "Notice_57":"1. MOMO enhancement adjustment. MOMO enhancement will  not require consumption of MBOX. Users who have consumed MBOX for MOMO enhancement will get a full refund from team MOBOX. (Expected refund on November 12)<br/>2. Added 16 EPIC MOMO’s to the platform.<br/>3. GEM Levels will increase from level 5 to level 6, which will take effect from the start of Token Master season 24.",
+  "Notice_58":"December 9th Update Notice",
+  "Notice_59":"1.Release full set of 'Bobby Binancowitz' MOMOs.<br/>2.MOMO evolution adjustments. Every evolution will increase  hash power by 1 (Fixed number), users can choose to bind evolution once. Click the “?” on Evolution page, where you can preview the result estimate.<br/>3.Users who have authorized MEC but have not completed the entire evolution will get a full refund.",
   "Air-drop_01":"請先選擇您要質押資產的主鏈",
   "Air-drop_02":"總質押",
   "Air-drop_03":"我的質押",
@@ -704,6 +706,10 @@
   "MOMO_69":"Advanced enhance",
   "MOMO_70":"Perfect enhance",
   "MOMO_71":"Bobby Binancowitz cannot be upgraded temporarily",
+  "MOMO_72":"Enhancement number",
+  "MOMO_73":"Enhancement cost",
+  "MOMO_74":"Enhancement #0# times",
+  "MOMO_75":"Enhancement preview",
   "Fetters_01":"固定算力加成",
   "Fetters_02":"每一組普通、良好、優秀和稀有4種品質的MOMO，可以額外提供300算力算成。",
   "Fetters_03":"當前固定算力總加成為",
@@ -1277,5 +1283,5 @@
   "Name_402":"DJ",
   "Name_403":"超人特工",
   "Name_404":"幣安小子",
-  "Name_405":"幣安小白"
+  "Name_405":"幣安小子"
 }

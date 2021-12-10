@@ -73,7 +73,7 @@
 				<div class="row clear">
 					<div class=" col-md-4 mgt-10 tal" style="padding:0px">
 						<div  class="dib speed-show">
-							<p class="small opa-6"><span class="tac">100 {{ $t("Mine_14") }}≈{{ eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 100, 100 ) }} MBOX/DAY</span></p>
+							<p class="small opa-6"><span class="tac">1000 {{ $t("Mine_14") }}≈{{ eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 1000, 100 ) }} MBOX/DAY</span></p>
 							<p class="vertical-children mgt-10 bold" style="height:25px">
 								<img src="@/assets/coin/MBOX.png" alt="" height="20">
 								<span class="mgl-5 " v-if="Number(eth_earnedMbox) >= 0">{{ eth_earnedMbox }}</span>
@@ -85,7 +85,7 @@
 					<div class="col-md-4 mgt-10" style="padding:0px" v-for="item in getBalanceArr" :key="item.coinName">
 						<div  class="dib speed-show" >
 							<div class="over" v-if="item.coinName == 'BANANA' ">{{$t("Air-drop_134")}}</div>
-							<p class="small opa-6"><span class="tac">100 {{ $t("Mine_14") }}≈{{ numFloor(Number(eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 100, 100 )) * item.dayDrop / 200000, 1e4) }} {{item.coinName}}/DAY</span></p>
+							<p class="small opa-6"><span class="tac">1000 {{ $t("Mine_14") }}≈{{ numFloor(Number(eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 1000, 100 )) * item.dayDrop / 200000, 1e4) }} {{item.coinName}}/DAY</span></p>
 							<p class="vertical-children mgt-10" style="height:25px">
 								<img :src="require(`@/assets/coin/${item.coinName}.png`)" alt="" height="20">
 								<span class="mgl-5 bold vertical-children">

@@ -185,7 +185,7 @@ export default {
 			return Number(this.numFloor(this.applyInfo.price / 1e18, 1e4) * Number(this.inputNum));
 		},
 		needApprove(){
-			return Number(this.mboxAllownceToApply)/1e18 < this.getNeedPayMbox
+			return Number(this.mboxAllownceToApply)/1e18 < this.getNeedPayMbox && this.mboxAllownceToApply != -1
 		},
 		//获取当前是否可以发起申购
 		isCanApply(){

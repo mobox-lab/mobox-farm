@@ -142,7 +142,7 @@ export default {
 			return Number(this.numFloor(this.applyInfo.roundPrice / 1e18, 1e4) * Number(this.inputNum));
 		},
 		needApprove(){
-			return Number(this.mboxAllownceToBoxApply)/1e18 < this.getNeedPayMbox
+			return Number(this.mboxAllownceToBoxApply)/1e18 < this.getNeedPayMbox && this.mboxAllownceToBoxApply != -1
 		},
 		isCanApply(){
 			let isCanApply = true;

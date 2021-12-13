@@ -212,7 +212,7 @@ export default {
 		},
 		//是否需要授权, 授权额度不足支付
 		needApprove(){
-			return this.coinArr[this.oprCoin].allowanceToGemAuction / 1e18 < Number(this.getNowPetItem.price/ 1e9);
+			return this.coinArr[this.oprCoin].allowanceToGemAuction / 1e18 < Number(this.getNowPetItem.price/ 1e9) && this.coinArr[this.oprCoin].allowanceToGemAuction != -1;
 		}
 	},
 	async created() {

@@ -24,6 +24,7 @@ import WalletConnectDialog from "@/components/WalletConnectDialog";
 import StatuButton from "@/components/StatuButton";
 import PetItemMin from "@/components/PetItemMin";
 import MomoInfo from "@/components/MomoInfo";
+import OpenPetItem from "@/components/OpenPetItem";
 
 export {
 	Dropdown,
@@ -52,4 +53,5 @@ export {
 	StatuButton,
 	PetItemMin,
 	GemSellItem,
+	OpenPetItem
 }

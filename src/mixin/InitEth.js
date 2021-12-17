@@ -1,8 +1,7 @@
 import {Common,EventBus,Wallet,Http, SwapHttp} from "@/utils";
-import {EventConfig,StorageConfig,WalletConfig, ConstantConfig, PancakeConfig, HttpConfig} from "@/config";
+import {EventConfig,StorageConfig,WalletConfig, ConstantConfig, PancakeConfig} from "@/config";
 import {mapState} from "vuex";
 import BigNumber from "bignumber.js";
-import axios from 'axios';
 
 const InitEth = {
 	data() {
@@ -142,7 +141,6 @@ const InitEth = {
 		},
 		//需要定时去取的数据
 		async needUpdate() {
-			this.getHalloweenBox();
 			//查询我质押的和key的收益
 			await this.getStakeValueAndEarndKey();
 
@@ -179,14 +177,7 @@ const InitEth = {
 			//获取总打开箱子数
 			await this.setTotalOpenBox();
 		},
-		async getHalloweenBox(){
-			let myAddr = await Wallet.ETH.getAccount();
-			let res = await axios.post(HttpConfig.Halloween.Bags, {addr: myAddr});
-			if(res.status == 200){
-				let box = res.data.data.box;
-				this.$store.commit("userState/setData", {halloweenBox: box});
-			}
-		},
+
 		async getRefund(){
 			let refundData = await Wallet.ETH.getRefund();
 			let {short, middle, long} = refundData;

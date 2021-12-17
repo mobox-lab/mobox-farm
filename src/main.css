@@ -1,7 +1,6 @@
 * {
 	padding: 0px;
 	margin: 0px;
-	font-family: 'Poppins', "Microsoft YaHei", 微软雅黑;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	box-sizing: border-box;
@@ -13,6 +12,7 @@
 body {
 	font-size: 14px;
 	padding-bottom: 20px;
+	font-family: 'Poppins', "Microsoft YaHei", 微软雅黑;
 }
 
 button{
@@ -655,7 +655,7 @@ svg {
 	transition: all 0.3s linear; 
 }
 .bold{
-	font-weight: bold;
+	font-weight: bold !important;
 }
 .fill-100 {
 	width: 100%;
@@ -1468,6 +1468,11 @@ svg {
 }
 .sexy::-webkit-scrollbar-track{
 	background: transparent;
+}
+
+.pre-load{
+	width: 0px !important;
+	height: 0px !important;
 }
 
 

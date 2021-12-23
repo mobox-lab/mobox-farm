@@ -3,25 +3,34 @@
 		<div id="bg1"></div>
 		<div id="bg2"></div>
 		<div id="aridorp">
-			<section class="mgt-10 por airdrop-cont">
+			<div class="snow-container" style="height: 600px;">
+				<div class="snow foreground"></div>
+				<div class="snow foreground layered"></div>
+				<div class="snow middleground"></div>
+				<div class="snow middleground layered"></div>
+				<div class="snow background"></div>
+				<div class="snow background layered"></div>
+			</div>
+			<section class="mgt-10 por airdrop-cont" style="z-index: 10">
 				<div class="swiper-container hide" ref="swiper_container" style="padding: 0px 10px;padding-bottom: 15px">
 					<div class="swiper-wrapper tac">
+						<div id="halloween-entry" class="swiper-slide tac" style="width: 80%">
+							<router-link to="/christmas">
+								<img src="@/assets/christmas.png" alt="" width="100%"  />
+							</router-link>
+							<span v-if="christmasData.box > 0">{{christmasData.box}}</span>
+						</div>
 						<div id="halloween-entry" class="swiper-slide tac" style="width: 80%;margin:0 auto">
 							<router-link to="/binanceNFT">
 								<img src="@/assets/binaceActivity.png" alt="" width="100%" />
 							</router-link>
 						</div>
-						<!-- <div id="halloween-entry" class="swiper-slide tac" style="width: 80%">
-							<router-link to="/halloween">
-								<img src="@/assets/halloween/entrybtn.png" alt="" width="100%"  />
-							</router-link>
-							<span v-if="halloweenBox > 0">{{halloweenBox}}</span>
-						</div> -->
 					</div>
 					<div ref="pagination" class="swiper-pagination"></div>
 				</div>
 				<div class="mgt-10 tal vertical-children tac-xs">
 					<img class="mgt-30 hide-xs" src="@/assets/airdrop_icon.png" width="200" alt="">
+					<img class="hide-xs tree" src="@/assets/christmas/tree.png" alt="">
 					<div class="dib mgl-10 block-xs">
 						<h1 style="font-size:40px">{{$t("Menu_01")}}</h1>
 						<p class="small-xs">{{$t("Air-drop_224")}}</p>
@@ -45,8 +54,11 @@
 
 									<div class="col-md-5 aveage-box" style="align-items: start;">
 										<div class="vertical-children " style="padding-left: 56px" id="apy-div">
-											<div class="dib airdorp-item-coin-icon tac " :class="item.isLP?'double-img':'' " style="left:0px">
+											<div class="dib airdorp-item-coin-icon tac por" :class="item.isLP?'double-img':'' " style="left:0px">
 												<img v-for="(name, key) in item.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="50" alt="" />
+												<div  class="coin-hat">
+													<img src="@/assets/christmas/coinhat.png" alt="">
+												</div>
 											</div>
 											<div style="margin-left: 15px">
 												<h4 class="color-w tal small">{{ item.coinName }} {{item.isLP?"LP":"POOL"}}</h4>
@@ -535,6 +547,7 @@ export default {
 			buyBackType: (state) => state.globalState.data.buyBackType,
 			refundData: (state) => state.globalState.data.refundData,
 			halloweenBox: (state) => state.userState.data.halloweenBox,
+			christmasData: (state) => state.userState.data.christmasData,
 		}),
 
 		isMoboxWallet(){
@@ -733,7 +746,12 @@ export default {
 </script>
 
 <style scoped>
-
+.tree{
+	position: absolute;
+	height: 190px;
+	left:  60%;
+	top: 10%;
+}
 #aridorp, #activity{
 	padding: 10px
 }
@@ -934,6 +952,7 @@ export default {
 		display: block;
 		padding: 0px 5px;
 		background: red;
+		min-width:20px;
 		border-radius: 20px;
 		top: 10px;
 		right: 0px;

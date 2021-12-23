@@ -57,6 +57,43 @@
 					</div>
 				</div>
 			</section>
+			<section id="buy-back" class="mgt-20 por">
+				<div class="info">
+					<span class="cur-point por dib"   @click="getRootRefs().ruleDialog.show('MOMO_80','MOMO_81')">
+						<svg class="opa-6"  width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path style="fill:none" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+					</span>
+				</div>
+				<div class="aveage-box" style="background:#1C222C;border-radius:10px">
+					<div style="padding:10px">
+						<p class="small opa-6 tac" >{{$t("MOMO_76")}}</p>
+						<div class="ly-input mgt-10 tac vertical-children2">{{getLeftTime(momoSetting.updateTime - nowTs)}}</div>
+					</div>
+					<div style="padding:10px">
+						<p class="small opa-6 tac" >{{$t("MOMO_77")}}</p>
+						<div class="ly-input mgt-10 tac vertical-children2">
+							<span>[10, {{momoSetting.v4_max_upgrade}}]</span>
+							<img class="mgl-5" src="@/assets/icon/upgradejt.png" alt="" height="12">
+							<span class="mgl-5">[10, <span style="color:rgb(133, 243, 74)">{{getNextHash.v4}}</span>]</span>
+						</div>
+					</div>
+					<div style="padding:10px">
+						<p class="small opa-6 tac" >{{$t("MOMO_78")}}</p>
+						<div class="ly-input mgt-10 tac vertical-children2">
+							<span>[50, {{momoSetting.v5_max_upgrade}}]</span>
+							<img class="mgl-5" src="@/assets/icon/upgradejt.png" alt="" height="12">
+							<span class="mgl-5">[50, <span style="color:rgb(133, 243, 74)">{{getNextHash.v5}}</span>]</span>
+						</div>
+					</div>
+					<div style="padding:10px" >
+						<p class="small opa-6 tac" >{{$t("MOMO_79")}}</p>
+						<div class="ly-input mgt-10 tac vertical-children2">
+							<span>{{Number(momoSetting.v5_max_upgrade) + 30}}</span>
+							<img class="mgl-5" src="@/assets/icon/upgradejt.png" alt="" height="12">
+							<span class="mgl-5" style="color:rgb(133, 243, 74)">{{getNextHash.v5 + 30}}</span>
+						</div>
+					</div>
+				</div>
+			</section>
 
 			<div style="overflow:hidden">
 				<div class="mgt-10 row">
@@ -195,6 +232,8 @@ export default {
 			myPetFilter: (state) => state.globalState.data.myPetFilter,
 			lockList: (state) => state.ethState.data.lockList,
 			momoNumObj: (state) => state.globalState.data.momoNumObj,
+			momoSetting: (state) => state.globalState.data.momoSetting,
+			nowTs: (state) => state.globalState.data.nowTs,
 		}),
 		getGrowup() {
 			let vType = this.perviewVTypeSelectPos + 4;
@@ -372,6 +411,17 @@ export default {
 			}
 			console.log(obj);
 			return obj;
+		},
+		getNextHash(){
+			let retData = {v4: 0, v5: 0, v6: 0};
+			let {v4_max_upgrade, v5_max_upgrade} = this.momoSetting;
+			retData.v4 = Number(v4_max_upgrade);
+			retData.v5 = Number(v5_max_upgrade);
+			retData.v6 = Number(v5_max_upgrade) >= 180? Number(v5_max_upgrade) + 30: 180;
+
+			retData.v4 += retData.v4 < 80? 20: 10;
+			retData.v5 += retData.v4 < 150? 30: 20;
+			return retData;
 		}
 	},
 	methods: {

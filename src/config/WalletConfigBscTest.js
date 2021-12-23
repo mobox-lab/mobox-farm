@@ -5,7 +5,7 @@ export default class WalletConfig {
 		
 		moMoMToken: "0x8442FB6545Ec5B7D8490C324699620B3aCa2dBC0", //ERC1155合约
 		moMoMinter: "0xeCf8c1E91B929D3EeA4940ec8AAF27f60bAd9F80", // 开箱子合约
-		moMoHelper: "0x47D466094A436413b17967E4CAD64e775df8F4f2", //工具合约
+		moMoHelper: "0x7049b1Ba0A28ea66395bb046F8b1158a8d373CFb", //工具合约
 		moMoHelper2: "0x825673F88Ea9B263722b9ffD3eaf89484a1C459F", //工具合约
 		moMoHelper3: "0x2C388d5Ea0048dC68824610cf778fFBF2F0bBC73", //工具合约
 		moMoStake: "0x21353d254bF00E553F17B88b79c45712a886827C", //质押挖矿合约
@@ -40,6 +40,7 @@ export default class WalletConfig {
 		mecBoxApply: "0x59b514FF2f8ccee595840CE1F1d4f3bE1C0a4D54", //水晶宝箱申购
 		mecBoxMinter: "0xe9b962FbEd34630c3Def91B34B982eB769135F5F", //水晶宝箱打开
 		binanceNFT: "0x58043A6AC692400197D59825bcb8Cec77C87C993", //binanceNFT
+		moMoSetting: "0xFDaA6B01F2a5Fe76F408A7464688c228BB12Accb", //MoMoSetting
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

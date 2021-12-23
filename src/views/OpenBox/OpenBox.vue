@@ -35,8 +35,8 @@
 							</div>
 						</div>
 						<div id="show-card-btn" class="hide animate__fadeIn animate__animated" v-show="!isOpenAll && !openOne">
-							<button class="btn-primary" @click.stop="openOneCard">翻开一张</button>
-							<button class="btn-primary mgl-10" @click.stop="openAll">全部打开</button>
+							<button class="btn-primary" @click.stop="openOneCard">{{$t("NewBOX_36")}}</button>
+							<button class="btn-primary mgl-10" @click.stop="openAll">{{$t("NewBOX_37")}}</button>
 						</div>
 					</div>
 

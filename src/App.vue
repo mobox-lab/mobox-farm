@@ -110,6 +110,13 @@
 			</ul>
 			<div class="tac mgt-30">
 				<div id="halloween-entry" class="por">
+					<router-link to="/christmas">
+						<img src="@/assets/christmas.png" alt="" height="85" />
+					</router-link>
+					<span v-if="christmasData.box > 0">{{christmasData.box}}</span>
+				</div>
+
+				<div id="halloween-entry" class="por">
 					<router-link to="/binanceNFT">
 						<img src="@/assets/binaceActivity.png" alt="" height="85" />
 					</router-link>
@@ -353,6 +360,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_60")}}</h3>
+						<span v-html="$t('Notice_61')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_58")}}</h3>
 						<span v-html="$t('Notice_59')" ></span>
 					</div>
@@ -574,7 +585,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "3.5"
+			noticeVersion: "3.6"
 		};
 	},
 	watch: {
@@ -604,6 +615,7 @@ export default {
 			crystalNum: (state) => state.userState.data.crystalNum,
 			mecBoxNum: (state) => state.userState.data.mecBoxNum,
 			halloweenBox: (state) => state.userState.data.halloweenBox,
+			christmasData: (state) => state.userState.data.christmasData,
 		}),
 		isMoboxWallet(){
 			return window.SHOW_APP_BAR != undefined;
@@ -881,6 +893,7 @@ export default {
 	position: absolute;
 	display: block;
 	padding: 0px 5px;
+	min-width:20px;
 	background: red;
 	border-radius: 20px;
 	top: 10px;

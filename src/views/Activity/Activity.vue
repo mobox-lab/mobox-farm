@@ -14,8 +14,7 @@
 				<Box v-if="tabKey == tabArr[0].key " />
 				<Mec v-if="tabKey == tabArr[1].key " />
 				<GemBuy v-if="tabKey == tabArr[2].key " />
-				<Mdx v-if="tabKey == tabArr[3].key " />
-				<Bidding v-if="tabKey == tabArr[4].key " />
+				<Bidding v-if="tabKey == tabArr[3].key " />
 			</section>
 		</div>
 	</section>
@@ -25,11 +24,10 @@
 import GemBuy from './Gem/GemBuy.vue';
 import Bidding from './Bidding/Bidding.vue';
 import Box from './Box/Box.vue';
-import Mdx from './Mdx/Mdx.vue';
-import Mec from './Mec/Mec'
+import Mec from './Mec/Mec.vue'
 
 export default {
-	components: {GemBuy, Bidding, Box, Mdx, Mec},
+	components: {GemBuy, Bidding, Box, Mec},
 	data(){
 		return({
 			tabKey: 'jinPai',
@@ -37,7 +35,6 @@ export default {
 				{icon: require("@/assets/icon/box_icon.png"), text: "NewBOX_01", key: "box"},
 				{icon: require("@/assets/box/mecbox.png"), text: "MECBOX_01", key: "mec"},
 				{icon: require("@/assets/icon/yellow_icon.png"), text: "Gemstone_01", key: "shenGou"},
-				{icon: require("@/assets/icon/mdx_icon.png"), text: "Air-drop_235", key: "mdx"},
 				{icon: require("@/assets/icon/momobidicon.png"), text: "Auction_03", key: "jinPai"},
 			]
 		})

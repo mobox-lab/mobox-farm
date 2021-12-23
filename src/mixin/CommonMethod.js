@@ -69,6 +69,7 @@ const CommonMethod = {
 			return addr.substr(0, 6) + "..." + addr.substr(addr.length - 4, addr.length);
 		},
 		numFloor(num, decimals = 100) {
+			if(num == "-") return "-"
 			return Number(Math.floor(num * decimals + 0.0000002) / decimals);
 		},
 		//根据算力得到显示文字的颜色
@@ -177,6 +178,19 @@ const CommonMethod = {
 				second = Math.floor(times) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
 			}
 			return this.patchTimeLength(hour) + ":" + this.patchTimeLength(minute) + ":" + this.patchTimeLength(second)
+		},
+		getLeftTime2(times) {
+			let day = 0,
+				hour = 0,
+				minute = 0,
+				second = 0;
+			if (times > 0) {
+				day = Math.floor(times / 60 / 60 / 24);
+				hour = Math.floor(times / (60 * 60) - day * 24);
+				minute = Math.floor(times / 60) - day * 24 * 60 - hour * 60;
+				second = Math.floor(times) - day * 24 * 60 * 60 - hour * 60 * 60 - minute * 60;
+			}
+			return this.patchTimeLength(day) + ":"+ this.patchTimeLength(hour) + ":" + this.patchTimeLength(minute) + ":" + this.patchTimeLength(second)
 		},
 
 		// 时间长度补位

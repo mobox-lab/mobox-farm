@@ -40,6 +40,7 @@ export default class WalletConfig {
 		mecBoxApply: "0x9cFA26eB210446FFFD248e6c048F11B51Ba61507", //水晶宝箱申购
 		mecBoxMinter: "0x1100Fe08470Ec04B10166902fd14Dac2c6C7C4d0", //水晶宝箱打开
 		binanceNFT: "0xc6b9DD6418b1143DC4861151d8EE7620f0163037", //binanceNFT
+		moMoSetting: "0x970093B4167261985621e6f2DC738D2e78ce6ac2", //MoMoSetting
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

@@ -19,7 +19,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-12 col-md-8 tal mgt-10" style="padding:10px">
+			<!-- <div class="col-xs-12 col-md-8 tal mgt-10 hide" style="padding:10px">
 				<h3>{{$t('Air-drop_208')}}</h3>
 				<div class="mgt-20 col-md-4 col-xs-6 other-balance " v-for="item in getBalanceArr" :key="item.coinName">
 					<div style="padding-top:10px" >
@@ -34,7 +34,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</section>
 		
 		<!-- 算力展示 -->
@@ -82,7 +82,7 @@
 							</p>
 						</div>
 					</div>
-					<div class="col-md-4 mgt-10" style="padding:0px" v-for="item in getBalanceArr" :key="item.coinName">
+					<!-- <div class="col-md-4 mgt-10" style="padding:0px" v-for="item in getBalanceArr" :key="item.coinName">
 						<div  class="dib speed-show" >
 							<div class="over" v-if="item.coinName == 'BANANA' ">{{$t("Air-drop_134")}}</div>
 							<p class="small opa-6"><span class="tac">1000 {{ $t("Mine_14") }}≈{{ numFloor(Number(eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 1000, 100 )) * item.dayDrop / 200000, 1e4) }} {{item.coinName}}/DAY</span></p>
@@ -96,10 +96,9 @@
 									</span>
 									<span class="mgl-5">{{item.coinName}}</span>
 								</span>
-								<!-- <StatuButton v-if="item.version == '-' && balancePool['ts'] != 0 " class="btn-small mgl-10" :isDisable="Number(eth_myHashrate) < 0" :isLoading="lockBtn.joinStakeLock > 0" :onClick="joinStake">{{$t('Air-drop_209')}}</StatuButton> -->
 							</p>
 						</div>
-					</div>
+					</div> -->
 				</div>
 				<div class="mgt-20">
 					<button id="take-btn" class="btn-primary por mgl-10" :class="(eth_earnedMbox > 0 && lockBtn.getMboxLock <= 0)? '':'disable-btn' " style="min-width: 200px;margin-top:3px" @click="setAction(25001);takeEarnedMbox('eth')" >
@@ -267,7 +266,6 @@ export default {
 	padding: 10px;
 }
 #mobox-pool{
-	border-right: 1px solid #5d646c;
 	padding-right: 20px;
 }
 #airdrop-pool-view{

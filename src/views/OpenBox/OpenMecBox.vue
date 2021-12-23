@@ -107,7 +107,7 @@
 						<th width="20%">{{ $t("BOX_27") }}</th>
 						<th width="40%" class="tar">TX</th>
 					</tr>
-					<tr v-for="item in getOpenBoxHistory" :key="item.tx">
+					<tr v-for="item in getOpenBoxHistory" :key="item.tx+item.event">
 						<td class="tal tac-xs">
 							<p>{{ dateFtt('yyyy-MM-dd', new Date(item.crtime * 1000)) }}</p> 
 							<p>{{ dateFtt('hh:mm:ss', new Date(item.crtime * 1000)) }}</p> 

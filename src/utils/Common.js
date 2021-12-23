@@ -44,7 +44,7 @@ export default class Common {
 		window.localStorage.removeItem(name);
 	}
 	static getRandomNum(start, end) {
-		return Math.ceil(start + Math.random() * end);
+		return parseInt(Math.random()*(end-start+1)+start,10);
 	}
 	static async sleep(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms))

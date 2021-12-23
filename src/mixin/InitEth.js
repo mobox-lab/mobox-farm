@@ -1,7 +1,8 @@
 import {Common,EventBus,Wallet,Http, SwapHttp} from "@/utils";
-import {EventConfig,StorageConfig,WalletConfig, ConstantConfig, PancakeConfig} from "@/config";
+import {EventConfig,StorageConfig,WalletConfig, ConstantConfig, PancakeConfig, HttpConfig} from "@/config";
 import {mapState} from "vuex";
 import BigNumber from "bignumber.js";
+import axios from 'axios';
 
 const InitEth = {
 	data() {
@@ -141,6 +142,8 @@ const InitEth = {
 		},
 		//需要定时去取的数据
 		async needUpdate() {
+			//产销MOMO升级设置
+			await this.getMoMoSetting();
 			//查询我质押的和key的收益
 			await this.getStakeValueAndEarndKey();
 
@@ -176,6 +179,42 @@ const InitEth = {
 
 			//获取总打开箱子数
 			await this.setTotalOpenBox();
+
+			//获取活动箱子数量
+			await this.getActivityData();
+		},
+
+		async getActivityData(){
+			let myAddr = await Wallet.ETH.getAccount();
+			let {data, status} = await axios.post(HttpConfig.Christmas.Bags, {addr: myAddr});
+			if(status == 200){
+				let {box,  balances} = data.data;
+				let christmasData ={
+					box: box,
+					balances: {
+						mbox: 0,
+						mec: 0,
+						box_v: 0,
+						box_r: 0 //实体箱子
+					}
+				}
+				balances.map(item=>{
+					christmasData.balances[item.symbol] = parseInt(item.balance);
+				});
+				this.$store.commit("userState/setData", {christmasData});
+			}
+		},
+
+		async getMoMoSetting(){
+			let [v4_max_upgrade, v5_max_upgrade, v4_max_enhance, v5_max_enhance, updateTime] = await Wallet.ETH.Group.MoMoSetting.getMoMoSetting();
+			let momoSetting = {
+				updateTime,
+				v4_max_upgrade,
+				v4_max_enhance,
+				v5_max_upgrade,
+				v5_max_enhance,
+			}
+			this.$store.commit("globalState/setData", {momoSetting});
 		},
 
 		async getRefund(){

@@ -71,7 +71,15 @@ const state = () => ({
 		mboxAllownceToBoxApply: -1, //mbox是否授权给Box申购合约
 		hasLoadSpine: false,
 		//补偿数据
-		refundData: {short: 0, middle: 0, long: 0, total: 0, refunded: "-"}
+		refundData: {short: 0, middle: 0, long: 0, total: 0, refunded: "-"},
+		//momoSetting
+		momoSetting: {
+			updateTime: 0,
+			v4_max_upgrade: 0,
+			v4_max_enhance: 0,
+			v5_max_upgrade: 0,
+			v5_max_enhance: 0,
+		}
 	},
 })
 

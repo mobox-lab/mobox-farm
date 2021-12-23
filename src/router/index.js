@@ -12,7 +12,6 @@ import AuctionView from '../views/Market/AuctionView.vue'
 import AuctionGemView from '../views/Market/AuctionGemView.vue'
 import RentView from '../views/Market/RentView.vue'
 import Activity from "../views/Activity/Activity.vue"
-import Halloween from "../views/Activity/Halloween/Halloween.vue"
 import Christmas from "../views/Activity/Christmas/Christmas.vue"
 import BinanceNFT from "../views/BNFT/BinanceNFT.vue"
 
@@ -91,6 +90,11 @@ const routes = [
 		}
 	},
 	{
+		path: '/activity-mdx',
+		name: 'ActivityMdx',
+		component: ()=>import("../views/Activity/Mdx/Mdx.vue"),
+	},
+	{
 		path: '/auctionView/:petInfo',
 		name: 'AuctionView',
 		component: AuctionView
@@ -109,11 +113,6 @@ const routes = [
 		path: "/binanceNFT",
 		name: "BinanceNFT",
 		component: BinanceNFT
-	},
-	{
-		path: "/halloween",
-		name: "Halloween",
-		component: Halloween
 	},
 	{
 		path: "/christmas",

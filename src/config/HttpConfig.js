@@ -15,4 +15,14 @@ export default class HttpConfig {
 		Claim: this.SN.Activity +"/event/claim",
 		Ovdata: this.SN.Activity +"/event/ovdata",
 	}
+
+	static Christmas = {
+		Bags: this.SN.Activity + "/event/bags",
+		Logs: this.SN.Activity + "/event/logs",
+		OpenBox: this.SN.Activity + "/event/openBox",
+		luckyGuys: this.SN.Activity + "/event/lucky/guys",
+		Ovdata: this.SN.Activity +"/event/ovdata",
+		Notify: this.SN.Activity +"/event/notify",
+		Claim: this.SN.Activity +"/event/claim",
+	}
 }

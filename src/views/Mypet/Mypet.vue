@@ -420,7 +420,7 @@ export default {
 			retData.v6 = Number(v5_max_upgrade) >= 180? Number(v5_max_upgrade) + 30: 180;
 
 			retData.v4 += retData.v4 < 80? 20: 10;
-			retData.v5 += retData.v4 < 150? 30: 20;
+			retData.v5 +=  20;
 			return retData;
 		}
 	},

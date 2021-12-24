@@ -59,7 +59,7 @@
 			<p v-if="!isStartApply">{{$t("NewBOX_21")}}<span class="dotting"></span></p>
 			<p v-if="isHightAndIsMax && isStartApply">{{$t("NewBOX_24")}}</p>
 			<div class="tac" v-if="Number(inputNum) > 0 && isCanApply">
-				<p v-if="getCanUseTemMbox > 0">{{$t("NewBOX_11").replace("#0#",getCanUseTemMbox > getNeedPayMbox? getNeedPayMbox: getCanUseTemMbox)}}</p>
+				<p v-if="getCanUseTemMbox > 0">{{$t("NewBOX_11").replace("#0#",getCanUseTemMbox > getNeedPayMbox? numFloor(getNeedPayMbox, 1e4): numFloor(getCanUseTemMbox, 1e4))}}</p>
 				<p >{{$t("NewBOX_12").replace("#0#", getCanUseTemMbox > getNeedPayMbox? 0 : numFloor(getNeedPayMbox -   getCanUseTemMbox, 1e3))}}</p>
 			</div>
 			<div  :class="{'btn-group': needApprove}">

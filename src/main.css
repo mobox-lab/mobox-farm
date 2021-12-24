@@ -14,6 +14,10 @@ body {
 	font-family: 'Poppins', "Microsoft YaHei", 微软雅黑;
 }
 
+input {
+	font-family: 'Poppins', "Microsoft YaHei", 微软雅黑;
+}
+
 button{
 	line-height: 100%;
 }
@@ -674,7 +678,7 @@ svg {
 }
 .bold2{
 	font-weight: bold !important;
-	font-family: "Poppins Bold";
+	font-family: "Poppins Bold" !important;
 }
 .fill-100 {
 	width: 100%;

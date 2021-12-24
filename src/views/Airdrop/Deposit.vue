@@ -20,7 +20,7 @@
 						<p>{{oprData.balance}} {{oprData.coinName}} <span v-if="oprData.isLP">(Pancake LP V{{oprData.pancakeVType}})</span></p>
 					</div>
 				</div>
-				<div class="mgt-10 tar">
+				<div class="mgt-10 tar" v-if="oprData.balance == 0">
 					<button class="btn-primary btn-small" v-if="oprData.isLP"  @click="$root.$children[0].$refs.pancake.setOprData(oprData).show('liquidity').showAddLiquidityPanel()">{{$t("Air-drop_57")}}</button>
 				</div>
 			

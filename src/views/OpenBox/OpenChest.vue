@@ -96,7 +96,7 @@
 							</div>
 							<div class="aveage-box">
 								<div class="tal">
-									<button class="btn-primary mgt-20" style="width: 90%" @click="setAction(23011);  oprDialog('get-chest-dialog', 'block'); addKey = parseInt(ethState.box) || 0; ">
+									<button class="btn-primary mgt-20" style="width: 90%" @click="setAction(23011);  oprDialog('get-chest-dialog', 'block'); addKey = parseInt(ethState.box)>200?200:parseInt(ethState.box) || 0;">
 										{{ $t("BOX_04") }}
 									</button>
 								</div>
@@ -187,9 +187,9 @@
 						<img  src="@/assets/coin/KEY.png" alt="" />
 					</div>
 					<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
-						v-int :data-max="parseInt(ethState.box) || 0" data-min="1" v-model="addKey" />
+						v-int :data-max="parseInt(ethState.box)>200?200:parseInt(ethState.box) || 0" data-min="1" v-model="addKey" />
 					<div class="dib" style="width: 30%">
-						<button @click="addKey = parseInt(ethState.box) || 0" class="btn-primary btn-small" style="width: 80%" >
+						<button @click="addKey = parseInt(ethState.box)>200?200:parseInt(ethState.box) || 0" class="btn-primary btn-small" style="width: 80%" >
 							Max
 						</button>
 					</div>

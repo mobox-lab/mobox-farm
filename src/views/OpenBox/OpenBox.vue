@@ -77,7 +77,7 @@
 							<p class="small opa-6 mgt-10 tal">{{$t("BOX_39")}}</p>
 							<div class="aveage-box">
 								<div class="tal">
-									<button class="btn-primary mgt-20" style="width: 90%" @click="setAction(23001); oprDialog('get-box-dialog', 'block'); addKey = parseInt(boxNum) || 0; ">
+									<button class="btn-primary mgt-20" style="width: 90%" @click="setAction(23001); oprDialog('get-box-dialog', 'block'); addKey = parseInt(boxNum)>200?200:parseInt(boxNum) || 0; ">
 										{{$t("BOX_36")}}
 									</button>
 								</div>
@@ -173,9 +173,9 @@
 						<img  src="@/assets/icon/box_view.png" alt="" />
 					</div>
 					<input class="ly-input dib" type="text" style=" text-align: center; width: 70%; padding-left: 50px; "
-						v-int :data-max="parseInt(boxNum) || 0"  v-model="addKey" />
+						v-int :data-max="parseInt(boxNum)>200?200:parseInt(boxNum)"  v-model="addKey" />
 					<div class="dib" style="width: 30%">
-						<button @click="addKey = parseInt(boxNum) || 0" class="btn-primary btn-small" style="width: 80%" >
+						<button @click="addKey = parseInt(boxNum)>200?200:parseInt(boxNum) || 0" class="btn-primary btn-small" style="width: 80%" >
 							Max
 						</button>
 					</div>
@@ -287,7 +287,6 @@ export default {
 			boxSpine: null,
 			cardSpines: [],
 			newBoxApproveToMinter: "-",
-			
 		};
 	},
 	computed: {

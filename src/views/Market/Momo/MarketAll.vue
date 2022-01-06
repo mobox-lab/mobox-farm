@@ -2,7 +2,7 @@
 	<div>
 		<div class="tal search vertical-children por mgt-20">
 			<div id="market-pet-fitter">
-				<span class="search-box  dib">
+				<span class="search-box  dib hide-xs ">
 					<div class="dib por" >
 						<div class="dib por">
 							<input class="ly-input" ref="searchInput" style="padding-right:30px;width:150px;border-radius:50px" type="text" :placeholder="$t('BOX_17')" v-model="searchWord" />
@@ -20,6 +20,11 @@
 					<img class="mgl-10 cur-point" :src="require('@/assets/icon/search.png')" alt="" @click="goSearch"  />
 				</span>
 
+				<div  class="cur-point dib por mgl-10 visiable-xs " @click="getMomoShopCar().show()"  >
+					<span v-if="shopCar.length >0" class="shop-car-num">{{shopCar.length}}</span>
+					<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
+				</div>
+
 				<div class="dib por mgl-5" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
@@ -29,17 +34,16 @@
 						{{$t("Market_63")}} ▼
 					</div>
 					<div class="dropdown-group-list hide">
-						<Dropdown :list="$parent.selectCategory" :defaultSelectPos="marketSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
-						<Dropdown :list="$parent.selectVType" :defaultSelectPos="marketSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
+						<Dropdown :list="$parent.$parent.selectCategory" :defaultSelectPos="marketSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
+						<Dropdown :list="$parent.$parent.selectVType" :defaultSelectPos="marketSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
 						<Dropdown :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
 					</div>
 				</div>
-				<Dropdown id="busd" class="mgl-5" style="margin-top:0px" :list="$parent.getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="$parent.onCoinChange" />
 			</div>
 
-			<p class="vertical-children  dib mgt-10">{{$t("Market_33")}}({{ marketPets.total }}) </p>
+			<p class="vertical-children  dib">{{$t("Market_33")}}({{ marketPets.total }}) </p>
 		</div>
-		<div :class="marketPets.list.length < 4 ? 'tal' : ''"  class="mgt-10 vertical-children" style="min-height:500px">
+		<div :class="marketPets.list.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
 			<a @click="$router.push({ path: `/auctionView/${item.tx}` })"  v-for="item in marketPets.list" :key="item.tx + item.index">
 				<PetItem  v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
@@ -403,7 +407,7 @@ export default {
 	}
 
 	#shop-history {
-		margin-right: 15px;
+		margin-right: 10px;
 		cursor: pointer;
 		position: relative;
 		user-select: none;
@@ -413,6 +417,7 @@ export default {
 		right: 0px;
 		top: 0px;
 	}
+
 	@media (max-width: 768px) {
 		#busd{
 			margin-top: 10px !important;
@@ -425,7 +430,9 @@ export default {
 		#market-pet-fitter{
 			zoom: 0.8;
 			text-align: right;
-			position: static !important;
+		}
+		.visiable-xs{
+			display: inline-block !important;
 		}
 	}
 </style>

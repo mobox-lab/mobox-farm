@@ -8,9 +8,11 @@
 					<span class="mgl-5">Lv. {{ item.level }}</span>
 				</div>
 
-				<img class="pet_img" :src="require(`@/assets/market/${item.imgName}.png`)" alt="" width="170" />
+				<div class="pet_img">
+					<img  :src="require(`@/assets/market/${item.imgName}.png`)" alt="" height="100%" />
+				</div>
 
-				<div style="position: absolute; width: 100%; bottom: 70px; left: 0px">
+				<div style="position: absolute; width: 100%; bottom: 50px; left: 0px">
 					<div class="vertical-children pet_num"  >
 						x{{ item.num }}
 					</div>
@@ -195,7 +197,8 @@ export default {
 	vertical-align: middle;
 	user-select: none;
 	position: relative;
-	top: -15px;
+	top: 10px;
+	height: 170px;
 }
 
 .pet_num {

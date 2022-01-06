@@ -52,7 +52,6 @@ import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
 import { mapState } from "vuex";
 
-let timer = null;
 export default {
 	mixins: [CommonMethod],
 	// components: {  Page, Dropdown},
@@ -74,7 +73,7 @@ export default {
 			marketGemMySellPage: (state) => state.marketState.data.marketGemMySellPage,
 			historyNotice: (state) => state.marketState.data.historyNotice,
 			marketTypePos: (state) => state.marketState.data.marketTypePos,
-
+			nowTs: (state) => state.globalState.data.nowTs,
 		}),
 		getSellList() {
 			let totalPet = [];
@@ -119,14 +118,17 @@ export default {
 			this.hasLoad = true;
 			this.getAuctionPetsMy(true);
 		}
-		timer = setInterval(()=>{
-			this.getAuctionPetsMy();
-		}, 5000);
 	},
-	
-	beforeDestroy(){
-		if(timer) clearInterval(timer);
+
+	watch: {
+		nowTs: function(val){
+			if(val % 5 == 0){
+				if(this.myAccount == "") return;
+				this.getAuctionPetsMy();
+			}
+		}
 	},
+
 	methods: {
 		getShowCoin(item){
 			return item.currency == 1?"MBOX": "BUSD";

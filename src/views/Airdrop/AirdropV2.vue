@@ -1025,7 +1025,7 @@ export default {
 	}
 	#apy-div{
 		padding-left: 40px !important;
-		flex: 1.5;
+		flex: 1.8;
 	}
 	#mbox-panel{
 		padding: 10px !important
@@ -1070,11 +1070,11 @@ export default {
 </style>
 
 <style>
-	.swiper-pagination-bullet-active{
+	#aridorp .swiper-pagination-bullet-active{
 		background: #fff !important;
 		width: 20px;
 	}
-	.swiper-pagination-bullet{
+	#aridorp .swiper-pagination-bullet{
 		background: #fff;
 		height: 4px;
 		border-radius: 10px;

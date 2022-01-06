@@ -9,19 +9,11 @@
 		<!-- ipad导航 -->
 		<div id="mobile-nav" class="hide">
 			<img src="./assets/logo.png" height="30" alt="" />
-			<div class="dib " style="position:absolute;top:0px;right:160px;zoom:0.8" >
-				<!-- <div class="vertical-children dib">
-					<img src="./assets/coin/KEY.png" height="25" alt=""/>
-					<span  @click="$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2',pancakeVType: 2}).show('swap')">
-						$<span v-if="ourPrice['KEY'] != '-' ">{{ourPrice["KEY"]}}</span>
-						<Loading v-else />
-					</span>
-				</div> -->
+			<div class="dib vertical-children" style="position:absolute;top:0px;right:15px;zoom:0.8" >
 				<div class="vertical-children dib">
 					<img src="./assets/icon/box_icon.png" width="30" alt=""/>
 					<router-link to="/market?tab=4">
-						<span >
-							$<span v-if="ourPrice['BOX'] != '-' ">{{ourPrice["BOX"]}}</span>
+						<span > $<span v-if="ourPrice['BOX'] != '-' ">{{ numFloor(ourPrice["BOX"], 1e2)}}</span>
 							<Loading v-else />
 						</span>
 					</router-link>
@@ -29,14 +21,21 @@
 				<div class="vertical-children  dib mgl-10 ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
 					<span @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
-						$<span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
+						$<span v-if="ourPrice['MBOX'] != '-' ">{{ numFloor(ourPrice["MBOX"], 1e2)}}</span>
 						<Loading v-else />
 					</span>
 				</div>
+				<div class="dib " style="margin-left:30px">
+					<img src="@/assets/icon/wallet_icon.png" alt="" height="45" @click="oprDialog('mobile-wallet-dialog', 'block')">
+					<span class="text-btn por mgl-10" @click="showNotice">
+						<span class="notice" v-if="!hasReadNotice"></span>
+						<img src="./assets/icon/notice_icon.png" alt="" height="40"/>
+					</span>
+				</div>
 			</div>
-			<div id="mobile-chain" style="position:absolute;right:10px;top:0px;zoom:0.7" class="hide">
+			<!-- <div id="mobile-chain" style="position:absolute;right:10px;top:0px;zoom:0.7" class="hide">
 				<WalletConnectBtn />
-			</div>
+			</div> -->
 			<div id="nav-btn" @click="navOpr('show')">
 				<svg width="23" height="23" viewBox="0 0 16 16" style="fill: #94bbff" >
 					<path d="M.571 3.571H15.43A.571.571 0 0016 3V1.571A.571.571 0 0015.429 1H.57A.571.571 0 000 1.571V3c0 .316.256.571.571.571zm0 5.715H15.43A.571.571 0 0016 8.714V7.286a.571.571 0 00-.571-.572H.57A.571.571 0 000 7.286v1.428c0 .316.256.572.571.572zm0 5.714H15.43a.571.571 0 00.571-.571V13a.571.571 0 00-.571-.571H.57A.571.571 0 000 13v1.429c0 .315.256.571.571.571z"></path>
@@ -56,14 +55,7 @@
 						<span>{{ $t("Air-drop_223") }}</span>
 					</li>
 				</router-link>
-				<!-- <router-link to="/activity">
-					<li :class="this.$route.path == '/activity' ? 'active' : ''">
-						<span class="per-icon vertical-children">
-							<img src="./assets/icon/huodong.png" alt="" width="25" />
-						</span>
-						<span>{{$t('Auction_01')}}</span>
-					</li>
-				</router-link> -->
+	
 				<router-link to="/openbox">
 					<li :class="this.$route.path == '/openbox' ? 'active' : ''">
 						<span class="per-icon vertical-children">
@@ -121,12 +113,6 @@
 						<img src="@/assets/binaceActivity.png" alt="" height="85" />
 					</router-link>
 				</div>
-				<!-- <div id="halloween-entry" class="por">
-					<router-link to="/halloween">
-						<img src="@/assets/halloween/entrybtn.png" alt="" height="85" />
-					</router-link>
-					<span v-if="halloweenBox > 0">{{halloweenBox}}</span>
-				</div> -->
 			</div>
 			<div id="our-parice-pc">
 				<!-- <div class="vertical-children point-block">
@@ -155,19 +141,19 @@
 			</div>
 		</div>
 		<!-- 顶部资源 -->
-		<div id="top-res" class="vertical-children">
+		<div id="top-res" class="vertical-children hide-xs">
 			<p class="vertical-children">
 				<img src="./assets/icon/airdrop.png" alt="" height="25" />&nbsp;
 				<span>{{ eth_myHashrate }}</span>
 			</p>
-			<p class="vertical-children">
+			<!-- <p class="vertical-children">
 				<img src="./assets/icon/box_icon.png" alt="" height="22" />&nbsp;
 				<span>{{ boxNum }}</span>
 			</p>
 			<p class="vertical-children">
 				<img src="./assets/box/mecbox.png" alt="" height="22" />&nbsp;
 				<span>{{ mecBoxNum }}</span>
-			</p>
+			</p> -->
 			<p class="vertical-children">
 				<img src="./assets/coin/CRYSTAL.png" alt="" height="25" />&nbsp;
 				<span>{{ crystalNum }}</span>
@@ -177,13 +163,16 @@
 				<span>{{ Number(coinArr["MBOX"].balance) || 0 }}</span>
 			</p>
 			<p class="vertical-children">
+				<img src="./assets/coin/BUSD.png" alt="" height="25" />&nbsp;
+				<span>{{ numFloor(Number(coinArr["BUSD"].balance) || 0, 1e2) }}</span>
+			</p>
+			<p class="vertical-children">
 				<img src="./assets/coin/BNB.png" alt="" height="25" />&nbsp;
-				<span>{{ Number(coinArr["BNB"].balance) || 0 }}</span>
+				<span>{{ numFloor(Number(coinArr["BNB"].balance) || 0, 1e2) }}</span>
 			</p>
 			<span class="text-btn por" @click="showNotice">
 				<span class="notice" v-if="!hasReadNotice"></span>
 				<img src="./assets/icon/notice_icon.png" alt="" height="25"/>
-				<span class="bold tac" style="position:absolute;left:0px;zoom:0.7;bottom:0px;height:10px;line-height:20px;color:#ccc;width:100%" >{{$i18n.locale == 'zh-CN' ? $t("Notice_03"): 'Notice'}}</span>
 			</span>
 		</div>
 		<!-- 手机底部导航 -->
@@ -360,6 +349,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_62")}}</h3>
+						<span v-html="$t('Notice_63')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_60")}}</h3>
 						<span v-html="$t('Notice_61')" ></span>
 					</div>
@@ -482,6 +475,65 @@
 				</div>
 			</div>
 		</Dialog>
+		<Dialog id="mobile-wallet-dialog" :top="100" :width="600">
+			<div class="aveage-box mgt-20">
+				<div class="tal">
+					<WalletConnectBtn class="btn-small btn-default" />
+				</div>
+				<div class="tar">
+					<a :href="'https://bscscan.com/address/' + connectWalletAddr" target="_blank">
+						<button class="btn-default btn-small">
+							<img src="@/assets/icon/bsc_icon.png" alt="" height="70%">
+							<span class="mgl-5">BscScan &gt;</span>
+						</button>
+					</a>
+				</div>
+			</div>
+			<div class="dialog-content mgt-10" id="my-mobile-res" style="border-radius: 15px">
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/coin/MBOX.png" alt="" width="30"/>
+						<span class="mgl-10">MBOX</span>
+					</div>
+					<div class="tar bold2">{{ Number(coinArr["MBOX"].balance) || 0 }}</div>
+				</div>
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/icon/box_icon.png" alt="" width="30"/>
+						<span class="mgl-10">BOX</span>
+					</div>
+					<div class="tar bold2">{{ boxNum }}</div>
+				</div>
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/box/mecbox.png" alt="" width="30"/>
+						<span class="mgl-10">MEC BOX</span>
+					</div>
+					<div class="tar bold2">{{ mecBoxNum }}</div>
+				</div>
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/coin/CRYSTAL.png" alt="" width="30"/>
+						<span class="mgl-10">MEC</span>
+					</div>
+					<div class="tar bold2">{{ crystalNum }}</div>
+				</div>
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/coin/BNB.png" alt="" width="30"/>
+						<span class="mgl-10">BNB</span>
+					</div>
+					<div class="tar bold2">{{ Number(coinArr["BNB"].balance) || 0 }}</div>
+				</div>
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/coin/BUSD.png" alt="" width="30"/>
+						<span class="mgl-10">BUSD</span>
+					</div>
+					<div class="tar bold2">{{ Number(coinArr["BUSD"].balance) || 0 }}</div>
+				</div>
+			</div>
+		</Dialog>
 	</div>
 </template>
 <script>
@@ -585,7 +637,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "3.6"
+			noticeVersion: "3.7"
 		};
 	},
 	watch: {
@@ -616,6 +668,7 @@ export default {
 			mecBoxNum: (state) => state.userState.data.mecBoxNum,
 			halloweenBox: (state) => state.userState.data.halloweenBox,
 			christmasData: (state) => state.userState.data.christmasData,
+			connectWalletAddr: (state) => state.globalState.data.connectWalletAddr,
 		}),
 		isMoboxWallet(){
 			return window.SHOW_APP_BAR != undefined;
@@ -889,6 +942,16 @@ export default {
 </script>
 
 <style scoped>
+#my-mobile-res{
+	padding:0px 15px
+}
+#my-mobile-res .aveage-box{
+	padding: 12px 0px;
+	border-bottom: 1px solid #1f2329;
+}
+#my-mobile-res .aveage-box:last-child{
+	border: none !important;
+}
 #halloween-entry span{
 	position: absolute;
 	display: block;

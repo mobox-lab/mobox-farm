@@ -32,7 +32,6 @@
 						<Dropdown :list="sortArr" :defaultSelectPos="marketRentSearch.sort" :onChange="onSortChange" />&nbsp;
 					</div>
 				</div>
-				<Dropdown id="busd" class="mgl-5" style="margin-top:0px" :list="$parent.getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="$parent.onCoinChange" />
 			</div>
 
 			<p class="vertical-children mgt-10 dib">{{$t("Market_33")}}({{ marketRents.total }}) </p>

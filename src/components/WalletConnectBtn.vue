@@ -51,4 +51,10 @@ export default {
 		line-height: 100%;
 		font-size: 14px;
 	}
+	.connect-btn.btn-small{
+		min-width: auto !important;
+		font-size: 12px;
+		height: 28px;
+		padding: 0px 12px!important;
+	}
 </style>

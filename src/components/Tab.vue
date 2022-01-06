@@ -1,5 +1,5 @@
 <template>
-	<ul class="yf-tab">
+	<ul class="yf-tab" >
 		<li v-for="(item, index) in list" :key="item" @click="selectItem(index)" :class="getNowPos == index ? 'active' : ''"  class="por">
 			{{ item }}
 			<span class="notice-num" v-if="notice[index]">{{notice[index]}}</span>
@@ -25,7 +25,7 @@ export default {
 		},
 		notice: {
 			default: () => [],
-		}
+		},
 	},
 	watch: {
 		defaultSelectPos: function(newValue){

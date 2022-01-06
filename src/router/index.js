@@ -13,6 +13,7 @@ import AuctionGemView from '../views/Market/AuctionGemView.vue'
 import RentView from '../views/Market/RentView.vue'
 import Activity from "../views/Activity/Activity.vue"
 import Christmas from "../views/Activity/Christmas/Christmas.vue"
+import BlindBox from "../views/Activity/BlindBox/BlindBox.vue"
 import BinanceNFT from "../views/BNFT/BinanceNFT.vue"
 
 Vue.use(VueRouter)
@@ -118,6 +119,11 @@ const routes = [
 		path: "/christmas",
 		name: "Christmas",
 		component: Christmas
+	},
+	{
+		path: "/blindBox",
+		name: "BlindBox",
+		component: BlindBox
 	},
 ]
 

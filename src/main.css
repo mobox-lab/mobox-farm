@@ -167,10 +167,11 @@ svg {
 }
 
 .pet_hover_lv1 {
-	position: relative;
-	z-index: 1;
+	background: #474747;
+	border-radius: 15px !important;
+	
 }
-.pet_hover_lv1::after{
+/* .pet_hover_lv1::after{
 	content: "";
 	background: linear-gradient(45deg,#919191 0%, rgba(0,0,0) 100%);
 	position: absolute;
@@ -191,14 +192,14 @@ svg {
 	right: 0px;
 	z-index: 1;
 	border-radius: 20px;
-}
+} */
 
 .pet_hover_lv2 {
-	position: relative;
-	z-index: 1;
+	background: #304119;
+	border-radius: 15px !important;
 }
 
-.pet_hover_lv2::after{
+/* .pet_hover_lv2::after{
 	content: "";
 	background: linear-gradient(45deg,#84a850 0%, rgba(0,0,0) 100%);
 	position: absolute;
@@ -219,14 +220,14 @@ svg {
 	right: 0px;
 	z-index: 1;
 	border-radius: 20px;
-}
+} */
 
 .pet_hover_lv3 {
-	position: relative;
-	z-index: 1;
+	background: #1e2f5c;
+	border-radius: 15px !important;
 }
 
-.pet_hover_lv3::after{
+/* .pet_hover_lv3::after{
 	content: "";
 	background: linear-gradient(45deg,#405ca8 0%, rgba(0,0,0) 100%);
 	position: absolute;
@@ -247,14 +248,15 @@ svg {
 	right: 0px;
 	z-index: 1;
 	border-radius: 20px;
-}
+} */
 
 .pet_hover_lv4 {
-	position: relative;
-	z-index: 1;
+	/* position: relative; */
+	background: #3e1f58;
+	border-radius: 15px !important;
 }
 
-.pet_hover_lv4::after{
+/* .pet_hover_lv4::after{
 	content: "";
 	background: linear-gradient(45deg,#8548b8 0%, rgba(0,0,0) 100%);
 	position: absolute;
@@ -275,14 +277,14 @@ svg {
 	right: 0px;
 	z-index: 1;
 	border-radius: 20px;
-}
+} */
 
 .pet_hover_lv5 {
-	position: relative;
-	z-index: 1;
+	background: #5f4e12;
+	border-radius: 15px !important;
 }
 
-.pet_hover_lv5::after{
+/* .pet_hover_lv5::after{
 	content: "";
 	background: linear-gradient(45deg,#a38b32 0%, rgba(0, 0, 0) 100%);
 	position: absolute;
@@ -303,14 +305,14 @@ svg {
 	right: 0px;
 	z-index: 1;
 	border-radius: 20px;
-}
+} */
 
 .pet_hover_lv6 {
-	position: relative;
-	z-index: 1;
+	background: #611211;
+	border-radius: 15px !important;
 }
 
-.pet_hover_lv6::after{
+/* .pet_hover_lv6::after{
 	content: "";
 	background: linear-gradient(45deg,#ac2f2d 0%, rgba(0, 0, 0) 100%);
 	position: absolute;
@@ -331,7 +333,7 @@ svg {
 	right: 0px;
 	z-index: 1;
 	border-radius: 20px;
-}
+} */
 
 .pet_id {
 	display: inline-block;
@@ -477,15 +479,17 @@ svg {
 	height: 35px;
 	outline: none;
 	/* background-image: linear-gradient(90deg, #ffffff, 50%, #d1d1d1); */
-	background: #27304b;
-	color: #ffffff;
+	background: #27304b !important;
+	color: #ffffff !important;
 	border: none;
 	cursor: pointer;
 	font-size: 12px;
 	min-width: 100px;
 	text-align: center;
 	user-select: none;
-	display: inline-block;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .btn-success {
@@ -576,11 +580,11 @@ svg {
 }
 
 .btn-liling {
-	height: 35px;
+	height: 26px;
 	outline: none;
 	color: #fff;
 	border-radius: 10px;
-	background: #2D3741;
+	background: #2d374191;
 	border: none;
 	cursor: pointer;
 	font-size: 12px;
@@ -590,7 +594,7 @@ svg {
 	display: inline-block;
 	position: relative;
 	z-index: 1;
-	padding: 0px 15px;
+	padding: 0px 10px;
 	border-radius: 20px;
 }
 
@@ -1586,3 +1590,53 @@ svg {
 }
 
 
+.type-select::-webkit-scrollbar{
+	background: transparent;
+}
+.type-select::-webkit-scrollbar-button{
+	background: transparent;
+}
+.type-select::-webkit-scrollbar-thumb{
+	background: transparent;
+}
+.type-select::-webkit-scrollbar-track{
+	background: transparent;
+}
+.type-select{
+	display: flex;
+	justify-content: left;
+	align-items: center;
+	word-break: keep-all;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+.type-select-item{
+	display: inline-flex;
+	height: 40px;
+	padding: 0px 12px;
+	margin-right: 0px;
+	text-align: center;
+	cursor: pointer;
+	user-select: none;
+	opacity: 0.5;
+	justify-content: center;
+	align-items: center;
+	border-radius: 27px;
+	white-space: nowrap;
+}
+.type-select-item.active{
+	background: #42464c;
+	opacity: 1;
+}
+.type-select-notice{
+	display: none;
+}
+@media (max-width: 768px) {
+	.type-select-notice{
+		display: inline-block !important;
+		position: absolute;
+		right: 0px;
+		font-size: 30px;
+		opacity: 0.4;
+	}
+}

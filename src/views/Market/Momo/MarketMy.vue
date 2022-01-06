@@ -21,8 +21,8 @@
 						{{$t("Market_63")}} ▼
 					</div>
 					<div class="dropdown-group-list hide">
-						<Dropdown :list="$parent.selectCategory" :defaultSelectPos="myMarketPetFilter.category" :onChange="onSelectTypeChange" />&nbsp;
-						<Dropdown :list="$parent.selectVType" :defaultSelectPos="myMarketPetFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
+						<Dropdown :list="$parent.$parent.selectCategory" :defaultSelectPos="myMarketPetFilter.category" :onChange="onSelectTypeChange" />&nbsp;
+						<Dropdown :list="$parent.$parent.selectVType" :defaultSelectPos="myMarketPetFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
 					</div>
 				</div>
 

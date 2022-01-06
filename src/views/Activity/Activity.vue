@@ -3,11 +3,12 @@
 	<section>
 		<div class="center-content ">
 			<section  id="activity-type">
-				<div style="text-align: left;border-bottom: 1px solid #162340" class="mgt-10">
-					<div class="activity-type-list-item vertical-children " v-for="item in tabArr" :key="item.key" :class="{active: tabKey == item.key}" @click="tabKey = item.key">
-						<img :src="item.icon" alt="" width="30">&nbsp;
-						<span>{{$t(item.text)}}</span>
+				<div  class="mgt-10 type-select">
+					<div class="type-select-item vertical-children " v-for="item in tabArr" :key="item.key" :class="{active: tabKey == item.key}" @click="tabKey = item.key">
+						<img :src="item.icon" alt="" width="30">
+						<span class="mgl-5">{{$t(item.text)}}</span>
 					</div>
+					<span class="type-select-notice">&gt;</span>
 				</div>
 			</section>
 			<section>

@@ -1,61 +1,75 @@
 <template>
-	<div id="market" style="padding:10px ">
+	<div id="market" style="padding:10px 0px ">
 		<div class="center-content">
-			<section id="market-type" >
+			<section id="market-type" class="type-select">
 				<span class="type-select-notice" style="right:5px">&gt;</span>
-				<div class="market-type-list-item vertical-children " :class="{active: marketTypePos == 0}" ref="menu0" @click="$store.commit('marketState/setData', {marketTypePos: 0, marketTabPos: 0})">
+				<div class="type-select-item vertical-children " :class="{active: marketTypePos == 0}" ref="menu0" @click="$store.commit('marketState/setData', {marketTypePos: 0, marketTabPos: 0})">
 					<img src="../../assets/icon/momo_icon.png" alt="" height="30">
 					<span class="mgl-5">MOMO</span>
 				</div>
-				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 4}" ref="menu4"
+				<div  class="type-select-item vertical-children" :class="{active: marketTypePos == 4}" ref="menu4"
 					@click="gemMarketKey = 'box'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2,marketTypePos: 4});$store.commit('marketState/setData', {marketTypePos: 4, marketTabPos: 0, marketGemFilter: 2});">
 					<img src="../../assets/icon/box_icon.png" alt="" width="30">
 					<span class="mgl-5">BOX</span>
 				</div>
-				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 3}"  ref="menu3"
+				<div  class="type-select-item vertical-children" :class="{active: marketTypePos == 3}"  ref="menu3"
 					@click="gemMarketKey = 'mecbox'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2,marketTypePos: 3});$store.commit('marketState/setData', {marketTypePos: 3, marketTabPos: 0, marketGemFilter: 3});">
 					<img src="../../assets/box/mecbox.png" alt="" height="20">
 					<span class="mgl-5">MEC BOX</span>
 				</div>
-				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 5}"  ref="menu5"
+				<div  class="type-select-item vertical-children" :class="{active: marketTypePos == 5}"  ref="menu5"
 					@click="gemMarketKey = 'mec'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 2,marketTypePos: 5});$store.commit('marketState/setData', {marketTypePos: 5, marketTabPos: 0, marketGemFilter: 4});">
 					<img src="../../assets/coin/CRYSTAL.png" alt="" height="30">
 					<span class="mgl-5">MEC</span>
 				</div>
-				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 2}" ref="menu2"
+				<div  class="type-select-item vertical-children" :class="{active: marketTypePos == 2}" ref="menu2"
 					@click="gemMarketKey = 'gem'+Date.now();$store.commit('marketState/initGemMarket', {defaultSort: 0,marketTypePos: 2});$store.commit('marketState/setData', {marketTypePos: 2, marketTabPos: 0, marketGemFilter: 1});">
 					<img src="../../assets/icon/yellow_icon.png" alt="" height="30">
 					<span class="mgl-5">{{$t("Gemstone_44")}}</span>
 				</div>
-				<div  class="market-type-list-item vertical-children" :class="{active: marketTypePos == 1} " ref="menu1" @click="$store.commit('marketState/setData', {marketTypePos: 1, marketTabPos: 0})">
+				<div  class="type-select-item vertical-children" :class="{active: marketTypePos == 1} " ref="menu1" @click="$store.commit('marketState/setData', {marketTypePos: 1, marketTabPos: 0})">
 					<img src="../../assets/icon/rent_icon.png" alt="" height="30">
 					<span class="mgl-5">{{$t("Hire_01")}}</span>
 				</div>
 			</section>
 
-			<div >
+			<div>
 				<!-- MOMO市场 -->
 				<MoMo v-if="marketTypePos==0" />
 
 				<!-- MOMO租赁市场 -->
-				<div v-else-if="marketTypePos==1" class="mgt-20">
+				<div v-else-if="marketTypePos==1" class="mgt-10">
 					<div class="tal">
-						<Tab :list="rentTabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,marketRentOrderList.total]"  />
+						<div class="hide-xs" style="border-bottom: 1px solid #141b24 !important;padding-bottom:10px">
+							<Tab :list="rentTabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,marketRentOrderList.total]"   />
+						</div>
+						<div class="m-tab dib visiable-xs" style="zoom: 0.8">
+							<Dropdown class="line" :list="rentTabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" />
+						</div>
 					</div>
-					<RentAll v-show="marketTabPos == 0" />
-					<RentMy v-show="marketTabPos == 1" />
-					<RentMySell ref="rentMySell" v-show="marketTabPos == 2" />
-					<RentStatistics v-if="marketTabPos == 3" />
+					<div style="padding:0px 10px">
+						<RentAll v-show="marketTabPos == 0" />
+						<RentMy v-show="marketTabPos == 1" />
+						<RentMySell ref="rentMySell" v-show="marketTabPos == 2" />
+						<RentStatistics v-if="marketTabPos == 3" />
+					</div>
 				</div>
 				<!-- 1155市场 -->
-				<div v-else-if="[2,3,4,5].indexOf(marketTypePos) != -1" class="mgt-20" :key="gemMarketKey">
+				<div v-else-if="[2,3,4,5].indexOf(marketTypePos) != -1" class="mgt-10" :key="gemMarketKey">
 					<div class="tal">
-						<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,getGemTemNum]"  />
+						<div class="hide-xs" style="border-bottom: 1px solid #141b24 !important;padding-bottom:10px">
+							<Tab :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" :notice="[0,0,getGemTemNum]"   />
+						</div>
+						<div class="m-tab dib visiable-xs" style="zoom: 0.8">
+							<Dropdown class="line" :list="tabList" :defaultSelectPos="marketTabPos" :onChange="onTabChange" />
+						</div>
 					</div>
-					<MarketGemAll v-show="marketTabPos == 0" />
-					<MarketGemMy v-show="marketTabPos == 1" />
-					<MarketGemMySell v-show="marketTabPos == 2" />
-					<MarketGemStatistics v-if="marketTabPos == 3" />
+					<div style="padding:0px 10px">
+						<MarketGemAll v-show="marketTabPos == 0" />
+						<MarketGemMy v-show="marketTabPos == 1" />
+						<MarketGemMySell v-show="marketTabPos == 2" />
+						<MarketGemStatistics v-if="marketTabPos == 3" />
+					</div>
 				</div>
 
 				<div class="loading" v-show="marketLoading">
@@ -71,7 +85,7 @@
 </template>
 
 <script>
-import {  Tab, Loading } from "@/components";
+import {  Tab, Loading, Dropdown } from "@/components";
 // MOMO
 import MomoHistory from './Momo/MomoHistory.vue'
 import MoMo from "./Momo/MoMo.vue"
@@ -97,7 +111,7 @@ import { CommonMethod } from "@/mixin";
 export default {
 	mixins: [CommonMethod],
 	components: { 
-		Tab , Loading,
+		Tab , Loading, Dropdown,
 		MoMo,
 		MomoHistory,
 		MarketGemAll,MarketGemMy,MarketGemMySell, MarketGemStatistics,GemHistory,
@@ -215,37 +229,16 @@ export default {
 
 <style >
 .center-content{
-	max-width: 1500px;
+	max-width: 1460px;
 	margin: 0px auto;
 }
+.momo-content{
+	margin: 0px -20px !important;
+}
 #market-type{
-	text-align: left;
-	border-bottom: 1px solid #162340 ;
+	border-bottom: 1px solid #141b24 !important;
+	padding-bottom: 10px;
 }
-.market-type-list-item{
-	display: inline-block;
-	height: 40px;
-	margin-right: 20px;
-	text-align: center;
-	cursor: pointer;
-	user-select: none;
-}
-.market-type-list-item.active{
-	border-bottom: 4px solid #1B54F5;
-}
-#market-type::-webkit-scrollbar{
-	background: transparent;
-}
-#market-type::-webkit-scrollbar-button{
-	background: transparent;
-}
-#market-type::-webkit-scrollbar-thumb{
-	background: transparent;
-}
-#market-type::-webkit-scrollbar-track{
-	background: transparent;
-}
-
 .loading{
 	position: absolute;
 	left: 0px;
@@ -253,16 +246,12 @@ export default {
 	right: 0px;
 	bottom: 0px;
 	text-align: center;
-	z-index: 99999
+	z-index: 999
 }
 .loading svg{
 	margin-top: 300px;
 }
-#market #market-pet-fitter {
-	position: absolute;
-	right: 0px;
-	top: 0px;
-}
+
 
 #market {
 	text-align: center;
@@ -271,20 +260,41 @@ export default {
 	margin-top: 20px;
 	padding-bottom: 50px !important ;
 }
-
+#market-pet-fitter {
+	position: absolute;
+	right: 0px;
+	top: -69px !important;
+}
 
 @media (max-width: 768px) {
+	#market-pet-fitter {
+		position: absolute;
+		right: 0px;
+		top: -65px !important;
+	}
+	.m-tab{
+		border-bottom: 1px solid #141b24 !important;
+        padding: 0px 10px;
+        padding-bottom: 10px;
+    }
+	.momo-content{
+		margin: 0px !important;
+	}
 	#market-type{
 		border-bottom: none !important;
+		padding: 0px 10px
 	}
-	#market .dropdown-value{
-		min-width: 120px !important;
+	.visiable-xs .dropdown-value{
+		min-width: 150px !important;
 	}
 	#market .dropdown{
 		margin-top: 0px !important;
 	}
 	#market {
 		margin-top: 0px;
+	}
+	#market .mgt-20{
+		margin-top: 10px !important;
 	}
 	
 	#market-type{
@@ -294,8 +304,9 @@ export default {
 		word-break: keep-all !important;
 		overflow-x: auto !important;
 		overflow-y: hidden !important;
+		border-bottom: 1px solid #141b24 !important;
 	}
-	.market-type-list-item{
+	.type-select-item{
 		display: inline-flex !important;
 		height: 40px !important;
 		padding: 0px 12px !important;
@@ -309,7 +320,7 @@ export default {
 		border-radius: 27px !important;
 		white-space: nowrap !important;
 	}
-	.market-type-list-item.active{
+	.type-select-item.active{
 		background: #42464c !important;
 		opacity: 1 !important;
 		border-bottom: none !important;

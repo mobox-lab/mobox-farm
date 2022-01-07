@@ -1,14 +1,19 @@
 <template>
 	<Dialog id="market-quick-buy-dialog" :top="100" width="550" >
 		<h2>{{$t("Market_50")}}</h2>
-		<div class="tar mgt-10 vertical-children" style="zoom:0.8">
-			<div  class="cur-point dib por mgt-10  shop-car-btn" @click="getMomoShopCar().show()" >
-				<span v-if="shopCar.length >0" class="shop-car-num">{{shopCar.length}}</span>
-				<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
+		<div class="aveage-box vertical-children2 mgt-10" >
+			<div class="tal" >
+				<div class="dib momo-tab" v-for="item in getShowArr" :key="item" @click="quickBuy(item)" :class="[{'opa-6': item != marketSearch.pType},`pet-min-type`+ parseInt(item / 1e4)]">
+					<img  :src="require(`@/assets/pet/${item}.png`)" alt="" width="100%" />
+				</div>
 			</div>
-
-			<Dropdown class="mgl-10" :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
-			<Dropdown :list="getSelectCoinArr" :defaultSelectPos="$parent.useCoinPos" :onChange="onCoinChange" />&nbsp;
+			<div class="tar  vertical-children" style="zoom:0.8;">
+				<div  class="cur-point dib por  shop-car-btn" @click="getMomoShopCar().show()" >
+					<span v-if="shopCar.length >0" class="shop-car-num">{{shopCar.length}}</span>
+					<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
+				</div>
+				<Dropdown class="mgl-10" style="margin-top:0px" :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
+			</div>
 		</div>
 		<div style="min-height:200px">
 			<div class="mgt-10 tab-panel" v-for="item in marketData.list" :key="item.tx">
@@ -103,7 +108,17 @@ export default {
 			})
 			return arr;
 		},
-		
+		getShowArr(){
+			let retArr = []
+			let {pType} = this.marketSearch;
+			if(!(pType == 0 || pType > 5e4)){
+				let mType = pType % 1e4;
+				[1,2,3,4].map(item=>{
+					retArr.push(mType + item * 1e4);
+				})
+			}
+			return retArr;
+		}
 	},
 	async created(){
 		this.startCountDown();
@@ -330,5 +345,36 @@ export default {
 <style>
 #market-quick-buy-dialog .yf-dialog{
 	background: #000 !important;
+}
+.momo-tab{
+	width: 40px;
+	height: 40px;
+	position: relative;
+	border-radius: 40px;
+	cursor: pointer;
+	margin-right: 5px;
+}
+.pet-min-type1{
+	border: 4px solid #8b8b8bb4;
+}
+.pet-min-type2{
+	border: 4px solid #5b7e2bb4;
+}
+.pet-min-type3{
+	border: 4px solid #3955a0b4;
+}
+.pet-min-type4{
+	border: 4px solid #793ea8b4;
+}
+.pet-min-type5{
+	border: 4px solid #97812fb4;
+}
+.pet-min-type6{
+	border: 4px solid #8f3433;
+}
+@media (max-width: 768px) {
+	.momo-tab{
+		zoom: 0.8
+	}
 }
 </style>

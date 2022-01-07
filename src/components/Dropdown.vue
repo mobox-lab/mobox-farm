@@ -1,6 +1,6 @@
 <template>
 	<div class="dropdown mgt-10" tabindex="2">
-		<div class="dropdown-value por"  @click="showDrop">{{ list[getNowPos] }}&nbsp;▼</div>
+		<div class="dropdown-value por"  @click="showDrop">{{ list[getNowPos] }}&nbsp;<span class="dropdown-ar">▼</span></div>
 		<ul class="dropdown-list hide" :style="direction == 'up' ? 'bottom: 40px' : ''" >
 			<li v-for="(item, index) in list" :key="item" @click="selectItem($event, index)" :class="getNowPos == index ? 'active' : ''" >
 				{{ item }}
@@ -68,6 +68,7 @@ export default {
 };
 </script>
 <style>
+
 .dropdown .dropdown-list {
 	position: absolute;
 	min-width: 60px;
@@ -119,5 +120,17 @@ export default {
 	font-size: 13px;
 	outline: none;
 	display: inline-block;
+}
+.dropdown.line .dropdown-value{
+	background: #070d14;
+	border: 1px solid #323841;
+	border-radius: 30px;
+	text-align: left;
+	color: #fff;
+	font-size: 15px;
+}
+.dropdown.line .dropdown-value .dropdown-ar{
+	position: absolute;
+	right: 10px;
 }
 </style>

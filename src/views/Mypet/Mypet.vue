@@ -27,7 +27,7 @@
 				<div class="clear">
 					<router-link :to="(item.location=='auction'?'/auctionView/': '/upgrade/') + item.prototype + '-' + item.tokenId+'-'+item.location " v-for="item in getShowPetArr"
 						:key=" item.prototype.toString() + item.tokenId + item.num " >
-						<PetItem v-bind:data="{ item: item }" />
+						<PetItem v-bind:data="{ item: item }" class="no-search" />
 					</router-link>
 				</div>
 			</div>

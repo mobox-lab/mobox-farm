@@ -20,16 +20,20 @@
 					<img class="mgl-10 cur-point" :src="require('@/assets/icon/search.png')" alt="" @click="goSearch"  />
 				</span>
 
-				<div  class="cur-point dib por mgl-10 visiable-xs " @click="getMomoShopCar().show()"  >
+				<div  class="cur-point dib por mgl-10  " @click="getMomoShopCar().show()"  >
 					<span v-if="shopCar.length >0" class="shop-car-num">{{shopCar.length}}</span>
 					<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
 				</div>
 
-				<div class="dib por mgl-5" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-				<div class="dropdown-group " @click="showDrop" tabindex="3">
+
+				<!-- <div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+					<img src="@/assets/icon/filter_icon.png" alt="" />
+				</div> -->
+				<div class="dropdown-group mgl-10" @click="showDrop" tabindex="3">
 					<div class="dropdown-group-value por">
 						{{$t("Market_63")}} ▼
 					</div>
@@ -43,9 +47,9 @@
 
 			<p class="vertical-children  dib">{{$t("Market_33")}}({{ marketPets.total }}) </p>
 		</div>
-		<div :class="marketPets.list.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
+		<div :class="marketPets.list.length < 4 ? 'tal' : ''"  class="vertical-children momo-content" style="min-height:500px;">
 			<a @click="$router.push({ path: `/auctionView/${item.tx}` })"  v-for="item in marketPets.list" :key="item.tx + item.index">
-				<PetItem  v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market" v-if="item.tokenId != 0 " >
+				<PetItem  v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market por" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="@/assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
 						<span class="money">{{numFloor(item.nowPrice/1e9, 100).toLocaleString()}} <sub class="small">BUSD</sub></span>
@@ -376,7 +380,7 @@ export default {
 </script>
 
 <style scoped>
-
+	
 	.search-box{
 	}
 	.search-preview{
@@ -407,7 +411,6 @@ export default {
 	}
 
 	#shop-history {
-		margin-right: 10px;
 		cursor: pointer;
 		position: relative;
 		user-select: none;
@@ -415,7 +418,7 @@ export default {
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;
-		top: 0px;
+		top: -69px !important;
 	}
 
 	@media (max-width: 768px) {
@@ -430,6 +433,7 @@ export default {
 		#market-pet-fitter{
 			zoom: 0.8;
 			text-align: right;
+			top: -65px !important;
 		}
 		.visiable-xs{
 			display: inline-block !important;

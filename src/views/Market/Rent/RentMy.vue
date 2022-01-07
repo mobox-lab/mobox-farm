@@ -16,20 +16,18 @@
 			</div>
 		</div>
 
-		<div :class="getTotalPetNum < 4 ? 'tal' : ''" >
-			<div class="clear mgt-20">
-				<router-link :to="`/rentView/${item.tokenId}`" v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()">
-					<PetItem   v-bind:data="{item: item}" class="market" >
-						<div style="position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px;">
-							<div v-if="item.vType > 3" class=" tac mgt-10">
-								<button  v-if="item.rent.state==-1" class="btn-primary btn-small mgt-10" >{{$t("Hire_02")}}</button>
-								<span v-if="item.rent.state == 0" class="dib mgt-10">{{$t("Hire_06")}}</span>
-								<span v-if="item.rent.state == 1" class="dib mgt-10" style="color:#ACC201">{{$t("Hire_07")}}</span>
-							</div>
+		<div :class="getTotalPetNum < 4 ? 'tal' : ''" class="momo-content">
+			<router-link :to="`/rentView/${item.tokenId}`" v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()">
+				<PetItem   v-bind:data="{item: item}" class="market no-search" >
+					<div style="position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px;">
+						<div v-if="item.vType > 3" class=" tac mgt-10">
+							<button  v-if="item.rent.state==-1" class="btn-primary btn-small mgt-10" >{{$t("Hire_02")}}</button>
+							<span v-if="item.rent.state == 0" class="dib mgt-10">{{$t("Hire_06")}}</span>
+							<span v-if="item.rent.state == 1" class="dib mgt-10" style="color:#ACC201">{{$t("Hire_07")}}</span>
 						</div>
-					</PetItem>
-				</router-link>
-			</div>
+					</div>
+				</PetItem>
+			</router-link>
 		</div>
 
 		<div style="margin-top: 30px" v-if="Math.ceil(this.myNFT_stake.length / onePageCount) > 1" >

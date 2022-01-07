@@ -21,7 +21,7 @@ export default {
 	data(){
 		return({
 			games: [
-				{bgName: "cz", logoName: "cz_logo", name: "Air-drop_250", des: "Air-drop_251", url: "https://www.mobox.io/home#/iframe/chainzarena"},
+				{bgName: "cz", logoName: "cz_logo", name: "Air-drop_270", des: "Air-drop_271", url: "https://www.mobox.io/home#/iframe/chainzarena"},
 				{bgName: "blockwar", logoName: "blockwar_logo", name: "Air-drop_253", des: "Air-drop_254", url: "https://www.mobox.io/home/#/block-brawler"},
 				{bgName: "goldmaster", logoName: "goldmaster_logo", name: "Air-drop_247", des: "Air-drop_248", url: "https://www.mobox.io/home/#/iframe/tokenmaster"},
 			]

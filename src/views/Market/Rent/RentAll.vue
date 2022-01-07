@@ -34,12 +34,12 @@
 				</div>
 			</div>
 
-			<p class="vertical-children mgt-10 dib">{{$t("Market_33")}}({{ marketRents.total }}) </p>
+			<p class="vertical-children dib">{{$t("Market_33")}}({{ marketRents.total }}) </p>
 
 		</div>
-		<div :class="marketRents.list.length < 4 ? 'tal' : ''"  class="mgt-10 vertical-children" style="min-height:500px">
+		<div :class="marketRents.list.length < 4 ? 'tal' : ''"  class="momo-content vertical-children" style="min-height:500px">
 			<router-link :to="'/rentView/'+ item.tokenId"  v-for="item in marketRents.list" :key="item.tx + item.index">
-				<PetItem  v-bind:data="{item: item}" class="market " :class="{'opa-6': nowTs -item.uptime <=  120}" v-if="item.tokenId != 0 " >
+				<PetItem  v-bind:data="{item: item}" class="market no-search " :class="{'opa-6': nowTs -item.uptime <=  120}" v-if="item.tokenId != 0 " >
 					<div class="aveage-box" style="color:#fff">
 						<div class="vertical-children  tal" style="font-size: 18px;flex:1">
 							<img src="@/assets/icon/rent_time.png" alt="" height="20"/>&nbsp;
@@ -347,9 +347,13 @@ export default {
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;
-		top: 0px;
+		top: -69px !important;
 	}
 	@media (max-width: 768px) {
+		#market-pet-fitter{
+			zoom: 0.8;
+			top: -65px !important;
+		}
 		#busd{
 			margin-top: 10px !important;
 			margin-left: 0px !important;
@@ -360,7 +364,7 @@ export default {
 		#market-pet-fitter{
 			zoom: 0.8;
 			text-align: right;
-			position: static !important;
+			top: -65px !important;
 		}
 	}
 </style>

@@ -8,15 +8,20 @@
 					<span id="shop-car-num" v-if="groupSellCar.length > 0" >{{ groupSellCar.length }}</span>
 					<img src="@/assets/icon/group_sell_icon.png" alt="" height="40" />
 				</div>
-				<div class="dib" id="shop-car" @click="oprDialog('pack-sell-dialog', 'block')" >
+				<div class="dib mgl-10" id="shop-car" @click="oprDialog('pack-sell-dialog', 'block')" >
 					<span id="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span>
 					<img src="@/assets/icon/shopcar.png" alt="" height="40" />
 				</div>
-				<div class="dib por " id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
 				</div>
-				<div class="dropdown-group " @click="showDrop" tabindex="3">
+
+				<!-- <div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+					<img src="@/assets/icon/filter_icon.png" alt="" height="40" />
+				</div> -->
+
+				<div class="dropdown-group mgl-10" @click="showDrop" tabindex="3">
 					<div class="dropdown-group-value por">
 						{{$t("Market_63")}} ▼
 					</div>
@@ -29,43 +34,40 @@
 			</div>
 		</div>
 
-		<div :class="myNFT_stake.length < 4 ? 'tal' : ''" >
-			<div class="clear mgt-20">
-				<PetItem  v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()" v-bind:data="{item: item}" class="market" >
-					<div style="position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
-						<div v-if="item.isLock" class="tac">
-							<button class="btn-primary disable-btn btn-small">
-								<img  src="@/assets/icon/lock.png" alt="" height="20"/>
-							</button>
-						</div>
-						<div v-else>
-							<button class="btn-danger btn-small" v-if="item.inGroupSellCar" @click="$store.commit('marketState/addToGroupSellCar', item);">{{$t("Market_67")}}</button>
-							<template v-else>
-								<button class="btn-primary btn-small" v-if="(item.vType <= 3 && getSelectNum(item.prototype) == 0) || (item.vType > 3 && item.rent.state == -1)" @click="$refs.groupSell.editPrice(item)">{{$t("Market_66")}}</button>
-
-								<div v-if="item.vType > 3" class=" tac dib mgl-5">
-									<button v-if="item.rent.state==-1" class="btn-primary btn-small" @click="set721Price(item)">
-										<span>{{$t("Market_02")}}</span>
-									</button>
-									<span v-if="item.rent.state == 0" class="dib mgt-10">{{$t("Hire_06")}}</span>
-									<span v-if="item.rent.state == 1" class="dib mgt-10">{{$t("Hire_07")}}</span>
-								</div>
-
-								<div class="tac dib mgl-5" v-if="item.vType <= 3" >
-									<SelectNum :maxNum="item.num" v-show="getSelectNum(item.prototype) > 0" :defaultNum="getSelectNum(item.prototype)" :data="item" :onChange="onNumChange" />
-									<button class="btn-primary btn-small" @click="sell1155Direct(item)" v-show="getSelectNum(item.prototype) == 0">
-										<span>{{$t("Market_57")}}</span>
-									</button>
-									<button class="btn-primary btn-small mgl-5" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.prototype) == 0">
-										<span>{{$t("Market_08")}}</span>
-									</button>
-								</div>
-							</template>
-
-						</div>
+		<div :class="myNFT_stake.length < 4 ? 'tal' : ''" class="momo-content" >
+			<PetItem  v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()" v-bind:data="{item: item}" class="market" >
+				<div style="position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
+					<div v-if="item.isLock" class="tac">
+						<button class="btn-primary disable-btn btn-small">
+							<img  src="@/assets/icon/lock.png" alt="" height="20"/>
+						</button>
 					</div>
-				</PetItem>
-			</div>
+					<div v-else>
+						<button class="btn-danger btn-small" v-if="item.inGroupSellCar" @click="$store.commit('marketState/addToGroupSellCar', item);">{{$t("Market_67")}}</button>
+						<template v-else>
+							<button class="btn-primary btn-small" v-if="(item.vType <= 3 && getSelectNum(item.prototype) == 0) || (item.vType > 3 && item.rent.state == -1)" @click="$refs.groupSell.editPrice(item)">{{$t("Market_66")}}</button>
+
+							<div v-if="item.vType > 3" class=" tac dib mgl-5">
+								<button v-if="item.rent.state==-1" class="btn-primary btn-small" @click="set721Price(item)">
+									<span>{{$t("Market_02")}}</span>
+								</button>
+								<span v-if="item.rent.state == 0" class="dib mgt-10">{{$t("Hire_06")}}</span>
+								<span v-if="item.rent.state == 1" class="dib mgt-10">{{$t("Hire_07")}}</span>
+							</div>
+
+							<div class="tac dib mgl-5" v-if="item.vType <= 3" >
+								<SelectNum :maxNum="item.num" v-show="getSelectNum(item.prototype) > 0" :defaultNum="getSelectNum(item.prototype)" :data="item" :onChange="onNumChange" />
+								<button class="btn-primary btn-small" @click="sell1155Direct(item)" v-show="getSelectNum(item.prototype) == 0">
+									<span>{{$t("Market_57")}}</span>
+								</button>
+								<button class="btn-primary btn-small mgl-5" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.prototype) == 0">
+									<span>{{$t("Market_08")}}</span>
+								</button>
+							</div>
+						</template>
+					</div>
+				</div>
+			</PetItem>
 		</div>
 
 		<div style="margin-top: 30px" v-if="Math.ceil(this.myNFT_stake.length / onePageCount) > 1" >
@@ -219,7 +221,7 @@
 </template>
 
 <script>
-import { Dropdown, Page, PetItem, SelectNum, Dialog, Tab } from '@/components';
+import {Page, PetItem, SelectNum, Dialog, Tab } from '@/components';
 import { CommonMethod } from "@/mixin";
 import { Wallet, Common } from '@/utils';
 import { WalletConfig } from '@/config';
@@ -247,7 +249,7 @@ export default {
 			priceTypePos: 0,
 		};
 	},
-	components: { Dropdown, Page, PetItem, SelectNum, Dialog, Tab, GroupSell },
+	components: {Page, PetItem, SelectNum, Dialog, Tab, GroupSell },
 	watch: {
 		marketTabPos: function(){
 			this.initParabola()
@@ -583,21 +585,37 @@ export default {
 </script>
 
 <style  scoped>
+.quick-buy{
+	opacity: 0.6;
+	position: absolute;
+	bottom: 0px;
+	left: 10px;
+	width: 30px;
+	cursor: pointer;
+}
+.quick-buy:hover{
+	opacity: 1;
+}
 .sell-input{
 	text-align: center; 
 	width: 100%;
+}
+ 
+ #market-pet-fitter {
+	position: absolute;
+	right: 0px;
+	top: -69px !important;
+
 }
 
 @media (max-width: 768px) {
 	#shop-car-content {
 		max-height: 500px !important;
 	}
-	#shop-car{
-		margin-right: 10px !important;
-	}
 	#market-pet-fitter{
 		zoom: 0.8;
 		text-align: right;
+		top: -65px !important;
 	}
 }
 #shop-car-content {
@@ -629,15 +647,10 @@ export default {
 	right: -5px;
 }
 #shop-car,#shop-history {
-	margin-right: 15px;
 	cursor: pointer;
 	position: relative;
 	user-select: none;
 }
-#market #market-pet-fitter {
-	position: absolute;
-	right: 0px;
-	top: 0px;
-}
+
 
 </style>

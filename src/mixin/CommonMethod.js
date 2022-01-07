@@ -20,6 +20,9 @@ const CommonMethod = {
 		})
 	},
 	methods: {
+		quickBuy(ptype){
+			Common.app.$refs.quickBuy.show(ptype);
+		},
 		async setAction(actionId){
 			let sendData = {
 				actionId: actionId.toString(),

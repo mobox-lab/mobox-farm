@@ -3,12 +3,12 @@
 		<div class="tal search vertical-children por mgt-20">
 			<span>{{$t("Market_33")}}({{ marketGemMy.total }})</span>&nbsp;
 			<div id="market-pet-fitter">
-				<div class="dib por " id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
+				<div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
 				
-				<div class="dropdown-group " @click="showDrop" tabindex="3" v-if="marketTypePos != 4">
+				<div class="dropdown-group mgl-10" @click="showDrop" tabindex="3" v-if="marketTypePos != 4">
 					<div class="dropdown-group-value por">
 						{{$t("Market_63")}} ▼
 					</div>
@@ -194,7 +194,6 @@ export default {
 
 <style scoped>
 	#shop-history {
-		margin-right: 15px;
 		cursor: pointer;
 		position: relative;
 		user-select: none;

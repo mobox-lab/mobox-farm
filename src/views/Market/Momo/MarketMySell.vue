@@ -7,7 +7,10 @@
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-				<div class="dropdown-group " @click="showDrop" tabindex="3">
+				<!-- <div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+					<img src="@/assets/icon/filter_icon.png" alt="" />
+				</div> -->
+				<div class="dropdown-group mgl-10" @click="showDrop" tabindex="3">
 					<div class="dropdown-group-value por">
 						{{$t("Market_63")}} ▼
 					</div>
@@ -18,7 +21,7 @@
 				</div>
 			</div>
 		</div>
-		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children">
+		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="vertical-children momo-content">
 			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ item.tx):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime + item.tokenId+item.ids[0]">
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
@@ -52,7 +55,7 @@
 </template>
 
 <script>
-import { Page, PetItem, PetItemScroll, Dropdown, Loading } from '@/components';
+import { Page, PetItem, PetItemScroll, Loading } from '@/components';
 import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
 import { BaseConfig } from "@/config";
@@ -61,7 +64,7 @@ import { mapState } from "vuex";
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {   PetItem, PetItemScroll, Dropdown, Page, Loading},
+	components: {   PetItem, PetItemScroll, Page, Loading},
 	data(){
 		return({
 			onePageCount: 15,
@@ -263,7 +266,6 @@ export default {
 
 <style scoped>
 	#shop-history {
-		margin-right: 15px;
 		cursor: pointer;
 		position: relative;
 		user-select: none;
@@ -277,6 +279,7 @@ export default {
 
 		#market-pet-fitter{
 			zoom: 0.8;
+			top: -65px !important;
 		}
 	}
 </style>

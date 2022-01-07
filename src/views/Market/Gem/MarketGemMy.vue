@@ -3,15 +3,15 @@
 		<div class="tal search vertical-children por mgt-20" >
 			<span>{{$t("Market_33")}}({{ geTotalNum }})</span>&nbsp;
 			<div id="market-pet-fitter">
-				<div class="dib " id="shop-car" @click="oprDialog('shop-car-dialog', 'block')" >
+				<div class="dib mgl-10" id="shop-car" @click="oprDialog('shop-car-dialog', 'block')" >
 					<span id="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span>
 					<img src="@/assets/icon/shopcar.png" alt="" height="40" />
 				</div>
-				<div class="dib por " id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
+				<div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-				<div class="dropdown-group " @click="showDrop" tabindex="3" v-if="marketTypePos != 4">
+				<div class="dropdown-group mgl-10" @click="showDrop" tabindex="3" v-if="marketTypePos != 4">
 					<div class="dropdown-group-value por">
 						{{$t("Market_63")}} ▼
 					</div>
@@ -23,8 +23,7 @@
 			</div>
 		</div>
 
-		<div :class="getMyGem.length < 4 || marketTypePos == 4  ? 'tal' : 'tac'" >
-			<div class="clear mgt-20">
+		<div :class="getMyGem.length < 4 || marketTypePos == 4  ? 'tal' : 'tac'"  class="momo-content">
 				<template v-if="marketTypePos == 2">
 					<GemSellItem v-for="item in getMyGem" :key="item.key" :data="{item: item}">
 						<div class="tac "  >
@@ -51,8 +50,6 @@
 						</div>
 					</GemSellItem>
 				</template>
-				
-			</div>
 		</div>
 
 		<!-- 购物车 -->
@@ -551,9 +548,6 @@ export default {
 	#shop-car-content {
 		max-height: 500px !important;
 	}
-	#shop-car{
-		margin-right: 10px !important;
-	}
 	#market-pet-fitter{
 		zoom: 0.8;
 	}
@@ -587,12 +581,11 @@ export default {
 	right: -5px;
 }
 #shop-car,#shop-history {
-	margin-right: 15px;
 	cursor: pointer;
 	position: relative;
 	user-select: none;
 }
-#market #market-pet-fitter {
+#market-pet-fitter {
 	position: absolute;
 	right: 0px;
 	top: 0px;

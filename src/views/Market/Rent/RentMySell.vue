@@ -1,6 +1,6 @@
 <template>
 	<div id="rentList">
-		<section class="mgt-20">
+		<section >
 			<ul class="statistics-top-tab" style="padding:0px">
 				<li @click="rentStatePos = 0" :class="rentStatePos == 0?'active':''" class="opa-6">{{$t("Hire_26")}}({{getNumShow.isMyRent}})</li>
 				<li @click="rentStatePos = 1" :class="rentStatePos == 1?'active':''" class="opa-6">{{$t("Hire_27")}}({{getNumShow.isRentOther}})</li>
@@ -254,7 +254,9 @@ export default {
 		top: 0px;
 	}
 	@media (max-width: 768px) {
-
+		#rentList{
+			margin-top: 10px !important;
+		}
 		#market-pet-fitter{
 			zoom: 0.8;
 		}

@@ -1,15 +1,13 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
-			<span class="vertical-children  dib">{{$t("Market_33")}}({{ marketGems.total }}) </span>
-			
 			<div id="market-pet-fitter">
-				<div class="dib por" id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
+				<div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" />
 				</div>
-				<Dropdown v-if="marketTypePos != 2" :list="sortArr" :defaultSelectPos="marketGemSearch.sort" :onChange="onSortChange" style="margin-top:0px" />
-				<div class="dropdown-group " @click="showDrop" tabindex="3" v-else>
+				<Dropdown class="mgl-10" v-if="marketTypePos != 2" :list="sortArr" :defaultSelectPos="marketGemSearch.sort" :onChange="onSortChange" style="margin-top:0px" />
+				<div class="dropdown-group mgl-10" @click="showDrop" tabindex="3" v-else>
 					<div class="dropdown-group-value por">
 						{{$t("Market_63")}} ▼
 					</div>
@@ -20,16 +18,19 @@
 					</div>
 				</div>
 			</div>
+
+			<p class="vertical-children  dib">{{$t("Market_33")}}({{ marketGems.total }}) </p>
+
 		</div>
-		<div :class="marketGems.list.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children" style="min-height:500px">
-			<router-link :to="'/auctionGemView/'+ item.tx"  v-for="item in marketGems.list" :key="item.tx + item.index">
+		<div :class="marketGems.list.length < 4 ? 'tal' : ''"  class="momo-content vertical-children" style="min-height:500px">
+			<a @click="$router.push({ path: `/auctionGemView/${item.tx}` })"  v-for="item in marketGems.list" :key="item.tx + item.index">
 				<GemSellItem  :key="item.orderId" :data="{item: item}">
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img :src="require(`@/assets/coin/${getCurrencyName(item.currency)}.png`)" alt="" height="20"/>&nbsp;
 						<span class="money">{{numFloor(item.price/1e9, 100).toLocaleString()}} <sub class="small">{{getCurrencyName(item.currency)}}</sub></span>
 					</div>
 				</GemSellItem>
-			</router-link>
+			</a>
 		</div>
 
 		<div style="margin-top: 30px" >
@@ -164,7 +165,6 @@ export default {
 	}
 
 	#shop-history {
-		margin-right: 15px;
 		cursor: pointer;
 		position: relative;
 		user-select: none;
@@ -172,12 +172,13 @@ export default {
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;
-		top: 0px;
+		top: -69px !important;
 	}
 	@media (max-width: 768px) {
 
 		#market-pet-fitter{
 			zoom: 0.8;
+			top: -65px !important;
 		}
 
 		/* #busd{

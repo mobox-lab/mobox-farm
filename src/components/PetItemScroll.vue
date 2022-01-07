@@ -1,8 +1,10 @@
 <template>
 <div class="pet_item por" :class="'pet_hover_lv' + getNowVType">
+	<img class="quick-buy" src="@/assets/icon/search.png" alt="" @click.stop="quickBuy(getShowList[0].prototype)" v-if="getShowList.length == 1">
 	<div ref="container" class="swiper-container dib " :id="data.item.tx">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide " v-for="item in getShowList" :key="item.prototype">
+
 				<div class="pet-lv vertical-children">
 					<img :src="require(`../assets/icon/${item.chain.toLocaleLowerCase()}.png`)" alt="" width="15" />&nbsp;
 					<span class="mgl-5">Lv. {{ item.level }}</span>
@@ -108,6 +110,22 @@ export default {
 </script>
 
 <style  scoped>
+.rent .quick-buy{
+	display: none;
+}
+.quick-buy{
+		opacity: 0.6;
+		position: absolute;
+		top: 10px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 30px;
+		cursor: pointer;
+		z-index: 99 !important;
+	}
+	.quick-buy:hover{
+		opacity: 1;
+	}
 @media (max-width:1000px) {
 	.swiper-pagination{
 		bottom: auto!important;

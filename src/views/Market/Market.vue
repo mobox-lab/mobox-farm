@@ -279,6 +279,7 @@ export default {
     }
 	.momo-content{
 		margin: 0px !important;
+		margin-top: 10px !important;
 	}
 	#market-type{
 		border-bottom: none !important;

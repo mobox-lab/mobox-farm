@@ -4,22 +4,76 @@
 			<div id="market-pet-fitter">
 				<div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
-					<img src="@/assets/icon/tradeRecord.png" alt="" />
+					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
 				</div>
-				<Dropdown class="mgl-10" v-if="marketTypePos != 2" :list="sortArr" :defaultSelectPos="marketGemSearch.sort" :onChange="onSortChange" style="margin-top:0px" />
-				<div class="dropdown-group mgl-10" @click="showDrop" tabindex="3" v-else>
-					<div class="dropdown-group-value por">
-						{{$t("Market_63")}} ▼
+				<!-- 宝石 -->
+				<div class="dib por mgl-10 filter"  v-if="marketTypePos == 2">
+					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
+					<div class="filter-panel hide " ref="filter">
+						<div >
+							<h5>Types</h5>
+							<div @click="onSelectTypeChange(pos)" class="filter-select-item" :class="{'active': pos == marketGemSearch.type}" v-for="(item, pos) in $parent.gemType" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-20">
+							<h5>Levels</h5>
+							<div @click="onSelectLevelChange(pos)" class="filter-select-item" :class="{'active': pos == marketGemSearch.level}" v-for="(item, pos) in $parent.gemLv" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-20">
+							<h5>Others</h5>
+							<div @click="onSortChange(pos)" class="filter-select-item" :class="{'active': pos == marketGemSearch.sort}" v-for="(item, pos) in sortArr" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-30 tac" @click="toggleFilter($refs.filter)">
+							<button class="btn-primary" style="width:80%">{{$t("Common_03")}}</button>
+						</div>
 					</div>
-					<div class="dropdown-group-list hide">
-						<Dropdown :list="$parent.gemType" :defaultSelectPos="marketGemSearch.type" :onChange="onSelectTypeChange" />&nbsp;
-						<Dropdown :list="$parent.gemLv" :defaultSelectPos="marketGemSearch.level" :onChange="onSelectLevelChange" />&nbsp;
-						<Dropdown :list="sortArr" :defaultSelectPos="marketGemSearch.sort" :onChange="onSortChange" />&nbsp;
+				</div>
+				<div class="dib por mgl-10 filter"  v-else>
+					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
+					<div class="filter-panel hide " ref="filter">
+						<div>
+							<h5>Others</h5>
+							<div @click="onSortChange(pos)" class="filter-select-item" :class="{'active': pos == marketGemSearch.sort}" v-for="(item, pos) in sortArr" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-30 tac" @click="toggleFilter($refs.filter)">
+							<button class="btn-primary" style="width:80%">{{$t("Common_03")}}</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="vertical-children  dib">
+				<span>{{$t("Market_33")}}({{ marketGems.total }})</span>
+				<!-- 宝石 -->
+				<div class="dib filter-show-group" v-if="marketTypePos == 2">
+					<div class="filter-show-item" v-if="marketGemSearch.type != 0" >
+						<span class="filter-close" @click="onSelectTypeChange(0)">&times;</span>
+						<span class="mgl-10">{{$parent.gemType[marketGemSearch.type]}}</span>
+					</div>
+					<div class="filter-show-item" v-if="marketGemSearch.level != 0" >
+						<span class="filter-close" @click="onSelectLevelChange(0)">&times;</span>
+						<span class="mgl-10">{{$parent.gemLv[marketGemSearch.level]}}</span>
+					</div>
+					<div class="filter-show-item" v-if="marketGemSearch.sort != 0" >
+						<span class="filter-close" @click="onSortChange(0)">&times;</span>
+						<span class="mgl-10">{{sortArr[marketGemSearch.sort]}}</span>
+					</div>
+				</div>
+				<div class="dib mgl-20" v-else>
+					<div class="filter-show-item" v-if="marketGemSearch.sort != 2" >
+						<span class="filter-close" @click="onSortChange(2)">&times;</span>
+						<span class="mgl-10">{{sortArr[marketGemSearch.sort]}}</span>
 					</div>
 				</div>
 			</div>
-
-			<p class="vertical-children  dib">{{$t("Market_33")}}({{ marketGems.total }}) </p>
 
 		</div>
 		<div :class="marketGems.list.length < 4 ? 'tal' : ''"  class="momo-content vertical-children" style="min-height:500px">
@@ -40,7 +94,7 @@
 </template>
 
 <script>
-import {  Page, Dropdown, GemSellItem } from "@/components";
+import {  Page, GemSellItem } from "@/components";
 import { CommonMethod } from "@/mixin";
 import { Http } from '@/utils';
 import { mapState } from "vuex";
@@ -48,7 +102,7 @@ import { mapState } from "vuex";
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {  Page,  Dropdown, GemSellItem},
+	components: {  Page, GemSellItem},
 	data(){
 		return({
 			onePageCount: 15,
@@ -109,7 +163,7 @@ export default {
 			this.$store.commit("marketState/setFilter", {filterName:"marketGemSearch",type: "level", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionAll(this.marketGemPage, true);
-				this.$refs.page.initPage();
+				this.$refs.page && this.$refs.page.initPage();
 			});
 		},
 		onSelectTypeChange(pos){
@@ -118,7 +172,7 @@ export default {
 			this.$store.commit("marketState/setFilter", {filterName:"marketGemSearch",type: "type", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionAll(this.marketGemPage, true);
-				this.$refs.page.initPage();
+				this.$refs.page && this.$refs.page.initPage();
 			});
 		},
 		onSortChange(pos){
@@ -127,7 +181,7 @@ export default {
 			this.$store.commit("marketState/setFilter", {filterName:"marketGemSearch",type: "sort", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionAll(this.marketGemPage, true);
-				this.$refs.page.initPage();
+				this.$refs.page && this.$refs.page.initPage();
 			});
 		}
 	}
@@ -164,11 +218,6 @@ export default {
 		background: #2c3d6b;
 	}
 
-	#shop-history {
-		cursor: pointer;
-		position: relative;
-		user-select: none;
-	}
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;

@@ -1,35 +1,70 @@
 <template>
-	<div id="mypet" style="padding:10px;max-width:1600px;margin:0px auto" >
+	<div id="mypet" style="max-width:1460px;margin:10px auto" >
 		<Tab class="mgt-10" :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" :notice="[]" />
 
 		<div class="tal search vertical-children por mgt-10" v-if="tab_pos != 2">
-			<span>{{ $t("Market_33") }}({{ getTotalPetNum }})</span >&nbsp;
-			<div class="dib por">
-				<img src="@/assets/icon/powerup.png" class="cur-point mgl-5 " alt="" height="40" @click="oprDialog('showPetPowerUp-dialog', 'block')" />
-				<span v-if="$root.$children[0].showPowerUpList.length <= 0" class="pop-notice">{{$t("MOMO_55")}}</span>
-			</div>
+			<div class="vertical-children  dib">
+				<span>{{$t("Market_33")}}({{ getTotalPetNum }})</span>
 
-			<div id="my-pet-fitter" v-if="tab_pos == 0">
-				<div class="dropdown-group mgl-5" @click="showDrop" tabindex="3">
-					<div class="dropdown-group-value por">
-						{{$t("Market_63")}} ▼
-					</div>
-					<div class="dropdown-group-list hide">
-						<Dropdown :list="select1" :defaultSelectPos="myPetFilter.category" :onChange="onSelectTypeChange" />&nbsp;
-						<Dropdown :list="select3" :defaultSelectPos="myPetFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
+				<div class="dib por powerup">
+					<img src="@/assets/icon/powerup.png" class="cur-point mgl-5 " alt="" height="40" @click="oprDialog('showPetPowerUp-dialog', 'block')" />
+					<span v-if="$root.$children[0].showPowerUpList.length <= 0" class="pop-notice">{{$t("MOMO_55")}}</span>
+				</div>
+
+				<div class="dib filter-show-group" >
+					<div class="filter-show-item" v-if="myPetFilter.vType != 0" >
+						<span class="filter-close" @click="onSelectQualityChange(0)">&times;</span>
+						<span class="mgl-10">{{select3[myPetFilter.vType]}}</span>
 					</div>
 				</div>
+			</div>
+			
+			<div id="my-pet-fitter" v-if="tab_pos == 0">
+
+				<div class="dib por mgl-10 filter"  >
+					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
+					<div class="filter-panel hide " ref="filter">
+						<!-- 搜索框 -->
+						<!-- <div>
+							<span class="search-box  dib " style="width:100%;display:inline-flex">
+								<div class="dib por" style="flex:1" >
+									<div class="dib por">
+										<input class="ly-input" ref="searchInput" style="padding-right:30px;width:100%;border-radius:50px" type="text" :placeholder="$t('BOX_17')" v-model="searchWord" />
+										<span v-if="searchWord != '' " style="position:absolute;right:10px;height:100%;align-items: center;display: inline-flex;justify-content: center;" class="cur-point opa-6" @click="searchWord='';goSearch()">
+											<svg t="1618473937077" class="icon" viewBox="0 0 1024 1024" version="1.1"  p-id="1127" width="20" height="20"><path d="M601.376 512l191.52-191.52c28.096-28.096 30.976-71.168 6.4-95.744s-67.68-21.696-95.744 6.4l-191.52 191.52-191.52-191.52c-28.096-28.096-71.168-30.976-95.744-6.368s-21.696 67.68 6.4 95.744l191.52 191.52-191.52 191.52c-28.096 28.096-30.976 71.168-6.368 95.744s67.68 21.696 95.744-6.4l191.52-191.52 191.52 191.52c28.096 28.096 71.168 30.976 95.744 6.4s21.696-67.68-6.4-95.744l-191.52-191.52z" p-id="1128" fill="#838689"></path></svg>
+										</span>
+									</div>
+									<div class="search-preview" ref="searchPreview"  style="margin-bottom:50px" v-if="getSearchArr.length > 0">
+										<div class="aveage-box" v-for="item in getSearchArr" :key="item.prototype" @click="setSearchItme(item)">
+											<div class="tal"><img :src="require(`@/assets/pet/${item.prototype}.png`)" alt="" height="40"></div>
+											<div class="tar small opa-6" style="flex:3" :class="'c-lv'+item.vType">{{item.realName}}</div>
+										</div>
+									</div>
+								</div>
+								<img class="mgl-10 cur-point" :src="require('@/assets/icon/search.png')" alt="" @click="goSearch"  />
+							</span>
+						</div> -->
+						<div >
+							<h5>Qualities</h5>
+							<div @click="onSelectQualityChange(pos)" class="filter-select-item" :class="{'active': pos == myPetFilter.vType}" v-for="(item, pos) in select3" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-30 tac" @click="toggleFilter($refs.filter)">
+							<button class="btn-primary" style="width:80%">{{$t("Common_03")}}</button>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 		<!--我的momo-->
-		<div :class="tab_pos == 0 ? '' : 'hide'" style="padding: 10px">
-			<div :class="getShowPetArr.length < 4 ? 'tal' : ''">
-				<div class="clear">
-					<router-link :to="(item.location=='auction'?'/auctionView/': '/upgrade/') + item.prototype + '-' + item.tokenId+'-'+item.location " v-for="item in getShowPetArr"
-						:key=" item.prototype.toString() + item.tokenId + item.num " >
-						<PetItem v-bind:data="{ item: item }" class="no-search" />
-					</router-link>
-				</div>
+		<div :class="{hide: tab_pos != 0}">
+			<div :class="{'tal': getShowPetArr.length < 4 }"  class="momo-content">
+				<router-link :to="(item.location=='auction'?'/auctionView/': '/upgrade/') + item.prototype + '-' + item.tokenId+'-'+item.location " v-for="item in getShowPetArr"
+					:key=" item.prototype.toString() + item.tokenId + item.num " >
+					<PetItem v-bind:data="{ item: item }" class="no-search" />
+				</router-link>
 			</div>
 			<div style="margin-top: 30px" v-show="Math.ceil(getTotalPet.length / onePageCount) > 1" >
 				<Page ref="page" :defaultPage="myPetPage" :totalPage="Math.ceil(getTotalPet.length / onePageCount)" :onChange="onPageChange" />
@@ -483,6 +518,9 @@ export default {
 </script>
 
 <style  scoped>
+.momo-content{
+	margin: 0px -20px !important;
+}
 .pop-notice{
 	position: absolute;
 	font-size: 12px;
@@ -567,11 +605,10 @@ export default {
 #mypet #my-pet-fitter {
 	position: absolute;
 	right: 0px;
-	top: 0px;
+	top: -5px;
 }
 #mypet {
 	text-align: center;
-	padding: 0px 20px;
 }
 #preview{
 	max-width: 1300px;
@@ -579,6 +616,13 @@ export default {
 	margin-top: 20px;
 }
 @media (max-width: 768px) {
+	.powerup img{
+		height: 27px;
+	}
+	.momo-content{
+		margin: 0px !important;
+		margin-top: 10px !important;
+	}
 	.pop-notice{
 		line-height: 15px;
 	}

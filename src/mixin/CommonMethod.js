@@ -20,6 +20,9 @@ const CommonMethod = {
 		})
 	},
 	methods: {
+		toggleFilter(target){
+			$(target).toggleClass("hide");
+		},
 		quickBuy(ptype){
 			Common.app.$refs.quickBuy.show(ptype);
 		},

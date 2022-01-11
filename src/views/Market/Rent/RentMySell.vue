@@ -242,12 +242,7 @@ export default {
 		list-style: none;
 		text-align: left;
 	}
-	#shop-history {
-		margin-right: 15px;
-		cursor: pointer;
-		position: relative;
-		user-select: none;
-	}
+
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;

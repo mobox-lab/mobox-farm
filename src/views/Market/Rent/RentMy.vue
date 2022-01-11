@@ -1,19 +1,43 @@
 <template>
 	<div >
 		<div class="tal search vertical-children por mgt-20" >
-			<span>{{$t("Market_33")}}({{ getTotalPetNum }})</span>&nbsp;
 			<div id="market-pet-fitter">
-				<div class="dropdown-group " @click="showDrop" tabindex="3">
-					<div class="dropdown-group-value por">
-						{{$t("Market_63")}} ▼
-					</div>
-					<div class="dropdown-group-list hide">
-						<Dropdown :list="$parent.selectCategory" :defaultSelectPos="myRentMarketFilter.category" :onChange="onSelectTypeChange" />&nbsp;
-						<Dropdown :list="selectVType" :defaultSelectPos="myRentMarketFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
-						<Dropdown :list="momoState" :defaultSelectPos="myRentMarketFilter.state" :onChange="onSelectState" />&nbsp;
+				<div class="dib por mgl-10 filter">
+					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
+					<div class="filter-panel hide " ref="filter">
+						<div >
+							<h5>Qualities</h5>
+							<div @click="onSelectQualityChange(pos)" class="filter-select-item" :class="{'active': pos == (myRentMarketFilter.vType == 0?0:myRentMarketFilter.vType - 3)}" v-for="(item, pos) in selectVType" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-20">
+							<h5>Status</h5>
+							<div @click="onSelectState(pos)" class="filter-select-item" :class="{'active': pos == myRentMarketFilter.state}" v-for="(item, pos) in momoState" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-30 tac" @click="toggleFilter($refs.filter)">
+							<button class="btn-primary" style="width:80%">{{$t("Common_03")}}</button>
+						</div>
 					</div>
 				</div>
 			</div>
+
+			<div class="vertical-children  dib">
+				<span>{{$t("Market_33")}}({{ getTotalPetNum }})</span>
+				<div class="dib filter-show-group">
+					<div class="filter-show-item" v-if="myRentMarketFilter.vType != 0" >
+						<span class="filter-close" @click="onSelectQualityChange(0)">&times;</span>
+						<span class="mgl-10">{{selectVType[(myRentMarketFilter.vType == 0?0:myRentMarketFilter.vType - 3)]}}</span>
+					</div>
+					<div class="filter-show-item" v-if="myRentMarketFilter.state != 0" >
+						<span class="filter-close" @click="onSelectState(0)">&times;</span>
+						<span class="mgl-10">{{momoState[myRentMarketFilter.state]}}</span>
+					</div>
+				</div>
+			</div>
+
 		</div>
 
 		<div :class="getTotalPetNum < 4 ? 'tal' : ''" class="momo-content">
@@ -38,7 +62,7 @@
 </template>
 
 <script>
-import { Dropdown, Page, PetItem } from '@/components';
+import { Page, PetItem } from '@/components';
 import { CommonMethod } from "@/mixin";
 import { mapState } from "vuex";
 
@@ -61,7 +85,7 @@ export default {
 			]
 		};
 	},
-	components: { Dropdown, Page, PetItem },
+	components: { Page, PetItem },
 	computed: {
 		...mapState({
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,
@@ -132,7 +156,7 @@ export default {
 		onPageChange(page) {
 			this.$store.commit("marketState/setData", {marketRentMyPage:page});
 			this.$nextTick(()=>{
-				this.$refs.page.initPage();
+				this.$refs.page && this.$refs.page.initPage();
 			})
 		},
 		onSelectState(pos){
@@ -191,12 +215,7 @@ export default {
 	top: 0px;
 	right: -5px;
 }
-#shop-car,#shop-history {
-	margin-right: 15px;
-	cursor: pointer;
-	position: relative;
-	user-select: none;
-}
+
 #market #market-pet-fitter {
 	position: absolute;
 	right: 0px;

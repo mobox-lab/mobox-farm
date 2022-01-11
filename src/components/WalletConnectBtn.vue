@@ -30,6 +30,12 @@ export default {
 				if(this.chainNetwork == 56){
 					this.oprDialog("connected-wallet-info-dialog", "block");
 				}else{
+					if(window.ethereum){
+						window.ethereum.request({
+							method: 'wallet_switchEthereumChain',
+							params: [{ chainId: '0x38' }],
+						});
+					}
 					this.showNotify(this.$t("Common_23"), "error");
 				}
 			}

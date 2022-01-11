@@ -1,25 +1,37 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
-			<span>{{$t("Market_33")}}({{ marketPetsMy.total }})</span>&nbsp;
 			<div id="market-pet-fitter">
-				<div class="dib por " id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por " @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
-					<img src="@/assets/icon/tradeRecord.png" alt="" />
+					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
 				</div>
-				<!-- <div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
-					<img src="@/assets/icon/filter_icon.png" alt="" />
-				</div> -->
-				<div class="dropdown-group mgl-10" @click="showDrop" tabindex="3">
-					<div class="dropdown-group-value por">
-						{{$t("Market_63")}} ▼
-					</div>
-					<div class="dropdown-group-list hide">
-						<Dropdown :list="$parent.$parent.selectCategory" :defaultSelectPos="myMarketSellFilter.category" :onChange="onSelectTypeChange" />&nbsp;
-						<Dropdown :list="$parent.$parent.selectVType" :defaultSelectPos="myMarketSellFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
+
+				<div class="dib por mgl-10 filter"  >
+					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
+					<div class="filter-panel hide " ref="filter">
+						<div >
+							<h5>Qualities</h5>
+							<div @click="onSelectQualityChange(pos)" class="filter-select-item" :class="{'active': pos == myMarketSellFilter.vType}" v-for="(item, pos) in $parent.$parent.selectVType" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-30 tac" @click="toggleFilter($refs.filter)">
+							<button class="btn-primary" style="width:80%">{{$t("Common_03")}}</button>
+						</div>
 					</div>
 				</div>
 			</div>
+			<div class="vertical-children  dib">
+				<span>{{$t("Market_33")}}({{ marketPetsMy.total }})</span>
+				<div class="dib filter-show-group">
+					<div class="filter-show-item" v-if="myMarketSellFilter.vType != 0" >
+						<span class="filter-close" @click="onSelectQualityChange(0)">&times;</span>
+						<span class="mgl-10">{{$parent.$parent.selectVType[myMarketSellFilter.vType]}}</span>
+					</div>
+				</div>
+			</div>
+
 		</div>
 		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="vertical-children momo-content">
 			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ item.tx):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime + item.tokenId+item.ids[0]">
@@ -241,7 +253,7 @@ export default {
 		onPageChange(page){
 			this.$store.commit("marketState/setData", {marketMySellPage: page});
 			this.$nextTick(()=>{
-				this.$refs.page.initPage();
+				this.$refs.page && this.$refs.page.initPage();
 			})
 		},
 		onSelectQualityChange(pos) {
@@ -265,11 +277,7 @@ export default {
 </script>
 
 <style scoped>
-	#shop-history {
-		cursor: pointer;
-		position: relative;
-		user-select: none;
-	}
+
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;

@@ -1301,10 +1301,6 @@ svg {
 	border-bottom: none;
 }
 
-#shop-history img{
-	height: 40px !important;
-}
-
 .search-box img{
 	height: 40px !important;
 }
@@ -1638,5 +1634,74 @@ svg {
 		right: 0px;
 		font-size: 30px;
 		opacity: 0.4;
+	}
+}
+
+.filter{
+	position: relative;
+	cursor: pointer;
+}
+
+.filter-panel{
+	position: absolute;
+	background: #13181f;
+	border: 1px solid #2c3849;
+	border-radius: 15px;
+	padding: 20px;
+	z-index: 9999;
+	right: 0px;
+	margin-top: 10px;
+	min-width: 300px;
+	text-align: left;
+}
+
+.filter-select-item{
+	font-size: 12px;
+	background: rgba(66,70,76,0.20);
+	border-radius: 10px;
+	display: inline-block;
+	margin-top: 15px;
+	margin-right: 15px;
+	padding: 5px 10px;
+	cursor: pointer;
+	user-select: none;
+}
+.filter-select-item.active{
+	background: #42464c;
+}
+.filter-show-item{
+	font-size: 12px;
+	background: #13181f;
+	border-radius: 10px;
+	padding: 2px 15px;
+	user-select: none;
+	display: inline-block;
+	margin-left: 10px;
+}
+.filter-close{
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.filter-show-group{
+	margin-left: 20px;
+}
+
+@media (max-width: 768px) {
+	.filter-show-group{
+		margin-left: 5px !important;
+	}
+	.filter-select-item{
+		font-size: 10px !important;
+		padding: 0px 10px !important;
+	}
+	.filter-close{
+		font-size: 12px;
+		cursor: pointer;
+	}
+	.filter-show-item{
+		line-height: 12px;
+		padding: 8px 10px !important;
+		margin-left: 5px !important;
 	}
 }

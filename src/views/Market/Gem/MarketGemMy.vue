@@ -1,26 +1,53 @@
 <template>
 	<div >
 		<div class="tal search vertical-children por mgt-20" >
-			<span>{{$t("Market_33")}}({{ geTotalNum }})</span>&nbsp;
 			<div id="market-pet-fitter">
 				<div class="dib mgl-10" id="shop-car" @click="oprDialog('shop-car-dialog', 'block')" >
 					<span id="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span>
 					<img src="@/assets/icon/shopcar.png" alt="" height="40" />
 				</div>
-				<div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
+				<div class="dib por mgl-10"  @click="oprDialog('shop-history-gem-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
-					<img src="@/assets/icon/tradeRecord.png" alt="" />
+					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
 				</div>
-				<div class="dropdown-group mgl-10" @click="showDrop" tabindex="3" v-if="marketTypePos != 4">
-					<div class="dropdown-group-value por">
-						{{$t("Market_63")}} ▼
-					</div>
-					<div class="dropdown-group-list hide">
-						<Dropdown :list="$parent.gemType" :defaultSelectPos="fitter.type" :onChange="pos=>fitter.type=pos" />&nbsp;
-						<Dropdown :list="$parent.gemLv" :defaultSelectPos="fitter.level" :onChange="pos=>fitter.level = pos" />&nbsp;
+				<!-- 宝石 -->
+				<div class="dib por mgl-10 filter" v-if="marketTypePos == 2">
+					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
+					<div class="filter-panel hide " ref="filter">
+						<div >
+							<h5>Types</h5>
+							<div @click="fitter.type=pos" class="filter-select-item" :class="{'active': pos == fitter.type}" v-for="(item, pos) in $parent.gemType" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-20">
+							<h5>Levels</h5>
+							<div @click="fitter.level = pos" class="filter-select-item" :class="{'active': pos == fitter.level}" v-for="(item, pos) in $parent.gemLv" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-30 tac" @click="toggleFilter($refs.filter)">
+							<button class="btn-primary" style="width:80%">{{$t("Common_03")}}</button>
+						</div>
 					</div>
 				</div>
 			</div>
+
+			<div class="vertical-children  dib">
+				<span>{{$t("Market_33")}}({{ geTotalNum }})</span>
+				<div class="dib filter-show-group" v-if="marketTypePos == 2">
+					<div class="filter-show-item" v-if="fitter.type != 0" >
+						<span class="filter-close" @click="fitter.type = 0">&times;</span>
+						<span class="mgl-10">{{$parent.gemType[fitter.type]}}</span>
+					</div>
+					<div class="filter-show-item" v-if="fitter.level != 0" >
+						<span class="filter-close" @click="fitter.level = 0">&times;</span>
+						<span class="mgl-10">{{$parent.gemLv[fitter.level]}}</span>
+					</div>
+				</div>
+				
+			</div>
+
 		</div>
 
 		<div :class="getMyGem.length < 4 || marketTypePos == 4  ? 'tal' : 'tac'"  class="momo-content">
@@ -177,7 +204,7 @@
 </template>
 
 <script>
-import { GemSellItem, SelectNum, Dialog, StatuButton, Dropdown } from '@/components';
+import { GemSellItem, SelectNum, Dialog, StatuButton } from '@/components';
 import { CommonMethod } from "@/mixin";
 import { Wallet, Common } from '@/utils';
 import { WalletConfig } from '@/config';
@@ -220,7 +247,7 @@ export default {
 			},
 		};
 	},
-	components: { GemSellItem, SelectNum, Dialog, StatuButton, Dropdown },
+	components: { GemSellItem, SelectNum, Dialog, StatuButton },
 	computed: {
 		...mapState({
 			lockList: (state) => state.ethState.data.lockList,
@@ -580,11 +607,7 @@ export default {
 	top: 0px;
 	right: -5px;
 }
-#shop-car,#shop-history {
-	cursor: pointer;
-	position: relative;
-	user-select: none;
-}
+
 #market-pet-fitter {
 	position: absolute;
 	right: 0px;

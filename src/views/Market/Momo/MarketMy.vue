@@ -1,7 +1,6 @@
 <template>
 	<div >
 		<div class="tal search vertical-children por mgt-20" >
-			<p class=" dib">{{$t("Market_33")}}({{ getTotalPetNum }})</p>&nbsp;
 
 			<div id="market-pet-fitter">
 				<div class="dib" id="shop-car" @click="$refs.groupSell.show()" >
@@ -12,29 +11,40 @@
 					<span id="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span>
 					<img src="@/assets/icon/shopcar.png" alt="" height="40" />
 				</div>
-				<div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por mgl-10"  @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
 				</div>
 
-				<!-- <div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
-					<img src="@/assets/icon/filter_icon.png" alt="" height="40" />
-				</div> -->
-
-				<div class="dropdown-group mgl-10" @click="showDrop" tabindex="3">
-					<div class="dropdown-group-value por">
-						{{$t("Market_63")}} ▼
-					</div>
-					<div class="dropdown-group-list hide">
-						<Dropdown :list="$parent.$parent.selectCategory" :defaultSelectPos="myMarketPetFilter.category" :onChange="onSelectTypeChange" />&nbsp;
-						<Dropdown :list="$parent.$parent.selectVType" :defaultSelectPos="myMarketPetFilter.vType" :onChange="onSelectQualityChange" />&nbsp;
+				<div class="dib por mgl-10 filter"  >
+					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
+					<div class="filter-panel hide " ref="filter">
+						<div >
+							<h5>Qualities</h5>
+							<div @click="onSelectQualityChange(pos)" class="filter-select-item" :class="{'active': pos == myMarketPetFilter.vType}" v-for="(item, pos) in $parent.$parent.selectVType" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-30 tac" @click="toggleFilter($refs.filter)">
+							<button class="btn-primary" style="width:80%">{{$t("Common_03")}}</button>
+						</div>
 					</div>
 				</div>
-
 			</div>
+
+			<div class="vertical-children  dib">
+				<span>{{$t("Market_33")}}({{ getTotalPetNum }})</span>
+				<div class="dib filter-show-group">
+					<div class="filter-show-item" v-if="myMarketPetFilter.vType != 0" >
+						<span class="filter-close" @click="onSelectQualityChange(0)">&times;</span>
+						<span class="mgl-10">{{$parent.$parent.selectVType[myMarketPetFilter.vType]}}</span>
+					</div>
+				</div>
+			</div>
+
 		</div>
 
-		<div :class="myNFT_stake.length < 4 ? 'tal' : ''" class="momo-content" >
+		<div :class="getShowPetArr.length < 4 ? 'tal' : ''" class="momo-content" >
 			<PetItem  v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()" v-bind:data="{item: item}" class="market" >
 				<div style="position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
 					<div v-if="item.isLock" class="tac">
@@ -577,7 +587,7 @@ export default {
 		onPageChange(page) {
 			this.pageNum = page;
 			this.$nextTick(()=>{
-				this.$refs.page.initPage();
+				this.$refs.page && this.$refs.page.initPage();
 			})
 		},
 	},
@@ -645,11 +655,6 @@ export default {
 	position: absolute;
 	top: 0px;
 	right: -5px;
-}
-#shop-car,#shop-history {
-	cursor: pointer;
-	position: relative;
-	user-select: none;
 }
 
 

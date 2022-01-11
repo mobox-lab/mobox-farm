@@ -1,51 +1,74 @@
 <template>
-	<div>
+	<div >
 		<div class="tal search vertical-children por mgt-20">
 			<div id="market-pet-fitter">
-				<span class="search-box  dib hide-xs ">
-					<div class="dib por" >
-						<div class="dib por">
-							<input class="ly-input" ref="searchInput" style="padding-right:30px;width:150px;border-radius:50px" type="text" :placeholder="$t('BOX_17')" v-model="searchWord" />
-							<span v-if="searchWord != '' " style="position:absolute;right:10px;height:100%;align-items: center;display: inline-flex;justify-content: center;" class="cur-point opa-6" @click="searchWord='';goSearch()">
-								<svg t="1618473937077" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1127" width="20" height="20"><path d="M601.376 512l191.52-191.52c28.096-28.096 30.976-71.168 6.4-95.744s-67.68-21.696-95.744 6.4l-191.52 191.52-191.52-191.52c-28.096-28.096-71.168-30.976-95.744-6.368s-21.696 67.68 6.4 95.744l191.52 191.52-191.52 191.52c-28.096 28.096-30.976 71.168-6.368 95.744s67.68 21.696 95.744-6.4l191.52-191.52 191.52 191.52c28.096 28.096 71.168 30.976 95.744 6.4s21.696-67.68-6.4-95.744l-191.52-191.52z" p-id="1128" fill="#838689"></path></svg>
-							</span>
-						</div>
-						<div class="search-preview" ref="searchPreview"  style="margin-bottom:50px" v-if="getSearchArr.length > 0">
-							<div class="aveage-box" v-for="item in getSearchArr" :key="item.prototype" @click="setSearchItme(item)">
-								<div class="tal"><img :src="require(`@/assets/pet/${item.prototype}.png`)" alt="" height="40"></div>
-								<div class="tar small opa-6" style="flex:3" :class="'c-lv'+item.vType">{{item.realName}}</div>
-							</div>
-						</div>
-					</div>
-					<img class="mgl-10 cur-point" :src="require('@/assets/icon/search.png')" alt="" @click="goSearch"  />
-				</span>
-
 				<div  class="cur-point dib por mgl-10  " @click="getMomoShopCar().show()"  >
 					<span v-if="shopCar.length >0" class="shop-car-num">{{shopCar.length}}</span>
 					<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
 				</div>
 
-				<div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por mgl-10"  @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
-					<img src="@/assets/icon/tradeRecord.png" alt="" />
+					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
 				</div>
 
-				<!-- <div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-dialog', 'block')" >
-					<img src="@/assets/icon/filter_icon.png" alt="" />
-				</div> -->
-				<div class="dropdown-group mgl-10" @click="showDrop" tabindex="3">
-					<div class="dropdown-group-value por">
-						{{$t("Market_63")}} ▼
+				<div class="dib por mgl-10 filter"  >
+					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
+					<div class="filter-panel hide " ref="filter">
+						<!-- 搜索框 -->
+						<div>
+							<span class="search-box  dib " style="width:100%;display:inline-flex">
+								<div class="dib por" style="flex:1" >
+									<div class="dib por">
+										<input class="ly-input" ref="searchInput" style="padding-right:30px;width:100%;border-radius:50px" type="text" :placeholder="$t('BOX_17')" v-model="searchWord" />
+										<span v-if="searchWord != '' " style="position:absolute;right:10px;height:100%;align-items: center;display: inline-flex;justify-content: center;" class="cur-point opa-6" @click="searchWord='';goSearch()">
+											<svg t="1618473937077" class="icon" viewBox="0 0 1024 1024" version="1.1"  p-id="1127" width="20" height="20"><path d="M601.376 512l191.52-191.52c28.096-28.096 30.976-71.168 6.4-95.744s-67.68-21.696-95.744 6.4l-191.52 191.52-191.52-191.52c-28.096-28.096-71.168-30.976-95.744-6.368s-21.696 67.68 6.4 95.744l191.52 191.52-191.52 191.52c-28.096 28.096-30.976 71.168-6.368 95.744s67.68 21.696 95.744-6.4l191.52-191.52 191.52 191.52c28.096 28.096 71.168 30.976 95.744 6.4s21.696-67.68-6.4-95.744l-191.52-191.52z" p-id="1128" fill="#838689"></path></svg>
+										</span>
+									</div>
+									<div class="search-preview" ref="searchPreview"  style="margin-bottom:50px" v-if="getSearchArr.length > 0">
+										<div class="aveage-box" v-for="item in getSearchArr" :key="item.prototype" @click="setSearchItme(item)">
+											<div class="tal"><img :src="require(`@/assets/pet/${item.prototype}.png`)" alt="" height="40"></div>
+											<div class="tar small opa-6" style="flex:3" :class="'c-lv'+item.vType">{{item.realName}}</div>
+										</div>
+									</div>
+								</div>
+								<img class="mgl-10 cur-point" :src="require('@/assets/icon/search.png')" alt="" @click="goSearch"  />
+							</span>
+						</div>
+						<div class="mgt-20">
+							<h5>Qualities</h5>
+							<div @click="onSelectVTypeChange(pos)" class="filter-select-item" :class="{'active': pos == marketSearch.vType}" v-for="(item, pos) in $parent.$parent.selectVType" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-20">
+							<h5>Others</h5>
+							<div @click="onSortChange(pos)" class="filter-select-item" :class="{'active': pos == marketSearch.sort}" v-for="(item, pos) in sortArr" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-30 tac" @click="toggleFilter($refs.filter)">
+							<button class="btn-primary" style="width:80%">{{$t("Common_03")}}</button>
+						</div>
 					</div>
-					<div class="dropdown-group-list hide">
-						<Dropdown :list="$parent.$parent.selectCategory" :defaultSelectPos="marketSearch.category" :onChange="onSelectCategoryChange" />&nbsp;
-						<Dropdown :list="$parent.$parent.selectVType" :defaultSelectPos="marketSearch.vType" :onChange="onSelectVTypeChange" />&nbsp;
-						<Dropdown :list="sortArr" :defaultSelectPos="marketSearch.sort" :onChange="onSortChange" />&nbsp;
+				</div>
+
+			</div>
+
+			<div class="vertical-children  dib">
+				<span>{{$t("Market_33")}}({{ marketPets.total }})</span>
+				<div class="dib filter-show-group">
+					<div class="filter-show-item" v-if="marketSearch.vType != 0" >
+						<span class="filter-close" @click="onSelectVTypeChange(0)">&times;</span>
+						<span class="mgl-10">{{$parent.$parent.selectVType[marketSearch.vType]}}</span>
+					</div>
+					<div class="filter-show-item" v-if="marketSearch.sort != 0">
+						<span class="filter-close" @click="onSortChange(0)">&times;</span>
+						<span class="mgl-10">{{sortArr[marketSearch.sort]}}</span>
 					</div>
 				</div>
 			</div>
-
-			<p class="vertical-children  dib">{{$t("Market_33")}}({{ marketPets.total }}) </p>
+			
 		</div>
 		<div :class="marketPets.list.length < 4 ? 'tal' : ''"  class="vertical-children momo-content" style="min-height:500px;">
 			<a @click="$router.push({ path: `/auctionView/${item.tx}` })"  v-for="item in marketPets.list" :key="item.tx + item.index">
@@ -89,7 +112,7 @@
 </template>
 
 <script>
-import {  Page, PetItem, PetItemScroll, Dropdown } from "@/components";
+import {  Page, PetItem, PetItemScroll } from "@/components";
 import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
 import { BaseConfig } from "@/config";
@@ -98,7 +121,7 @@ import { mapState } from "vuex";
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {  Page, PetItem, PetItemScroll, Dropdown},
+	components: {  Page, PetItem, PetItemScroll},
 	data(){
 		return({
 			onePageCount: 15,
@@ -354,7 +377,7 @@ export default {
 			this.$store.commit("marketState/setFilter", {filterName:"marketSearch",type: "category", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketPage, true);
-				this.$refs.page.initPage();
+				this.$refs.page && this.$refs.page.initPage();
 			});
 		},
 		onSelectVTypeChange(pos){
@@ -363,7 +386,7 @@ export default {
 			this.$store.commit("marketState/setFilter", {filterName:"marketSearch",type: "vType", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketPage, true);
-				this.$refs.page.initPage();
+				this.$refs.page && this.$refs.page.initPage();
 			});
 		},
 		onSortChange(pos){
@@ -372,7 +395,7 @@ export default {
 			this.$store.commit("marketState/setFilter", {filterName:"marketSearch",type: "sort", value: pos});
 			this.$nextTick(()=>{
 				this.getAuctionPets(this.marketPage, true);
-				this.$refs.page.initPage();
+				this.$refs.page && this.$refs.page.initPage();
 			});
 		}
 	}
@@ -410,11 +433,6 @@ export default {
 		background: #2c3d6b;
 	}
 
-	#shop-history {
-		cursor: pointer;
-		position: relative;
-		user-select: none;
-	}
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;

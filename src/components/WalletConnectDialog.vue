@@ -206,6 +206,12 @@ export default {
 							//获取当前Network
 							let network = await window.ethereum.request({method: 'net_version'});
 							chainNetwork = network;
+							if(chainNetwork != 56){
+								window.ethereum.request({
+									method: 'wallet_switchEthereumChain',
+									params: [{ chainId: '0x38' }], // chainId must be in hexadecimal numbers
+								});
+							}
 							//获取当前provider
 							provider = window.web3.currentProvider;
 						}

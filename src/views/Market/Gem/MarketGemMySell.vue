@@ -1,23 +1,48 @@
 <template>
 	<div>
 		<div class="tal search vertical-children por mgt-20">
-			<span>{{$t("Market_33")}}({{ marketGemMy.total }})</span>&nbsp;
 			<div id="market-pet-fitter">
-				<div class="dib por mgl-10" id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
+				<div class="dib por mgl-10"  @click="oprDialog('shop-history-gem-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
-					<img src="@/assets/icon/tradeRecord.png" alt="" />
+					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
 				</div>
-				
-				<div class="dropdown-group mgl-10" @click="showDrop" tabindex="3" v-if="marketTypePos != 4">
-					<div class="dropdown-group-value por">
-						{{$t("Market_63")}} ▼
-					</div>
-					<div class="dropdown-group-list hide">
-						<Dropdown :list="$parent.gemType" :defaultSelectPos="myGemMarketSellFilter.type" :onChange="onSelectTypeChange" />&nbsp;
-						<Dropdown :list="$parent.gemLv" :defaultSelectPos="myGemMarketSellFilter.level" :onChange="onSelectLevelChange" />&nbsp;
+				<!-- 宝石 -->
+				<div class="dib por mgl-10 filter" v-if="marketTypePos == 2">
+					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
+					<div class="filter-panel hide " ref="filter">
+						<div >
+							<h5>Types</h5>
+							<div @click="onSelectTypeChange(pos)" class="filter-select-item" :class="{'active': pos == myGemMarketSellFilter.type}" v-for="(item, pos) in $parent.gemType" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-20">
+							<h5>Levels</h5>
+							<div @click="onSelectLevelChange(pos)" class="filter-select-item" :class="{'active': pos == myGemMarketSellFilter.level}" v-for="(item, pos) in $parent.gemLv" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-30 tac" @click="toggleFilter($refs.filter)">
+							<button class="btn-primary" style="width:80%">{{$t("Common_03")}}</button>
+						</div>
 					</div>
 				</div>
 			</div>
+
+			<div class="vertical-children  dib">
+				<span>{{$t("Market_33")}}({{ marketGemMy.total }})</span>
+				<div class="dib filter-show-group" v-if="marketTypePos == 2">
+					<div class="filter-show-item" v-if="myGemMarketSellFilter.type != 0" >
+						<span class="filter-close" @click="onSelectTypeChange(0)">&times;</span>
+						<span class="mgl-10">{{$parent.gemType[myGemMarketSellFilter.type]}}</span>
+					</div>
+					<div class="filter-show-item" v-if="myGemMarketSellFilter.level != 0" >
+						<span class="filter-close" @click="onSelectLevelChange(0)">&times;</span>
+						<span class="mgl-10">{{$parent.gemLv[myGemMarketSellFilter.level]}}</span>
+					</div>
+				</div>
+			</div>
+
 		</div>
 		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children">
 			<router-link :to=" item.orderId >= 0 ? ('/auctionGemView/'+ item.tx):'###'" :class="item.orderId >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime">
@@ -47,15 +72,14 @@
 </template>
 
 <script>
-import { Page, GemSellItem, Dropdown, Loading } from '@/components';
+import { Page, GemSellItem, Loading } from '@/components';
 import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
 import { mapState } from "vuex";
 
 export default {
 	mixins: [CommonMethod],
-	// components: {  Page, Dropdown},
-	components: {   GemSellItem, Dropdown, Page, Loading},
+	components: {   GemSellItem, Page, Loading},
 	data(){
 		return({
 			onePageCount: 15,
@@ -193,11 +217,7 @@ export default {
 </script>
 
 <style scoped>
-	#shop-history {
-		cursor: pointer;
-		position: relative;
-		user-select: none;
-	}
+
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;

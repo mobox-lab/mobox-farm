@@ -2,7 +2,7 @@
 	<div>
 		<div class="tal search vertical-children por mgt-20">
 			<div id="market-pet-fitter">
-				<div class="dib por " @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por cur-point" @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
 				</div>

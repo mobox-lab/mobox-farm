@@ -133,8 +133,7 @@ export default {
 .notification {
 	position: fixed;
 	top: 0px;
-	left: 0px;
-	width: 100%;
+	right: 0px;
 	z-index: 9999999;
 	margin: 0px auto;
 	text-align: right;

@@ -2,12 +2,12 @@
 	<div >
 		<div class="tal search vertical-children por mgt-20">
 			<div id="market-pet-fitter">
-				<div  class="cur-point dib por mgl-10  " @click="getMomoShopCar().show()"  >
+				<div  class="cur-point dib por mgl-10  " @click="getMomoShopCar().show()" id="buy-car" >
 					<span v-if="shopCar.length >0" class="shop-car-num">{{shopCar.length}}</span>
 					<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
 				</div>
 
-				<div class="dib por mgl-10"  @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por mgl-10 por cur-point"  @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
 				</div>

@@ -3,15 +3,15 @@
 		<div class="tal search vertical-children por mgt-20" >
 
 			<div id="market-pet-fitter">
-				<div class="dib" id="shop-car" @click="$refs.groupSell.show()" >
+				<div class="dib por cur-point" id="shop-car" @click="$refs.groupSell.show()" >
 					<span id="shop-car-num" v-if="groupSellCar.length > 0" >{{ groupSellCar.length }}</span>
 					<img src="@/assets/icon/group_sell_icon.png" alt="" height="40" />
 				</div>
-				<div class="dib mgl-10" id="shop-car" @click="oprDialog('pack-sell-dialog', 'block')" >
+				<div class="dib mgl-10 por cur-point" id="shop-car" @click="oprDialog('pack-sell-dialog', 'block')" >
 					<span id="shop-car-num" v-if="getShopCarTotalSelectNum > 0" >{{ getShopCarTotalSelectNum }}</span>
 					<img src="@/assets/icon/shopcar.png" alt="" height="40" />
 				</div>
-				<div class="dib por mgl-10"  @click="oprDialog('shop-history-dialog', 'block')" >
+				<div class="dib por mgl-10 por cur-point"  @click="oprDialog('shop-history-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
 				</div>

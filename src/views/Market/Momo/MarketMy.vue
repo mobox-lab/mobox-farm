@@ -3,7 +3,11 @@
 		<div class="tal search vertical-children por mgt-20" >
 
 			<div id="market-pet-fitter">
-				<div class="dib por cur-point" id="shop-car" @click="$refs.groupSell.show()" >
+				<div class="dib por cur-point" id="shop-car" @click="$refs.bigSell.show()" >
+					<!-- <span id="shop-car-num" v-if="groupSellCar.length > 0" >{{ groupSellCar.length }}</span> -->
+					<img src="@/assets/icon/bigsell_icon.png" alt="" height="40" />
+				</div>
+				<div class="dib por mgl-10 cur-point" id="shop-car" @click="$refs.groupSell.show()" >
 					<span id="shop-car-num" v-if="groupSellCar.length > 0" >{{ groupSellCar.length }}</span>
 					<img src="@/assets/icon/group_sell_icon.png" alt="" height="40" />
 				</div>
@@ -227,6 +231,7 @@
 		</Dialog>
 
 		<GroupSell ref="groupSell" />
+		<BigSell ref="bigSell" />
 	</div>
 </template>
 
@@ -237,6 +242,7 @@ import { Wallet, Common } from '@/utils';
 import { WalletConfig } from '@/config';
 import { mapState } from "vuex";
 import GroupSell from './GroupSell'
+import BigSell from './BigSell'
 
 let timer = null;
 export default {
@@ -259,7 +265,7 @@ export default {
 			priceTypePos: 0,
 		};
 	},
-	components: {Page, PetItem, SelectNum, Dialog, Tab, GroupSell },
+	components: {Page, PetItem, SelectNum, Dialog, Tab, GroupSell , BigSell},
 	watch: {
 		marketTabPos: function(){
 			this.initParabola()

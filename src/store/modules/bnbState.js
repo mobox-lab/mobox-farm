@@ -26,6 +26,7 @@ const baseCoinAttr = {
 	allowanceToSwap: -1,
 	allowanceToQuickSwap: -1,
 	allowanceToAuction: -1,
+	allowanceToBigAuction: -1, //大宗交易
 	allowanceToGemAuction: -1,
 	allowanceToRent: -1,
 	allowanceToVeMbox: -1,

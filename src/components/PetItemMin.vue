@@ -7,7 +7,7 @@
 		<p class="pet-min-catogry">
 			<img :src=" require(`../assets/icon/${ category_img[petData.category] }.png`) " alt="" width="10" height="10" />
 		</p>
-		<div class="pet-min-hover" ref="petMinHover" :class="{'left': isLeft, 'top': isTop}">
+		<div class="pet-min-hover" ref="petMinHover" :class="{'left': isLeft, 'top': isTop}" v-if="!petData.noHover">
 			<PetItem :data="{item: petData}" :class="petData.vType >= 4 && !petData.noPrice?'market':'' " class="no-search">
 				<div class="vertical-children mgt-10" style="font-size: 18px" v-if="petData.vType >= 4 && !petData.noPrice">
 					<img v-if="petData.isRent" :src="require(`@/assets/coin/${Number(petData.orderId) >= 5e4?'BUSD':'MBOX'}.png`)" alt="" height="20"/>&nbsp;
@@ -31,7 +31,7 @@ export default {
 	props: ['data', "isLeft", "isTop"],
 	data(){
 		return({
-			petData: {...this.data, gems: [0,0,0,0]},
+			petData: {...this.data, gems: [0,0,0,0], vType: this.getVType(this.data.prototype)},
 		})
 	},
 	computed: {

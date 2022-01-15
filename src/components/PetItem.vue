@@ -3,7 +3,7 @@
 		<img class="quick-buy" src="@/assets/icon/search.png" alt="" @click.stop="quickBuy(data.item.prototype)">
 
 		<div class="pet-lv vertical-children">
-			<img :src="require(`../assets/icon/${data.item.chain.toLocaleLowerCase()}.png`)" alt="" width="15" />&nbsp;
+			<img :src="require(`../assets/icon/bnb.png`)" alt="" width="15" />&nbsp;
 			<span class="mgl-5">Lv. {{ data.item.level }}</span>
 		</div>
 

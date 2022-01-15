@@ -286,8 +286,8 @@ export default {
 		//授权
 		async approve(){
 			let coinKey = "BUSD";
-			let {allowanceToAuction, isApproving} = this.coinArr[coinKey];
-			if(allowanceToAuction > 0 || isApproving) return;
+			let { isApproving} = this.coinArr[coinKey];
+			if( isApproving) return;
 
 			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin["BUSD"].addr,
 			WalletConfig.ETH.moMoStakeAuction, {coinKey, type: "allowanceToAuction"});
@@ -346,35 +346,5 @@ export default {
 #market-quick-buy-dialog .yf-dialog{
 	background: #000 !important;
 }
-.momo-tab{
-	width: 40px;
-	height: 40px;
-	position: relative;
-	border-radius: 40px;
-	cursor: pointer;
-	margin-right: 5px;
-}
-.pet-min-type1{
-	border: 4px solid #8b8b8bb4;
-}
-.pet-min-type2{
-	border: 4px solid #5b7e2bb4;
-}
-.pet-min-type3{
-	border: 4px solid #3955a0b4;
-}
-.pet-min-type4{
-	border: 4px solid #793ea8b4;
-}
-.pet-min-type5{
-	border: 4px solid #97812fb4;
-}
-.pet-min-type6{
-	border: 4px solid #8f3433;
-}
-@media (max-width: 768px) {
-	.momo-tab{
-		zoom: 0.8
-	}
-}
+
 </style>

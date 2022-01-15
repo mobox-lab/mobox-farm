@@ -3,8 +3,8 @@ import {EventBus, Common} from "@/utils";
 import {EventConfig} from '@/config';
 export default class HTTP {
 	// static serverNode = "https://nfttestapi.mobox.io"; //测试
-	static serverNode = "https://nftapi.mobox.io"; // 新合约的 （公测版）
-	// static serverNode = "http://192.168.5.78:3000"; // 测试
+	// static serverNode = "https://nftapi.mobox.io"; // 新合约的 （公测版）
+	static serverNode = "http://192.168.5.211:3000"; // 测试
 
 	static async post(url, sendData) {
 		try {
@@ -120,6 +120,13 @@ export default class HTTP {
 		let { data } = await this.get(`/auction/search/${chain}?page=${page}&limit=${limit}`, params);
 		return data;
 	}
+	//获取大宗交易市场上的NFT
+	static async getBigAuctionList(page = 1, limit = 15, search = {}) {
+		let params = {...search};
+		if(params.sort != undefined) params.sort = this.sortPosToName[params.sort];
+		let { data } = await this.get(`/auction_group/list?page=${page}&limit=${limit}`, params);
+		return data;
+	}
 	static async getAuctionListGem(chain, page = 1, limit = 15, search = {}){
 		let params = {...search};
 		params.filter = Common.store.state.marketState.data.marketGemFilter;
@@ -140,7 +147,7 @@ export default class HTTP {
 		let { data } = await this.get(`/momo_renter/search/${chain}?page=${page}&limit=${limit}`, params);
 		return data;
 	}
-	//获取交易市场上我的NFT
+	//获取交易市场上我的Gem
 	static async getMyGemAuctionList(chain, address) {
 		let { data } = await this.get(`/gem_auction/list/${chain}/${address}?sort=-time&page=1&limit=128`, {filter: Common.store.state.marketState.data.marketGemFilter});
 		return data;
@@ -152,7 +159,7 @@ export default class HTTP {
 	}
 	//获取交易历史记录
 	static async getMyAuctionHistory(address, page=1,limit=50) {
-		let { data } = await this.get(`/auction/logs/${address}?&page=${page}&limit=${limit}`);
+		let { data } = await this.get(`/auction/logs_new/${address}?&page=${page}&limit=${limit}`);
 		return data;
 	}
 	//获取交易历史记录
@@ -191,7 +198,7 @@ export default class HTTP {
 	}
 	//获取momo交易历史记录
 	static async getMomoAuctionHistoryAll() {
-		let { data } = await this.get(`/auction/logs?&page=1&limit=50`);
+		let { data } = await this.get(`/auction/logs_new?&page=1&limit=50`);
 		return data;
 	}
 	//获取gem交易历史记录

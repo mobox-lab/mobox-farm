@@ -278,8 +278,8 @@ export default {
 		//授权
 		async approve(){
 			let coinKey = this.oprCoin;
-			let {allowanceToGemAuction, isApproving} = this.coinArr[coinKey];
-			if(allowanceToGemAuction > 0 || isApproving) return;
+			let { isApproving} = this.coinArr[coinKey];
+			if( isApproving) return;
 
 			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr,
 			WalletConfig.ETH.common1155Auction, {coinKey, type: "allowanceToGemAuction"});

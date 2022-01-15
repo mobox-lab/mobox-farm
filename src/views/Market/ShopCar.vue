@@ -175,8 +175,8 @@ export default {
 		//授权
 		async approve(){
 			let coinKey = "BUSD";
-			let {allowanceToAuction, isApproving} = this.coinArr[coinKey];
-			if(allowanceToAuction > 0 || isApproving) return;
+			let { isApproving} = this.coinArr[coinKey];
+			if(isApproving) return;
 
 			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin["BUSD"].addr,
 			WalletConfig.ETH.moMoStakeAuction, {coinKey, type: "allowanceToAuction"});

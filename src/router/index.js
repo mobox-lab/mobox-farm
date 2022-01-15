@@ -9,6 +9,7 @@ import Upgrade from '../views/Mypet/Upgrade.vue'
 import Rank from '../views/Rank.vue'
 import Market from '../views/Market/Market.vue'
 import AuctionView from '../views/Market/AuctionView.vue'
+import BigSellView from '../views/Market/BigSellView.vue'
 import AuctionGemView from '../views/Market/AuctionGemView.vue'
 import RentView from '../views/Market/RentView.vue'
 import Activity from "../views/Activity/Activity.vue"
@@ -99,6 +100,11 @@ const routes = [
 		path: '/auctionView/:petInfo',
 		name: 'AuctionView',
 		component: AuctionView
+	},
+	{
+		path: '/bigSellView/:tx',
+		name: 'BigSellView',
+		component: BigSellView
 	},
 	{
 		path: '/auctionGemView/:petInfo',

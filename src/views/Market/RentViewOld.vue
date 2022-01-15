@@ -271,8 +271,8 @@ export default {
 		//授权
 		async approve(){
 			let coinKey = "MBOX";
-			let {allowanceToRent, isApproving} = this.coinArr[coinKey];
-			if(allowanceToRent > 0 || isApproving) return;
+			let {isApproving} = this.coinArr[coinKey];
+			if( isApproving) return;
 
 			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr,
 			WalletConfig.ETH.momoRent, {coinKey, type: "allowanceToRent"});

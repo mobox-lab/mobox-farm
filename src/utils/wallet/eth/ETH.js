@@ -11,13 +11,14 @@ import Enhancer from './group/Enhancer'
 import Rent from './group/Rent'
 import BinaceNFT from './group/BinaceNFT'
 import MoMoSetting from './group/MoMoSetting'
+import BigSell from './group/BigSell'
 
 export default class ETH {
 	static web3;
 	static web3MainNet;
 
 	static  Group = {
-		Gem, MdxBox, Enhancer, Rent, BinaceNFT, MoMoSetting
+		Gem, MdxBox, Enhancer, Rent, BinaceNFT, MoMoSetting, BigSell
 	}
 
 	//合约相关

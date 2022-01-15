@@ -26,6 +26,9 @@ const CommonMethod = {
 		quickBuy(ptype){
 			Common.app.$refs.quickBuy.show(ptype);
 		},
+		getVType(prototype){
+			return parseInt(prototype/1e4)
+		},
 		async setAction(actionId){
 			let sendData = {
 				actionId: actionId.toString(),

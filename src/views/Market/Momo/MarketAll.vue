@@ -344,7 +344,6 @@ export default {
 		},
 		async getMomoGem(needGetGemArr){
 			let fitterArr = [];
-			//去除重复的名字,缓存会有问题 后面看怎么缓存更好
 			needGetGemArr.map(item=>{
 				fitterArr.push(item);
 			});

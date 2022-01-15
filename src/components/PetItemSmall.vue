@@ -1,5 +1,5 @@
 <template>
-	<div class="pet-add-item por" @click="addNum()" >
+	<div class="pet-add-item por" @click="addNum()"  :class="{'opa-6': data.isLock}">
 		<div :class="isSelect || data.num <= 0?'opa-4':''">
 			<div :class="'skew-box v' + data.vType"></div>
 			<img v-if="getSelectNum > 0 && data.vType < 4" class="reduce-btn" src="../assets/icon/reduce_pet.png" alt="" @click="reduceNum($event)" />
@@ -35,7 +35,11 @@
 			<div class="dib" style="height: 94px"></div>
 			<img class="rent" src="../assets/icon/rent_time.png" height="20" alt="" />
 		</div>
-		<span class="opa-6" v-if="data.num <= 0 || getSelectNum == data.num" style="position:absolute;top:-5px;left:15px">
+		<div  class="pet-select vertical-children" v-if="hasGem">
+			<div class="dib" style="height: 94px"></div>
+			<img class="has-gem" src="../assets/icon/hasgem.png" height="20" alt="" />
+		</div>
+		<span class="opa-6" v-if="data.num <= 0 || (getSelectNum == data.num && data.vType < 4)" style="position:absolute;top:-5px;left:15px">
 			<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M867.7 423.8H599.8V155.9c0-49.3-40-89.3-89.3-89.3s-89.3 40-89.3 89.3v267.9H153.3c-49.3 0-89.3 40-89.3 89.3s40 89.3 89.3 89.3h267.9v267.9c0 49.3 40 89.3 89.3 89.3s89.3-40 89.3-89.3V602.4h267.9c49.3 0 89.3-40 89.3-89.3s-40-89.3-89.3-89.3z"  fill="#E1FF17"></path></svg>
 		</span>
 	</div>
@@ -80,6 +84,17 @@ export default {
 				isRent = true;
 			}
 			return isRent;
+		},
+
+		// 是否有宝石
+		hasGem(){
+			let hasGem = false;
+			if(this.data.vType >= 4 && this.data.num > 0){
+				this.data.gems.map(item=>{
+					if(Number(item) > 0) hasGem = true;
+				})
+			}
+			return hasGem;
 		}
 		
 	},
@@ -127,6 +142,11 @@ export default {
 	right: 0px;
 	top: 0px;
 }
+.has-gem{
+	position: absolute;
+	left: 0px;
+	bottom:30px;
+}
 .opa-4{
 	opacity: 0.4;
 }
@@ -152,6 +172,7 @@ export default {
 	left: 0px;
 	text-align: center;
 }
+
 .pet-add-show-img {
 	position: absolute;
 	left: 0px;
@@ -232,7 +253,7 @@ export default {
 }
 .pet-add-item {
 	display: inline-block;
-	width: 124px;
+	width: 120px;
 	height: 94px;
 	cursor: pointer;
 	margin-top: 20px;
@@ -248,7 +269,7 @@ export default {
 }
 @media (max-width: 768px) {
 	.pet-add-item {
-		zoom: 0.5;
+		zoom: 0.6;
 	}
 }
 </style>

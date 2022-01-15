@@ -299,7 +299,7 @@ export default {
 			if (Object.keys(retObj).length == 3) {
 				this.$router.replace("/mypet");
 			}
-			// retObj.level = 34;
+			// retObj.level = 19;
 			return retObj;
 		},
 		hasSelectPetPrototype() {
@@ -493,7 +493,8 @@ export default {
 				let targetItem = getMyPetObj[item.prototype];
 				if (targetItem) {
 					num = targetItem.num;
-					item.tokenId = targetItem.tokenId
+					item.tokenId = targetItem.tokenId;
+					item.gems = targetItem.gems;
 				}else{
 					item.tokenId = 0;
 				}
@@ -851,18 +852,7 @@ export default {
 </script>
 <style scoped>
 
-.sort-btn{
-	height: 40px;
-	background: #1d2b50;
-	border-radius: 40px;
-	width: 40px;
-	color: #fff;
-	line-height: 40px;
-	text-align: center;
-	font-size: 0px;
-	cursor: pointer;
-	margin-left: 5px;
-}
+
 @media (max-width: 768px){
 	.type_change{
 		position: static!important;

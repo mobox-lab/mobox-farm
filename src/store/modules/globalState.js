@@ -79,6 +79,8 @@ const state = () => ({
 			v4_max_enhance: 0,
 			v5_max_upgrade: 0,
 			v5_max_enhance: 0,
+			v6_max_upgrade: 0,
+			v6_max_enhance: 0
 		}
 	},
 })

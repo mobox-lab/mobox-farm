@@ -157,6 +157,11 @@ export default class HTTP {
 		let { data } = await this.get(`/auction/list/${chain}/${address}?sort=-time&page=1&limit=128`);
 		return data;
 	}
+	//获取大宗交易市场上我的NFT
+	static async getMyBigAuctionList(address) {
+		let { data } = await this.get(`/auction_group/list/${address}?sort=-time&page=1&limit=128`);
+		return data;
+	}
 	//获取交易历史记录
 	static async getMyAuctionHistory(address, page=1,limit=50) {
 		let { data } = await this.get(`/auction/logs_new/${address}?&page=${page}&limit=${limit}`);

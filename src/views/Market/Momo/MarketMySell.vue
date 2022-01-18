@@ -23,7 +23,7 @@
 				</div>
 			</div>
 			<div class="vertical-children  dib">
-				<span>{{$t("Market_33")}}({{ marketPetsMy.total }})</span>
+				<span>{{$t("Market_33")}}({{ marketPetsMy.total + bigSellMy.total }})</span>
 				<div class="dib filter-show-group">
 					<div class="filter-show-item" v-if="myMarketSellFilter.vType != 0" >
 						<span class="filter-close" @click="onSelectQualityChange(0)">&times;</span>
@@ -34,6 +34,9 @@
 
 		</div>
 		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="vertical-children momo-content">
+			<router-link :to="`/bigSellView/`+item.tx" v-for="item in getBigShowList" :key="item.tx">
+				<BigSellItem :data="item" />
+			</router-link>
 			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ item.tx):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime + item.tokenId+item.ids[0]">
 				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
@@ -72,11 +75,12 @@ import { CommonMethod } from "@/mixin";
 import { Http, Wallet } from '@/utils';
 import { BaseConfig } from "@/config";
 import { mapState } from "vuex";
+import BigSellItem from './items/BigSellItem.vue';
 
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {   PetItem, PetItemScroll, Page, Loading},
+	components: {   PetItem, PetItemScroll, Page, Loading, BigSellItem},
 	data(){
 		return({
 			onePageCount: 15,
@@ -87,6 +91,7 @@ export default {
 	computed: {
 		...mapState({
 			marketPetsMy: (state) => state.marketState.data.marketPetsMy,
+			bigSellMy: (state) => state.momoMarketState.data.bigSellMy,
 			tempSells: (state) => state.marketState.data.tempSells,
 			tempMarketCancelTx: (state) => state.marketState.data.tempMarketCancelTx,
 			marketMySellPage: (state) => state.marketState.data.marketMySellPage,
@@ -128,6 +133,9 @@ export default {
 				this.onePageCount * (this.marketMySellPage - 1),
 				this.onePageCount * this.marketMySellPage
 			);
+		},
+		getBigShowList(){
+			return this.marketMySellPage > 1?[]: this.bigSellMy.list;
 		}
 	},
 	async created(){
@@ -150,6 +158,7 @@ export default {
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
 			let account = this.myAccount;
 			// account = "0x390Ec77a320a3822bd3074aBa174570307154140";
+			await this.getBigAuctionPetsMy(needLoading);
 			let data = await Http.getMyAuctionList("BNB", account);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let hashArr = [];
@@ -204,6 +213,15 @@ export default {
 				await this.getMomoName(needGetNameArr);
 				await this.getMomoGem(needGetGemArr);
 			})
+		},
+		// 获取市场上我的大宗交易
+		async getBigAuctionPetsMy(needLoading = false){
+			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
+			let account = this.myAccount;
+			let data = await Http.getMyBigAuctionList(account);
+			this.$store.commit("marketState/setData", {marketLoading: false});
+			console.log(data, "big------");
+			this.$store.commit("momoMarketState/setData", {bigSellMy:data});
 		},
 		async getMomoName(needGetNameArr){
 			let fitterArr = [];

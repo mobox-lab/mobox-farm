@@ -54,56 +54,8 @@ export default {
 			let data = await Http.getMyAuctionHistory(myAccount);
 			if(data){
 				data.list.map(item=>{
-					if(item.tokenId != 0){
-						item.tokenName = BaseConfig.NftCfg[item.prototype]["tokenName"];
-						item.vType = parseInt(item.prototype / 10000);
-					}
 					item.isBuy =  item.bidder.toLocaleLowerCase() == myAccount.toLocaleLowerCase();
-
-					//生成显示小头像数据
-					let petList = [];
-					//1155
-					if(item.tokenId == 0){
-						let {ids, amounts, bidPrice} = item;
-						ids.map((prototype, index)=>{
-							let obj = BaseConfig.NftCfg[prototype];
-							if(obj){
-								petList.push({
-									...obj,
-									bidPrice,
-									prototype,
-									level: 1,
-									num: amounts[index],
-									chain: "bnb",
-									tokenId: 0,
-									hashrate: obj.quality,
-									lvHashrate: obj.quality,
-									vType: parseInt(prototype / 1e4),
-									quality: obj.quality,
-								});
-							}
-						});
-					}else{
-						//721
-						let obj = BaseConfig.NftCfg[item.prototype];
-						petList.push({
-							...obj,
-							bidPrice: item.bidPrice,
-							prototype: item.prototype,
-							level: item.level,
-							num: 1,
-							chain: "bnb",
-							tokenId: item.tokenId,
-							hashrate: item.hashrate,
-							lvHashrate: item.lvHashrate,
-							vType: parseInt(item.prototype / 1e4),
-							category: item.category,
-							quality: item.quality,
-						})
-					}
-
-					item.petList = petList;
-
+					item.petList = this.getPetList(item);
 				});
 				data.uptime = new Date().valueOf();
 				let historyNotice = this.historyNotice;
@@ -112,6 +64,40 @@ export default {
 				}
 				this.$store.commit("marketState/setData", {marketHistory: data, historyNotice});
 			}
+		},
+		getPetList(data){
+			let petList = [];
+			//1155
+			let {ids, amounts, bidPrice, tokens, type} = data;
+			ids.map((prototype, index)=>{
+				let obj = BaseConfig.NftCfg[prototype];
+				petList.push({
+					...obj,
+					bidPrice,
+					level: 1,
+					num: amounts[index],
+					chain: "bnb",
+					tokenId: 0,
+					hashrate: obj.quality,
+					lvHashrate: obj.quality,
+					vType: parseInt(prototype / 1e4),
+				});
+			});
+			// 721
+			tokens.map(item=>{
+				let obj = BaseConfig.NftCfg[item.prototype];
+				petList.push({
+					...obj,
+					...item,
+					num: 1,
+					chain: "bnb",
+					bidPrice,
+					vType: this.getVType(item.prototype),
+					noPrice: true,
+					isGroup: type == 1
+				})
+			})
+			return petList;
 		},
 	}
 }

@@ -206,13 +206,17 @@ const InitEth = {
 		},
 
 		async getMoMoSetting(){
-			let [v4_max_upgrade, v5_max_upgrade, v4_max_enhance, v5_max_enhance, updateTime] = await Wallet.ETH.Group.MoMoSetting.getMoMoSetting();
+			let [v4_max_upgrade, v5_max_upgrade, v6_max_upgrade,
+				v4_max_enhance, v5_max_enhance, v6_max_enhance,
+				updateTime] = await Wallet.ETH.Group.MoMoSetting.getMoMoSetting();
 			let momoSetting = {
 				updateTime,
 				v4_max_upgrade,
 				v4_max_enhance,
 				v5_max_upgrade,
 				v5_max_enhance,
+				v6_max_upgrade,
+				v6_max_enhance
 			}
 			this.$store.commit("globalState/setData", {momoSetting});
 		},

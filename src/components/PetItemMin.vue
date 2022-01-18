@@ -7,6 +7,7 @@
 		<p class="pet-min-catogry">
 			<img :src=" require(`../assets/icon/${ category_img[petData.category] }.png`) " alt="" width="10" height="10" />
 		</p>
+		<img v-if="petData.isGroup" src="@/assets/icon/isGroup.png" alt="" height="20" class="is-group"/>
 		<div class="pet-min-hover" ref="petMinHover" :class="{'left': isLeft, 'top': isTop}" v-if="!petData.noHover">
 			<PetItem :data="{item: petData}" :class="petData.vType >= 4 && !petData.noPrice?'market':'' " class="no-search">
 				<div class="vertical-children mgt-10" style="font-size: 18px" v-if="petData.vType >= 4 && !petData.noPrice">
@@ -67,6 +68,12 @@ export default {
 </script>
 
 <style  scoped>
+.is-group{
+	position: absolute;
+	top: -10px;
+	left: 50%;
+	transform: translateX(-50%);
+}
 @media (max-width: 768px){
 	.pet_item{
 		width:350px !important;

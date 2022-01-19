@@ -1,5 +1,5 @@
 <template >
-	<button @click="btnClick"  class="por" :class="[isDisable || isLoading?'disable-btn':'', btnType] " >
+	<button @click="btnClick"  class="por" :class="[isDisable || isLoading?'disable-btn '+btnType:'', btnType] " >
 		<Loading v-if="isLoading" class="btn-loading" />
 		<slot></slot>
 	</button>

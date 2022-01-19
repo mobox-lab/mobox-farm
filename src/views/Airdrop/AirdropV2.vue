@@ -1,36 +1,20 @@
 <template>
 	<div class="tac por">
 		<div id="bg1"></div>
-		<div id="bg2"></div>
 		<div id="aridorp">
-			<div class="snow-container" style="height: 600px;">
-				<div class="snow foreground"></div>
-				<div class="snow foreground layered"></div>
-				<div class="snow middleground"></div>
-				<div class="snow middleground layered"></div>
-				<div class="snow background"></div>
-				<div class="snow background layered"></div>
-			</div>
-			<section class="mgt-10 por airdrop-cont" style="z-index: 10">
-				<div class="swiper-container hide" ref="swiper_container" style="padding: 0px 10px;padding-bottom: 15px">
+				<section class="mgt-10 por airdrop-cont" style="z-index: 10">
+				<!-- <div class="swiper-container hide" ref="swiper_container" style="padding: 0px 10px;padding-bottom: 15px;">
 					<div class="swiper-wrapper tac">
-						<div id="halloween-entry" class="swiper-slide tac" style="width: 80%">
-							<router-link to="/christmas">
-								<img src="@/assets/christmas.png" alt="" width="100%"  />
-							</router-link>
-							<span v-if="christmasData.box > 0">{{christmasData.box}}</span>
-						</div>
-						<div id="halloween-entry" class="swiper-slide tac" style="width: 80%;margin:0 auto">
+						<div id="halloween-entry" class="swiper-slide tac" style="width: 60%;margin:0 auto">
 							<router-link to="/binanceNFT">
 								<img src="@/assets/binaceActivity.png" alt="" width="100%" />
 							</router-link>
 						</div>
 					</div>
 					<div ref="pagination" class="swiper-pagination"></div>
-				</div>
+				</div> -->
 				<div class="mgt-10 tal vertical-children tac-xs">
 					<img class="mgt-30 hide-xs" src="@/assets/airdrop_icon.png" width="200" alt="">
-					<img class="hide-xs tree" src="@/assets/christmas/tree.png" alt="">
 					<div class="dib mgl-10 block-xs">
 						<h1 style="font-size:40px">{{$t("Menu_01")}}</h1>
 						<p class="small-xs">{{$t("Air-drop_224")}}</p>
@@ -56,9 +40,6 @@
 										<div class="vertical-children " style="padding-left: 56px" id="apy-div">
 											<div class="dib airdorp-item-coin-icon tac por" :class="item.isLP?'double-img':'' " style="left:0px">
 												<img v-for="(name, key) in item.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="50" alt="" />
-												<div  class="coin-hat">
-													<img src="@/assets/christmas/coinhat.png" alt="">
-												</div>
 											</div>
 											<div style="margin-left: 15px">
 												<h4 class="color-w tal small">{{ item.coinName }} {{item.isLP?"LP":"POOL"}}</h4>
@@ -202,12 +183,12 @@
 
 									</div>
 
-									<div class="aveage-box col-md-12 mgt-20" style="background:#070d14;border-radius: 16px;padding:10px 0px">
+									<div class="aveage-box col-md-12 mgt-20" style="background:#070d14;border-radius: 10px;padding:10px 0px">
 										<div class="dib por tac" @click="setAction(21001);$root.$children[0].$refs.pancake.setOprData(item).show('swap')" >
 											<img class="cur-point "  width="40" src="../../assets/icon/liquidity_icon.png" alt="" >
 											<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" >{{$t("Air-drop_29")}}</span>
 										</div>
-										<div class="dib por tac"  @click="setAction(21002);$root.$children[0].$refs.pancake.setOprData(item).show('liquidity')">
+										<div class="dib por tac hide-xs"  @click="setAction(21002);$root.$children[0].$refs.pancake.setOprData(item).show('liquidity')">
 											<img class="cur-point "  width="40" src="../../assets/icon/exchange_icon.png" alt="" >
 											<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" >{{$t("Air-drop_30")}}</span>
 										</div>
@@ -261,6 +242,40 @@
 					<Activity />
 				</div>
 
+				<div class="mgt-30 tal">
+					<div class="vertical-children">
+						<img src="@/assets/icon/periocn.png" alt="" height="20">
+						<h2 class="dib mgl-10">{{$t("Menu_04")}}</h2>
+					</div>
+					<div class="mgt-10">
+						<Collection />
+					</div>
+				</div>
+				<div class="mgt-30 tal visiable-xs">
+					<div class="vertical-children">
+						<img src="@/assets/icon/periocn.png" alt="" height="20">
+						<h2 class="dib mgl-10">Total MOMO Staked</h2>
+					</div>
+					<div class="mgt-10 adv-panel" style="padding:20px">
+						<div class="aveage-box ">
+							<div >
+								<p class="small opa-6">{{ $t("Mine_02") }}</p>
+								<p class=" bold2 vertical-children" style="margin-top:5px">
+									<img src="@/assets/icon/airdrop.png" alt="" height="20">
+									<span class="mgl-5" style="font-size: 16px">{{eth_totalHashrate.toLocaleString()}}</span>
+								</p>
+							</div>
+							<div>
+								<p class="small opa-6">{{ $t("Mine_01") }}</p>
+								<p class=" bold2 vertical-children" style="margin-top:5px">
+									<img src="@/assets/coin/MBOX.png" alt="" height="20">
+									<span class="mgl-5" style="font-size: 16px">{{totalAirdropMbox.toLocaleString()}}</span>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<template v-if="!isMoboxWallet">
 					<div class="tal mgt-30" >
 						<div class="vertical-children">
@@ -276,112 +291,115 @@
 					</div>
 				</template>
 
-				<div class="tal mgt-30">
-					<div class="vertical-children">
-						<img src="@/assets/icon/periocn.png" alt="" height="20">
-						<h2 class="dib mgl-10">veMBOX</h2>
+				<!-- 统计分析 先隐藏 -->
+				<section >
+					<div class="tal mgt-30">
+						<div class="vertical-children">
+							<img src="@/assets/icon/periocn.png" alt="" height="20">
+							<h2 class="dib mgl-10">veMBOX</h2>
+						</div>
+						<div class="aveage-box block-xs">
+							<p class="small-xs">{{$t("Air-drop_256")}}</p>
+						</div>
 					</div>
-					<div class="aveage-box block-xs">
-						<p class="small-xs">{{$t("Air-drop_256")}}</p>
-					</div>
-				</div>
 
-				<section id="buy-back" class="mgt-20 por">
+					<section id="buy-back" class="mgt-20 por">
 
-					<div class="info">
-						<span class="cur-point por dib" v-popMsg  >
-							<svg class="opa-6" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path style="fill:none" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-							<span class="popMsg left" v-html="$t('Air-drop_193')"></span>
-						</span>
-					</div>
-					<div class="aveage-box" style="background:#1C222C;border-radius:10px">
-						<div style="padding:10px">
-							<p class="small opa-6 tac" >{{$t("Air-drop_189")}}</p>
-							<input type="text" readonly class="ly-input mgt-10 tac" :value="numFloor(totalStakeMbox, 1).toLocaleString()+'('+numFloor(totalStakeMbox/buyBack.circulating * 100, 100)+'%)'" />
-						</div>
-						<div style="padding:10px">
-							<p class="small opa-6 tac" >{{$t("Air-drop_190")}}</p>
-							<input type="text" readonly class="ly-input mgt-10 tac" :value="numFloor(veMboxTotal/1e18, 1)" />
-						</div>
-						<div style="padding:10px">
-							<p class="small opa-6 tac" >{{$t("Air-drop_191")}}</p>
-							<input type="text" readonly class="ly-input mgt-10 tac" :value="avglockdays"  />
-						</div>
-						<div style="padding:10px" class="por">
-							<p class="small opa-6 tac" >{{$t("Air-drop_192")}}</p>
-							<input type="text" readonly class="ly-input mgt-10 tac" :value="getMyTotalVeMbox" />
-							<span class="dib por cur-point" style="width:30px;position:absolute;right:20px;bottom:10px" @click="$root.$children[0].$refs.vmbox.setOprData(coinArr['GOV']).show()">
-								<span class="notice" style="zoom:0.7" v-if="coinArr['GOV'].veMbox.notice "></span>
-								<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
-								<span class="tac opa-6" style="width:120%;position:absolute;bottom:-5px;left:-10%;font-size:12px;color:#fff;zoom:0.7;" >veMBOX</span>
+						<div class="info">
+							<span class="cur-point por dib" v-popMsg  >
+								<svg class="opa-6" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path style="fill:none" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+								<span class="popMsg left" v-html="$t('Air-drop_193')"></span>
 							</span>
 						</div>
-					</div>
-				</section>
+						<div class="aveage-box" style="background:#1C222C;border-radius:10px">
+							<div style="padding:10px">
+								<p class="small opa-6 tac" >{{$t("Air-drop_189")}}</p>
+								<input type="text" readonly class="ly-input mgt-10 tac" :value="numFloor(totalStakeMbox, 1).toLocaleString()+'('+numFloor(totalStakeMbox/buyBack.circulating * 100, 100)+'%)'" />
+							</div>
+							<div style="padding:10px">
+								<p class="small opa-6 tac" >{{$t("Air-drop_190")}}</p>
+								<input type="text" readonly class="ly-input mgt-10 tac" :value="numFloor(veMboxTotal/1e18, 1)" />
+							</div>
+							<div style="padding:10px">
+								<p class="small opa-6 tac" >{{$t("Air-drop_191")}}</p>
+								<input type="text" readonly class="ly-input mgt-10 tac" :value="avglockdays"  />
+							</div>
+							<div style="padding:10px" class="por">
+								<p class="small opa-6 tac" >{{$t("Air-drop_192")}}</p>
+								<input type="text" readonly class="ly-input mgt-10 tac" :value="getMyTotalVeMbox" />
+								<span class="dib por cur-point" style="width:30px;position:absolute;right:20px;bottom:10px" @click="$root.$children[0].$refs.vmbox.setOprData(coinArr['GOV']).show()">
+									<span class="notice" style="zoom:0.7" v-if="coinArr['GOV'].veMbox.notice "></span>
+									<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
+									<span class="tac opa-6" style="width:120%;position:absolute;bottom:-5px;left:-10%;font-size:12px;color:#fff;zoom:0.7;" >veMBOX</span>
+								</span>
+							</div>
+						</div>
+					</section>
 
-				<div class="tal mgt-30">
-					<div class="vertical-children">
-						<img src="@/assets/icon/periocn.png" alt="" height="20">
-						<h2 class="dib mgl-10">{{$t("Air-drop_257")}}</h2>
+					<div class="tal mgt-30">
+						<div class="vertical-children">
+							<img src="@/assets/icon/periocn.png" alt="" height="20">
+							<h2 class="dib mgl-10">{{$t("Air-drop_257")}}</h2>
+						</div>
+						<div class="aveage-box block-xs">
+							<p class="small-xs">{{$t("Air-drop_91")}}</p>
+						</div>
 					</div>
-					<div class="aveage-box block-xs">
-						<p class="small-xs">{{$t("Air-drop_91")}}</p>
-					</div>
-				</div>
 
-				<section id="buy-back" class="mgt-20 por">
-					<div class="info">
-						<span class="cur-point por dib" v-popMsg  >
-							<svg class="opa-6" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path style="fill:none" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-							<span class="popMsg left">{{$t("Air-drop_91")}}</span>
-						</span>
-					</div>
-					<div class="aveage-box" style="background:#1C222C;border-radius:10px">
-						<div style="padding:10px">
-							<p class="small opa-6 tac" >{{$t("Air-drop_78")}}</p>
-							<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.amount.toLocaleString()" />
+					<section id="buy-back" class="mgt-20 por">
+						<div class="info">
+							<span class="cur-point por dib" v-popMsg  >
+								<svg class="opa-6" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path style="fill:none" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+								<span class="popMsg left">{{$t("Air-drop_91")}}</span>
+							</span>
 						</div>
-						<div style="padding:10px">
-							<p class="small opa-6 tac" >{{$t("Air-drop_79")}}</p>
-							<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.avgPrice" />
+						<div class="aveage-box" style="background:#1C222C;border-radius:10px">
+							<div style="padding:10px">
+								<p class="small opa-6 tac" >{{$t("Air-drop_78")}}</p>
+								<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.amount.toLocaleString()" />
+							</div>
+							<div style="padding:10px">
+								<p class="small opa-6 tac" >{{$t("Air-drop_79")}}</p>
+								<input type="text" readonly class="ly-input mgt-10 tac" :value="'$'+buyBack.avgPrice" />
+							</div>
+							<div style="padding:10px">
+								<p class="small opa-6 tac" >{{$t("Air-drop_80")}}</p>
+								<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.moboxBurn.toLocaleString()"  />
+							</div>
+							<div style="padding:10px" >
+								<p class="small opa-6 tac" >{{$t("Air-drop_187")}}</p>
+								<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.circulating.toLocaleString()" />
+							</div>
 						</div>
-						<div style="padding:10px">
-							<p class="small opa-6 tac" >{{$t("Air-drop_80")}}</p>
-							<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.moboxBurn.toLocaleString()"  />
-						</div>
-						<div style="padding:10px" >
-							<p class="small opa-6 tac" >{{$t("Air-drop_187")}}</p>
-							<input type="text" readonly class="ly-input mgt-10 tac" :value="buyBack.circulating.toLocaleString()" />
-						</div>
-					</div>
-					<table class=" table-his tac small mgt-20" style="width:100%" border="0" frame="void" rules="none">
-						<tr>
-							<th style="width:25%;">{{ $t("BOX_12") }}</th>
-							<th style="width:25%;" class="no-dropdown-bg">
-								<Dropdown class="small" style="margin-top:0px" :list="burnTypeList" :defaultSelectPos="buyBackType" :onChange="onBurnTypeChange" />
-							</th>
-							<th>{{ $t("Air-drop_51") }}</th>
-							<th>{{ $t("Air-drop_50") }}</th>
-							<th>TX</th>
-						</tr>
-						<tr v-for="item in buyBack.logs" :key="item.txId">
-							<td >{{ dateFtt("yyyy-MM-dd hh:mm:ss", new Date(item.ts* 1000)) }}</td>
-							<td v-if="item.type == 1">{{$t("Air-drop_132")}}</td>
-							<td v-else>{{$t("Air-drop_133")}}</td>
-							<td>${{numFloor(item.price, 1e2)}}</td>
-							<td>{{numFloor(item.amount, 1e2)}}</td>
-							<td>
-								<a :href="getTxUrl(item.txId)" target="_blank">
-									<img src="../../assets/icon/viewTx.png" height="25" alt="" class="cur-point" />
-								</a>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="6">
-								<a href="https://bscscan.com/address/0x9907fa65f3b0a9b9254a2c29a213c4d3501bf84f" target="_blank">{{$t("Air-drop_148")}}</a>
-							</td>
-						</tr>
-					</table>
+						<table class=" table-his tac small mgt-20" style="width:100%" border="0" frame="void" rules="none">
+							<tr>
+								<th style="width:25%;">{{ $t("BOX_12") }}</th>
+								<th style="width:25%;" class="no-dropdown-bg">
+									<Dropdown class="small" style="margin-top:0px" :list="burnTypeList" :defaultSelectPos="buyBackType" :onChange="onBurnTypeChange" />
+								</th>
+								<th>{{ $t("Air-drop_51") }}</th>
+								<th>{{ $t("Air-drop_50") }}</th>
+								<th>TX</th>
+							</tr>
+							<tr v-for="item in buyBack.logs" :key="item.txId">
+								<td >{{ dateFtt("yyyy-MM-dd hh:mm:ss", new Date(item.ts* 1000)) }}</td>
+								<td v-if="item.type == 1">{{$t("Air-drop_132")}}</td>
+								<td v-else>{{$t("Air-drop_133")}}</td>
+								<td>${{numFloor(item.price, 1e2)}}</td>
+								<td>{{numFloor(item.amount, 1e2)}}</td>
+								<td>
+									<a :href="getTxUrl(item.txId)" target="_blank">
+										<img src="../../assets/icon/viewTx.png" height="25" alt="" class="cur-point" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="6">
+									<a href="https://bscscan.com/address/0x9907fa65f3b0a9b9254a2c29a213c4d3501bf84f" target="_blank">{{$t("Air-drop_148")}}</a>
+								</td>
+							</tr>
+						</table>
+					</section>
 				</section>
 			</section>
 		</div>
@@ -494,10 +512,11 @@ import Deposit from './Deposit';
 import { Dialog, Loading, Dropdown } from '@/components';
 import Activity from "../Activity/Activity.vue"
 import GamesView from "./GamesView.vue"
+import Collection from "../Collection.vue"
 
 export default {
 	mixins: [CommonMethod],
-	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, Dropdown, Activity, GamesView},
+	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, Dropdown, Activity, GamesView, Collection},
 	data(){
 		return({
 			howToPlayPos: 0,
@@ -548,6 +567,8 @@ export default {
 			refundData: (state) => state.globalState.data.refundData,
 			halloweenBox: (state) => state.userState.data.halloweenBox,
 			christmasData: (state) => state.userState.data.christmasData,
+			eth_totalHashrate: (state) => state.ethState.data.totalHashrate,
+			totalAirdropMbox: (state) => state.ethState.data.totalAirdropMbox,
 		}),
 
 		isMoboxWallet(){
@@ -756,22 +777,14 @@ export default {
 	padding: 10px
 }
 #bg1{
-	background-image: url("../../assets/bg11.png");
+	background-image: url("../../assets/bg11.jpg");
 	background-repeat: no-repeat;
-	background-size:50%;
+	background-size:100%;
 	height: 800px;
 	width: 100%;
 	position: absolute;
 }
-#bg2{
-	background-image: url("../../assets/bg2.png");
-	background-repeat: no-repeat;
-	background-size:50%;
-	background-position: right 0% top 0%;
-	height: 2000px;
-	width: 100%;
-	position: absolute;
-}
+
 #airdrop-bnb-icon{
 	position: absolute;
 	left: 0px;
@@ -837,7 +850,7 @@ export default {
 
 .airdrop-item {
 	background: #1C222C;
-	border-radius: 20px;
+	border-radius: 10px;
 	position: relative;
 	box-sizing: border-box;
 	z-index: 1;
@@ -853,7 +866,7 @@ export default {
 	bottom: -5px;
 	right: -3px;
 	z-index: -1;
-	border-radius: 20px;
+	border-radius: 10px;
 }
 .test{
 	position: absolute;
@@ -863,7 +876,7 @@ export default {
 	left: -1px;
 	z-index: -1;
 	background: #1C222C;
-	border-radius: 20px;
+	border-radius: 10px;
 }
 #buy-back .info{
 	position: absolute;
@@ -960,7 +973,9 @@ export default {
 
 
 	#bg1,#bg2{
-		background-size: 100%;
+		background-size: 300%;
+		background-position: bottom;
+		height: 300px;
 	}
 	#bg2{
 		top: 20%;

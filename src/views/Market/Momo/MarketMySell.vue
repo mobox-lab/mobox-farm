@@ -72,8 +72,8 @@
 <script>
 import { Page, PetItem, PetItemScroll, Loading } from '@/components';
 import { CommonMethod } from "@/mixin";
-import { Http, Wallet } from '@/utils';
-import { BaseConfig } from "@/config";
+import { Http, Wallet,Common  } from '@/utils';
+import { BaseConfig,  } from "@/config";
 import { mapState } from "vuex";
 import BigSellItem from './items/BigSellItem.vue';
 
@@ -140,13 +140,16 @@ export default {
 	},
 	async created(){
 		this.myAccount = await Wallet.ETH.getAccount();
+
 		if(!this.hasLoad){
 			this.hasLoad = true;
 			this.getAuctionPetsMy(true);
+			Common.app.getBigAuctionPetsMy();
 		}
 		timer = setInterval(()=>{
 			this.getAuctionPetsMy();
-		}, 5000);
+		}, 10000);
+
 	},
 	
 	beforeDestroy(){
@@ -158,7 +161,6 @@ export default {
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
 			let account = this.myAccount;
 			// account = "0x390Ec77a320a3822bd3074aBa174570307154140";
-			await this.getBigAuctionPetsMy(needLoading);
 			let data = await Http.getMyAuctionList("BNB", account);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let hashArr = [];
@@ -215,7 +217,7 @@ export default {
 			})
 		},
 		// 获取市场上我的大宗交易
-		async getBigAuctionPetsMy(needLoading = false){
+		async getBigAuctionPetsMy2(needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
 			let account = this.myAccount;
 			let data = await Http.getMyBigAuctionList(account);
@@ -223,6 +225,7 @@ export default {
 			console.log(data, "big------");
 			this.$store.commit("momoMarketState/setData", {bigSellMy:data});
 		},
+	
 		async getMomoName(needGetNameArr){
 			let fitterArr = [];
 			//去除重复的名字

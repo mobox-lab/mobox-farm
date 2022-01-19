@@ -71,7 +71,7 @@
 							</td>
 							<td class="addr">{{getShortAddr(item.bidder)}}</td>
 							<td class="addr">{{getShortAddr(item.auctor)}}</td>
-							<td class="vertical-children">
+							<td class="vertical-children addr">
 								<span :class="item.isBuy?'color-buy':'color-sell'" v-if="tableDataPos == 'myHistory' ">
 									{{item.isBuy?"-":"+"}}{{numFloor((item.bidPrice / 1e9) * (item.isBuy?1:0.95), 10000)}} BUSD
 								</span>

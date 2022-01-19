@@ -23,10 +23,6 @@
 				<span v-if="getSelectNum > 0"> {{ getSelectNum }}/</span >{{ data.num }}
 			</p>
 		</div>
-		<div @click="reduceNum($event)" class="pet-select vertical-children" v-if="isSelect" >
-			<div class="dib" style="height: 94px"></div>
-			<img src="../assets/icon/select.png" alt="" />
-		</div>
 		<div  class="pet-select vertical-children" v-if="data.isLock">
 			<div class="dib" style="height: 94px"></div>
 			<img class="lock" src="../assets/icon/lock.png" height="20" alt="" />
@@ -35,9 +31,13 @@
 			<div class="dib" style="height: 94px"></div>
 			<img class="rent" src="../assets/icon/rent_time.png" height="20" alt="" />
 		</div>
-		<div  class="pet-select vertical-children" v-if="hasGem">
+		<div  class="pet-select vertical-children" v-if="hasGem" >
 			<div class="dib" style="height: 94px"></div>
 			<img class="has-gem" src="../assets/icon/hasgem.png" height="20" alt="" />
+		</div>
+		<div @click="reduceNum($event)" class="pet-select vertical-children" v-if="isSelect" >
+			<div class="dib" style="height: 94px"></div>
+			<img src="../assets/icon/select.png" alt="" />
 		</div>
 		<span class="opa-6" v-if="data.num <= 0 || (getSelectNum == data.num && data.vType < 4)" style="position:absolute;top:-5px;left:15px">
 			<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M867.7 423.8H599.8V155.9c0-49.3-40-89.3-89.3-89.3s-89.3 40-89.3 89.3v267.9H153.3c-49.3 0-89.3 40-89.3 89.3s40 89.3 89.3 89.3h267.9v267.9c0 49.3 40 89.3 89.3 89.3s89.3-40 89.3-89.3V602.4h267.9c49.3 0 89.3-40 89.3-89.3s-40-89.3-89.3-89.3z"  fill="#E1FF17"></path></svg>

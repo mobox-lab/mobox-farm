@@ -48,8 +48,8 @@
 			</div>
 			<ul id="nav-list" style="maring-top: 50px">
 				<router-link to="/">
-					<li :class="this.$route.path == '/' ? 'active' : ''">
-						<span class="per-icon vertical-children">
+					<li :class="this.$route.path == '/' ? 'active' : ''" class="vertical-children">
+						<span class="per-icon ">
 							<img src="./assets/icon/home.png" alt="" width="30" />
 						</span>
 						<span>{{ $t("Air-drop_223") }}</span>
@@ -81,15 +81,6 @@
 					<span>{{ $t("Menu_05") }}</span>
 				</li>
 				</router-link>
-
-				<router-link to="/collection">
-					<li :class="this.$route.path == '/collection' ? 'active' : ''">
-						<span class="per-icon vertical-children">
-							<img src="./assets/icon/airdrop.png" alt="" width="30" />
-						</span>
-						<span>{{ $t("Menu_04") }}</span>
-					</li>
-				</router-link>
 				
 				<router-link to="/rank">
 					<li :class="this.$route.path == '/rank' ? 'active' : ''">
@@ -100,28 +91,15 @@
 					</li>
 				</router-link>
 			</ul>
-			<div class="tac mgt-30">
-				<div id="halloween-entry" class="por">
-					<router-link to="/christmas">
-						<img src="@/assets/christmas.png" alt="" height="85" />
-					</router-link>
-					<span v-if="christmasData.box > 0">{{christmasData.box}}</span>
-				</div>
-
+			<!-- <div class="tac mgt-30">
 				<div id="halloween-entry" class="por">
 					<router-link to="/binanceNFT">
 						<img src="@/assets/binaceActivity.png" alt="" height="85" />
 					</router-link>
 				</div>
-			</div>
+			</div> -->
 			<div id="our-parice-pc">
-				<!-- <div class="vertical-children point-block">
-					<img src="./assets/coin/KEY.png" height="25" alt=""/>
-					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
-						$<span v-if="ourPrice['KEY'] != '-' ">{{ourPrice["KEY"]}}</span>
-						<Loading v-else />
-					</span>
-				</div> -->
+
 				<div class="vertical-children dib point-block">
 					<img src="./assets/icon/box_icon.png" width="30" alt=""/>
 					<router-link to="/market?tab=4">
@@ -141,7 +119,7 @@
 			</div>
 		</div>
 		<!-- 顶部资源 -->
-		<div id="top-res" class="vertical-children hide-xs">
+		<div id="top-res" class="vertical-children">
 			<p class="vertical-children">
 				<img src="./assets/icon/airdrop.png" alt="" height="25" />&nbsp;
 				<span>{{ eth_myHashrate }}</span>
@@ -223,14 +201,6 @@
 					</li>
 				</router-link>
 
-				<router-link to="/collection">
-					<li :class="this.$route.path == '/collection' ? 'active' : ''">
-						<p class="per-icon vertical-children">
-							<img src="./assets/icon/airdrop.png" alt="" height="30" />
-						</p>
-						<span  class="mgt-5">{{ $t("Menu_04") }}</span>
-					</li>
-				</router-link>
 
 				<router-link to="/rank" >
 					<li :class="this.$route.path == '/rank' ? 'active' : ''" >
@@ -891,7 +861,7 @@ export default {
 		async setOurPrice(coinName){
 			if(coinName == "BOX"){
 				let {data} = await Http.get(`/gem_auction/search/BNB?page=1&limit=1&type=&level=&sort=price&filter=2`);
-				if(data){
+				if(data.list[0]){
 					let {price, amounts} = data.list[0];
 					this.ourPrice[coinName] = this.numFloor(price / amounts[0] /1e9, 100).toFixed(2);
 				}
@@ -1202,16 +1172,15 @@ export default {
 	z-index: 9998;
 }
 #nav-list li.active {
-	background: #1F252B !important;
-	border-top-left-radius: 20px;
-	border-bottom-left-radius: 20px;
+	background: #1752f634 !important;
 	opacity: 1;
 	color: #fff;
+	border-left: 5px solid #1752f6;
 }
 #nav-list li {
 	cursor: pointer;
-	height: 40px;
-	line-height: 40px;
+	height: 50px;
+	line-height: 50px;
 	padding-left: 80px;
 	margin-top: 10px;
 	color: rgb(124, 124, 124);
@@ -1219,9 +1188,7 @@ export default {
 	opacity: 0.7;
 }
 #nav-list li:hover {
-	background: #161a1f;
-	border-top-left-radius: 20px;
-	border-bottom-left-radius: 20px;
+	background: #1752f61e !important;
 	opacity: 1;
 }
 #nav-list li .per-icon {
@@ -1231,12 +1198,11 @@ export default {
 	margin-left: -42px;
 	text-align: center;
 	font-size: 0px;
-	line-height: 40px;
+	line-height: 50px;
 }
 #nav-list {
 	list-style: none;
 	margin-top: 50px;
-	margin-left: 20px;
 }
 #app {
 	padding-left: 260px;

@@ -183,7 +183,42 @@ const InitEth = {
 			//获取活动箱子数量
 			await this.getActivityData();
 		},
-
+		//我的大宗交易
+		async getBigAuctionPetsMy(needLoading = false){
+			let account = await Wallet.ETH.getAccount();
+			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
+			let data = await Wallet.ETH.Group.BigSell.getMyBigSell();
+			console.log(data, "big sell");
+			this.$store.commit("marketState/setData", {marketLoading: false});
+			let bigSellMy = {total: data.length, list: []};
+			if(data.length > 0){
+				data.map(async index=>{
+					let sellData = await Wallet.ETH.Group.BigSell.getOrder({auctor_: account, index_: Number(index)});
+					let momoData = await Http.getMoMoDetail(sellData.tokenIds);
+					sellData.tokens = momoData.list;
+					sellData.price = sellData.price / 1e9;
+					sellData.tx = sellData.orderId;
+					sellData.auctor = account;
+					sellData.index = index;
+					sellData.uptime= sellData.startTime;
+					let hashrate = 0;
+					sellData.tokens.map(item=>{
+						hashrate += item.lvHashrate;
+					})
+					if(sellData.type == 1){
+						hashrate += data.length * 300;
+					}
+					sellData.hashrate = hashrate;
+					bigSellMy.list.push(sellData);
+					bigSellMy.list.sort((a,b)=>b.startTime - a.startTime)
+					if(bigSellMy.list.length == data.length){
+						this.$store.commit("momoMarketState/setData", {bigSellMy});
+					}
+				})
+			}else{
+				this.$store.commit("momoMarketState/setData", {bigSellMy});
+			}
+		},
 		async getActivityData(){
 			let myAddr = await Wallet.ETH.getAccount();
 			let {data, status} = await axios.post(HttpConfig.Christmas.Bags, {addr: myAddr});

@@ -57,6 +57,11 @@ export default class HTTP {
 		return data;
 	}
 
+	static async getMoMoDetail(arr){
+		let {data} = await this.post("/momo/details", {tokenIds: arr});
+		return data;
+	}
+
 	//查看租借清单
 	static async getMyRentList(owner){
 		let { data } = await this.get(`/momo_renter/detailed_list/${owner}`);

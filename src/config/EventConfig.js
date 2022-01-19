@@ -31,4 +31,7 @@ export default class EventConfig {
 	static AddLiquiditySuccess = "AddLiquiditySuccess";
 	//AddLiquiditySuccess
 	static RemoveLiquiditySuccess = "RemoveLiquiditySuccess";
+	// 更新我的大宗交易
+	static updateMyBigSell = "updateMyBigSell";
+	
 }

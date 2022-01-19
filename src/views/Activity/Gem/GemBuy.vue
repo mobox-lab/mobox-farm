@@ -1,11 +1,9 @@
 <style src="./style.css"></style>
 <template>
 <div class="tac center-content">
-	<div class="por clear mgt-20" style="border:1px solid #5d636f80;border-radius: 30px">
-		<section class="col-md-7" style="padding:10px">
-			<div class="adv-panel" :class="{veapply: tabPos == 1}">
-				<!-- <Tab  :list="tabList" :defaultSelectPos="tabPos" :onChange="onTabChange" style="background:#000" /> -->
-
+	<div class="por ovh mgt-20 adv-panel" >
+		<section class="col-md-7" style="padding: 20px">
+			<div  :class="{veapply: tabPos == 1}">
 				<div class="tal  dib" style="background:#000;border-radius:30px">
 					<div @click="tabPos =  1 "  :class="tabPos == 1?'active':''"  class="tab-new-menu"  >{{$t("Gemstone_52")}}</div>
 					<div @click="tabPos =  0 "  :class="tabPos == 0?'active':''" class="tab-new-menu " >{{$t("Gemstone_51")}}</div>
@@ -47,12 +45,33 @@
 					
 				</div>
 			</div>
+			<!-- 手机操作 -->
+			<div class="visiable-xs">
+				<div class="mgt-30 aveage-box">
+					<div class="dib por tac">
+						<button class="btn-primary" style="margin:10px;width:80%" @click="setAction(22021);oprDialog('gem-apply2-dialog', 'block')">{{$t("Gemstone_14")}}</button>
+					</div>
+					<div class="tac">
+						<button class="btn-line por" style="width:80%" @click="setAction(22001);oprDialog('gem-take-dialog', 'block')">
+							<span class="notice" v-if="gemToTakeNum > 0"></span>
+							{{$t("Gemstone_15")}}
+						</button>
+					</div>
+				</div>
+				<div class="tac mgt-10">
+					<p class="cur-point" @click="showRank = !showRank" style="color: #668eff">{{$t("Air-drop_243")}} >></p>
+				</div>
+				<div class="gemBag" @click="oprDialog('gemBag-dialog','block')" style="bottom:10px">
+					<img  src="@/assets/icon/gem_bag_icon.png" alt="">
+					<p class="stroke" :data-text="$t('Gemstone_16')">{{$t("Gemstone_16")}}</p>
+				</div>
+			</div>
 		</section>
 
-		<section class="col-md-5" style="padding:10px">
-			<div class="panel por" style="height:400px;padding:10px">
+		<section class="col-md-5 adv-panel-content hide-xs" style="padding:10px">
+			<div class="por" style="height:380px;padding:10px">
 				<section style="padding:10px">
-						<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:15px">
+						<div class="aveage-box tal" style="padding:15px">
 							<div >
 								<p class="small opa-6">{{$t("Air-drop_152")}}</p>
 								<h3  class="por">
@@ -75,7 +94,7 @@
 								<h3>{{getMaxVeMboxApplyTimes}}</h3>
 							</div>
 						</div>
-						<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:15px">
+						<div class="aveage-box tal" style="padding:15px">
 							<div >
 								<p class="small opa-6">{{$t('Gemstone_55')}}</p>
 								<h3  class="por">
@@ -117,7 +136,7 @@
 		
 	</div>
 
-	<div class="tac mgt-10">
+	<div class="tac mgt-10 hide-xs">
 		<p class="cur-point" @click="showRank = !showRank">{{$t("Air-drop_243")}} >></p>
 	</div>
 

@@ -1,8 +1,8 @@
 <template>
 	<div class="tac center-content">
-		<div class="por clear mgt-20" style="border:1px solid #5d636f80;border-radius: 30px">
+		<div class="por ovh mgt-20 adv-panel" >
 			<section class="col-md-7" style="padding:10px">
-				<div class="adv-panel">
+				<div >
 					<h1 class="vertical-children">
 						<span>{{$t("Auction_03")}}</span>
 						<img class="mgl-10 cur-point" @click="oprDialog('bid-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="30">
@@ -26,9 +26,9 @@
 					</div>
 				</div>
 			</section>
-			<section class="col-md-5" style="padding:10px">
-				<div class="panel por" id="winList-cont" style="height:439px;padding:20px">
-					<div class="aveage-box tac" style="border-bottom: 1px solid #162340;padding-bottom:10px">
+			<section class="col-md-5 adv-panel-content" style="padding:10px">
+				<div class="por" id="winList-cont" style="height:400px;padding:20px">
+					<div class="aveage-box tac" style="padding-bottom:10px">
 						<div>
 							<p class="small opa-6">{{$t("Auction_27")}}</p>
 							<h4 v-if="bidInfo.currBidder == '-' " >
@@ -53,7 +53,7 @@
 					</div>
 					<div class="mgt-10 tal">
 						<h4>{{$t("Auction_30")}}</h4>
-						<table class="small  new-table tac" >
+						<table class="small  new-table tac" style="background: #070d14">
 							<tr class="small opa-6">
 								<td class="tal" style="width:15%">MOMO</td>
 								<td style="width:20%">{{$t("BOX_12")}}</td>
@@ -63,7 +63,7 @@
 							</tr>
 						</table>
 						<div style="height: 226px;overflow: auto" id="bid-winlist" >
-							<table class="small  new-table tac" >
+							<table class="small  new-table tac" style="background: #070d14">
 								<tbody >
 									<tr v-if="Number(bidInfo.state) != 1 && getNowRound != '-' ">
 										<td class="tal"><PetItemMin :data="momoDatas[getNowRound]" /></td>

@@ -1,5 +1,5 @@
 <template>
-	<div class="yf-dialog-bg" v-on:animationend="closed">
+	<div class="yf-dialog-bg" v-on:animationend="closed" @click="close($event.target)">
 		<div class="yf-dialog" :style="`margin-top:${top}px;width:${width}px`" @click="$event.stopPropagation()" v-on:animationend="animationed" >
 			<img v-if="!hideClose" @click="close($event.target.parentNode.parentNode)" class="yf-dialog-close-btn" src="../assets/icon/close.png" alt="" width="25" />
 			<slot></slot>
@@ -77,7 +77,7 @@ export default {
 	animation: showAni 0.3s;
 	background: #13181f;
 	border: 1px solid #36383A;
-	border-radius: 21px;
+	border-radius: 10px;
 
 }
 

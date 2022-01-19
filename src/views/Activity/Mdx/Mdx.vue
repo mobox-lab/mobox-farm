@@ -412,8 +412,6 @@ export default {
 		zoom: 0.8;
 		padding: 5px 20px !important;
 	}
-	.adv-panel{
-		padding-bottom: 40px;
-	}
+
 }
 </style>

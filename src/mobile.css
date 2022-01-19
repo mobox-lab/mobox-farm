@@ -233,5 +233,8 @@
 		zoom: 0.5;
 		margin: 1%!important;
 	}
+	.adv-panel{
+		background: #090909;
+	}
 }
 

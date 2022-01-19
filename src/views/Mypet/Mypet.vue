@@ -154,8 +154,8 @@
 					<div class="tal" >
 						{{$t("MOMO_49")}}: 
 						<div class="dib mgl-10">
-							<Dropdown v-if="perviewVTypeSelectPos == 2" :list="hashSelectArr" :defaultSelectPos="hashSelectPos" :onChange="(pos)=>{hashSelectPos = pos;search()}" />
-							<input v-else class="ly-input mgt-10" type="number"  style="width:120px;border-radius:50px" v-model="inputLvHashRate" v-int :placeholder="inputRange[perviewVTypeSelectPos].min+'~'+inputRange[perviewVTypeSelectPos].max" /> 
+							<!-- <Dropdown v-if="perviewVTypeSelectPos == 2" :list="hashSelectArr" :defaultSelectPos="hashSelectPos" :onChange="(pos)=>{hashSelectPos = pos;search()}" /> -->
+							<input class="ly-input mgt-10" type="number"  style="width:120px;border-radius:50px" v-model="inputLvHashRate" v-int :placeholder="inputRange[perviewVTypeSelectPos].min+'~'+inputRange[perviewVTypeSelectPos].max" /> 
 						</div>
 					</div>
 					<div class="tac hide-xs" style="align-item:center;height:50px;display: flex;align-items: center;justify-content: center;">
@@ -234,9 +234,9 @@ export default {
 			tab_pos: 0,
 			hasShowBook: false,
 			perviewVTypeSelectPos: 2,
-			inputLvHashRate: 120,
+			inputLvHashRate: 180,
 			perviewLvHashRate: "",
-			inputRange: [{min: 10, max: 80}, {min: 50, max: 150}],
+			// inputRange: [{min: 10, max: 80}, {min: 50, max: 150}],
 			//v6算力查看
 			hashSelectArr: [180,200,220,240,260],
 			hashSelectPos: 0,
@@ -270,6 +270,13 @@ export default {
 			momoSetting: (state) => state.globalState.data.momoSetting,
 			nowTs: (state) => state.globalState.data.nowTs,
 		}),
+		inputRange(){
+			return [
+				{min: 10, max: this.momoSetting.v4_max_enhance}, 
+				{min: 50, max: this.momoSetting.v5_max_enhance},
+				{min: 180, max: this.momoSetting.v6_max_enhance},
+			];
+		},
 		getGrowup() {
 			let vType = this.perviewVTypeSelectPos + 4;
 			let hashrate = Number(this.perviewLvHashRate);
@@ -395,7 +402,7 @@ export default {
 			this.lockList.map(item=>lockTypes.push(item.prototype));
 			for (let key in nftConfig) {
 				
-				let item = nftConfig[key];
+				let item = {...nftConfig[key]};
 				let num = 0;
 				if (getMyPetObj[item.prototype]) {
 					num = getMyPetObj[item.prototype].num;
@@ -444,7 +451,6 @@ export default {
 					obj.v5 += nftCfg[key].mmNum - momoNumObj[key];
 				}
 			}
-			console.log(obj);
 			return obj;
 		},
 		getNextHash(){
@@ -461,18 +467,19 @@ export default {
 	},
 	methods: {
 		search(){
-			if(this.perviewVTypeSelectPos == 2){
-				this.perviewLvHashRate = this.hashSelectArr[this.hashSelectPos];
-				return;
-			}
+			// if(this.perviewVTypeSelectPos == 2){
+			// 	this.perviewLvHashRate = this.hashSelectArr[this.hashSelectPos];
+			// 	return;
+			// }
 			let value = Number(this.inputLvHashRate);
 			let range = this.inputRange[this.perviewVTypeSelectPos];
 			if(value < range.min || value > range.max){
-				if(range.min == 10){
-					this.showNotify(this.$t("MOMO_53"), "error");
-				}else{
-					this.showNotify(this.$t("MOMO_54"), "error");
-				}
+				// if(range.min == 10){
+				// 	this.showNotify(this.$t("MOMO_53"), "error");
+				// }else{
+				// 	this.showNotify(this.$t("MOMO_54"), "error");
+				// }
+				this.showNotify("请输入对应范围的算力值", "error")
 				return;
 			}
 			this.perviewLvHashRate = this.inputLvHashRate;
@@ -482,9 +489,6 @@ export default {
 			this.inputLvHashRate = "";
 			this.perviewLvHashRate = "";
 			this.perviewVTypeSelectPos = pos;
-			if(pos == 2){
-				this.search();
-			}
 		},
 		onSelectCoinChange(pos) {
 			console.log(pos);

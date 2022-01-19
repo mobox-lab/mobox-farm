@@ -1,44 +1,7 @@
 <template>
-	<div id="aridorp" class="tac" style="padding:10px">
-		<section id="airdrop-pool-view" class="panel clear mgt-10">
-			<div class="col-xs-12  col-md-4 tal mgt-10" style="padding:10px">
-				<h3>{{$t('Air-drop_207')}}</h3>
-				<div class="aveage-box mgt-20" id="mobox-pool" >
-					<div>
-						<div class="dib coin-adv" style="border-color:#1b54f5">
-							<img src="@/assets/coin/MBOX.png" alt="">
-						</div>
-						<div class="dib mgl-10">
-							<h3>MBOX</h3>
-							<p class="opa-6">Mobox.io</p>
-						</div>
-					</div>
-					<div class="tar">
-						<h3>{{totalAirdropMbox}} MBOX</h3>
-						<p class="opa-6">{{ $t("Mine_01") }}</p>
-					</div>
-				</div>
-			</div>
-			<!-- <div class="col-xs-12 col-md-8 tal mgt-10 hide" style="padding:10px">
-				<h3>{{$t('Air-drop_208')}}</h3>
-				<div class="mgt-20 col-md-4 col-xs-6 other-balance " v-for="item in getBalanceArr" :key="item.coinName">
-					<div style="padding-top:10px" >
-						<div class="dib coin-adv small" :style="{borderColor: item.color}">
-							<img :src="require(`@/assets/coin/${item.coinName}.png`)" alt="">
-						</div>
-						<div class="dib mgl-10">
-							<h3>{{item.dayDrop}} {{item.coinName}}</h3>
-							<p class="opa-6 small">
-								<a :href="item.website" target="_blank" style="text-decoration:underline">{{item.des}}</a>
-							</p>
-						</div>
-					</div>
-				</div>
-			</div> -->
-		</section>
-		
+	<div id="aridorp" class="tac adv-panel  ovh" >
 		<!-- 算力展示 -->
-		<section id="airdrop-cont" class="">
+		<section id="airdrop-cont" class="hide-xs">
 			<div class="row "  id="collection-view">
 				<div class="mining-pet" v-for="item in myNFT_stake.slice(0, 20)" :key="item.prototype.toString() + item.tokenId + item.num" >
 					<JumpPet :prototype="item.prototype" />
@@ -46,69 +9,91 @@
 			</div>
 		</section>
 
-		<section class="panel clear mgt-10" id="airdrop-opr">
-			<div class="col-xs-12 col-md-4">
-				<div class="clear tal">
-					<div class="col-md-12 mgt-10">
-						<p class="small opa-6">{{ $t("Mine_02") }}</p>
-						<p class="mgt-10 bold" style="width:80%;height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">{{eth_totalHashrate}}</p>
-					</div>
-					<div class="col-md-12 mgt-20">
-						<p class="small vertical-children">
-							<span class="opa-6">{{ $t("Mine_03") }}</span>
-							<StatuButton style="zoom: 0.8" v-if="needShowAdd &&  $root.$children[0].showPowerUpList.length > 0" class="btn-small mgl-10" :isLoading="lockBtn.joinStakeLock > 0" :onClick="joinStake">{{$t('Mine_15')}}</StatuButton>
-						</p>
-						<div class="por dib mgt-10" style="width:80%">
-							<p class="por bold" style="height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">
-								<span>{{eth_myHashrate}}</span>
-								<span v-if="eth_getAddHashrate > 0" class="small" style="color: #75fd49" >({{ eth_getAddHashrate }})</span>
-								<img src="../assets/icon/powerup.png" id="powerup-btn" alt="" @click="oprDialog('showPetPowerUp-dialog', 'block')"  />
-							</p>
-						</div>
-					</div>
+		<section class=" adv-panel-content ovh tal hide-xs" id="claim-panel" style="padding: 20px 50px">
+			<div >
+				<div class="dib coin-adv" style="border-color:#1b54f5">
+					<img src="@/assets/coin/MBOX.png" alt="">
+				</div>
+				<div class="dib tal mgl-20">
+					<p class="opa-6">{{ $t("Mine_01") }}</p>
+					<h3>{{totalAirdropMbox}} MBOX</h3>
 				</div>
 			</div>
-			<div class="col-xs-12 col-md-8 tal" >
-				<p class="small opa-6 mgt-10">{{$t("Air-drop_210")}}</p>
-				<div class="row clear">
-					<div class=" col-md-4 mgt-10 tal" style="padding:0px">
-						<div  class="dib speed-show">
-							<p class="small opa-6"><span class="tac">1000 {{ $t("Mine_14") }}≈{{ eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 1000, 100 ) }} MBOX/DAY</span></p>
-							<p class="vertical-children mgt-10 bold" style="height:25px">
-								<img src="@/assets/coin/MBOX.png" alt="" height="20">
-								<span class="mgl-5 " v-if="Number(eth_earnedMbox) >= 0">{{ eth_earnedMbox }}</span>
-								<Loading class="mgl-5 " v-else  />
-								<span class="mgl-5">MBOX</span>
-							</p>
-						</div>
-					</div>
-					<!-- <div class="col-md-4 mgt-10" style="padding:0px" v-for="item in getBalanceArr" :key="item.coinName">
-						<div  class="dib speed-show" >
-							<div class="over" v-if="item.coinName == 'BANANA' ">{{$t("Air-drop_134")}}</div>
-							<p class="small opa-6"><span class="tac">1000 {{ $t("Mine_14") }}≈{{ numFloor(Number(eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 1000, 100 )) * item.dayDrop / 200000, 1e4) }} {{item.coinName}}/DAY</span></p>
-							<p class="vertical-children mgt-10" style="height:25px">
-								<img :src="require(`@/assets/coin/${item.coinName}.png`)" alt="" height="20">
-								<span class="mgl-5 bold vertical-children">
-									<span v-if="item.amount != '-' ">{{numFloor(item.amount, 1e4)}}</span>
-									<span v-else class="vertical-children">
-										<span v-if="balancePool['ts'] == 0"><Loading  /></span>
-										<span v-else>-</span>
-									</span>
-									<span class="mgl-5">{{item.coinName}}</span>
-								</span>
-							</p>
-						</div>
-					</div> -->
+			<div class="mgt-20">
+				<p class="small opa-6">{{ $t("Mine_02") }}</p>
+				<p class="mgt-10 bold" style="width:100%;height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">{{eth_totalHashrate}}</p>
+			</div>
+			<div class=" mgt-20">
+				<p class="small vertical-children">
+					<span class="opa-6">{{ $t("Mine_03") }}</span>
+					<StatuButton style="zoom: 0.8" v-if="needShowAdd &&  getStaticAdd > 0" class="btn-small mgl-10" :isLoading="lockBtn.joinStakeLock > 0" :onClick="joinStake">{{$t('Mine_15')}}</StatuButton>
+				</p>
+				<div class="por dib mgt-10" style="width:100%">
+					<p class="por bold" style="height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">
+						<span>{{eth_myHashrate}}</span>
+						<span v-if="eth_getAddHashrate > 0" class="small" style="color: #75fd49" >({{ eth_getAddHashrate }})</span>
+						<img src="../assets/icon/powerup.png" id="powerup-btn" alt="" @click="oprDialog('showPetPowerUp-dialog', 'block')"  />
+					</p>
 				</div>
-				<div class="mgt-20">
-					<button id="take-btn" class="btn-primary por mgl-10" :class="(eth_earnedMbox > 0 && lockBtn.getMboxLock <= 0)? '':'disable-btn' " style="min-width: 200px;margin-top:3px" @click="setAction(25001);takeEarnedMbox('eth')" >
-						<Loading class="btn-loading" v-if="lockBtn.getMboxLock > 0" />
-						{{$t("Mine_04")}}
-					</button>
+			</div>
+			<p class="small opa-6 mgt-20">{{$t("Air-drop_210")}}</p>
+			<div class="  mgt-10 tal" style="padding:0px">
+				<div  class="dib speed-show">
+					<p class="small opa-6"><span class="tac">1000 {{ $t("Mine_14") }}≈{{ eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 1000, 100 ) }} MBOX/DAY</span></p>
+					<p class="vertical-children mgt-10 bold" style="height:25px">
+						<img src="@/assets/coin/MBOX.png" alt="" height="20">
+						<span class="mgl-5 " v-if="Number(eth_earnedMbox) >= 0">{{ eth_earnedMbox }}</span>
+						<Loading class="mgl-5 " v-else  />
+						<span class="mgl-5">MBOX</span>
+					</p>
 				</div>
+			</div>
+			<div class="mgt-20 tac">
+				<button id="take-btn" class="btn-primary por mgl-10" :class="(eth_earnedMbox > 0 && lockBtn.getMboxLock <= 0)? '':'disable-btn' " style="min-width: 200px;margin-top:3px" @click="setAction(25001);takeEarnedMbox('eth')" >
+					<Loading class="btn-loading" v-if="lockBtn.getMboxLock > 0" />
+					{{$t("Mine_04")}}
+				</button>
 			</div>
 		</section>
 
+		<!-- 手机版展示 -->
+		<section class="visiable-xs">
+			<div class="momo-show por">
+				<div class="momo_show_anime">
+					<div class="water"></div>
+					<div class="gka-harmer por animation-harmer" style="margin-top: -12px;right:0px"></div>
+					<p class="small opa-6 mgt-10">{{$t("Mine_03")}}</p>
+					<p class="bold2" style="font-size: 28px;color: #fdc006">{{eth_myHashrate.toLocaleString()}}</p>
+				</div>
+				<div id="collection-view2">
+					<div class="mining-pet2" v-for="item in myNFT_stake.slice(0, 10)" :key="item.prototype.toString() + item.tokenId + item.num" >
+						<JumpPet :prototype="item.prototype" />
+					</div>
+				</div>
+			</div>
+			<div class="claim-opr">
+				<div class="mask">
+					<div class="aveage-box" style="padding:15px 50px">
+						<div class="tal">
+							<p class="opa-6">Mining Camp</p>
+							<p class="vertical-children  bold" style="height:25px">
+								<img src="@/assets/coin/MBOX.png" alt="" height="20">
+								<span class="mgl-5  bold2" style="font-size:18px" v-if="Number(eth_earnedMbox) >= 0">{{ eth_earnedMbox }}</span>
+								<Loading class="mgl-5 " v-else  />
+							</p>
+						</div>
+						<div class="tar">
+							<button  class="btn-primary por mgt-10" :class="(eth_earnedMbox > 0 && lockBtn.getMboxLock <= 0)? '':'disable-btn' "  @click="setAction(25001);takeEarnedMbox('eth')" >
+								<Loading class="btn-loading" v-if="lockBtn.getMboxLock > 0" />
+								{{$t("Mine_04")}}
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<p class="mgt-10 opa-6"><span class="tac">1000 {{ $t("Mine_14") }}≈{{ eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 1000, 100 ) }} MBOX/DAY</span></p>
+
+		</section>
 	</div>
 
 </template>
@@ -118,7 +103,6 @@ import { Common, Wallet } from "@/utils";
 import { CommonMethod } from "@/mixin";
 import { JumpPet, Loading, StatuButton } from '@/components';
 
-const $ = window.$;
 export default {
 	components: { JumpPet,  Loading, StatuButton},
 	mixins: [CommonMethod],
@@ -150,11 +134,19 @@ export default {
 		getMaxInputBox() {
 			return parseInt(this.eth_earnedMbox / 5) || 1;
 		},
+		getStaticAdd(){
+			if(!Common.app) return 0
+			return Common.app.showPowerUpList.length * 300;
+		},
+		getTotalPercent(){
+			if(!Common.app) return 0
+			return Common.app.getTotalPercent.maxAdd;
+		},
 		//获取加成
 		eth_getAddHashrate() {
-			let staticAddHashrate = this.$parent.showPowerUpList.length * 300;
+			let staticAddHashrate = this.getStaticAdd;
 			let myHashrate = this.eth_myHashrate;
-			let addP = this.$parent.getTotalPercent.maxAdd;
+			let addP = this.getTotalPercent;
 			return this.numFloor(myHashrate - (myHashrate / (1 + addP) - staticAddHashrate),1);
 		},
 		getBalanceArr(){
@@ -220,23 +212,73 @@ export default {
 		getPositonY() {
 			return Common.getRandomNum(400, 500);
 		},
-		scalCollection() {
-			let $content = $("#collection-view");
-			let width = $content.width() * Number($content.css("zoom"));
-			let zoom = width / 1753;
-			$content.css("zoom", zoom);
-			$content.css("-moz-transform", "scale(" + zoom + ")");
-			$content.css("-moz-transform-origin:", "top left");
-		},
-	},
-	mounted() {
-		this.scalCollection();
-		$(window).resize(this.scalCollection);
+		
 	},
 };
 </script>
 
 <style scoped>
+.momo_show_anime{
+	width: 200px;
+	height: 200px;
+	background-size: cover;
+	margin: 50px auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	border: 2px solid #6C18E3;
+	border-radius: 100%;
+	box-shadow: 0px 0px 80px #6C18E3 inset; 
+}
+.momo_show_anime::after{
+      width: 200px;
+      height: 200px;
+      content: "";
+      border-radius: 100%;
+      border: 2px solid #6C18E3;
+      position: absolute;
+      left: -4px;
+      right: 0px;
+      animation-name: keyframes-water;
+      animation-duration: 4s ;
+      animation-delay: 0s;
+      animation-iteration-count: infinite;
+      animation-fill-mode: forwards;
+      animation-timing-function: steps(1);
+      animation-timing-function: linear;
+}
+.water{
+      width: 200px;
+      height: 200px;
+      border-radius: 100%;
+      border: 2px solid #6C18E3;
+      position: absolute;
+      left: -2px;
+      right: 0px;
+      animation-name: keyframes-water;
+      animation-duration: 4s ;
+      animation-delay: 2s;
+      animation-iteration-count: infinite;
+      animation-fill-mode: forwards;
+      animation-timing-function: steps(1);
+      animation-timing-function: linear;
+}
+@keyframes keyframes-water{
+      0% {
+            transform: scale(1.05);
+            opacity: 1;
+      }
+      50%{
+            transform: scale(1.3);
+            opacity: 0.5;
+      }
+      100%{
+            transform: scale(1.6);
+            opacity: 0;
+      }
+}
 .over{
 	transform: rotate(-320deg);
 	transform-origin: right top;
@@ -255,7 +297,7 @@ export default {
 	zoom: 0.8;
 }
 .speed-show{
-	background:#2A2F35;border-radius:10px;padding:10px;width:90%;
+	background:#2A2F35;border-radius:10px;padding:10px;width:100%;
 	overflow: hidden;
 	position: relative;
 }
@@ -288,12 +330,57 @@ export default {
 	margin: 10px;
 	position: relative;
 }
-
+.mining-pet2{
+	position: absolute;
+	zoom: 0.5;
+}
 .mining-pet {
 	position: absolute;
 	top: 0px;
 	left: 0px;
+	z-index: 999
 }
+#collection-view2 > div:nth-child(1) {
+	left: 80px;
+	top: 10px;
+}
+#collection-view2 > div:nth-child(2) {
+	left: 60px;
+	top: 150px;
+}
+#collection-view2 > div:nth-child(3) {
+	left: 80px;
+	top: 300px;
+}
+#collection-view2 > div:nth-child(4) {
+	left: 550px;
+	top: 160px;
+}
+#collection-view2 > div:nth-child(5) {
+	left: 650px;
+	top: 260px;
+}
+#collection-view2 > div:nth-child(6) {
+	left: 600px;
+	top: 60px;
+}
+#collection-view2 > div:nth-child(7) {
+	left: 500px;
+	top: -50px;
+}
+#collection-view2 > div:nth-child(8) {
+	left: 500px;
+	top: 330px;
+}
+#collection-view2 > div:nth-child(9) {
+	left: 300px;
+	top: 350px;
+}
+#collection-view2 > div:nth-child(10) {
+	left: 300px;
+	top: -80px;
+}
+
 #collection-view > div:nth-child(1) {
 	left: 722px;
 	top: 360px;
@@ -303,20 +390,20 @@ export default {
 	top: 275px;
 }
 #collection-view > div:nth-child(3) {
-	left: 840px;
+	left: 1800px;
 	top: 303px;
 }
 #collection-view > div:nth-child(4) {
-	left: 961px;
-	top: 303px;
+	left: 570px;
+	top: 260px;
 }
 #collection-view > div:nth-child(5) {
-	left: 1080px;
+	left: 750px;
 	top: 270px;
 }
 #collection-view > div:nth-child(6) {
-	left: 1047px;
-	top: 374px;
+	left: 400px;
+	top: 364px;
 }
 #collection-view > div:nth-child(7) {
 	left: 553px;
@@ -327,20 +414,20 @@ export default {
 	top: 299px;
 }
 #collection-view > div:nth-child(9) {
-	left: 1260px;
-	top: 330px;
+	left: 150px;
+	top: 370px;
 }
 #collection-view > div:nth-child(10) {
 	left: 1304px;
 	top: 171px;
 }
 #collection-view > div:nth-child(11) {
-	left: 1208px;
-	top: 110px;
+	left: 760px;
+	top: 85px;
 }
 #collection-view > div:nth-child(12) {
-	left: 241px;
-	top: 204px;
+	left: 231px;
+	top: 250px;
 }
 #collection-view > div:nth-child(13) {
 	left: 250px;
@@ -348,19 +435,19 @@ export default {
 }
 #collection-view > div:nth-child(14) {
 	left: 150px;
-	top: 288px;
+	top: 258px;
 }
 #collection-view > div:nth-child(15) {
-	left: 1500px;
-	top: 288px;
+	left: 50px;
+	top: 228px;
 }
 #collection-view > div:nth-child(16) {
-	left: 1519px;
-	top: 136px;
+	left: 1370px;
+	top: 70px;
 }
 #collection-view > div:nth-child(17) {
-	left: 182px;
-	top: 68px;
+	left: 50px;
+	top: 328px;
 }
 #collection-view > div:nth-child(18) {
 	left: 1243px;
@@ -374,13 +461,14 @@ export default {
 	left: 345px;
 	top: 290px;
 }
+
 #collection-view {
 	background-image: url("../assets/wkbg.jpg");
 	background-size: cover;
 	background-position: center;
-	height: 500px;
-	padding: 0px;
-	border-radius: 30px;
+	height: 475px;
+	margin-right: 410px;
+	border-radius: 10px;
 	position: relative;
 	overflow: hidden;
 }
@@ -392,11 +480,16 @@ export default {
 	margin: 20px 10px;
 }
 #airdrop-cont {
+	border-radius: 10px;
 	width: 100%;
-	background: #1C222C;
-	border-radius: 20px;
-	display: inline-block;
-	margin-top: 10px;
+}
+#claim-panel{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	bottom: 10px;
+	width: 400px;
+	background: rgba(0,0,0,0.8);
 }
 #aridorp{
 	max-width: 1300px;
@@ -419,6 +512,21 @@ export default {
 	background: #1C222C;
 }
 @media (max-width: 768px) {
+	.claim-opr .mask{
+		background: rgba(0,0,0,0.5);
+		position: absolute;
+		left: 0px; right: 0px; bottom: 0px; top: 0px;
+	}
+	.claim-opr{
+		height: 80px;
+		background-image: url("../assets/wkbg.jpg");
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		position: relative;
+	}
+	.momo-show{
+
+	}
 	.other-balance{
 		zoom: 0.7;
 		margin-top: 0px;

@@ -1,8 +1,8 @@
 <template>
 	<div class="tac center-content">
-		<div class="por clear mgt-20 " style="border:1px solid #5d636f80;border-radius: 30px">
+		<div class="por ovh mgt-20 adv-panel" >
 			<section class="col-md-7" style="padding:10px;">
-				<div class="adv-panel por">
+				<div class=" por">
 					<div class="vertical-children">
 						<h2 class="dib">{{$t("MECBOX_01")}}</h2>
 						<img class="mgl-10 cur-point" @click="getRootRefs().ruleDialog.show('MECBOX_02', 'MECBOX_03')" src="@/assets/icon/help.png" alt="" height="30">
@@ -29,7 +29,7 @@
 						</div>
 						
 					</div>
-					<div style="padding:10px 0px;position:absolute;bottom:0px;width:100%;left:0px;background:#1F232A;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;" class="tal rate-show">
+					<div class="tal rate-show hide-xs">
 						<div class="col-md-1"></div>
 						<div class="col-md-2 col-xs-4 vertical-children mgt-5" v-for="item in rateObj" :key="item.lv">
 							<div style="height:20px;width:20px;border-radius:20px;padding:2px;" class="dib dot-bg">
@@ -45,13 +45,30 @@
 						</div>
 						<div class="col-md-1"></div>
 					</div>
+
+					<!-- 手机版操作 -->
+					<div class="visiable-xs">
+						<div class="mgt-10 aveage-box">
+							<div class="dib por tac">
+								<button class="btn-primary" style="margin:10px;width:80%" @click="oprDialog('mecBox-apply-dialog', 'block')">{{$t("MECBOX_14")}}</button>
+							</div>
+							<div class="tac">
+								<StatuButton v-if="this.myApplyInfo.boxAmount >= 0" style="width:80%" :isDisable="this.myApplyInfo.boxAmount<=0" :isLoading="lockBtn.takeBoxLock > 0" :onClick="takeBox">
+									{{$t("MECBOX_15").replace("#0#", this.myApplyInfo.boxAmount)}}
+								</StatuButton>
+							</div>
+						</div>
+							<div class="tac mgt-10">
+								<p class="cur-point" @click="getBoxApplyHistory();showRank = !showRank" style="color: #668eff">{{$t("Air-drop_243")}} >></p>
+							</div>
+					</div>
 				</div>
 			</section>
 
-			<section class="col-md-5" style="padding:10px">
-				<div class="panel por" style="height:380px;padding:10px">
+			<section class="col-md-5 adv-panel-content hide-xs" style="padding:10px">
+				<div class="por" style="height:380px;padding:10px">
 					<section style="padding:10px">
-						<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:15px">
+						<div class="aveage-box tal" style="padding:15px">
 							<div >
 								<p class="small opa-6">{{$t("Air-drop_152")}}</p>
 								<h3  class="por">
@@ -74,7 +91,7 @@
 								<h3>{{getMaxVeMboxApplyTimes}}</h3>
 							</div>
 						</div>
-						<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:15px">
+						<div class="aveage-box tal" style="padding:15px">
 							<div >
 								<p class="small opa-6">{{$t('Gemstone_55')}}</p>
 								<h3  class="por">
@@ -92,7 +109,7 @@
 								<h3>{{getMaxPowerApplyTimes}}</h3>
 							</div>
 						</div>
-						<div class="aveage-box tal" style="border-bottom:1px solid #2f3236;padding:15px">
+						<div class="aveage-box tal" style="padding:15px">
 							<div>
 								<p class="small opa-6">{{$t("MECBOX_26")}}</p>
 								<h3>
@@ -120,19 +137,14 @@
 							<StatuButton v-if="this.myApplyInfo.boxAmount >= 0" style="width:80%" :isDisable="this.myApplyInfo.boxAmount<=0" :isLoading="lockBtn.takeBoxLock > 0" :onClick="takeBox">
 								{{$t("MECBOX_15").replace("#0#", this.myApplyInfo.boxAmount)}}
 							</StatuButton>
-							<!-- <router-link to="/market?tab=4" v-else>
-								<button class="btn-line" style="width:90%;" @click="setAction(22002);">
-									{{$t("BOX_37")}}
-								</button>
-							</router-link> -->
 						</div>
 					</div>
 				</div>
 			</section>
 		</div>
 
-		<div class="tac mgt-10">
-			<p class="cur-point" @click="getBoxApplyHistory();showRank = !showRank">{{$t("Air-drop_243")}} >></p>
+		<div class="tac mgt-10 hide-xs">
+			<p class="cur-point" @click="getBoxApplyHistory();showRank = !showRank" >{{$t("Air-drop_243")}} >></p>
 		</div>
 		<!-- 记录 -->
 		<div class="col-md-12" :class="{hide: !showRank}">
@@ -456,9 +468,6 @@ export default {
 	.rate-show{
 		zoom: 0.8;
 		padding: 5px 20px !important;
-	}
-	.adv-panel{
-		padding-bottom: 40px;
 	}
 }
 </style>

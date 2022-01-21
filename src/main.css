@@ -479,6 +479,9 @@ svg {
 	background: #0C2158 !important;
 	color: #4E5E86 !important;
 }
+.btn-primary:hover{
+	background: #1344C9;
+}
 
 .disable-btn path{
 	fill:  #6d6d6d !important;

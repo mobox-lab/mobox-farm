@@ -259,6 +259,11 @@ export default {
 		this.$parent.eth_setLockList();
 		this.search();
 	},
+	watch: {
+		momoSetting: function(){
+			this.search()
+		}
+	},
 	computed: {
 		...mapState({
 			myNFT_wallet: (state) => state.ethState.data.myNFT_wallet,
@@ -467,10 +472,7 @@ export default {
 	},
 	methods: {
 		search(){
-			// if(this.perviewVTypeSelectPos == 2){
-			// 	this.perviewLvHashRate = this.hashSelectArr[this.hashSelectPos];
-			// 	return;
-			// }
+			if(this.momoSetting.v4_max_enhance == 0) return;
 			let value = Number(this.inputLvHashRate);
 			let range = this.inputRange[this.perviewVTypeSelectPos];
 			if(value < range.min || value > range.max){
@@ -479,7 +481,7 @@ export default {
 				// }else{
 				// 	this.showNotify(this.$t("MOMO_54"), "error");
 				// }
-				this.showNotify("请输入对应范围的算力值", "error")
+				this.showNotify("Range: "+range.min+"~"+ range.max, "error")
 				return;
 			}
 			this.perviewLvHashRate = this.inputLvHashRate;

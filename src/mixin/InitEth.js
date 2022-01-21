@@ -194,6 +194,7 @@ const InitEth = {
 			if(data.length > 0){
 				data.map(async index=>{
 					let sellData = await Wallet.ETH.Group.BigSell.getOrder({auctor_: account, index_: Number(index)});
+					console.log({sellData});
 					let momoData = await Http.getMoMoDetail(sellData.tokenIds);
 					sellData.tokens = momoData.list;
 					sellData.price = sellData.price / 1e9;
@@ -201,6 +202,7 @@ const InitEth = {
 					sellData.auctor = account;
 					sellData.index = index;
 					sellData.uptime= sellData.startTime;
+					sellData.type = sellData.groupType;
 					let hashrate = 0;
 					sellData.tokens.map(item=>{
 						hashrate += item.lvHashrate;

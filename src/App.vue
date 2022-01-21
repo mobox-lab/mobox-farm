@@ -119,7 +119,7 @@
 			</div>
 		</div>
 		<!-- 顶部资源 -->
-		<div id="top-res" class="vertical-children">
+		<div id="top-res" class="vertical-children hide-xs">
 			<p class="vertical-children">
 				<img src="./assets/icon/airdrop.png" alt="" height="25" />&nbsp;
 				<span>{{ eth_myHashrate }}</span>
@@ -319,6 +319,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_64")}}</h3>
+						<span v-html="$t('Notice_65')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_62")}}</h3>
 						<span v-html="$t('Notice_63')" ></span>
 					</div>
@@ -607,7 +611,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "3.7"
+			noticeVersion: "3.8"
 		};
 	},
 	watch: {

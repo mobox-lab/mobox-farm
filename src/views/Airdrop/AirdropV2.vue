@@ -41,12 +41,25 @@
 											<div class="dib airdorp-item-coin-icon tac por" :class="item.isLP?'double-img':'' " style="left:0px">
 												<img v-for="(name, key) in item.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="50" alt="" />
 											</div>
-											<div style="margin-left: 15px">
-												<h4 class="color-w tal small">{{ item.coinName }} {{item.isLP?"LP":"POOL"}}</h4>
+											<div class="tal " style="margin-left: 15px">
+												<p class="opa-6 small vertical-children" >
+													<span style="vertical-align:top">{{ $t("Air-drop_02") }}</span>
+													<span class="mgl-5 cur-point dib" style="margin-top:-5px" @click="oprDialog('mbox-drop-des-dialog','block')">
+														<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path style="fill:none" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+													</span>
+												</p>
+												<h3 class="mgt-5 new-text">${{ numFloor(item.totalSupply, 1).toLocaleString() }}</h3>
+											</div>
+
+											
+										</div>
+
+										<div >
+												<h4 class="color-w tal small opa-6">{{$t("Air-drop_205")}}</h4>
 												<div  class=" point-block  close"  @click="getApyObj(item);toggleClass($event, {isLP: true})">
 													<div class="tal "  >
-														<h4 class="vertical-children" :class="item.isLP?'show-point-block':''" style="right:10px">
-															<span>{{$t("Air-drop_205")}}: {{ item.apy }}</span>
+														<h4 class="vertical-children new-text" :class="item.isLP?'show-point-block':''" style="right:10px;">
+															<span>{{ item.apy }}</span>
 															<svg  viewBox="0 0 24 24" class="rotate-arrow"  height="20px" ><path fill="#fff" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
 														</h4>
 													</div>
@@ -110,17 +123,6 @@
 												</div>
 
 											</div>
-										</div>
-
-										<div class="tal ">
-											<p class="opa-6 small vertical-children" >
-												<span style="vertical-align:top">{{ $t("Air-drop_02") }}</span>
-												<span class="mgl-5 cur-point dib" style="margin-top:-5px" @click="oprDialog('mbox-drop-des-dialog','block')">
-													<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path style="fill:none" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-												</span>
-											</p>
-											<h3 class="mgt-5">${{ numFloor(item.totalSupply, 1).toLocaleString() }}</h3>
-										</div>
 									</div>
 
 									<div class="col-md-7 aveage-box" style="align-items: start;">
@@ -129,7 +131,7 @@
 											<div >
 												<div><span class="opa-6 small " >{{ $t("Air-drop_03") }}</span></div>
 												<div class="tal "  style="flex:2">
-													<h3 v-if=" item.wantAmount > 0"  class="vertical-children notice-color" :class="item.isLP?'show-point-block':''">
+													<h3 v-if=" item.wantAmount > 0"  class="vertical-children notice-color new-text" :class="item.isLP?'show-point-block':''">
 														<span>{{ numFloor(item.wantAmount, 1e2) }}</span>
 														<svg v-if="item.isLP" viewBox="0 0 24 24" class="rotate-arrow"  height="20px" ><path fill="#fff" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
 													</h3>
@@ -160,7 +162,7 @@
 													<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path style="fill:none" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
 												</span>
 											</p>
-											<h3 style="margin-top:7px">
+											<h3 style="margin-top:7px" class="new-text">
 												{{ numFloor( 
 													(
 													Number(coinArr[item.coinKey].veMbox.orderIndexs[0].veMboxNum)
@@ -174,7 +176,7 @@
 										<div class="tal  ">
 											<p class="opa-6 small">{{ $t("Air-drop_05") }}(MBOX)</p>
 											<p class="mgt-5">
-												<button class="btn-success btn-small por"  @click="$refs.keyopr.showAll()">
+												<button class="btn-success btn-small por new-text"  @click="$refs.keyopr.showAll()">
 													{{getTotalKey}}
 												</button>
 
@@ -227,11 +229,10 @@
 			<section class=" por airdrop-cont">
 				<div class="tal ">
 					<div class="vertical-children">
-						<img src="@/assets/icon/periocn.png" alt="" height="20">
-						<h2 class="dib mgl-10">{{$t("Auction_01")}}</h2>
+						<h2 class="dib">{{$t("Auction_01")}}</h2>
 					</div>
 					<div class="aveage-box block-xs">
-						<p class="small-xs mgt-10 hide-xs">{{$t("Air-drop_234")}}</p>
+						<p class="small-xs mgt-10 hide-xs opa-6">{{$t("Air-drop_234")}}</p>
 						<div class="tar mgt-10 tal-xs">
 							<button class="btn-liling" @click="howToPlayPos =  0;oprDialog('how-to-play-dialog', 'block')">{{$t("Air-drop_226")}}</button>
 							<button class="btn-liling mgl-5" @click="howToPlayPos =  1;oprDialog('how-to-play-dialog', 'block')">{{$t("Air-drop_227")}}</button>
@@ -244,19 +245,18 @@
 
 				<div class="mgt-30 tal">
 					<div class="vertical-children">
-						<img src="@/assets/icon/periocn.png" alt="" height="20">
-						<h2 class="dib mgl-10">{{$t("Menu_04")}}</h2>
+						<h2 class="dib">{{$t("Menu_04")}}</h2>
 					</div>
 					<div class="mgt-10">
 						<Collection />
 					</div>
 				</div>
-				<div class="mgt-30 tal visiable-xs">
-					<div class="vertical-children">
+				<div class="mgt-10 tal visiable-xs">
+					<!-- <div class="vertical-children">
 						<img src="@/assets/icon/periocn.png" alt="" height="20">
 						<h2 class="dib mgl-10">Total MOMO Staked</h2>
-					</div>
-					<div class="mgt-10 adv-panel" style="padding:20px">
+					</div> -->
+					<div class="mgt-10 adv-panel tac" style="padding:20px">
 						<div class="aveage-box ">
 							<div >
 								<p class="small opa-6">{{ $t("Mine_02") }}</p>
@@ -279,11 +279,10 @@
 				<template v-if="!isMoboxWallet">
 					<div class="tal mgt-30" >
 						<div class="vertical-children">
-							<img src="@/assets/icon/periocn.png" alt="" height="20">
-							<h2 class="dib mgl-10">{{$t("Air-drop_245")}}</h2>
+							<h2 class="dib">{{$t("Air-drop_245")}}</h2>
 						</div>
 						<div class="aveage-box block-xs">
-							<p class="small-xs">{{$t("Air-drop_246")}}</p>
+							<p class="small-xs opa-6">{{$t("Air-drop_246")}}</p>
 						</div>
 					</div>
 					<div class="mgt-20 sexy" style="overflow: auto">
@@ -295,11 +294,10 @@
 				<section >
 					<div class="tal mgt-30">
 						<div class="vertical-children">
-							<img src="@/assets/icon/periocn.png" alt="" height="20">
-							<h2 class="dib mgl-10">veMBOX</h2>
+							<h2 class="dib">veMBOX</h2>
 						</div>
 						<div class="aveage-box block-xs">
-							<p class="small-xs">{{$t("Air-drop_256")}}</p>
+							<p class="small-xs opa-6">{{$t("Air-drop_256")}}</p>
 						</div>
 					</div>
 
@@ -338,11 +336,10 @@
 
 					<div class="tal mgt-30">
 						<div class="vertical-children">
-							<img src="@/assets/icon/periocn.png" alt="" height="20">
-							<h2 class="dib mgl-10">{{$t("Air-drop_257")}}</h2>
+							<h2 class="dib">{{$t("Air-drop_257")}}</h2>
 						</div>
 						<div class="aveage-box block-xs">
-							<p class="small-xs">{{$t("Air-drop_91")}}</p>
+							<p class="small-xs opa-6">{{$t("Air-drop_91")}}</p>
 						</div>
 					</div>
 
@@ -767,6 +764,10 @@ export default {
 </script>
 
 <style scoped>
+.new-text{
+	font-size: 18px !important;
+	font-family: 'Poppins Bold';
+}
 .tree{
 	position: absolute;
 	height: 190px;
@@ -860,7 +861,6 @@ export default {
 	position: absolute;
 	/* background: linear-gradient(145deg,#e3672a 0%, #000 100%); */
 	/* background: linear-gradient(145deg,#C320FF  0%, #30BAFD  100%); */
-	background: linear-gradient(145deg,#30BAFD  0%, #C320FF  100%);
 	left: -3px;
 	top: -3px;
 	bottom: -5px;
@@ -947,6 +947,9 @@ export default {
 
 
 @media (max-width: 768px) {
+	.new-text{
+		font-size: 16px !important;
+	}
 	.swiper-container{
 		display: block;
 		--swiper-pagination-color: #fff;
@@ -1040,7 +1043,6 @@ export default {
 	}
 	#apy-div{
 		padding-left: 40px !important;
-		flex: 1.8;
 	}
 	#mbox-panel{
 		padding: 10px !important

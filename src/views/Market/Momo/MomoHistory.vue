@@ -12,7 +12,7 @@
 			<div style="por mgt-10 tal"  >
 				<div class="aveage-box mgt-10 por tal" v-for="(item, index) in marketHistory.list" :key="item.tx+index" style="background:#13181F;border-radius:15px;padding:10px 8px ;">
 					<div class="shop-history-pet" style="flex:2">
-						<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px" class="dib">
+						<span v-for="item2 in item.petList" :key="''+item2.prototype+item2.tokenId" style="margin:0px 2px" class="dib">
 							<PetItemMin :data="item2" style="zoom: 0.5" />
 						</span>
 					</div>

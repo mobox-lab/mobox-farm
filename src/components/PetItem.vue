@@ -37,6 +37,12 @@
 			</div>
 		</div>
 
+		<div class="mgt-10 tar vertical-children lv1" style="font-size: 12px" v-if="data.item.vType >= 4 && data.item.level > 1">
+			<span>Lv. 1</span>&nbsp;
+			<img src="../assets/icon/airdrop.png" alt="" height="15">&nbsp;
+			<span :class="getHashrateColor(data.item)"  class="bold">{{ data.item.hashrate }}</span>
+		</div>
+
 		<div class="pet-power vertical-children mgt-20">
 			<div class="gka-harmer por" ref="anime" style="margin-top: -12px;right:-10px">
 				<img src="../assets/anime/sleep.gif" class="sleep-harmer" v-if="data.item.location == 'wallet'" alt="" />
@@ -106,6 +112,14 @@ export default {
 </script>
 
 <style  scoped>
+.market .lv1{
+	display: none !important;
+}
+.lv1{
+	position: absolute;
+	top: 0px;
+	right: 10px;
+}
 .no-search .quick-buy{
 	display: none;
 }

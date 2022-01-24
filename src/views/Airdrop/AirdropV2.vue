@@ -2,7 +2,7 @@
 	<div class="tac por">
 		<div id="bg1"></div>
 		<div id="aridorp">
-				<section class="mgt-10 por airdrop-cont" style="z-index: 10">
+				<section class=" por airdrop-cont" style="z-index: 10">
 				<!-- <div class="swiper-container hide" ref="swiper_container" style="padding: 0px 10px;padding-bottom: 15px;">
 					<div class="swiper-wrapper tac">
 						<div id="halloween-entry" class="swiper-slide tac" style="width: 60%;margin:0 auto">
@@ -13,7 +13,7 @@
 					</div>
 					<div ref="pagination" class="swiper-pagination"></div>
 				</div> -->
-				<div class="mgt-10 tal vertical-children tac-xs">
+				<div class=" tal vertical-children tac-xs">
 					<img class="mgt-30 hide-xs" src="@/assets/airdrop_icon.png" width="200" alt="">
 					<div class="dib mgl-10 block-xs">
 						<h1 style="font-size:40px">{{$t("Menu_01")}}</h1>
@@ -225,7 +225,7 @@
 			</section>
 		</div>
 
-		<div id="activity" class="mgt-30">
+		<div id="activity" class="mgt-10">
 			<section class=" por airdrop-cont">
 				<div class="tal ">
 					<div class="vertical-children">
@@ -768,12 +768,7 @@ export default {
 	font-size: 18px !important;
 	font-family: 'Poppins Bold';
 }
-.tree{
-	position: absolute;
-	height: 190px;
-	left:  60%;
-	top: 10%;
-}
+
 #aridorp, #activity{
 	padding: 10px
 }
@@ -976,7 +971,7 @@ export default {
 
 
 	#bg1,#bg2{
-		background-size: 300%;
+		background-size: cover;
 		background-position: bottom;
 		height: 300px;
 	}

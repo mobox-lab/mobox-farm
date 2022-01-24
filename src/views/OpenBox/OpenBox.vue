@@ -40,7 +40,7 @@
 						</div>
 					</div>
 
-					<div style="padding:10px 0px;position:absolute;bottom:0px;width:100%;left:0px;background:#1F232A;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;" class="tal rate-show">
+					<div style="padding:10px 0px;position:absolute;bottom:0px;width:100%;left:0px;background:#1F232A;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;" class="tal rate-show">
 						<div class="col-md-1"></div>
 						<div class="col-md-2 col-xs-4 vertical-children mgt-5" v-for="item in $parent.rateObj" :key="item.lv">
 							<div style="height:20px;width:20px;border-radius:20px;padding:2px;" class="dib dot-bg">

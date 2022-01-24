@@ -135,12 +135,10 @@ export default {
 			return parseInt(this.eth_earnedMbox / 5) || 1;
 		},
 		getStaticAdd(){
-			if(!Common.app) return 0
-			return Common.app.showPowerUpList.length * 300;
+			return this.$root.$children[0].showPowerUpList.length * 300;
 		},
 		getTotalPercent(){
-			if(!Common.app) return 0
-			return Common.app.getTotalPercent.maxAdd;
+			return this.$root.$children[0].getTotalPercent.maxAdd;
 		},
 		//获取加成
 		eth_getAddHashrate() {

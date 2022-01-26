@@ -230,8 +230,18 @@
 	}
 	.pet_item {
 		width: 48% !important;
-		zoom: 0.5;
+		zoom: 0.7;
 		margin: 1%!important;
+	}
+	.pet_item_new {
+		width: 48% !important;
+		height: auto !important;
+		min-height: 200px;
+		zoom: 0.9;
+		margin: 1%!important;
+	}
+	.scroll-item{
+		padding: 6px !important;
 	}
 	.adv-panel{
 		background: #090909;

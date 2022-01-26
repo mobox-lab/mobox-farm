@@ -34,33 +34,37 @@
 
 		</div>
 		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="vertical-children momo-content">
-			<router-link :to="`/bigSellView/`+item.tx" v-for="item in getBigShowList" :key="item.tx">
-				<BigSellItem :data="item" />
-			</router-link>
-			<router-link :to=" item.index >= 0 ? ('/auctionView/'+ item.tx):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime + item.tokenId+item.ids[0]">
-				<PetItem  v-bind:data="{item: item}" class="market" v-if="item.tokenId != 0 " >
-					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
-						<img src="@/assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
-					</div>
-					<div class="vertical-children mgt-10" v-if="item.index < 0" style="font-size: 18px;">
-						<Loading />&nbsp;
-						<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
-						<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
-					</div>
-				</PetItem>
-				<PetItemScroll v-bind:data="{item: item}" class="market" v-if="item.tokenId == 0 ">
-					<div class="vertical-children mgt-10" style="font-size: 18px;" v-if="item.index >= 0">
-						<img src="@/assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
-						<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
-					</div>
-					<div class="vertical-children mgt-10" v-if="item.index < 0" style="font-size: 18px;">
-						<Loading />&nbsp;
-						<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
-						<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
-					</div>
-				</PetItemScroll>
-			</router-link>
+			<div>
+				<router-link :to="`/bigSellView/`+item.tx" v-for="item in getBigShowList" :key="item.tx">
+					<BigSellItem :data="item" />
+				</router-link>
+			</div>
+			<div>
+				<router-link :to=" item.index >= 0 ? ('/auctionView/'+ item.tx):'###'" :class="item.index >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime + item.tokenId+item.ids[0]">
+					<PetItem  v-bind:data="{item: item.tokenId == 0?item.list1155[0]:item}" class="market" v-if="item.tokenId != 0 || item.list1155.length == 1" >
+						<div class="vertical-children " style="font-size: 18px" v-if="item.index >= 0 ">
+							<img src="@/assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
+							<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
+						</div>
+						<div class="vertical-children " v-if="item.index < 0" style="font-size: 18px;">
+							<Loading />&nbsp;
+							<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
+							<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
+						</div>
+					</PetItem>
+					<PetItemScroll v-bind:data="{item: item}" class="market" v-else>
+						<div class="vertical-children " style="font-size: 18px;" v-if="item.index >= 0">
+							<img src="@/assets/coin/BUSD.png"  alt="" height="20"/>&nbsp;
+							<span>{{numFloor(item.nowPrice/1e9, 10000)}} <sub class="small">BUSD</sub></span>
+						</div>
+						<div class="vertical-children " v-if="item.index < 0" style="font-size: 18px;">
+							<Loading />&nbsp;
+							<small v-if="item.index == -1">{{$t("Market_30")}}...</small>
+							<small v-if="item.index == -2">{{$t("Market_31")}}...</small>
+						</div>
+					</PetItemScroll>
+				</router-link>
+			</div>
 		</div>
 
 		<div style="margin-top: 30px" v-if="Math.ceil(marketPetsMy.total / onePageCount) > 1">
@@ -115,6 +119,7 @@ export default {
 						if(this.myMarketSellFilter.category == category) isMatchCategory = true;
 						if(this.myMarketSellFilter.vType == vType) isMathVType = true;
 					})
+					item.list1155 = this.get1155ShowList(item);
 				}
 				if (isMatchCategory && isMathVType) {
 					totalPet.push(item);
@@ -122,6 +127,7 @@ export default {
 			});
 			return totalPet;
 		},
+		
 		getShowList(){
 			let list = this.getSellList;
 			let cancelTx = [];
@@ -156,6 +162,26 @@ export default {
 		if(timer) clearInterval(timer);
 	},
 	methods: {
+		get1155ShowList(item){
+			let {ids, amounts} = item;
+			let arr = [];
+			ids.map((prototype, index)=>{
+				let obj = BaseConfig.NftCfg[prototype];
+				obj.num = amounts[index];
+				obj.vType = parseInt(prototype / 1e4);
+				obj.tokenId = 0;
+				obj.level = 1;
+				obj.chain = "bnb";
+				obj.hashrate = obj.quality;
+				obj.lvHashrate = obj.quality;
+				arr.push(obj);
+			});
+
+			arr.sort((a,b)=>{
+				return b.vType - a.vType;
+			});
+			return arr;
+		},
 		//获取市场上的宠物
 		async getAuctionPetsMy(needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});

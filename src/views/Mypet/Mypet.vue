@@ -229,7 +229,7 @@ export default {
 				this.$t("MOMO_13"),
 				this.$t("MOMO_14"),
 			],
-			onePageCount: 15,
+			onePageCount: 18,
 			tab: [this.$t("MOMO_31"), this.$t("MOMO_32"), this.$t("MOMO_47")],
 			tab_pos: 0,
 			hasShowBook: false,
@@ -527,6 +527,7 @@ export default {
 .momo-content{
 	margin: 0px -20px !important;
 }
+
 .pop-notice{
 	position: absolute;
 	font-size: 12px;

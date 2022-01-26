@@ -375,6 +375,10 @@ svg {
 	opacity: 0.3;
 }
 
+.mgb-10{
+	margin-bottom: 10px;
+}
+
 .mgt-5 {
 	margin-top: 5px;
 }
@@ -435,7 +439,7 @@ svg {
 	color: orange;
 }
 .small {
-	font-size: 12px;
+	font-size: 12px !important;
 }
 
 .panel {
@@ -473,6 +477,53 @@ svg {
 .disable-btn {
 	background: #666666 !important;
 	color: #919191 !important;
+}
+.btn-sell{
+	width: 126px;
+	height: 30px;
+	background: #323841;
+	border: 1px solid #0d0f11;
+	border-radius: 16px;
+	position: relative;
+	cursor: pointer;
+	color:#fff;
+	font-size: 16px;
+	font-family: 'Poppins Bold';
+	font-weight: bold;
+	text-shadow: #070d13 1px 2px 1px; 
+}
+.btn-sell:hover{
+	background: #3b424d;
+}
+.btn-sell img{
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	height: 50%;
+}
+.btn-card{
+	height: 35px;
+	outline: none;
+	border: none;
+	cursor: pointer;
+	font-size: 16px;
+	text-align: center;
+	user-select: none;
+	display: inline-block;
+	position: relative;
+	background: #1751f6;
+	border: 1px solid #0d0f11;
+	border-radius: 20px;
+	color:#fff;
+	box-shadow: 0px 2.25px 0px 2.25px #070d13; 
+	width: 150px;
+	font-family: 'Poppins Bold';
+	font-weight: bold;
+	text-shadow: #070d13 1px 2px 1px; 
+}
+.btn-card:hover{
+	background: #1344C9;
 }
 
 .btn-primary.disable-btn{
@@ -1097,7 +1148,7 @@ svg {
 	height: 47px;
 	display: inline-block;
 	background-image: url("./assets/anime/chuizi.png");
-	zoom: 0.8;
+	zoom: 0.7;
 }
 
 .animation-harmer {
@@ -1736,30 +1787,31 @@ svg {
 	}
 }
 
-.pet-min-type1{
-	border: 4px solid #8b8b8bb4;
+.momo-tab-min-type1{
+	border: 3px solid #8b8b8bb4;
 }
-.pet-min-type2{
-	border: 4px solid #5b7e2bb4;
+.momo-tab-min-type2{
+	border: 3px solid #5b7e2bb4;
 }
-.pet-min-type3{
-	border: 4px solid #3955a0b4;
+.momo-tab-min-type3{
+	border: 3px solid #3955a0b4;
 }
-.pet-min-type4{
-	border: 4px solid #793ea8b4;
+.momo-tab-min-type4{
+	border: 3px solid #793ea8b4;
 }
-.pet-min-type5{
-	border: 4px solid #97812fb4;
+.momo-tab-min-type5{
+	border: 3px solid #97812fb4;
 }
-.pet-min-type6{
-	border: 4px solid #8f3433;
+.momo-tab-min-type6{
+	border: 3px solid #8f3433;
 }
 .momo-tab{
 	width: 40px;
 	height: 40px;
 	position: relative;
-	border-radius: 40px;
+	border-radius: 12px;
 	cursor: pointer;
+	background: #222;
 	margin-right: 5px;
 }
 

@@ -78,6 +78,25 @@
 			</p>
 			<p class="small opa-6 mgt-10">{{$t("MECBOX_13")}}</p>
 		</div>
+		<!-- 中签率 -->
+		<div class="visiable-xs">
+			<div class="ly-input-content mgt-20" >
+				<div class="aveage-box" v-if="dialog_tab_pos == 1">
+					<p class="opa-6 tal">{{$t("MECBOX_26")}}</p>
+					<h3 class="tar">
+						<span class="apply-rate" v-if="Number(applyCfg[0].now) <= Number(applyCfg[0].max)">100%</span>
+						<span class="apply-rate" v-else>{{numFloor(Number(applyCfg[0].max) / Number(applyCfg[0].now) * 100, 1e2)  }}%</span>
+					</h3>
+				</div>
+				<div class="aveage-box" v-else>
+					<p class="opa-6 tal">{{$t("MECBOX_25")}}</p>
+					<h3 class="tar">
+						<span class="apply-rate" v-if="Number(applyCfg[0].now) <= Number(applyCfg[0].max)">100%</span>
+						<span class="apply-rate" v-else>{{numFloor(Number(applyCfg[0].max) / Number(applyCfg[0].now) * 100, 1e2)  }}%</span>
+					</h3>
+				</div>
+			</div>
+		</div>
 	</Dialog>
 </template>
 <script>
@@ -96,6 +115,7 @@ export default {
 			inputNum: "",
 			dialog_tab_pos: 1,
 			mboxAllownceToApply: -1,
+			applyCfg: this.$parent.applyCfg
 		})
 	},
 	computed:{

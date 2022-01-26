@@ -50,37 +50,54 @@
 
 		<div :class="getShowPetArr.length < 4 ? 'tal' : ''" class="momo-content" >
 			<PetItem  v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()" v-bind:data="{item: item}" class="market" >
-				<div style="position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
+				<template  v-slot:default="data" >
 					<div v-if="item.isLock" class="tac">
-						<button class="btn-primary disable-btn btn-small">
-							<img  src="@/assets/icon/lock.png" alt="" height="20"/>
-						</button>
+						<img  src="@/assets/newCard/newLock.png" alt="" width="20"/>
 					</div>
 					<div v-else>
+						<!-- 移除购物车 -->
 						<button class="btn-danger btn-small" v-if="item.inGroupSellCar" @click="$store.commit('marketState/addToGroupSellCar', item);">{{$t("Market_67")}}</button>
 						<template v-else>
-							<button class="btn-primary btn-small" v-if="(item.vType <= 3 && getSelectNum(item.prototype) == 0) || (item.vType > 3 && item.rent.state == -1)" @click="$refs.groupSell.editPrice(item)">{{$t("Market_66")}}</button>
-
+							<!-- 租赁状态 -->
 							<div v-if="item.vType > 3" class=" tac dib mgl-5">
-								<button v-if="item.rent.state==-1" class="btn-primary btn-small" @click="set721Price(item)">
-									<span>{{$t("Market_02")}}</span>
-								</button>
 								<span v-if="item.rent.state == 0" class="dib mgt-10">{{$t("Hire_06")}}</span>
 								<span v-if="item.rent.state == 1" class="dib mgt-10">{{$t("Hire_07")}}</span>
 							</div>
 
 							<div class="tac dib mgl-5" v-if="item.vType <= 3" >
 								<SelectNum :maxNum="item.num" v-show="getSelectNum(item.prototype) > 0" :defaultNum="getSelectNum(item.prototype)" :data="item" :onChange="onNumChange" />
-								<button class="btn-primary btn-small" @click="sell1155Direct(item)" v-show="getSelectNum(item.prototype) == 0">
-									<span>{{$t("Market_57")}}</span>
-								</button>
-								<button class="btn-primary btn-small mgl-5" @click="onNumChange(item,1, $event)" v-show="getSelectNum(item.prototype) == 0">
-									<span>{{$t("Market_08")}}</span>
-								</button>
 							</div>
+							<button class="btn-sell" @click="data.showOpr(true)"  v-show="((item.vType <= 3 && getSelectNum(item.prototype) == 0) || (item.vType > 3 && item.rent.state == -1)) && !item.isLock">
+								{{$t("Market_02")}}
+								<img src="@/assets/newCard/jt.png" alt="">
+							</button>
 						</template>
+
 					</div>
-				</div>
+				</template>
+				<!-- 操作按钮 -->
+				<template v-slot:mask_opr="data">
+					<div class="mask-opr" @click="data.showOpr(false)" v-show="((item.vType <= 3 && getSelectNum(item.prototype) == 0) || (item.vType > 3 && item.rent.state == -1)) && !item.isLock">
+						<div class="mask-btn-group animate__fadeIn animate__animated animate__faster">
+							<!-- 批量出售 -->
+							<button class="btn-card  mgb-10" @click="$refs.groupSell.editPrice(item)">
+								{{$t("Market_66")}}
+							</button><br />
+							<!-- 721出售 -->
+							<button class="btn-card mgb-10" @click="set721Price(item)" v-if="item.vType > 3">
+								{{$t("Market_02")}}
+							</button>
+							<!-- 单个出售 -->
+							<button class="btn-card mgb-10" v-else @click="sell1155Direct(item)" >
+								{{$t("Market_57")}}
+							</button><br/>
+							<!-- 打包出售 -->
+							<button class="btn-card mgb-10" @click="onNumChange(item,1, $event)" >
+								{{$t("Market_08")}}
+							</button>
+						</div>
+					</div>
+				</template>
 			</PetItem>
 		</div>
 

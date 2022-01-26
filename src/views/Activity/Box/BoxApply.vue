@@ -76,6 +76,30 @@
 			</p>
 			<p class="small opa-6 mgt-10">{{$t("NewBOX_13")}}</p>
 		</div>
+
+		<!-- 中签率 -->
+		<div class="visiable-xs">
+			<div class="ly-input-content mgt-20" v-if="dialog_tab_pos == 0">
+				<div class="aveage-box">
+					<p class="opa-6 tal">{{$t("NewBOX_30")}}</p>
+					<h3 class="tar">{{applyInfo.nowNormalAmount}}</h3>
+				</div>
+				<div class="aveage-box mgt-10">
+					<p class="opa-6 tal">{{$t("NewBOX_23")}}</p>
+					<h3 class="tar">{{ numFloor(applyInfo.maxNormalLuckyAmount / (Number(applyInfo.nowNormalAmount) >= Number(applyInfo.maxNormalLuckyAmount)?applyInfo.nowNormalAmount:applyInfo.maxNormalLuckyAmount) * 100, 1e3 ) || "-" }}%</h3>
+				</div>
+			</div>
+			<div class="ly-input-content mgt-20" v-else>
+				<div class="aveage-box">
+					<p class="opa-6 tal">{{$t("NewBOX_31")}}</p>
+					<h3 class="tar">{{applyInfo.nowAmount}}/{{applyInfo.maxLuckyAmount}}</h3>
+				</div>
+				<div class="aveage-box mgt-10">
+					<p class="opa-6 tal">{{$t("NewBOX_23")}}</p>
+					<h3 class="tar">{{ numFloor(applyInfo.maxLuckyAmount / (Number(applyInfo.nowAmount) >= Number(applyInfo.maxLuckyAmount)?applyInfo.nowAmount:applyInfo.maxLuckyAmount) * 100, 1e3 ) || "-" }}%</h3>
+				</div>
+			</div>
+		</div>
 	</Dialog>
 </template>
 

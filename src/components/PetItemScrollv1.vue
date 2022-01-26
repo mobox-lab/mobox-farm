@@ -1,50 +1,55 @@
 <template>
-	<div class="pet_item_new por" :class="'pet_hover_lv' + getNowVType">
-		<img src="@/assets/newCard/comp_bg.png"  width="100%" alt="" />
-		<div  class="dib momo_cont" :id="data.item.tx" >
-			<div v-for="item in getShowList.slice(0, 3)" :key="item.prototype" class="scroll-item">
-				<div class="aveage-box">
-					<div class="vertical-children tal" style="flex:3;white-space: nowrap">
-						<PetItemMin :data="item" />
-						<div class="dib mgl-10" style="white-space: nowrap">
-								<div class="sn">{{$t(item.tokenName) }}</div>
-								<div class=" vertical-children mgt-5" >
-									<img src="@/assets/icon/airdrop.png" alt="" height="15" />
-									<span class="mgl-5">{{ item.lvHashrate }}</span>
-								</div>
-						</div>
+<div class="pet_item por" :class="'pet_hover_lv' + getNowVType">
+	<img class="quick-buy" src="@/assets/icon/search.png" alt="" @click.stop="quickBuy(getShowList[0].prototype)" v-if="getShowList.length == 1">
+	<div ref="container" class="swiper-container dib " :id="data.item.tx">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide " v-for="item in getShowList" :key="item.prototype">
+
+				<div class="pet-lv vertical-children">
+					<img :src="require(`../assets/icon/${item.chain.toLocaleLowerCase()}.png`)" alt="" width="15" />&nbsp;
+					<span class="mgl-5">Lv. {{ item.level }}</span>
+				</div>
+
+				<img class="pet_img" :src="require(`../assets/pet/${item.prototype}.png`)" alt="" width="120" height="120" />
+				<div style="position: absolute; width: 100%; bottom: 100px; left: 0px">
+					<div class="vertical-children pet_num"  >
+						x{{ item.num }}
 					</div>
-					<div class="tac">x{{ item.num }}</div>
 				</div>
-			</div>
-			<div class="scroll-item">
-				<div class="dib">
-					<img src="@/assets/newCard/more_momo.png" alt="">
+
+				<div class="pet-bottom vertical-children mgt-5">
+					<div class="pet-name">
+						<img :src=" require(`../assets/icon/${ category_img[item.category] }.png`)" alt="" width="15" height="15" />&nbsp;
+						{{$t(item.tokenName) }}
+					</div>
 				</div>
-				<div class="mgl-10 dib">
-					ALL: {{getShowList.length}}
+
+				<div class="pet-power vertical-children mgt-20">
+					<div class="gka" ref="anime" style="margin-top: -15px"></div>
+					<span :class="getHashrateColor(item)" style="font-size: 25px" >{{ item.lvHashrate }}</span>
 				</div>
 			</div>
 		</div>
+		<div ref="pagination" class="swiper-pagination"></div>
 		<div class="slot">
 			<slot></slot>
 		</div>
 	</div>
+</div>
 </template>
 
 <script>
 import { CommonMethod } from "@/mixin";
 import { BaseConfig } from '@/config';
 // import { Common } from '@/utils';
-import PetItemMin from "./PetItemMin.vue";
 
 export default {
 	mixins: [CommonMethod],
-	components: {PetItemMin},
 	props: ["data"],
 	data(){
 		return({
 			nowIndex: 0,
+			mySwiper: null,
 		})
 	},
 	computed: {
@@ -60,8 +65,6 @@ export default {
 				obj.chain = "bnb";
 				obj.hashrate = obj.quality;
 				obj.lvHashrate = obj.quality;
-				obj.noPrice = true;
-				obj.noHover = true;
 				arr.push(obj);
 			});
 
@@ -75,58 +78,38 @@ export default {
 		}
 
 	},
+	async mounted(){
+		let that = this;
+		if( this.data.item.ids.length == 1) return;
+		let direction = document.body.clientWidth < 1000?"horizontal":"vertical";
+		this.mySwiper = new window.Swiper(this.$refs.container, {
+			direction: direction,
+			slidesPerView : 1,
+			loop: false,
+			// autoplay: {
+			// 	delay: 3000,
+			// 	stopOnLastSlide: false,
+			// 	disableOnInteraction: false,
+			// },
+			passiveListeners : false,
+			resistanceRatio: 0,
+			pagination: {
+				el: this.$refs.pagination,
+				type: 'bullets',
+				clickable: true
+			},
+			on: {
+				slideChangeTransitionEnd: function(){
+					that.nowIndex = this.activeIndex;
+				},
+			}
+		});
+	},
+	
 };
 </script>
 
 <style  scoped>
-
-@media (max-width: 768px) {
-	.sn{
-		width: 60px !important;
-	}
-	.scroll-item{
-		padding: 2px !important;
-		margin-bottom: 3px !important;
-	}
-	.momo_cont{
-		left: 10px !important; 
-		right: 10px !important;
-		top: 10px !important;
-	}
-}
-.sn{
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	width: 80px;
-	height: 20px;
-	line-height: 20px;
-}
-.listing{
-	background: #323841e7;
-	border: 2px solid #0d0f11;
-	border-radius: 15px 0px 0px 15px;
-	line-height: 15px;
-	right: 5px;top: -200px;
-	position: absolute;
-	padding: 10px;
-	text-align: left;
-	font-family: 'Poppins Bold';
-	font-weight: bold;
-	text-shadow: #070d13 1px 2px 1px; 
-	width: 120px;
-}
-.scroll-item{
-	background: #95999763;
-	border: 2px solid #070d14;
-	border-radius: 15px;
-	padding: 6px;
-	margin-bottom: 5px;
-}
-.momo_cont{
-	position: absolute;
-	left: 15px; right: 15px; bottom: 0px; top: 15px;
-}
 .rent .quick-buy{
 	display: none;
 }
@@ -143,8 +126,30 @@ export default {
 	.quick-buy:hover{
 		opacity: 1;
 	}
-
-
+@media (max-width:1000px) {
+	.swiper-pagination{
+		bottom: auto!important;
+		top: 0px!important;
+	}
+}
+.swiper-pagination{
+	zoom: 1.5;
+}
+.swiper-container{
+    --swiper-pagination-color: #95be9d;/* 两种都可以 */
+  }
+.swiper-slide{
+	border-radius: 20px;
+	padding: 15px;
+}
+.swiper-container{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	bottom: 0px;
+}
 .slot{
 	position: absolute;
 	bottom: 10px;
@@ -195,18 +200,20 @@ export default {
 	text-align: center;
 	margin-top: 30px;
 }
-.pet_item_new {
+.pet_item {
+	width: 350px;
+	border-radius: 16px;
+	text-align: center;
 	position: relative;
 	display: inline-block;
 	margin-left: 20px;
 	margin-top: 20px;
 	cursor: pointer;
+	padding: 15px;
 	user-select: none;
-	line-height: 0px;
-	width: 226px;
-	font-family: 'Poppins Bold';
-	font-weight: bold;
-	text-shadow: #070d13 1px 2px 1px; 
+	color: #fff;
+	height: 250px;
+	transition: all 0.3s linear;
 }
 
 .pet_item .pet_img {

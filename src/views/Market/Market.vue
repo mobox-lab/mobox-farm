@@ -1,5 +1,5 @@
 <template>
-	<div id="market" style="padding:10px 0px ">
+	<div id="market-content" style="padding:10px 0px ">
 		<div class="center-content">
 			<section id="market-type" class="type-select">
 				<span class="type-select-notice" style="right:5px">&gt;</span>
@@ -253,7 +253,7 @@ export default {
 }
 
 
-#market {
+#market-content {
 	text-align: center;
 	padding: 20px;
 	position: relative;

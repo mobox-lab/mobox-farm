@@ -1,25 +1,19 @@
 <template>
-<div class="pet_item por pet_hover_lv1" :class="'pet_hover_lv3' ">
+<div class="pet_item por " >
 	<div ref="container" class="swiper-container dib " :id="data.item.tx">
 		<div class="swiper-wrapper">
-			<div class="swiper-slide " v-for="item in getShowList" :key="item.id">
-				<div class="pet-lv vertical-children" v-if="Number(item.imgName) > 100">
-					<img :src="require(`../assets/icon/${item.chain.toLocaleLowerCase()}.png`)" alt="" width="15" />&nbsp;
-					<span class="mgl-5">Lv. {{ item.level }}</span>
-				</div>
+			<div class="swiper-slide por" v-for="item in getShowList" :key="item.id">
 
 				<div class="pet_img">
-					<img  :src="require(`@/assets/market/${item.imgName}.png`)" alt="" height="100%" />
+					<img  :src="require(`@/assets/market/${item.imgName}.png`)" alt="" height="80%" />
 				</div>
 
-				<div style="position: absolute; width: 100%; bottom: 50px; left: 0px">
-					<div class="vertical-children pet_num"  >
-						x{{ item.num }}
-					</div>
-				</div>
-				<div style="position: absolute; width: 100%; top: -10px; left: 0px" v-if="item.erc1155_ != 1 && item.currency == 2">
-					<div class="vertical-children pet_num small"  >
-						<span>{{$t('Market_39')}}: {{ numFloor(item.price / item.num /1e9, 100) }} {{getCurrencyName(item.currency)}}</span>
+				<h2 style="position: absolute;  top: 15px; right: 20px;" class="bold2">x{{ item.num }}</h2>
+				<h2 class="pet-lv bold2" v-if="Number(item.imgName) > 100">Lv. {{ item.level }}</h2>
+
+				<div style="position: absolute;  top: 15px; left: 20px;" v-if="item.erc1155_ != 1 && item.currency == 2">
+					<div class="vertical-children pet_num small bold2"  >
+						<span>{{$t('Market_39')}}: {{ numFloor(item.price / item.num /1e9, 100) }} <span class="opa-6">{{getCurrencyName(item.currency)}}</span></span>
 					</div>
 				</div>
 			</div>
@@ -116,7 +110,7 @@ export default {
   }
 .swiper-slide{
 	border-radius: 20px;
-	padding: 15px;
+	padding: 5px;
 }
 .swiper-container{
 	width: 100%;
@@ -158,10 +152,10 @@ export default {
 	top: 15px;
 }
 .pet_item .pet-lv {
-	line-height: 11px;
-	left: 15px;
+	left: 20px;
 	top: 15px;
 	position: absolute;
+	font-size: 16px;
 }
 .pet-bottom .pet-name {
 	display: inline-block;
@@ -186,29 +180,27 @@ export default {
 	margin-left: 20px;
 	margin-top: 20px;
 	cursor: pointer;
-	padding: 15px;
+	padding: 5px;
 	user-select: none;
 	color: #c9c9c9;
 	height: 250px;
 	transition: all 0.3s linear;
+	background: #1c222c;
+	border-radius: 16px;
 }
 
 .pet_item .pet_img {
 	vertical-align: middle;
 	user-select: none;
 	position: relative;
-	top: 10px;
-	height: 170px;
+	height: 190px;
+	background: #00000031;
+	border-radius: 12px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.pet_num {
-	display: inline-block;
-	border-radius: 30px;
-	padding: 2px 15px;
-	background: rgba(0, 0, 0, 0.6);
-	text-align: center;
-	margin-top: 20px;
-}
 
 .gka {
 	width: 51px;

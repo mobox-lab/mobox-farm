@@ -11,7 +11,7 @@
 			</p>
 		</div>
 		<div class="dialog-content mgt-10" id="shop-car-content" style="padding-bottom:15px">
-			<div v-for="item in shopCar" :key="item.prototype" :class="'pet_hover_lv' +item.vType" class="shop-car-item  vertical-children por mgt-10 por">
+			<div v-for="item in shopCar" :key="item.prototype+''+item.index" :class="'pet_hover_lv' +item.vType" class="shop-car-item  vertical-children por mgt-10 por">
 				<div class="dib por">
 					<img  :src="require(`@/assets/pet/${item.prototype}.png`)" alt="" width="100" height="100" />
 					<p style="position:absolute;bottom:5px;width:100%;text-align:center" v-if="item.tokenId == 0">

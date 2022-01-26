@@ -43,10 +43,22 @@
 			</div>
 		</div>
 		<div id="nav" class="por" @click="navOpr('hide')">
-			<div class="mgt-20 tac">
-				<WalletConnectBtn />
+			<div class="mgt-20 tac vertical-children">
+				<!-- <WalletConnectBtn /> -->
+				<button class="btn-line" @click="connectWalletAddr == ''?$refs.wbtn.buttonClick():oprDialog('mobile-wallet-dialog', 'block')" style="padding:0px 10px;font-size: 15px">
+					<span v-if="connectWalletAddr == '' ">Connect Wallet</span>
+					<p v-else class="vertical-children">
+						<span v-if="chainNetwork == 56">{{getShortAddr(connectWalletAddr)}}</span>
+						<span v-else class="color-danger">Error network</span>
+						<img class="mgl-10" src="@/assets/icon/pc_wallet.png" alt="" height="18"/>
+					</p>
+				</button>
+				<span class="text-btn por mgl-5" @click="showNotice">
+					<span class="notice" v-if="!hasReadNotice"></span>
+					<img src="./assets/icon/notice_icon.png" alt="" height="30"/>
+				</span>
 			</div>
-			<ul id="nav-list" style="maring-top: 50px">
+			<ul id="nav-list" >
 				<router-link to="/">
 					<li :class="this.$route.path == '/' ? 'active' : ''" class="vertical-children">
 						<span class="per-icon ">
@@ -119,7 +131,7 @@
 			</div>
 		</div>
 		<!-- 顶部资源 -->
-		<div id="top-res" class="vertical-children hide-xs">
+		<div id="top-res" class="vertical-children hide">
 			<p class="vertical-children">
 				<img src="./assets/icon/airdrop.png" alt="" height="25" />&nbsp;
 				<span>{{ eth_myHashrate }}</span>
@@ -312,6 +324,65 @@
 		<ConfirmDialog ref=confirmDialog />
 		<RuleDialog ref=ruleDialog />
 		<WalletOprStatus />
+		<Dialog id="mobile-wallet-dialog" :top="100" :width="450">
+			<div class="aveage-box mgt-20">
+				<div class="tal">
+					<WalletConnectBtn class="btn-small btn-default" ref="wbtn" />
+				</div>
+				<div class="tar">
+					<a :href="'https://bscscan.com/address/' + connectWalletAddr" target="_blank">
+						<button class="btn-default btn-small">
+							<img src="@/assets/icon/bsc_icon.png" alt="" height="70%">
+							<span class="mgl-5">BscScan &gt;</span>
+						</button>
+					</a>
+				</div>
+			</div>
+			<div class="dialog-content mgt-10" id="my-mobile-res" style="border-radius: 15px">
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/coin/MBOX.png" alt="" width="30"/>
+						<span class="mgl-10">MBOX</span>
+					</div>
+					<div class="tar bold2">{{ Number(coinArr["MBOX"].balance) || 0 }}</div>
+				</div>
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/icon/box_icon.png" alt="" width="30"/>
+						<span class="mgl-10">BOX</span>
+					</div>
+					<div class="tar bold2">{{ boxNum }}</div>
+				</div>
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/box/mecbox.png" alt="" width="30"/>
+						<span class="mgl-10">MEC BOX</span>
+					</div>
+					<div class="tar bold2">{{ mecBoxNum }}</div>
+				</div>
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/coin/CRYSTAL.png" alt="" width="30"/>
+						<span class="mgl-10">MEC</span>
+					</div>
+					<div class="tar bold2">{{ crystalNum }}</div>
+				</div>
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/coin/BNB.png" alt="" width="30"/>
+						<span class="mgl-10">BNB</span>
+					</div>
+					<div class="tar bold2">{{ Number(coinArr["BNB"].balance) || 0 }}</div>
+				</div>
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/coin/BUSD.png" alt="" width="30"/>
+						<span class="mgl-10">BUSD</span>
+					</div>
+					<div class="tar bold2">{{ Number(coinArr["BUSD"].balance) || 0 }}</div>
+				</div>
+			</div>
+		</Dialog>
 		<WalletConnectDialog />
 
 		<Dialog id="showNotice-dialog" :top="100" :width="600">
@@ -449,65 +520,7 @@
 				</div>
 			</div>
 		</Dialog>
-		<Dialog id="mobile-wallet-dialog" :top="100" :width="600">
-			<div class="aveage-box mgt-20">
-				<div class="tal">
-					<WalletConnectBtn class="btn-small btn-default" />
-				</div>
-				<div class="tar">
-					<a :href="'https://bscscan.com/address/' + connectWalletAddr" target="_blank">
-						<button class="btn-default btn-small">
-							<img src="@/assets/icon/bsc_icon.png" alt="" height="70%">
-							<span class="mgl-5">BscScan &gt;</span>
-						</button>
-					</a>
-				</div>
-			</div>
-			<div class="dialog-content mgt-10" id="my-mobile-res" style="border-radius: 15px">
-				<div class="aveage-box">
-					<div class="vertical-children tal">
-						<img src="@/assets/coin/MBOX.png" alt="" width="30"/>
-						<span class="mgl-10">MBOX</span>
-					</div>
-					<div class="tar bold2">{{ Number(coinArr["MBOX"].balance) || 0 }}</div>
-				</div>
-				<div class="aveage-box">
-					<div class="vertical-children tal">
-						<img src="@/assets/icon/box_icon.png" alt="" width="30"/>
-						<span class="mgl-10">BOX</span>
-					</div>
-					<div class="tar bold2">{{ boxNum }}</div>
-				</div>
-				<div class="aveage-box">
-					<div class="vertical-children tal">
-						<img src="@/assets/box/mecbox.png" alt="" width="30"/>
-						<span class="mgl-10">MEC BOX</span>
-					</div>
-					<div class="tar bold2">{{ mecBoxNum }}</div>
-				</div>
-				<div class="aveage-box">
-					<div class="vertical-children tal">
-						<img src="@/assets/coin/CRYSTAL.png" alt="" width="30"/>
-						<span class="mgl-10">MEC</span>
-					</div>
-					<div class="tar bold2">{{ crystalNum }}</div>
-				</div>
-				<div class="aveage-box">
-					<div class="vertical-children tal">
-						<img src="@/assets/coin/BNB.png" alt="" width="30"/>
-						<span class="mgl-10">BNB</span>
-					</div>
-					<div class="tar bold2">{{ Number(coinArr["BNB"].balance) || 0 }}</div>
-				</div>
-				<div class="aveage-box">
-					<div class="vertical-children tal">
-						<img src="@/assets/coin/BUSD.png" alt="" width="30"/>
-						<span class="mgl-10">BUSD</span>
-					</div>
-					<div class="tar bold2">{{ Number(coinArr["BUSD"].balance) || 0 }}</div>
-				</div>
-			</div>
-		</Dialog>
+		
 	</div>
 </template>
 <script>
@@ -643,6 +656,7 @@ export default {
 			halloweenBox: (state) => state.userState.data.halloweenBox,
 			christmasData: (state) => state.userState.data.christmasData,
 			connectWalletAddr: (state) => state.globalState.data.connectWalletAddr,
+			chainNetwork: (state) => state.globalState.data.chainNetwork,
 		}),
 		isMoboxWallet(){
 			return window.SHOW_APP_BAR != undefined;
@@ -1206,11 +1220,11 @@ export default {
 }
 #nav-list {
 	list-style: none;
-	margin-top: 50px;
+	margin-top: 20px;
 }
 #app {
 	padding-left: 260px;
-	padding-top: 50px;
+	/* padding-top: 50px; */
 }
 #nav {
 	user-select: none;

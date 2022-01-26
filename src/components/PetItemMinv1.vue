@@ -1,7 +1,7 @@
 <template>
 	<div class="dib pet-min por" :class="'pet-min-type'+petData.vType" ref="petMin"  > 
 		<div class="pet-min-img">
-			<img  :src="require(`../assets/pet/${petData.prototype}.png`)" alt="" width="70%" />
+			<img  :src="require(`../assets/pet/${petData.prototype}.png`)" alt="" />
 		</div>
 		<p class="pet-min-lv" v-if="petData.vType < 4 && !petData.noHover">{{petData.num}}</p>
 		<p class="pet-min-catogry">
@@ -70,8 +70,9 @@ export default {
 <style  scoped>
 .is-group{
 	position: absolute;
-	bottom: -5px;
-	right: 0px;
+	top: -10px;
+	left: 50%;
+	transform: translateX(-50%);
 }
 @media (max-width: 768px){
 	.pet_item{
@@ -85,22 +86,26 @@ export default {
 	z-index: 998;
 }
 .pet-min-hover.left{
-	right: 20px;
+	right: 0px;
 }
 .pet-min-hover.top{
 	bottom: 0px;
 }
-
+.pet-min-img img{
+	position: absolute;
+	width: 37px;
+	height: 37px;
+	left: 0px;
+	top: 0px;
+}
 .pet-min-img{
 	position: absolute;
-	width: 50px;
-	height:50px;
+	width: 37px;
+	height: 37px;
 	left:0px;
-	top: 2px;
+	top: 0px;
 	overflow: hidden;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	border-radius: 37px;
 }
 .pet-min-catogry{
 	position: absolute;
@@ -110,8 +115,11 @@ export default {
 	align-items: center;
 	display: flex;
 	justify-content: center;
-	top: 0px;
-	left: 0px;
+	background: #1a2c50;
+	border: 1px solid #315184;
+	bottom: -12px;
+	left: 50%;
+	transform: translateX(-50%);
 	zoom: 0.8;
 }
 .pet-min-lv{
@@ -122,39 +130,37 @@ export default {
 	align-items: center;
 	display: flex;
 	justify-content: center;
-	background: #13181f;
-	border: 1px solid #383e46;
-	border-radius: 10px;
-	border-radius: 51.2px;
-	top:0px;
+	background: #1a2c5069;
+	border: 1px solid #315184;
+	top:-8px;
 	right: 0px;
 	font-size: 12px;
 	color: #fff;
 	zoom: 0.8;
 }
 .pet-min{
-	width: 50px;
-	height: 50px;
+	width: 45px;
+	height: 45px;
 	position: relative;
+	border-radius: 45px;
 	cursor: pointer;
-	background-size: 100% 100%;
 }
 .pet-min-type1{
-	background-image: url('../assets/newCard/minbg1.png');
+	border: 4px solid #8b8b8bb4;
 }
 .pet-min-type2{
-	background-image: url('../assets/newCard/minbg2.png');
+	border: 4px solid #5b7e2bb4;
 }
 .pet-min-type3{
-	background-image: url('../assets/newCard/minbg3.png');
+	border: 4px solid #3955a0b4;
 }
 .pet-min-type4{
-	background-image: url('../assets/newCard/minbg4.png');
+	border: 4px solid #793ea8b4;
 }
 .pet-min-type5{
-	background-image: url('../assets/newCard/minbg5.png');
+	border: 4px solid #97812fb4;
 }
 .pet-min-type6{
-	background-image: url('../assets/newCard/minbg6.png');
+	border: 4px solid #8f3433;
 }
 </style>

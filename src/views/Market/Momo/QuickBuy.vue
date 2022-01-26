@@ -16,7 +16,7 @@
 			</div>
 		</div>
 		<div style="min-height:200px">
-			<div class="mgt-10 tab-panel" v-for="item in marketData.list" :key="item.tx">
+			<div class="mgt-10 tab-panel" v-for="item in marketData.list" :key="item.tx+''+item.uptime+item.index">
 				<div class="aveage-box">
 					<div class="vertical-children"  style="flex:1.5">
 						<div class="tac" >

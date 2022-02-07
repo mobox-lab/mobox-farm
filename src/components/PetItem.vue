@@ -1,122 +1,162 @@
 <template>
-	<div class="dib pet_item_new" ref="pet" :class="{'show-opr': isShowOpr}">
-		<img :src="require(`@/assets/newCard/bgv${data.item.vType}.png`)"  width="100%" alt="" />
-		<div class="momo_power">
-			<div class="aveage-box" style="flex: 1">
-				<div class="vertical-children tal">
-					<img v-if="data.item.category != 0" :src=" require(`../assets/icon/${ category_img[data.item.category] }.png`)" alt=""  height="20" />
-					<span class="mgl-5 new_momo_text">Lv. {{ data.item.level }}</span>
-				</div>
-				<div class="vertical-children tar por">
-					<div class="gka-harmer por" ref="anime" style="margin-top: -13px;right:-10px" :class="{'animation-harmer': data.item.location == 'stake'}" :style="{animationDelay: delay+'s'}">
-						<img src="../assets/anime/sleep.gif" class="sleep-harmer" v-if="data.item.location == 'wallet'" alt="" />
-					</div>
-					<span   class="new_momo_text">{{ data.item.lvHashrate }}</span>
-					<div class=" tar vertical-children lv1 small new_momo_text opa-6"  v-if="data.item.vType >= 4 && data.item.level > 1">
-						<span>Lv. 1</span>
-						<span class="mgl-5">[{{ data.item.hashrate }}]</span>
-					</div>
-				</div>
+	<div :class="' pet_item pet_hover_lv' + data.item.vType" :data-vType="data.item.vType">
+		<img class="quick-buy" src="@/assets/icon/search.png" alt="" @click.stop="quickBuy(data.item.prototype)">
+
+		<div class="pet-lv vertical-children">
+			<img :src="require(`../assets/icon/bnb.png`)" alt="" width="15" />&nbsp;
+			<span class="mgl-5">Lv. {{ data.item.level }}</span>
+		</div>
+
+		<div class="jewel" v-if="data.item.vType >= 4">
+			<div v-for="(item, index) in [100,200,300,400 ]" :key="JSON.stringify(item)" class="gem-item-little">
+				<img v-if="data.item.gems == undefined || data.item.gems[index] == 0" :src="require(`../assets/market/${item+1}.png`)" class="opa-3 gray" alt="" title="jewel"/>
+				<img v-else :src="require(`../assets/market/${data.item.gems[index]}.png`)" alt="">
 			</div>
 		</div>
-		<div class="momo_content">
-			<img class="pet_img" v-if="Number(data.item.prototype) > 60000" :src="require(`../assets/pet/${data.item.prototype}.gif`)" alt=""   />
-			<img class="pet_img" v-else :src="require(`../assets/pet/${data.item.prototype}.png`)" alt="" :class="{'big_momo': data.item.vType ==1}" />
-			<p class="momo_name new_momo_text show_on_market hide" >{{ hasSetName ? shortStr(data.item.tokenName) : $t(data.item.tokenName) }}</p>
-			<!-- MOMO数量 -->
-			<div class="vertical-children pet_num new_momo_text" v-if="data.item.vType < 4 && data.item.num >= 1" >x{{ data.item.num }}</div>
-			<!-- 宝石 -->
-			<div class="jewel" v-if="data.item.vType >= 4">
-				<div v-for="(item, index) in [100,200,300,400 ]" :key="JSON.stringify(item)" class="gem-item-little">
-					<img v-if="data.item.gems == undefined || data.item.gems[index] == 0" :src="require(`../assets/market/${item+1}.png`)" class="opa-3 gray" alt="" title="jewel"/>
-					<img v-else :src="require(`../assets/market/${data.item.gems[index]}.png`)" alt="">
-				</div>
+
+		<!-- 抽卡特效 -->
+		<!-- <div v-if="data.item.isOpenCard">
+			<div id="light-border-show" class="v5b" v-show="data.item.vType == 5"></div>
+			<div id="light-border-show" class="v6b" v-show="data.item.vType == 6"></div>
+			<div class="light-shadow" ref="lightShadowV4" v-show="data.item.vType == 4"></div>
+			<div class="light-shadow" ref="lightShadowV5" v-show="data.item.vType == 5"></div>
+		</div> -->
+
+		<img class="pet_img" v-if="Number(data.item.prototype) > 60000" :src="require(`../assets/pet/${data.item.prototype}.gif`)" alt=""  height="120" />
+		<img class="pet_img" v-else :src="require(`../assets/pet/${data.item.prototype}.png`)" alt=""  height="120" />
+		<div style="position: absolute; width: 100%; bottom: 100px; left: 0px;right:0px;z-index:5">
+			<div class="vertical-children pet_num" v-if="data.item.vType < 4 && data.item.num > 1" >
+				x{{ data.item.num }}
 			</div>
-			<!-- 品质 -->
-			<p v-if="data.item.vType > 3" class="new_momo_text momoType" :class="`momoType${data.item.vType}`">{{momoType[data.item.vType]}}</p>
 		</div>
-		<div class="momo_opr new_momo_text">
-			<p class="hide_on_market">{{ hasSetName ? shortStr(data.item.tokenName) : $t(data.item.tokenName) }}</p>
-			<slot :showOpr="showOpr"></slot>
+
+		<div class="pet-bottom vertical-children mgt-5">
+			<div class="pet-name">
+				<img v-if="data.item.category != 0" :src=" require(`../assets/icon/${ category_img[data.item.category] }.png`)" alt="" width="15" height="15" />&nbsp;
+				{{ hasSetName ? shortStr(data.item.tokenName) : $t(data.item.tokenName) }}
+			</div>
 		</div>
-		<slot name="mask_opr" :showOpr="showOpr"></slot>
+
+		<div class="mgt-10 tar vertical-children lv1" style="font-size: 12px" v-if="data.item.vType >= 4 && data.item.level > 1">
+			<span>Lv. 1</span>&nbsp;
+			<img src="../assets/icon/airdrop.png" alt="" height="15">&nbsp;
+			<span :class="getHashrateColor(data.item)"  class="bold">{{ data.item.hashrate }}</span>
+		</div>
+
+		<div class="pet-power vertical-children mgt-20">
+			<div class="gka-harmer por" ref="anime" style="margin-top: -12px;right:-10px">
+				<img src="../assets/anime/sleep.gif" class="sleep-harmer" v-if="data.item.location == 'wallet'" alt="" />
+			</div>
+			<span :class="getHashrateColor(data.item)" style="font-size: 25px" class="bold">{{ data.item.lvHashrate }}</span>
+			<div class="mgt-10 tar vertical-children show-only-market hide" style="font-size: 12px" v-if="data.item.vType >= 4 && data.item.level > 1">
+				<span>Lv. 1</span>&nbsp;
+				<img src="../assets/icon/airdrop.png" alt="" height="15">&nbsp;
+				<span :class="getHashrateColor(data.item)"  class="bold">{{ data.item.hashrate }}</span>
+			</div>
+		</div>
+		<div class="por slot">
+			<slot></slot>
+		</div>
 	</div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
 import { Common } from "@/utils";
+import lottie from "lottie-web";
 
 export default {
 	mixins: [CommonMethod],
 	props: ["data"],
-	data(){
-		return({
-			delay: Common.getRandomNum(200, 5000) / 100,
-			isShowOpr: false,
-			momoType: [0,0,0,0,"RARE","EPIC","LEGENDARY"]
-		})
-	},
 	computed: {
+		...mapState({
+			globalState: (state) => state.globalState.data,
+		}),
 		//是否设置过名字
 		hasSetName() {
 			return this.data.item.tokenName.indexOf("Name_") == -1;
 		},
 	},
+
+	async mounted() {
+		this.loadBorderLight();
+		await Common.sleep(Common.getRandomNum(200, 1000));
+		if (this.$refs.anime && this.data.item.location == "stake") {
+			this.$refs.anime.classList.add("animation-harmer");
+		}
+	},
+
 	methods: {
-		showOpr(show){
-			this.isShowOpr = show;
+		loadBorderLight(){
+			if(this.data.item.vType >= 4 && this.data.item.isOpenCard){
+				console.log("loadBorderLight");
+				lottie.loadAnimation({
+					container: this.$refs.lightShadowV4, // the dom element that will contain the animation
+					renderer: 'svg',
+					loop: true,
+					autoplay: true,
+					path: `./animation/lightShadow/v4.json` ,// the path to the animation json
+				});
+				lottie.loadAnimation({
+					container: this.$refs.lightShadowV5, // the dom element that will contain the animation
+					renderer: 'svg',
+					loop: true,
+					autoplay: true,
+					path: `./animation/lightShadow/v5.json` ,// the path to the animation json
+				});
+			}
 		}
 	}
-	
 };
 </script>
 
-<style scoped>
-.momoType{
-	font-size: 12px;
+<style  scoped>
+.market .lv1{
+	display: none !important;
+}
+.lv1{
 	position: absolute;
-	top: 10px;
-	right: 15px;
-	font-style: italic;
+	top: 0px;
+	right: 10px;
 }
-.momoType4{
-	color: #e8befd;
+.no-search .quick-buy{
+	display: none;
 }
-.momoType5{
-	color: #ffdeb0;
-}
-.momoType6{
-	color: #ffc7c8;
-}
-.listing{
-	background: #323841e7;
-	border: 2px solid #0d0f11;
-	border-radius: 15px 0px 0px 15px;
-	line-height: 15px;
-	right: 5px;top: -200px;
+.quick-buy{
+		opacity: 0.6;
+		position: absolute;
+		top: 10px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 30px;
+		cursor: pointer;
+		z-index: 99 !important;
+	}
+	.quick-buy:hover{
+		opacity: 1;
+	}
+.slot{
 	position: absolute;
-	padding: 10px;
-	text-align: left;
-	font-family: 'Poppins Bold';
-	font-weight: bold;
-	text-shadow: #070d13 1px 2px 1px; 
-	width: 120px;
+	bottom: 10px;
+	z-index: 9999;
+	text-align: center;
+	width: 100%;
+	height: 25px;
+	left: 0px;
+	padding: 0px 10px;
+
 }
-.jewel{
-	position: absolute;
-	left: 15px;
-	top: 5px;
-	transform: translate(0, -50%);
+.slot .mgt-10{
+	margin-top: 0px;
 }
 .gem-item-little{
-	width: 25px;
-	height: 25px;
+	width: 30px;
+	height: 30px;
 	position: relative;
 	background: rgba(0, 0, 0, 0.493);
 	border-radius: 5px;
-	margin-right: 5px;
-	display: inline-block;
+	margin-top: 5px;
 }
 .gem-item-little img{
 	position: absolute;
@@ -125,99 +165,118 @@ export default {
 	left: 0px;
 	top: 0px;
 }
-
-.show-opr .mask-btn-group{
-	display: flex;
-	flex-direction: column;
-	justify-content:flex-end;
-	align-items: center;
-	flex: 1;
-	height: 100%;
-}
-.show-opr .mask-opr{
-	display: block !important;
-}
-.mask-opr{
+#light-border-show{
 	position: absolute;
-	top: 0px;left: 0px;bottom: 0px;right: 0px;
-	background: rgba(0, 0, 0, 0.5);
-	display: none;
-	padding-bottom: 50px;
-	padding-left: 10px;
-	padding-right: 10px;
+	left:50%;
+	top:50%;
+	transform: translate(-50%, -50%) scale(1.07,0.96);
 }
-.market .hide_on_market{
-	display: none !important;
-}
-.market .show_on_market{
-	display: block !important;
-}
-.big_momo{
-	zoom: 1.2;
-}
-.pet_num{
+.light-shadow{
 	position: absolute;
-	font-size: 20px;
-	top: 15px;
-	right: 15px;
-}
-.pet_img{
-	margin-top: -10px;
-	height: 150px;
-}
-.momo_opr{
-	position: absolute;
-	bottom: 5px;
-	height: 42px;
-	width: 100%;
-	display: flex;
-	flex: 1;
-	align-items: center;
-	justify-content: center;
-}
-.lv1{
-	position: absolute;
+	left: 0px;
 	right: 0px;
-	bottom: -15px;
-	line-height: 12px;
+	top: 0px;
+	bottom: 0px;
+	transform: scale(1.2,1.1);
 }
-.momo_power{
+.jewel{
 	position: absolute;
-	top: 5px;
-	height: 42px;
-	width: 100%;
-	font-size: 16px;
-	display: flex;
-	flex: 1;
-	padding: 0px 15px;
+	left: 20px;
+	top:50%;
+	transform: translate(0, -50%);
 }
-.momo_name{
+
+.market .animation{
+	animation: none !important;
+}
+.market .show-only-market{
+	display: block;
+}
+.market .pet-power{
 	position: absolute;
-	bottom: 20px;
+	right: 15px;
+	top: 15px;
+	margin-top: 0px;
+	zoom: 0.9;
+	text-align: right;
+}
+.pet_item .pet-power {
 	width: 100%;
+	position: absolute;
+	line-height: 14px;
+	font-size: 14px;
+	left: 0px;
+	bottom: 10px;
+	padding: 0px 10px;
+}
+.pet_item .pet-lv {
+	line-height: 11px;
+	left: 15px;
+	top: 15px;
+	position: absolute;
+}
+.pet-bottom .pet-name {
+	display: inline-block;
+	border-radius: 50px;
+	padding: 5px 15px;
+	font-size: 12px;
+	background: rgba(0, 0, 0, 0.3);
 	text-align: center;
 }
-.momo_content{
-	position: absolute;
-	top: 60px;left: 0px;right: 0px;bottom: 60px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+
+.pet_item .pet-bottom {
+	width: 100%;
+	text-align: center;
+	margin-top: 30px;
+	position: relative;
+	z-index: 5;
 }
-.pet_item_new {
+.pet_item {
+	width: 350px;
+	border-radius: 50px;
+	text-align: center;
 	position: relative;
 	display: inline-block;
 	margin-left: 20px;
 	margin-top: 20px;
 	cursor: pointer;
+	padding: 15px;
 	user-select: none;
-	line-height: 0px;
-	width: 226px;
-	height: 327px;
+	color: #c9c9c9;
+	height: 250px;
 }
-.new_momo_text{
-	font-family: 'Poppins Bold';
-	font-weight: bold;
-	text-shadow: #070d13 1px 2px 1px; 
+/* .pet_item {
+	width: 255px;
+	border-radius: 16px;
+	text-align: center;
+	position: relative;
+	display: inline-block;
+	margin-left: 20px;
+	margin-top: 20px;
+	cursor: pointer;
+	padding: 15px;
+	user-select: none;
+	color: #c9c9c9;
+	height: 265px;
+} */
+
+.pet_item *{
+	z-index: 5;
 }
+
+.pet_item .pet_img {
+	vertical-align: middle;
+	user-select: none;
+	position: relative;
+	top: 15px;
+}
+
+.pet_num {
+	display: inline-block;
+	border-radius: 30px;
+	padding: 2px 15px;
+	background: rgba(0, 0, 0, 0.3);
+	text-align: center;
+}
+
 </style>

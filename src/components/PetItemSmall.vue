@@ -89,6 +89,7 @@ export default {
 		// 是否有宝石
 		hasGem(){
 			let hasGem = false;
+			if(!this.data.gems) return hasGem;
 			if(this.data.vType >= 4 && this.data.num > 0){
 				this.data.gems.map(item=>{
 					if(Number(item) > 0) hasGem = true;

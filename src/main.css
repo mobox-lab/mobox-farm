@@ -1541,7 +1541,15 @@ svg {
 .money{
 	font-family: Verdana;
 	font-size: 18px;
+	display: inline-flex;
 }
+.money *{
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	margin-left: 5px;
+}
+
 .sexy{
 	overflow: auto;
 }

@@ -1230,7 +1230,7 @@ export default class ETH {
 					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
 					await Common.app.eth_setMyHashrate();
-					Common.app.unLockBtn("stekeLock");
+					Common.app.unLockBtn("stakeLock");
 				}
 			);
 		});

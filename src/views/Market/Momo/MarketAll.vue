@@ -72,56 +72,34 @@
 		</div>
 		<div :class="marketPets.list.length < 4 ? 'tal' : ''"  class="vertical-children momo-content" style="min-height:500px;">
 			<a @click="$router.push({ path: `/auctionView/${item.tx}` })"  v-for="item in marketPets.list" :key="item.tx + item.index">
-				<PetItem  v-bind:data="{item: item.tokenId == 0?item.list1155[0]:item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market por" v-if="item.tokenId != 0 || item.list1155.length == 1" >
-					<template v-slot:default="data" >
-						<div class="aveage-box" style="flex:1;padding:0px 12px">
-							<div class="vertical-children tal" style="font-size: 18px;flex:10">
-								<img src="@/assets/coin/BUSD.png" alt="" height="25"/>&nbsp;
-								<span class="money" :class="{'small': item.nowPrice/1e9 > 1e6}">{{numFloor(item.nowPrice/1e9, 100).toLocaleString()}} <sub class="small opa-6" >BUSD</sub></span>
-							</div>
-							<div class="tar" >
-								<div style="width: 30px;" class="tar dib" @click.stop="data.showOpr(true)">
-									<img src="@/assets/newCard/more.png" alt="" height="25" />
-								</div>
-							</div>
-						</div>
-						<!-- 上架中 -->
-						<div v-if="nowTs -item.uptime <=  120" class=" mgt-10 small listing" >
-							<div class="dib">
-								<img src="@/assets/newCard/sl.png" alt="">
-							</div>
-							<div class="dib mgl-5">
-								<p class="small">{{$t("Market_30")}}<span class="dotting"></span></p>
-								<p >{{getLeftTime(Number(item.uptime)+120- nowTs)}}</p>
-							</div>
-						</div>
-					</template>
-					<template v-slot:mask_opr="data">
-						<div class="mask-opr" @click.stop="data.showOpr(false)" >
-							<div class="mask-btn-group animate__fadeIn animate__animated animate__faster" style="align-items: flex-end">
-								<img class="mgb-10" src="@/assets/newCard/search.png" alt="" @click="quickBuy(item.prototype)" height="40">
-								<template v-if="nowTs -item.uptime >  120">
-									<img class="mgb-10" src="@/assets/icon/inshopcar.png" v-if="isInShopCar(item)" @click="addToShopCar(item, $event, true)" alt="" height="40" />
-									<img class="mgb-10" src="@/assets/icon/add2shopcar.png" v-else @click="addToShopCar(item, $event, false)" alt="" height="40" />
-								</template>
-							</div>
-						</div>
-					</template>
-				</PetItem>
-				<PetItemScroll v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market" v-else>
-					<div class="vertical-childre" style="font-size: 18px">
-						<img src="@/assets/coin/BUSD.png" alt="" height="25"/>&nbsp;
-						<span class="money">{{numFloor(item.nowPrice/1e9, 100).toLocaleString()}} <sub class="small opa-6">BUSD</sub></span>
+				<PetItem  v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market por" v-if="item.tokenId != 0 " >
+					<div class="vertical-children mgt-10" style="font-size: 18px">
+						<img src="@/assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
+						<span class="money">{{numFloor(item.nowPrice/1e9, 100).toLocaleString()}} <sub class="small">BUSD</sub></span>
 					</div>
-					<!-- 上架中 -->
-					<div v-if="nowTs -item.uptime <=  120" class=" mgt-10 small listing" >
-						<div class="dib">
-							<img src="@/assets/newCard/sl.png" alt="">
-						</div>
-						<div class="dib mgl-5">
-							<p class="small">{{$t("Market_30")}}<span class="dotting"></span></p>
-							<p >{{getLeftTime(Number(item.uptime)+120- nowTs)}}</p>
-						</div>
+					<div v-if="nowTs -item.uptime <=  120" class=" mgt-10 small" style="position: absolute;right: 15px;top: -100px;transform: translateY(-50%);">
+						<p class="small">{{$t("Market_30")}}<span class="dotting"></span></p>
+						<p >{{getLeftTime(Number(item.uptime)+120- nowTs)}}</p>
+					</div>
+					<div v-else style="position:absolute;right:10px;bottom:0px;">
+						<img src="@/assets/icon/inshopcar.png" v-if="isInShopCar(item)" @click.stop="addToShopCar(item, $event, true)" alt="" height="40" />
+						<img src="@/assets/icon/add2shopcar.png" v-else @click.stop="addToShopCar(item, $event, false)" alt="" height="40" />
+					</div>
+				</PetItem>
+				<PetItemScroll v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market" v-if="item.tokenId == 0 ">
+					<div class="vertical-children mgt-10" style="font-size: 18px">
+						<img src="@/assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
+						<span class="money">{{numFloor(item.nowPrice/1e9, 100).toLocaleString()}} <sub class="small">BUSD</sub></span>
+					</div>
+					<div v-if="nowTs -item.uptime <=  120" class=" mgt-10 small" style="position: absolute;right: 15px;top: -100px;transform: translateY(-50%);">
+						<p class="small">{{$t("Market_30")}}<span class="dotting"></span></p>
+						<p >{{getLeftTime(Number(item.uptime)+120- nowTs)}}</p>
+					</div>
+					<div v-else style="position:absolute;right:10px;bottom:0px;">
+						<template v-if="item.ids.length <= 1 " >
+							<img src="@/assets/icon/inshopcar.png" v-if="isInShopCar(item)" @click.stop="addToShopCar(item, $event, true)" alt="" height="40" />
+							<img src="@/assets/icon/add2shopcar.png" v-else @click.stop="addToShopCar(item, $event, false)" alt="" height="40" />
+						</template>
 					</div>
 				</PetItemScroll>
 			</a>
@@ -146,7 +124,7 @@ export default {
 	components: {  Page, PetItem, PetItemScroll},
 	data(){
 		return({
-			onePageCount: 18,
+			onePageCount: 15,
 			selectCategory:[],
 			selectVType: [],
 			sortArr: [this.$t("Market_47"),this.$t("Market_04"), this.$t("Market_05"), this.$t("Market_06"), this.$t("Market_07")],
@@ -309,7 +287,7 @@ export default {
 		//获取市场上的宠物
 		async getAuctionPets(page, needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
-			let data = await Http.getAuctionList("BNB", page, this.onePageCount, this.marketSearch);
+			let data = await Http.getAuctionList("BNB", page, 15, this.marketSearch);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let needGetNameArr = [];
 			let needGetGemArr = [];
@@ -334,7 +312,6 @@ export default {
 				}
 				item.nowPrice = nowPrice;
 				item.tx = item.tx.toString() + item.auctor.toString() + item.index;
-				item.list1155 = this.get1155ShowList(item);
 			});
 			this.$store.commit("marketState/setData", {marketPets:data});
 			
@@ -342,26 +319,6 @@ export default {
 				await this.getMomoGem(needGetGemArr);
 				await this.getMomoName(needGetNameArr);
 			})
-		},
-		get1155ShowList(item){
-			let {ids, amounts} = item;
-			let arr = [];
-			ids.map((prototype, index)=>{
-				let obj = BaseConfig.NftCfg[prototype];
-				obj.num = amounts[index];
-				obj.vType = parseInt(prototype / 1e4);
-				obj.tokenId = 0;
-				obj.level = 1;
-				obj.chain = "bnb";
-				obj.hashrate = obj.quality;
-				obj.lvHashrate = obj.quality;
-				arr.push(obj);
-			});
-
-			arr.sort((a,b)=>{
-				return b.vType - a.vType;
-			});
-			return arr;
 		},
 		async getMomoName(needGetNameArr){
 			let fitterArr = [];

@@ -291,10 +291,10 @@ export default {
 	#market .dropdown{
 		margin-top: 0px !important;
 	}
-	#market {
+	#market-content {
 		margin-top: 0px;
 	}
-	#market .mgt-20{
+	#market-content .mgt-20{
 		margin-top: 10px !important;
 	}
 	

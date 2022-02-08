@@ -23,6 +23,10 @@
 						<p style="color:#8f8f8f;zoom:0.8;" >{{dateFtt('yyyy-MM-dd hh:mm:ss', new Date(item.crtime * 1000))}}</p>
 					</div>
 				</div>
+				<div class="no-show" v-if="marketHistory.list.length == 0">
+					<img src="@/assets/no_items.png" alt="">
+					<p class="opa-6 mgt-10">No items to display</p>
+				</div>
 			</div>
 		</div>
 	</Dialog>

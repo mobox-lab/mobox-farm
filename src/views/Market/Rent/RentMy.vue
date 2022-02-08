@@ -41,6 +41,10 @@
 		</div>
 
 		<div :class="getTotalPetNum < 4 ? 'tal' : ''" class="momo-content">
+			<div class="no-show" v-if="getTotalPetNum == 0">
+				<img src="@/assets/no_items.png" alt="">
+				<p class="opa-6 mgt-10">No items to display</p>
+			</div>
 			<router-link :to="`/rentView/${item.tokenId}`" v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()">
 				<PetItem   v-bind:data="{item: item}" class="market no-search" >
 					<div style="position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px;">
@@ -70,7 +74,7 @@ export default {
 	mixins: [CommonMethod],
 	data() {
 		return {
-			onePageCount: 15,
+			onePageCount: 12,
 			selectVType: [
 				this.$t("MOMO_08"),
 				this.$t("MOMO_12"),

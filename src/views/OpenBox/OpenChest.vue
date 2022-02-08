@@ -8,7 +8,7 @@
 						{{ totalOpenBoxAmount.bnb }}
 					</h1>
 					<br />
-					<div class="por box"  style="height:300px;width:300px; margin:0px auto; ">
+					<div class="por box"  style="height:322px;width:300px; margin:0px auto; ">
 						<div id="openbox-anime-new" class="hide"></div>
 						<div class="animation-box mgt-20" id="openbox-anime"></div>
 						<!-- <div class="box-show" @click="playBoxAnime2">
@@ -82,7 +82,7 @@
 			<section class="col-md-5" style="padding:10px">
 				<div >
 					<div  >
-						<div class="ly-input-content dib" style="width:100%;padding:40px 20px">
+						<div class="ly-input-content dib" style="width:100%;padding:30px 20px">
 							<p class="tal">{{ $t("BOX_02") }}:</p>
 							<div class="por mgt-10">
 								<div class="ly-input-pre-icon">
@@ -94,6 +94,8 @@
 									:value="ethState.box"
 								/>
 							</div>
+							<p class="small opa-6 mgt-10 tal">{{$t("BOX_39")}}</p>
+
 							<div class="aveage-box">
 								<div class="tal">
 									<button class="btn-primary mgt-20" style="width: 90%" @click="setAction(23011);  oprDialog('get-chest-dialog', 'block'); addKey = parseInt(ethState.box)>200?200:parseInt(ethState.box) || 0;">
@@ -110,7 +112,7 @@
 					</div>
 
 					<div class=" mgt-20" >
-						<div class="ly-input-content dib" style="width:100%;padding:40px 20px">
+						<div class="ly-input-content dib" style="width:100%;padding:30px 20px">
 							<p class="tal">{{ $t("BOX_03") }}:</p>
 							<div class="por mgt-10">
 								<div class="ly-input-pre-icon">
@@ -122,6 +124,8 @@
 									readonly="readonly"
 								/>
 							</div>
+							<p class="small opa-6 mgt-10 tal">{{$t("BOX_40")}}</p>
+
 							<div class="aveage-box">
 								<div class="tal">
 									<StatuButton class="mgt-20" style="width: 90%" :isDisable="lockBtn.openBoxLock > 0" :isLoading="lockBtn.openBoxLock > 0" :onClick="showOpenBox.bind(this)">
@@ -170,6 +174,10 @@
 						</td>
 					</tr>
 				</table>
+				<div class="no-show" v-if="getOpenBoxHistory.length == 0">
+					<img src="@/assets/no_items.png" alt="">
+					<p class="opa-6 mgt-10">No items to display</p>
+				</div>
 			</section>
 		</div>
 

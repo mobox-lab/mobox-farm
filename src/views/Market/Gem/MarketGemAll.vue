@@ -77,6 +77,10 @@
 
 		</div>
 		<div :class="marketGems.list.length < 4 ? 'tal' : ''"  class="momo-content vertical-children" style="min-height:500px">
+			<div class="no-show" v-if="marketGems.list.length == 0">
+				<img src="@/assets/no_items.png" alt="">
+				<p class="opa-6 mgt-10">No items to display</p>
+			</div>
 			<a @click="$router.push({ path: `/auctionGemView/${item.tx}` })"  v-for="item in marketGems.list" :key="item.tx + item.index">
 				<GemSellItem  :key="item.orderId" :data="{item: item}">
 					<div class="vertical-children mgt-10" style="font-size: 18px">
@@ -105,7 +109,7 @@ export default {
 	components: {  Page, GemSellItem},
 	data(){
 		return({
-			onePageCount: 15,
+			onePageCount: 12,
 			sortArr: [this.$t("Market_47"),this.$t("Market_04"), this.$t("Market_05")],
 		});
 	},

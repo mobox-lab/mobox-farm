@@ -45,6 +45,10 @@
 
 		</div>
 		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="mgt-20 vertical-children">
+			<div class="no-show" v-if="getShowList.length == 0">
+				<img src="@/assets/no_items.png" alt="">
+				<p class="opa-6 mgt-10">No items to display</p>
+			</div>
 			<router-link :to=" item.orderId >= 0 ? ('/auctionGemView/'+ item.tx):'###'" :class="item.orderId >= 0?'':'opa-6'" v-for="item in getShowList" :key="item.tx + item.uptime">
 				<GemSellItem  :key="item.orderId" :data="{item: item}">
 					<template v-if="item.currency == 2">

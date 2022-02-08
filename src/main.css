@@ -1828,3 +1828,11 @@ svg {
 		zoom: 0.8
 	}
 }
+
+.no-show{
+	height: 500px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}

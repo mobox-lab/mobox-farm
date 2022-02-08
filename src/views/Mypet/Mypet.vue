@@ -1,5 +1,5 @@
 <template>
-	<div id="mypet" style="max-width:1460px;margin:10px auto" >
+	<div id="mypet" style="max-width:1460px;margin:20px auto" >
 		<Tab class="mgt-10" :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" :notice="[]" />
 
 		<div class="tal search vertical-children por mgt-10" v-if="tab_pos != 2">
@@ -65,6 +65,18 @@
 					:key=" item.prototype.toString() + item.tokenId + item.num " >
 					<PetItem v-bind:data="{ item: item }" class="no-search" />
 				</router-link>
+			</div>
+			<div class="no-show" v-if="getShowPetArr.length == 0">
+				<img src="@/assets/no_items.png" alt="">
+				<p class="opa-6 mgt-10">Oops, you don't have MOMO yet</p>
+				<div class="mgt-20">
+					<router-link to="/market?tab=0">
+						<button class="btn-primary">Buy MOMO</button>
+					</router-link>
+					<router-link to="/openbox">
+						<button class="btn-line mgl-10">Open BOX</button>
+					</router-link>
+				</div>
 			</div>
 			<div style="margin-top: 30px" v-show="Math.ceil(getTotalPet.length / onePageCount) > 1" >
 				<Page ref="page" :defaultPage="myPetPage" :totalPage="Math.ceil(getTotalPet.length / onePageCount)" :onChange="onPageChange" />
@@ -229,7 +241,7 @@ export default {
 				this.$t("MOMO_13"),
 				this.$t("MOMO_14"),
 			],
-			onePageCount: 18,
+			onePageCount: 12,
 			tab: [this.$t("MOMO_31"), this.$t("MOMO_32"), this.$t("MOMO_47")],
 			tab_pos: 0,
 			hasShowBook: false,
@@ -623,6 +635,9 @@ export default {
 	margin-top: 20px;
 }
 @media (max-width: 768px) {
+	#mypet{
+		margin-top: 0px !important;
+	}
 	.powerup img{
 		height: 27px;
 	}

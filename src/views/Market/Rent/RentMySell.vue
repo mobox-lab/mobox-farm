@@ -67,6 +67,10 @@
 					<tr><td colspan="6" style="height:5px"></td></tr>
 				</tbody>
 			</table>
+			<div class="no-show" v-if="getShowOrderList.length == 0">
+				<img src="@/assets/no_items.png" alt="">
+				<p class="opa-6 mgt-10">No items to display</p>
+			</div>
 			
 		</section>
 	</div>

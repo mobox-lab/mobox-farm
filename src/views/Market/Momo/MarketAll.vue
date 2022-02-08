@@ -71,6 +71,10 @@
 			
 		</div>
 		<div :class="marketPets.list.length < 4 ? 'tal' : ''"  class="vertical-children momo-content" style="min-height:500px;">
+			<div class="no-show" v-if="marketPets.list.length == 0">
+				<img src="@/assets/no_items.png" alt="">
+				<p class="opa-6 mgt-10">No items to display</p>
+			</div>
 			<a @click="$router.push({ path: `/auctionView/${item.tx}` })"  v-for="item in marketPets.list" :key="item.tx + item.index">
 				<PetItem  v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market por" v-if="item.tokenId != 0 " >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
@@ -124,7 +128,7 @@ export default {
 	components: {  Page, PetItem, PetItemScroll},
 	data(){
 		return({
-			onePageCount: 15,
+			onePageCount: 12,
 			selectCategory:[],
 			selectVType: [],
 			sortArr: [this.$t("Market_47"),this.$t("Market_04"), this.$t("Market_05"), this.$t("Market_06"), this.$t("Market_07")],
@@ -287,7 +291,7 @@ export default {
 		//获取市场上的宠物
 		async getAuctionPets(page, needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
-			let data = await Http.getAuctionList("BNB", page, 15, this.marketSearch);
+			let data = await Http.getAuctionList("BNB", page, this.onePageCount, this.marketSearch);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let needGetNameArr = [];
 			let needGetGemArr = [];

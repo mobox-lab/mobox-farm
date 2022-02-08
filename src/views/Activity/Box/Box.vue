@@ -166,6 +166,10 @@
 						</td>
 					</tr>
 				</table>
+				<div class="no-show" v-if="getHistory.length == 0">
+					<img src="@/assets/no_items.png" alt="">
+					<p class="opa-6 mgt-10">No items to display</p>
+				</div>
 			</section>
 		</div>
 		

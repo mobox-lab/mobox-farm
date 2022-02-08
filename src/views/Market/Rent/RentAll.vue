@@ -43,6 +43,10 @@
 
 		</div>
 		<div :class="marketRents.list.length < 4 ? 'tal' : ''"  class="momo-content vertical-children" style="min-height:500px">
+			<div class="no-show" v-if="marketRents.list.length == 0">
+				<img src="@/assets/no_items.png" alt="">
+				<p class="opa-6 mgt-10">No items to display</p>
+			</div>
 			<router-link :to="'/rentView/'+ item.tokenId"  v-for="item in marketRents.list" :key="item.tx + item.index">
 				<PetItem  v-bind:data="{item: item}" class="market no-search " :class="{'opa-6': nowTs -item.uptime <=  120}" v-if="item.tokenId != 0 " >
 					<div class="aveage-box" style="color:#fff">
@@ -82,7 +86,7 @@ export default {
 	components: {  Page, PetItem},
 	data(){
 		return({
-			onePageCount: 15,
+			onePageCount: 12,
 			selectVType: [
 				this.$t("MOMO_08"),
 				this.$t("MOMO_12"),
@@ -193,7 +197,7 @@ export default {
 		//获取市场上的宠物
 		async getAuctionPets(page, needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
-			let data = await Http.getRentList("BNB", page, 15, this.marketRentSearch);
+			let data = await Http.getRentList("BNB", page, this.onePageCount, this.marketRentSearch);
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let needGetNameArr = [];
 			let needGetGemArr = [];

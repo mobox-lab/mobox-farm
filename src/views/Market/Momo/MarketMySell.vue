@@ -34,6 +34,10 @@
 
 		</div>
 		<div :class="getShowList.length < 4 ? 'tal' : ''"  class="vertical-children momo-content">
+			<div class="no-show" v-if="getShowList.length == 0 && getBigShowList.length == 0">
+				<img src="@/assets/no_items.png" alt="">
+				<p class="opa-6 mgt-10">No items to display</p>
+			</div>
 			<div>
 				<router-link :to="`/bigSellView/`+item.tx" v-for="item in getBigShowList" :key="item.tx">
 					<BigSellItem :data="item" />
@@ -87,7 +91,7 @@ export default {
 	components: {   PetItem, PetItemScroll, Page, Loading, BigSellItem},
 	data(){
 		return({
-			onePageCount: 15,
+			onePageCount: 12,
 			myAccount: "",
 			hasLoad: false,
 		});

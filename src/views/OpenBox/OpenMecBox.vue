@@ -3,17 +3,20 @@
 		<div class="clear mgt-10">
 			<section class="col-md-7" style="padding:10px">
 				<div class="adv-panel por box-section" style="padding-bottom:45px">
-					<p class="opa-6 mgt-20">{{$t("MECBOX_40")}}</p>
-					<h1 class="dib mgt-10" style="font-size: 20px">
-						{{ totalOpen }}
-					</h1>
-					<div class="por box "  style="margin:20px auto; ">
+					<div class="hide-xs">
+						<p class="opa-6 mgt-20">{{$t("MECBOX_40")}}</p>
+						<h1 class="dib mgt-10" style="font-size: 20px">
+							{{ totalOpen }}
+						</h1>
+					</div>
+					<div class="por box "  style="margin:51px auto; ">
+						<img src="@/assets/icon/box_rate.png" alt="" id="show-rate" @click="oprDialog('show-mec-rate-dialog', 'block')">
 						<div class="box-show" >
-							<img src="@/assets/box/mecbox_a.png" alt="" height="230">
+							<img src="@/assets/box/mecbox_a.png" alt="" height="200" class="box-img">
 						</div>
 					</div>
 
-					<div style="padding:10px 0px;position:absolute;bottom:0px;width:100%;left:0px;background:#1F232A;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;" class="tal rate-show">
+					<div style="padding:8px 0px;position:absolute;bottom:0px;width:100%;left:0px;background:#1F232A;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;" class="tal rate-show hide-xs">
 						<div class="col-md-1"></div>
 						<div class="col-md-2 col-xs-4 vertical-children mgt-5" v-for="item in rateObj" :key="item.lv">
 							<div style="height:20px;width:20px;border-radius:20px;padding:2px;" class="dib dot-bg">
@@ -29,7 +32,7 @@
 						</div>
 						<div class="col-md-1"></div>
 					</div>
-					<br />
+					
 				</div>
 			</section>
 
@@ -57,11 +60,11 @@
 								</div>
 								
 								<div class="tar">
-									<!-- <router-link to="/market?tab=4">
+									<router-link to="/market?tab=3">
 										<button class="mgt-20 btn-line" style="width:90%;" @click="setAction(23002); ">
 											{{$t("BOX_37")}}
 										</button>
-									</router-link> -->
+									</router-link>
 								</div>
 							</div>
 							
@@ -81,6 +84,7 @@
 									readonly="readonly"
 								/>
 							</div>
+							<p class="small opa-6 mgt-10 tal" style="opacity: 0">aa</p>
 							<div class="aveage-box">
 								<div class="tal">
 									<StatuButton class="mgt-20" style="width: 90%" :isDisable="lockBtn.openBoxLock > 0" :isLoading="lockBtn.openBoxLock > 0" :onClick="showOpenBox.bind(this)">
@@ -125,6 +129,10 @@
 						</td>
 					</tr>
 				</table>
+				<div class="no-show" v-if="getOpenBoxHistory.length == 0">
+					<img src="@/assets/no_items.png" alt="">
+					<p class="opa-6 mgt-10">No items to display</p>
+				</div>
 			</section>
 		</div>
 	
@@ -182,6 +190,33 @@
 			<StatuButton :isDisable="!canSubmitOpen" :isLoading="lockBtn.openMecBoxLock > 0" :onClick="mecBoxmint.bind(this,openBoxNum, true)" class=" mgt-30" style="width: 70%;" >
 				{{$t("MECBOX_39")}}
 			</StatuButton>
+		</Dialog>
+		<Dialog id="show-mec-rate-dialog" :top="200" :width="400">
+			<div style="padding:15px">
+				<div class="pie dib por">
+					<div class="pie-mask">
+						<img src="@/assets/box/mecbox_a.png" alt="" width="50%">
+					</div>
+				</div>
+				<div class="ovh mgt-20" style="padding-left:35px">
+					<div class="col-md-2 col-xs-4 vertical-children mgt-5 tal" v-for="item in rateObj" :key="item.lv">
+						<!-- <div class="dib mgl-5" style="line-height:15px;">
+							<h2 class="bold2">{{item.rate}}</h2>
+							<p :class="`bg-new${item.lv}`" style="width:40px;height:2px;margin-top:3px"></p>
+							<p class="small opa-6 mgt-5">{{$t(item.lang)}}</p>
+						</div> -->
+						<div class="dib mgl-5" style="line-height:15px">
+							<h2 class="bold2">{{item.rate}}</h2>
+							<p :class="`bg-new${item.lv}`" style="width:40px;height:2px;margin-top:3px"></p>
+							<p class="small  vertical-children opa-6 mgt-5">
+								<span>{{item.lang}}</span>
+								<img class="mgl-5" src="@/assets/coin/CRYSTAL.png" alt="" height="20">
+							</p>
+						</div>
+
+					</div>
+				</div>
+			</div>
 		</Dialog>
 	</div>
 </template>
@@ -361,3 +396,47 @@ export default {
 	},
 };
 </script>
+
+
+<style scoped>
+.pie {
+	width: 260px; height: 260px;
+	border-radius: 50%;
+	background: conic-gradient(#80E220 0, #80E220 32%,#618FFC 0, #618FFC 48%, #AE20E2 0, #AE20E2 52%, #FD820B 0, #FD820B 53%, #D8D8D8 0);
+}
+.pie-mask{
+	position: absolute;
+	top: 30px; left: 30px; bottom: 30px; right: 30px;
+	background: #1C222C;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#show-rate{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	display: none;
+	z-index: 99;
+	height: 44px !important;
+}
+
+@media (max-width: 768px) {
+	#show-rate{
+		display: block;
+	}
+	.box-img{
+		height: 150px !important;
+	}
+	.box{
+		margin: 0px !important;
+		margin-top: 5px !important;
+	}
+	.box-section{
+		padding-bottom: 0px !important;
+		border: none !important;
+		background: none !important;
+	}
+}
+</style>

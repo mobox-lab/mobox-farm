@@ -52,6 +52,10 @@
 
 		<div :class="getMyGem.length < 4 || marketTypePos == 4  ? 'tal' : 'tac'"  class="momo-content">
 				<template v-if="marketTypePos == 2">
+					<div class="no-show" v-if="getMyGem.length == 0">
+						<img src="@/assets/no_items.png" alt="">
+						<p class="opa-6 mgt-10">No items to display</p>
+					</div>
 					<GemSellItem v-for="item in getMyGem" :key="item.key" :data="{item: item}">
 						<div class="tac "  >
 							<SelectNum :maxNum="item.num" v-show="getSelectNum(item.key) > 0" :defaultNum="getSelectNum(item.key)" :data="item" :onChange="onNumChange" />

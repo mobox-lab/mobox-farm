@@ -9,13 +9,16 @@
 				<div class="card-v4-loading  pre-load"></div>
 				<div class="card-v5-loading  pre-load"></div>
 			</template>
-			<section class="col-md-7" style="padding:10px">
+			<section class="col-md-7" style="padding:10px" >
 				<div class="adv-panel por box-section" style="padding-bottom:45px">
-					<p class="opa-6 mgt-20">{{ $t("BOX_01") }}</p>
-					<h1 class="dib mgt-10" style="font-size: 20px">
-						{{ totalOpenBoxAmount.bnb }}
-					</h1>
-					<div class="por box"  style="height:300px; margin:0px auto; ">
+					<div class="hide-xs">
+						<p class="opa-6 mgt-20">{{ $t("BOX_01") }}</p>
+						<h1 class="dib mgt-10" style="font-size: 20px">
+							{{ totalOpenBoxAmount.bnb }}
+						</h1>
+					</div>
+					<div class="por box"  style="height:287px; margin:0px auto; ">
+						<img src="@/assets/icon/box_rate.png" alt="" id="show-rate" @click="oprDialog('show-rate-dialog', 'block')">
 						<div class="box-show" >
 							<div id="box-spine" ref="boxSpine"></div>
 						</div>
@@ -39,8 +42,8 @@
 							<button class="btn-primary mgl-10" @click.stop="openAll">{{$t("NewBOX_37")}}</button>
 						</div>
 					</div>
-
-					<div style="padding:10px 0px;position:absolute;bottom:0px;width:100%;left:0px;background:#1F232A;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;" class="tal rate-show">
+					<!-- 概率展示 -->
+					<div style="padding:10px 0px;position:absolute;bottom:0px;width:100%;left:0px;background:#1F232A;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;" class="tal rate-show hide-xs">
 						<div class="col-md-1"></div>
 						<div class="col-md-2 col-xs-4 vertical-children mgt-5" v-for="item in $parent.rateObj" :key="item.lv">
 							<div style="height:20px;width:20px;border-radius:20px;padding:2px;" class="dib dot-bg">
@@ -134,7 +137,7 @@
 						<th width="40%" class="tar">TX</th>
 					</tr>
 					<tr v-for="item in getOpenBoxHistory" :key="item.tx + item.event">
-						<td class="tal tac-xs">{{ getTimeFtt(item.crtime) }}</td>
+						<td class="tal">{{ getTimeFtt(item.crtime) }}</td>
 						<td class="tal">{{ $t(eventToLang[item.event]) }}</td>
 						<td>x{{ item.amount }}</td>
 						<td class="vertical-children">
@@ -156,6 +159,10 @@
 						</td>
 					</tr>
 				</table>
+				<div class="no-show" v-if="getOpenBoxHistory.length == 0">
+					<img src="@/assets/no_items.png" alt="">
+					<p class="opa-6 mgt-10">No items to display</p>
+				</div>
 			</section>
 		</div>
 
@@ -219,6 +226,24 @@
 				{{ $t("BOX_11") }}
 			</button>
 		</Dialog>
+		<Dialog id="show-rate-dialog" :top="200" :width="400">
+			<div style="padding:15px">
+				<div class="pie dib por">
+					<div class="pie-mask">
+						<img src="@/assets/icon/box_view.png" alt="" width="50%">
+					</div>
+				</div>
+				<div class="ovh mgt-20" style="padding-left:35px">
+					<div class="col-md-2 col-xs-4 vertical-children mgt-5 tal" v-for="item in $parent.rateObj" :key="item.lv">
+						<div class="dib mgl-5" style="line-height:15px;">
+							<h2 class="bold2">{{item.rate}}</h2>
+							<p :class="`bg-new${item.lv}`" style="width:40px;height:2px;margin-top:3px"></p>
+							<p class="small opa-6 mgt-5">{{$t(item.lang)}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</Dialog>
 	</div>
 </template>
 
@@ -249,12 +274,12 @@ export default {
 			showOpenBoxCard: [],
 
 			testArr: [
-				// {category: 5,hashrate: 120,level: 1,lvHashrate: 120,num: 1,prototype: '50092',quality: 6,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'Name_338',isOpenCard:true},
-				// {category: 3,hashrate: 40,level: 1,lvHashrate: 40,num: 1,prototype: '43025',quality: 6,specialty: 0,tokenId:0,vType: 4, chain:'bnb', tokenName:'Name_296',isOpenCard:true},
-				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '21001',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'Name_1',isOpenCard:true},
+			// 	{category: 5,hashrate: 120,level: 1,lvHashrate: 120,num: 1,prototype: '50092',quality: 6,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'Name_338',isOpenCard:true},
+			// 	{category: 3,hashrate: 40,level: 1,lvHashrate: 40,num: 1,prototype: '43025',quality: 6,specialty: 0,tokenId:0,vType: 4, chain:'bnb', tokenName:'Name_296',isOpenCard:true},
+			// 	{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '21001',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'Name_1',isOpenCard:true},
 
-				// {category: 2,hashrate: 20,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 5,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'7',isOpenCard:true},
-				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'6',isOpenCard:true},
+			// 	{category: 2,hashrate: 20,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 5,specialty: 0,tokenId:0,vType: 5, chain:'bnb', tokenName:'7',isOpenCard:true},
+			// 	{category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'6',isOpenCard:true},
 				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '33020',quality: 2,specialty: 0,tokenId:0,vType: 3, chain:'bnb', tokenName:'5',isOpenCard:true},
 				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '22020',quality: 2,specialty: 0,tokenId:0,vType: 2, chain:'bnb', tokenName:'4',isOpenCard:true},
 				// {category: 2,hashrate: 2,level: 1,lvHashrate: 2,num: 1,prototype: '43014',quality: 4,specialty: 0,tokenId:0,vType: 4, chain:'bnb', tokenName:'3',isOpenCard:true},
@@ -759,6 +784,27 @@ export default {
 </script>
 
 <style scoped>
+.pie {
+	width: 260px; height: 260px;
+	border-radius: 50%;
+	background: conic-gradient(#80E220 0, #80E220 35%,#618FFC 0, #618FFC 47%, #AE20E2 0, #AE20E2 49.5%, #FD820B 0, #FD820B 50%, #D8D8D8 0);
+}
+.pie-mask{
+	position: absolute;
+	top: 30px; left: 30px; bottom: 30px; right: 30px;
+	background: #1C222C;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#show-rate{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	display: none;
+	z-index: 99;
+}
 .animate__slideInUp{
 	animation-name: slideInUp !important;
 	position: relative;
@@ -781,6 +827,9 @@ export default {
 }
 
 @media (max-width: 768px) {
+	#show-rate{
+		display: block;
+	}
 	#show-card-bg{
 		transform: scale(0.7);
 	}
@@ -1131,7 +1180,9 @@ export default {
 	}
 
 	.box-section{
-		padding-bottom: 30px;
+		padding-bottom: 0px !important;
+		border: none !important;
+		background: none !important;
 	}
 	
 	.table-his td{
@@ -1139,6 +1190,11 @@ export default {
 	}
 	#box-spine{
 		width: 606px;
+		transform: translateX(-50%);
+		left: 50%;
+		top: -30%;
+		position: absolute;
+		zoom: 1.5;
 		/* zoom: 0.5; */
 		/* top: calc(100vh - 300px) !important; */
 	}

@@ -49,6 +49,10 @@
 		</div>
 
 		<div :class="getShowPetArr.length < 4 ? 'tal' : ''" class="momo-content" >
+			<div class="no-show" v-if="getShowPetArr.length == 0">
+				<img src="@/assets/no_items.png" alt="">
+				<p class="opa-6 mgt-10">No items to display</p>
+			</div>
 			<PetItem  v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()" v-bind:data="{item: item}" class="market" >
 				<div style="position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px">
 					<div v-if="item.isLock" class="tac">
@@ -249,7 +253,7 @@ export default {
 	mixins: [CommonMethod],
 	data() {
 		return {
-			onePageCount: 15,
+			onePageCount: 12,
 			inputPrice: "",
 			shopCar: [],
 			pageNum: 1,

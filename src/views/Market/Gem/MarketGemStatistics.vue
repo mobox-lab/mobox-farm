@@ -104,6 +104,11 @@
 					</tbody>
 				</table>
 
+				<div class="no-show" v-if="tableData[tableDataPos].length == 0">
+					<img src="@/assets/no_items.png" alt="">
+					<p class="opa-6 mgt-10">No items to display</p>
+				</div>
+
 				<div style="margin-top: 30px" v-if="tableDataPos == 'myHistory' ">
 					<Page :defaultPage="this.myHistoryPage" :totalPage="Math.ceil(marketGemHistory.total / 50)" :onChange="onPageChange" v-if="Math.ceil(marketGemHistory.total / 50) > 1" />
 				</div>

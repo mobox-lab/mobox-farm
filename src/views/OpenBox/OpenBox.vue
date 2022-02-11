@@ -71,7 +71,7 @@
 								<div class="ly-input-pre-icon">
 									<img  src="@/assets/icon/box_view.png" alt="" height="20" />
 								</div>
-								<input class="ly-input" type="number"
+								<input class="ly-input" type="text"
 									style=" text-align: left; width: 100%; padding-left:65px"
 									readonly="readonly"
 									:value="boxNum"
@@ -103,7 +103,7 @@
 								<div class="ly-input-pre-icon">
 									<img src="@/assets/icon/box_icon.png" alt="" height="20" />
 								</div>
-								<input class="ly-input" type="number"
+								<input class="ly-input" type="text"
 									style="text-align: left; width: 100%; padding-left:65px"
 									:value="canOpenBox"
 									readonly="readonly"

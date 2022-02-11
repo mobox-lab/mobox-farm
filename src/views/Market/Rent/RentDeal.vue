@@ -42,7 +42,7 @@
 				<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
 					<p class="small tal opa-6">{{$t("Hire_55").replace('#0#', statusObj.rentDays)}}</p>
 					<div class="por mgt-5">
-						<input v-model="inputRentDays" class="ly-input" type="number" v-number :data-max="statusObj.rentDays"
+						<input v-model="inputRentDays" class="ly-input" type="text" v-number :data-max="statusObj.rentDays"
 							style=" background: #0f172a; text-align: center; width: 100%; "
 							:placeholder="$t('Hire_55').replace('#0#', statusObj.rentDays)"
 						/>

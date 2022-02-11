@@ -71,7 +71,7 @@
 						<div class="ly-input-pre-icon">
 							<img  src="@/assets/coin/BUSD.png" alt="" />
 						</div>
-						<input v-model="inputPrice" class="ly-input" type="number"
+						<input v-model="inputPrice" class="ly-input" type="text"
 							style=" background: #0f172a; text-align: center; width: 100%; "
 							:placeholder="$t('Market_10')"
 							v-number

@@ -6,7 +6,7 @@
 <template>
 	<div id="app">
 		<div class="mask" :class="{'show':showMoreMenu}" @click="showMoreMenu=false;navOpr('hide')"></div>
-		<!-- ipad导航 -->
+		<!-- ipad顶部导航 -->
 		<div id="mobile-nav" class="hide">
 			<img src="./assets/logo.png" height="30" alt="" />
 			<div class="dib vertical-children" style="position:absolute;top:0px;right:15px;zoom:0.8" >
@@ -42,6 +42,7 @@
 				</svg>
 			</div>
 		</div>
+		<!-- PC左边导航 -->
 		<div id="nav" class="por" @click="navOpr('hide')">
 			<div class="mgt-20 tac vertical-children">
 				<!-- <WalletConnectBtn /> -->
@@ -55,14 +56,14 @@
 				</button>
 				<span class="text-btn por mgl-5" @click="showNotice">
 					<span class="notice" v-if="!hasReadNotice"></span>
-					<img src="./assets/icon/notice_icon.png" alt="" height="30"/>
+					<img src="./assets/icon/notice_icon.png" alt="" height="26"/>
 				</span>
 			</div>
 			<ul id="nav-list" >
 				<router-link to="/">
 					<li :class="this.$route.path == '/' ? 'active' : ''" class="vertical-children">
 						<span class="per-icon ">
-							<img src="./assets/icon/home.png" alt="" width="30" />
+							<img src="./assets/menu/home.png" alt="" width="35" />
 						</span>
 						<span>{{ $t("Air-drop_223") }}</span>
 					</li>
@@ -71,7 +72,7 @@
 				<router-link to="/openbox">
 					<li :class="this.$route.path == '/openbox' ? 'active' : ''">
 						<span class="per-icon vertical-children">
-							<img src="./assets/icon/box.png" alt="" width="30" />
+							<img src="./assets/menu/box.png" alt="" width="35" />
 						</span>
 						<span>{{ $t("Menu_02") }}</span>
 					</li>
@@ -79,29 +80,38 @@
 				<router-link to="/mypet">
 					<li :class="this.$route.path.indexOf('/mypet') != -1  ? 'active' : ''">
 						<span class="per-icon vertical-children">
-							<img src="./assets/icon/mypet.png" alt="" height="30" />
+							<img src="./assets/menu/momo.png" alt="" height="35" />
 						</span>
 						<span>{{ $t("Menu_03") }}</span>
 					</li>
 				</router-link>
 				<router-link to="/market">
-				<li :class="this.$route.path == '/market' ? 'active' : ''">
-					<span class="per-icon vertical-children">
-						<span class="notice" v-if="historyNotice"></span>
-						<img src="./assets/icon/market.png" alt="" height="30" />
-					</span>
-					<span>{{ $t("Menu_05") }}</span>
-				</li>
+					<li :class="this.$route.path == '/market' ? 'active' : ''">
+						<span class="per-icon vertical-children">
+							<span class="notice" v-if="historyNotice"></span>
+							<img src="./assets/menu/market.png" alt="" height="35" />
+						</span>
+						<span>{{ $t("Menu_05") }}</span>
+					</li>
 				</router-link>
 				
-				<router-link to="/rank">
-					<li :class="this.$route.path == '/rank' ? 'active' : ''">
+				<!-- <router-link to="/statistics">
+					<li :class="this.$route.path == '/statistics' ? 'active' : ''">
 						<span class="per-icon vertical-children">
-							<img src="./assets/icon/rank.png" alt="" width="25" />
+							<img src="./assets/menu/fx.png" alt="" width="35" />
 						</span>
+						<span>Statistics</span>
+					</li>
+				</router-link> -->
+				<router-link to="/rank" >
+					<li :class="this.$route.path == '/rank' ? 'active' : ''" >
+						<p class="per-icon vertical-children">
+							<img src="./assets/icon/rank.png" alt="" height="25" />
+						</p>
 						<span>{{ $t("Rank_05") }}</span>
 					</li>
 				</router-link>
+
 			</ul>
 			<!-- <div class="tac mgt-30">
 				<div id="halloween-entry" class="por">
@@ -136,14 +146,6 @@
 				<img src="./assets/icon/airdrop.png" alt="" height="25" />&nbsp;
 				<span>{{ eth_myHashrate }}</span>
 			</p>
-			<!-- <p class="vertical-children">
-				<img src="./assets/icon/box_icon.png" alt="" height="22" />&nbsp;
-				<span>{{ boxNum }}</span>
-			</p>
-			<p class="vertical-children">
-				<img src="./assets/box/mecbox.png" alt="" height="22" />&nbsp;
-				<span>{{ mecBoxNum }}</span>
-			</p> -->
 			<p class="vertical-children">
 				<img src="./assets/coin/CRYSTAL.png" alt="" height="25" />&nbsp;
 				<span>{{ crystalNum }}</span>
@@ -171,33 +173,25 @@
 				<router-link to="/">
 					<li :class="this.$route.path == '/' ? 'active' : ''">
 						<p class="per-icon vertical-children">
-							<img src="./assets/icon/home.png" alt="" height="28" />
+							<img src="./assets/menu/home.png" alt="" height="30" />
 						</p>
-						<span  class="mgt-5">{{ $t("Air-drop_223") }}</span>
+						<span  >{{ $t("Air-drop_223") }}</span>
 					</li>
 				</router-link>
-				<!-- <router-link to="/activity">
-					<li :class="this.$route.path == '/activity' ? 'active' : ''">
-						<span class="per-icon vertical-children">
-							<img src="./assets/icon/huodong.png" alt="" width="60" />
-						</span>
-						<span>{{$t("Auction_01")}}</span>
-					</li>
-				</router-link> -->
 				<router-link to="/openbox">
 					<li :class="this.$route.path == '/openbox' ? 'active' : ''">
 						<p class="per-icon vertical-children">
-							<img src="./assets/icon/box.png" alt="" width="40" />
+							<img src="./assets/menu/box.png" alt="" width="30" />
 						</p>
-						<span  class="mgt-5">{{ $t("Menu_02") }}</span>
+						<span  >{{ $t("Menu_02") }}</span>
 					</li>
 				</router-link>
 				<router-link to="/mypet">
 					<li :class="this.$route.path == '/mypet' ? 'active' : ''">
 						<p class="per-icon vertical-children">
-							<img src="./assets/icon/mypet.png" alt="" height="32" />
+							<img src="./assets/menu/momo.png" alt="" height="30" />
 						</p>
-						<span  class="mgt-5">{{ $t("Menu_03") }}</span>
+						<span  >{{ $t("Menu_03") }}</span>
 					</li>
 				</router-link>
 
@@ -206,22 +200,30 @@
 						<p class="per-icon vertical-children">
 							<section class="por dib">
 								<span class="notice" v-if="historyNotice"></span>
-								<img src="./assets/icon/market.png" alt="" height="30" />
+								<img src="./assets/menu/market.png" alt="" height="30" />
 							</section>
 						</p>
 						<span>{{ $t("Menu_05") }}</span>
 					</li>
 				</router-link>
 
-
-				<router-link to="/rank" >
-					<li :class="this.$route.path == '/rank' ? 'active' : ''" >
+				<!-- <router-link to="/statistics" >
+					<li :class="this.$route.path == '/statistics' ? 'active' : ''" >
 						<p class="per-icon vertical-children">
-							<img src="./assets/icon/rank.png" alt="" height="25" />
+							<img src="./assets/menu/fx.png" alt="" height="30" />
 						</p>
-						<span>{{ $t("Rank_05") }}</span>
+						<span>Statistics</span>
+					</li>
+				</router-link> -->
+				<router-link to="/rank">
+					<li :class="this.$route.path == '/rank' ? 'active' : ''">
+						<span class="per-icon vertical-children">
+							<img src="./assets/icon/rank.png" alt="" height="30" />
+						</span>
+						<span class="mgt-5">{{ $t("Rank_05") }}</span>
 					</li>
 				</router-link>
+
 
 				<!-- <a href="javascript:void(0)"> 
 					<li @click="showMoreMenu = !showMoreMenu">
@@ -855,7 +857,7 @@ export default {
 				lang = navigator.language||navigator.userLanguage;
 				lang = langMap[lang] || 'en';
 			}
-			if(lang == "zh-CH") lang = "zh-TW";
+			if(lang.indexOf("zh-") != 0) lang = "zh-CN";
 			this.$i18n.locale = lang;
 		},
 		async  getTotalStakeUSDTAndAirdropKEY(){
@@ -1058,7 +1060,7 @@ export default {
 	white-space:nowrap;
 }
 #nav-list-mobile span{
-	zoom: 0.5;
+	zoom: 0.7;
 	font-size: 14px;
 }
 #nav-list-mobile ul li.active{
@@ -1194,6 +1196,7 @@ export default {
 	opacity: 1;
 	color: #fff;
 	border-left: 5px solid #1752f6;
+	padding-left: 75px;
 }
 #nav-list li {
 	cursor: pointer;

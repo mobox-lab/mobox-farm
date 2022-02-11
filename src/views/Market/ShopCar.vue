@@ -141,10 +141,7 @@ export default {
 			this.getConfirmDialog().show(msg, async ()=>{
 				let coinKey = "BUSD";
 
-				if(this.getShopCarTotalPrice > Number(this.coinArr[coinKey].balance)){
-					this.showNotify(this.$t("Market_34"), "error");
-					return ;
-				}
+				
 
 				let auctors = [];
 				let indexs = [];
@@ -156,6 +153,13 @@ export default {
 					startTimes.push(item.uptime);
 					prices.push(item.nowPrice)
 				});
+
+				console.log(auctors, indexs, prices, startTimes);
+
+				if(this.getShopCarTotalPrice > Number(this.coinArr[coinKey].balance)){
+					this.showNotify(this.$t("Market_34"), "error");
+					return ;
+				}
 
 				let hash = await Wallet.ETH.buyMarketPets(auctors, indexs, coinKey, startTimes, prices, this.ignoreSold);
 				if(hash){

@@ -457,8 +457,8 @@ svg {
 	border-radius: 10px;
 }
 .adv-panel-content{
-	background: #070d14;
-	border: 1px solid #1f252b;
+	background: #090909;
+	border: 1px solid #21272e;
 	border-radius: 10px;
 }
 
@@ -1401,7 +1401,7 @@ svg {
 .my-rank td{border: none;padding: 10px 15px;}
 
 .center-box{
-	max-width: 1200px;
+	max-width: 1460px;
 	margin: 0px auto;
 }
 .shop-car-item *{
@@ -1835,4 +1835,10 @@ svg {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+}
+
+.link{
+	color: #668eff;
+	cursor: pointer;
+	text-decoration: underline;
 }

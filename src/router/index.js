@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Airdrop from '../views/Airdrop/Airdrop.vue'
 import AirdropV2 from '../views/Airdrop/AirdropV2.vue'
-import OpenBox from '../views/OpenBox/index.vue'
+import OpenBox from '../views/OpenBox/Index.vue'
 import Collection from '../views/Collection.vue'
 import Mypet from '../views/Mypet/Mypet.vue'
 import Upgrade from '../views/Mypet/Upgrade.vue'
@@ -16,6 +16,7 @@ import Activity from "../views/Activity/Activity.vue"
 import Christmas from "../views/Activity/Christmas/Christmas.vue"
 import BlindBox from "../views/Activity/BlindBox/BlindBox.vue"
 import BinanceNFT from "../views/BNFT/BinanceNFT.vue"
+import Statistics from "../views/Statistics/Index.vue"
 
 Vue.use(VueRouter)
 
@@ -130,6 +131,11 @@ const routes = [
 		path: "/blindBox",
 		name: "BlindBox",
 		component: BlindBox
+	},
+	{
+		path: "/statistics",
+		name: "Statistics",
+		component: Statistics
 	},
 ]
 

@@ -229,6 +229,7 @@ export default {
 				item.bidPrice = nowPrice;
 				item.nowPrice = nowPrice;
 				item.isMyPet =  item.auctor.toLocaleLowerCase() == myAccount.toLocaleLowerCase();
+				item.tx = item.tx.toString() + item.auctor.toString() + item.index;
 				
 				//明天的价格
 				let nextDayPrice = item.endPrice;

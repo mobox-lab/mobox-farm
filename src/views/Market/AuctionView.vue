@@ -150,7 +150,7 @@
 						<div class="ly-input-pre-icon">
 							<img  src="@/assets/coin/BUSD.png" alt="" />
 						</div>
-						<input v-model="sellObj.startPrice"   class="ly-input sell-input" type="number" :placeholder="priceTypePos == 1?$t('Market_11'):$t('Market_17')" v-number  data-max="100000000"/>
+						<input v-model="sellObj.startPrice"   class="ly-input sell-input" type="text" :placeholder="priceTypePos == 1?$t('Market_11'):$t('Market_17')" v-number  data-max="100000000"/>
 					</div>
 				</div>
 				<div v-if="priceTypePos == 1">
@@ -160,13 +160,13 @@
 							<div class="ly-input-pre-icon">
 								<img  src="@/assets/coin/BUSD.png" alt="" />
 							</div>
-							<input v-model="sellObj.endPrice" class="ly-input sell-input" type="number" :placeholder="$t('Market_12')" v-number data-max="100000000"/>
+							<input v-model="sellObj.endPrice" class="ly-input sell-input" type="text" :placeholder="$t('Market_12')" v-number data-max="100000000"/>
 						</div>
 					</div>
 					<div class="ly-input-content mgt-10">
 						<p class="small tal opa-6">{{$t("Market_13")}}(≥2)</p>
 						<div class="por mgt-5">
-							<input v-model="sellObj.durationDays" class="ly-input sell-input" type="number" v-int :placeholder="$t('Market_13')" data-max="1000" data-min="2"  />
+							<input v-model="sellObj.durationDays" class="ly-input sell-input" type="text" v-int :placeholder="$t('Market_13')" data-max="1000" data-min="2"  />
 						</div>
 					</div>
 				</div>

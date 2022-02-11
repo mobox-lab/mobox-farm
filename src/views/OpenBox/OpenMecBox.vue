@@ -45,7 +45,7 @@
 								<div class="ly-input-pre-icon">
 									<img  src="@/assets/box/mecbox.png" alt="" height="20" />
 								</div>
-								<input class="ly-input" type="number"
+								<input class="ly-input" type="text"
 									style=" text-align: left; width: 100%; padding-left:65px"
 									readonly="readonly"
 									:value="mecBoxNum"
@@ -78,7 +78,7 @@
 								<div class="ly-input-pre-icon">
 									<img src="@/assets/box/mecbox_a.png" alt="" height="20" />
 								</div>
-								<input class="ly-input" type="number"
+								<input class="ly-input" type="text"
 									style="text-align: left; width: 100%; padding-left:65px"
 									:value="canOpenBox"
 									readonly="readonly"

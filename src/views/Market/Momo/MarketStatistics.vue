@@ -59,14 +59,14 @@
 					<tbody v-for="(item, pos) in tableData[tableDataPos]" :key="item.tx + item.prototype + item.bidPrice + pos" class="por tal">
 						<div class="list-item-momo-mobile" >
 							<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px">
-								<PetItemMin :data="item2" />&nbsp;
+								<PetItemMin :data="item2" :isTop="pos > tableData[tableDataPos].length-4"/>&nbsp;
 							</span>
 						</div>
 						<tr><td colspan="5" style="height:5px"></td></tr>
 						<tr class="list-item">
 							<td style="width:350px;" class="list-item-momo">
 								<span v-for="item2 in item.petList" :key="item2.prototype" style="margin:0px 2px">
-									<PetItemMin :data="item2" />
+									<PetItemMin :data="item2" :isTop="pos > tableData[tableDataPos].length-4" />
 								</span>
 							</td>
 							<td class="addr">{{getShortAddr(item.bidder)}}</td>

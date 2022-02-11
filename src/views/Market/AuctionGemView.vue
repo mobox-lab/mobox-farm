@@ -76,7 +76,7 @@
 						<div class="ly-input-pre-icon">
 							<img  :src="require(`@/assets/coin/${oprCoin}.png`)" alt="" />
 						</div>
-						<input v-model="sellObj.onePrice"  class="ly-input sell-input" type="number" :placeholder="$t('Market_39')" v-number  data-max="100000000"/>
+						<input v-model="sellObj.onePrice"  class="ly-input sell-input" type="text" :placeholder="$t('Market_39')" v-number  data-max="100000000"/>
 					</div>
 				</div>
 				<div class="ly-input-content mgt-10">
@@ -85,8 +85,8 @@
 						<div class="ly-input-pre-icon">
 							<img  :src="require(`@/assets/coin/${oprCoin}.png`)" alt="" />
 						</div>
-						<input v-if="isGem" v-model="sellObj.startPrice"  class="ly-input sell-input" type="number" :placeholder="$t('Market_18')" v-number  data-max="100000000"/>
-						<input v-else v-model="totalPrice" readonly class="ly-input sell-input opa-6" type="number" :placeholder="$t('Market_18')" v-number  data-max="100000000"/>
+						<input v-if="isGem" v-model="sellObj.startPrice"  class="ly-input sell-input" type="text" :placeholder="$t('Market_18')" v-number  data-max="100000000"/>
+						<input v-else v-model="totalPrice" readonly class="ly-input sell-input opa-6" type="text" :placeholder="$t('Market_18')" v-number  data-max="100000000"/>
 					</div>
 				</div>
 				<div v-if="priceTypePos == 1">
@@ -96,13 +96,13 @@
 							<div class="ly-input-pre-icon">
 								<img  :src="require(`@/assets/coin/${oprCoin}.png`)" alt="" />
 							</div>
-							<input v-model="sellObj.endPrice" class="ly-input sell-input" type="number" :placeholder="$t('Market_12')" v-number data-max="100000000"/>
+							<input v-model="sellObj.endPrice" class="ly-input sell-input" type="text" :placeholder="$t('Market_12')" v-number data-max="100000000"/>
 						</div>
 					</div>
 					<div class="ly-input-content mgt-10">
 						<p class="small tal opa-6">{{$t("Market_13")}}(≥2)</p>
 						<div class="por mgt-5">
-							<input v-model="sellObj.durationDays" class="ly-input sell-input" type="number" v-int :placeholder="$t('Market_13')" data-max="1000" data-min="2"  />
+							<input v-model="sellObj.durationDays" class="ly-input sell-input" type="text" v-int :placeholder="$t('Market_13')" data-max="1000" data-min="2"  />
 						</div>
 					</div>
 				</div>

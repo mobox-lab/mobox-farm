@@ -490,7 +490,7 @@ export default {
 	background: rgba(0,0,0,0.8);
 }
 #aridorp{
-	max-width: 1300px;
+	max-width: 1460px;
 	margin:0px auto;
 }
 #aridorp .menu-btn {

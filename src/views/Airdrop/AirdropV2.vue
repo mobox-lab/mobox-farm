@@ -55,7 +55,7 @@
 										</div>
 
 										<div >
-												<h4 class="color-w tal small opa-6">{{$t("Air-drop_205")}}</h4>
+												<p class="color-w tal small opa-6">{{$t("Air-drop_205")}}</p>
 												<div  class=" point-block  close"  @click="getApyObj(item);toggleClass($event, {isLP: true})">
 													<div class="tal "  >
 														<h4 class="vertical-children new-text" :class="item.isLP?'show-point-block':''" style="right:10px;">
@@ -886,7 +886,7 @@ export default {
 }
 #buy-back {
 	padding: 20px 30px;
-	max-width: 1300px;
+	max-width: 1460px;
 	background: #13181F;
 	border-radius: 20px;
 	margin: 0px auto;
@@ -894,19 +894,18 @@ export default {
 }
 .airdrop-cont {
 	padding-top: 0px;
-	max-width: 1300px;
-	display: inline-block;
-	width: 80%;
+	max-width: 1460px;
 	border-radius: 20px;
+	margin: 0 auto;
 }
 
 #airdrop-info{
 	padding-top: 0px;
-	width: 80%;
-	max-width: 1300px;
+	max-width: 1460px;
 	border-radius: 20px;
 	padding-left: 34px;
 	margin: 0px auto;
+	border: 1px solid red;
 }
 
 #aridorp .menu-btn {

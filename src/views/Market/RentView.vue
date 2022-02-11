@@ -50,7 +50,7 @@
 									<div class="ly-input-pre-icon">
 										<img  src="@/assets/coin/BUSD.png" alt="" />
 									</div>
-									<input v-model="rentObj.rentPrice" class="ly-input" type="number" v-number
+									<input v-model="rentObj.rentPrice" class="ly-input" type="text" v-number
 										style=" background: #0f172a; text-align: center; width: 100%; "
 										:placeholder="$t('Hire_50')"
 									/>
@@ -62,7 +62,7 @@
 							<div class="ly-input-content" style="max-width:350px;margin:0px auto;margin-top:10px">
 								<p class="small tal" :class="{'color-buy':Number(rentObj.rentDay) < 7 && Number(rentObj.rentDay) > 0}">{{$t("Hire_51")}}</p>
 								<div class="por mgt-5">
-									<input v-model="rentObj.rentDay" class="ly-input" type="number" v-int data-max="30" 
+									<input v-model="rentObj.rentDay" class="ly-input" type="text" v-int data-max="30" 
 										style=" background: #0f172a; text-align: center; width: 100%; "
 										:placeholder="$t('Hire_52')"
 									/>
@@ -103,7 +103,7 @@
 									<p >{{$t('Hire_53').replace('#0#',statusObj.rentDays)}}</p>
 									<p class="small  color-buy">{{$t("Hire_58")}}</p>
 									<div class="por mgt-5">
-										<input v-model="inputRentDays" class="ly-input" type="number" v-number :data-max="statusObj.rentDays"
+										<input v-model="inputRentDays" class="ly-input" type="text" v-number :data-max="statusObj.rentDays"
 											style=" background: #0f172a; text-align: center; width: 100%; "
 											:placeholder="$t('Hire_54')"
 										/>

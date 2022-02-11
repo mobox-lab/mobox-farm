@@ -38,7 +38,7 @@
 					<div class="ly-input-pre-icon">
 						<img  src="@/assets/coin/BUSD.png" alt="" height="20" />
 					</div>
-					<input class="ly-input" type="number" style=" text-align: left; width: 100%; padding-left:50px" v-model="inputPrice" v-number />
+					<input class="ly-input" type="text" style=" text-align: left; width: 100%; padding-left:50px" v-model="inputPrice" v-number />
 				</div>
 			</section>
 			<section class="mgt-20">
@@ -47,7 +47,7 @@
 					<div class="ly-input-pre-icon">
 						<img  src="@/assets/coin/BOX.png" alt="" width="30" />
 					</div>
-					<input class="ly-input" type="number" style=" text-align: left; width: 100%; padding-left:50px;background:#070d14" readonly="readonly"  :value="changePriceObj.count" />
+					<input class="ly-input" type="text" style=" text-align: left; width: 100%; padding-left:50px;background:#070d14" readonly="readonly"  :value="changePriceObj.count" />
 				</div>
 			</section>
 			<section class="mgt-20">
@@ -56,7 +56,7 @@
 					<div class="ly-input-pre-icon">
 						<img  src="@/assets/coin/BUSD.png" alt="" height="20" />
 					</div>
-					<input class="ly-input" type="number" :value="getToTalValue" readonly="readonly" style=" text-align: left; width: 100%; padding-left:50px;background:#070d14" />
+					<input class="ly-input" type="text" :value="getToTalValue" readonly="readonly" style=" text-align: left; width: 100%; padding-left:50px;background:#070d14" />
 				</div>
 			</section>
 			<p>

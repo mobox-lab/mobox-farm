@@ -88,7 +88,7 @@
 								<div class="ly-input-pre-icon">
 									<img  src="@/assets/coin/KEY.png" alt="" />
 								</div>
-								<input class="ly-input" type="number"
+								<input class="ly-input" type="text"
 									style=" text-align: left; width: 100%; padding-left:65px"
 									readonly="readonly"
 									:value="ethState.box"
@@ -118,7 +118,7 @@
 								<div class="ly-input-pre-icon">
 									<img src="@/assets/icon/box_old.png" alt="" />
 								</div>
-								<input class="ly-input" type="number"
+								<input class="ly-input" type="text"
 									style="text-align: left; width: 100%; padding-left:65px"
 									:value="canOpenBox"
 									readonly="readonly"

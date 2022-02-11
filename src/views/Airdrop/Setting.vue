@@ -34,7 +34,7 @@
 				</p>
 				<div class="aveage-box mgt-10">
 					<div style="flex:1 1 auto">
-						<input style="width:100%" type="number" class="ly-input"  v-model="setting.duration" v-int placeholder="20"> 
+						<input style="width:100%" type="text" class="ly-input"  v-model="setting.duration" v-int placeholder="20"> 
 					</div>
 					<p  class="tac" style="padding:0px 10px">{{$t("Air-drop_44")}}</p>
 				</div>

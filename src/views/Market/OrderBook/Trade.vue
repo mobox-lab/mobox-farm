@@ -55,7 +55,7 @@
 							<div class="ly-input-pre-icon">
 								<img  src="@/assets/coin/BUSD.png" alt="" height="20" />
 							</div>
-							<input class="ly-input" type="number" style=" text-align: left; width: 100%; padding-left:50px" v-model="price" v-number />
+							<input class="ly-input" type="text" style=" text-align: left; width: 100%; padding-left:50px" v-model="price" v-number />
 						</div>
 					</section>
 					<section class="mgt-20">
@@ -64,7 +64,7 @@
 							<div class="ly-input-pre-icon">
 								<img  src="@/assets/coin/BOX.png" alt="" width="30" />
 							</div>
-							<input class="ly-input" type="number" style=" text-align: left; width: 100%; padding-left:50px" v-model="boxNum" v-int />
+							<input class="ly-input" type="text" style=" text-align: left; width: 100%; padding-left:50px" v-model="boxNum" v-int />
 							<div class="ly-input-after">
 								<span v-if="Number(boxNum) > 0" id="numOpr">
 									<img class="cur-point"  src="@/assets/icon/reduce.png" alt="" height="30" @click="boxNum > 0?boxNum--:'' ">
@@ -80,7 +80,7 @@
 							<div class="ly-input-pre-icon">
 								<img  src="@/assets/coin/BUSD.png" alt="" height="20" />
 							</div>
-							<input class="ly-input" type="number" :value="getToTalValue" readonly="readonly" style=" text-align: left; width: 100%; padding-left:65px;background:#070d14" />
+							<input class="ly-input" type="text" :value="getToTalValue" readonly="readonly" style=" text-align: left; width: 100%; padding-left:65px;background:#070d14" />
 							
 						</div>
 					</section>

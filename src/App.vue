@@ -95,20 +95,12 @@
 					</li>
 				</router-link>
 				
-				<!-- <router-link to="/statistics">
+				<router-link to="/statistics">
 					<li :class="this.$route.path == '/statistics' ? 'active' : ''">
 						<span class="per-icon vertical-children">
 							<img src="./assets/menu/fx.png" alt="" width="35" />
 						</span>
 						<span>Statistics</span>
-					</li>
-				</router-link> -->
-				<router-link to="/rank" >
-					<li :class="this.$route.path == '/rank' ? 'active' : ''" >
-						<p class="per-icon vertical-children">
-							<img src="./assets/icon/rank.png" alt="" height="25" />
-						</p>
-						<span>{{ $t("Rank_05") }}</span>
 					</li>
 				</router-link>
 
@@ -207,23 +199,14 @@
 					</li>
 				</router-link>
 
-				<!-- <router-link to="/statistics" >
+				<router-link to="/statistics" >
 					<li :class="this.$route.path == '/statistics' ? 'active' : ''" >
 						<p class="per-icon vertical-children">
 							<img src="./assets/menu/fx.png" alt="" height="30" />
 						</p>
 						<span>Statistics</span>
 					</li>
-				</router-link> -->
-				<router-link to="/rank">
-					<li :class="this.$route.path == '/rank' ? 'active' : ''">
-						<span class="per-icon vertical-children">
-							<img src="./assets/icon/rank.png" alt="" height="30" />
-						</span>
-						<span class="mgt-5">{{ $t("Rank_05") }}</span>
-					</li>
 				</router-link>
-
 
 				<!-- <a href="javascript:void(0)"> 
 					<li @click="showMoreMenu = !showMoreMenu">
@@ -857,7 +840,7 @@ export default {
 				lang = navigator.language||navigator.userLanguage;
 				lang = langMap[lang] || 'en';
 			}
-			if(lang.indexOf("zh-") != 0) lang = "zh-CN";
+			if(lang.indexOf("zh-") != -1) lang = "zh-CN";
 			this.$i18n.locale = lang;
 		},
 		async  getTotalStakeUSDTAndAirdropKEY(){

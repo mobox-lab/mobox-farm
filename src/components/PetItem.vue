@@ -14,14 +14,6 @@
 			</div>
 		</div>
 
-		<!-- 抽卡特效 -->
-		<!-- <div v-if="data.item.isOpenCard">
-			<div id="light-border-show" class="v5b" v-show="data.item.vType == 5"></div>
-			<div id="light-border-show" class="v6b" v-show="data.item.vType == 6"></div>
-			<div class="light-shadow" ref="lightShadowV4" v-show="data.item.vType == 4"></div>
-			<div class="light-shadow" ref="lightShadowV5" v-show="data.item.vType == 5"></div>
-		</div> -->
-
 		<img class="pet_img" v-if="Number(data.item.prototype) > 60000" :src="require(`../assets/pet/${data.item.prototype}.gif`)" alt=""  height="120" />
 		<img class="pet_img" v-else :src="require(`../assets/pet/${data.item.prototype}.png`)" alt=""  height="120" />
 		<div style="position: absolute; width: 100%; bottom: 100px; left: 0px;right:0px;z-index:5">
@@ -36,7 +28,7 @@
 				{{ hasSetName ? shortStr(data.item.tokenName) : $t(data.item.tokenName) }}
 			</div>
 		</div>
-
+		<!-- LV.1 -->
 		<div class="mgt-10 tar vertical-children lv1" style="font-size: 12px" v-if="data.item.vType >= 4 && data.item.level > 1">
 			<span>Lv. 1</span>&nbsp;
 			<img src="../assets/icon/airdrop.png" alt="" height="15">&nbsp;
@@ -44,7 +36,7 @@
 		</div>
 
 		<div class="pet-power vertical-children mgt-20">
-			<div class="gka-harmer por" ref="anime" style="margin-top: -12px;right:-10px">
+			<div class="gka-harmer por" ref="anime" style="margin-top: -12px;right:-10px" :style="{animationDelay: delay+'s'}" :class="{'animation-harmer': data.item.location == 'stake'}">
 				<img src="../assets/anime/sleep.gif" class="sleep-harmer" v-if="data.item.location == 'wallet'" alt="" />
 			</div>
 			<span :class="getHashrateColor(data.item)" style="font-size: 25px" class="bold">{{ data.item.lvHashrate }}</span>
@@ -64,11 +56,15 @@
 import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
 import { Common } from "@/utils";
-import lottie from "lottie-web";
 
 export default {
 	mixins: [CommonMethod],
 	props: ["data"],
+	data(){
+		return{
+			delay: Common.getRandomNum(200, 1000) / 100
+		}
+	},
 	computed: {
 		...mapState({
 			globalState: (state) => state.globalState.data,
@@ -79,35 +75,6 @@ export default {
 		},
 	},
 
-	async mounted() {
-		this.loadBorderLight();
-		await Common.sleep(Common.getRandomNum(200, 1000));
-		if (this.$refs.anime && this.data.item.location == "stake") {
-			this.$refs.anime.classList.add("animation-harmer");
-		}
-	},
-
-	methods: {
-		loadBorderLight(){
-			if(this.data.item.vType >= 4 && this.data.item.isOpenCard){
-				console.log("loadBorderLight");
-				lottie.loadAnimation({
-					container: this.$refs.lightShadowV4, // the dom element that will contain the animation
-					renderer: 'svg',
-					loop: true,
-					autoplay: true,
-					path: `./animation/lightShadow/v4.json` ,// the path to the animation json
-				});
-				lottie.loadAnimation({
-					container: this.$refs.lightShadowV5, // the dom element that will contain the animation
-					renderer: 'svg',
-					loop: true,
-					autoplay: true,
-					path: `./animation/lightShadow/v5.json` ,// the path to the animation json
-				});
-			}
-		}
-	}
 };
 </script>
 

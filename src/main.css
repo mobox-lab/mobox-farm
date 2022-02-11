@@ -1094,7 +1094,7 @@ svg {
 .popMsg{
 	position: absolute;
 	min-width: 240px;
-	background: #10172A;
+	background: #000000;
 	border-radius: 5px;
 	padding: 10px;
 	text-align: left;
@@ -1105,20 +1105,20 @@ svg {
 	left: 7px;
 	display: none;
 	user-select: none;
-	border:1px solid #2D4DA6;
+	border:1px solid #333333;
 }
 .popMsg::after{
 	content: "";
 	width: 10px;
 	height: 10px;
-	background: #10172A;
+	background: #000000;
 	/* background: red; */
 	position: absolute;
 	top: 0px;
 	left: 50%;
 	transform: rotate(45deg) translate(-50%);
-	border-right:1px solid #2D4DA6;
-	border-top:1px solid #2D4DA6;
+	border-right:1px solid #333333;
+	border-top:1px solid #333333;
 }
 .double-img > img:nth-child(1){
 	position: absolute;

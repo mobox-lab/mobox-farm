@@ -392,7 +392,7 @@
 							</tr>
 							<tr>
 								<td colspan="6">
-									<a href="https://bscscan.com/address/0x9907fa65f3b0a9b9254a2c29a213c4d3501bf84f" target="_blank">{{$t("Air-drop_148")}}</a>
+									<a href="https://bscscan.com/address/0x1846c0ab8D09007154066Cbb114315e11D94D4E8" target="_blank">{{$t("Air-drop_148")}}</a>
 								</td>
 							</tr>
 						</table>

@@ -1,5 +1,12 @@
 <template>
 	<div class="rank tac" style="padding:10px">
+		<div class="tal">
+			<router-link to="/">
+				<span  class="cur-point text-big">
+					<span class="dib" style="transform: rotate(90deg)">▼</span>&nbsp;{{ $t("MOMO_19") }}
+				</span>
+			</router-link>
+		</div>
 		<div class="mgt-10">
 			<Tab :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" :notice="[]"/>
 		</div>

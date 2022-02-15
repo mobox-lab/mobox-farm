@@ -133,7 +133,7 @@ const routes = [
 		component: BlindBox
 	},
 	{
-		path: "/statistics",
+		path: "/network",
 		name: "Statistics",
 		component: Statistics
 	},

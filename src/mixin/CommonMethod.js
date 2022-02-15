@@ -134,6 +134,9 @@ const CommonMethod = {
 			if (!hash) return ""
 			return hash.substring(0, 6).concat("...").concat(hash.substring(hash.length - 6, hash.length));
 		},
+		getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min + 1) + min);
+		},
 		shortStr(name) {
 			if (!name) return ""
 

@@ -882,6 +882,9 @@ svg {
 .rotate {
 	animation: spin 1000ms infinite linear;
 }
+.rotate2 {
+	animation: spin 10s infinite linear;
+}
 
 @keyframes spin {
 	0% {
@@ -1841,4 +1844,33 @@ svg {
 	color: #668eff;
 	cursor: pointer;
 	text-decoration: underline;
+}
+
+.search-box{
+}
+.search-preview{
+	position: absolute;
+	width: 100%;
+	z-index: 999;
+	background: #2A2F35;
+	margin-top: 5px;
+	border-radius: 10px;
+}
+.search-preview .aveage-box:nth-child(1){
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+	border: none;
+	padding:10px;
+}
+.search-preview .aveage-box:last-child{
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+.search-preview .aveage-box{
+	border-top: 1px solid #252525;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+.search-preview .aveage-box:hover{
+	background: #333333;
 }

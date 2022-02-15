@@ -11,7 +11,8 @@ const state = () => ({
 		myPetPage: 1,
 		myPetFilter: {
 			category: 0,
-			vType: 0
+			vType: 0,
+			searchProto: 0,
 		},
 
 		totalOpenBoxAmount: {

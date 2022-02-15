@@ -116,7 +116,9 @@
 										{{$t("BOX_34")}}
 									</StatuButton>
 								</div>
-								<div></div>
+								<div class="tar">
+									<button class="btn-line mgt-20" style="width: 90%" @click="previewOpen">Preview</button>
+								</div>
 							</div>
 							
 						</div>
@@ -244,6 +246,29 @@
 				</div>
 			</div>
 		</Dialog>
+		<div class="preview l" v-if="showPreview" @click="showPreview = false">
+			<div class="preview-content adv-panel animate__zoomIn animate__animated animate__faster">
+				<h2>Preview</h2>
+				<div class="adv-panel-content mgt-10" style="padding:20px" v-if="previewMomo.vType != ''">
+					<div class="vertical-children">
+						<img :src="require(`@/assets/icon/${category_img[previewMomo.category]}.png`)" alt="">
+						<span class="mgl-5 bold2">{{$t(previewMomo.tokenName)}}</span>
+					</div>
+					<div class="momo-show por dib mgt-10">
+						<img src="@/assets/card_v2/previewbg.png" alt="" class="rotate2">
+						<img class="momo-show-momo" :src="require(`@/assets/pet/${previewMomo.prototype}.png`)"/>
+					</div>
+					<h2 :class="`c-lv${previewMomo.vType}`">{{selectVType[previewMomo.vType]}}</h2>
+					<div class="vertical-children">
+						<img src="@/assets/icon/airdrop.png" alt="" height="14px">
+						<span class="mgl-5">{{previewMomo.vType > 3?getStaticHashPower[previewMomo.vType] - getRandomInt(0,20): getStaticHashPower[previewMomo.vType]}} hash power</span>
+					</div>
+				</div>
+				<div class="mgt-20 tac">
+					<button class="btn-primary" @click="showPreview = false">Close Preview</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -312,6 +337,17 @@ export default {
 			boxSpine: null,
 			cardSpines: [],
 			newBoxApproveToMinter: "-",
+			showPreview: false,
+			previewMomo: {prototype:"",tokenName:"",category:"", vType: ""},
+			selectVType: [
+				this.$t("MOMO_08"),
+				this.$t("MOMO_09"),
+				this.$t("MOMO_10"),
+				this.$t("MOMO_11"),
+				this.$t("MOMO_12"),
+				this.$t("MOMO_13"),
+				this.$t("MOMO_14"),
+			],
 		};
 	},
 	computed: {
@@ -321,7 +357,26 @@ export default {
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			boxNum: (state) => state.gemState.data.boxNum,
 			hasLoadSpine: (state) => state.globalState.data.hasLoadSpine,
+			momoSetting: (state) => state.globalState.data.momoSetting,
 		}),
+		getStaticHashPower(){
+			console.log([0,1,2,3,this.momoSetting.v4_max_upgrade, this.momoSetting.v5_max_upgrade]);
+			return [0,1,2,3,this.momoSetting.v4_max_upgrade, this.momoSetting.v5_max_upgrade]
+		},
+		getMoMoVType(){
+				let retData = {
+					v1: [],
+					v2: [],
+					v3: [],
+					v4: [],
+					v5: [],
+					v6: [],
+				}
+				Object.keys(BaseConfig.NftCfg).map(item=>{
+					retData[`v${this.getVType(item)}`].push(item);
+				})
+				return retData;
+		},
 		canOpenBox() {
 			let { canOpenBox, orderBlockHash, openBoxTemp } = this.ethState;
 			if (orderBlockHash =="0x0000000000000000000000000000000000000000000000000000000000000001") {
@@ -760,6 +815,7 @@ export default {
 				this.boxSpine.setAnimation("open2", {
 					complete: async ()=>{
 						$(".box-show").removeClass("box-show-open");
+						this.boxSpine.setAnimation("jingzhen");
 						document.querySelector("#show-card-v2").classList.remove("hide");
 						//单张直接打开
 						if(this.testArr.length == 1){
@@ -778,12 +834,68 @@ export default {
 				});
 			})
 		},
+
+		previewOpen(){
+			if(this.petDataArr.length > 0) return;
+			$(".box-show").addClass("box-show-open");
+			this.boxSpine.config.loop = false;
+			this.boxSpine.setAnimation("open2", {
+				complete: async ()=>{
+					$(".box-show").removeClass("box-show-open");
+					this.boxSpine.setAnimation("jingzhen");
+					this.showPreview = true;
+					let num = this.getRandomInt(0, 200);
+					console.log(num);
+					let vType = 0;
+					if(num <= 70){
+						vType = "v1";
+					}
+					if(num <= 120 && num > 70){
+						vType = "v2";
+					}
+					if(num <= 160 && num > 120){
+						vType = "v3";
+					}
+					if(num <= 190 && num > 160){
+						vType = "v4";
+					}
+					if(num > 190){
+						vType = "v5";
+					}
+					let arr = this.getMoMoVType[vType];
+					let pos = this.getRandomInt(0, arr.length-1);
+					let pType = arr[pos];
+					this.previewMomo = BaseConfig.NftCfg[pType];
+					this.previewMomo.vType = this.getVType(pType);
+				}
+			})
+		}
 		
 	},
 };
 </script>
 
 <style scoped>
+.momo-show-momo{
+	position: absolute;
+	width: 100%;
+	left: 0px;
+	top: 0px;
+}
+.preview{
+	position: fixed;
+	top: 0px; left: 0px; bottom: 0px; right: 0px;
+	background: rgba(0,0,0,0.8);
+	z-index: 9999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.preview-content{
+	width: 90%;
+	max-width: 430px;
+	padding: 20px;
+}
 .pie {
 	width: 260px; height: 260px;
 	border-radius: 50%;

@@ -66,6 +66,10 @@
 						<span class="filter-close" @click="onSortChange(0)">&times;</span>
 						<span class="mgl-10">{{sortArr[marketSearch.sort]}}</span>
 					</div>
+					<div class="filter-show-item" v-if="searchWord != ''" >
+						<span class="filter-close" @click="searchWord='';goSearch()">&times;</span>
+						<span class="mgl-10">{{searchWord}}</span>
+					</div>
 				</div>
 			</div>
 			
@@ -407,34 +411,7 @@ export default {
 
 <style scoped>
 	
-	.search-box{
-	}
-	.search-preview{
-		position: absolute;
-		width: 100%;
-		z-index: 999;
-		background: #182342;
-		margin-top: 5px;
-		border-radius: 10px;
-	}
-	.search-preview .aveage-box:nth-child(1){
-		border-top-right-radius: 10px;
-		border-top-left-radius: 10px;
-		border: none;
-		padding:10px;
-	}
-	.search-preview .aveage-box:last-child{
-		border-bottom-right-radius: 10px;
-		border-bottom-left-radius: 10px;
-	}
-	.search-preview .aveage-box{
-		border-top: 1px solid #3f5185;
-		padding: 5px 10px;
-		cursor: pointer;
-	}
-	.search-preview .aveage-box:hover{
-		background: #2c3d6b;
-	}
+	
 
 	#market-pet-fitter {
 		position: absolute;

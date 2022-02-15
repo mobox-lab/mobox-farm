@@ -1,5 +1,8 @@
 <template>
-	<div id="aridorp" class="tac adv-panel  ovh" >
+	<div id="aridorp" class="tac adv-panel " >
+		<router-link to="/rank">
+			<div class="link rank vertical-children"><span>{{ $t("Rank_05") }}</span><img class="mgl-5" src="@/assets/icon/more.png" alt="" height="16"></div>
+		</router-link>
 		<!-- 算力展示 -->
 		<section id="airdrop-cont" class="hide-xs">
 			<div class="row "  id="collection-view">
@@ -216,6 +219,11 @@ export default {
 </script>
 
 <style scoped>
+.rank{
+	position: absolute;
+	top: -30px;
+	right: 0px;
+}
 .momo_show_anime{
 	width: 200px;
 	height: 200px;

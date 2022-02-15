@@ -47,7 +47,7 @@ export default {
 .yf-dialog-bg {
 	display: none;
 	position: fixed;
-	z-index: 9999;
+	z-index: 9999999;
 	top: 0px;
 	left: 0px;
 	right: 0px;

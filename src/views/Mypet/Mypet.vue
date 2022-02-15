@@ -16,6 +16,10 @@
 						<span class="filter-close" @click="onSelectQualityChange(0)">&times;</span>
 						<span class="mgl-10">{{select3[myPetFilter.vType]}}</span>
 					</div>
+					<div class="filter-show-item" v-if="searchWord != ''" >
+						<span class="filter-close" @click="searchWord='';goSearch()">&times;</span>
+						<span class="mgl-10">{{searchWord}}</span>
+					</div>
 				</div>
 			</div>
 			
@@ -25,7 +29,7 @@
 					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
 					<div class="filter-panel hide " ref="filter">
 						<!-- 搜索框 -->
-						<!-- <div>
+						<div>
 							<span class="search-box  dib " style="width:100%;display:inline-flex">
 								<div class="dib por" style="flex:1" >
 									<div class="dib por">
@@ -43,8 +47,8 @@
 								</div>
 								<img class="mgl-10 cur-point" :src="require('@/assets/icon/search.png')" alt="" @click="goSearch"  />
 							</span>
-						</div> -->
-						<div >
+						</div>
+						<div class="mgt-10">
 							<h5>Qualities</h5>
 							<div @click="onSelectQualityChange(pos)" class="filter-select-item" :class="{'active': pos == myPetFilter.vType}" v-for="(item, pos) in select3" :key="item">
 								{{item}}
@@ -223,6 +227,7 @@ export default {
 	mixins: [CommonMethod],
 	data() {
 		return {
+			searchWord: "",
 			select1: [
 				this.$t("MOMO_02"),
 				this.$t("MOMO_03"),
@@ -270,6 +275,11 @@ export default {
 		}
 		this.$parent.eth_setLockList();
 		this.search();
+
+		let searcheItem = BaseConfig.NftCfg[this.myPetFilter.searchProto];
+		if(searcheItem){
+			this.setSearchItme({realName: this.getLangMap[searcheItem["tokenName"]], prototype: searcheItem.prototype});
+		}
 	},
 	watch: {
 		momoSetting: function(){
@@ -287,6 +297,34 @@ export default {
 			momoSetting: (state) => state.globalState.data.momoSetting,
 			nowTs: (state) => state.globalState.data.nowTs,
 		}),
+		getLangMap(){
+			let langToName = {};
+			let nftConfig = BaseConfig.NftCfg;
+			for (let key in nftConfig) {
+				let item =nftConfig[key];
+				langToName[item.tokenName] = this.$t(item.tokenName);
+			}
+			return langToName;
+		},
+		getSearchArr(){
+			let retArr = [];
+			let searchWord = this.searchWord;
+			if(searchWord == "") return retArr;
+			let nftConfig = BaseConfig.NftCfg;
+			let langMap = this.getLangMap;
+			for (let key in nftConfig) {
+				let item =nftConfig[key];
+				let realName = langMap[item.tokenName];
+				if(realName.toLowerCase().indexOf(searchWord.toLowerCase()) != -1 
+				|| item.cnName.toLowerCase().indexOf(searchWord.toLowerCase()) != -1
+				){
+					item.realName = realName;
+					item.vType = parseInt(item.prototype / 1e4);
+					retArr.push(item);
+				}
+			}
+			return retArr.reverse();
+		},
 		inputRange(){
 			return [
 				{min: 10, max: this.momoSetting.v4_max_enhance}, 
@@ -373,7 +411,8 @@ export default {
 				let isMathVType =
 					this.myPetFilter.vType == 0 ||
 					this.myPetFilter.vType == item.vType;
-				if (isMatchCategory && isMathVType) {
+				let isMathProto = this.myPetFilter.searchProto <= 0 || item.prototype == this.myPetFilter.searchProto;
+				if (isMatchCategory && isMathVType && isMathProto) {
 					totalPet.push(item);
 				}
 			});
@@ -394,7 +433,7 @@ export default {
 			return this.getTotalPet.slice(
 				this.onePageCount * (this.myPetPage - 1),
 				this.onePageCount * this.myPetPage
-			);
+			).filter(item => this.myPetFilter.searchProto <= 0 || this.myPetFilter.searchProto == item.prototype);
 		},
 		getMyPetObj() {
 			let obj = {};
@@ -483,6 +522,23 @@ export default {
 		}
 	},
 	methods: {
+		setSearchItme(item){
+			if(item.prototype == 0) return;
+			this.searchWord = item.realName + ":"+item.prototype;
+			this.goSearch();
+		},
+		goSearch(){
+			let prototype = this.searchWord.split(":")[1];
+			if(this.searchWord == ""){
+				prototype = 0;
+			}else{
+				if(BaseConfig.NftCfg[prototype] == undefined) return;
+			}
+			this.$store.commit("globalState/myPetFilter", {
+				type: "searchProto",
+				value: prototype,
+			});
+		},
 		search(){
 			if(this.momoSetting.v4_max_enhance == 0) return;
 			let value = Number(this.inputLvHashRate);

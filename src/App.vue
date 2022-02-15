@@ -95,12 +95,12 @@
 					</li>
 				</router-link>
 				
-				<router-link to="/statistics">
-					<li :class="this.$route.path == '/statistics' ? 'active' : ''">
+				<router-link to="/network">
+					<li :class="this.$route.path == '/network' ? 'active' : ''">
 						<span class="per-icon vertical-children">
 							<img src="./assets/menu/fx.png" alt="" width="35" />
 						</span>
-						<span>Statistics</span>
+						<span>{{ $t("Network_1") }}</span>
 					</li>
 				</router-link>
 
@@ -199,12 +199,12 @@
 					</li>
 				</router-link>
 
-				<router-link to="/statistics" >
-					<li :class="this.$route.path == '/statistics' ? 'active' : ''" >
+				<router-link to="/network" >
+					<li :class="this.$route.path == '/network' ? 'active' : ''" >
 						<p class="per-icon vertical-children">
 							<img src="./assets/menu/fx.png" alt="" height="30" />
 						</p>
-						<span>Statistics</span>
+						<span>{{ $t("Network_1") }}</span>
 					</li>
 				</router-link>
 

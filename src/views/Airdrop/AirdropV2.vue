@@ -1,5 +1,5 @@
 <template>
-	<div class="tac por">
+	<div class="tac por" style="padding-bottom: 50px">
 		<div id="bg1"></div>
 		<div id="aridorp">
 				<section class=" por airdrop-cont" style="z-index: 10">
@@ -291,7 +291,7 @@
 				</template>
 
 				<!-- 统计分析 先隐藏 -->
-				<section >
+				<section class="hide">
 					<div class="tal mgt-30">
 						<div class="vertical-children">
 							<h2 class="dib">veMBOX</h2>

@@ -840,7 +840,7 @@ export default {
 				lang = navigator.language||navigator.userLanguage;
 				lang = langMap[lang] || 'en';
 			}
-			if(lang.indexOf("zh-") != -1) lang = "zh-CN";
+			if(lang.indexOf("zh") != -1) lang = "zh-CN";
 			this.$i18n.locale = lang;
 		},
 		async  getTotalStakeUSDTAndAirdropKEY(){

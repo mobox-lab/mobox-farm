@@ -27,6 +27,10 @@ export default class HTTP {
 		let { data } = await this.get('/statistic/daily_infos');
 		return data;
 	}
+	static async getBaseData(){
+		let { data } = await this.get('/statistic/homepage_info');
+		return data;
+	}
 	static async getMecBoxHistory(owner){
 		let { data } = await this.get(`/crystal/minter_logs?address=${owner}`);
 		return data;

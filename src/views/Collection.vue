@@ -359,16 +359,16 @@ export default {
 	top: 300px;
 }
 #collection-view2 > div:nth-child(4) {
-	left: 550px;
-	top: 160px;
+	left: 590px;
+	top: 230px;
 }
 #collection-view2 > div:nth-child(5) {
-	left: 650px;
-	top: 260px;
+	left: 580px;
+	top: 60px;
 }
 #collection-view2 > div:nth-child(6) {
-	left: 600px;
-	top: 60px;
+	left: 170px;
+	top: -80px;
 }
 #collection-view2 > div:nth-child(7) {
 	left: 500px;

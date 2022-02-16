@@ -117,7 +117,7 @@
 									</StatuButton>
 								</div>
 								<div class="tar">
-									<button class="btn-line mgt-20" style="width: 90%" @click="previewOpen">Preview</button>
+									<button class="btn-line mgt-20" style="width: 90%" @click="previewOpen">{{$t("BOX_43")}}</button>
 								</div>
 							</div>
 							
@@ -248,7 +248,7 @@
 		</Dialog>
 		<div class="preview l" v-if="showPreview" @click="showPreview = false">
 			<div class="preview-content adv-panel animate__zoomIn animate__animated animate__faster">
-				<h2>Preview</h2>
+				<h2>{{$t("BOX_43")}}</h2>
 				<div class="adv-panel-content mgt-10" style="padding:20px" v-if="previewMomo.vType != ''">
 					<div class="vertical-children">
 						<img :src="require(`@/assets/icon/${category_img[previewMomo.category]}.png`)" alt="">
@@ -265,7 +265,7 @@
 					</div>
 				</div>
 				<div class="mgt-20 tac">
-					<button class="btn-primary" @click="showPreview = false">Close Preview</button>
+					<button class="btn-primary" @click="showPreview = false">{{$t("Network_12")}}</button>
 				</div>
 			</div>
 		</div>

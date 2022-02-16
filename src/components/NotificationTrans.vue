@@ -134,7 +134,7 @@ export default {
 	position: fixed;
 	top: 0px;
 	right: 0px;
-	z-index: 9999999;
+	z-index: 999999999999999;
 	margin: 0px auto;
 	text-align: right;
 	padding: 0px 10px;

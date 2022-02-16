@@ -23,7 +23,27 @@
 				<div class="dib por mgl-10 filter"  >
 					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
 					<div class="filter-panel hide " ref="filter">
-						<div >
+						<!-- 搜索框 -->
+						<div>
+							<span class="search-box  dib " style="width:100%;display:inline-flex">
+								<div class="dib por" style="flex:1" >
+									<div class="dib por">
+										<input class="ly-input" ref="searchInput" style="padding-right:30px;width:100%;border-radius:50px" type="text" :placeholder="$t('BOX_17')" v-model="searchWord" />
+										<span v-if="searchWord != '' " style="position:absolute;right:10px;height:100%;align-items: center;display: inline-flex;justify-content: center;" class="cur-point opa-6" @click="searchWord='';goSearch()">
+											<svg t="1618473937077" class="icon" viewBox="0 0 1024 1024" version="1.1"  p-id="1127" width="20" height="20"><path d="M601.376 512l191.52-191.52c28.096-28.096 30.976-71.168 6.4-95.744s-67.68-21.696-95.744 6.4l-191.52 191.52-191.52-191.52c-28.096-28.096-71.168-30.976-95.744-6.368s-21.696 67.68 6.4 95.744l191.52 191.52-191.52 191.52c-28.096 28.096-30.976 71.168-6.368 95.744s67.68 21.696 95.744-6.4l191.52-191.52 191.52 191.52c28.096 28.096 71.168 30.976 95.744 6.4s21.696-67.68-6.4-95.744l-191.52-191.52z" p-id="1128" fill="#838689"></path></svg>
+										</span>
+									</div>
+									<div class="search-preview" ref="searchPreview"  style="margin-bottom:50px" v-if="getSearchArr.length > 0">
+										<div class="aveage-box" v-for="item in getSearchArr" :key="item.prototype" @click="setSearchItme(item)">
+											<div class="tal"><img :src="require(`@/assets/pet/${item.prototype}.png`)" alt="" height="40"></div>
+											<div class="tar small opa-6" style="flex:3" :class="'c-lv'+item.vType">{{item.realName}}</div>
+										</div>
+									</div>
+								</div>
+								<img class="mgl-10 cur-point" :src="require('@/assets/icon/search.png')" alt="" @click="goSearch"  />
+							</span>
+						</div>
+						<div class="mgt-10">
 							<h5>Qualities</h5>
 							<div @click="onSelectQualityChange(pos)" class="filter-select-item" :class="{'active': pos == myMarketPetFilter.vType}" v-for="(item, pos) in $parent.$parent.selectVType" :key="item">
 								{{item}}
@@ -43,6 +63,10 @@
 						<span class="filter-close" @click="onSelectQualityChange(0)">&times;</span>
 						<span class="mgl-10">{{$parent.$parent.selectVType[myMarketPetFilter.vType]}}</span>
 					</div>
+				</div>
+				<div class="filter-show-item" v-if="searchWord != ''" >
+					<span class="filter-close" @click="searchWord='';goSearch()">&times;</span>
+					<span class="mgl-10">{{searchWord}}</span>
 				</div>
 			</div>
 
@@ -247,12 +271,14 @@ import { WalletConfig } from '@/config';
 import { mapState } from "vuex";
 import GroupSell from './GroupSell'
 import BigSell from './BigSell'
+import { BaseConfig } from "@/config";
 
 let timer = null;
 export default {
 	mixins: [CommonMethod],
 	data() {
 		return {
+			searchWord: "",
 			onePageCount: 12,
 			inputPrice: "",
 			shopCar: [],
@@ -286,6 +312,34 @@ export default {
 			lockList: (state) => state.ethState.data.lockList,
 			groupSellCar: (state) => state.marketState.data.groupSellCar,
 		}),
+		getLangMap(){
+			let langToName = {};
+			let nftConfig = BaseConfig.NftCfg;
+			for (let key in nftConfig) {
+				let item =nftConfig[key];
+				langToName[item.tokenName] = this.$t(item.tokenName);
+			}
+			return langToName;
+		},
+		getSearchArr(){
+			let retArr = [];
+			let searchWord = this.searchWord;
+			if(searchWord == "") return retArr;
+			let nftConfig = BaseConfig.NftCfg;
+			let langMap = this.getLangMap;
+			for (let key in nftConfig) {
+				let item =nftConfig[key];
+				let realName = langMap[item.tokenName];
+				if(realName.toLowerCase().indexOf(searchWord.toLowerCase()) != -1 
+				|| item.cnName.toLowerCase().indexOf(searchWord.toLowerCase()) != -1
+				){
+					item.realName = realName;
+					item.vType = parseInt(item.prototype / 1e4);
+					retArr.push(item);
+				}
+			}
+			return retArr.reverse();
+		},
 		getTotalPetNum: function () {
 			let totalPet = 0;
 			this.getTotalPet.map((item) => {
@@ -313,7 +367,8 @@ export default {
 				let isMathVType =
 					this.myMarketPetFilter.vType == 0 ||
 					this.myMarketPetFilter.vType == item.vType;
-				if (isMatchCategory && isMathVType) {
+				let isMathProto = this.myMarketPetFilter.searchProto <= 0 || item.prototype == this.myMarketPetFilter.searchProto;
+				if (isMatchCategory && isMathVType && isMathProto) {
 					let bookType =  item.prototype % (item.vType * 10000)
 					item.isLock = this.getLockTypes.indexOf(bookType) != -1;
 					totalPet.push(item);
@@ -327,7 +382,7 @@ export default {
 			return totalPet;
 		},
 		getShowPetArr() {
-			return this.getTotalPet.slice(
+			return this.getTotalPet.filter(item => this.myMarketPetFilter.searchProto <= 0 || this.myMarketPetFilter.searchProto == item.prototype).slice(
 				this.onePageCount * (this.pageNum - 1),
 				this.onePageCount * this.pageNum
 			);
@@ -351,11 +406,35 @@ export default {
 
 	mounted(){
 		this.initParabola();
+
+		let searcheItem = BaseConfig.NftCfg[this.myMarketPetFilter.searchProto];
+		if(searcheItem){
+			this.setSearchItme({realName: this.getLangMap[searcheItem["tokenName"]], prototype: searcheItem.prototype});
+		}
 	},
 	beforeDestroy(){
 		if(timer) clearInterval(timer);
 	},
 	methods: {
+		setSearchItme(item){
+			if(item.prototype == 0) return;
+			this.searchWord = item.realName + ":"+item.prototype;
+			this.goSearch();
+		},
+		goSearch(){
+			let prototype = this.searchWord.split(":")[1];
+			if(this.searchWord == ""){
+				prototype = 0;
+			}else{
+				if(BaseConfig.NftCfg[prototype] == undefined) return;
+			}
+			this.$store.commit("marketState/setFilter", {
+				filterName: "myMarketPetFilter",
+				type: "searchProto",
+				value: prototype,
+			});
+			this.onPageChange(1);
+		},
 		onTabChange(pos){
 			this.sellObj.endPrice = this.sellObj.startPrice;
 			this.priceTypePos = pos;

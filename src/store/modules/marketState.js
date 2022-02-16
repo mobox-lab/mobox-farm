@@ -15,7 +15,7 @@ const state = () => ({
 		marketPage: 1,
 		marketMySellPage: 1,
 		//筛选
-		myMarketPetFilter: {category: 0,vType: 0},
+		myMarketPetFilter: {category: 0,vType: 0, searchProto: 0,},
 		myMarketSellFilter: {category: 0,vType: 0},
 		marketSearch: {category: 0,vType: 0,sort: 0,pType: 0,},
 		//记录

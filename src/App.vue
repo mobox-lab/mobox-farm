@@ -835,12 +835,13 @@ export default {
 			let storageLang = Common.getUrlParms("lang");
 
 			if(storageLang){
+				if(storageLang.indexOf("zh") != -1) storageLang = "zh-CN";
 				lang = langMap[storageLang] || 'en'
 			}else{
 				lang = navigator.language||navigator.userLanguage;
 				lang = langMap[lang] || 'en';
 			}
-			if(lang.indexOf("zh") != -1) lang = "zh-CN";
+			
 			this.$i18n.locale = lang;
 		},
 		async  getTotalStakeUSDTAndAirdropKEY(){
@@ -1157,7 +1158,7 @@ export default {
 	top: 0px;
 	line-height: 50px;
 	background: #13181F;
-	z-index: 9999998;
+	z-index: 99999999;
 }
 #top-res p {
 	display: inline-block;

@@ -430,10 +430,10 @@ export default {
 			return totalPet;
 		},
 		getShowPetArr() {
-			return this.getTotalPet.slice(
+			return this.getTotalPet.filter(item => this.myPetFilter.searchProto <= 0 || this.myPetFilter.searchProto == item.prototype).slice(
 				this.onePageCount * (this.myPetPage - 1),
 				this.onePageCount * this.myPetPage
-			).filter(item => this.myPetFilter.searchProto <= 0 || this.myPetFilter.searchProto == item.prototype);
+			);
 		},
 		getMyPetObj() {
 			let obj = {};
@@ -538,6 +538,7 @@ export default {
 				type: "searchProto",
 				value: prototype,
 			});
+			this.onPageChange(1);
 		},
 		search(){
 			if(this.momoSetting.v4_max_enhance == 0) return;

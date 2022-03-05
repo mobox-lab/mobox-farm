@@ -26,7 +26,7 @@
 								<img class="bmomo-momo" :src="require(`@/assets/pet/${item.prototype}.png`)" alt="" width="150px">
 								<span class="vtype" :class="`bg-new${item.vType}`"></span>
 								<p class="mname">{{$t(item.tokenName)}}</p>
-								<button class="mgt-10 babtn" style="zoom: 0.8" @click="approve" v-if="!hasApprove && hasApprove != '-'" :class="{gray: lockBtn.approveLock > 0}">
+								<button class="mgt-10 babtn" style="zoom: 0.8" @click="approve(item)" v-if="needApprove(item)" :class="{gray: lockBtn.approveLock > 0}">
 									<Loading v-if="lockBtn.approveLock > 0" />
 									{{$t("Withdraw_02")}}
 								</button>
@@ -114,6 +114,7 @@ export default {
 			showSuccess: false,
 			dataList: [],
 			hasApprove: "-",
+			hasApprove_new: "-",
 			nowClaimItem: {
 				bToken: 0,
 				prototype: 0,
@@ -153,10 +154,16 @@ export default {
 		this.initData();
 	},
 	methods: {
+		needApprove(item){
+			let isNew = item.bToken.indexOf("2124") != -1;
+			let hasApprove = isNew? this.hasApprove_new: this.hasApprove;
+			return !hasApprove && hasApprove != "-"
+		},
 		async initData(){
 			await Wallet.ETH.getAccount();
 			await this.getMyNFTList();
-			await this.isApprovedForAll();
+			await this.isApprovedForAll(false);
+			await this.isApprovedForAll(true);
 		},
 		async claim(item){
 			let bnNFTTokenId = item.bToken;
@@ -182,19 +189,24 @@ export default {
 				}
 			}
 		},
-		async approve(){
+		async approve(item){
+			let isNew = item.bToken.indexOf("2124") != -1
 			if(this.lockBtn.approveLock > 0) return;
 			let hash = await Wallet.ETH.Group.BinaceNFT.approveForAll(()=>{
-				this.isApprovedForAll();
+				this.isApprovedForAll(isNew);
 			});
 			if(hash){
 				this.lockBtnMethod("approveLock");
 			}
 		},
-		async isApprovedForAll(){
-			let res = await Wallet.ETH.Group.BinaceNFT.isApprovedForAll();
-			console.log(res);
-			this.hasApprove = res;
+		async isApprovedForAll(isNew = false){
+			let res = await Wallet.ETH.Group.BinaceNFT.isApprovedForAll(isNew);
+			console.log(res, {isNew});
+			if(isNew){
+				this.hasApprove_new = res;
+			}else{
+				this.hasApprove = res;
+			}
 		},
 		async getMyNFTList(){
 			let res = await Wallet.ETH.Group.BinaceNFT.getMyNFTList();
@@ -212,7 +224,7 @@ export default {
 						vType: parseInt(item / 1e4),
 						...BaseConfig.NftCfg[item]
 					});
-				})
+				});
 			}else{
 				this.state = 2;
 			}

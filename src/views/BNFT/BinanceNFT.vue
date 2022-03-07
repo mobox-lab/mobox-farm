@@ -194,7 +194,7 @@ export default {
 			if(this.lockBtn.approveLock > 0) return;
 			let hash = await Wallet.ETH.Group.BinaceNFT.approveForAll(()=>{
 				this.isApprovedForAll(isNew);
-			});
+			}, isNew);
 			if(hash){
 				this.lockBtnMethod("approveLock");
 			}

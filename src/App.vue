@@ -105,13 +105,13 @@
 				</router-link>
 
 			</ul>
-			<!-- <div class="tac mgt-30">
+			<div class="tac mgt-30">
 				<div id="halloween-entry" class="por">
 					<router-link to="/binanceNFT">
 						<img src="@/assets/binaceActivity.png" alt="" height="85" />
 					</router-link>
 				</div>
-			</div> -->
+			</div>
 			<div id="our-parice-pc">
 
 				<div class="vertical-children dib point-block">

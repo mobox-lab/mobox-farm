@@ -3,7 +3,7 @@
 		<div id="bg1"></div>
 		<div id="aridorp">
 				<section class=" por airdrop-cont" style="z-index: 10">
-				<!-- <div class="swiper-container hide" ref="swiper_container" style="padding: 0px 10px;padding-bottom: 15px;">
+				<div class="swiper-container hide" ref="swiper_container" style="padding: 0px 10px;padding-bottom: 15px;">
 					<div class="swiper-wrapper tac">
 						<div id="halloween-entry" class="swiper-slide tac" style="width: 60%;margin:0 auto">
 							<router-link to="/binanceNFT">
@@ -12,7 +12,7 @@
 						</div>
 					</div>
 					<div ref="pagination" class="swiper-pagination"></div>
-				</div> -->
+				</div>
 				<div class=" tal vertical-children tac-xs">
 					<img class="mgt-30 hide-xs" src="@/assets/airdrop_icon.png" width="200" alt="">
 					<div class="dib mgl-10 block-xs">

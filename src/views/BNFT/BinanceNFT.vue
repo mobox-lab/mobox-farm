@@ -120,6 +120,7 @@ export default {
 				prototype: 0,
 				tokenName: "",
 			},
+			hasShowNotice: false,
 		})
 	},
 	computed: {
@@ -216,7 +217,12 @@ export default {
 				let res2 = await Wallet.ETH.Group.BinaceNFT.getBNFTData(res);
 				this.dataList = [];
 				let {prototypes, claimers} = res2;
+				let needShowNotice = false;
 				prototypes.map((item, pos)=>{
+					if(item == 0){
+						needShowNotice = true;
+						return;
+					}
 					this.dataList.push({
 						bToken: res[pos],
 						prototype: item,
@@ -225,6 +231,11 @@ export default {
 						...BaseConfig.NftCfg[item]
 					});
 				});
+				if(needShowNotice && !this.hasShowNotice){
+					this.getConfirmDialog().show(this.$t('Withdraw_15'), ()=>{
+						this.hasShowNotice = true;
+					}, true);
+				}
 			}else{
 				this.state = 2;
 			}

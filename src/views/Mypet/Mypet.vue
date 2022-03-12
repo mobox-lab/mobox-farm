@@ -25,6 +25,10 @@
 			
 			<div id="my-pet-fitter" v-if="tab_pos == 0">
 
+				<div class="dib por mgl-10 por cur-point"  @click="oprDialog('transfer-dialog', 'block')" >
+					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
+				</div>
+
 				<div class="dib por mgl-10 filter"  >
 					<img src="@/assets/icon/filter_icon.png" alt="" height="40" @click="toggleFilter($refs.filter)" />
 					<div class="filter-panel hide " ref="filter">
@@ -214,6 +218,7 @@
 				</div>
 			</div>
 		</div>
+		<Transfer />
 	</div>
 </template>
 
@@ -222,6 +227,7 @@ import { PetItem, Dropdown, Page, Tab, BookItem } from "@/components";
 import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
 import { BaseConfig } from "@/config";
+import Transfer from './Transfer'
 
 export default {
 	mixins: [CommonMethod],
@@ -264,7 +270,7 @@ export default {
 			]
 		};
 	},
-	components: { PetItem, Dropdown, Page, Tab, BookItem },
+	components: { PetItem, Dropdown, Page, Tab, BookItem, Transfer },
 	created(){
 		this.tab_pos = this.$route.query.tab || 0;
 		if (this.tab_pos == 1) this.hasShowBook = true;

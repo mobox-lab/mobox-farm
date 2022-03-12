@@ -12,13 +12,14 @@ import Rent from './group/Rent'
 import BinaceNFT from './group/BinaceNFT'
 import MoMoSetting from './group/MoMoSetting'
 import BigSell from './group/BigSell'
+import Transfer from './group/Transfer';
 
 export default class ETH {
 	static web3;
 	static web3MainNet;
 
 	static  Group = {
-		Gem, MdxBox, Enhancer, Rent, BinaceNFT, MoMoSetting, BigSell
+		Gem, MdxBox, Enhancer, Rent, BinaceNFT, MoMoSetting, BigSell, Transfer
 	}
 
 	//合约相关

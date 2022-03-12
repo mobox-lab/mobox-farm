@@ -38,6 +38,9 @@ const CommonMethod = {
 			}
 			axios.post("https://accountapi.mobox.io/app/action", sendData);
 		},
+		getRoot(){
+			return this.$root.$children[0]
+		},
 		getRootRefs(){
 			return this.$root.$children[0].$refs
 		},

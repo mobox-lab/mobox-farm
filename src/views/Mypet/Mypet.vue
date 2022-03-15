@@ -26,7 +26,7 @@
 			<div id="my-pet-fitter" v-if="tab_pos == 0">
 
 				<div class="dib por mgl-10 por cur-point"  @click="oprDialog('transfer-dialog', 'block')" >
-					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
+					<img src="@/assets/icon/momoverse_icon.png" alt="" height="40" />
 				</div>
 
 				<div class="dib por mgl-10 filter"  >
@@ -295,6 +295,7 @@ export default {
 	computed: {
 		...mapState({
 			myNFT_wallet: (state) => state.ethState.data.myNFT_wallet,
+			myNFT_verse: (state) => state.ethState.data.myNFT_verse,
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,
 			myPetPage: (state) => state.globalState.data.myPetPage,
 			myPetFilter: (state) => state.globalState.data.myPetFilter,
@@ -409,7 +410,7 @@ export default {
 		},
 		getTotalPet() {
 			let totalPet = [];
-			[...this.myNFT_wallet, ...this.myNFT_stake].map((item) => {
+			[...this.myNFT_wallet, ...this.myNFT_verse,...this.myNFT_stake].map((item) => {
 				//类型的筛选,品质的筛选
 				let isMatchCategory =
 					this.myPetFilter.category == 0 ||

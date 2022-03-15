@@ -123,7 +123,8 @@ const InitEth = {
 					}
 				}, 1000);
 
-				this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
 
 				await this.getNewBoxNum();

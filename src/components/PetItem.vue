@@ -1,11 +1,13 @@
 <template>
-	<div :class="' pet_item pet_hover_lv' + data.item.vType" :data-vType="data.item.vType">
+	<div :class="['pet_hover_lv' + data.item.vType,{'market': data.item.location == 'verse'}]" class="pet_item" :data-vType="data.item.vType">
 		<img class="quick-buy" src="@/assets/icon/search.png" alt="" @click.stop="quickBuy(data.item.prototype)">
 
 		<div class="pet-lv vertical-children">
 			<img :src="require(`../assets/icon/bnb.png`)" alt="" width="15" />&nbsp;
 			<span class="mgl-5">Lv. {{ data.item.level }}</span>
 		</div>
+
+		
 
 		<div class="jewel" v-if="data.item.vType >= 4">
 			<div v-for="(item, index) in [100,200,300,400 ]" :key="JSON.stringify(item)" class="gem-item-little">
@@ -29,22 +31,25 @@
 			</div>
 		</div>
 		<!-- LV.1 -->
-		<div class="mgt-10 tar vertical-children lv1" style="font-size: 12px" v-if="data.item.vType >= 4 && data.item.level > 1">
+		<div class="mgt-10 tar vertical-children lv1" style="font-size: 12px" v-if="(data.item.vType >= 4 && data.item.level > 1) || data.item.location=='verse' ">
 			<span>Lv. 1</span>&nbsp;
 			<img src="../assets/icon/airdrop.png" alt="" height="15">&nbsp;
 			<span :class="getHashrateColor(data.item)"  class="bold">{{ data.item.hashrate }}</span>
 		</div>
 
 		<div class="pet-power vertical-children mgt-20">
-			<div class="gka-harmer por" ref="anime" style="margin-top: -12px;right:-10px" :style="{animationDelay: delay+'s'}" :class="{'animation-harmer': data.item.location == 'stake'}">
+			<div  class="gka-harmer por" ref="anime" style="margin-top: -12px;right:-10px" :style="{animationDelay: delay+'s'}" :class="{'animation-harmer': data.item.location == 'stake'}">
 				<img src="../assets/anime/sleep.gif" class="sleep-harmer" v-if="data.item.location == 'wallet'" alt="" />
 			</div>
-			<span :class="getHashrateColor(data.item)" style="font-size: 25px" class="bold">{{ data.item.lvHashrate }}</span>
-			<div class="mgt-10 tar vertical-children show-only-market hide" style="font-size: 12px" v-if="data.item.vType >= 4 && data.item.level > 1">
+			<span :class="getHashrateColor(data.item)" style="font-size: 25px" class="bold" >{{ data.item.lvHashrate }}</span>
+			<div class="mgt-10 tar vertical-children " style="font-size: 12px" v-if="data.item.vType >= 4 && data.item.level > 1">
 				<span>Lv. 1</span>&nbsp;
 				<img src="../assets/icon/airdrop.png" alt="" height="15">&nbsp;
 				<span :class="getHashrateColor(data.item)"  class="bold">{{ data.item.hashrate }}</span>
 			</div>
+		</div>
+		<div class="pet-chanzi" v-if="data.item.location == 'verse'">
+			<img src="@/assets/icon/chanzi.gif" alt="" width="50" style="margin-bottom:-10px">
 		</div>
 		<div class="por slot">
 			<slot></slot>
@@ -79,6 +84,7 @@ export default {
 </script>
 
 <style  scoped>
+
 .market .lv1{
 	display: none !important;
 }
@@ -158,6 +164,12 @@ export default {
 }
 .market .show-only-market{
 	display: block;
+}
+.pet-chanzi{
+	width: 100%;
+	position: absolute;
+	left: 0px;
+	bottom: 5px;
 }
 .market .pet-power{
 	position: absolute;

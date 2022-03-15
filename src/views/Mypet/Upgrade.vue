@@ -223,6 +223,7 @@ export default {
 		...mapState({
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,
 			myNFT_wallet: (state) => state.ethState.data.myNFT_wallet,
+			myNFT_verse: (state) => state.ethState.data.myNFT_verse,
 			lockList: (state) => state.ethState.data.lockList,
 			allowance_1155_to_721: (state) =>state.ethState.data.allowance_1155_to_721,
 			allowance_1155_to_stake: (state) =>state.ethState.data.allowance_1155_to_stake,
@@ -281,7 +282,7 @@ export default {
 			return parseInt(hashrate + parseInt(growup.staticPower * (level - 1) /100) + parseInt(((parseInt(level / 5) * (1 + parseInt(level / 5)))) * growup.staticPower * growup.staticPercent / 200) );
 		},
 		getTotalNft(){
-			return [...this.myNFT_stake, ...this.myNFT_wallet];
+			return [...this.myNFT_stake, ...this.myNFT_wallet,...this.myNFT_verse];
 		},
 		//获取当前要显示的NFT的信息
 		getNowPetItem() {
@@ -459,6 +460,7 @@ export default {
 		},
 		//是否设置过名字
 		hasSetName() {
+			console.log(this.getNowPetItem, "--------");
 			return this.getNowPetItem.tokenName.indexOf("Name_") == -1;
 		},
 		//获取锁定type

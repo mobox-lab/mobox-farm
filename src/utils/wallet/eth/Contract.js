@@ -615,6 +615,35 @@ export default class Contract {
 			}
 		],
 	}
+	//获取momoverse中ERC1155和721---MomoHelper
+	static getMomosVerse = {
+		name: 'getMomosVerse',
+		type: "function",
+		inputs: [{
+			type: 'address',
+			name: '_ower'
+		}, {
+			type: 'uint256[]',
+			name: '_ids'
+		}],
+		outputs: [{
+				type: "uint256[]",
+				name: "_ids"
+			},
+			{
+				type: "uint256[]",
+				name: "_amounts"
+			},
+			{
+				type: "uint256[]",
+				name: "_tokenIds"
+			},
+			{
+				type: "uint256[]",
+				name: "_attrs"
+			}
+		],
+	}
 	//获取钱包中ERC1155和721---MomoHelper
 	static getMomosWallet = {
 		name: 'getMomosWallet',

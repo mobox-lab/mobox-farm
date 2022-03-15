@@ -102,6 +102,7 @@ export default class ETH {
 		], WalletConfig.ETH.moMoMToken);
 		this.momoHelperContract = new this.web3.eth.Contract([
 			Contract.getMomosWallet,
+			Contract.getMomosVerse,
 			Contract.getMomosStake,
 			Contract.getMomosAuction,
 			Contract.getMomoNames,
@@ -1017,6 +1018,12 @@ export default class ETH {
 					this.momoHelperContract.methods.getMomosAuction(myAddr).call().then(momosObj => {
 						console.log("AUCTION", this.generateNftObj(momosObj, ConstantConfig.NFT_LOCATION.AUCTION));
 						resolve(this.generateNftObj(momosObj, ConstantConfig.NFT_LOCATION.AUCTION));
+					});
+					break;
+				case ConstantConfig.NFT_LOCATION.VERSE:
+					this.momoHelperContract.methods.getMomosVerse(myAddr, prototype_1155_arr).call().then(momosObj => {
+						console.log("Verse momo", this.generateNftObj(momosObj, ConstantConfig.NFT_LOCATION.VERSE));
+						resolve(this.generateNftObj(momosObj, ConstantConfig.NFT_LOCATION.VERSE));
 					});
 					break;
 				default:

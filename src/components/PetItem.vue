@@ -7,8 +7,6 @@
 			<span class="mgl-5">Lv. {{ data.item.level }}</span>
 		</div>
 
-		
-
 		<div class="jewel" v-if="data.item.vType >= 4">
 			<div v-for="(item, index) in [100,200,300,400 ]" :key="JSON.stringify(item)" class="gem-item-little">
 				<img v-if="data.item.gems == undefined || data.item.gems[index] == 0" :src="require(`../assets/market/${item+1}.png`)" class="opa-3 gray" alt="" title="jewel"/>
@@ -42,14 +40,15 @@
 				<img src="../assets/anime/sleep.gif" class="sleep-harmer" v-if="data.item.location == 'wallet'" alt="" />
 			</div>
 			<span :class="getHashrateColor(data.item)" style="font-size: 25px" class="bold" >{{ data.item.lvHashrate }}</span>
-			<div class="mgt-10 tar vertical-children " style="font-size: 12px" v-if="data.item.vType >= 4 && data.item.level > 1">
+			<div class="mgt-10 tar vertical-children show-only-market hide " style="font-size: 12px" v-if="data.item.vType >= 4 && data.item.level > 1">
 				<span>Lv. 1</span>&nbsp;
 				<img src="../assets/icon/airdrop.png" alt="" height="15">&nbsp;
 				<span :class="getHashrateColor(data.item)"  class="bold">{{ data.item.hashrate }}</span>
 			</div>
 		</div>
-		<div class="pet-chanzi" v-if="data.item.location == 'verse'">
-			<img src="@/assets/icon/chanzi.gif" alt="" width="50" style="margin-bottom:-10px">
+		<div class="pet-chanzi vertical-children" v-if="data.item.location == 'verse'">
+			<img src="@/assets/icon/chanzi.gif" alt="" width="50" style="margin-bottom:-5px">
+			<span  class="bold" style="font-size: 25px;color: #fff">{{getSCL}}</span>
 		</div>
 		<div class="por slot">
 			<slot></slot>
@@ -78,13 +77,20 @@ export default {
 		hasSetName() {
 			return this.data.item.tokenName.indexOf("Name_") == -1;
 		},
+		// 获取momo的生产力
+		getSCL(){
+			let {lvHashrate, hashrate} = this.data.item;
+			return hashrate * 20 + lvHashrate;
+		}
 	},
 
 };
 </script>
 
 <style  scoped>
-
+.market .show-only-market{
+	display: block;
+}
 .market .lv1{
 	display: none !important;
 }
@@ -165,11 +171,14 @@ export default {
 .market .show-only-market{
 	display: block;
 }
+.rent .pet-chanzi{
+	display: none !important;
+}
 .pet-chanzi{
 	width: 100%;
 	position: absolute;
 	left: 0px;
-	bottom: 5px;
+	bottom: 3px;
 }
 .market .pet-power{
 	position: absolute;

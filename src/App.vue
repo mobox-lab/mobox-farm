@@ -629,6 +629,7 @@ export default {
 			globalState: (state) => state.globalState.data,
 			ethBalance: (state) => state.ethState.data.balance,
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,
+			myNFT_verse: (state) => state.ethState.data.myNFT_verse,
 			eth_myHashrate: (state) => state.ethState.data.myHashrate,
 			orderBlockHash: (state) => state.ethState.data.orderBlockHash,
 			canOpenBox: (state) => state.ethState.data.canOpenBox,
@@ -678,6 +679,21 @@ export default {
 			});
 			return retObj;
 		},
+		getNftVInfo_verse() {
+			let retObj = {
+				v1: [],
+				v2: [],
+				v3: [],
+				v4: [],
+				v5: [],
+				v6: [],
+			};
+			this.myNFT_verse.map((item) => {
+				let vType = parseInt(item.prototype / 1e4);
+				retObj["v" + vType].push(item);
+			});
+			return retObj;
+		},
 		getTotalPercent() {
 			let obj = { maxAdd: 0, v4: -1, v5: -1, v6: -1, };
 			let nftInfo = this.getNftVInfo;
@@ -698,6 +714,28 @@ export default {
 			let showList = [];
 			let typeObj = {};
 			this.myNFT_stake.map((item) => {
+				if (item.num >= 1) {
+					let type = item.prototype % (item.vType * 10000);
+					if (!typeObj[type]) {
+						typeObj[type] = {};
+					}
+					typeObj[type][item.prototype] = item;
+				}
+			});
+
+			Object.values(typeObj).map((item) => {
+				let compList = Object.values(item);
+				if (compList.length >= 4) {
+					showList.push(compList);
+				}
+			});
+
+			return showList;
+		},
+		showPowerUpList_verse() {
+			let showList = [];
+			let typeObj = {};
+			this.myNFT_verse.map((item) => {
 				if (item.num >= 1) {
 					let type = item.prototype % (item.vType * 10000);
 					if (!typeObj[type]) {

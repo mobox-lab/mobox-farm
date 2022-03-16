@@ -30,6 +30,10 @@
 
 					<div class="por" id="show-pet-view" style="margin-top: 100px" >
 						<PetView v-bind:prototype="this.getNowPetItem.prototype" />
+						<div class=" vertical-children chanzi" v-if="this.getNowPetItem.location == 'verse'">
+							<img src="@/assets/icon/chanzi.gif" alt="" width="50" style="margin-bottom:-5px">
+							<span  class="bold" style="font-size: 25px;color: #fff">{{getSCL}}</span>
+						</div>
 						<div class="vertical-children" id="upgrade-name">
 							<img :src=" require(`@/assets/icon/${this.getNowPetItem.chain}.png`) " height="25" alt="" />&nbsp;
 							<span>{{ hasSetName ? shortStr(this.getNowPetItem.tokenName) : $t(this.getNowPetItem.tokenName) }}</span>
@@ -41,7 +45,7 @@
 			<div class="col-md-6 tal mgt-10">
 				<div class="panel vertical-children">
 					<!-- momo升级 -->
-					<div v-if="getNowPetItem.tokenId != 0 && getNowPetItem.location=='stake'">
+					<div class="mgb-20" v-if="getNowPetItem.tokenId != 0 && getNowPetItem.location  != 'wallet'">
 						<h3 >
 							{{ $t("MOMO_22") }}
 							<img class="mgl-5 cur-point" @click="getRootRefs().ruleDialog.show('MOMO_35','MOMO_36')" src="@/assets/icon/help.png" alt="" height="20"/>
@@ -80,10 +84,7 @@
 											{{ $t("MOMO_22") }}
 										</button>
 									</div>
-									<!-- 币安小子不让升级 -->
-									<!-- <div v-else class="mgt-20">
-										{{$t("MOMO_71")}}
-									</div> -->
+							
 								</div>
 							</div>
 						</div>
@@ -230,6 +231,11 @@ export default {
 			allowance_721_to_stake: (state) =>state.ethState.data.allowance_721_to_stake,
 			upgradeLocks: (state) =>state.ethState.data.upgradeLocks,
 		}),
+		// 获取momo的生产力
+		getSCL(){
+			let {lvHashrate, hashrate} = this.getNowPetItem;
+			return hashrate * 20 + lvHashrate;
+		},
 		showCanSelectArr(){
 			let { type, needPrototype, needLv } = this.needHandleData;
 			let needShowArr = [];
@@ -675,7 +681,7 @@ export default {
 		async upgrade() {
 			if(this.lockUpgradeTime > 0) return;
 
-			let { level, tokenId } = this.getNowPetItem;
+			let { level, tokenId, location } = this.getNowPetItem;
 			let { v1, v2, v3, v4_tokenId, v5_tokenId } = this.selectProtoTypes;
 			//TODO校验是否符合升级条件
 			let upgradeInfo = this.getUpgradeInfo;
@@ -709,7 +715,8 @@ export default {
 				tokenId,
 				Object.keys(protosV1V2V3Obj),
 				Object.values(protosV1V2V3Obj),
-				[...v4_tokenId, ...v5_tokenId]
+				[...v4_tokenId, ...v5_tokenId],
+				location == ConstantConfig.NFT_LOCATION.VERSE
 			);
 			if (hash) {
 				//锁定升级按钮
@@ -875,6 +882,11 @@ export default {
 	right: 20px;
 	top: 65px;
 	z-index: 999;
+}
+.chanzi{
+	position: absolute;
+	bottom: 30px;
+	width: 100%;
 }
 #upgrade-name {
 	position: absolute;

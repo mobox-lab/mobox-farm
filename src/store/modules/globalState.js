@@ -56,6 +56,7 @@ const state = () => ({
 			addCrystalLock: 0, //添加水晶数量
 			enhanceLock: 0, //升级锁
 			openMecBoxLock: 0,
+			transMoMoLock: 0, //转移momo锁
 			claimBNFTLock: 0, // 领取binaceNFT锁
 		},
 		walletStatus: {

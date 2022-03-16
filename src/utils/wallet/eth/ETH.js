@@ -121,6 +121,19 @@ export default class ETH {
 			Contract.addMomoStory,
 		], WalletConfig.ETH.moMoStake);
 
+		this.momoStakeContract_verse = new this.web3.eth.Contract([
+			Contract.stake,
+			Contract.withdrawMomo,
+			Contract.getReward,
+			Contract.earned,
+			Contract.userHashrate,
+			Contract.totalHashrate,
+			Contract.mintAndStake,
+			Contract.levelUpStake,
+			Contract.setMomoName,
+			Contract.addMomoStory,
+		], WalletConfig.ETH.momoVerse);
+
 		this.pancakeSwapContract = new this.web3.eth.Contract([
 			PancakSwapContract.approve,
 			PancakSwapContract.allowance,
@@ -1200,10 +1213,11 @@ export default class ETH {
 		});
 	}
 	//升级质押的721
-	static async upgradeStake(gotoLv, tokenId, protosV1V2V3 = [], amountsV1V2V3 = [], tokensV4V5 = []) {
+	static async upgradeStake(gotoLv, tokenId, protosV1V2V3 = [], amountsV1V2V3 = [], tokensV4V5 = [], isMoMoVerse = false) {
 		let myAddr = await this.getAccount();
 		if (!myAddr) return;
-		if (!this.momoStakeContract) return;
+		let constract = isMoMoVerse?this.momoStakeContract_verse: this.momoStakeContract;
+		if (!constract) return;
 		return new Promise(resolve => {
 			//将字符串转换为Number
 			protosV1V2V3.map((item, index) => protosV1V2V3[index] = Number(item));
@@ -1212,10 +1226,13 @@ export default class ETH {
 			console.log({protosV1V2V3}, {amountsV1V2V3}, {tokensV4V5});
 
 			this.sendMethod(
-				this.momoStakeContract.methods.levelUp(tokenId, protosV1V2V3, amountsV1V2V3, tokensV4V5), {from: myAddr},
+				constract.methods.levelUp(tokenId, protosV1V2V3, amountsV1V2V3, tokensV4V5), {from: myAddr},
 				hash=>resolve(hash),
 				()=>{
 					EventBus.$emit(EventConfig.LevelUpConfirm, { chain: "eth", gotoLv, tokenId });
+					if(isMoMoVerse){
+						Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
+					}
 				}
 			)
 		});

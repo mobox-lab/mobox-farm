@@ -410,7 +410,8 @@ export default {
 		},
 		getTotalPet() {
 			let totalPet = [];
-			[...this.myNFT_wallet, ...this.myNFT_verse,...this.myNFT_stake].map((item) => {
+			
+			[...this.myNFT_wallet,...this.myNFT_verse,...this.myNFT_stake].map((item) => {
 				//类型的筛选,品质的筛选
 				let isMatchCategory =
 					this.myPetFilter.category == 0 ||
@@ -425,14 +426,11 @@ export default {
 			});
 
 			totalPet.sort((a, b) =>{
-				if(b.location == "wallet") {
-					if(a.location == "wallet"){
-						return b.lvHashrate - a.lvHashrate
-					}else{
-						return 1;
-					}
+				if(a.location == b.location) {
+					return b.lvHashrate - a.lvHashrate
+				}else{
+					return 0;
 				}
-				return b.lvHashrate - a.lvHashrate
 			});
 			return totalPet;
 		},

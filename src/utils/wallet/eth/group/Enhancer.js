@@ -288,7 +288,7 @@ export default class Enhancer {
 	}
 
 	//进化2.0版本
-	static async enhanceV2({tokenId_,hrUp_,crystal_}, recipt){
+	static async enhanceV2({tokenId_,hrUp_,crystal_}, recipt, isMoMoVerse = false){
 		let myAddr = await ETH.getAccount();
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
@@ -298,7 +298,7 @@ export default class Enhancer {
 				{"name": "hrUp_","type": "uint256"},
 				{"name": "crystal_","type": "uint256"},
 			],
-		}], WalletConfig.ETH.moMoStake);
+		}], isMoMoVerse?WalletConfig.ETH.momoVerse: WalletConfig.ETH.moMoStake); 
 		console.log({tokenId_});
 		return new Promise(resolve => {
 			ETH.sendMethod(
@@ -306,8 +306,12 @@ export default class Enhancer {
 				hash=>resolve(hash),
 				async ()=>{
 					console.log("enhance success");
-					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
-					await Common.app.eth_setMyHashrate();
+					if(isMoMoVerse){
+						await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
+					}else{
+						await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+						await Common.app.eth_setMyHashrate();
+					}
 					await Common.app.getCrystalNum();
 					Common.app.unLockBtn("enhanceLock");
 					recipt();

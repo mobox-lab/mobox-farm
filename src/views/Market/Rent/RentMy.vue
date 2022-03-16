@@ -46,7 +46,7 @@
 				<p class="opa-6 mgt-10">No items to display</p>
 			</div>
 			<router-link :to="`/rentView/${item.tokenId}`" v-for="item in getShowPetArr" :key="item.prototype.toString() +item.tokenId + Math.random()">
-				<PetItem   v-bind:data="{item: item}" class="market no-search" >
+				<PetItem   v-bind:data="{item: item}" class="market no-search rent" >
 					<div style="position:absolute;width:100%;left:0px;padding:0px 10px;bottom:0px;">
 						<div v-if="item.vType > 3" class=" tac mgt-10">
 							<button  v-if="item.rent.state==-1" class="btn-primary btn-small mgt-10" >{{$t("Hire_02")}}</button>
@@ -58,7 +58,7 @@
 			</router-link>
 		</div>
 
-		<div style="margin-top: 30px" v-if="Math.ceil(this.myNFT_stake.length / onePageCount) > 1" >
+		<div style="margin-top: 30px" v-if="Math.ceil(getTotalPet.length / onePageCount) > 1" >
 			<Page ref="page"   :defaultPage="marketRentMyPage" :totalPage="getTotalPage" :onChange="onPageChange" v-show="getTotalPage > 1" />
 		</div>
 	
@@ -93,6 +93,7 @@ export default {
 	computed: {
 		...mapState({
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,
+			myNFT_verse: (state) => state.ethState.data.myNFT_verse,
 			myRentMarketFilter: (state) => state.marketState.data.myRentMarketFilter,
 			marketRentMyPage: (state) => state.marketState.data.marketRentMyPage,
 			historyNotice: (state) => state.marketState.data.historyNotice,
@@ -111,7 +112,7 @@ export default {
 		getTotalPet() {
 			let totalPet = [];
 			let {state, category, vType} = this.myRentMarketFilter;
-			[...this.myNFT_stake].map((item) => {
+			[...this.myNFT_stake,...this.myNFT_verse].map((item) => {
 				//类型的筛选,品质的筛选
 				let isMatchCategory = category == 0 || category == item.category;
 				let isMatchVType = item.vType >= 4 && (vType == 0 || vType == item.vType);

@@ -1,16 +1,16 @@
 <template>
 	<div>
-		<MomoEnhance :data="this.data"  v-if="!this.isMarket && getNowPetItem.location=='stake'"  />
+		<MomoEnhance :data="this.data"  v-if="!this.isMarket && getNowPetItem.location != 'wallet'"  />
 
 		<!-- 宝石相关功能 -->
-		<div v-if="getNowPetItem.vType >= 4  && getNowPetItem.gems" class="mgt-20">
-			<h3 >{{getNowPetItem.location == 'stake'  && !isMarket ?$t("MOMO_40"): $t("Gemstone_44")}}</h3>
+		<div v-if="getNowPetItem.vType >= 4  && getNowPetItem.gems" class="mgb-20">
+			<h3 >{{getNowPetItem.location != 'wallet'  && !isMarket ?$t("MOMO_40"): $t("Gemstone_44")}}</h3>
 			<div class="ly-input-content mgt-10" style="padding-bottom:20px">
 				<div class="aveage-box tac mgt-10 "  id="gem-show">
 					<div  v-for="(item, index) in [100,200,300,400]" :key="item"  class="tac">
 						<div class="gem-item por" style="max-width:80px" @click="showGemBag(index)">
 							<img :class="{'opa-3': Number(data.gems[index]) == 0}" :src="require(`@/assets/market/${data.gems[index]==0?item+1:data.gems[index]}.png`)" alt="" width="100%">
-							<template v-if="getNowPetItem.location =='stake'  && !isMarket">
+							<template v-if="getNowPetItem.location !='wallet'  && !isMarket">
 								<svg v-if="Number(data.gems[index]) == 0 " style="position:absolute;right:3px;top:3px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
 									<path  fill="#E1FF17" d="M867.7 423.8H599.8V155.9c0-49.3-40-89.3-89.3-89.3s-89.3 40-89.3 89.3v267.9H153.3c-49.3 0-89.3 40-89.3 89.3s40 89.3 89.3 89.3h267.9v267.9c0 49.3 40 89.3 89.3 89.3s89.3-40 89.3-89.3V602.4h267.9c49.3 0 89.3-40 89.3-89.3s-40-89.3-89.3-89.3z" ></path>
 								</svg>
@@ -22,7 +22,7 @@
 								</template>
 							</template>
 						</div>
-						<div class="tac mgt-10" style="height:30px" v-if="getNowPetItem.location =='stake'  && !isMarket">
+						<div class="tac mgt-10" style="height:30px" v-if="getNowPetItem.location !='wallet'  && !isMarket">
 							<StatuButton :onClick="removeGem.bind(this, index)" v-if="Number(data.gems[index]) != 0" :isDisable="isDisableOpr || data.rent.state != -1"  :isLoading="lockBtn.takeOffGemLock > 0"  class="btn-small" style="width:100%;max-width:80px">
 								<img src="@/assets/icon/rent_time.png" alt="" height="15" v-if="data.rent.state != -1">
 								<span v-else>{{$t("Gemstone_43")}}</span>
@@ -31,7 +31,7 @@
 					</div>
 				</div>
 
-				<div class="por mgt-20" style="height:50px;width:100%;" v-if="getNowPetItem.location =='stake' && !isMarket">
+				<div class="por mgt-20" style="height:50px;width:100%;" v-if="getNowPetItem.location !='wallet' && !isMarket">
 					<div class="gemBag" @click="oprDialog('gemBag-dialog','block')">
 						<img  src="../assets/icon/gem_bag_icon.png" alt="">
 						<p class="stroke" :data-text="$t('Gemstone_16')">{{$t("Gemstone_16")}}</p>
@@ -41,11 +41,12 @@
 		</div>
 
 		<!-- 质押状态 -->
-		<div v-if="!isMarket"  class="mgt-20">
+		<div v-if="!isMarket"  class="mgb-20">
 			<h3 >{{$t("MOMO_41")}}</h3>
 			<p class="mgt-10 small opa-6">
 				<span v-if="getNowPetItem.location=='stake'">{{$t("MOMO_42")}}</span>
 				<span v-if="getNowPetItem.location=='wallet'">{{$t("MOMO_43")}}</span>
+				<span v-if="getNowPetItem.location=='verse'">该momo在MoMoverse中挖矿</span>
 			</p>
 			<div class="tac mgt-20">
 				<div v-if="getNowPetItem.location=='wallet'" :class="needApprove?'btn-group':''">
@@ -70,7 +71,7 @@
 		</div>
 
 		<!-- 升级记录｜进化记录 -->
-		<div v-if="levelUpInfo.length > 0 || enhanceHistory.length > 0"  class="mgt-20 ly-input-content">
+		<div v-if="levelUpInfo.length > 0 || enhanceHistory.length > 0"  class="mgb-20 ly-input-content">
 			<div class="por">
 				<h3 class="dib cur-point " :class="{tabActive: historyTab == 0}" @click="historyTab=0">{{$t("MOMO_34")}}</h3>
 				<h3 class="dib cur-point mgl-10" :class="{tabActive: historyTab == 1}" @click="historyTab=1">{{$t("MOMO_67")}}</h3>
@@ -136,7 +137,7 @@
 		</div>
 		
 		<!-- 交易记录 -->
-		<div v-if="tradeHistory.length > 0"  class="mgt-20">
+		<div v-if="tradeHistory.length > 0"  class="mgb-20">
 			<h3  class="por ">
 				{{ $t("Market_24") }}
 				<span class="refrash" @click="getMomoTradeHistory">
@@ -166,7 +167,7 @@
 		</div>
 
 		<!-- 故事记录 -->
-		<div v-if="hasStorySkill && getNowPetItem.location!='wallet' " class="mgt-20">
+		<div v-if="hasStorySkill && getNowPetItem.location =='stake' " class="mgb-20">
 			<div v-if="!isMarket">
 				<h3  >{{ $t("MOMO_24") }}</h3>
 				<div class="mgt-10">
@@ -377,7 +378,7 @@ export default {
 		},
 		//
 		showGemBag(index){
-			if(this.getNowPetItem.location != "stake") return;
+			if(this.getNowPetItem.location == "wallet") return;
 			this.gemWearPos=index;
 			this.selectGemLv=0;
 			this.oprDialog('gem-wear-dialog','block')

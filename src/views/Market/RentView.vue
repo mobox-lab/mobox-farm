@@ -175,6 +175,7 @@ export default {
 	computed: {
 		...mapState({
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,
+			myNFT_verse: (state) => state.ethState.data.myNFT_verse,
 			marketRents: (state) => state.marketState.data.marketRents,
 			coinArr: (state) => state.bnbState.data.coinArr,
 			lockBtn: (state) => state.globalState.data.lockBtn,
@@ -209,7 +210,7 @@ export default {
 		isMyPet(){
 			let petObj;
 			let {tokenId} = this.$route.params;
-			this.myNFT_stake.map(item=>{
+			[...this.myNFT_stake,...this.myNFT_verse].map(item=>{
 				if(item.tokenId == tokenId){
 					petObj = item;
 				}

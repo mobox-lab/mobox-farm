@@ -6,6 +6,11 @@
 				<div class="swiper-container hide" ref="swiper_container" style="padding: 0px 10px;padding-bottom: 15px;">
 					<div class="swiper-wrapper tac">
 						<div id="halloween-entry" class="swiper-slide tac" style="width: 60%;margin:0 auto">
+							<router-link to="/anniversary">
+								<img src="@/assets/anniversary/anniEntry.png" alt="" width="100%" />
+							</router-link>
+						</div>
+						<div id="halloween-entry" class="swiper-slide tac" style="width: 60%;margin:0 auto">
 							<router-link to="/binanceNFT">
 								<img src="@/assets/binaceActivity.png" alt="" width="100%" />
 							</router-link>

@@ -106,7 +106,12 @@
 
 			</ul>
 			<div class="tac mgt-30">
-				<div id="halloween-entry" class="por">
+				<div id="halloween-entry" class="por ">
+					<router-link to="/anniversary">
+						<img src="@/assets/anniversary/anniEntry.png" alt="" height="85" />
+					</router-link>
+				</div>
+				<div id="halloween-entry" class="por mgt-10">
 					<router-link to="/binanceNFT">
 						<img src="@/assets/binaceActivity.png" alt="" height="85" />
 					</router-link>

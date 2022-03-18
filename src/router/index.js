@@ -15,6 +15,7 @@ import RentView from '../views/Market/RentView.vue'
 import Activity from "../views/Activity/Activity.vue"
 import Christmas from "../views/Activity/Christmas/Christmas.vue"
 import BlindBox from "../views/Activity/BlindBox/BlindBox.vue"
+import Anniversary from "../views/Activity/Anniversary/Anniversary.vue"
 import BinanceNFT from "../views/BNFT/BinanceNFT.vue"
 import Statistics from "../views/Statistics/Index.vue"
 
@@ -126,6 +127,11 @@ const routes = [
 		path: "/christmas",
 		name: "Christmas",
 		component: Christmas
+	},
+	{
+		path: "/anniversary",
+		name: "Anniversary",
+		component: Anniversary
 	},
 	{
 		path: "/blindBox",

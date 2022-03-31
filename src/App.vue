@@ -380,6 +380,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div >
+						<h3 class="tac">{{$t("Notice_66")}}</h3>
+						<span v-html="$t('Notice_67')" ></span>
+					</div>
+					<div >
 						<h3 class="tac">{{$t("Notice_64")}}</h3>
 						<span v-html="$t('Notice_65')" ></span>
 					</div>

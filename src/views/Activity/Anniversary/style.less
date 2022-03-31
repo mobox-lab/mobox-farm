@@ -1,0 +1,1595 @@
+.layout {
+    background-color: #000000;
+	font-family: 'Poppins Bold';
+    padding-bottom: 20px;
+    position: relative;
+
+    ul {
+        list-style: none;
+    }
+
+    button {
+        border: none;
+        outline: none;
+    }
+
+    .footer-bg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 0;
+        transform: rotate(180deg);
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .header,
+    .container {
+        position: relative;
+        z-index: 9;
+    }
+
+    .header {
+        background: url(../../../assets/anniversary/head-bg.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding-bottom: 20px;
+        text-align: center;
+
+        .title {
+            width: 40%;
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+            padding-top: 100px;
+    
+            img {
+                width: 100%;
+            }
+        }
+    
+        .date {
+            text-align: center;
+            margin: 30px 0 50px 0;
+
+            span, img {
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            span {
+                font-size: 30px;
+                font-weight: bold;
+                color: #FFCD0B;
+                line-height: 1;
+                text-shadow: 0px 1px 0px #1B1F5C;
+            }
+
+            img {
+                cursor: pointer;
+                width: 40px;
+                margin-left: 10px;
+
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+    
+        // 倒计时
+        .countdown {
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 20px 15px 30px;
+            background: url(../../../assets/anniversary/countdown-bg.png);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+    
+            .label {
+                margin-right: 20px;
+                opacity: 0.67;
+                font-size: 22px;
+            }
+    
+            ul {
+                .separate {
+                    margin: 0 8px;
+                }
+    
+                li {
+                    padding: 2px 10px;
+                    display: inline-block;
+                    background: linear-gradient(0deg, #304749, #FFFFFF);
+                    border-radius: 10px;
+                    position: relative;
+                    overflow: hidden;
+    
+                    &::after {
+                        z-index: 0;
+                        display: block;
+                        position: absolute;
+                        top: 1px;
+                        right: 1px;
+                        bottom: 1px;
+                        left: 1px;
+                        content: '';
+                        border-radius: 10px;
+                        background-color: #050101;
+                    }
+    
+                    span {
+                        font-size: 18px;
+                        position: relative;
+                        z-index: 9;
+                    }
+                }
+            }
+    
+            span, li {
+                vertical-align: middle;
+            }
+        }
+    }
+
+    // 任务
+    .task {
+        height: 300px;
+        padding-top: 160px;
+
+        .task-start {
+            width: 100px;
+            height: 74px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 99;
+            margin-top: -35px;
+            margin-left: -50px;
+            background: url(../../../assets/anniversary/task-start-bg.png) no-repeat;
+            background-size: 100% 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 66%;
+                margin-top: -17px;
+            }
+        }
+
+        ul {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-left: 50px;
+
+            .bar,
+            &::before {
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translate3d(0, -50%, 0);
+            }
+
+            .bar {
+                width: 50%;
+                height: 10px;
+                background: #FFCD0B;
+            }
+
+            &::before {
+                content: '';
+                z-index: 0;
+                height: 20px;
+                right: 0;
+                background: url(../../../assets/anniversary/task-bg.png);
+                background-size: 100% 100%;
+                background-repeat: no-repeat;
+            }
+
+            li {
+                position: relative;
+
+                &:first-child {
+                    .count {
+                        left: 0;
+                    }
+                }
+            }
+        }
+
+        .tip {
+            width: 95.4px;
+            height: 59.4px;
+            box-sizing: border-box;
+            padding-top: 13px;
+            display: inline-block;
+            z-index: 9999;
+            position: absolute;
+            bottom: 40px;
+            right: -24px;
+            cursor: no-drop;
+            opacity: 0.6;
+            background: url(../../../assets/anniversary/task-tip-border.png) no-repeat;
+            background-size: 100% 100%;
+    
+            // 完成状态
+            .done {
+                width: 36px;
+                height: 36px;
+                position: absolute;
+                left: 50%;
+                margin-left: -18px;
+                top: 8px;
+                display: none;
+    
+                img {
+                    width: 100%;
+                }
+            }
+    
+            .box {
+                width: 30px;
+                display: inline-block;
+                margin-right: 8px;
+            }
+    
+            span {
+                font-size: 22px;
+                color: #FFD10C;
+                font-weight: bold;
+                line-height: 21px;
+                text-shadow: #644901 1px 0 0, #644901 0 1px 0, #644901 -1px 0 0, #644901 0 -1px 0;
+                font-family: "poppins-blackitalic";
+            }
+    
+            .box, span {
+                vertical-align: middle;
+            }
+        }
+
+        // 已领取
+        .received {
+            .tip {
+                .done {
+                    display: block;
+                }
+            }
+        }
+
+        // 待领取
+        .waiting-receive {
+            .tip {
+                cursor: pointer;
+            }
+        }
+
+        .received,
+        .waiting-receive {
+            .tip {
+                opacity: 1;
+            }
+
+            .icon::after {
+                background: #6174EB;
+            }
+        }
+
+        .icon {
+            z-index: 9;
+            width: 34px;
+            height: 34px;
+            border-radius: 100%;
+            background-color: #FFCD0B;
+            box-sizing: border-box;
+            border: 6px solid #000000;
+            position: relative;
+            padding: 4px;
+
+            &::after {
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
+                content: '';
+                display: block;
+                background: #1A1B27;
+                border: 4px solid #000000;
+                border-radius: 100%;
+            }
+        }
+
+        .count {
+            font-size: 18px;
+            color: #ffffff;
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translate3d(-50%, 0, 0);
+        }
+    }
+
+    // 任务列表
+    .task-list {
+        .list {
+            overflow-y: scroll;
+            height: 450px;
+
+            .item {
+                overflow: hidden;
+                margin: 10px 0;
+                height: 87px;
+                border-radius: 15px;
+                padding: 0 25px 0 30px;
+                display: flex;
+                box-sizing: border-box;
+                align-items: center;
+                background: url(../../../assets/anniversary/task-item-bg.png) no-repeat;
+                background-size: 100% 100%;
+            }
+    
+            .info {
+                flex: 1;
+    
+                p {
+                    margin-bottom: 7px;
+                    font-size: 18px;
+                    font-family: "Poppins Bold";
+                    font-weight: bold;
+                    color: #B5B5B5;
+                }
+    
+                .progress {
+                    position: relative;
+                    width: 330px;
+                    height: 20px;
+                    border-radius: 9px;
+                    box-sizing: border-box;
+                    padding: 3px 6px;
+                    background: rgba(255, 255, 255, 0.11);
+    
+                    .bar {
+                        display: block;
+                        height: 100%;
+                        border-radius: 9px;
+                        background-color: #6174EB;
+                        box-shadow: 0px 0px 5px 0px #514CDE inset;
+                    }
+    
+                    span {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        font-family: "poppins-black";
+                        font-size: 15px;
+                        transform: translate3d(-50%, -50%, 0);
+                        font-weight: 900;
+                        color: #FFFFFF;
+                        line-height: 18px;
+                        text-shadow: #030301 1px 0 0, #030301 0 1px 0, #030301 -1px 0 0, #030301 0 -1px 0;
+                    }
+                }
+            }
+
+            .right {
+                display: flex;
+                align-items: center;
+
+                .chest {
+                    img, .count {
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+                }
+            }
+    
+            .icon {
+                width: 40px;
+            }
+            
+            .count {
+                font-size: 23px;
+                font-weight: normal;
+                color: #FFD10C;
+                line-height: 21px;
+                text-shadow: #644901 1px 0 0, #644901 0 1px 0, #644901 -1px 0 0, #644901 0 -1px 0;
+                margin: 0 25px 0 10px;
+            }
+
+            button {
+                cursor: pointer;
+                width: 86px;
+                height: 32px;
+                border-radius: 6px;
+                outline: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 15px;
+                font-weight: 800;
+                color: #FFFFFF;
+                line-height: 6px;
+                // background: url(../../../assets/anniversary/yellow-button-bg.png) no-repeat;
+                // background-size: 100% 100%;
+                background: #F4D623;
+                box-shadow: 0px 1px 0px 2px #7C4227;
+                text-shadow: #7B4127 1px 0 0, #7B4127 0 1px 0, #7B4127 -1px 0 0, #7B4127 0 -1px 0;
+
+                &[disabled] {
+                    background: #383838;
+                    cursor: no-drop;
+                    box-shadow: 0px 1px 0px 2px #212121;
+                }
+            }
+    
+            // 已领取
+            .received {
+                font-size: 15px;
+                font-family: "poppins-blackitalic";
+                font-weight: bold;
+                color: #5156A0;
+                line-height: 17px;
+                text-align: center;
+            }
+        }
+
+        .tip {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 10px;
+            font-family: "Poppins Bold";
+            font-weight: 500;
+            color: #6A6963;
+        }
+    }
+
+    // 模块公共头部
+    .block-head {
+        text-align: center;
+
+        .title {
+            font-size: 25px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 45px;
+        }
+
+        .count {
+            position: relative;
+            background: url(../../../assets/anniversary/radius-bg.png) no-repeat;
+            background-size: 100% 100%;
+            height: 43px;
+            margin: 0 auto;
+            display: inline-flex;
+            align-items: center;
+            padding-left: 87px;
+            padding-right: 36px;
+            box-sizing: border-box;
+            font-size: 24px;
+            font-weight: normal;
+            color: #FFFFFF;
+            line-height: 21px;
+            text-shadow: #644901 1px 0 0, #644901 0 1px 0, #644901 -1px 0 0, #644901 0 -1px 0;
+            font-family: "poppins-blackitalic";
+
+            img {
+                width: 58px;
+                position: absolute;
+                top: -20px;
+                left: 23px;
+            }
+        }
+    }
+
+    // 记录
+    .record-layout {
+        background: #000000;
+        border: 5px solid #1E202E;
+        background: #000000;
+        border-radius: 10px;
+
+        .head, li {
+            display: flex;
+            align-items: center;
+            height: 43px;
+            padding: 0 50px;
+
+            & > * {
+                text-align: center;
+                font-size: 12px;
+                color: #B5B5B5;
+            }
+
+            .flex-1 {
+                flex: 1;
+            }
+
+            .time {
+                text-align: left;
+            }
+
+            .tx {
+                text-align: right;
+
+                img {
+                    width: 25px;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .head {
+            padding-right: 55px;
+        }
+
+        .body {
+            box-sizing: border-box;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    }
+
+    // 兑换
+    .redemption {
+        margin-top: 80px;
+        text-align: center;
+
+        .items {
+            display: flex;
+            margin-top: 80px;
+
+            li {
+                flex: 1;
+                height: 102px;
+                display: flex;
+                cursor: pointer;
+                align-items: center;
+                justify-content: center;
+                background: url(../../../assets/anniversary/redemption-item-bg-2.png) no-repeat;
+                background-size: 100% 100%;
+
+                // 选中
+                &.selected {
+                    background: url(../../../assets/anniversary/redemption-item-bg-1.png) no-repeat;
+                    background-size: 100% 100%;
+                }
+
+                &:first-child {
+                    margin-right: 38px;
+                }
+
+                .img {
+                    width: 121px;
+                    margin-top: -40px;
+                }
+
+                .info {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-start;
+                    margin-left: 19px;
+
+                    .count {
+                        font-size: 30px;
+                        color: #FFD10C;
+                        text-shadow: #644901 1px 0 0, #644901 0 1px 0, #644901 -1px 0 0, #644901 0 -1px 0;
+                        font-family: "poppins-blackitalic";
+                    }
+
+                    p {
+                        span, img {
+                            display: inline-block;
+                            vertical-align: middle;
+                        }
+
+                        span {
+                            font-size: 18px;
+                            font-weight: bold;
+                            color: #B5B5B5;
+                            margin-right: 10px;
+                        }
+
+                        img {
+                            width: 28px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .tip {
+            font-size: 18px;
+            color: #B5B5B5;
+            text-align: center;
+            font-family: 'Poppins Bold';
+            margin: 40px 0 38px 0;
+        }
+
+        // 输入框和按钮
+        .input-container {
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .button {
+                font-family: 'Poppins Bold';
+                width: 87px;
+                height: 32px;
+                font-size: 15px;
+                font-weight: 800;
+                color: #FFFFFF;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                text-shadow: #121472 1px 0 0, #121472 0 1px 0, #121472 -1px 0 0, #121472 0 -1px 0;
+                background: url(../../../assets/anniversary/redemption-button-bg.png) no-repeat;
+                background-size: 100% 100%;
+                transition: opacity 0.2s;
+    
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+
+            .input {
+                display: flex;
+                margin: 0 13px;
+                width: 267px;
+                height: 42px;
+                padding: 7px;
+                box-sizing: border-box;
+                background: #1B1A18;
+                border-radius: 5px;
+
+                .input-button {
+                    cursor: pointer;
+                    transition: opacity 0.2s;
+    
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+
+                img {
+                    height: 100%;
+                }
+
+                input {
+                    min-width: 0;
+                    text-align: center;
+                    padding: 0 15px;
+                    border: none;
+                    outline: none;
+                    flex: 1;
+                    background: none;
+                    font-size: 23px;
+                    font-weight: normal;
+                    color: #FFFFFF;
+                    text-shadow: #644901 1px 0 0, #644901 0 1px 0, #644901 -1px 0 0, #644901 0 -1px 0;
+                }
+            }
+        }
+
+        // 确认按钮
+        .confirm-button {
+            width: 243px;
+            height: 43px;
+            cursor: pointer;
+            background: url(../../../assets/anniversary/yellow-button-bg-2.png) no-repeat;
+            background-size: 100% 100%;
+            font-size: 17px;
+            font-weight: 800;
+            color: #FFFFFF;
+            text-shadow: #7B4127 1px 0 0, #7B4127 0 1px 0, #7B4127 -1px 0 0, #7B4127 0 -1px 0;
+            margin-top: 33px;
+            margin-bottom: 36px;
+            transition: opacity 0.2s;
+
+            &:hover {
+                opacity: 0.8;
+            }
+
+            &[disabled],
+            &[disabled]:hover {
+                opacity: 1;
+                cursor: no-drop;
+                -webkit-filter:grayscale(100%);
+            }
+        }
+    }
+
+    // 开箱
+    .open-box {
+        margin-top: 80px;
+
+        .box-info,
+        .backpack {
+            width: 620px;
+            margin: 0 auto;
+        }
+
+        // 背包
+        .backpack {
+            display: flex;
+            margin: 20px auto;
+            height: 50px;
+            background: rgb(27, 26, 24, 0.5);
+            border-radius: 10px;
+            align-items: center;
+            padding: 0 9px 0 16px;
+
+            img, span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+    
+            img {
+                margin-right: 10px;
+            }
+    
+            span {
+                font-size: 15px;
+                font-weight: normal;
+                font-family: "poppins-blackitalic";
+                color: #FFFFFF;
+                text-shadow: #545454 1px 0 0, #545454 0 1px 0, #545454 -1px 0 0, #545454 0 -1px 0;
+                line-height: 1;
+            }
+    
+            ul {
+                display: flex;
+                flex: 1;
+    
+                li {
+                    margin-left: 26px;
+
+                    &:first-child {
+                        margin-left: 0;
+                    }
+                }
+
+                img {
+                    height: 31px;
+                }
+            }
+
+            button {
+                width: 87px;
+                height: 38px;
+                border-radius: 8px;
+                font-size: 15px;
+                font-weight: 800;
+                color: #FFFFFF;
+                line-height: 6px;
+                display: flex;
+                cursor: pointer;
+                align-items: center;
+                justify-content: center;
+                text-shadow: #121472 1px 0 0, #121472 0 1px 0, #121472 -1px 0 0, #121472 0 -1px 0;
+                background: url(../../../assets/anniversary/redemption-button-bg.png) no-repeat;
+                background-size: 100% 100%;
+                transition: opacity 0.2s;
+    
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+
+        .box-layout {
+            position: relative;
+            overflow: hidden;
+
+            // 背景射线
+            .bg-image {
+                display: block;
+                margin: 0 auto;
+                width: 100%;
+                max-width: 500px;
+            }
+        }
+
+        // 箱子信息
+        .box-info {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            display: flex;
+
+            li {
+                flex: 1;
+                height: 80.5px;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                &:first-child {
+                    background: url(../../../assets/anniversary/epic-box-bg.png) no-repeat;
+                    background-size: 100% 100%;
+
+                    .info span {
+                        text-shadow: #4749B5 1px 0 0, #4749B5 0 1px 0, #4749B5 -1px 0 0, #4749B5 0 -1px 0;
+                    }
+                }
+
+                &:last-child {
+                    background: url(../../../assets/anniversary/legendary-box-bg.png) no-repeat;
+                    background-size: 100% 100%;
+
+                    .info span {
+                        text-shadow: #931F17 1px 0 0, #931F17 0 1px 0, #931F17 -1px 0 0, #931F17 0 -1px 0;
+                    }
+                }
+
+                h6 {
+                    font-size: 14px;
+                }
+
+                .info {
+                    margin-top: 5px;
+
+                    img, span {
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+
+                    img {
+                        width: 35px;
+                        margin-right: 7.5px;
+                    }
+
+                    span {
+                        font-size: 23px;
+                        font-weight: normal;
+                        color: #FFFFFF;
+                        font-family: "poppins-blackitalic";
+                    }
+                }
+            }
+            
+            .tip {
+                width: 41px;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
+
+        // 箱子
+        .box {
+            width: 160px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+        }
+
+        // 箱子
+        .button-layout {
+            margin-top: 100px;
+            display: flex;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            display: flex;
+            justify-content: center;
+
+            .record {
+                width: 43px;
+                height: 43px;
+                cursor: pointer;
+                position: absolute;
+                top: 0;
+                right: 0;
+
+                img {
+                    width: 100%;
+                }
+            }
+
+            button {
+                width: 188px;
+                height: 43px;
+                font-size: 17px;
+                font-family: "poppins-blackitalic";
+                font-weight: 800;
+                color: #FFFFFF;
+                line-height: 6px;
+                transition: opacity 0.2s;
+                cursor: pointer;
+
+                &[disabled],
+                &[disabled]:hover {
+                    opacity: 0.6;
+                    cursor: no-drop;
+                }
+    
+                &:hover {
+                    opacity: 0.8;
+                }
+
+                &:first-child {
+                    margin-right: 21px;
+                }
+            }
+
+            .one {
+                background: url(../../../assets/anniversary/button-bg-1.png);
+                background-size: 100% 100%;
+                text-shadow: #242668 1px 0 0, #242668 0 1px 0, #242668 -1px 0 0, #242668 0 -1px 0;
+            }
+
+            .all {
+                text-shadow: #7B4127 1px 0 0, #7B4127 0 1px 0, #7B4127 -1px 0 0, #7B4127 0 -1px 0;
+                background: url(../../../assets/anniversary/button-bg-2.png);
+                background-size: 100% 100%;
+            }
+        }
+    }
+
+    // 开箱弹窗
+    .open-box-dialog {
+        @box-icon-size: 184px;
+
+        .content {
+            font-family: "poppins-blackitalic";
+            width: 555px;
+            position: relative;
+            box-sizing: border-box;
+            padding-bottom: 20px;
+            background-color: #000000;
+            background-image: url(../../../assets/anniversary/open-box-dialog-bg.png);
+            background-size: 100% 100%;
+        }
+
+        .close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 28px;
+            height: 28px;
+            margin-top: -9px;
+            margin-right: -9px;
+            cursor: pointer;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .head-icon {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            z-index: 9;
+            width: @box-icon-size;
+            height: @box-icon-size;
+            box-sizing: border-box;
+            padding: 35px 30px 0 30px;
+            margin-left: -(@box-icon-size / 2);
+            margin-top: -(@box-icon-size / 2);
+            line-height: 1;
+
+            .bg {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url(../../../assets/anniversary/box-bg-ray-2.png) no-repeat;
+                background-size: 100% 100%;
+                z-index: -1;
+            }
+
+            p {
+                display: block;
+                font-size: 33px;
+                color: #FFAA0E;
+                text-shadow: #232B33 1px 0 0, #232B33 0 1px 0, #232B33 -1px 0 0, #232B33 0 -1px 0;
+                text-align: center;
+                margin-top: 6px;
+            }
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .title {
+            text-align: center;
+            padding-top: (@box-icon-size / 2) + 10px;
+            font-size: 15px;
+            color: #FFFFFF;
+            text-shadow: #232B31 1px 0 0, #232B31 0 1px 0, #232B31 -1px 0 0, #232B31 0 -1px 0;
+            margin-bottom: 14px;
+        }
+
+        .list {
+            margin: 0 23px;
+            background: #060708;
+            border: 2px solid #121315;
+            box-shadow: 0px 0px 5px 0px #000000;
+            border-radius: 10px;
+            box-sizing: border-box;
+            padding: 17px 20px;
+
+            .scroll {
+                width: 100%;
+                max-height: 190px;
+                overflow-y: scroll;
+                overflow-x: hidden;
+            }
+
+            // 盲盒
+            .box {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 6px;
+
+                li {
+                    width: 220px;
+                    height: 57px;
+                    display: flex;
+                    align-items: center;
+                    padding-left: 14px;
+                    padding-right: 23px;
+
+                    &:last-child {
+                        margin-left: 12px;
+                    }
+
+                    img {
+                        width: 38px;
+                        margin-right: 9px;
+                    }
+
+                    .count {
+                        font-size: 23px;
+                        text-shadow: #FFFFFF 1px 0 0, #FFFFFF 0 1px 0, #FFFFFF -1px 0 0, #FFFFFF 0 -1px 0;
+                    }
+
+                    .name {
+                        flex: 1;
+                        text-align: right;
+                    }
+                }
+
+                .legendary {
+                    background: url(../../../assets/anniversary/open-legendary-bg.png) no-repeat;
+                    background-size: 100% 100%;
+                    color: #E71E1D;
+                }
+
+                .epic {
+                    background: url(../../../assets/anniversary/open-epic-bg.png) no-repeat;
+                    background-size: 100% 100%;
+                    color: #AB1DE8;
+                }
+            }
+                
+            .items {
+                width: 100%;
+                text-align: left;
+
+                li {
+                    display: inline-block;
+                    padding: 6px 12px 0 0;
+                }
+
+                .item {
+                    width: 105px;
+                    height: 52px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: url(../../../assets/anniversary/open-item-bg.png) no-repeat;
+                    background-size: 100% 100%;
+
+                    img {
+                        width: 25px;
+                    }
+
+                    span {
+                        font-size: 20px;
+                        margin-left: 4px;
+                        font-weight: normal;
+                        color: #FFFFFF;
+                        line-height: 21px;
+                        text-shadow: #545454 1px 0 0, #545454 0 1px 0, #545454 -1px 0 0, #545454 0 -1px 0;
+                    }
+                }
+            }
+
+            // 网格布局
+            .grid {
+                display: grid;
+                grid-template-columns: auto auto auto auto;
+
+                li {
+                    padding: 6px 0;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .check-box-dialog {
+        .content {
+            padding: 20px 0 !important;
+        }
+    }
+
+    // 盲盒中奖记录
+    .box-record {
+        width: 600px;
+        padding: 0 17px 14px 17px;
+        background-image: url(../../../assets/anniversary/head-bg.png);
+        background-repeat: no-repeat;
+        background-size: 101% auto;
+        background-position: 0 0;
+        position: relative;
+        border-radius: 11px;
+        border: 3px solid #141C1D;
+        box-sizing: border-box;
+        background-color: #000000;
+
+        h5 {
+            font-family: "poppins-blackitalic";
+            font-size: 20px;
+            font-weight: normal;
+            color: #FFFFFF;
+            line-height: 29px;
+            text-shadow: #232B31 1px 0 0, #232B31 0 1px 0, #232B31 -1px 0 0, #232B31 0 -1px 0;
+            text-align: center;
+            padding: 19px 0 16px 0;
+        }
+
+        .close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 28px;
+            height: 28px;
+            margin-top: -14px;
+            margin-right: -14px;
+            cursor: pointer;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .list {
+            padding: 0 19px;
+            box-sizing: border-box;
+            height: 438px;
+            display: flex;
+            flex-direction: column;
+            background: #060708;
+            border: 2px solid #121315;
+            box-shadow: 0px 0px 5px 0px #000000;
+            border-radius: 10px;
+
+            .head,
+            .body li {
+                display: flex;
+            }
+
+            .head {
+                height: 45px;
+                align-items: center;
+                font-size: 12px;
+                font-weight: 400;
+                color: #888888;
+                padding-left: 13px;
+                padding-right: 15px;
+            }
+
+            .body {
+                flex: 1;
+                padding-top: 5px;
+                overflow-y: scroll;
+                overflow-x: hidden;
+
+                li {
+                    height: 38px;
+                    background-color: #13181D;
+                    border-radius: 15px;
+                    margin-top: 8px;
+                    padding-left: 13px;
+                    padding-right: 15px;
+                    align-items: center;
+                    position: relative;
+
+                    &::after {
+                        display: block;
+                        content: '';
+                        width: 110px;
+                        height: 100%;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        border-radius: 15px 0px 15px 15px;
+                        background: red;
+                    }
+
+                    &:first-child {
+                        margin-top: 0;
+                    }
+                }
+
+                .epic {
+                    background-image: url(../../../assets/anniversary/epic-item-bg.png);
+                    background-repeat:  no-repeat;
+                    background-size: auto 100%;
+                    background-position: right 0 top 0;
+
+                    .order {
+                        color: #CF5FFF;
+                    }
+
+                    &::after {
+                        background: #24255B;
+                    }
+                }
+
+                .legendary {
+                    background-image: url(../../../assets/anniversary/legendary-item-bg.png);
+                    background-repeat:  no-repeat;
+                    background-size: auto 100%;
+                    background-position: right 0 top 0;
+
+                    .order {
+                        color: #E71E1D;
+                    }
+
+                    &::after {
+                        background: #4A100C;
+                    }
+                }
+
+                .icon {
+                    position: relative;
+                    z-index: 1;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    img {
+                        width: 34px;
+                    }
+                }
+
+                .order {
+                    position: relative;
+                    z-index: 1;
+                    font-size: 14px;
+                    line-height: 16px;
+                    text-shadow: #FFFFFF 1px 0 0, #FFFFFF 0 1px 0, #FFFFFF -1px 0 0, #FFFFFF 0 -1px 0;
+                    font-family: "poppins-blackitalic";
+                }
+            }
+
+            .icon {
+                width: 54px;
+                text-align: center;
+                margin-right: 10px;
+            }
+
+            .order {
+                width: 50px;
+                margin-right: 10px;
+                text-align: left;
+            }
+
+            .time,
+            .address {
+                flex: 1;
+            }
+
+            .time {
+                text-align: left;
+            }
+
+            .address {
+                text-align: right;
+            }
+        }
+    }
+
+    // 介绍
+    .introduce-modal {
+        .modal-content {
+            width: 600px;
+        }
+
+        .content {
+            padding: 0 17px 14px 17px;
+            background-image: url(../../../assets/anniversary/head-bg.png);
+            background-repeat: no-repeat;
+            background-size: 101% auto;
+            background-position: 0 0;
+            position: relative;
+            border-radius: 11px;
+            border: 3px solid #141C1D;
+            box-sizing: border-box;
+            background-color: #000000;
+
+            .title {
+                font-family: "poppins-blackitalic";
+                font-size: 20px;
+                font-weight: normal;
+                color: #FFFFFF;
+                line-height: 29px;
+                text-shadow: #232B31 1px 0 0, #232B31 0 1px 0, #232B31 -1px 0 0, #232B31 0 -1px 0;
+                text-align: center;
+                padding: 19px 0 16px 0;
+            }
+
+            .close {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 28px;
+                height: 28px;
+                margin-top: -14px;
+                margin-right: -14px;
+                cursor: pointer;
+    
+                img {
+                    width: 100%;
+                }
+            }
+
+            .scroll {
+                background: #060708;
+                height: 438px;
+                overflow: hidden scroll;
+                padding: 40px;
+                background: #060708;
+                border: 2px solid #121315;
+                box-shadow: 0px 0px 5px 0px #000000;
+                border-radius: 10px;
+            }
+        }
+    }
+}
+
+// 移动端
+@media (max-width: 740px) {
+    .container {
+        padding: 0 20px;
+    }
+
+    .header {
+        .title {
+            padding-top: 50px !important;
+            width: 70% !important;
+        }
+
+        .countdown {
+            display: flex !important;
+            flex-direction: column;
+            margin: 0 24px;
+            padding: 20px 0px !important;
+        }
+
+        .label {
+            margin: 0 0 10px 0 !important;
+        }
+
+        .task {
+            zoom: 0.6;
+        }
+    }
+
+    .task-list {
+        .item {
+            height: auto !important;
+            padding: 20px 30px !important;
+            zoom: 0.8;
+            height: 100px;
+            flex-direction: column;
+            background: url(../../../assets/anniversary/redemption-item-bg-2.png) no-repeat !important;
+            background-size: 100% 100% !important;
+        }
+
+        .info {
+            width: 100%;
+            flex: none !important;
+        }
+
+        .progress {
+            width: 100% !important;
+        }
+
+        .right {
+            width: 100%;
+            margin-top: 10px;
+
+            .chest {
+                flex: 1;
+            }
+        }
+    }
+
+    .redemption {
+        margin-top: 40px !important;
+
+        .block-head {
+            zoom: 0.7;
+        }
+
+        .items {
+            zoom: 0.8;
+            margin-top: 60px !important;
+            flex-direction: column;
+
+            li {
+                flex: none !important;
+
+                &:first-child {
+                    margin: 0 0 40px 0 !important;
+                }
+            }
+        }
+
+        .input-container {
+            .input {
+                min-width: 0;
+                flex: 1;
+            }
+
+            .button {
+                width: 60px !important;
+            }
+        }
+
+        .record {
+            .head,
+            li {
+                padding: 0 14px !important;
+            }
+        }
+    }
+
+    .open-box {
+        zoom: 0.8;
+
+        .box-info,
+        .backpack {
+            width: 100% !important;
+        }
+
+        .backpack {
+            height: auto !important;
+            padding: 8px !important;
+
+            ul {
+                display: flex;
+
+                img {
+                    margin: 0 !important;
+                   height: 40px !important; 
+                }
+
+                li {
+                    flex: 1;
+                    text-align: center;
+                    margin-left: 0 !important;
+
+                    span {
+                        margin-top: 4px;
+                        display: block !important;
+                    }
+                }
+            }
+
+            button {
+                height: 45px !important;
+            }
+        }
+
+        .box-info {
+            zoom: 0.75;
+        }
+
+        .button-layout {
+            padding: 0 55px;
+        }
+    }
+
+    .record-layout {
+        margin-bottom: 20px;
+
+        .head, li {
+            padding: 0 20px !important;
+        }
+    }
+
+    .open-box-dialog {
+        .modal-content {
+            width: 100vw !important;
+            box-sizing: border-box;
+            padding: 0 20px;
+
+            .content {
+                width: 100%;
+            }
+
+            .list {
+                zoom: 0.8;
+            }
+
+            .grid {
+                grid-template-columns: auto auto auto !important;
+            }
+        }
+    }
+
+    .box-record-modal {
+        .modal-content {
+            .box-record {
+                padding: 0 10px 14px 10px;
+                zoom: 0.9;
+                width: 100%;
+            }
+
+            .list {
+                padding: 0 10px !important;
+
+                .body {
+                    font-size: 12px;
+                }
+
+                li {
+                    height: 46px !important;
+                }
+            }
+        }
+    }
+
+    .box-record-modal,
+    .introduce-modal {
+        .modal-content {
+            width: 100vw !important;
+            box-sizing: border-box;
+            padding: 0 20px;
+
+            h5 {
+                font-size: 18px;
+            }
+        }
+    }
+
+    .introduce-modal {
+        .scroll {
+            padding: 20px !important;
+        }
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 740px) {
+    .container {
+        max-width: 90%;
+        margin: 0 auto;
+    }
+}
+
+// PC端
+@media (min-width: 1024px) {
+    .container {
+        max-width: 60%;
+        margin: 0 auto;
+    }
+}

@@ -177,6 +177,7 @@ export default {
 			}
 		},
 		async preLoadRes(){
+			console.log("yafet--preLoadRes" );
 			for (const key in this.openBoxTypeObj) {
 				let boxSpineRes = this.openBoxTypeObj[key].boxSpineRes;
 				try {

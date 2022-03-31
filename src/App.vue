@@ -771,8 +771,11 @@ export default {
 		
 		this.setLang();
 
+	
 		setTimeout(() => {
 			this.scorllToTargetPos();
+
+			
 			
 		}, 5000);
 

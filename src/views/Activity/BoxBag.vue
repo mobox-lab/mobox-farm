@@ -111,6 +111,12 @@ export default {
 			myAccount: "",
 			openBoxType: "mec",
 			openBoxTypeObj: {
+				"anniversary": {
+					iconName: "coin/MBOX",
+					boxSpineRes: "anniversary/zixiangzi",
+					boxRes: "box/mdxbox",
+					coinNumToLv: {"2": 1, "3": 2, "5": 3, "10": 4, "20":5},
+				},
 				"mdx": {
 					iconName: "coin/MDX",
 					boxSpineRes: "mdxBox/baoxiang",

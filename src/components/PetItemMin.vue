@@ -10,9 +10,9 @@
 		<img v-if="petData.isGroup" src="@/assets/icon/isGroup.png" alt="" height="20" class="is-group"/>
 		<div class="pet-min-hover" ref="petMinHover" :class="{'left': isLeft, 'top': isTop}" v-if="!petData.noHover">
 			<PetItem :data="{item: petData}" :class="petData.vType >= 4 && !petData.noPrice?'market':'' " class="no-search">
-				<div class="vertical-children mgt-10" style="font-size: 18px" v-if="petData.vType >= 4 && !petData.noPrice">
-					<img v-if="petData.isRent" :src="require(`@/assets/coin/${Number(petData.orderId) >= 5e4?'BUSD':'MBOX'}.png`)" alt="" height="20"/>&nbsp;
-					<img v-else src="../assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
+				<div class="vertical-children mgt-10" style="font-size: 18px" v-if="petData.vType >= 4 && !petData.noPrice">&nbsp;
+					<img v-if="petData.isRent" :src="require(`@/assets/coin/${Number(petData.orderId) >= 5e4?'BUSD':'MBOX'}.png`)" alt="" height="20"/>
+					<img v-else src="../assets/coin/BUSD.png" alt="" height="20"/>
 					<span>{{numFloor(petData.bidPrice/1e9, 10000)}}</span>
 				</div>
 			</PetItem>

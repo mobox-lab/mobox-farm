@@ -113,7 +113,7 @@ export default {
 			openBoxTypeObj: {
 				"anniversary": {
 					iconName: "coin/MBOX",
-					boxSpineRes: "anniversary/zixiangzi",
+					boxSpineRes: "anniversary/zixiangzi37",
 					boxRes: "box/mdxbox",
 					coinNumToLv: {"2": 1, "3": 2, "5": 3, "10": 4, "20":5},
 				},

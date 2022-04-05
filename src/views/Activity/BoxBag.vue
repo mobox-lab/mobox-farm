@@ -360,6 +360,7 @@ export default {
 	#boxSpineShow{
 		width: 100vw;
 		height: 100vh;
+		margin: 0 auto;
 	}
 	#showBoxLayer{
 		position: fixed;

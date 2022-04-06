@@ -738,6 +738,8 @@
   "MOMO_88":"Productivity",
   "MOMO_89":"Productivity = (MOMO initial hash power x 20 + current hash power) x (1 +  bonus of gems)",
   "MOMO_90":"MAX transfer limit has been reached",
+  "MOMO_91":"Transfer To  MOMOvese",
+  "MOMO_92":"Transfer To MOMO Farmer",
   "Fetters_01":"Bonus de hachage fixe",
   "Fetters_02":"Chaque équipage de MOMOs avec 4 qualités (Commun, Peu Commun, Unique, Rare) donnera un bonus de 300 de puissance de hachage.",
   "Fetters_03":"Bonus fixe actuel de puissance de hachage",

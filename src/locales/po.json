@@ -738,6 +738,8 @@
   "MOMO_88":"Productivity",
   "MOMO_89":"Productivity = (MOMO initial hash power x 20 + current hash power) x (1 +  bonus of gems)",
   "MOMO_90":"MAX transfer limit has been reached",
+  "MOMO_91":"Transfer To  MOMOvese",
+  "MOMO_92":"Transfer To MOMO Farmer",
   "Fetters_01":"Bônus de Hash fixo",
   "Fetters_02":"Cada Coleção de MOMOs com 4 qualidades (Comum, Incomum, Único, Rara) dará um bônus de 300 Hash Power.",
   "Fetters_03":"Bônus de hash fixo atual",

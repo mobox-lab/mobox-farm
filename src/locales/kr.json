@@ -738,6 +738,8 @@
   "MOMO_88":"Productivity",
   "MOMO_89":"Productivity = (MOMO initial hash power x 20 + current hash power) x (1 +  bonus of gems)",
   "MOMO_90":"MAX transfer limit has been reached",
+  "MOMO_91":"Transfer To  MOMOvese",
+  "MOMO_92":"Transfer To MOMO Farmer",
   "Fetters_01":"수정된 보너스 해쉬",
   "Fetters_02":"4개 품질의 모모를 형성하면 300 해쉬 파워를 보너스로 받습니다.",
   "Fetters_03":"현재 수정된 해쉬파워 보너스",

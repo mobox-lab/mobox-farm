@@ -60,6 +60,7 @@
 import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
 import { Common } from "@/utils";
+import { BaseConfig } from '@/config';
 
 export default {
 	mixins: [CommonMethod],
@@ -79,11 +80,17 @@ export default {
 		},
 		// 获取momo的生产力
 		getSCL(){
-			let {lvHashrate, hashrate} = this.data.item;
-			return hashrate * 20 + lvHashrate;
-		}
+			let {lvHashrate, hashrate, gems} = this.data.item;
+			let gemAdd = 0;
+			let gemCfg = BaseConfig.GemProductivityCfg;
+			gems.map(item => {
+				if(item != 0){
+					gemAdd += gemCfg[item].productivityRate;
+				}
+			})
+			return hashrate * 10 + lvHashrate + gemAdd;
+		},
 	},
-
 };
 </script>
 

@@ -42,6 +42,7 @@ export default class WalletConfig {
 		binanceNFT: "0xc6b9DD6418b1143DC4861151d8EE7620f0163037", //binanceNFT
 		moMoSetting: "0x970093B4167261985621e6f2DC738D2e78ce6ac2", //MoMoSetting
 		bigSell: "0x1d4D9706B057a945FCE86EE53B8894BD17FFa0dE", //大宗交易
+		momoVerse: "0x2625621A924CfA74c660a5061dAa91a65441aE7D", //momoverse划转
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

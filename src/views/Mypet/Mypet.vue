@@ -218,7 +218,6 @@
 				</div>
 			</div>
 		</div>
-		<Transfer />
 	</div>
 </template>
 
@@ -227,7 +226,6 @@ import { PetItem, Dropdown, Page, Tab, BookItem } from "@/components";
 import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
 import { BaseConfig } from "@/config";
-import Transfer from './Transfer'
 
 export default {
 	mixins: [CommonMethod],
@@ -270,7 +268,7 @@ export default {
 			]
 		};
 	},
-	components: { PetItem, Dropdown, Page, Tab, BookItem, Transfer },
+	components: { PetItem, Dropdown, Page, Tab, BookItem },
 	created(){
 		this.tab_pos = this.$route.query.tab || 0;
 		if (this.tab_pos == 1) this.hasShowBook = true;

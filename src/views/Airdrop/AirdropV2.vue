@@ -10,10 +10,13 @@
 								<img src="@/assets/anniversary/anniEntry.png" alt="" width="100%" />
 							</router-link>
 						</div>
-						<div id="halloween-entry" class="swiper-slide tac" style="width: 60%;margin:0 auto">
+						<!-- <div id="halloween-entry" class="swiper-slide tac" style="width: 60%;margin:0 auto">
 							<router-link to="/binanceNFT">
 								<img src="@/assets/binaceActivity.png" alt="" width="100%" />
 							</router-link>
+						</div> -->
+						<div id="halloween-entry" @click="oprDialog('transfer-dialog', 'block')" class="swiper-slide tac" style="width: 60%;margin:0 auto">
+							<img src="@/assets/transMoMo.png" alt="" width="100%" />
 						</div>
 					</div>
 					<div ref="pagination" class="swiper-pagination"></div>

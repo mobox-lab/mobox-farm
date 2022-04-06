@@ -233,9 +233,17 @@ export default {
 		}),
 		// 获取momo的生产力
 		getSCL(){
-			let {lvHashrate, hashrate} = this.getNowPetItem;
-			return hashrate * 20 + lvHashrate;
+			let {lvHashrate, hashrate, gems} = this.getNowPetItem;
+			let gemAdd = 0;
+			let gemCfg = BaseConfig.GemProductivityCfg;
+			gems.map(item => {
+				if(item != 0){
+					gemAdd += gemCfg[item].productivityRate;
+				}
+			})
+			return hashrate * 10 + lvHashrate + gemAdd;
 		},
+	
 		showCanSelectArr(){
 			let { type, needPrototype, needLv } = this.needHandleData;
 			let needShowArr = [];

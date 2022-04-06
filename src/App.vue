@@ -111,10 +111,13 @@
 						<img src="@/assets/anniversary/anniEntry.png" alt="" height="85" />
 					</router-link>
 				</div>
-				<div id="halloween-entry" class="por mgt-10">
+				<!-- <div id="halloween-entry" class="por mgt-10">
 					<router-link to="/binanceNFT">
 						<img src="@/assets/binaceActivity.png" alt="" height="85" />
 					</router-link>
+				</div> -->
+				<div id="halloween-entry" class="por mgt-10" @click="oprDialog('transfer-dialog', 'block')">
+						<img src="@/assets/transMoMo.png" alt="" height="85" />
 				</div>
 			</div>
 			<div id="our-parice-pc">
@@ -305,6 +308,7 @@
 		</Dialog>
 		
 		<div id="fly-dot"></div>
+		<Transfer />
 		<VMbox ref="vmbox" />
 		<Pancake ref="pancake" />
 		<QuickBuy ref="quickBuy" />
@@ -532,11 +536,13 @@ import { mapState } from "vuex";
 import { Common, Http, Wallet } from "@/utils";
 import { PancakeConfig } from "@/config";
 
+import Transfer from '@/views/Mypet/Transfer'
+
 let timer = null;
 export default {
 	name: "App",
 	mixins: [InitEth, InitTron, CommonMethod],
-	components: {RuleDialog, BoxBag,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
+	components: {Transfer,RuleDialog, BoxBag,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
 	data() {
 		return {
 			langArr: ["English", "中文"],
@@ -620,7 +626,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "3.8"
+			noticeVersion: "3.9"
 		};
 	},
 	watch: {

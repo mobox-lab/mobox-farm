@@ -12,8 +12,16 @@
 				</div>
 
 				<div class="dib filter-show-group" >
+					<div class="filter-show-item" v-if="myPetFilter.location != 0" >
+						<span class="filter-close" @click="setFilter('location',0)">&times;</span>
+						<span class="mgl-10">{{locationSelect[myPetFilter.location]}}</span>
+					</div>
+					<div class="filter-show-item" v-if="myPetFilter.category != 0" >
+						<span class="filter-close" @click="setFilter('category',0)">&times;</span>
+						<span class="mgl-10">{{categorySelect[myPetFilter.category]}}</span>
+					</div>
 					<div class="filter-show-item" v-if="myPetFilter.vType != 0" >
-						<span class="filter-close" @click="onSelectQualityChange(0)">&times;</span>
+						<span class="filter-close" @click="setFilter('vType',0)">&times;</span>
 						<span class="mgl-10">{{select3[myPetFilter.vType]}}</span>
 					</div>
 					<div class="filter-show-item" v-if="searchWord != ''" >
@@ -53,8 +61,20 @@
 							</span>
 						</div>
 						<div class="mgt-10">
+							<h5>{{$t("MOMO_93")}}</h5>
+							<div @click="setFilter('location',pos)" class="filter-select-item" :class="{'active': pos == myPetFilter.location}" v-for="(item, pos) in locationSelect" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-10">
+							<h5>Types</h5>
+							<div @click="setFilter('category',pos)" class="filter-select-item" :class="{'active': pos == myPetFilter.category}" v-for="(item, pos) in categorySelect" :key="item">
+								{{item}}
+							</div>
+						</div>
+						<div class="mgt-10">
 							<h5>Qualities</h5>
-							<div @click="onSelectQualityChange(pos)" class="filter-select-item" :class="{'active': pos == myPetFilter.vType}" v-for="(item, pos) in select3" :key="item">
+							<div @click="setFilter('vType',pos)" class="filter-select-item" :class="{'active': pos == myPetFilter.vType}" v-for="(item, pos) in select3" :key="item">
 								{{item}}
 							</div>
 						</div>
@@ -232,15 +252,6 @@ export default {
 	data() {
 		return {
 			searchWord: "",
-			select1: [
-				this.$t("MOMO_02"),
-				this.$t("MOMO_03"),
-				this.$t("MOMO_04"),
-				this.$t("MOMO_05"),
-				this.$t("MOMO_06"),
-				this.$t("MOMO_07"),
-			],
-			select2: ["ETH", "TRX", "BNB"],
 			select3: [
 				this.$t("MOMO_08"),
 				this.$t("MOMO_09"),
@@ -250,6 +261,7 @@ export default {
 				this.$t("MOMO_13"),
 				this.$t("MOMO_14"),
 			],
+			
 			onePageCount: 12,
 			tab: [this.$t("MOMO_31"), this.$t("MOMO_32"), this.$t("MOMO_47")],
 			tab_pos: 0,
@@ -417,18 +429,24 @@ export default {
 				let isMathVType =
 					this.myPetFilter.vType == 0 ||
 					this.myPetFilter.vType == item.vType;
+				let isMatchLocation = 
+					this.myPetFilter.location == 0 ||
+					this.locationName[this.myPetFilter.location] == item.location;
 				let isMathProto = this.myPetFilter.searchProto <= 0 || item.prototype == this.myPetFilter.searchProto;
-				if (isMatchCategory && isMathVType && isMathProto) {
+				if (isMatchCategory && isMathVType && isMathProto && isMatchLocation) {
 					totalPet.push(item);
 				}
 			});
 
+			// totalPet.sort((a, b) =>{
+			// 	if(a.location == b.location) {
+			// 		return b.lvHashrate - a.lvHashrate
+			// 	}else{
+			// 		return 0;
+			// 	}
+			// });
 			totalPet.sort((a, b) =>{
-				if(a.location == b.location) {
-					return b.lvHashrate - a.lvHashrate
-				}else{
-					return 0;
-				}
+				return b.lvHashrate - a.lvHashrate
 			});
 			return totalPet;
 		},
@@ -578,6 +596,13 @@ export default {
 			this.$store.commit("globalState/myPetFilter", {
 				type: "category",
 				value: pos,
+			});
+			this.onPageChange(1);
+		},
+		setFilter(type, value){
+			this.$store.commit("globalState/myPetFilter", {
+				type,
+				value,
 			});
 			this.onPageChange(1);
 		},

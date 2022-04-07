@@ -16,10 +16,26 @@ const CommonMethod = {
 				5: "people",
 				6: "people",
 			},
-			hackReload: "page_"+new Date().valueOf()
+			hackReload: "page_"+new Date().valueOf(),
+			locationSelect: [
+				"All",
+				this.$t("MOMO_95"),
+				this.$t("MOMO_94"),
+				"Wallet",
+			],
+			categorySelect: [
+				this.$t("MOMO_02"),
+				this.$t("MOMO_03"),
+				this.$t("MOMO_04"),
+				this.$t("MOMO_05"),
+				this.$t("MOMO_06"),
+				this.$t("MOMO_07"),
+			],
+			locationName:["","stake","verse","wallet"]
 		})
 	},
 	methods: {
+		
 		toggleFilter(target){
 			$(target).toggleClass("hide");
 		},

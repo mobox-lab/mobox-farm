@@ -13,6 +13,7 @@ const state = () => ({
 			category: 0,
 			vType: 0,
 			searchProto: 0,
+			location: 0,
 		},
 
 		totalOpenBoxAmount: {

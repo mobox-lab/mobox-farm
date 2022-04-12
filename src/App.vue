@@ -44,6 +44,7 @@
 		</div>
 		<!-- PC左边导航 -->
 		<div id="nav" class="por" @click="navOpr('hide')">
+			<span id="version">v{{version}}</span>
 			<div class="mgt-20 tac vertical-children">
 				<!-- <WalletConnectBtn /> -->
 				<button class="btn-line" @click="connectWalletAddr == ''?$refs.wbtn.buttonClick():oprDialog('mobile-wallet-dialog', 'block')" style="padding:0px 10px;font-size: 15px">
@@ -227,6 +228,7 @@
 				</a> -->
 
 			</ul>
+			
 		</div>
 		
 		<keep-alive>
@@ -626,7 +628,8 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "3.9"
+			noticeVersion: "3.9",
+			version: "2.0.1"
 		};
 	},
 	watch: {
@@ -789,7 +792,8 @@ export default {
 		//1s定时器
 		clearInterval(timer);
 		let airdropCountDown = 1619784000 - parseInt(new Date().valueOf()/ 1000);
-		let gemApplyEndCountDown = 1622779200 - parseInt(new Date().valueOf()/ 1000);
+		let gemApplyEndCountDown = 1649736000 - parseInt(new Date().valueOf()/ 1000);
+		this.$store.commit("globalState/setData", {gemApplyEndCountDown});
 
 		timer = setInterval(async ()=>{
 			this.$store.commit("globalState/setData", {nowTs: parseInt(new Date().valueOf()/1000)});
@@ -974,6 +978,14 @@ export default {
 </script>
 
 <style scoped>
+#version{
+	position: absolute;
+	bottom: 15px;
+	left: 100px;
+	display: block;
+	font-size: 10px;
+	color: #9b9b9b;
+}
 #my-mobile-res{
 	padding:0px 15px
 }

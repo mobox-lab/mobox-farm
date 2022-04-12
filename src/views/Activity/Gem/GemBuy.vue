@@ -14,12 +14,15 @@
 					<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="25">
 				</h1>
 				<div class="tac mgt-10">
-					<span v-if="getCountDown  > 8640000 ">
-						{{$t("Gemstone_53")}}: {{getLeftTime(1630987200 - nowTs)}}
-					</span>
+					<span v-if="gemApplyEndCountDown <=0">{{$t("Festival_37")}}</span>
 					<template v-else>
-						<p v-if="getCountDown >0">{{Number(applyInfo.startTime) > nowTs?$t("Gemstone_53") :$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
-						<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
+						<span v-if="getCountDown  > 8640000 ">
+							{{$t("Gemstone_53")}}: {{getLeftTime(1630987200 - nowTs)}}
+						</span>
+						<template v-else>
+							<p v-if="getCountDown >0">{{Number(applyInfo.startTime) > nowTs?$t("Gemstone_53") :$t("Gemstone_21")}}: {{getLeftTime(getCountDown)}}</p>
+							<p v-else>{{$t("Gemstone_22")}}<span class="dotting"></span></p>
+						</template>
 					</template>
 
 					<div class="aveage-box mgt-10 " id="show-num">

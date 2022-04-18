@@ -629,7 +629,7 @@ export default {
 			hasReadNotice: false,
 			showMoreMenu: false,
 			noticeVersion: "3.9",
-			version: "2.0.1"
+			version: "2.0.2"
 		};
 	},
 	watch: {

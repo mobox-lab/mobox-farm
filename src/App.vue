@@ -107,11 +107,11 @@
 
 			</ul>
 			<div class="tac mgt-30">
-				<div id="halloween-entry" class="por ">
+				<!-- <div id="halloween-entry" class="por ">
 					<router-link to="/anniversary">
 						<img src="@/assets/anniversary/anniEntry.png" alt="" height="85" />
 					</router-link>
-				</div>
+				</div> -->
 				<!-- <div id="halloween-entry" class="por mgt-10">
 					<router-link to="/binanceNFT">
 						<img src="@/assets/binaceActivity.png" alt="" height="85" />
@@ -629,7 +629,7 @@ export default {
 			hasReadNotice: false,
 			showMoreMenu: false,
 			noticeVersion: "3.9",
-			version: "2.0.2"
+			version: "2.0.6"
 		};
 	},
 	watch: {

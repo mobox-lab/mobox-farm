@@ -262,6 +262,7 @@ export default class Enhancer {
 				async ()=>{
 					console.log("enhance success");
 					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+					await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
 					await Common.app.eth_setMyHashrate();
 					Common.app.unLockBtn("enhanceLock");
 					recipt();

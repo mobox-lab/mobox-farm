@@ -33,6 +33,7 @@ export default class Rent {
 					console.log("createRent success!!!!!");
 					Common.app.unLockBtn("putRentLock");
 					Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+					Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
 					recipet();
 				}
 			)
@@ -60,6 +61,7 @@ export default class Rent {
 					console.log("cancelPutRent success!!!!!");
 					Common.app.unLockBtn("cancelRentLock");
 					Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+					Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
 					recipet();
 				}
 			)

@@ -29,10 +29,9 @@
 				</div>
 				<div class="mgt-30 tac" :class="depositNeedApprove?' btn-group':'' " style="margin-bottom:10px" v-if="oprData.coinName == 'MBOX-BNB' ">
 					<div v-if="depositNeedApprove">
-						<button data-step="1" @click="approveToPool(oprData.coinKey)" class="btn-primary por" style="width:70%;" :class="oprData.coinName != '' && coinArr[oprData.coinKey].allowanceToPool > 1e8 || coinArr[oprData.coinKey].isApproving?'disable-btn':''">
-							<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinKey].isApproving"  style="position:absolute;left:8px;top:9px"/>
+						<StatuButton data-step="1" style="width:70%" :isLoading="coinArr[oprData.coinKey].isApproving" :onClick="()=>approveToPool(oprData.coinKey)">
 							{{$t("Air-drop_16")}} {{oprData.coinName}}
-						</button>
+						</StatuButton>
 					</div>
 					<button data-step="2" class="btn-primary mgt-10 por" style="width:70%" :class="!isCanDeposit?'disable-btn':''" @click="deposit">
 						<Loading v-if="oprData.coinName != ''  && coinArr[oprData.coinKey].isDeposing"  style="position:absolute;left:8px;top:9px"/>
@@ -68,7 +67,7 @@
 </template>
 
 <script>
-import { Dialog, PercentSelect,Loading} from '@/components';
+import { Dialog, PercentSelect,Loading, StatuButton} from '@/components';
 import {CommonMethod} from '@/mixin';
 import { mapState } from 'vuex';
 import { Common, Wallet, EventBus } from '@/utils';
@@ -76,11 +75,11 @@ import { WalletConfig, PancakeConfig, EventConfig} from '@/config';
 
 export default {
 	mixins: [CommonMethod],
-	components: {Dialog, PercentSelect, Loading},
+	components: {Dialog, PercentSelect, Loading, StatuButton},
 	data(){
 		return({
 			inputPercent: 1,
-			inputDepositValue: "",
+			inputDepositValue: "2",
 			oprData: {
 				apy: "-%",
 				balance: 0,
@@ -133,14 +132,14 @@ export default {
 			return Number(this.inputDepositValue) > 0 
 						&& Number(this.inputDepositValue) <= this.getTrueShowBalacne(Number(oprCoin.balance))
 						&& !oprCoin.isDeposing
-						&& (this.oprData.coinName == "BNB" || Number(oprCoin.allowanceToPool) > 1e8);
+						&& !this.depositNeedApprove;
 		},
 
 		depositNeedApprove(){
 			let {coinName, coinKey} = this.oprData;
 			if(coinName == "") return false;
 			let allowanceToPool = Number(this.coinArr[coinKey].allowanceToPool);
-			return coinName != 'BNB' && allowanceToPool >= 0 && allowanceToPool <  1e8;
+			return coinName != 'BNB' && allowanceToPool >= 0 && (allowanceToPool/1e18 ) <  Number(this.inputDepositValue);
 		},
 		
 	},
@@ -187,7 +186,7 @@ export default {
 		async approveToPool(coinKey){
 			if(coinKey == "" || coinKey == "BNB") return;
 			let {isApproving, allowanceToPool} =  this.coinArr[coinKey];
-			if(isApproving || Number(allowanceToPool) >1e8) return;
+			if(isApproving) return;
 
 			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.StakeLP[coinKey].addr, 
 			WalletConfig.ETH.momoFarm, {coinKey, type:"allowanceToPool"});

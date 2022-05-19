@@ -49,8 +49,8 @@
 					</div>
 					<div style="padding:0px 10px">
 						<RentAll v-show="marketTabPos == 0" />
-						<RentMy v-show="marketTabPos == 1" />
-						<RentMySell ref="rentMySell" v-show="marketTabPos == 2" />
+						<RentMy v-if="marketTabPos == 1" />
+						<RentMySell ref="rentMySell" v-if="marketTabPos == 2" />
 						<RentStatistics v-if="marketTabPos == 3" />
 					</div>
 				</div>

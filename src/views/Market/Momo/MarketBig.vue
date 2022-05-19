@@ -66,7 +66,7 @@ export default {
 	components: {BigSellItem, Page},
     data(){
         return{
-			onePageCount: 12,
+			onePageCount: 15,
 			sortArr: [this.$t("Market_47"),this.$t("Market_04"), this.$t("Market_05"), this.$t("Market_06"), this.$t("Market_07")],
         }
     },

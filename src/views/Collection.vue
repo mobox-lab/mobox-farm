@@ -396,7 +396,7 @@ export default {
 	top: 275px;
 }
 #collection-view > div:nth-child(3) {
-	left: 1800px;
+	left: 885px;
 	top: 303px;
 }
 #collection-view > div:nth-child(4) {
@@ -424,16 +424,16 @@ export default {
 	top: 370px;
 }
 #collection-view > div:nth-child(10) {
-	left: 1304px;
-	top: 171px;
+	left: 358px;
+	top: 260px;
 }
 #collection-view > div:nth-child(11) {
 	left: 760px;
 	top: 85px;
 }
 #collection-view > div:nth-child(12) {
-	left: 231px;
-	top: 250px;
+	left: 248px;
+	top: 275px;
 }
 #collection-view > div:nth-child(13) {
 	left: 250px;
@@ -464,8 +464,8 @@ export default {
 	top: 352px;
 }
 #collection-view > div:nth-child(20) {
-	left: 345px;
-	top: 290px;
+	left: 825px;
+	top: 369px;
 }
 
 #collection-view {

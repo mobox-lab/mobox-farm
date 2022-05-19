@@ -71,13 +71,17 @@
 				<img src="@/assets/no_items.png" alt="">
 				<p class="opa-6 mgt-10">No items to display</p>
 			</div>
+
+			<div style="margin-top: 30px" v-if="getTotalPage > 1" >
+				<Page ref="page"   :defaultPage="page" :totalPage="getTotalPage" :onChange="onPageChange"  />
+			</div>
 			
 		</section>
 	</div>
 </template>
 
 <script>
-import { PetItemMin, Loading } from '@/components';
+import { PetItemMin, Loading, Page } from '@/components';
 import { CommonMethod } from "@/mixin";
 import { Wallet, Http, Common } from '@/utils';
 import { mapState } from "vuex";
@@ -86,7 +90,7 @@ import {BaseConfig, ConstantConfig} from "@/config";
 let t = null;
 export default {
 	mixins: [CommonMethod],
-	components: { PetItemMin , Loading},
+	components: { PetItemMin , Loading, Page},
 	data(){
 		return({
 			rentStatePos:0,
@@ -94,6 +98,8 @@ export default {
 			rentData: [],
 			loadingData: false,
 			oneDay: 600,
+			page: 1,
+			onePageCount: 20,
 		});
 	},
 	computed: {
@@ -102,6 +108,12 @@ export default {
 			marketRentOrderList: (state) => state.marketState.data.marketRentOrderList,
 		}),
 		getShowOrderList(){
+			return this.getTotalOrder.slice(
+				this.onePageCount * (this.page - 1),
+				this.onePageCount * this.page
+			);
+		},
+		getTotalOrder(){
 			let list = [];
 			this.marketRentOrderList.list.map(item=>{
 				if(this.rentStatePos == 0){
@@ -111,6 +123,10 @@ export default {
 				}
 			});
 			return list;
+		},
+
+		getTotalPage() {
+			return Math.ceil(this.getTotalOrder.length / this.onePageCount);
 		},
 		getNumShow(){
 			let obj = {
@@ -143,7 +159,7 @@ export default {
 					if(item.leftTs == 0) needUpdateMomo = true;
 				}
 			});
-			if(count%10 == 0 || needUpdateMomo){
+			if(count%20 == 0 || needUpdateMomo){
 				await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE, false);
 				await this.getMyRentList();
 			}
@@ -153,6 +169,12 @@ export default {
 		if(t)  clearInterval(t);
 	},
 	methods: {
+		onPageChange(page){
+			this.page = page;
+			this.$nextTick(()=>{
+				this.$refs.page && this.$refs.page.initPage();
+			})
+		},
 		async getMyRentList(){
 			if(this.loadingData) return;
 			this.loadingData = true;

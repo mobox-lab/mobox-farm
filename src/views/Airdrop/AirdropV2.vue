@@ -3,20 +3,21 @@
 		<div id="bg1"></div>
 		<div id="aridorp">
 				<section class=" por airdrop-cont" style="z-index: 10">
-				<div class="swiper-container hide" ref="swiper_container" style="padding: 0px 10px;padding-bottom: 15px;">
+				<!-- <div class="swiper-container hide" ref="swiper_container" style="padding: 0px 10px;padding-bottom: 15px;"> -->
+				<div class="swiper-container hide" ref="swiper_container" style="padding: 0px;padding-bottom: 15px;">
 					<div class="swiper-wrapper tac">
-						<div id="halloween-entry" class="swiper-slide tac" style="width: 60%;margin:0 auto">
+						<!-- <div id="halloween-entry" class="swiper-slide tac" style="width: 60%;margin:0 auto">
 							<router-link to="/anniversary">
 								<img src="@/assets/anniversary/anniEntry.png" alt="" width="100%" />
 							</router-link>
-						</div>
+						</div> -->
 						<!-- <div id="halloween-entry" class="swiper-slide tac" style="width: 60%;margin:0 auto">
 							<router-link to="/binanceNFT">
 								<img src="@/assets/binaceActivity.png" alt="" width="100%" />
 							</router-link>
 						</div> -->
-						<div id="halloween-entry" @click="oprDialog('transfer-dialog', 'block')" class="swiper-slide tac" style="width: 60%;margin:0 auto">
-							<img src="@/assets/transMoMo.png" alt="" width="100%" />
+						<div id="halloween-entry"  class="swiper-slide tac" style="width: 100%;margin:0 auto">
+							<img src="@/assets/transMoMo.png" @click="oprDialog('transfer-dialog', 'block')" alt="" width="60%" />
 						</div>
 					</div>
 					<div ref="pagination" class="swiper-pagination"></div>

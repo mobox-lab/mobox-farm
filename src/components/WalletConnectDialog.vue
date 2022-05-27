@@ -19,6 +19,14 @@
 						<img style="margin-top:5px" src="../assets/icon/binanceWallet.svg" height="30" alt="">
 					</div>
 				</div>
+				<div class="connect-wallet-item aveage-box mgt-10" @click="connectWallet('coinbase')">
+					<div class="tal">
+						<span>Coinbase Wallet</span>	
+					</div>
+					<div class="tar">
+						<img style="margin-top:5px" src="../assets/icon/coinbase.png" height="30" alt="">
+					</div>
+				</div>
 				<div class="connect-wallet-item aveage-box mgt-10" @click="connectWallet('metamask')">
 					<div class="tal">
 						<span>Metamask</span>	
@@ -125,16 +133,16 @@ export default {
 		logoutWallet(){
 			Common.removeStorageItem("connect-wallet");
 			Common.removeStorageItem("walletconnect");
-			Common.walletConnectConnector = null;
-			Wallet.ETH.myAddr = "";
-			Wallet.ETH.logoutWallet();
-			this.$store.commit("globalState/setData", {
-				connectWalletAddr: "",
-				chainNetwork: 0
-			});
-			this.oprDialog("connected-wallet-info-dialog", "none");
-
-			window.hackReload();
+			window.location.reload();
+			// Common.walletConnectConnector = null;
+			// Wallet.ETH.myAddr = "";
+			// Wallet.ETH.logoutWallet();
+			// this.$store.commit("globalState/setData", {
+			// 	connectWalletAddr: "",
+			// 	chainNetwork: 0
+			// });
+			// this.oprDialog("connected-wallet-info-dialog", "none");
+			// window.hackReload();
 		},
 
 		async connectWallet(type){
@@ -195,25 +203,26 @@ export default {
 					
 					break;
 				case "metamask":
-						if (typeof window.ethereum !== 'undefined' && window.ethereum.request) {
+						if (typeof window.ethereum !== 'undefined') {
+							const mp = window.ethereum?.providers?.find((item) => item.isMetaMask) || window.ethereum;
 							try {
 								//获取账户
-								let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+								let accounts = await mp.request({ method: 'eth_requestAccounts' });
 								account =  accounts[0];
 							} catch (error) {
 								this.showNotify(this.$t("Air-drop_101"), "error");
 							}
 							//获取当前Network
-							let network = await window.ethereum.request({method: 'net_version'});
+							let network = await mp.request({method: 'net_version'});
 							chainNetwork = network;
 							if(chainNetwork != 56){
-								window.ethereum.request({
+								mp.request({
 									method: 'wallet_switchEthereumChain',
 									params: [{ chainId: '0x38' }], // chainId must be in hexadecimal numbers
 								});
 							}
 							//获取当前provider
-							provider = window.web3.currentProvider;
+							provider = mp;
 						}
 					break;
 				case "binanceChain":
@@ -247,7 +256,30 @@ export default {
 						} else {
 							// download
 						}
+					break;
+				case "coinbase":
+					if (typeof window.ethereum !== 'undefined') {
+						const cp = window.ethereum?.providers?.find((item) => item.isCoinbaseWallet) || (window.ethereum.isCoinbaseWallet ? window.ethereum : null);
+						try {
+							//获取账户
+							let accounts = await cp.request({ method: 'eth_requestAccounts' });
+							account =  accounts[0];
+						} catch (error) {
+							this.showNotify(this.$t("Air-drop_101"), "error");
+						}
 
+						//获取当前Network
+						let network = await cp.request({method: 'net_version'});
+						chainNetwork = network;
+						if(chainNetwork != 56){
+							cp.request({
+								method: 'wallet_switchEthereumChain',
+								params: [{ chainId: '0x38' }], // chainId must be in hexadecimal numbers
+							});
+						}
+						//获取当前provider
+						provider = cp;
+					}
 					break;
 				default:
 					break;

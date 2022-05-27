@@ -147,7 +147,6 @@ const InitEth = {
 			await this.getMoMoSetting();
 			//查询我质押的和key的收益
 			await this.getStakeValueAndEarndKey();
-
 			//获取veMBOX相关
 			await this.getPools();
 			await this.avglockdays();

@@ -17,7 +17,7 @@ const baseCoinAttr = {
 	stakeLp: 0,
 	earnedKey: 0,
 	gracePeriod: 0,
-	wantAmount: 0,
+	wantAmount: "-",
 	lpPrice: ["-","-"],
 	lpPriceUpTs: 0,
 	workingBalance: 0,
@@ -43,7 +43,7 @@ const baseCoinAttr = {
 	veMbox: {
 		mul: 100, //倍率
 		orderIndexs: {
-			"0": {stakeMbox: 0,endTime: 0, veMboxNum: 0,},
+			"0": {stakeMbox: "-",endTime: 0, veMboxNum: "-",},
 			"1": {stakeMbox: 0,endTime: 0, veMboxNum: 0,},
 			"2": {stakeMbox: 0,endTime: 0, veMboxNum: 0,},
 		},
@@ -145,7 +145,7 @@ const state = () => ({
 		totalStakeMbox: 0,//共质押的MBOX
 		veMboxTotal:0,//共质押的vembox
 		myTotalVeMbox: 0, //我的总veMbox
-		canUseVeMbox: 0,//可以使用的veMbox
+		canUseVeMbox: "-",//可以使用的veMbox
 	},
 })
 

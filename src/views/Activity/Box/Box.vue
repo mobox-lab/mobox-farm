@@ -64,7 +64,10 @@
 							<div >
 								<p class="small opa-6">{{$t("Air-drop_152")}}</p>
 								<h3  class="por">
-									{{canUseVeMbox}}
+									<span v-if="canUseVeMbox != '-' ">
+										{{canUseVeMbox}}
+									</span>
+									<Loading v-else />
 									<span class="dib por cur-point" style="width:30px;position:absolute;right:20px;bottom:0px" @click="jumpVeMBOX">
 										<span class="notice" style="zoom:0.7" v-if="coinArr['GOV'].veMbox.notice && !hasStake"></span>
 										<img   src="@/assets/icon/vembox-icon.png" alt="" height="30" />
@@ -265,7 +268,7 @@ export default {
 		}),
 		getMaxApplyTimes(){
 			let maxAmount = 0
-			let myTotalVeMbox = this.canUseVeMbox;
+			let myTotalVeMbox = this.canUseVeMbox | 0;
 
 			if (myTotalVeMbox < 3000) {
 				maxAmount = 0;

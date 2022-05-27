@@ -139,13 +139,14 @@
 										<div class=" point-block  close" @click="getLPPrice(item);toggleClass($event, item)">
 											<div >
 												<div><span class="opa-6 small " >{{ $t("Air-drop_03") }}</span></div>
-												<div class="tal "  style="flex:2">
+												<div class="tal "  style="flex:2" v-if="item.wantAmount != '-' ">
 													<h3 v-if=" item.wantAmount > 0"  class="vertical-children notice-color new-text" :class="item.isLP?'show-point-block':''">
 														<span>{{ numFloor(item.wantAmount, 1e2) }}</span>
 														<svg v-if="item.isLP" viewBox="0 0 24 24" class="rotate-arrow"  height="20px" ><path fill="#fff" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
 													</h3>
-													<h3 v-else style="padding: 5px;display:inline-block">-</h3>
+													<h3 v-else style="padding: 5px;display:inline-block">0</h3>
 												</div>
+												<Loading class="mgt-10" v-else />
 											</div>
 
 											<div  class="mgt-10 small toggle-item" style="background:#13181F;padding:5px;border-radius:10px">
@@ -171,7 +172,7 @@
 													<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path style="fill:none" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
 												</span>
 											</p>
-											<h3 style="margin-top:7px" class="new-text">
+											<h3 style="margin-top:7px" class="new-text" v-if="coinArr[item.coinKey].veMbox.orderIndexs[0].veMboxNum != '-' ">
 												{{ numFloor( 
 													(
 													Number(coinArr[item.coinKey].veMbox.orderIndexs[0].veMboxNum)
@@ -180,6 +181,7 @@
 													) /1e18, 1e4) || "0" }}
 												<span class="notice-color" v-if="coinArr[item.coinKey].veMbox.mul > 100">({{numFloor(coinArr[item.coinKey].veMbox.mul/100, 100)}}x)</span>
 											</h3>
+											<Loading class="mgt-10" v-else />
 										</div>
 
 										<div class="tal  ">
@@ -188,7 +190,6 @@
 												<button class="btn-success btn-small por new-text"  @click="$refs.keyopr.showAll()">
 													{{getTotalKey}}
 												</button>
-
 											</p>
 										</div>
 
@@ -266,12 +267,13 @@
 						<h2 class="dib mgl-10">Total MOMO Staked</h2>
 					</div> -->
 					<div class="mgt-10 adv-panel tac" style="padding:20px">
-						<div class="aveage-box ">
+							<div class="aveage-box ">
 							<div >
 								<p class="small opa-6">{{ $t("Mine_02") }}</p>
 								<p class=" bold2 vertical-children" style="margin-top:5px">
 									<img src="@/assets/icon/airdrop.png" alt="" height="20">
-									<span class="mgl-5" style="font-size: 16px">{{eth_totalHashrate.toLocaleString()}}</span>
+									<span class="mgl-5" style="font-size: 16px" v-if="eth_totalHashrate != '-' ">{{eth_totalHashrate.toLocaleString()}}</span>
+									<Loading class="mgl-5 " v-else  />
 								</p>
 							</div>
 							<div>

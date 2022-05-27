@@ -30,6 +30,8 @@ window.hackReload = ()=>{
 		i18n,
 		render: h => h(App)
 	}).$mount('#app');
+	
+	Common.app = app.$children[0];
 }
 
 window.getPrice = async (addr = '', name, d = 1e18) =>{

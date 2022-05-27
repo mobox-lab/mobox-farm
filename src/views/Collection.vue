@@ -24,7 +24,10 @@
 			</div>
 			<div class="mgt-20">
 				<p class="small opa-6">{{ $t("Mine_02") }}</p>
-				<p class="mgt-10 bold" style="width:100%;height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">{{eth_totalHashrate}}</p>
+				<p class="mgt-10 bold" style="width:100%;height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">
+					<span v-if="eth_totalHashrate != '-' ">{{eth_totalHashrate}}</span>
+					<Loading v-else />
+				</p>
 			</div>
 			<div class=" mgt-20">
 				<p class="small vertical-children">
@@ -33,7 +36,8 @@
 				</p>
 				<div class="por dib mgt-10" style="width:100%">
 					<p class="por bold" style="height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">
-						<span>{{eth_myHashrate}}</span>
+						<span v-if="eth_myHashrate != '-' ">{{eth_myHashrate}}</span>
+						<Loading v-else />
 						<span v-if="eth_getAddHashrate > 0" class="small" style="color: #75fd49" >({{ eth_getAddHashrate }})</span>
 						<img src="../assets/icon/powerup.png" id="powerup-btn" alt="" @click="oprDialog('showPetPowerUp-dialog', 'block')"  />
 					</p>
@@ -42,12 +46,12 @@
 			<p class="small opa-6 mgt-20">{{$t("Air-drop_210")}}</p>
 			<div class="  mgt-10 tal" style="padding:0px">
 				<div  class="dib speed-show">
-					<p class="small opa-6"><span class="tac">1000 {{ $t("Mine_14") }}≈{{ eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 1000, 100 ) }} MBOX/DAY</span></p>
+					<p class="small opa-6"><span class="tac">1000 {{ $t("Mine_14") }}≈{{ eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate | 0) * 1000, 100 ) }} MBOX/DAY</span></p>
 					<p class="vertical-children mgt-10 bold" style="height:25px">
 						<img src="@/assets/coin/MBOX.png" alt="" height="20">
 						<span class="mgl-5 " v-if="Number(eth_earnedMbox) >= 0">{{ eth_earnedMbox }}</span>
 						<Loading class="mgl-5 " v-else  />
-						<span class="mgl-5">MBOX</span>
+					<span class="mgl-5">MBOX</span>
 					</p>
 				</div>
 			</div>
@@ -66,7 +70,8 @@
 					<div class="water"></div>
 					<div class="gka-harmer por animation-harmer" style="margin-top: -12px;right:0px"></div>
 					<p class="small opa-6 mgt-10">{{$t("Mine_03")}}</p>
-					<p class="bold2" style="font-size: 28px;color: #fdc006">{{eth_myHashrate.toLocaleString()}}</p>
+					<p class="bold2" style="font-size: 28px;color: #fdc006" v-if="eth_myHashrate != '-' ">{{eth_myHashrate.toLocaleString()}}</p>
+					<Loading class="mgt-10" v-else />
 				</div>
 				<div id="collection-view2">
 					<div class="mining-pet2" v-for="item in myNFT_stake.slice(0, 10)" :key="item.prototype.toString() + item.tokenId + item.num" >
@@ -94,7 +99,7 @@
 					</div>
 				</div>
 			</div>
-			<p class="mgt-10 opa-6"><span class="tac">1000 {{ $t("Mine_14") }}≈{{ eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate) * 1000, 100 ) }} MBOX/DAY</span></p>
+			<p class="mgt-10 opa-6"><span class="tac">1000 {{ $t("Mine_14") }}≈{{ eth_totalHashrate == 0?"0": numFloor( (totalAirdropMbox / eth_totalHashrate | 0) * 1000, 100 ) }} MBOX/DAY</span></p>
 
 		</section>
 	</div>
@@ -146,7 +151,7 @@ export default {
 		//获取加成
 		eth_getAddHashrate() {
 			let staticAddHashrate = this.getStaticAdd;
-			let myHashrate = this.eth_myHashrate;
+			let myHashrate = this.eth_myHashrate | 0;
 			let addP = this.getTotalPercent;
 			return this.numFloor(myHashrate - (myHashrate / (1 + addP) - staticAddHashrate),1);
 		},

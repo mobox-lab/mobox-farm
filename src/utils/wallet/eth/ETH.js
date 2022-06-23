@@ -476,11 +476,13 @@ export default class ETH {
 	}
 
 	//获取当前账户
-	static async getAccount() {
+	static async getAccount(needShowConnect = false) {
 		if (this.myAddr != "") return this.myAddr;
 		return new Promise(resolve => {
 			if(Common.app){
-				Common.app.oprDialog('connect-wallet-dialog','block');
+				if(needShowConnect){
+					Common.app.oprDialog('connect-wallet-dialog','block');
+				}
 			}
 			let t = setInterval(()=>{
 				if(this.myAddr != ""){
@@ -492,7 +494,7 @@ export default class ETH {
 	}
 	//授权
 	static async approveBoxToMinter() {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		if (!this.boxTokenContract) return;
 		return new Promise(resolve => {
@@ -520,7 +522,7 @@ export default class ETH {
 
 	//领取Key到钱包
 	static async getRewardKey(pIndexArr){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return null;
 
 		let contract = new this.web3.eth.Contract([
@@ -577,42 +579,47 @@ export default class ETH {
 	}
 	//授权Erc20给矿池
 	static async approveErcToTarget(fromAddr, targetAddr, approveInfo = {coinKey: "", type: ""}) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		let contract = new this.web3.eth.Contract([
 			Contract.approve,
 			Contract.allowance
 		], fromAddr);
+		
 		return new Promise((resolve) => {
-			this.sendMethod(
-				contract.methods.approve(targetAddr,"0x" + Common.repeat("f", 64)), {from: myAddr},
-				hash=>resolve(hash),
-				()=>{
-					let {coinKey, type} = approveInfo;
-					console.log("recipt",approveInfo);
-					if(coinKey != ""){
-						Common.store.commit("bnbState/setCoinAllowance", {coinKey, allowance: 1.157920892373162e77, type});
+			Common.app.showRiskNotice(()=>{
+				this.sendMethod(
+					contract.methods.approve(targetAddr,"0x" + Common.repeat("f", 64)), {from: myAddr},
+					hash=>resolve(hash),
+					()=>{
+						let {coinKey, type} = approveInfo;
+						console.log("recipt",approveInfo);
+						if(coinKey != ""){
+							Common.store.commit("bnbState/setCoinAllowance", {coinKey, allowance: 1.157920892373162e77, type});
+						}
 					}
-				}
-			)
+				)
+			})
 		});
 	}
 	//授权Erc20给矿池带返回
 	static async approveErcToTargetOnRecipt(fromAddr, targetAddr, recipt) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		let contract = new this.web3.eth.Contract([
 			Contract.approve,
 			Contract.allowance
 		], fromAddr);
 		return new Promise((resolve) => {
-			this.sendMethod(
-				contract.methods.approve(targetAddr,"0x" + Common.repeat("f", 64)), {from: myAddr},
-				hash=>resolve(hash),
-				()=>{
-					recipt()
-				}
-			)
+			Common.app.showRiskNotice(()=>{
+				this.sendMethod(
+					contract.methods.approve(targetAddr,"0x" + Common.repeat("f", 64)), {from: myAddr},
+					hash=>resolve(hash),
+					()=>{
+						recipt()
+					}
+				)
+			})
 		});
 	}
 	//查询合约里面币我的币
@@ -698,7 +705,7 @@ export default class ETH {
 	}
 	// 领取key到开箱子合约并兑换箱子
 	static async getChestBox(pIndexArr, amount) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -768,7 +775,7 @@ export default class ETH {
 
 	//添加box
 	static async addMysteryBox(amount) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		if (!this.moMoMinterContract) return;
 
@@ -784,7 +791,7 @@ export default class ETH {
 	}
 	//添加box
 	static async addBox(amount) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		if (!this.moMoMinterContract) return;
 
@@ -797,7 +804,7 @@ export default class ETH {
 	}
 	//开箱子
 	static async openBox(amount) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		if (!this.moMoMinterContract) return;
 		let transactionHash = "";
@@ -826,7 +833,7 @@ export default class ETH {
 	}
 	//开箱子并质押
 	static async openBoxAndStake(amount) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		if (!this.momoStakeContract) return;
 		let transactionHash = "";
@@ -873,7 +880,7 @@ export default class ETH {
 	}
 	//授权1155给对应合约
 	static async approve1155ToTargetToken(tokenAddr) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return null;
 		if (!this.moMoMTokenContract) return null;
 		return new Promise(resolve => {
@@ -900,7 +907,7 @@ export default class ETH {
 	}
 	//授权721给对应合约
 	static async approve721ToTargetToken(tokenAddr) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return null;
 		if (!this.moMoTokenContract) return null;
 		return new Promise(resolve => {
@@ -931,7 +938,7 @@ export default class ETH {
 	}
 	//授权给目标合约
 	static async approvedForAll(fromToken, toToken, recipet){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return null;
 
 		let contract = new this.web3.eth.Contract([
@@ -1150,7 +1157,7 @@ export default class ETH {
 	}
 	//取名
 	static async setMomoNameByTokenId(tokenId, name, isFirst) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		if (!this.momoStakeContract) return;
 		console.log( this.web3.utils.utf8ToHex(name).length);
@@ -1169,7 +1176,7 @@ export default class ETH {
 	}
 	//写故事
 	static async setMomoStoryByTokenId(tokenId, story, isFirst) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		if (!this.momoStakeContract) return;
 		return new Promise(resolve => {
@@ -1194,7 +1201,7 @@ export default class ETH {
 	}
 	//升级721
 	static async upgrade(gotoLv, tokenId, protosV1V2V3 = [], amountsV1V2V3 = [], tokensV4V5 = []) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		if (!this.moMoTokenContract) return;
 		return new Promise(resolve => {
@@ -1213,7 +1220,7 @@ export default class ETH {
 	}
 	//升级质押的721
 	static async upgradeStake(gotoLv, tokenId, protosV1V2V3 = [], amountsV1V2V3 = [], tokensV4V5 = [], isMoMoVerse = false) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		let constract = isMoMoVerse?this.momoStakeContract_verse: this.momoStakeContract;
 		if (!constract) return;
@@ -1239,7 +1246,7 @@ export default class ETH {
 
 	//质押NFT
 	static async stakeNft(erc1155ids, erc1155Num, erc721TokenIds) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		if (!this.momoStakeContract) return;
 		return new Promise(resolve => {
@@ -1261,7 +1268,7 @@ export default class ETH {
 	}
 	//解冻质押
 	static async unStakeNft(erc1155ids, erc1155Num, erc721TokenIds) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		if (!this.momoStakeContract) return;
 		return new Promise(resolve => {
@@ -1316,7 +1323,7 @@ export default class ETH {
 	}
 	//领取MBOX
 	static async takeEarnedMbox() {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		if (!this.momoStakeContract) return;
 		return new Promise(resolve => {
@@ -1351,7 +1358,7 @@ export default class ETH {
 	}
 	//上架
 	static async createAuction({_startPrice,_endPrice,_durationDay,_suggestIndex,_tokenId = 0,_ids = [],_amounts = []}) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -1383,7 +1390,7 @@ export default class ETH {
 
 	//批量创建订单
 	static async createAuctionBatch({suggestIndex_, tokenIds_, prices721_, ids_, prices1155_}){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -1428,7 +1435,7 @@ export default class ETH {
 
 	//购买市场上的物品
 	static async buyMarketPet(_auctor, _index, coinKey, _startTime, _price){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -1454,7 +1461,7 @@ export default class ETH {
 
 	//批量购买
 	static async buyMarketPets(_auctors, _indexs, coinKey, _startTimes, _prices, ignoreSold){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -1490,7 +1497,7 @@ export default class ETH {
 
 	//取消上架
 	static async cancelAuction(_index){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -1519,7 +1526,7 @@ export default class ETH {
 
 	//修改价格
 	static async changePrice({index, startPrice, endPrice, durationDays}){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -1575,7 +1582,7 @@ export default class ETH {
 	// static async withdraw
 
 	static async deposit(coinKey, amount){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -1610,7 +1617,7 @@ export default class ETH {
 	
 	//提币
 	static async withdraw(coinKey, amount) {
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		//创建合约对象
 		let contract = new this.web3.eth.Contract([
@@ -1638,7 +1645,7 @@ export default class ETH {
 	//购买box
 	static async buyBox(amount) {
 		console.log("buyBox", amount);
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		if (!this.moMoMinterContract) return;
 
@@ -1658,7 +1665,7 @@ export default class ETH {
 	static async removeLiquidity(coinItemObj, liquidity, targetLPPrice, setting){
 		console.log({coinItemObj});
 		let {coinName, coinKey} = coinItemObj;
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let coinObj = coinName.split("-");
@@ -1711,7 +1718,7 @@ export default class ETH {
 	}
 	//增加流动性
 	static async addLiquidity(from, to, setting){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let fromCoinCfg = PancakeConfig.SelectCoin[from.coinName];
@@ -1767,7 +1774,7 @@ export default class ETH {
 		console.log({to});
 		console.log({path});
 		console.log({setting});
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let method;
@@ -1890,7 +1897,7 @@ export default class ETH {
 
 	//宝石升级
 	static async gemLevelUp(gemId, amount){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		let contract = new this.web3.eth.Contract([
 			Contract.levelUpGem,
@@ -1980,7 +1987,7 @@ export default class ETH {
 
 	//申购宝石
 	static async applyForGem(type, applyNum_, recipt){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		let contract = new this.web3.eth.Contract([
 			Contract.nApplyForGem,
@@ -2007,7 +2014,7 @@ export default class ETH {
 
 	//申购BOX
 	static async applyForBox(type, applyNum_, recipt){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		let contract = new this.web3.eth.Contract([
 			{
@@ -2043,7 +2050,7 @@ export default class ETH {
 	}
 	//领取宝石
 	static async takeGem(recipt){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2063,7 +2070,7 @@ export default class ETH {
 	}
 	//领取BOX
 	static async takeBox(recipt){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2089,7 +2096,7 @@ export default class ETH {
 	}
 	//领取申购BOX多余的MBOX
 	static async takeMbox_box(recipt){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2110,7 +2117,7 @@ export default class ETH {
 
 	//领取申购宝石多余的MBOX
 	static async takeMbox(recipt){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2131,7 +2138,7 @@ export default class ETH {
 
 	//穿戴宝石
 	static async wearGem({momoId_, gemId_, pos_}){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2179,7 +2186,7 @@ export default class ETH {
 
 	//脱下宝石
 	static async takeOffGem({momoId_, pos_}){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2203,7 +2210,7 @@ export default class ETH {
 
 	//快速升级
 	static async inlayQuickLvUp({momoId_, pos_}){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2241,7 +2248,7 @@ export default class ETH {
 	}
 
 	static async gemCreateAuction({price_, suggestIndex_,currency_, erc1155_ ,ids_,  amounts_}){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2300,7 +2307,7 @@ export default class ETH {
 
 	//取消上架
 	static async cancelGemAuction(orderId_){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2345,7 +2352,7 @@ export default class ETH {
 
 	//修改价格
 	static async changeGemPrice({orderId_, price_, }, recipt){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2387,7 +2394,7 @@ export default class ETH {
 
 	//购买市场上的物品
 	static async buyGemMarketPet({auctor_, orderId_, coinKey, amount_}){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2420,7 +2427,7 @@ export default class ETH {
 
 	//momo出租相关
 	static async createRent({tokenId_, curRentDays_, curRentRound_,curRentPrice_}, recipet){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2458,7 +2465,7 @@ export default class ETH {
 
 	//增加续租合同
 	static async addRentRenewal({tokenId_, orderId_, nextRentDays_,nextRentRound_,nextRentPrice_},recipt){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2592,7 +2599,7 @@ export default class ETH {
 
 	//取消上架的租赁
 	static async cancelPutRent({tokenId_, orderId_},recipet){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		console.log({tokenId_,orderId_ });
@@ -2626,7 +2633,7 @@ export default class ETH {
 
 	//租赁momo
 	static async rentMomo({tokenId_, orderId_, gameId_, price_}){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2660,7 +2667,7 @@ export default class ETH {
 
 	//续租
 	static async reRent({tokenId_, orderId_, price_}, recipt){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2693,7 +2700,7 @@ export default class ETH {
 
 	///veMBOX相关
 	static async stakeMbox({poolIndex_, amount_, lockTime_, orderIndex_}, coinItem){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2734,7 +2741,7 @@ export default class ETH {
 
 	///取回质押的MBOX
 	static async unstakeMbox({poolIndex_, orderIndex_}){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2881,7 +2888,7 @@ export default class ETH {
 
 	//划转veMbox
 	static async moveStake({moveVeMobox_, fromPool_, toPool_, orderIndex_}){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -2970,7 +2977,7 @@ export default class ETH {
 
 	//参与挖矿
 	static async joinStake(recipt){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -3047,7 +3054,7 @@ export default class ETH {
 	}
 
 	static async bidMomo({amount, tokenId}, recipt){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -3079,7 +3086,7 @@ export default class ETH {
 	}
 	//领取MOMO
 	static async withdraw721(recipt){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -3159,7 +3166,7 @@ export default class ETH {
 	}
 
 	static async refundMbox(){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return null;
 
 		let contract = new this.web3.eth.Contract([
@@ -3187,7 +3194,7 @@ export default class ETH {
 
 	//订单部相关功能
 	static async orderBookOpr(param, type ){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([
@@ -3232,7 +3239,7 @@ export default class ETH {
 
 	//订单部相关功能
 	static async cancelOrderBook({erc1155_, index_, orderId_}){
-		let myAddr = await this.getAccount();
+		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new this.web3.eth.Contract([

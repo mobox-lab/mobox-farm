@@ -13,7 +13,7 @@
 
 				<div style="position: absolute;  top: 15px; left: 20px;" v-if="item.erc1155_ != 1 && item.currency == 2">
 					<div class="vertical-children pet_num small bold2"  >
-						<span>{{$t('Market_39')}}: {{ numFloor(item.price / item.num /1e9, 100) }} <span class="opa-6">{{getCurrencyName(item.currency)}}</span></span>
+						<span>{{$t('Market_39')}}: {{ numFloor(item.price / item.num /1e9, 1e6) }} <span class="opa-6">{{getCurrencyName(item.currency)}}</span></span>
 					</div>
 				</div>
 			</div>

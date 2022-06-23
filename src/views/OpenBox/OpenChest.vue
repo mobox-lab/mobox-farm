@@ -103,9 +103,9 @@
 									</button>
 								</div>
 								<div class="tar">
-									<button class="mgt-20 btn-line" style="width:90%;" @click="setAction(23012);  $root.$children[0].$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
+									<!-- <button class="mgt-20 btn-line" style="width:90%;" @click="setAction(23012);  $root.$children[0].$refs.pancake.setOprData({coinKey: 'KEY-BNB-V2', pancakeVType: 2}).show('swap')">
 										{{$t("BOX_33")}}
-									</button>
+									</button> -->
 								</div>
 							</div>
 						</div>

@@ -6,7 +6,7 @@ import BigNumber from "bignumber.js";
 export default class Rent {
 	//创建出租订单: 注意如果MOMO在老的租赁合约上还在租赁的, 也不能出租
 	static async createRent({tokenId_, rentDays_, rentPrice_}, recipet){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 
 		let contract = new ETH.web3.eth.Contract([
@@ -41,7 +41,7 @@ export default class Rent {
 	}
 	//取消出租
 	static async cancelRent({tokenId_, orderId_}, recipet){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([
 			{
@@ -69,7 +69,7 @@ export default class Rent {
 	}
 	//租赁
 	static async rent({tokenId_, orderId_, days_, price_}){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([
 			{
@@ -97,7 +97,7 @@ export default class Rent {
 	}
 	//续租
 	static async renewRent({tokenId_, orderId_, days_, price_}, recipet){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([
 			{

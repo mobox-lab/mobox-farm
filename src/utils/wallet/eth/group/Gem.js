@@ -81,7 +81,7 @@ export default class Gem {
 	//申购 fcName: veMoboxApplyForGem, hashRateApplyForGem
 	static async applyForGem(fcName, gemType_, applyNum_, recipt){
 		console.log({fcName, gemType_, applyNum_});
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
 				"name": fcName, "type": "function",
@@ -105,7 +105,7 @@ export default class Gem {
 	}
 	//领取冻结的MBOX
 	static async claimfrozenMbox(recipt){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
 				"name": "claimfrozenMbox", "type": "function",
@@ -127,7 +127,7 @@ export default class Gem {
 	}
 	//领取申购到的宝石
 	static async claimfrozenGem(recipt){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
 				"name": "claimfrozenGem", "type": "function",

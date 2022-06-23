@@ -20,10 +20,11 @@
 				</div>
 				<div class="vertical-children  dib mgl-10 ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<span @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
+					<a href="https://pancakeswap.finance/swap?inputCurrency=0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c&outputCurrency=0x3203c9e46ca618c8c1ce5dc67e7e9d75f5da2377" target="_blank" >
+					<!-- <span @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')"> -->
 						$<span v-if="ourPrice['MBOX'] != '-' ">{{ numFloor(ourPrice["MBOX"], 1e2)}}</span>
 						<Loading v-else />
-					</span>
+					</a>
 				</div>
 				<div class="dib " style="margin-left:30px">
 					<img src="@/assets/icon/wallet_icon.png" alt="" height="45" @click="oprDialog('mobile-wallet-dialog', 'block')">
@@ -134,10 +135,11 @@
 				</div>
 				<div class="vertical-children mgt-10 point-block ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
+					<a class="mgl-10 bold show-point-block" href="https://pancakeswap.finance/swap?inputCurrency=0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c&outputCurrency=0x3203c9e46ca618c8c1ce5dc67e7e9d75f5da2377" target="_blank" >
+					<!-- <span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')"> -->
 						$<span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
 						<Loading v-else />
-					</span>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -524,6 +526,31 @@
 				</div>
 			</div>
 		</Dialog>
+
+		<!-- 风险提示 -->
+		<Dialog id="risk-notice-dialog" :top="100" :width="400">
+			<h2>{{$t("Air-drop_23")}}</h2>
+			<div class="tab-body tal mgt-10 small" v-html="$t('Air-drop_272')" style=" padding:15px;max-height:340px;overflow-y: auto;"></div>
+			<div class="tab-body tal mgt-10" style="padding:15px">
+				<div class="vertical-children " style="display:flex">
+					<div class="ly-checkbox" :class="hasAgreeNotice?'active':''" @click="hasAgreeNotice = !hasAgreeNotice">
+						<div style="width:20px">
+							<svg class="hide"  viewBox="0 0 1024 1024" width="20" height="20"><path fill="#92FFDA" d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z" ></path></svg>
+						</div>
+					</div> &nbsp;
+					<span class="small mgl-10" style="flex:auto">{{$t("Air-drop_273")}}</span>
+				</div>
+
+				<div class="mgt-20 aveage-box">
+					<div class="tac">
+						<button class="btn-primary" style="width:80%" @click="oprDialog('risk-notice-dialog', 'none')">{{$t("Air-drop_27")}}</button>
+					</div>
+					<div class="tac">
+						<StatuButton style="width:80%" :isDisable="!hasAgreeNotice" :onClick="agreeNotice">{{$t("Air-drop_28")}}</StatuButton>
+					</div>
+				</div>
+			</div>
+		</Dialog>
 		
 	</div>
 </template>
@@ -536,7 +563,7 @@ import GemBag from "./views/Activity/Gem/GemBag";
 import BoxBag from "./views/Activity/BoxBag.vue";
 import VMbox from "./views/VMBOX/VMbox";
 
-import {Notification, NotificationTrans, Dialog, ConfirmDialog,RuleDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading } from "@/components";
+import { Notification, NotificationTrans, Dialog, ConfirmDialog, RuleDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading, StatuButton } from '@/components';
 import { InitEth, InitTron, CommonMethod } from "@/mixin";
 import { mapState } from "vuex";
 import { Common, Http, Wallet } from "@/utils";
@@ -548,12 +575,14 @@ let timer = null;
 export default {
 	name: "App",
 	mixins: [InitEth, InitTron, CommonMethod],
-	components: {Transfer,RuleDialog, BoxBag,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
+	components: {StatuButton, Transfer,RuleDialog, BoxBag,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
 	data() {
 		return {
 			langArr: ["English", "中文"],
 			langPosToName: ["en", "zh-CN"],
 			showPowerPet: false,
+			hasAgreeNotice: false,
+			showRiskCb: null,
 			ourPrice: {
 				"MBOX": "-",
 				"KEY": "-",
@@ -633,7 +662,7 @@ export default {
 			hasReadNotice: false,
 			showMoreMenu: false,
 			noticeVersion: "4.0",
-			version: "2.0.7"
+			version: "2.0.9"
 		};
 	},
 	watch: {
@@ -865,6 +894,18 @@ export default {
 		clearInterval(timer);
 	},
 	methods: {
+		agreeNotice(){
+			if(this.showRiskCb != null){
+				this.oprDialog("risk-notice-dialog", "none");
+				this.showRiskCb();
+				this.showRiskCb = null;
+			}
+		},
+		showRiskNotice(showRiskCb){
+			this.showRiskCb = showRiskCb;
+			this.hasAgreeNotice = false;
+			this.oprDialog("risk-notice-dialog", "block");
+		},
 		jumpToTokenMaster(){
 			let url = "https://www.mobox.io/#/iframe/tokenmaster";
 			if(window.SHOW_APP_BAR){

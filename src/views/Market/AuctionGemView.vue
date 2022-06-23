@@ -290,6 +290,7 @@ export default {
 	
 		//购买
 		async buyPet(){
+			await Wallet.ETH.getAccount(true);
 			let coinKey = this.oprCoin;
 			if(this.coinArr[coinKey].allowanceToGemAuction <= 0 || this.lockBtn.buyMomoLock > 0) return
 			if(this.getNowPetItem.price/1e9 > Number(this.coinArr[coinKey].balance)){

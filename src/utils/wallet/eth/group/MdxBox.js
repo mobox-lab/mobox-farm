@@ -29,7 +29,7 @@ export default class MdxBox {
 	//开箱子
 	static async openBox(amount_, recipt){
 		console.log("openBox", amount_);
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
 				"name": "openBox", "type": "function",
@@ -123,7 +123,7 @@ export default class MdxBox {
 	}
 	//去申购
 	static async hApplyForBox(applyNum_, recipt){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
 				"name": "hApplyForBox", "type": "function",
@@ -146,7 +146,7 @@ export default class MdxBox {
 	}
 	//领取申购到的箱子
 	static async claimfrozenBox(recipt){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
 				"name": "claimfrozenBox", "type": "function",

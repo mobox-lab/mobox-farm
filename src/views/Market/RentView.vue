@@ -218,7 +218,7 @@ export default {
 			return petObj;
 		},
 		isMyRent(){
-			return this.statusObj.owner.toLocaleLowerCase() == this.myAccount.toLocaleLowerCase();
+			return this.myAccount && this.statusObj.owner.toLocaleLowerCase() == this.myAccount.toLocaleLowerCase();
 		},
 		//上架租赁
 		isCanPutRent(){

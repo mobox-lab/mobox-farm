@@ -29,7 +29,7 @@ export default class Enhancer {
 	//打开水晶箱子
 	static async mecBoxmint(amount_,recipt){
 		console.log(amount_);
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([
 			{
@@ -63,7 +63,7 @@ export default class Enhancer {
 	}
 	//解锁水晶箱子
 	static async addMysteryBox(amount_, recipt){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([
 			{
@@ -150,7 +150,7 @@ export default class Enhancer {
 	//申购 fcName: veMoboxApply, hashRateApply
 	static async applyBuy(fcName, applyNum_, recipt){
 		console.log({fcName, applyNum_});
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
 				"name": fcName, "type": "function",
@@ -173,7 +173,7 @@ export default class Enhancer {
 	}
 	//领取冻结的MBOX
 	static async claimfrozenMbox(recipt){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
 				"name": "claimfrozenMbox", "type": "function",
@@ -195,7 +195,7 @@ export default class Enhancer {
 	}
 	//领取申购到的箱子
 	static async claimfrozenBox(recipt){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
 				"name": "claimfrozenBox", "type": "function",
@@ -218,7 +218,7 @@ export default class Enhancer {
 
 	//给momo注入水晶
 	static async addCrystal({tokenId_, hrOriginal_, crystalAmount_, mbox_},recipt){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
 			"name": "addCrystal", "type": "function",
@@ -246,7 +246,7 @@ export default class Enhancer {
 	}
 	//开始进化
 	static async enhance(tokenId_, recipt){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
 			"name": "enhance", "type": "function",
@@ -290,7 +290,7 @@ export default class Enhancer {
 
 	//进化2.0版本
 	static async enhanceV2({tokenId_,hrUp_,crystal_}, recipt, isMoMoVerse = false){
-		let myAddr = await ETH.getAccount();
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([{
 			"name": "enhance", "type": "function",

@@ -41,6 +41,12 @@
 								{{item}}
 							</div>
 						</div>
+						<div class="mgt-10">
+							<h5>Types</h5>
+							<div @click="onSelectCategoryChange(pos)" class="filter-select-item" :class="{'active': pos == marketSearch.category}" v-for="(item, pos) in categorySelect" :key="item">
+								{{item}}
+							</div>
+						</div>
 						<div class="mgt-20">
 							<h5>Others</h5>
 							<div @click="onSortChange(pos)" class="filter-select-item" :class="{'active': pos == marketSearch.sort}" v-for="(item, pos) in sortArr" :key="item">
@@ -61,6 +67,10 @@
 					<div class="filter-show-item" v-if="marketSearch.vType != 0" >
 						<span class="filter-close" @click="onSelectVTypeChange(0)">&times;</span>
 						<span class="mgl-10">{{$parent.$parent.selectVType[marketSearch.vType]}}</span>
+					</div>
+					<div class="filter-show-item" v-if="marketSearch.category != 0" >
+						<span class="filter-close" @click="onSelectCategoryChange(0)">&times;</span>
+						<span class="mgl-10">{{categorySelect[marketSearch.category]}}</span>
 					</div>
 					<div class="filter-show-item" v-if="marketSearch.sort != 0">
 						<span class="filter-close" @click="onSortChange(0)">&times;</span>

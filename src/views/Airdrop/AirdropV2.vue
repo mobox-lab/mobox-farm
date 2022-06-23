@@ -196,14 +196,16 @@
 									</div>
 
 									<div class="aveage-box col-md-12 mgt-20" style="background:#070d14;border-radius: 10px;padding:10px 0px">
-										<div class="dib por tac" @click="setAction(21001);$root.$children[0].$refs.pancake.setOprData(item).show('swap')" >
+										<!-- <div class="dib por tac" @click="setAction(21001);$root.$children[0].$refs.pancake.setOprData(item).show('swap')" > -->
+										<a href="https://pancakeswap.finance/swap?inputCurrency=0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c&outputCurrency=0x3203c9e46ca618c8c1ce5dc67e7e9d75f5da2377" target="_blank" class="dib por tac">
 											<img class="cur-point "  width="40" src="../../assets/icon/liquidity_icon.png" alt="" >
 											<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" >{{$t("Air-drop_29")}}</span>
-										</div>
-										<div class="dib por tac hide-xs"  @click="setAction(21002);$root.$children[0].$refs.pancake.setOprData(item).show('liquidity')">
+										</a>
+										<!-- <div class="dib por tac hide-xs"  @click="setAction(21002);$root.$children[0].$refs.pancake.setOprData(item).show('liquidity')"> -->
+										<a href="https://pancakeswap.finance/add/BNB/0x3203c9E46cA618C8C1cE5dC67e7e9D75f5da2377" target="_blank" class="dib por tac">
 											<img class="cur-point "  width="40" src="../../assets/icon/exchange_icon.png" alt="" >
 											<span style="width:100%;position:absolute;bottom:-5px;left:0px;font-size:12px;color:#fff;zoom:0.8" >{{$t("Air-drop_30")}}</span>
-										</div>
+										</a>
 										<template>
 											<div class="dib por tac"  @click="setAction(21003);needSetItem = item;oprDialog('deposit-notice-dialog','block')"  v-if="needShowNotice">
 												<img class="cur-point " width="40" src="../../assets/icon/deposit_icon.png" alt=""   >
@@ -280,7 +282,8 @@
 								<p class="small opa-6">{{ $t("Mine_01") }}</p>
 								<p class=" bold2 vertical-children" style="margin-top:5px">
 									<img src="@/assets/coin/MBOX.png" alt="" height="20">
-									<span class="mgl-5" style="font-size: 16px">{{totalAirdropMbox.toLocaleString()}}</span>
+									<span class="mgl-5" style="font-size: 16px" v-if="totalAirdropMbox != '-' ">{{totalAirdropMbox.toLocaleString()}}</span>
+									<Loading class="mgl-5" v-else />
 								</p>
 							</div>
 						</div>

@@ -69,8 +69,9 @@ const state = () => ({
 		shopCar: [],
 		//批量出售车
 		groupSellCar: [],
-		
 	},
+	// 批量购买数据
+	bulkBuyings: [],
 })
 
 const mutations = {
@@ -91,6 +92,7 @@ const mutations = {
 			state.data.myGemMarketSellFilter = {type: 0,level: 0,}
 			state.data.marketGems = {limit: 1,list: [],page: 1,total: 0,}
 			state.data.marketGemFilter = defaultSort;
+			state.bulkBuyings = [];
 		}
 	},
 	addToShopCar(state, newItem){
@@ -143,6 +145,9 @@ const mutations = {
 			item.groupSellPrice = "";
 		})
 		state.data.groupSellCar = [];
+	},
+	setBulkBuying(state, data) {
+		state.bulkBuyings = data;
 	}
 };
 

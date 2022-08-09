@@ -1,5 +1,6 @@
 export default class WalletConfig {
 	static ETH = {
+		bidBatch: "0x819e97C7Da2C784403B790121304DB9E6a038dE9", // 批量购买
 		boxToken: "0x85c128eE1feEb39A59490c720A9C563554B51D33", //箱子ERC20合约 // keyToken
 		mboxToken: "0x3203c9E46cA618C8C1cE5dC67e7e9D75f5da2377", //mbox的合约地址
 

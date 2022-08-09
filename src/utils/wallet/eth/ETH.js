@@ -1495,6 +1495,55 @@ export default class ETH {
 		});
 	}
 
+	// 批量购买
+	static async bidBatch(auctors, orderIds, amounts, skipSoldOrder) {
+		const address = await this.getAccount(true);
+
+		if (!address) return;
+
+		console.log(WalletConfig.ETH);
+		console.log(arguments);
+
+		const contract = new this.web3.eth.Contract([
+			{
+				"inputs": [
+					{
+						"internalType": "address[]",
+						"name": "auctors_",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "orderIds_",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "amounts_",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "bool",
+						"name": "skipSoldOrder_",
+						"type": "bool"
+					}
+				],
+				"name": "bidBatch",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		], WalletConfig.ETH.bidBatch);
+
+		return new Promise((resolve) => {
+			this.sendMethod(
+				contract.methods.bidBatch(auctors, orderIds, amounts, !!skipSoldOrder), {from: address},
+				(hash) => resolve(hash),
+				async () => {}
+			)
+		});
+	}
+
 	//取消上架
 	static async cancelAuction(_index){
 		let myAddr = await this.getAccount(true);

@@ -2,6 +2,12 @@
 	<div>
 		<div class="tal search vertical-children por mgt-20">
 			<div id="market-pet-fitter">
+				<!-- 购物车 -->
+				<div class="cur-point dib por mgl-10" @click="toggleShowBulkBuying">
+					<span v-if="bulkBuyings.length" class="shop-car-num">{{bulkBuyings.length}}</span>
+					<img src="@/assets/icon/shopCar-buy.png" alt="" height="40">
+				</div>
+				<!-- 历史记录 -->
 				<div class="dib por mgl-10 por cur-point" id="shop-history" @click="oprDialog('shop-history-gem-dialog', 'block')" >
 					<span class="notice" v-if="historyNotice"></span>
 					<img src="@/assets/icon/tradeRecord.png" alt="" height="40" />
@@ -83,9 +89,14 @@
 			</div>
 			<a @click="$router.push({ path: `/auctionGemView/${item.tx}` })"  v-for="item in marketGems.list" :key="item.tx + item.index">
 				<GemSellItem  :key="item.orderId" :data="{item: item}">
-					<div class="vertical-children mgt-10" style="font-size: 18px">
+					<div class="vertical-children mgt-10 por" style="font-size: 18px">
 						<img :src="require(`@/assets/coin/${getCurrencyName(item.currency)}.png`)" alt="" height="20"/>&nbsp;
 						<span class="money">{{numFloor(item.price/1e9, 100).toLocaleString()}} <sub class="small">{{getCurrencyName(item.currency)}}</sub></span>
+						<!-- 加入购物车 -->
+						<div class="add-cart" @click.stop="addBulkBuying(item)">
+							<img v-if="getBulkBuyingIndex(item.tx) == -1" src="@/assets/icon/add2shopcar.png" />
+							<img v-else src="@/assets/icon/inshopcar.png"  />
+						</div>
 					</div>
 				</GemSellItem>
 			</a>
@@ -94,23 +105,52 @@
 		<div style="margin-top: 30px" >
 			<Page ref="page" :defaultPage="this.marketGemPage" :totalPage="Math.ceil(marketGems.total / onePageCount)" :onChange="onPageChange" v-show="Math.ceil(marketGems.total / onePageCount) > 1" />
 		</div>
+		<!-- 批量购买购物车 -->
+		<BulkBuying
+			v-model="isShowBulkBuying"
+			:count="bulkBuyings.length"
+			:totalPrice="bulkBuyingTotalPrice"
+			@clear="clearBulkBuying"
+			@pay="bulkBuyingPlay"
+		>
+			<BulkBuyingItem
+				v-for="item in bulkBuyings"
+				:key="item.tx + item.orderId"
+				:image="require(`@/assets/market/${item.erc1155_ == 4 ? 4 : item.ids[0]}.png`)"
+				:count="item.amounts[0]"
+				:unitPrice="numFloor(item.price / item.amounts[0] / 1e9, 1e6).toString()"
+				:totalPrice="numFloor(item.price / 1e9, 100).toString()"
+				@remove="removeBulkBuying(item.tx)"
+			/>
+		</BulkBuying>
 	</div>
 </template>
 
 <script>
-import {  Page, GemSellItem } from "@/components";
-import { CommonMethod } from "@/mixin";
-import { Http } from '@/utils';
 import { mapState } from "vuex";
+import {  Page, GemSellItem } from "@/components";
+import BulkBuying from "@/components/BulkBuying";
+import BulkBuyingItem from "@/components/BulkBuyingItem";
+import { CommonMethod } from "@/mixin";
+import { Http, Wallet } from '@/utils';
 
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: {  Page, GemSellItem},
+	components: {
+		Page,
+		GemSellItem,
+		BulkBuying,
+		BulkBuyingItem, 
+	},
 	data(){
 		return({
 			onePageCount: 12,
 			sortArr: [this.$t("Market_47"),this.$t("Market_04"), this.$t("Market_05")],
+			// 购物车显示状态
+			isShowBulkBuying: false,
+			// 批量购买列表
+			bulkBuyings: [],
 		});
 	},
 	computed: {
@@ -121,14 +161,25 @@ export default {
 			marketLoading: (state) => state.marketState.data.marketLoading,
 			historyNotice: (state) => state.marketState.data.historyNotice,
 			marketTypePos: (state) => state.marketState.data.marketTypePos,
+			coinArr: (state) => state.bnbState.data.coinArr,
 		}),
 		showCoin(){
 			return "BUSD"
-		}
+		},
+		// 批量购买总价
+		bulkBuyingTotalPrice() {
+			if (this.bulkBuyings.length) {
+				const value = this.bulkBuyings.reduce((value, item) => {
+					return value + item.price;
+				}, 0);
 
+				return this.numFloor(value / 1e9, 100).toString();
+			}
+
+			return '0';
+		}
 	},
 	created(){
-
 		this.$nextTick(()=>{
 			this.getAuctionAll(this.marketGemPage, true);
 			if(timer) clearInterval(timer);
@@ -137,11 +188,39 @@ export default {
 			}, 10000);
 		})
 	},
-	
 	beforeDestroy(){
 		if(timer) clearInterval(timer);
 	},
 	methods: {
+		// 切换购物车显示状态
+		toggleShowBulkBuying() {
+			this.isShowBulkBuying = !this.isShowBulkBuying;
+		},
+		// 加入购物车
+		addBulkBuying(item) {
+			if (this.bulkBuyings.length >= 10) {
+				this.$store.commit("globalState/addNotify", {msg:"Market_101", type:"error", isLangName: true});
+				return;
+			}
+
+			const index = this.getBulkBuyingIndex(item.tx);
+
+			if (index == -1) {
+				this.bulkBuyings.push(item);
+			} else {
+				this.bulkBuyings.splice(index, 1);
+			}
+
+
+			this.$store.commit("marketState/setBulkBuying", this.bulkBuyings);
+		},
+		// 移除批量购买
+		removeBulkBuying(tx) {
+			const index = this.getBulkBuyingIndex(tx);
+			this.bulkBuyings.splice(index, 1);
+
+			this.$store.commit("marketState/setBulkBuying", this.bulkBuyings);
+		},
 		//获取市场上的宠物
 		async getAuctionAll(page, needLoading = false){
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
@@ -152,7 +231,39 @@ export default {
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			this.$store.commit("marketState/setData", {marketGems:data});
 		},
+		// 判断是否存在批量购买
+		getBulkBuyingIndex(tx) {
+			return this.bulkBuyings.findIndex((item) => item.tx === tx);
+		},
+		// 清除批量购买
+		clearBulkBuying() {
+			this.bulkBuyings = [];
+			this.$store.commit("marketState/setBulkBuying", []);
+		},
+		// 批量购买支付
+		async bulkBuyingPlay(skipSoldOrder) {
+			const auctors = [];
+			const orderIds = [];
+			let amounts = [];
 
+			this.bulkBuyings.forEach((item) => {
+				auctors.push(item.auctor);
+				orderIds.push(item.orderId);
+				amounts.push(Wallet.ETH.getGemMarketOrder(item.orderId));
+			});
+
+			const data = await Promise.all(amounts);
+			amounts = data.map((item) => item.price);
+
+			console.log(amounts);
+			const hash = await Wallet.ETH.bidBatch(auctors, orderIds, amounts, skipSoldOrder);
+
+			if (hash) {
+				this.bulkBuyings = [];
+				this.isShowBulkBuying = false;
+				this.$store.commit("marketState/setBulkBuying", []);
+			}
+		},
 		onPageChange(page){
 			if(page == this.marketGemPage) return;
 			this.marketGems.list = [];
@@ -188,11 +299,14 @@ export default {
 				this.$refs.page && this.$refs.page.initPage();
 			});
 		}
+	},
+	mounted() {
+		this.bulkBuyings = this.$store.state.marketState.bulkBuyings;
 	}
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 	.search-box{
 	}
 	.search-preview{
@@ -227,6 +341,21 @@ export default {
 		right: 0px;
 		top: -69px !important;
 	}
+
+	/* 加入购物车 */
+	.add-cart {
+		position: absolute;
+		top: 50%;
+		margin-top: -20px;
+		right: 10px;
+		width: 40px;
+		height: 40px;
+
+		img {
+			width: 100%;
+		}
+	}
+
 	@media (max-width: 768px) {
 
 		#market-pet-fitter{

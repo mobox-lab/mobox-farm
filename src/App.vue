@@ -387,15 +387,15 @@
 			<h2>{{$t("Notice_03")}}</h2>
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
-					<div >
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_72")}}</h3>
 						<span v-html="$t('Notice_73')" ></span>
 					</div>
-					<div >
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_70")}}</h3>
 						<span v-html="$t('Notice_71')" ></span>
 					</div>
-					<div  class="mgt-20">
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_68")}}</h3>
 						<span v-html="$t('Notice_69')" ></span>
 					</div>

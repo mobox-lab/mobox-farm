@@ -68,7 +68,7 @@ const CommonMethod = {
 		},
 		showSwapBox(){
 			// this.$root.$children[0].$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap');
-			window.open("https://pancakeswap.finance/swap?inputCurrency=0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c&outputCurrency=0x3203c9e46ca618c8c1ce5dc67e7e9d75f5da2377")
+			window.open("https://pancakeswap.finance/swap?outputCurrency=0x3203c9e46ca618c8c1ce5dc67e7e9d75f5da2377")
 		},
 		getCurrencyName(currency){
 			return ConstantConfig.CurrencyTypeName[currency]

@@ -1,67 +1,91 @@
 <template>
 	<div  class="tab-body tal">
-		<div class="tab-content">
+		<div class="title-layout">
 			<h2 v-if="setting.pancakeVType==1">{{$t("Air-drop_144")}}</h2>
 			<h2 v-else>{{$t("Air-drop_146")}}</h2>
 			<p class="small opa-6">{{$t("Air-drop_34")}}</p>
 		</div>
-		<div class="tab-split"></div>
 		<!-- From -->
-		<div class="tab-content">
-			<div class="tab-panel">
-				<div class="aveage-box">
-					<p class="tal small vertical-children">
-						<span>{{$t("Air-drop_35")}}</span>&nbsp;
-						<span v-if="from.isEstimated && Number(from.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
-						<Loading  v-if="from.loading" />
-					</p>
-					<p class="tar small">{{$t("Mine_05")}}: {{from.coinName==""?"-":coinArr[from.coinName].balance}}</p>
-				</div>
-				<div class="aveage-box vertical-children mgt-10" >
-					<div  style="flex:1 1 auto">
-						<input style="width:100%" type="text" placeholder="0.0" v-model="from.inputValue" v-number @keydown="oneToValue = '-';" @keyup="inputValueChange('from')">
+		<div class="panel-box">
+			<div class="card-layout">
+				<!-- <div class="panel-item">
+					<div class="aveage-box">
+						<p class="tal small vertical-children">
+							<span>{{$t("Air-drop_35")}}</span>&nbsp;
+							<span v-if="from.isEstimated && Number(from.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
+							<Loading  v-if="from.loading" />
+						</p>
+						<p class="balance">{{$t("Mine_05")}}: {{from.coinName==""?"-":coinArr[from.coinName].balance}}</p>
 					</div>
-					<p class="text-btn tac"  v-if="from.coinName != ''" @click="oneToValue = '-';maxInputFrom();inputValueChange('from')">Max</p>
-					<p class="tar cur-point text-btn vertical-children" @click="openSelectCoin('from')">
-					<!-- <p class="tar cur-point text-btn vertical-children" > -->
-						<span  v-if="from.coinName != '' ">
-							<img :src="require(`../../assets/coin/${from.coinName}.png`)" alt="" height="20" />&nbsp;
-							<span>{{from.coinName}}</span>
-						</span>
-						<span v-else>{{$t("Air-drop_38")}}</span>
-						<svg viewBox="0 0 24 24"  width="20px" ><path fill="#838689" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
-					</p>
-				</div>
-			</div>
-			<div class="mgt-10 tac">
-				<button class="icon-btn" @click="exchangeFromAndTo">
-					<svg viewBox="0 0 24 24"  width="24px" ><path fill="#838689" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
-				</button>
-			</div>
-			<!-- To -->
-			<div class="tab-panel mgt-10">
-				<div class="aveage-box">
-					<p class="tal small vertical-children">
-						<span>{{$t("Air-drop_36")}}</span>&nbsp;
-						<span v-if="to.isEstimated && Number(to.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
-						<Loading  v-if="to.loading" />
-					</p>
-					<p class="tar small">{{$t("Mine_05")}}: {{to.coinName==""?"-":coinArr[to.coinName].balance}}</p>
-				</div>
-				<div class="aveage-box vertical-children mgt-10">
-					<div style="flex:1 1 auto;">
-						<input style="width:100%" type="text" placeholder="0.0" v-model="to.inputValue" v-number @keydown="oneToValue = '-';" @keyup="inputValueChange('to')">
+					<div class="aveage-box vertical-children mgt-10" >
+						<div  style="flex:1 1 auto">
+							<input style="width:100%" type="text" placeholder="0.0" v-model="from.inputValue" v-number @keydown="oneToValue = '-';" @keyup="inputValueChange('from')">
+						</div>
+						<p class="text-btn tac"  v-if="from.coinName != ''" @click="oneToValue = '-';maxInputFrom();inputValueChange('from')">Max</p>
+						<p class="tar cur-point text-btn vertical-children" @click="openSelectCoin('from')">
+							<span  v-if="from.coinName != '' ">
+								<img :src="require(`../../assets/coin/${from.coinName}.png`)" alt="" height="20" />&nbsp;
+								<span>{{from.coinName}}</span>
+							</span>
+							<span v-else>{{$t("Air-drop_38")}}</span>
+							<svg viewBox="0 0 24 24"  width="20px" ><path fill="#838689" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
+						</p>
 					</div>
-					<p class="tar text-btn vertical-children" @click="openSelectCoin('to')">
-					<!-- <p class="tar text-btn vertical-children" > -->
-						<span  v-if="to.coinName != '' ">
-							<img :src="require(`../../assets/coin/${to.coinName}.png`)" alt="" height="20" />&nbsp;
-							<span>{{to.coinName}}</span>
-						</span>
-						<span v-else>{{$t("Air-drop_38")}}</span>
-						<svg viewBox="0 0 24 24"  height="20px" ><path fill="#838689" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
-					</p>
+				</div> -->
+				<div class="panel-item">
+					<div class="head">
+						<p class="balance">{{$t("Mine_05")}}: {{from.coinName==""?"-":coinArr[from.coinName].balance}}</p>
+						<p class="max-button"  v-if="from.coinName != ''" @click="oneToValue = '-';maxInputFrom();inputValueChange('from')">Max</p>
+					</div>
+					<div class="footer">
+						<div class="icon" @click="openSelectCoin('from')">
+							<img v-if="!!from.coinName" :src="require(`../../assets/coin/${from.coinName}.png`)" />
+						</div>
+						<input type="text" placeholder="0.0" v-model="from.inputValue" v-number @keydown="oneToValue = '-';" @keyup="inputValueChange('from')">
+						<div class="coin-name">{{from.coinName}}</div>
+					</div>
 				</div>
+				<div class="mgt-10 tac">
+					<button class="icon-btn" @click="exchangeFromAndTo">
+						<svg viewBox="0 0 24 24"  width="24px" ><path fill="#838689" d="M11 5V16.17L6.11997 11.29C5.72997 10.9 5.08997 10.9 4.69997 11.29C4.30997 11.68 4.30997 12.31 4.69997 12.7L11.29 19.29C11.68 19.68 12.31 19.68 12.7 19.29L19.29 12.7C19.68 12.31 19.68 11.68 19.29 11.29C18.9 10.9 18.27 10.9 17.88 11.29L13 16.17V5C13 4.45 12.55 4 12 4C11.45 4 11 4.45 11 5Z"></path></svg>
+					</button>
+				</div>
+				<!-- To -->
+				<div class="panel-item mgt-10">
+					<div class="head">
+						<p class="balance">{{$t("Mine_05")}}: {{to.coinName==""?"-":coinArr[to.coinName].balance}}</p>
+					</div>
+					<div class="footer">
+						<div class="icon" @click="openSelectCoin('to')">
+							<img v-if="!!to.coinName" :src="require(`../../assets/coin/${to.coinName}.png`)" />
+						</div>
+						<input type="text" placeholder="0.0" v-model="to.inputValue" v-number @keydown="oneToValue = '-';" @keyup="inputValueChange('to')">
+						<div class="coin-name">{{to.coinName}}</div>
+					</div>
+				</div>
+				<!-- <div class="panel-item mgt-10">
+					<div class="aveage-box">
+						<p class="tal small vertical-children">
+							<span>{{$t("Air-drop_36")}}</span>&nbsp;
+							<span v-if="to.isEstimated && Number(to.inputValue) > 0">{{$t("Air-drop_37")}}</span>&nbsp;
+							<Loading  v-if="to.loading" />
+						</p>
+						<p class="tar small">{{$t("Mine_05")}}: {{to.coinName==""?"-":coinArr[to.coinName].balance}}</p>
+					</div>
+					<div class="aveage-box vertical-children mgt-10">
+						<div style="flex:1 1 auto;">
+							<input style="width:100%" type="text" placeholder="0.0" v-model="to.inputValue" v-number @keydown="oneToValue = '-';" @keyup="inputValueChange('to')">
+						</div>
+						<p class="tar text-btn vertical-children" @click="openSelectCoin('to')">
+							<span  v-if="to.coinName != '' ">
+								<img :src="require(`../../assets/coin/${to.coinName}.png`)" alt="" height="20" />&nbsp;
+								<span>{{to.coinName}}</span>
+							</span>
+							<span v-else>{{$t("Air-drop_38")}}</span>
+							<svg viewBox="0 0 24 24"  height="20px" ><path fill="#838689" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
+						</p>
+					</div>
+				</div> -->
 			</div>
 			<!-- Des -->
 			<div class="aveage-box mgt-20 " v-if="canCalcPerPrice">
@@ -102,7 +126,7 @@
 					</button>
 				</div>
 				<div>
-					<button data-step="2" class="btn-primary mgt-10 por" style="width:80%" :class="canSwap?'':'disable-btn'" @click="goSwap">{{$t("Air-drop_29")}}</button>
+					<button data-step="2" class="btn-primary mgt-10 por" style="width:30%;height:40px" :class="canSwap?'':'disable-btn'" @click="goSwap">{{$t("Air-drop_29")}}</button>
 				</div>
 			</div>
 		</div>
@@ -392,7 +416,96 @@ export default {
 			}
 		}
 	}
-	
-	
 }
 </script>
+
+<style lang="less" scoped>
+	.tab-body {
+		padding: 30px;
+
+		.card-layout {
+			background: #13181f;
+			border-radius: 16px;
+			padding: 20px;
+			margin: 20px 0;
+			box-shadow: 2px 2px 2px 0px rgba(26,32,38,0.40) inset, 0px 0px 4px 0px rgba(46,68,87,0.00) inset; 
+		}
+
+		.panel-item {
+			background: rgba(255, 255, 255, 0.1);
+			padding: 12px 20px;
+			border-radius: 8px;
+
+			input {
+				background: none;
+				border: none;
+				outline: none;
+				color: #fff;
+			}
+
+			// 头部
+			.head {
+				display: flex;
+				margin-bottom: 10px;
+
+				.balance {
+					flex: 1;
+				}
+
+				.max-button {
+					cursor: pointer;
+					font-size: 14px;
+					font-weight: bold;
+					color: #13CCE8;
+				}
+			}
+
+			.footer {
+				display: flex;
+
+				input {
+					flex: 1;
+				}
+
+				.icon {
+					width: 28px;
+					height: 28px;
+					cursor: pointer;
+					margin-right: 10px;
+				}
+
+				img {
+					width: 100%;
+					height: 100%;
+					display: block;
+				}
+
+				input {
+					min-width: 0;
+					font-weight: bold;
+					font-size: 18px;
+				}
+
+				.coin-name {
+					font-size: 16px;
+				}
+			}
+		}
+
+		@media (max-width: 768px) {
+			.card-layout {
+				padding: 15px;
+			}
+
+			.panel-item {
+				padding: 12px 15px;
+			}
+
+			.footer {
+				input {
+					font-size: 14px !important;
+				}
+			}
+		}
+	}
+</style>

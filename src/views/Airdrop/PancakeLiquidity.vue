@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<div v-if="!showAddLiquidityPanel && !showRemoveLiquidityPanel" class="tab-body tal" style="padding-bottom:10px">
-			<div class="tab-content"  v-if="oprData.isLP">
-				<div   v-if="oprData.isLP" >
+			<div v-if="oprData.isLP">
+				<div v-if="oprData.isLP" >
 					<h2>
 						<span v-if="setting.pancakeVType==1">{{$t("Air-drop_145")}}</span>
 						<span v-else>{{$t("Air-drop_147")}}</span>
@@ -14,10 +14,9 @@
 					<button class="btn-primary mgt-10" v-if="oprData.balance > 0" @click="showRemoveLiquidityPanel =  true"  style="background: #384A7C">{{$t("Air-drop_95")}}</button>
 				</div>
 			</div>
-			<div class="tab-split"></div>
-			<div class="tab-content" v-if="oprData.isLP">
-				<div class="mgt-10 cur-point lp-amount-item close"  style="border-radius:10px;padding:10px 10px;background:#13181F;" @click="toggleClass($event)">
-					<div class="aveage-box vertical-children por" >
+			<div class="content" v-if="oprData.isLP">
+				<div class="mgt-10 cur-point lp-amount-item close" @click="toggleClass($event)">
+					<div class="aveage-box vertical-children por aveage-head" >
 						<div class="dib">
 							<div class="dib por"  :class="oprData.isLP?'double-img':'' " v-if="oprData.coinName != ''" style="zoom: 0.75">
 								<img v-for="(name, key) in oprData.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="40" alt="" />
@@ -432,17 +431,58 @@ export default {
 }
 </script>
 
-<style scoped>
-.rotate-arrow{
-	transform: rotate(-180deg);
-	transition: all 0.2s linear;
-}
+<style lang="less" scoped>
+	.rotate-arrow{
+		transform: rotate(-180deg);
+		transition: all 0.2s linear;
+	}
 
-.lp-amount-item.close .rotate-arrow{
-	transform: rotate(0deg);
-}
-.lp-amount-item.close{
-	height:50px;
-	overflow: hidden;
-}
+	.lp-amount-item.close .rotate-arrow{
+		transform: rotate(0deg);
+	}
+
+	.lp-amount-item.close{
+		height: 70px;
+		overflow: hidden;
+	}
+
+	.aveage-head {
+		background: #070d14;
+		border-radius: 30px;
+		padding: 5px;
+	}
+
+	.tab-body {
+		padding: 30px;
+	}
+
+	.content {
+		padding: 15px;
+		background: #13181f;
+		border-radius: 16px;
+		margin-top: 20px;
+		box-shadow: 2px 2px 2px 0px rgba(26,32,38,0.40) inset, 0px 0px 4px 0px rgba(46,68,87,0.00) inset; 
+	}
+
+	.lp-amount-item {
+		border-radius: 8px;
+		padding: 15px;
+		background: rgba(255, 255, 255, 0.1);
+	}
+
+
+	@media (max-width: 768px) {
+		.tab-body {
+			padding: 15px;
+		}
+
+		.lp-amount-item {
+			padding: 0;
+			background: none;
+
+			&.close {
+				height: 40px !important;
+			}
+		}
+	}
 </style>

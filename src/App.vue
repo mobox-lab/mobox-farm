@@ -20,11 +20,10 @@
 				</div>
 				<div class="vertical-children  dib mgl-10 ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<a href="https://pancakeswap.finance/swap?outputCurrency=0x3203c9e46ca618c8c1ce5dc67e7e9d75f5da2377" target="_blank" >
-					<!-- <span @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')"> -->
+					<span @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
 						$<span v-if="ourPrice['MBOX'] != '-' ">{{ numFloor(ourPrice["MBOX"], 1e2)}}</span>
 						<Loading v-else />
-					</a>
+					</span>
 				</div>
 				<div class="dib " style="margin-left:30px">
 					<img src="@/assets/icon/wallet_icon.png" alt="" height="45" @click="oprDialog('mobile-wallet-dialog', 'block')">
@@ -135,11 +134,10 @@
 				</div>
 				<div class="vertical-children mgt-10 point-block ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<a class="mgl-10 bold show-point-block" href="https://pancakeswap.finance/swap?outputCurrency=0x3203c9e46ca618c8c1ce5dc67e7e9d75f5da2377" target="_blank" >
-					<!-- <span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')"> -->
+					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
 						$<span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
 						<Loading v-else />
-					</a>
+					</span>
 				</div>
 			</div>
 		</div>

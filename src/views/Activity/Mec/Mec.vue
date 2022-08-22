@@ -328,7 +328,7 @@ export default {
 			} else {
 				maxAmount = 150;
 			}
-			return maxAmount;
+			return maxAmount * 4;
 		},
 		getMaxPowerApplyTimes(){
 			let maxAmount = 0
@@ -348,7 +348,7 @@ export default {
 			} else {
 				maxAmount = 120;
 			}
-			return maxAmount;
+			return maxAmount * 4;
 		},
 		hasStake(){
 			let hasStake = false;

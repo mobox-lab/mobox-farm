@@ -164,6 +164,7 @@ export default {
 		position: absolute;
 		right: 15px;
 		top: 35px;
+		z-index: 1;
 	}
 
 	#pancake-dialog {

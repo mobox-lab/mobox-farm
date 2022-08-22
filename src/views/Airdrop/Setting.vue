@@ -16,7 +16,7 @@
 					</div>
 					<p  class="tal" style="padding:0px 10px">%</p>
 				</div>
-				<div class=" mgt-10">
+				<div class="button-layout mgt-10">
 					<button :class="Number(setting.slippage) == 0.1?'btn-primary':'btn-default' " @click="setting.slippage = 0.1">0.1%</button>&nbsp;
 					<button :class="Number(setting.slippage) == 0.5?'btn-primary':'btn-default' " @click="setting.slippage = 0.5">0.5%</button>&nbsp;
 					<button :class="Number(setting.slippage) == 1?'btn-primary':'btn-default' " @click="setting.slippage = 1">1%</button>
@@ -69,3 +69,9 @@ export default {
 	}
 }
 </script>
+
+<style lang="less" scoped>
+	.button-layout {
+		display: flex;
+	}
+</style>

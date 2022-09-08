@@ -228,7 +228,6 @@ export default {
 		},
 		//判断是否可以Swap
 		canSwap(){
-			// TODO:test
 			return this.hasSelectTargetCoin 
 						&& Number(this.from.inputValue) > 0 
 						&& Number(this.to.inputValue) > 0 
@@ -326,15 +325,19 @@ export default {
 					// mec兑换
 					if (this.isSwapMec) {
 						this.path = this.swapPath;
-						const coin = PancakeConfig.SelectCoin[this[type].coinName];
 
-						console.log(coin);
+						if (type === "from") {
+							const coin = PancakeConfig.SelectCoin[this.from.coinName];
+							amountOut = await Wallet.ETH.getMecSwapAmountsOut(this[type].inputValue * coin.decimals, this.swapPath);
+						} else {
+							const coin = PancakeConfig.SelectCoin[this.from.coinName];
+							const res = await Wallet.ETH.getMecSwapAmountsIn(this[type].inputValue, this.swapPath);
+							console.log(res);
+							amountOut = res / coin.decimals;
+							amountOut = res / 1e18;
+						}
 
-						// if (type === "from") {
-						// 	Wallet.ETH.getMecSwapAmountsOut(this[type].inputValue * (), this.swapPath);
-						// 	} else {
-						// 	Wallet.ETH.getMecSwapAmountsIn(this[type].inputValue, this.swapPath);
-						// }
+						console.log(amountOut);
 						return;
 					} else {
 						let sendData = {
@@ -359,7 +362,6 @@ export default {
 						}
 					}
 
-					// TODO:test
 					this.getOneToValue();
 					this[otherType].loading = false;
 					this[otherType].isEstimated = true;
@@ -397,7 +399,6 @@ export default {
 			this.inputValueChange(otherType, 0);
 		},
 		async setCoinAllowance(){
-			// TODO:test
 			let coinKey = this.from.coinName;
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
 			if(coinKey != "" && coinKey != "BNB") {

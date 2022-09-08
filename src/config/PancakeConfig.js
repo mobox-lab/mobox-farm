@@ -50,11 +50,11 @@ export default class PancakeConfig {
 			decimals: 1e18,
 			addr: "0x85c128eE1feEb39A59490c720A9C563554B51D33"
 		},
-		// "MEC": {
-		// 	omit: 1e4,
-		// 	decimals: 1,
-		// 	addr: "0x98387108842a7CfC7bA23E080030351f6ea68ac0"
-		// },
+		"MEC": {
+			omit: 1e4,
+			decimals: 1,
+			addr: "0x98387108842a7CfC7bA23E080030351f6ea68ac0"
+		},
 	}
 	
 	static StakeLP = {
@@ -85,15 +85,15 @@ export default class PancakeConfig {
 			pancakeVType: 1,
 			isFinish: true,
 		},
-		// "MBOX-MEC":{
-		// 	pIndex: 12,
-		// 	addr: "0xd5C390665eC94A5C76D79356582944164816580a",
-		// 	allocPoint: 10,
-		// 	decimals: 0,
-		// 	omit: 1e6,
-		// 	pancakeVType: 1,
-		// 	isFinish: true,
-		// },
+		"MBOX-MEC":{
+			pIndex: 12,
+			addr: "0xd5C390665eC94A5C76D79356582944164816580a",
+			allocPoint: 10,
+			decimals: 0,
+			omit: 1e6,
+			pancakeVType: 1,
+			isFinish: true,
+		},
 		"BTCB-BNB":{
 			pIndex: 1,
 			addr: "0x7561EEe90e24F3b348E1087A005F78B4c8453524",

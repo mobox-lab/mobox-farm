@@ -46,8 +46,7 @@
 					</div>
 				</div>
 				<!-- mbox - mec -->
-				<!-- TODO:TEST -->
-				<!-- <div class="mgt-10 cur-point lp-amount-item close" @click="toggleClass($event)">
+				<div class="mgt-10 cur-point lp-amount-item close" @click="toggleClass($event)">
 					<div class="aveage-box vertical-children por aveage-head" >
 						<div class="dib">
 							<div class="dib por double-img" style="zoom: 0.75">
@@ -74,7 +73,7 @@
 							</p>
 						</div>
 					</div>
-				</div> -->
+				</div>
 				<p class="small mgt-20 opa-6">
 					{{$t("Air-drop_110")}}
 				</p>
@@ -472,22 +471,21 @@ export default {
 		},
 		// 获取mec兑换数据
 		async getMecSwapInfo() {
-			// TODO:TEST
-			// const config = PancakeConfig.SelectCoin;
-			// const [reserves, pair] = await Promise.all([
-			// 	Wallet.ETH.mecSwapContrac.methods.getReserves(
-			// 		config.MBOX.addr,
-			// 		config.MEC.addr,
-			// 		1
-			// 	).call(),
-			// 	Wallet.ETH.mecSwapPairContrac.methods.getPairInfo().call(),
-			// ]);
+			const config = PancakeConfig.SelectCoin;
+			const [reserves, pair] = await Promise.all([
+				Wallet.ETH.mecSwapContrac.methods.getReserves(
+					config.MBOX.addr,
+					config.MEC.addr,
+					1
+				).call(),
+				Wallet.ETH.mecSwapPairContrac.methods.getPairInfo().call(),
+			]);
 
-			// this.mecReserveData = {
-			// 	...reserves,
-			// 	reserveA: reserves.reserveA / 1e18,
-			// };
-			// this.mecTotalSupply = pair.totalSupply;
+			this.mecReserveData = {
+				...reserves,
+				reserveA: reserves.reserveA / 1e18,
+			};
+			this.mecTotalSupply = pair.totalSupply;
 		},
 		// 添加流动性
 		goSupply(){
@@ -555,12 +553,11 @@ export default {
 			this[otherType].inputValue = Common.numFloor((Number(this[otherType].reserve) / Number(this[type].reserve) ) * Number(this[type].inputValue), 1e8);
 		},
 		openSelectCoin(){
-			// TODO:TEST
-			// this.$parent.$parent.$refs.selectCoin.setOprData(
-			// 	[this.to.coinName],
-			// 	this.onSelectCoin,
-			// 	['BNB', 'MEC'],
-			// ).show();
+			this.$parent.$parent.$refs.selectCoin.setOprData(
+				[this.to.coinName],
+				this.onSelectCoin,
+				['BNB', 'MEC'],
+			).show();
 		},
 		onSelectCoin(coinName) {
 			this.to.coinName = coinName;

@@ -232,9 +232,8 @@ export default {
 		},
 		// 显示选择币种
 		showSelect() {
-			// TODO:TESET
-			// const ref = this.$parent.$parent.$parent.$refs.selectPool;
-			// ref.show(this.onSelectCoin);
+			const ref = this.$parent.$parent.$parent.$refs.selectPool;
+			ref.show(this.onSelectCoin);
 		},
 		// 选择币种
 		onSelectCoin(data) {

@@ -169,6 +169,7 @@ export default class ETH {
 		// MEC兑换合约
 		this.mecSwapContrac = new this.web3.eth.Contract([
 			MecSwap.approve,
+			MecSwap.getAmountsIn,
 			MecSwap.getAmountsOut,
 			MecSwap.allowance,
 			MecSwap.addLiquidity,
@@ -1963,25 +1964,27 @@ export default class ETH {
 				}
 			)
 		});
-		
 	}
 
 	// 兑换mec
-	static swapMec(from, to, path, setting) {
+	static async swapMec(from, to, path, setting) {
 		console.log(from, to, path, setting);
 	}
 
 	// mec兑换 - 获取in值
-	static getMecSwapAmountsIn(amountOut, path) {
+	static async getMecSwapAmountsIn(amountOut, path) {
 		console.log(amountOut, path);
+		amountOut = this.numToHex(BigNumber(amountOut));
+		const data = await this.mecSwapContrac.methods.getAmountsIn(1, amountOut, path).call();
+		return data[0];
 	}
 	
 	// mec兑换 - 获取out值
 	static async getMecSwapAmountsOut(amountIn, path) {
-		console.log(1, amountIn, path);
 		amountIn = this.numToHex(BigNumber(amountIn));
-		const res = await this.mecSwapContrac.methods.getAmountsOut(1, amountIn, path).call();
-		console.log(res);
+		const data = await this.mecSwapContrac.methods.getAmountsOut(1, amountIn, path).call();
+		return data[1];
+
 	}
 
 	//获取兑换价格

@@ -783,6 +783,10 @@ export default {
 				});
 				//删除选中
 				this.onStepRemoveFood();
+
+				setTimeout(() => {
+					EventBus.$emit('refreshCrystalNum');
+				}, 1000);
 			}
 		},
 		//授权1155给721

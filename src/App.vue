@@ -900,6 +900,7 @@ export default {
 				this.oprDialog("momo-des-dialog", "block")
 			}, 1000)
 		}
+
 		//自动弹出提示
 		if(!this.hasReadNotice){
 			let t = setTimeout(()=>{

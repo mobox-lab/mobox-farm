@@ -47,6 +47,7 @@ const InitEth = {
 		});
 		EventBus.$on(EventConfig.LevelUpConfirm,this.eth_levelUpConfirm.bind(this));
 		EventBus.$on(EventConfig.OpenBoxHistory,this.eth_openBoxHistory.bind(this));
+		EventBus.$on('refreshCrystalNum', this.getCrystalNum.bind(this));
 		
 		//取消下架失败
 		EventBus.$on(EventConfig.CancelAuctionError,  async ({hash}) => {
@@ -86,6 +87,10 @@ const InitEth = {
 
 		//兑换成功
 		EventBus.$on(EventConfig.SwapSuccess, this.setBalance);
+
+		setInterval(() => {
+			this.getCrystalNum();
+		}, 5000);
 
 		Wallet.ETH.init();
 	},

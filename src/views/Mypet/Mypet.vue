@@ -232,6 +232,11 @@
 								<!-- <img v-if="(item.level+1)%5 == 0" src="@/assets/icon/preview-icon.png" alt="" @click="oprDialog('upgrade-des-dialog','block')"/> -->
 							</span>
 							<span v-if="item.level == 40">{{$t("BOX_15")}}</span>
+							<!-- mec -->
+							<span class="mec" v-if="item.upgradeCfg.mecNum">
+								<img src="@/assets/anniversary/mec.png" alt="">
+								<span>{{item.upgradeCfg.mecNum}}</span>
+							</span>
 						</p>
 					</div>
 					<div class="split-hr mgt-10"></div>
@@ -622,7 +627,7 @@ export default {
 };
 </script>
 
-<style  scoped>
+<style lang="less" scoped>
 .momo-content{
 	margin: 0px -20px !important;
 }
@@ -721,6 +726,40 @@ export default {
 	margin: 0px auto;
 	margin-top: 20px;
 }
+
+.tal > span {
+	min-width: 30px;
+	height: 30px;
+	display: inline-flex;
+	align-content: center;
+	justify-content: center;
+	vertical-align: middle;
+}
+
+.mec {
+	background: #2a3b67;
+	border-radius: 100%;
+	position: relative;
+
+	span {
+		display: block;
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -8px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 12px;
+		text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+	}
+
+	img {
+		display: block;
+		width: auto;
+		height: 100%;
+	}
+}
+
 @media (max-width: 768px) {
 	#mypet{
 		margin-top: 0px !important;

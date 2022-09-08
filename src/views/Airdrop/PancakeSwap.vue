@@ -328,17 +328,13 @@ export default {
 
 						if (type === "from") {
 							const coin = PancakeConfig.SelectCoin[this.from.coinName];
-							amountOut = await Wallet.ETH.getMecSwapAmountsOut(this[type].inputValue * coin.decimals, this.swapPath);
+							const res = await Wallet.ETH.getMecSwapAmountsOut(this[type].inputValue * coin.decimals, this.swapPath);
+							amountOut = res / PancakeConfig.SelectCoin[this.to.coinName].decimals;
 						} else {
 							const coin = PancakeConfig.SelectCoin[this.from.coinName];
 							const res = await Wallet.ETH.getMecSwapAmountsIn(this[type].inputValue, this.swapPath);
-							console.log(res);
 							amountOut = res / coin.decimals;
-							amountOut = res / 1e18;
 						}
-
-						console.log(amountOut);
-						return;
 					} else {
 						let sendData = {
 							from: this[type].coinName,
@@ -362,7 +358,7 @@ export default {
 						}
 					}
 
-					this.getOneToValue();
+					// this.getOneToValue();
 					this[otherType].loading = false;
 					this[otherType].isEstimated = true;
 
@@ -401,8 +397,17 @@ export default {
 		async setCoinAllowance(){
 			let coinKey = this.from.coinName;
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
-			if(coinKey != "" && coinKey != "BNB") {
-				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, routerAddr, false);
+
+			if (coinKey != "" && coinKey != "BNB") {
+				let allowance;
+
+				if (coinKey === 'MEC') {
+					const res = await Wallet.ETH.isApprovedForAll(PancakeConfig.SelectCoin.MEC.addr, PancakeConfig.MecSwap);
+					allowance = res ? -1 : 0;
+				} else {
+					allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, routerAddr, false);
+				}
+
 				this.coinArr[coinKey].allowanceToSwap = Number(allowance);
 				this.coinArr["ts"] = new Date().valueOf();
 			}
@@ -471,11 +476,11 @@ export default {
 		},
 		async getOneToValue(){
 			if (this.isSwapMec) {
-				if (this.lastType === "from") {
-					Wallet.ETH.getMecSwapAmountsOut(10 * 1e18, this.swapPath);
-					} else {
-					Wallet.ETH.getMecSwapAmountsIn(10, this.swapPath);
-				}
+			// 	if (this.lastType === "from") {
+			// 		Wallet.ETH.getMecSwapAmountsOut(10 * 1e18, this.swapPath);
+			// 		} else {
+			// 		Wallet.ETH.getMecSwapAmountsIn(10, this.swapPath);
+			// 	}
 				return;
 			}
 

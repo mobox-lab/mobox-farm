@@ -1981,8 +1981,10 @@ export default class ETH {
 	
 	// mec兑换 - 获取out值
 	static async getMecSwapAmountsOut(amountIn, path) {
+		console.log(amountIn, path);
 		amountIn = this.numToHex(BigNumber(amountIn));
 		const data = await this.mecSwapContrac.methods.getAmountsOut(1, amountIn, path).call();
+		console.log(data);
 		return data[1];
 
 	}

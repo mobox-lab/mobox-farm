@@ -45,6 +45,36 @@
 						</div>
 					</div>
 				</div>
+				<!-- mbox - mec -->
+				<!-- TODO:TEST -->
+				<!-- <div class="mgt-10 cur-point lp-amount-item close" @click="toggleClass($event)">
+					<div class="aveage-box vertical-children por aveage-head" >
+						<div class="dib">
+							<div class="dib por double-img" style="zoom: 0.75">
+								<img src="@/assets/coin/MBOX.png" height="40" alt="" />
+								<img src="@/assets/coin/MEC.png" height="40" alt="" />
+							</div>
+							<span> MBOX-MEC</span>
+						</div>
+						<p class="dib tar">
+							<span class="mgl-10" v-if="mecLP != '-' ">{{mecLP}}</span>
+							<Loading v-else />
+							<svg viewBox="0 0 24 24" class="mgl-5 rotate-arrow"  height="20px" ><path fill="#838689" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
+						</p>
+					</div>
+					<div class="mgt-20">
+						<div class="aveage-box vertical-children por mgt-10"  v-for="(name, key) in ['MBOX', 'MEC']" :key="name+key">
+							<div class="dib">
+								<span> {{name}}</span>
+							</div>
+							<p class="dib tar" >
+								<span class="mgl-10" v-if="mecLPPrice[key] != '-' ">{{mecLPPrice[key]}}</span>
+								<Loading v-else />
+								<img class="mgl-5" :src="require(`../../assets/coin/${name}.png`)" height="20" alt="" />
+							</p>
+						</div>
+					</div>
+				</div> -->
 				<p class="small mgt-20 opa-6">
 					{{$t("Air-drop_110")}}
 				</p>
@@ -110,7 +140,7 @@
 							<input style="width:100%" type="text" placeholder="0.0" v-model="to.inputValue" v-number @keyup="inputValueChange('to')">
 						</div>
 						<p class="text-btn" v-if="from.coinName != ''" @click="maxInput('to');inputValueChange('to')">Max</p>
-						<p class="tar text-btn vertical-children" >
+						<p class="tar text-btn vertical-children" @click="openSelectCoin">
 							<span  v-if="to.coinName != '' ">
 								<img :src="require(`../../assets/coin/${to.coinName}.png`)" alt="" height="20" />&nbsp;
 								<span>{{to.coinName}}</span>
@@ -187,7 +217,7 @@ import { Loading, Dialog, StatuButton } from '@/components';
 import {Wallet, Common, EventBus, SwapHttp} from "@/utils";
 import { mapState } from 'vuex';
 import { CommonMethod } from '@/mixin';
-import { EventConfig, PancakeConfig } from '@/config';
+import { EventConfig, PancakeConfig, WalletConfig } from '@/config';
 import PancakeLiquidityRemove from "./PancakeLiquidityRemove";
 
 let timerInterval;
@@ -215,6 +245,11 @@ export default {
 			},
 			totalSupply: 0, //流动池总质押LP
 			lastType: "from",
+			// MEC LP值
+			mecLP: '-',
+			mecReserveData: null,
+			mecTotalSupply: null,
+			bnbInfoData: null,
 		});
 	},
 	computed: {
@@ -222,7 +257,6 @@ export default {
 			coinArr: (state) => state.bnbState.data.coinArr,
 			setting: (state) => state.bnbState.data.setting,
 		}),
-
 		//是否可以添加流动性
 		canSupply(){
 			return Number(this.from.inputValue) > 0 
@@ -244,7 +278,6 @@ export default {
 			let allowanceToSwap = Number(this.coinArr[coinName].allowanceToSwap);
 			return coinName != '' && coinName != 'BNB' && allowanceToSwap >= 0 && allowanceToSwap <  1e8;
 		},
-	
 		//能获取多少的LP
 		canGetLp(){
 			let amount0 = Number(this.from.inputValue);
@@ -259,17 +292,35 @@ export default {
 		getLPPrice(){
 			let retObj = ["-","-"];
 
-			let reserve0 = Number(this.from.reserve);
-			let reserve1 = Number(this.to.reserve);
-			let _totalSupply = Number(this.totalSupply);
-			let lp = this.oprData.balance;
+			let reserve0 = Number(this.bnbInfoData?.reserveA);
+			let reserve1 = Number(this.bnbInfoData?.reserveB);
+			let _totalSupply = Number(this.bnbInfoData?.totalSupply);
+
 			if(_totalSupply == 0 || reserve0 == 0 || reserve1 == 0) return retObj;
 
-			retObj[0] = Common.numFloor(lp * reserve0 / _totalSupply, PancakeConfig.SelectCoin[this.from.coinName].omit);
-			retObj[1] = Common.numFloor(lp * reserve1 / _totalSupply, PancakeConfig.SelectCoin[this.to.coinName].omit);
+			let lp = this.oprData.balance;
+
+			retObj[0] = Common.numFloor(lp * reserve0 / _totalSupply, PancakeConfig.SelectCoin.MBOX.omit);
+			retObj[1] = Common.numFloor(lp * reserve1 / _totalSupply, PancakeConfig.SelectCoin.BNB.omit);
 
 			return retObj;
+		},
+		mecLPPrice() {
+			const data = ["-", "-"];
+			const reserve0 = Number(this.mecReserveData?.reserveA);
+			const reserve1 = Number(this.mecReserveData?.reserveB);
+			const _totalSupply = Number(this.mecTotalSupply / 1e18);
 
+			if(_totalSupply == 0 || reserve0 == 0 || reserve1 == 0) {
+				return data;
+			} else {
+				return [
+					// MBOX
+					Common.numFloor(this.mecLP * reserve0 / _totalSupply),
+					// MEC
+					Common.numFloor(this.mecLP * reserve1 / _totalSupply),
+				];
+			}
 		},
 		toValuePerFrom(){
 			let {reserve, coinName} = this.to;
@@ -280,6 +331,9 @@ export default {
 			let {reserve, coinName} = this.from;
 			if(coinName =="" || reserve == 0) return 0;
 			return Common.numFloor(reserve / this.to.reserve, 1e8);
+		},
+		isMec() {
+			return this.to.coinName === 'MEC';
 		}
 	},
 	watch: {
@@ -295,8 +349,10 @@ export default {
 	},
 	created(){
 		clearInterval(timerInterval);
+		this.getMecSwapInfo();
 		timerInterval = setInterval(() => {
 			this.getLPAmount();
+			this.getMecSwapInfo();
 		}, 10000);
 		EventBus.$on(EventConfig.AddLiquiditySuccess, this.updateBalance);
 	},
@@ -305,6 +361,15 @@ export default {
 		EventBus.$off(EventConfig.AddLiquiditySuccess, this.updateBalance);
 	},
 	methods:{
+		//查询宝石合约是被授权
+		async viewMECApproved() {
+			return await Wallet.ETH.isApprovedForAll(PancakeConfig.SelectCoin.MEC.addr, PancakeConfig.MecSwap);
+		},
+		async approveMEC(){
+			return await Wallet.ETH.approvedForAll(PancakeConfig.SelectCoin.MEC.addr, PancakeConfig.MecSwap, () => {
+				this.viewMECApproved();
+			});
+		},
 		maxInput(type){
 			let obj = this[type];
 			let value = this.coinArr[obj.coinName].balance;
@@ -323,6 +388,7 @@ export default {
 			let {addr , coinName} = this.oprData;
 			if(addr != ""){
 				this.getLPBalance();
+				this.getMecLPBalance();
 			}
 
 			this.from.coinName = coinName.split("-")[0] || "";
@@ -341,6 +407,7 @@ export default {
 			this.coinArr[coinKey].isDeposing = false;
 			this.coinArr["ts"] = new Date().valueOf();
 			this.getLPBalance();
+			this.getMecLPBalance();
 		},
 
 		async getLPBalance(){
@@ -354,8 +421,22 @@ export default {
 			coinArr[coinKey].balanceTrue =  value;
 			coinArr["ts"] = new Date().valueOf();
 		},
-	
+
+		async getMecLPBalance() {
+			const res = await Wallet.ETH.getErc20BalanceByTokenAddr(PancakeConfig.MecSwapPair, false);
+			this.mecLP = Common.numFloor(Number(res) / 1e18, 1e18);
+		},
 		async getLPAmount(){
+			if (this.to.coinName === 'MEC') {
+				await this.getMecSwapInfo();
+
+				this.from.reserve = this.mecReserveData.reserveA;
+				this.to.reserve = this.mecReserveData.reserveB;
+				this.totalSupply = this.mecTotalSupply;
+				this.inputValueChange(this.lastType);
+				return;
+			}
+
 			let tokenA = this.from.coinName;
 			let tokenB = this.to.coinName;
 			if(tokenA == "" || tokenB == "") return;
@@ -368,17 +449,45 @@ export default {
 			let {data, code } = res.data;
 			if(code == 200){
 				let {token0, token1, totalSupply} = data;
+				this.bnbInfoData = {
+					reserveA: token0.reserve,
+					reserveB: token1.reserve,
+					totalSupply: totalSupply,
+				};
+
 				if(token0.symbol.indexOf(tokenA) != -1){
 					this.from.reserve = token0.reserve 
 				}
+
 				if(token1.symbol.indexOf(tokenB) != -1){
 					this.to.reserve = token1.reserve 
 				}
+
 				if(this[this.lastType].inputValue != ""){
 					this.inputValueChange(this.lastType);
 				}
+
 				this.totalSupply = totalSupply;
 			}
+		},
+		// 获取mec兑换数据
+		async getMecSwapInfo() {
+			// TODO:TEST
+			// const config = PancakeConfig.SelectCoin;
+			// const [reserves, pair] = await Promise.all([
+			// 	Wallet.ETH.mecSwapContrac.methods.getReserves(
+			// 		config.MBOX.addr,
+			// 		config.MEC.addr,
+			// 		1
+			// 	).call(),
+			// 	Wallet.ETH.mecSwapPairContrac.methods.getPairInfo().call(),
+			// ]);
+
+			// this.mecReserveData = {
+			// 	...reserves,
+			// 	reserveA: reserves.reserveA / 1e18,
+			// };
+			// this.mecTotalSupply = pair.totalSupply;
 		},
 		// 添加流动性
 		goSupply(){
@@ -388,44 +497,76 @@ export default {
 		// 添加流动性
 		async confirmSuppy(){
 			this.oprDialog("confirm-supply-dialog", "none");
-			let hash = await Wallet.ETH.addLiquidity(this.from, this.to, this.setting);
-			if(hash){
+			const addLiquidity = this.isMec ? Wallet.ETH.addMecLiquidity : Wallet.ETH.addLiquidity;
+			const hash = await addLiquidity.apply(Wallet.ETH, [this.from, this.to, this.setting]);
+
+			if(hash) {
 				this.from.inputValue = "";
 				this.to.inputValue = "";
 				this.coinArr[this.oprData.coinKey].isAddLiqiditing = true;
 			}
 		},
-		async setCoinAllowance(coinKey){
-			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
-
+		async setCoinAllowance(coinKey) {
 			if(coinKey != "" && coinKey != "BNB") {
-				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, routerAddr, false);
+				let allowance;
+
+				if (coinKey === 'MEC') {
+					await this.setCoinAllowance('MBOX');
+					const res = await this.viewMECApproved();
+					allowance = res ? -1 : 0;
+				} else {
+					const routerAddr = this.to.coinName === 'MEC' ? PancakeConfig.MecSwap : (this.setting.pancakeVType == 1 ? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2);
+					allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, routerAddr, false);
+				}
+
 				this.coinArr[coinKey].allowanceToSwap = Number(allowance);
 				this.coinArr["ts"] = new Date().valueOf();
 			}
 		},
 
 		async approve(coinKey){
-			console.log(coinKey);
-			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
+			let routerAddr = this.to.coinName === 'MEC' ? PancakeConfig.MecSwap : (this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2);
 
 			if(coinKey == "" || coinKey == "BNB") return;
 			let {isApproving, allowanceToSwap} =  this.coinArr[coinKey];
-			if(isApproving || Number(allowanceToSwap) >1e8) return;
+			if(isApproving || Number(allowanceToSwap) > 1e8) return;
 
-			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr, 
-			routerAddr, {coinKey, type: "allowanceToSwap"});
-			if(hash){
+			let hash;
+
+			if (coinKey === 'MEC') {
+				hash = await this.approveMEC();
+			} else {
+				hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr, routerAddr, {coinKey, type: "allowanceToSwap"});
+			}
+
+			if (hash) {
 				this.coinArr[coinKey].isApproving = true;
 			}
 		},
-	
 		inputValueChange(type){
+			// 如果 reserveA 或者 reserveB 为0, 两个币的输入可以是任何数
+			if (this.isMec && (this.from.reserve == 0 || this.to.reserve == 0)) {
+				return;
+			}
+
 			this.lastType = type;
-			let otherType = type == "from"?"to":"from";
-			this[otherType].inputValue = Common.numFloor((Number(this[otherType].reserve) / Number(this[type].reserve) ) 
-														* Number(this[type].inputValue), 1e8);
-		}
+			let otherType = type == "from" ? "to" : "from";
+
+			this[otherType].inputValue = Common.numFloor((Number(this[otherType].reserve) / Number(this[type].reserve) ) * Number(this[type].inputValue), 1e8);
+		},
+		openSelectCoin(){
+			// TODO:TEST
+			// this.$parent.$parent.$refs.selectCoin.setOprData(
+			// 	[this.to.coinName],
+			// 	this.onSelectCoin,
+			// 	['BNB', 'MEC'],
+			// ).show();
+		},
+		onSelectCoin(coinName) {
+			this.to.coinName = coinName;
+			this.getLPAmount();
+			this.setCoinAllowance(coinName);
+		},
 	}
 
 }

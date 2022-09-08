@@ -63,7 +63,7 @@
 				</div>
 		
 				<div v-if="getNowPetItem.location=='stake'">
-					<button  :class="lockBtn.unStakeLock <= 0?'':'disable-btn' " class="btn-primary por" @click="lockBtn.unStakeLock <= 0 && oprDialog('unstake-confirm-dialog', 'block')" > 
+					<button  :class="lockBtn.unStakeLock <= 0?'':'disable-btn' " class="btn-primary por" @click="cancelApply" > 
 						<Loading class="btn-loading" :width="15" :height="15" v-if="lockBtn.unStakeLock > 0"  />{{$t("MOMO_45")}} 
 					</button>
 				</div>
@@ -366,6 +366,20 @@ export default {
 		}
 	},
 	methods: {
+		// 取消申购
+		async cancelApply() {
+			// 判断是否参与了mec申购
+			const mecBoxInfo = await Wallet.ETH.Group.Enhancer.getMyApplyInfo();
+
+			if(mecBoxInfo.veMoboxTicket[0] != 0) {
+				this.showNotify(this.$t("Gemstone_38") ,"error");
+				return;
+			}
+
+			if (this.lockBtn.unStakeLock <= 0) {
+				this.oprDialog('unstake-confirm-dialog', 'block');
+			}
+		},
 		async getEnhanceLog(){
 			if(this.getNowPetItem.tokenId == 0 || this.loading.trade) return;
 			this.loading.upgrade = true;
@@ -459,6 +473,7 @@ export default {
 		//取消质押
 		async unStakeNftConfirm(){
 			this.oprDialog('unstake-confirm-dialog', 'none');
+
 			//判断是否参与了高级申购
 			let hasHighApply = await Wallet.ETH.hasHighApply();
 			if(hasHighApply){

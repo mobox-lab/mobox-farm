@@ -1,6 +1,24 @@
 import {ConstantConfig} from "@/config";
+import MoMoSetting from "../../utils/wallet/eth/group/MoMoSetting";
+
+
+const STEP_SEC = 2592000;             // 一个周期的秒数
+const STEP_START_PRE = 1637640000;    // STEP 0的更前一个周期
+const STEP_10_BEGIN = 1663560000;     // STEP 10的开始时间
+
+function getMinHashrate(lv, step) {
+	if (lv == 4) {
+			return (((step - 8) / 2) * 10) + 10;
+	} else if (lv == 5) {
+			return (((step - 8) / 2) * 20) + 50;
+	} else {
+			return 180;
+	}
+}
 
 const state = () => ({
+	v4MinHashrate: '',
+	v5MinHashrate: '',
 	data: {
 		connectWalletAddr: "",
 		chainNetwork: 0,
@@ -151,11 +169,23 @@ const mutations = {
 		state.data.walletStatus.status = status || 1;
 		state.data.walletStatus.msg = msg || "";
 		state.data.walletStatus.hash = hash || "";
+	},
+	setStep(state, value) {
+		state.v4MinHashrate = getMinHashrate(4, +value + 1);
+		state.v5MinHashrate = getMinHashrate(5, +value + 1);
+	}
+};
+
+const actions = {
+	async getHashrateStep(context) {
+		const res = await MoMoSetting.getHashrateStep();
+		context.commit('setStep', res);
 	}
 };
 
 export default {
 	namespaced: true,
 	state,
-	mutations
+	mutations,
+	actions,
 };

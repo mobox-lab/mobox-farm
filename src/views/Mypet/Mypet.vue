@@ -148,7 +148,7 @@
 						<div class="ly-input mgt-10 tac vertical-children2">
 							<span>[10, {{momoSetting.v4_max_upgrade}}]</span>
 							<img class="mgl-5" src="@/assets/icon/upgradejt.png" alt="" height="12">
-							<span class="mgl-5">[10, <span style="color:rgb(133, 243, 74)">{{getNextHash.v4}}</span>]</span>
+							<span class="mgl-5">[<span :style="{color: v4MinHashrate > 10 ? 'rgb(133, 243, 74)' : ''}">{{v4MinHashrate}}</span>, <span style="color:rgb(133, 243, 74)">{{getNextHash.v4}}</span>]</span>
 						</div>
 					</div>
 					<div style="padding:10px">
@@ -156,7 +156,7 @@
 						<div class="ly-input mgt-10 tac vertical-children2">
 							<span>[50, {{momoSetting.v5_max_upgrade}}]</span>
 							<img class="mgl-5" src="@/assets/icon/upgradejt.png" alt="" height="12">
-							<span class="mgl-5">[50, <span style="color:rgb(133, 243, 74)">{{getNextHash.v5}}</span>]</span>
+							<span class="mgl-5">[<span :style="{color: v5MinHashrate > 50 ? 'rgb(133, 243, 74)' : ''}">{{v5MinHashrate}}</span>, <span style="color:rgb(133, 243, 74)">{{getNextHash.v5}}</span>]</span>
 						</div>
 					</div>
 					<div style="padding:10px" >
@@ -304,6 +304,8 @@ export default {
 	},
 	computed: {
 		...mapState({
+			v4MinHashrate: (state) => state.globalState.v4MinHashrate,
+			v5MinHashrate: (state) => state.globalState.v5MinHashrate,
 			myNFT_wallet: (state) => state.ethState.data.myNFT_wallet,
 			myNFT_verse: (state) => state.ethState.data.myNFT_verse,
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,

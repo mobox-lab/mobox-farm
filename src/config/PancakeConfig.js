@@ -2,6 +2,8 @@ export default class PancakeConfig {
 	static SwapRouterAddr = "0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F";
 	static SwapRouterAddrV2 = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
 	static QuickSwapAddr = "0x50aEdfA05bbC474E53BB45B6Ed0aD3aE7Fb54B0f";
+	static MecSwap = "0xCAc8aA7cb8775Bb86DfacaE15B3dC73143D4bcF3";
+	static MecSwapPair = "0xd5C390665eC94A5C76D79356582944164816580a";
 	static SelectCoin = {
 		"BNB": {
 			decimals: 1e18,
@@ -48,6 +50,11 @@ export default class PancakeConfig {
 			decimals: 1e18,
 			addr: "0x85c128eE1feEb39A59490c720A9C563554B51D33"
 		},
+		// "MEC": {
+		// 	omit: 1e4,
+		// 	decimals: 1,
+		// 	addr: "0x98387108842a7CfC7bA23E080030351f6ea68ac0"
+		// },
 	}
 	
 	static StakeLP = {
@@ -78,6 +85,15 @@ export default class PancakeConfig {
 			pancakeVType: 1,
 			isFinish: true,
 		},
+		// "MBOX-MEC":{
+		// 	pIndex: 12,
+		// 	addr: "0xd5C390665eC94A5C76D79356582944164816580a",
+		// 	allocPoint: 10,
+		// 	decimals: 0,
+		// 	omit: 1e6,
+		// 	pancakeVType: 1,
+		// 	isFinish: true,
+		// },
 		"BTCB-BNB":{
 			pIndex: 1,
 			addr: "0x7561EEe90e24F3b348E1087A005F78B4c8453524",
@@ -141,7 +157,6 @@ export default class PancakeConfig {
 			pancakeVType: 1,
 			isFinish: true,
 		},
-
 		"MBOX-BNB-V2":{
 			pIndex: 21,
 			addr: "0x8FA59693458289914dB0097F5F366d771B7a7C3F",

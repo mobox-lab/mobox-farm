@@ -4,6 +4,7 @@ import Contract from './Contract'
 import PancakSwapContract from './PancakSwapContract'
 import {EventBus,Common,Http} from "@/utils";
 import {EventConfig,WalletConfig,BaseConfig,ConstantConfig, PancakeConfig} from '@/config';
+import MecSwap from "./MecSwap";
 import BigNumber from "bignumber.js";
 import Gem from './group/Gem';
 import MdxBox from './group/MdxBox';
@@ -31,6 +32,8 @@ export default class ETH {
 	static momoStakeContract;
 	static pancakeSwapContract;
 	static pancakeSwapContracV2;
+	static mecSwapContrac;
+	static mecSwapPairContrac;
 
 	static myAddr = "";
 
@@ -163,6 +166,25 @@ export default class ETH {
 			PancakSwapContract.swapExactTokensForTokens,
 			PancakSwapContract.swapTokensForExactTokens,
 		], PancakeConfig.SwapRouterAddrV2);
+		// MEC兑换合约
+		this.mecSwapContrac = new this.web3.eth.Contract([
+			MecSwap.approve,
+			MecSwap.getAmountsOut,
+			MecSwap.allowance,
+			MecSwap.addLiquidity,
+			MecSwap.removeLiquidity,
+			MecSwap.swapExactETHForTokens,
+			MecSwap.swapETHForExactTokens,
+			MecSwap.swapExactTokensForETH,
+			MecSwap.swapTokensForExactETH,
+			MecSwap.swapExactTokensForTokens,
+			MecSwap.swapTokensForExactTokens,
+			MecSwap.getReserves,
+		], PancakeConfig.MecSwap);
+		// MEC兑换合约
+		this.mecSwapPairContrac = new this.web3.eth.Contract([
+			MecSwap.getPairInfo,
+		], PancakeConfig.MecSwapPair);
 	}
 
 	//调起钱包
@@ -558,6 +580,7 @@ export default class ETH {
 	//查询我钱包里面的erc20币授权情况
 	static async viewErcAllowanceToTarget(fromAddr, targetAddr, isMainNet = true) {
 		let myAddr = await this.getAccount();
+
 		if (!myAddr) return -1;
 
 		let contract;
@@ -579,6 +602,7 @@ export default class ETH {
 	}
 	//授权Erc20给矿池
 	static async approveErcToTarget(fromAddr, targetAddr, approveInfo = {coinKey: "", type: ""}) {
+		console.log(fromAddr, targetAddr, approveInfo = {coinKey: "", type: ""});
 		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		let contract = new this.web3.eth.Contract([
@@ -878,6 +902,7 @@ export default class ETH {
 			});
 		});
 	}
+	
 	//授权1155给对应合约
 	static async approve1155ToTargetToken(tokenAddr) {
 		let myAddr = await this.getAccount(true);
@@ -1159,11 +1184,11 @@ export default class ETH {
 	static async setMomoNameByTokenId(tokenId, name, isFirst) {
 		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
-		if (!this.momoStakeContract) return;
+		if (!this.moMoTokenContract) return;
 		console.log( this.web3.utils.utf8ToHex(name).length);
 		return new Promise(resolve => {
 			this.sendMethod(
-				this.momoStakeContract.methods.setMomoName(tokenId, this.web3.utils.utf8ToHex(name)), {from: myAddr,value: isFirst ? 0 : 0.05e18},
+				this.moMoTokenContract.methods.setMomoName(tokenId, this.web3.utils.utf8ToHex(name)), {from: myAddr,value: isFirst ? 0 : 0.05e18},
 				hash=>resolve(hash),
 				()=>{
 					Common.app.eth_setNameConfirm({chain: "eth",tokenId,name})
@@ -1178,10 +1203,10 @@ export default class ETH {
 	static async setMomoStoryByTokenId(tokenId, story, isFirst) {
 		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
-		if (!this.momoStakeContract) return;
+		if (!this.moMoTokenContract) return;
 		return new Promise(resolve => {
 			this.sendMethod(
-				this.momoStakeContract.methods.addMomoStory(tokenId, this.web3.utils.utf8ToHex(story)), {from: myAddr, value: isFirst ? 0 : 0.05e18},
+				this.moMoTokenContract.methods.addMomoStory(tokenId, this.web3.utils.utf8ToHex(story)), {from: myAddr, value: isFirst ? 0 : 0.05e18},
 				hash=>resolve(hash),
 				()=>{
 					EventBus.$emit(EventConfig.SetStoryConfirm);
@@ -1210,7 +1235,7 @@ export default class ETH {
 			tokensV4V5.map((item, index) => tokensV4V5[index] = Number(item));
 
 			this.sendMethod(
-				this.moMoTokenContract.methods.levelUp(tokenId, protosV1V2V3, amountsV1V2V3, tokensV4V5), {from: myAddr},
+				this.moMoTokenContract.methods.levelUp(tokenId, protosV1V2V3, amountsV1V2V3), {from: myAddr},
 				hash=>resolve(hash),
 				()=>{
 					EventBus.$emit(EventConfig.LevelUpConfirm, { chain: "eth", gotoLv, tokenId });
@@ -1232,7 +1257,7 @@ export default class ETH {
 			console.log({protosV1V2V3}, {amountsV1V2V3}, {tokensV4V5});
 
 			this.sendMethod(
-				constract.methods.levelUp(tokenId, protosV1V2V3, amountsV1V2V3, tokensV4V5), {from: myAddr},
+				constract.methods.levelUp(tokenId, protosV1V2V3, amountsV1V2V3), {from: myAddr},
 				hash=>resolve(hash),
 				()=>{
 					EventBus.$emit(EventConfig.LevelUpConfirm, { chain: "eth", gotoLv, tokenId });
@@ -1718,6 +1743,7 @@ export default class ETH {
 		if (!myAddr) return;
 
 		let coinObj = coinName.split("-");
+		const isMec = coinName.indexOf('MEC') != -1;
 		let selectCoinA = PancakeConfig.SelectCoin[coinObj[0]];
 		let selectCoinB = PancakeConfig.SelectCoin[coinObj[1]];
 		let LPObj = PancakeConfig.StakeLP[coinKey];
@@ -1727,14 +1753,20 @@ export default class ETH {
 		let method;
 		let tokenA = selectCoinA.addr;
 		let tokenB =  selectCoinB.addr;
-		liquidity = this.numToHex(BigNumber(liquidity).times(LPObj.decimals));
+		liquidity = this.numToHex(BigNumber(liquidity).times(1e18));
 
 		let amountAMin = this.numToHex(BigNumber(Common.numFloor(targetLPPrice[0] * (1-slippage/100), 1e8)).times(selectCoinA.decimals));
-		let amountBMin = this.numToHex(BigNumber(Common.numFloor(targetLPPrice[1] * (1-slippage/100), 1e8)).times(selectCoinB.decimals));
+		let amountBMin = targetLPPrice[1] * (1-slippage/100);
+
+		if (isMec) {
+			amountBMin = this.numToHex(BigNumber(Math.floor(amountBMin)));
+		} else {
+			amountBMin = this.numToHex(BigNumber(Common.numFloor(amountBMin, 1e8)).times(selectCoinB.decimals));
+		}
 
 		let deadline = parseInt(new Date().valueOf() / 1000) + (60 *duration);
 
-		let PancakeSwapContract = setting.pancakeVType == 1? this.pancakeSwapContract: this.pancakeSwapContracV2;
+		let PancakeSwapContract = setting.pancakeVType == 1 ? this.pancakeSwapContract: this.pancakeSwapContracV2;
 
 		//包含BNB
 		if(coinName.indexOf("BNB") != -1){
@@ -1742,11 +1774,12 @@ export default class ETH {
 			let amountTokenMin = coinObj[0] == "BNB"? amountBMin: amountAMin;
 			let amountETHMin = coinObj[0] == "BNB"?amountAMin: amountBMin;
 
-			console.log({token,liquidity, amountTokenMin, amountETHMin});
 			method =PancakeSwapContract.methods.removeLiquidityETH(
 				token, liquidity, amountTokenMin, amountETHMin,
 				myAddr, deadline);
-		}else{
+		} else if (isMec) {
+			method = this.mecSwapContrac.methods.removeLiquidity(tokenA, tokenB, 1, liquidity, amountAMin, amountBMin, myAddr, deadline);
+		} else{
 			method =PancakeSwapContract.methods.removeLiquidity(
 				tokenA,tokenB, liquidity, amountAMin, amountBMin,
 				myAddr, deadline);
@@ -1815,8 +1848,53 @@ export default class ETH {
 				}
 			)
 		});
-
 	}
+
+	// 增加MBOX - MEC流动性
+	static async addMecLiquidity(from, to, setting){
+		let myAddr = await this.getAccount(true);
+		if (!myAddr) return;
+
+		let fromCoinCfg = PancakeConfig.SelectCoin[from.coinName];
+		let toCoinCfg = PancakeConfig.SelectCoin[to.coinName];
+		let callValue = this.numToHex(0);
+		let duration = Number(setting.duration) || 20;
+		let slippage = Number(setting.slippage) || 0.5;
+		let decimals_to = BigNumber(toCoinCfg.decimals);
+		let decimals_from = BigNumber(fromCoinCfg.decimals);
+
+		let deadline = parseInt(new Date().valueOf() / 1000) + (60 *duration);
+		let tokenA = fromCoinCfg.addr;
+		let tokenB = toCoinCfg.addr;
+		let amountADesired =  this.numToHex(BigNumber(Common.numFloor(from.inputValue , 1e8)).times(decimals_from));
+		let amountAMin = this.numToHex(BigNumber(Common.numFloor(from.inputValue * (1-slippage/100), 1e8)).times(decimals_from));
+		let amountBDesired, amountBMin;
+
+		if (to.coinName === 'MEC') {
+			amountBDesired = this.numToHex(BigNumber(to.inputValue));
+			amountBMin = this.numToHex(BigNumber(to.inputValue));
+		} else {
+			amountBDesired = this.numToHex(BigNumber(Common.numFloor(to.inputValue , 1e8)).times(decimals_to));
+			amountBMin = this.numToHex(BigNumber(Common.numFloor(to.inputValue * (1-slippage/100), 1e8)).times(decimals_to));
+		}
+
+		console.log(tokenA, tokenB, 1, amountADesired, amountBDesired, amountAMin, amountBMin, myAddr, deadline);
+
+		const method = this.mecSwapContrac.methods.addLiquidity(tokenA, tokenB, 1, amountADesired, amountBDesired, amountAMin, amountBMin, myAddr, deadline);
+
+		return new Promise(resolve => {
+			this.sendMethod(method, {from: myAddr,value: callValue},
+				hash=>resolve(hash),
+				()=>{
+					console.log("addLiquidity success!!!!!");
+					Common.store.commit("bnbState/clearLoading");
+					EventBus.$emit(EventConfig.AddLiquiditySuccess);
+					EventBus.$emit(EventConfig.SwapSuccess);
+				}
+			)
+		});
+	}
+
 	//兑换
 	static async goSwap(from,  to, path, setting){
 		console.log({from});
@@ -1886,6 +1964,24 @@ export default class ETH {
 			)
 		});
 		
+	}
+
+	// 兑换mec
+	static swapMec(from, to, path, setting) {
+		console.log(from, to, path, setting);
+	}
+
+	// mec兑换 - 获取in值
+	static getMecSwapAmountsIn(amountOut, path) {
+		console.log(amountOut, path);
+	}
+	
+	// mec兑换 - 获取out值
+	static async getMecSwapAmountsOut(amountIn, path) {
+		console.log(1, amountIn, path);
+		amountIn = this.numToHex(BigNumber(amountIn));
+		const res = await this.mecSwapContrac.methods.getAmountsOut(1, amountIn, path).call();
+		console.log(res);
 	}
 
 	//获取兑换价格

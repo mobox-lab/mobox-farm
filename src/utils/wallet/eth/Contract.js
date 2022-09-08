@@ -549,9 +549,6 @@ export default class Contract {
 		}, {
 			type: 'uint256[]',
 			name: '_amountsV1V2V3'
-		}, {
-			type: 'uint256[]',
-			name: '_tokensV4V5'
 		}],
 	}
 	//取名--MomoToken
@@ -846,9 +843,6 @@ export default class Contract {
 		}, {
 			type: 'uint256[]',
 			name: '_amountsV1V2V3'
-		}, {
-			type: 'uint256[]',
-			name: '_tokensV4V5'
 		}],
 	}
 

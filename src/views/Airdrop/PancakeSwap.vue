@@ -228,6 +228,7 @@ export default {
 		},
 		//判断是否可以Swap
 		canSwap(){
+			// TODO:test
 			return this.hasSelectTargetCoin 
 						&& Number(this.from.inputValue) > 0 
 						&& Number(this.to.inputValue) > 0 
@@ -255,6 +256,38 @@ export default {
 			if(num > 99) num = 99;
 			return num;
 		},
+		// 是否兑换mec
+		isSwapMec() {
+			return this.to.coinName === 'MEC' || this.from.coinName === 'MEC';
+		},
+		// 兑换path
+		swapPath() {
+			const wbnbPath = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+			const path = [PancakeConfig.SelectCoin.MEC.addr, PancakeConfig.SelectCoin.MBOX.addr];
+			// 是否是兑换到mec - 如果
+			const isToMec = this.to.coinName === 'MEC';
+			const endName = isToMec ? this.from.coinName : this.to.coinName;
+
+			switch(endName) {
+				case 'MBOX':
+					break;
+				case 'BNB':
+					path.push(wbnbPath);
+					break;
+				default:
+					path.push(wbnbPath);
+					path.push(PancakeConfig.SelectCoin[endName].addr);
+					break;
+
+			}
+
+			// 兑换到mec则反转路径
+			if (isToMec) {
+				path.reverse();
+			}
+
+			return path;
+		}
 	},
 	created(){
 		clearInterval(timerInterval);
@@ -284,39 +317,63 @@ export default {
 				//TODO: 请求可以兑换到的数量,延时防抖
 				clearTimeout(this.timer);
 				this.timer =  setTimeout(async () => {
-					let sendData = {
-						from: this[type].coinName,
-						to: this[otherType].coinName,
-						amountIn: this[type].inputValue,
-						exactTo: type == "to",
-						version
-					}
-					if(Number(sendData.amountIn) <= 0) return;
+					if(Number(this[type].inputValue) <= 0) return;
+
+					let value, amountOut;
+
 					this[otherType].loading = true;
-					let res = await SwapHttp.post("/pair/price",sendData);
+
+					// mec兑换
+					if (this.isSwapMec) {
+						this.path = this.swapPath;
+						const coin = PancakeConfig.SelectCoin[this[type].coinName];
+
+						console.log(coin);
+
+						// if (type === "from") {
+						// 	Wallet.ETH.getMecSwapAmountsOut(this[type].inputValue * (), this.swapPath);
+						// 	} else {
+						// 	Wallet.ETH.getMecSwapAmountsIn(this[type].inputValue, this.swapPath);
+						// }
+						return;
+					} else {
+						let sendData = {
+							from: this[type].coinName,
+							to: this[otherType].coinName,
+							amountIn: this[type].inputValue,
+							exactTo: type == "to",
+							version
+						}
+						let res = await SwapHttp.post("/pair/price",sendData);
+						let {data, code} = res.data;
+
+						if(code == 200){
+							amountOut = data.amountOut;
+							this[otherType].isEstimated = true;
+							this.path = data.path;
+
+							//要反转一下path路径。当路径>3的时候gg 要重新弄了 -- @王十三
+							if(otherType == "from"){
+								this.path.reverse();
+							}
+						}
+					}
+
+					// TODO:test
 					this.getOneToValue();
 					this[otherType].loading = false;
-					let {data, code} = res.data;
-					if(code == 200){
-						this[otherType].isEstimated = true;
-						let value;
+					this[otherType].isEstimated = true;
 
-						//计算要扣除的手续费
-						if(otherType == "to"){
-							value = data.amountOut * 0.997;
-						}else{
-							value = data.amountOut / 0.997;
-						}
-
-						this[otherType].inputValue = this.numFloor(value, 1e10);
-
-						this[type].isEstimated = false;
-						this.path = data.path;
-						//要反转一下path路径。当路径>3的时候gg 要重新弄了 -- @王十三
-						if(otherType == "from"){
-							this.path.reverse();
-						}
+					//计算要扣除的手续费
+					if(otherType == "to"){
+						value = amountOut * 0.997;
+					}else{
+						value = amountOut / 0.997;
 					}
+
+					this[otherType].inputValue = this.numFloor(value, 1e10);
+
+					this[type].isEstimated = false;
 				}, stepTime);
 				
 			}else{
@@ -340,6 +397,7 @@ export default {
 			this.inputValueChange(otherType, 0);
 		},
 		async setCoinAllowance(){
+			// TODO:test
 			let coinKey = this.from.coinName;
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
 			if(coinKey != "" && coinKey != "BNB") {
@@ -354,8 +412,16 @@ export default {
 		},
 		async confirmSwap(){
 			this.oprDialog("confirm-swap-dialog", "none");
-			let hash = await Wallet.ETH.goSwap(this.from, this.to, this.path, this.setting);
-			if(hash){
+
+			let hash;
+
+			if (this.from.coinName === 'MEC' || this.from.coinName === 'MEC') {
+				hash = await Wallet.ETH.swapMec(this.from, this.to, this.path, this.setting);
+			} else {
+				hash = await Wallet.ETH.goSwap(this.from, this.to, this.path, this.setting);
+			}
+
+			if(hash) {
 				this.from.inputValue = "";
 				this.to.inputValue = "";
 			}
@@ -403,6 +469,15 @@ export default {
 			}
 		},
 		async getOneToValue(){
+			if (this.isSwapMec) {
+				if (this.lastType === "from") {
+					Wallet.ETH.getMecSwapAmountsOut(10 * 1e18, this.swapPath);
+					} else {
+					Wallet.ETH.getMecSwapAmountsIn(10, this.swapPath);
+				}
+				return;
+			}
+
 			let sendData = {
 				from: this.to.coinName,
 				to: this.from.coinName,
@@ -475,8 +550,9 @@ export default {
 				}
 
 				img {
-					width: 100%;
+					width: auto;
 					height: 100%;
+					margin: 0 auto;
 					display: block;
 				}
 

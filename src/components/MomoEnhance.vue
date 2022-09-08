@@ -231,14 +231,16 @@ export default {
 			}
 		},
 		//查询宝石合约是被授权
-		async viewMECApproved(){
-			let isApprove = await Wallet.ETH.isApprovedForAll(WalletConfig.ETH.crystalToken, WalletConfig.ETH.momoEnhancer);
+		async viewMECApproved(address){
+			address = address || WalletConfig.ETH.momoEnhancer;
+			let isApprove = await Wallet.ETH.isApprovedForAll(WalletConfig.ETH.crystalToken, address);
 			if(isApprove != null){
 				this.isMECApproved = isApprove;
 			}
 		},
-		async approveMEC(){
-			let hash = await Wallet.ETH.approvedForAll(WalletConfig.ETH.crystalToken, WalletConfig.ETH.momoEnhancer, ()=>{
+		async approveMEC(address){
+			address = address || WalletConfig.ETH.momoEnhancer;
+			let hash = await Wallet.ETH.approvedForAll(WalletConfig.ETH.crystalToken, address, ()=>{
 				this.viewMECApproved();
 			});
 			if(hash){

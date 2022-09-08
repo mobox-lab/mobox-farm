@@ -66,6 +66,12 @@
 											v-bind:selectProtoTypes=" selectProtoTypes[item.type] "
 										/>
 									</span>
+									<span class="mec-item dib mgt-10" v-if="isNeedMec">
+										<div class="icon">
+											<img src="@/assets/coin/CRYSTAL.png" />
+										</div>
+										<p class="count">{{upgradeConfig.mecNum}}</p>
+									</span>
 								</div>
 								<div class="vertical-children mgt-20" style="font-size: 18px" >
 									<img src="@/assets/icon/airdrop.png" height="25" alt="" />&nbsp;
@@ -75,14 +81,28 @@
 									<span style="color: #85f34a">{{ this.getNowPetItemNextLvHashRate }}</span>
 								</div>
 								<div>
-									<div class="mgt-10" >
-										<button @click="upgrade" :class="lockUpgradeTime > 0?'disable-btn':''" class="btn-primary vertical-children por" style="min-width: 160px; margin: 5px" >
+									<div class="mgt-20" >
+										<!-- <button @click="upgrade" :class="lockUpgradeTime > 0?'disable-btn':''" class="btn-primary vertical-children por" style="min-width: 160px; margin: 5px" >
 											<Loading v-if="lockUpgradeTime > 0"  class="btn-loading" />
 											<svg  viewBox="0 0 1024 1024" width="15" height="15" style=" transform: rotate(270deg); margin-top: -2px; " >
 												<path fill="#ffffff" d="M583.586909 555.473455a62.091636 62.091636 0 0 0 0-86.94691L151.970909 30.138182a60.113455 60.113455 0 0 0-85.783273 0 62.045091 62.045091 0 0 0 0 86.946909L454.981818 512 66.210909 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.043636 60.043636 0 0 0 85.783273 0l431.592727-438.388363zM440.459636 117.061818L829.160727 512 440.413091 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.090182 60.090182 0 0 0 85.806545 0l431.569455-438.388363a62.091636 62.091636 0 0 0 0-86.94691L526.196364 30.138182a60.136727 60.136727 0 0 0-85.806546 0 62.045091 62.045091 0 0 0 0.023273 86.923636z"></path>
 											</svg >&nbsp;
 											{{ $t("MOMO_22") }}
-										</button>
+										</button> -->
+										<div :class="{'btn-group': needApproveMec}">
+											<div v-if="needApproveMec">
+												<StatuButton data-step="1" style="width:150px" :isLoading="lockBtn.approveLock > 0" :onClick="approveMEC">{{$t("Air-drop_16")}} MEC</StatuButton>
+											</div>
+											<div class="mgt-10">
+												<StatuButton :onClick="upgrade" data-step="2" style="min-width:150px" :isDisable="needApproveMec || lockUpgradeTime > 0" :isLoading="lockBtn.enhanceLock > 0">
+													<Loading v-if="lockUpgradeTime > 0"  class="btn-loading" />
+													<svg  viewBox="0 0 1024 1024" width="15" height="15" style=" transform: rotate(270deg); margin-top: -2px; " >
+														<path fill="#ffffff" d="M583.586909 555.473455a62.091636 62.091636 0 0 0 0-86.94691L151.970909 30.138182a60.113455 60.113455 0 0 0-85.783273 0 62.045091 62.045091 0 0 0 0 86.946909L454.981818 512 66.210909 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.043636 60.043636 0 0 0 85.783273 0l431.592727-438.388363zM440.459636 117.061818L829.160727 512 440.413091 906.938182a62.045091 62.045091 0 0 0 0 86.923636 60.090182 60.090182 0 0 0 85.806545 0l431.569455-438.388363a62.091636 62.091636 0 0 0 0-86.94691L526.196364 30.138182a60.136727 60.136727 0 0 0-85.806546 0 62.045091 62.045091 0 0 0 0.023273 86.923636z"></path>
+													</svg >&nbsp;
+													{{ $t("MOMO_22") }}
+												</StatuButton>
+											</div>
+										</div>
 									</div>
 							
 								</div>
@@ -115,7 +135,7 @@
 
 		<Dialog id="selectNft-dialog" :top="30" :width="540">
 			<h2 class="mgt-10">{{ $t("BOX_18") }}</h2>
-			<div class="mgt-20">
+			<div class="mgt-20 items">
 				<span @click="showSelectNftDialog(item, handPos, true)" v-for="(item, handPos) in this.getUpgradeInfo" :key="JSON.stringify(item)"  >
 					<PetAddItem
 						class="need-notice"
@@ -167,7 +187,7 @@
 	</div>
 </template>
 <script>
-import { PetView, PetAddItem, Dialog, PetItemSmall, Tab, BookSelectItem, MomoInfo, Loading } from '@/components';
+import { PetView, PetAddItem, Dialog, PetItemSmall, Tab, BookSelectItem, MomoInfo, Loading, StatuButton } from '@/components';
 import { mapState } from "vuex";
 import { Wallet, EventBus } from "@/utils";
 import { BaseConfig, WalletConfig, EventConfig, ConstantConfig } from "@/config";
@@ -176,9 +196,10 @@ import { CommonMethod } from "@/mixin";
 let upgradeLockTimer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { PetView, PetAddItem, Dialog, PetItemSmall, Tab, BookSelectItem, MomoInfo, Loading },
+	components: { PetView, PetAddItem, Dialog, PetItemSmall, Tab, BookSelectItem, MomoInfo, Loading, StatuButton },
 	data() {
 		return {
+			isMECApproved: -1,
 			inputName: "",
 			nowLen: 0,
 			selectProtoTypes: {
@@ -226,6 +247,7 @@ export default {
 			myNFT_wallet: (state) => state.ethState.data.myNFT_wallet,
 			myNFT_verse: (state) => state.ethState.data.myNFT_verse,
 			lockList: (state) => state.ethState.data.lockList,
+			lockBtn: (state) => state.globalState.data.lockBtn,
 			allowance_1155_to_721: (state) =>state.ethState.data.allowance_1155_to_721,
 			allowance_1155_to_stake: (state) =>state.ethState.data.allowance_1155_to_stake,
 			allowance_721_to_stake: (state) =>state.ethState.data.allowance_721_to_stake,
@@ -333,26 +355,28 @@ export default {
 			// }
 			return prototype;
 		},
+		// 升级配置
+		upgradeConfig() {
+			const { level, vType } = this.getNowPetItem;
+
+			switch (Number(vType)) {
+				case 4:
+					return BaseConfig.MomoLv4Cfg[level];
+				case 5:
+					return BaseConfig.MomoLv5Cfg[level];
+				case 6:
+					return BaseConfig.MomoLv6Cfg[level];
+				default:
+					console.log("quality not support");
+					return null;
+			}
+		},
 		//获取当前升级信息
 		getUpgradeInfo() {
 			let { level, category, prototype, vType } = this.getNowPetItem;
 			if (!vType) return [];
 			if (Number(vType) < 4) return [];
-			let lvUpgradeConfig;
-			switch (Number(vType)) {
-				case 4:
-					lvUpgradeConfig = BaseConfig.MomoLv4Cfg[level];
-					break;
-				case 5:
-					lvUpgradeConfig = BaseConfig.MomoLv5Cfg[level];
-					break;
-				case 6:
-					lvUpgradeConfig = BaseConfig.MomoLv6Cfg[level];
-					break;
-				default:
-					console.log("quality not support");
-					break;
-			}
+			const lvUpgradeConfig = this.upgradeConfig;
 			//卡五必难
 			let isHard = (Number(level) + 1) % 5 == 0 && Number(vType) <= 4;
 
@@ -402,6 +426,8 @@ export default {
 					type: "v5"
 				})
 			}
+
+			console.log(lvUpgradeConfig, 'lvUpgradeConfig');
 
 			console.log(arr, "getUpgradeInfo");
 			//处理需要自己的材料
@@ -569,6 +595,13 @@ export default {
 			
 			return showList;
 		},
+		// 是否需要mec
+		isNeedMec() {
+			return !!this.upgradeConfig?.mecNum;
+		},
+		needApproveMec(){
+			return this.isMECApproved == false;
+		},
 	},
 	created() {
 		this.inputName = this.hasSetName ? this.getNowPetItem.tokenName : "";
@@ -579,6 +612,7 @@ export default {
 			if(this.lockUpgradeTime > 0) this.lockUpgradeTime--;
 		}, 1000);
 		EventBus.$on(EventConfig.LevelUpConfirm,this.levelUpConfirm);
+		this.viewMECApproved();
 	},
 	beforeDestroy(){
 		clearInterval(upgradeLockTimer);
@@ -864,12 +898,28 @@ export default {
 				}
 			});
 		},
+		// 查询MEC授权状态
+		async viewMECApproved(){
+			const isApprove = await Wallet.ETH.isApprovedForAll(WalletConfig.ETH.crystalToken, WalletConfig.ETH.moMoToken);
+
+			if(isApprove != null) {
+				this.isMECApproved = isApprove;
+			}
+		},
+		// 授权MEC
+		async approveMEC(){
+			const hash = await Wallet.ETH.approvedForAll(WalletConfig.ETH.crystalToken, WalletConfig.ETH.moMoToken, ()=>{
+				this.viewMECApproved();
+			});
+
+			if(hash){
+				this.lockBtnMethod("approveLock");
+			}
+		},
 	},
 };
 </script>
-<style scoped>
-
-
+<style lang="less" scoped>
 @media (max-width: 768px){
 	.type_change{
 		position: static!important;
@@ -968,6 +1018,56 @@ export default {
 	overflow: hidden;
 	position: relative;
 	margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+	.mec-item {
+    zoom: 0.6 !important;
+	}
+}
+
+.mec-item {
+	position: relative;
+
+	.icon {
+    cursor: pointer;
+    width: 86px;
+    height: 65px;
+    margin: 0 10px 25px 10px;
+		background-image: url("../../assets/nft_head_mec.png");
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		img {
+			width: 40%;
+		}
+	}
+
+	.count {
+		width: 100%;
+		text-align: center;
+		font-size: 13px;
+		position: absolute;
+		bottom: 0;
+	}
+}
+
+#selectNft-dialog {
+	.items {
+		& > span {
+			display: inline-block;
+			vertical-align: top;
+		}
+
+		.mec-item {
+			.count {
+				color: #e24c4c;
+			}
+		}
+	}
 }
 </style>
 

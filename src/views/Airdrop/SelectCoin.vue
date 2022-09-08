@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { PancakeConfig, EventConfig } from '@/config';
+import { PancakeConfig, EventConfig, WalletConfig } from '@/config';
 import { Dialog, Loading } from '@/components';
 import {CommonMethod} from '@/mixin';
 import { mapState } from 'vuex'
@@ -27,6 +27,7 @@ export default {
 	data(){
 		return({
 			hasSelectCoin: [],
+			coins: null,
 			cb: ()=>{},
 			updataTime: 0,
 		});
@@ -36,7 +37,7 @@ export default {
 			coinArr: (state) => state.bnbState.data.coinArr,
 		}),
 		selectCoinList(){
-			return Object.keys(PancakeConfig.SelectCoin);
+			return this.coins || Object.keys(PancakeConfig.SelectCoin);
 		}
 	},
 	created(){
@@ -51,11 +52,21 @@ export default {
 			this.coinArr["BNB"].balance = balance;
 			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 
-			for (let coinKey in PancakeConfig.SelectCoin) {
-				let {addr, decimals, omit} = PancakeConfig.SelectCoin[coinKey];
-				if(addr != ""){
-					let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
-					this.coinArr[coinKey].balance =  Common.numFloor((Number(value) / decimals), omit);
+			for (let key in PancakeConfig.SelectCoin) {
+				let {addr, decimals, omit} = PancakeConfig.SelectCoin[key];
+
+				if(addr != "") {
+					let value;
+
+					if (key === "MEC") {
+						const data = await Wallet.ETH.get1155Num(WalletConfig.ETH.crystalToken, [1]);
+						value = data['1'];
+					} else {
+						const data = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
+						value = Common.numFloor((Number(data) / decimals), omit);
+					}
+
+					this.coinArr[key].balance = value;
 					this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 					await Common.sleep(500);
 				}
@@ -70,11 +81,13 @@ export default {
 			return this;
 		},
 		close(){
+			this.coins = null;
 			this.oprDialog("select-coin-dialog","none")
 			return this;
 		},
-		setOprData(hasSelectCoin, cb){
+		setOprData(hasSelectCoin, cb, coins){
 			this.hasSelectCoin = hasSelectCoin;
+			this.coins = coins;
 			this.cb = cb;
 			return this;
 		},

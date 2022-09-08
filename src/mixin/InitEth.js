@@ -401,9 +401,19 @@ const InitEth = {
 
 			for (let key in PancakeConfig.SelectCoin) {
 				let {addr, decimals, omit} = PancakeConfig.SelectCoin[key];
-				if(addr != ""){
-					let value = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
-					this.coinArr[key].balance =  Common.numFloor((Number(value) / decimals), omit);
+
+				if(addr != "") {
+					let value;
+
+					if (key === "MEC") {
+						const data = await Wallet.ETH.get1155Num(WalletConfig.ETH.crystalToken, [1]);
+						value = data['1'];
+					} else {
+						const data = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
+						value = Common.numFloor((Number(data) / decimals), omit);
+					}
+
+					this.coinArr[key].balance = value;
 					this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 					await Common.sleep(500);
 				}
@@ -517,7 +527,7 @@ const InitEth = {
 
 			let coinArr = this.coinArr;
 			let version = pancakeVType == 1?"V1":"V2";
-
+			
 			let dtTime = new Date().valueOf() - coinArr[coinKey].lpPriceUpTs;
 			if(coinName.indexOf("-") == -1 || dtTime < 5000) return;
 			let tokenA = coinName.split("-")[0];

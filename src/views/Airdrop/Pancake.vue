@@ -61,13 +61,15 @@
 			</div>
 		</Dialog>
 		<SelectCoin ref="selectCoin"  />
+		<SelectPool ref="selectPool" />
 		<Setting ref="setting" />
 	</div>
 </template>
 <script>
 import { Dialog } from '@/components';
 import {CommonMethod} from '@/mixin';
-import SelectCoin from '@/views/Airdrop/SelectCoin' ;
+import SelectCoin from '@/views/Airdrop/SelectCoin';
+import SelectPool from './SelectPool';
 import PancakeSwap from '@/views/Airdrop/PancakeSwap';
 import PancakeLiquidity from '@/views/Airdrop/PancakeLiquidity';
 import QuickSwap from '@/views/Airdrop/QuickSwap'
@@ -78,7 +80,7 @@ import {PancakeConfig} from "@/config";
 export default {
 	name: "Pancake",
 	mixins: [CommonMethod],
-	components: {Dialog, SelectCoin, PancakeSwap, PancakeLiquidity, Setting, QuickSwap},
+	components: {Dialog, SelectCoin, PancakeSwap, PancakeLiquidity, Setting, QuickSwap, SelectPool},
 	computed: {
 		...mapState({
 			setting: (state) => state.bnbState.data.setting,
@@ -142,7 +144,6 @@ export default {
 			return this;
 		},
 		setOprData(data){
-			console.log(data);
 			this.oprCoinKey = data.coinKey;
 			this.setting.pancakeVType = data.pancakeVType;
 			this.$store.commit("bnbState/setData", {setting: this.setting});

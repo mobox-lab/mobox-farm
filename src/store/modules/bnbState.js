@@ -68,6 +68,7 @@ const state = () => ({
 			"BNB": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "BNB"},
 			"MBOX": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "MBOX"},
 			"BTCB": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "BTCB"},
+			"MEC": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "MEC"},
 			"ETH": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "ETH"},
 			"BUSD": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "BUSD"},
 			"USDT": {...Common.ObjClone(baseCoinAttr), isLP: false,coinName: "USDT"},
@@ -85,6 +86,7 @@ const state = () => ({
 			"KEY-BNB": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "KEY-BNB"},
 
 			"MBOX-BNB-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "MBOX-BNB"},
+			"MBOX-MEC": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "MBOX-MEC"},
 			"BTCB-BNB-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "BTCB-BNB"},
 			"ETH-BNB-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "ETH-BNB"},
 			"BUSD-BNB-V2": {...Common.ObjClone(baseCoinAttr), isLP: true,coinName: "BUSD-BNB"},

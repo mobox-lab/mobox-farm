@@ -16,8 +16,8 @@
 		<div class="tab-content" >
 			<div class="kk-div">
 				<div class="mgt-10 por">
-					<div class="ly-input-pre-icon" :class="oprData.isLP?'double-img':'' " v-if="oprData.coinName != ''" style="zoom: 0.75">
-						<img v-for="(name, key) in oprData.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="40" alt="" />
+					<div class="ly-input-pre-icon" :class="oprData.isLP ? 'double-img':'' " v-if="oprData.coinName != ''" style="zoom: 0.75" @click="showSelect">
+						<img v-for="(name, key) in pair" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="40" alt="" />
 					</div>
 					<input type="text" class="ly-input tac" style="width:100%;padding: 0px 50px" v-model="inputValue"  readonly="readonly" >
 				</div>
@@ -37,8 +37,8 @@
 						<Loading v-else />
 					</p>
 					<div class="tar vertical-children">
-						<img :src="require(`@/assets/coin/${oprData.coinName.split('-')[0]}.png`)" height="20" alt=""/>
-						<span class="mgl-10">{{oprData.coinName.split('-')[0]}}</span>
+						<img :src="require(`@/assets/coin/${pair[0]}.png`)" height="20" alt=""/>
+						<span class="mgl-10">{{pair[0]}}</span>
 					</div>
 				</div>
 				<div class="aveage-box mgt-10" style="font-size: 18px">
@@ -47,8 +47,8 @@
 						<Loading v-else />
 					</p>
 					<div class="tar vertical-children">
-						<img :src="require(`@/assets/coin/${oprData.coinName.split('-')[1]}.png`)" height="20" alt=""/>
-						<span class="mgl-10">{{oprData.coinName.split('-')[1]}}</span>
+						<img :src="require(`@/assets/coin/${pair[1]}.png`)" height="20" alt=""/>
+						<span class="mgl-10">{{pair[1]}}</span>
 					</div>
 				</div>
 			</div>
@@ -56,16 +56,16 @@
 			<div class="aveage-box mgt-30 small" >
 				<p class="tal ">{{$t("Air-drop_103")}}:</p>
 				<div class="tar vertical-children" style="flex:2">
-					<p>1 {{$parent.from.coinName}} = {{$parent.toValuePerFrom}} {{$parent.to.coinName}}</p>
-					<p>1 {{$parent.to.coinName}} = {{$parent.fromValuePerTo}} {{$parent.from.coinName}}</p>
+					<p>1 {{pair[0]}} = {{toValuePerFrom}} {{pair[1]}}</p>
+					<p>1 {{pair[1]}} = {{fromValuePerTo}} {{pair[0]}}</p>
 				</div>
 			</div>
 
 			<div class="mgt-20 " :class="needApprove?'btn-group':'' ">
-				<StatuButton data-step="1" v-if="needApprove" :onClick="approve.bind(this, oprData.coinKey)" :isDisable="!needApprove" :isLoading="coinArr[oprData.coinKey].isApproving"  style="width: 80%" >
-					{{$t("Air-drop_16")}} {{oprData.coinName}}
+				<StatuButton data-step="1" v-if="needApprove" :onClick="approve.bind(this, coinKey)" :isDisable="!needApprove" :isLoading="coinArr[coinKey].isApproving"  style="width: 80%" >
+					{{$t("Air-drop_16")}} {{pair[0]}}-{{pair[1]}}
 				</StatuButton>
-				<StatuButton data-step="2" :onClick="removeLp.bind(this)" style="width: 80%" :isDisable="needApprove && oprData.balance > 0" :isLoading="coinArr[oprData.coinKey].isRemoveLiqiditing" class="mgt-10">
+				<StatuButton data-step="2" :onClick="removeLp.bind(this)" style="width: 80%" :isDisable="needApprove" :isLoading="coinArr[coinKey].isRemoveLiqiditing" class="mgt-10">
 					{{$t("MOMO_20")}}
 				</StatuButton>
 			</div>
@@ -87,6 +87,7 @@ export default {
 		return({
 			inputPercent: 1,
 			inputValue: "",
+			pair: [],
 		})
 	},
 	computed: {
@@ -94,47 +95,90 @@ export default {
 			coinArr: (state) => state.bnbState.data.coinArr,
 			setting: (state) => state.bnbState.data.setting,
 		}),
-		getTargetLPPrice(){
-			let retObj = ["-","-"];
+		toValuePerFrom(){
+			let reserve0, reserve1;
 
-			let reserve0 = Number(this.$parent.from.reserve);
-			let reserve1 = Number(this.$parent.to.reserve);
-			let _totalSupply = Number(this.$parent.totalSupply);
+			if (this.isNotMec) {
+				reserve0 = Number(this.$parent.from.reserve);
+				reserve1 = Number(this.$parent.to.reserve);
+			} else {
+				reserve0 = Number(this.$parent.mecReserveData.reserveA);
+				reserve1 = Number(this.$parent.mecReserveData.reserveB);
+			}
+
+			if (!reserve0) return 0;
+
+			return Common.numFloor(reserve1 / reserve0, 1e8);
+		},
+		fromValuePerTo(){
+			let reserve0, reserve1;
+
+			if (this.isNotMec) {
+				reserve0 = Number(this.$parent.from.reserve);
+				reserve1 = Number(this.$parent.to.reserve);
+			} else {
+				reserve0 = Number(this.$parent.mecReserveData.reserveA);
+				reserve1 = Number(this.$parent.mecReserveData.reserveB);
+			}
+
+			if (!reserve1) return 0;
+
+			return Common.numFloor(reserve0 / reserve1, 1e8);
+		},
+		isNotMec() {
+			return this.pair.indexOf('MEC') == -1;
+		},
+		getTargetLPPrice(){
+			let retObj = ["-", "-"];
+
+			let reserve0, reserve1, _totalSupply;
+
+			if (this.isNotMec) {
+				reserve0 = Number(this.$parent.from.reserve);
+				reserve1 = Number(this.$parent.to.reserve);
+				_totalSupply = Number(this.$parent.totalSupply);
+			} else {
+				reserve0 = Number(this.$parent.mecReserveData.reserveA);
+				reserve1 = Number(this.$parent.mecReserveData.reserveB);
+				_totalSupply = Number(this.$parent.mecTotalSupply / 1e18);
+			}
+
 			let lp = Number(this.inputValue);
+
 			if(_totalSupply == 0 || reserve0 == 0 || reserve1 == 0) return retObj;
 
-			retObj[0] = Common.numFloor(lp * reserve0 / _totalSupply, PancakeConfig.SelectCoin[this.$parent.from.coinName].omit);
-			retObj[1] = Common.numFloor(lp * reserve1 / _totalSupply, PancakeConfig.SelectCoin[this.$parent.to.coinName].omit);
+			retObj[0] = Common.numFloor(lp * reserve0 / _totalSupply, PancakeConfig.SelectCoin[this.pair[0]].omit);
+			retObj[1] = Common.numFloor(lp * reserve1 / _totalSupply, PancakeConfig.SelectCoin[this.pair[1]].omit);
 
 			return retObj;
-
 		},
 		needApprove(){
-			let {coinName, coinKey} = this.oprData;
+			const coinKey = this.coinKey;
+			let {coinName} = this.oprData;
 			if(coinName == "") return false;
 			let coinArr = this.coinArr;
 			
 			let allowanceToSwap = Number(coinArr[coinKey].allowanceToSwap);
 			return coinName != ''  && allowanceToSwap >= 0 && allowanceToSwap <  1e8
 		},
+		coinKey() {
+			return this.isNotMec ? this.oprData.coinKey : this.pair.join('-');
+		}
 	},
 	watch: {
 		inputValue: function(){
 			this.inputPercent = 0;
 		},
-		oprData: {
-			handler(newData){
-				if(this.inputValue === ""){
-					this.inputValue = newData.balance;
-					this.setCoinAllowance(newData.coinKey);
-				} 
+		pair: {
+			handler() {
+				this.inputValue = this.isNotMec ? this.oprData.balance : this.$parent.mecLP;
+				this.setCoinAllowance();
 			},
-			immediate: true
 		},
-	
 		inputPercent: function(newData){
-			let {balance, omit} = this.oprData;
-			let targetValue = Common.numFloor(Number(balance) * Number(newData), omit);
+			const balance = this.isNotMec ? this.oprData.balance : this.$parent.mecLP;
+			let targetValue = Common.numFloor(Number(balance) * Number(newData), 1e6);
+
 			if(newData == 0) return;
 			
 			this.inputValue = targetValue;
@@ -143,16 +187,20 @@ export default {
 	methods:{
 		async removeLp(){
 			let coinArr = this.coinArr;
+			const data = this.isNotMec ? this.oprData : {
+				coinName: this.pair.join('-'),
+				coinKey: this.pair.join('-')
+			};
 
-			let res = await Wallet.ETH.removeLiquidity(this.oprData, Number(this.inputValue), this.getTargetLPPrice, this.setting);
+			let res = await Wallet.ETH.removeLiquidity(data, Number(this.inputValue), this.getTargetLPPrice, this.setting);
 			if(res){
 				this.inputValue = 0;
 				coinArr[this.oprData.coinKey].isRemoveLiqiditing = true;
 			}
 		},
-		async approve(coinKey){
-			console.log(coinKey);
-			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
+		async approve(){
+			const coinKey = this.coinKey;
+			let routerAddr = this.isNotMec ? (this.setting.pancakeVType == 1 ? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2) : PancakeConfig.MecSwap;
 			let coinArr =  this.coinArr;
 			let stakeLp = PancakeConfig.StakeLP;
 
@@ -160,30 +208,55 @@ export default {
 			let {isApproving, allowanceToSwap} =  coinArr[coinKey];
 			if(isApproving || Number(allowanceToSwap) >1e8) return;
 
-			let hash = await Wallet.ETH.approveErcToTarget(stakeLp[coinKey].addr, 
-			routerAddr, {coinKey, type: "allowanceToSwap"});
-			if(hash){
+			let hash = await Wallet.ETH.approveErcToTarget(stakeLp[coinKey].addr, routerAddr, {coinKey, type: "allowanceToSwap"});
+
+			if (hash) {
 				coinArr[coinKey].isApproving = true;
 			}
 		},
 
-		async setCoinAllowance(coinKey){
-			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
+		async setCoinAllowance() {
+			const coinKey = this.coinKey;
+			const routerAddr = this.isNotMec ? (this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2) : PancakeConfig.MecSwap;
+			
+
 			let coinArr =  this.coinArr;
 			let stakeLp = PancakeConfig.StakeLP;
 
 			if(coinKey != "") {
 				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(stakeLp[coinKey].addr, routerAddr, false);
+				console.log(allowance, '===allowance===');
 				coinArr[coinKey].allowanceToSwap = Number(allowance);
 				coinArr["ts"] = new Date().valueOf();
 			}
 		},
+		// 显示选择币种
+		showSelect() {
+			// TODO:TESET
+			// const ref = this.$parent.$parent.$parent.$refs.selectPool;
+			// ref.show(this.onSelectCoin);
+		},
+		// 选择币种
+		onSelectCoin(data) {
+			this.pair = data;
+		}
+	},
+	created() {
+		this.pair = this.oprData.coinName.split('-');
 	}
 }
 </script>
 
-<style  scoped>
+<style lang="less" scoped>
 .kk-div{
 	border:1px solid #4e5e86;padding:10px;border-radius:10px;
+}
+
+.ly-input-pre-icon {
+	cursor: pointer;
+
+	&:hover {
+		opacity: 0.6;
+	}
 }
 </style>

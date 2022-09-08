@@ -175,17 +175,10 @@ export default {
 	async created(){
 		await Wallet.ETH.getAccount();
 		Common.app.getPoolsEarns();
-		await this.getGroupV4();
 	},
 	methods: {
-		async getGroupV4(){
-			let num = await Wallet.ETH.getGroupV4();
-			this.needShowAdd = num == 0;
-		},
 		async joinStake(){
-			let hash = await Wallet.ETH.joinStake(async ()=>{
-				await this.getGroupV4();
-			});
+			let hash = await Wallet.ETH.joinStake();
 			if(hash){
 				this.lockBtnMethod("joinStakeLock")
 			}

@@ -120,7 +120,7 @@
 			</div>
 			<div class="mgt-20 tac " :class="needApproved?'btn-group':'' " style="margin-bottom:10px">
 				<div v-if="needApproved && from.coinName != '' ">
-					<button data-step="1" @click="approve" class="btn-primary por" style="width:80%;" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
+					<button data-step="1" @click="approve" class="btn-primary por" style="width:30%;" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
 						<Loading v-if="coinArr[from.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
 						{{$t("Air-drop_16")}} {{from.coinName}}
 					</button>
@@ -211,13 +211,22 @@ export default {
 				this.oneToValue = "-";
 				this.initData();
 			}
-		}
+		},
 	},
 	computed:{
 		...mapState({
 			coinArr: (state) => state.bnbState.data.coinArr,
 			setting: (state) => state.bnbState.data.setting,
 		}),
+		needApproved(){
+			let coinKey = this.from.coinName;
+			let needApprove =  false;
+			if(coinKey != "" && coinKey != "BNB" && this.coinArr[coinKey].allowanceToSwap == 0){
+				needApprove = true;
+			}
+
+			return needApprove;
+		},
 		hasSelectTargetCoin(){
 			return this.from.coinName != "" &&this.to.coinName != "";
 		},
@@ -228,23 +237,16 @@ export default {
 		},
 		//判断是否可以Swap
 		canSwap(){
-			return this.hasSelectTargetCoin 
-						&& Number(this.from.inputValue) > 0 
-						&& Number(this.to.inputValue) > 0 
-						&& Number(this.coinArr[this.from.coinName].balance) >= Number(this.from.inputValue)
-						&& this.hasApproved
+			// return this.hasSelectTargetCoin 
+			// 			&& Number(this.from.inputValue) > 0 
+			// 			&& Number(this.to.inputValue) > 0 
+			// 			&& Number(this.coinArr[this.from.coinName].balance) >= Number(this.from.inputValue)
+			// 			&& this.hasApproved
+			return true;
 		},
 		hasApproved(){
 			let coinKey = this.from.coinName;
 			return coinKey == "BNB" || (coinKey != "" && coinKey != "BNB" && this.coinArr[coinKey].allowanceToSwap > 1e8);
-		},
-		needApproved(){
-			let coinKey = this.from.coinName;
-			let needApprove =  false;
-			if(coinKey != "" && coinKey != "BNB" && this.coinArr[coinKey].allowanceToSwap == 0){
-				needApprove = true;
-			}
-			return needApprove;
 		},
 		getSlippage(){
 			return Number(this.setting.slippage) || 0.5;
@@ -298,7 +300,7 @@ export default {
 	beforeDestroy(){
 		clearInterval(timerInterval);
 	},
-	methods:{
+	methods: {
 		maxInputFrom(){
 			let value = this.coinArr[this.from.coinName].balance;
 			if(this.from.coinName == "BNB"){
@@ -316,6 +318,8 @@ export default {
 				//TODO: 请求可以兑换到的数量,延时防抖
 				clearTimeout(this.timer);
 				this.timer =  setTimeout(async () => {
+					try {
+
 					if(Number(this[type].inputValue) <= 0) return;
 
 					let value, amountOut;
@@ -331,9 +335,16 @@ export default {
 							const res = await Wallet.ETH.getMecSwapAmountsOut(this[type].inputValue * coin.decimals, this.swapPath);
 							amountOut = res / PancakeConfig.SelectCoin[this.to.coinName].decimals;
 						} else {
-							const coin = PancakeConfig.SelectCoin[this.from.coinName];
-							const res = await Wallet.ETH.getMecSwapAmountsIn(this[type].inputValue, this.swapPath);
-							amountOut = res / coin.decimals;
+							const toCoin = PancakeConfig.SelectCoin[this.to.coinName];
+							const res = await Wallet.ETH.getMecSwapAmountsIn(this[type].inputValue * toCoin.decimals, this.swapPath);
+							amountOut = res / PancakeConfig.SelectCoin[this.from.coinName].decimals;
+						}
+
+						//计算要扣除的手续费
+						if(otherType == "to"){
+							value = amountOut * 0.95;
+						}else{
+							value = amountOut / 0.95;
 						}
 					} else {
 						let sendData = {
@@ -348,7 +359,6 @@ export default {
 
 						if(code == 200){
 							amountOut = data.amountOut;
-							this[otherType].isEstimated = true;
 							this.path = data.path;
 
 							//要反转一下path路径。当路径>3的时候gg 要重新弄了 -- @王十三
@@ -356,24 +366,24 @@ export default {
 								this.path.reverse();
 							}
 						}
+
+						//计算要扣除的手续费
+						if(otherType == "to"){
+							value = amountOut * 0.997;
+						}else{
+							value = amountOut / 0.997;
+						}
 					}
 
 					// this.getOneToValue();
 					this[otherType].loading = false;
 					this[otherType].isEstimated = true;
 
-					//计算要扣除的手续费
-					if(otherType == "to"){
-						value = amountOut * 0.997;
-					}else{
-						value = amountOut / 0.997;
-					}
-
 					this[otherType].inputValue = this.numFloor(value, 1e10);
 
 					this[type].isEstimated = false;
+					} catch(error) {}
 				}, stepTime);
-				
 			}else{
 				this[otherType].inputValue = "";
 			}
@@ -396,19 +406,21 @@ export default {
 		},
 		async setCoinAllowance(){
 			let coinKey = this.from.coinName;
-			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
 
 			if (coinKey != "" && coinKey != "BNB") {
+				const addr = PancakeConfig.SelectCoin[coinKey].addr;
+
 				let allowance;
 
 				if (coinKey === 'MEC') {
-					const res = await Wallet.ETH.isApprovedForAll(PancakeConfig.SelectCoin.MEC.addr, PancakeConfig.MecSwap);
-					allowance = res ? -1 : 0;
+					allowance = await Wallet.ETH.isApprovedForAll(addr, PancakeConfig.MecSwap);
 				} else {
-					allowance = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, routerAddr, false);
+					const routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
+					const res = await Wallet.ETH.viewErcAllowanceToTarget(addr, routerAddr, false);
+					allowance = Number(res);
 				}
 
-				this.coinArr[coinKey].allowanceToSwap = Number(allowance);
+				this.coinArr[coinKey].allowanceToSwap = allowance;
 				this.coinArr["ts"] = new Date().valueOf();
 			}
 		},
@@ -421,13 +433,13 @@ export default {
 
 			let hash;
 
-			if (this.from.coinName === 'MEC' || this.from.coinName === 'MEC') {
+			if (this.from.coinName === 'MEC' || this.to.coinName === 'MEC') {
 				hash = await Wallet.ETH.swapMec(this.from, this.to, this.path, this.setting);
 			} else {
 				hash = await Wallet.ETH.goSwap(this.from, this.to, this.path, this.setting);
 			}
 
-			if(hash) {
+			if (hash) {
 				this.from.inputValue = "";
 				this.to.inputValue = "";
 			}
@@ -458,7 +470,6 @@ export default {
 			this.from = resultFrom;
 			this.to = resultTo;
 			this.inputValueChange(this.from.isEstimated?"to":"from");
-
 			this.setCoinAllowance();
 		},
 		async approve(){
@@ -466,6 +477,13 @@ export default {
 			if(coinKey == "" || coinKey == "BNB") return;
 			let {isApproving, allowanceToSwap} =  this.coinArr[coinKey];
 			if(isApproving || Number(allowanceToSwap) >1e8) return;
+
+			if (coinKey === 'MEC') {
+				await Wallet.ETH.approvedForAll(PancakeConfig.SelectCoin.MEC.addr, PancakeConfig.MecSwap, () => {
+					this.viewMECApproved();
+				});
+				return;
+			}
 
 			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
 

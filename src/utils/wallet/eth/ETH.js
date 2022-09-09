@@ -166,6 +166,7 @@ export default class ETH {
 			PancakSwapContract.swapExactTokensForTokens,
 			PancakSwapContract.swapTokensForExactTokens,
 		], PancakeConfig.SwapRouterAddrV2);
+
 		// MEC兑换合约
 		this.mecSwapContrac = new this.web3.eth.Contract([
 			MecSwap.approve,
@@ -182,7 +183,7 @@ export default class ETH {
 			MecSwap.swapTokensForExactTokens,
 			MecSwap.getReserves,
 		], PancakeConfig.MecSwap);
-		// MEC兑换合约
+
 		this.mecSwapPairContrac = new this.web3.eth.Contract([
 			MecSwap.getPairInfo,
 		], PancakeConfig.MecSwapPair);
@@ -1969,6 +1970,69 @@ export default class ETH {
 	// 兑换mec
 	static async swapMec(from, to, path, setting) {
 		console.log(from, to, path, setting);
+		let myAddr = await this.getAccount(true);
+		if (!myAddr) return;
+
+		let method;
+		let callValue = this.numToHex(0);
+		let duration = Number(setting.duration) || 20;
+		let slippage = Number(setting.slippage) || 0.5;
+		let decimals_to = BigNumber(PancakeConfig.SelectCoin[to.coinName].decimals);
+		let decimals_from = BigNumber(PancakeConfig.SelectCoin[from.coinName].decimals);
+
+		let deadline = parseInt(new Date().valueOf() / 1000) + (60 *duration);
+		let amountIn = this.numToHex(BigNumber(Common.numFloor(from.inputValue , 1e8)).times(decimals_from));
+		let amountInMax = this.numToHex(BigNumber(Common.numFloor(from.inputValue * (1+slippage/100), 1e8)).times(decimals_from));
+		let amountOut = this.numToHex(BigNumber(Common.numFloor(to.inputValue , 1e8)).times(decimals_to));
+		let amountOutMin = this.numToHex(BigNumber(Common.numFloor(to.inputValue * (1-slippage/100), 1e8)).times(decimals_to));
+
+		const PancakeSwapContract  = this.mecSwapContrac;
+
+
+		if(from.coinName == "BNB" || to.coinName == "BNB"){
+			//BNB 兑换 MEC
+			if(from.coinName == "BNB"){
+				if(to.isEstimated){
+					method =PancakeSwapContract.methods.swapExactETHForTokens(amountOutMin, 1, path, myAddr, deadline);
+					callValue = amountIn;
+				}
+
+				if(from.isEstimated){
+					method =PancakeSwapContract.methods.swapETHForExactTokens(amountOut, 1, path, myAddr, deadline);
+					callValue = amountInMax;
+				}
+			}
+
+			//其他币兑换成BNB
+			if(to.coinName == "BNB"){
+				if(to.isEstimated){
+					method =PancakeSwapContract.methods.swapExactTokensForETH(amountIn, amountOutMin, 1, path, myAddr, deadline);
+				}
+				if(from.isEstimated){
+					method =PancakeSwapContract.methods.swapTokensForExactETH(amountOut,amountInMax, 1, path, myAddr, deadline);
+				}
+			}
+
+		}else{
+			if(to.isEstimated){
+				method =PancakeSwapContract.methods.swapExactTokensForTokens(amountIn, amountOutMin, 1, path, myAddr, deadline);
+			}
+			if(from.isEstimated){
+				console.log(amountOut, amountInMax, 1, path, myAddr, deadline);
+				method =PancakeSwapContract.methods.swapTokensForExactTokens(amountOut, amountInMax, 1, path, myAddr, deadline);
+			}
+		}
+		
+		return new Promise(resolve => {
+			this.sendMethod(method, {from: myAddr,value: callValue},
+				hash=>resolve(hash),
+				()=>{
+					console.log("swap success!!!!!");
+					Common.store.commit("bnbState/clearLoading");
+					EventBus.$emit(EventConfig.SwapSuccess);
+				}
+			)
+		});
 	}
 
 	// mec兑换 - 获取in值
@@ -1976,17 +2040,15 @@ export default class ETH {
 		console.log(amountOut, path);
 		amountOut = this.numToHex(BigNumber(amountOut));
 		const data = await this.mecSwapContrac.methods.getAmountsIn(1, amountOut, path).call();
+		console.log(data);
 		return data[0];
 	}
-	
+
 	// mec兑换 - 获取out值
 	static async getMecSwapAmountsOut(amountIn, path) {
-		console.log(amountIn, path);
 		amountIn = this.numToHex(BigNumber(amountIn));
 		const data = await this.mecSwapContrac.methods.getAmountsOut(1, amountIn, path).call();
-		console.log(data);
 		return data[1];
-
 	}
 
 	//获取兑换价格

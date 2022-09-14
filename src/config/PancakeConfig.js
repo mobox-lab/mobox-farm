@@ -1,9 +1,11 @@
+import WalletConfig from "../config/index";
+
 export default class PancakeConfig {
 	static SwapRouterAddr = "0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F";
 	static SwapRouterAddrV2 = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
 	static QuickSwapAddr = "0x50aEdfA05bbC474E53BB45B6Ed0aD3aE7Fb54B0f";
-	static MecSwap = "0xCAc8aA7cb8775Bb86DfacaE15B3dC73143D4bcF3";
-	static MecSwapPair = "0xd5C390665eC94A5C76D79356582944164816580a";
+	static MecSwap = "0xbc2286100f8Deb469A09C603c3E67806cab97732";
+	static MecSwapPair = "0xD4e6bd32B8e03aBC2D5a54e4de9E703229780AF6";
 	static SelectCoin = {
 		"BNB": {
 			decimals: 1e18,
@@ -87,7 +89,7 @@ export default class PancakeConfig {
 		},
 		"MBOX-MEC":{
 			pIndex: 12,
-			addr: "0xd5C390665eC94A5C76D79356582944164816580a",
+			addr: PancakeConfig.MecSwapPair,
 			allocPoint: 10,
 			decimals: 0,
 			omit: 1e6,

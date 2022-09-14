@@ -38,11 +38,14 @@
 						<p class="max-button"  v-if="from.coinName != ''" @click="oneToValue = '-';maxInputFrom();inputValueChange('from')">Max</p>
 					</div>
 					<div class="footer">
-						<div class="icon" @click="openSelectCoin('from')">
-							<img v-if="!!from.coinName" :src="require(`../../assets/coin/${from.coinName}.png`)" />
+						<div class="coin-info" @click="openSelectCoin('from')">
+							<span class="icon">
+								<img v-if="!!from.coinName" :src="require(`../../assets/coin/${from.coinName}.png`)" />
+							</span>
+							<span class="coin-name">{{from.coinName}}</span>
+							<img class="down-icon" src="@/assets/icon/down.png" />
 						</div>
 						<input type="text" placeholder="0.0" v-model="from.inputValue" v-number @keydown="oneToValue = '-';" @keyup="inputValueChange('from')">
-						<div class="coin-name">{{from.coinName}}</div>
 					</div>
 				</div>
 				<div class="mgt-10 tac">
@@ -56,11 +59,14 @@
 						<p class="balance">{{$t("Mine_05")}}: {{to.coinName==""?"-":coinArr[to.coinName].balance}}</p>
 					</div>
 					<div class="footer">
-						<div class="icon" @click="openSelectCoin('to')">
-							<img v-if="!!to.coinName" :src="require(`../../assets/coin/${to.coinName}.png`)" />
+						<div class="coin-info" @click="openSelectCoin('to')">
+							<span class="icon">
+								<img v-if="!!to.coinName" :src="require(`../../assets/coin/${to.coinName}.png`)" />
+							</span>
+							<div class="coin-name">{{to.coinName}}</div>
+							<img class="down-icon" src="@/assets/icon/down.png" />
 						</div>
 						<input type="text" placeholder="0.0" v-model="to.inputValue" v-number @keydown="oneToValue = '-';" @keyup="inputValueChange('to')">
-						<div class="coin-name">{{to.coinName}}</div>
 					</div>
 				</div>
 				<!-- <div class="panel-item mgt-10">
@@ -98,11 +104,11 @@
 		
 			<div class="aveage-box  mgt-5" v-if="to.isEstimated">
 				<p class="tal small">{{$t("Air-drop_53")}}</p>
-				<p class="tar small">{{numFloor(to.inputValue * (1-getSlippage/100), 1e8)}} {{to.coinName}}</p>
+				<p class="tar small">{{to.coinName === 'MEC' ? Math.floor(numFloor(to.inputValue * (1-getSlippage/100), 1e8)) : numFloor(to.inputValue * (1-getSlippage/100), 1e8)}} {{to.coinName}}</p>
 			</div>
 			<div class="aveage-box  mgt-5" v-if="from.isEstimated">
 				<p class="tal small">{{$t("Air-drop_94")}}</p>
-				<p class="tar small">{{numFloor(from.inputValue * (1+getSlippage/100), 1e8)}} {{from.coinName}}</p>
+				<p class="tar small">{{from.coinName === 'MEC' ? Math.floor(numFloor(from.inputValue * (1+getSlippage/100), 1e8)) : numFloor(from.inputValue * (1+getSlippage/100), 1e8)}} {{from.coinName}}</p>
 			</div>
 			<div class="aveage-box mgt-5 " v-if="canCalcPerPrice">
 				<p class="tal small">{{$t("Air-drop_214")}}</p>
@@ -120,7 +126,7 @@
 			</div>
 			<div class="mgt-20 tac " :class="needApproved?'btn-group':'' " style="margin-bottom:10px">
 				<div v-if="needApproved && from.coinName != '' ">
-					<button data-step="1" @click="approve" class="btn-primary por" style="width:30%;" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
+					<button data-step="1" @click="approve" class="btn-primary por" style="width:30%;height:40px" :class="coinArr[from.coinName].allowanceToSwap > 1e8 || coinArr[from.coinName].isApproving?'disable-btn':''">
 						<Loading v-if="coinArr[from.coinName].isApproving"  style="position:absolute;left:8px;top:9px"/>
 						{{$t("Air-drop_16")}} {{from.coinName}}
 					</button>
@@ -237,12 +243,11 @@ export default {
 		},
 		//判断是否可以Swap
 		canSwap(){
-			// return this.hasSelectTargetCoin 
-			// 			&& Number(this.from.inputValue) > 0 
-			// 			&& Number(this.to.inputValue) > 0 
-			// 			&& Number(this.coinArr[this.from.coinName].balance) >= Number(this.from.inputValue)
-			// 			&& this.hasApproved
-			return true;
+			return this.hasSelectTargetCoin 
+						&& Number(this.from.inputValue) > 0 
+						&& Number(this.to.inputValue) > 0 
+						&& Number(this.coinArr[this.from.coinName].balance) >= Number(this.from.inputValue)
+						&& this.hasApproved
 		},
 		hasApproved(){
 			let coinKey = this.from.coinName;
@@ -251,6 +256,7 @@ export default {
 		getSlippage(){
 			return Number(this.setting.slippage) || 0.5;
 		},
+		// TODO:需要对接计算方式
 		getPriceImpact(){
 			if(this.oneToValue == "-") return 0;
 			let num = Number(this.numFloor((this.from.inputValue/ this.to.inputValue - this.oneToValue)/this.oneToValue * 100, 100));
@@ -320,69 +326,91 @@ export default {
 				this.timer =  setTimeout(async () => {
 					try {
 
-					if(Number(this[type].inputValue) <= 0) return;
+						let inputValue = this[type].inputValue;
 
-					let value, amountOut;
+						if(Number(this[type].inputValue) <= 0) return;
 
-					this[otherType].loading = true;
+						let value, amountOut;
 
-					// mec兑换
-					if (this.isSwapMec) {
-						this.path = this.swapPath;
+						this[otherType].loading = true;
 
-						if (type === "from") {
-							const coin = PancakeConfig.SelectCoin[this.from.coinName];
-							const res = await Wallet.ETH.getMecSwapAmountsOut(this[type].inputValue * coin.decimals, this.swapPath);
-							amountOut = res / PancakeConfig.SelectCoin[this.to.coinName].decimals;
+						// mec兑换
+						if (this.isSwapMec) {
+							console.log(this.from.coinName, type);
+							if (this.from.coinName === 'MEC' && type === "from") {
+								inputValue = inputValue - Math.max(1, (inputValue * 0.02));
+							}
+
+							console.log(inputValue, '=1===');
+
+							this.path = this.swapPath;
+
+							// 输入mec向下取整
+							if (this[type].coinName === 'MEC') {
+								inputValue = Math.floor(inputValue);
+							}
+
+							if (type === "from") {
+								const coin = PancakeConfig.SelectCoin[this.from.coinName];
+								const res = await Wallet.ETH.getMecSwapAmountsOut(inputValue * coin.decimals, this.swapPath);
+								amountOut = res / PancakeConfig.SelectCoin[this.to.coinName].decimals;
+							} else {
+								const toCoin = PancakeConfig.SelectCoin[this.to.coinName];
+								const res = await Wallet.ETH.getMecSwapAmountsIn(inputValue* toCoin.decimals, this.swapPath);
+								amountOut = res / PancakeConfig.SelectCoin[this.from.coinName].decimals;
+							}
+
+							//计算要扣除的手续费
+							if(otherType == "to"){
+								value = amountOut * 0.98;
+							}else{
+								value = amountOut / 0.98;
+							}
 						} else {
-							const toCoin = PancakeConfig.SelectCoin[this.to.coinName];
-							const res = await Wallet.ETH.getMecSwapAmountsIn(this[type].inputValue * toCoin.decimals, this.swapPath);
-							amountOut = res / PancakeConfig.SelectCoin[this.from.coinName].decimals;
-						}
+							let sendData = {
+								from: this[type].coinName,
+								to: this[otherType].coinName,
+								amountIn: this[type].inputValue,
+								exactTo: type == "to",
+								version
+							}
+							let res = await SwapHttp.post("/pair/price",sendData);
+							let {data, code} = res.data;
 
-						//计算要扣除的手续费
-						if(otherType == "to"){
-							value = amountOut * 0.95;
-						}else{
-							value = amountOut / 0.95;
-						}
-					} else {
-						let sendData = {
-							from: this[type].coinName,
-							to: this[otherType].coinName,
-							amountIn: this[type].inputValue,
-							exactTo: type == "to",
-							version
-						}
-						let res = await SwapHttp.post("/pair/price",sendData);
-						let {data, code} = res.data;
+							if(code == 200){
+								amountOut = data.amountOut;
+								this.path = data.path;
 
-						if(code == 200){
-							amountOut = data.amountOut;
-							this.path = data.path;
+								//要反转一下path路径。当路径>3的时候gg 要重新弄了 -- @王十三
+								if(otherType == "from"){
+									this.path.reverse();
+								}
+							}
 
-							//要反转一下path路径。当路径>3的时候gg 要重新弄了 -- @王十三
-							if(otherType == "from"){
-								this.path.reverse();
+							//计算要扣除的手续费
+							if(otherType == "to"){
+								value = amountOut * 0.997;
+							}else{
+								value = amountOut / 0.997;
 							}
 						}
 
-						//计算要扣除的手续费
-						if(otherType == "to"){
-							value = amountOut * 0.997;
-						}else{
-							value = amountOut / 0.997;
+						this.getOneToValue();
+						this[otherType].loading = false;
+						this[otherType].isEstimated = true;
+
+						// mec向下取整
+						if (this[otherType].coinName === 'MEC') {
+							this[otherType].inputValue = Math.floor(value);
+						} else {
+							this[otherType].inputValue = this.numFloor(value, 1e10);
 						}
+
+						this[type].isEstimated = false;
+					} catch(error) {
+						this.from.loading = false;
+						this.to.loading = false;
 					}
-
-					// this.getOneToValue();
-					this[otherType].loading = false;
-					this[otherType].isEstimated = true;
-
-					this[otherType].inputValue = this.numFloor(value, 1e10);
-
-					this[type].isEstimated = false;
-					} catch(error) {}
 				}, stepTime);
 			}else{
 				this[otherType].inputValue = "";
@@ -406,16 +434,25 @@ export default {
 		},
 		async setCoinAllowance(){
 			let coinKey = this.from.coinName;
+			console.log(coinKey, this.isSwapMec, '-----');
 
 			if (coinKey != "" && coinKey != "BNB") {
 				const addr = PancakeConfig.SelectCoin[coinKey].addr;
 
 				let allowance;
 
-				if (coinKey === 'MEC') {
-					allowance = await Wallet.ETH.isApprovedForAll(addr, PancakeConfig.MecSwap);
+				if (this.isSwapMec) {
+					console.log('===mec===');
+					if (coinKey === 'MEC') {
+						const res = await Wallet.ETH.isApprovedForAll(addr, PancakeConfig.MecSwap);
+						allowance = res ? 1e18 : 0;
+					} else {
+						const res = await Wallet.ETH.viewErcAllowanceToTarget(addr, PancakeConfig.MecSwap, false);
+						allowance = Number(res);
+					}
+					console.log(allowance, '===mec===');
 				} else {
-					const routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
+					const routerAddr = this.setting.pancakeVType == 1 ? PancakeConfig.SwapRouterAddr :  PancakeConfig.SwapRouterAddrV2;
 					const res = await Wallet.ETH.viewErcAllowanceToTarget(addr, routerAddr, false);
 					allowance = Number(res);
 				}
@@ -470,49 +507,63 @@ export default {
 			this.from = resultFrom;
 			this.to = resultTo;
 			this.inputValueChange(this.from.isEstimated?"to":"from");
-			this.setCoinAllowance();
+			this.$nextTick(() => {
+				this.setCoinAllowance();
+			});
 		},
 		async approve(){
-			let coinKey = this.from.coinName;
+			const coinKey = this.from.coinName;
+			const tokenAddress = PancakeConfig.SelectCoin[coinKey].addr;
 			if(coinKey == "" || coinKey == "BNB") return;
 			let {isApproving, allowanceToSwap} =  this.coinArr[coinKey];
 			if(isApproving || Number(allowanceToSwap) >1e8) return;
 
-			if (coinKey === 'MEC') {
-				await Wallet.ETH.approvedForAll(PancakeConfig.SelectCoin.MEC.addr, PancakeConfig.MecSwap, () => {
-					this.viewMECApproved();
-				});
-				return;
+			let hash;
+
+			if (this.isSwapMec) {
+				if (coinKey === 'MEC') {
+					hash = await Wallet.ETH.approvedForAll(tokenAddress, PancakeConfig.MecSwap, () => {
+						this.setCoinAllowance();
+					});
+				} else {
+					hash = await Wallet.ETH.approveErcToTarget(tokenAddress, PancakeConfig.MecSwap, {coinKey, type: "allowanceToSwap"});
+				}
+			} else {
+				const routerAddr = this.setting.pancakeVType == 1 ? PancakeConfig.SwapRouterAddr :  PancakeConfig.SwapRouterAddrV2;
+				hash = await Wallet.ETH.approveErcToTarget(tokenAddress, routerAddr, {coinKey, type: "allowanceToSwap"});
 			}
 
-			let routerAddr = this.setting.pancakeVType == 1? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2;
-
-			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin[coinKey].addr, routerAddr, {coinKey, type: "allowanceToSwap"});
 			if(hash){
 				this.coinArr[coinKey].isApproving = true;
 			}
 		},
 		async getOneToValue(){
+			let amountOut;
+
 			if (this.isSwapMec) {
-			// 	if (this.lastType === "from") {
-			// 		Wallet.ETH.getMecSwapAmountsOut(10 * 1e18, this.swapPath);
-			// 		} else {
-			// 		Wallet.ETH.getMecSwapAmountsIn(10, this.swapPath);
-			// 	}
-				return;
+				if (this.lastType === "from") {
+						const res = await Wallet.ETH.getMecSwapAmountsOut(1 * 1e18, this.swapPath);
+						amountOut = res / PancakeConfig.SelectCoin[this.to.coinName].decimals;
+					} else {
+						const res = await Wallet.ETH.getMecSwapAmountsIn(1, this.swapPath);
+						amountOut = res / PancakeConfig.SelectCoin[this.from.coinName].decimals;
+
+				}
+			} else {
+				let sendData = {
+					from: this.to.coinName,
+					to: this.from.coinName,
+					amountIn: 1,
+					exactTo: true,
+					version: "V2"
+				}
+				let res = await SwapHttp.post("/pair/price",sendData);
+				if(res.data.code == 200){
+					amountOut = res.data.data.amountOut;
+				}
 			}
 
-			let sendData = {
-				from: this.to.coinName,
-				to: this.from.coinName,
-				amountIn: 1,
-				exactTo: true,
-				version: "V2"
-			}
-			let res = await SwapHttp.post("/pair/price",sendData);
-			if(res.data.code == 200){
-				this.oneToValue = res.data.data.amountOut / 0.997;
-			}
+			this.oneToValue = amountOut / 0.997;
 		}
 	}
 }
@@ -564,30 +615,53 @@ export default {
 
 				input {
 					flex: 1;
+					text-align: right;
 				}
 
-				.icon {
-					width: 28px;
-					height: 28px;
-					cursor: pointer;
+				.coin-info {
+					display: flex;
+					align-items: center;
+					background: #000000;
+					height: 38px;
+					padding: 0px 10px;
+					border-radius: 36px;
 					margin-right: 10px;
-				}
+					cursor: pointer;
 
-				img {
-					width: auto;
-					height: 100%;
-					margin: 0 auto;
-					display: block;
+					&:hover {
+						opacity: 0.6;
+					}
+
+					.icon {
+						width: 28px;
+						height: 28px;
+						display: inline-block;
+						cursor: pointer;
+						margin-right: 10px;
+					}
+
+					.coin-name {
+						font-size: 14px;
+					}
+
+					.down-icon {
+						width: 10px;
+						height: auto;
+						margin-left: 5px;
+					}
+
+					img {
+						width: auto;
+						height: 100%;
+						margin: 0 auto;
+						display: block;
+					}
 				}
 
 				input {
 					min-width: 0;
 					font-weight: bold;
 					font-size: 18px;
-				}
-
-				.coin-name {
-					font-size: 16px;
 				}
 			}
 		}

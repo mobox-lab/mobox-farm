@@ -380,7 +380,7 @@ export default class ETH {
 	}
 
 	static onReciptNotice(hash, method, type){
-		// console.log({hash, method, type});
+		console.log(hash, method, type);
 		//当前只记录swap和流动性相关的记录
 		let methodName = method._method.name;
 		let _arguments = method.arguments;
@@ -425,13 +425,15 @@ export default class ETH {
 			needSave = true;
 		}
 		//Swap Token to token
+		console.log('-----', methodName);
 		if(["swapExactTokensForTokens", "swapTokensForExactTokens"].indexOf(methodName) != -1  ){
+			console.log('=============');
 			let fromName = "";
 			let toName = ""
 			let fromValue =  methodName == "swapTokensForExactTokens"?BigNumber(_arguments[1]): BigNumber(_arguments[0]);
 			let toValue =  methodName == "swapTokensForExactTokens"?BigNumber(_arguments[0]): BigNumber(_arguments[1]);
 			
-			let path = _arguments[2];
+			let path = Array.isArray(_arguments[2]) ? _arguments[2] : _arguments[3];
 			for (let key in PancakeConfig.SelectCoin) {
 				if(PancakeConfig.SelectCoin[key].addr.toLocaleUpperCase() == path[0].toLocaleUpperCase()){
 					fromName = key;
@@ -440,8 +442,17 @@ export default class ETH {
 					toName = key;
 				}
 			}
-			fromValue =  Common.numFloor(BigNumber(fromValue).dividedBy(BigNumber(1e18)), 1e8);
-			toValue = Common.numFloor(BigNumber(toValue).dividedBy(BigNumber(1e18)), 1e8);
+
+			if (fromName === 'MEC') {
+				fromValue =  Number(fromValue);
+				toValue = Common.numFloor(BigNumber(toValue).dividedBy(BigNumber(1e18)), 1e8);
+			} else if (toName === 'MEC') {
+				fromValue =  Common.numFloor(BigNumber(fromValue).dividedBy(BigNumber(1e18)), 1e8);
+				toValue = Number(toValue);
+			} else {
+				fromValue =  Common.numFloor(BigNumber(fromValue).dividedBy(BigNumber(1e18)), 1e8);
+				toValue = Common.numFloor(BigNumber(toValue).dividedBy(BigNumber(1e18)), 1e8);
+			}
 			msg = `Swap ${fromValue} ${fromName} for ${toValue} ${toName}`;
 			needSave = true;
 		}
@@ -465,25 +476,32 @@ export default class ETH {
 		}
 		//Add Token & Token || Remove Token & Token
 		if(["addLiquidity", "removeLiquidity"].indexOf(methodName) != -1){
-			let fromName = "";
-			let toName = ""
-			let fromValue =  BigNumber(_arguments[4]);
-			let toValue =  BigNumber(_arguments[5]);
+			let fromName = "MBOX";
+			let toName = "MEC"
+			let fromValue, action;
+			let toValue =  Number(_arguments[5]);
 			
-			for (let key in PancakeConfig.SelectCoin) {
-				if(PancakeConfig.SelectCoin[key].addr.toLocaleUpperCase() ==_arguments[0].toLocaleUpperCase()){
-					fromName = key;
-				}
-				if(PancakeConfig.SelectCoin[key].addr.toLocaleUpperCase() ==_arguments[1].toLocaleUpperCase()){
-					toValue = key;
-				}
+			// for (let key in PancakeConfig.SelectCoin) {
+			// 	if(PancakeConfig.SelectCoin[key].addr.toLocaleUpperCase() ==_arguments[0].toLocaleUpperCase()){
+			// 		fromName = key;
+			// 	}
+			// 	if(PancakeConfig.SelectCoin[key].addr.toLocaleUpperCase() ==_arguments[1].toLocaleUpperCase()){
+			// 		toValue = key;
+			// 	}
+			// }
+			if (methodName == "addLiquidity") {
+				fromValue = BigNumber(_arguments[5]);
+				action = "Add";
+			} else {
+				fromValue = BigNumber(_arguments[4]);
+				action = "Remove";
 			}
 			fromValue =  Common.numFloor(BigNumber(fromValue).dividedBy(BigNumber(1e18)), 1e8);
-			toValue = Common.numFloor(BigNumber(toValue).dividedBy(BigNumber(1e18)), 1e8);
-			let action = methodName == "addLiquidity"?"Add":"Remove";
 			msg = `${action} ${fromValue} ${fromName} and ${toValue} ${toName}`;
 			needSave = true;
 		}
+
+		console.log('===',needSave);
 		
 		Common.app.showNotifyTrans(msg, hash, type);
 		if(needSave){
@@ -604,7 +622,6 @@ export default class ETH {
 	}
 	//授权Erc20给矿池
 	static async approveErcToTarget(fromAddr, targetAddr, approveInfo = {coinKey: "", type: ""}) {
-		console.log(fromAddr, targetAddr, approveInfo = {coinKey: "", type: ""});
 		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 		let contract = new this.web3.eth.Contract([
@@ -1739,7 +1756,7 @@ export default class ETH {
 	//pancake相关
 	//移除流动性
 	static async removeLiquidity(coinItemObj, liquidity, targetLPPrice, setting){
-		console.log({coinItemObj});
+		console.log(coinItemObj, liquidity, targetLPPrice, setting);
 		let {coinName, coinKey} = coinItemObj;
 		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
@@ -1780,6 +1797,7 @@ export default class ETH {
 				token, liquidity, amountTokenMin, amountETHMin,
 				myAddr, deadline);
 		} else if (isMec) {
+			console.log(tokenA, tokenB, 1, liquidity, amountAMin, amountBMin, myAddr, deadline);
 			method = this.mecSwapContrac.methods.removeLiquidity(tokenA, tokenB, 1, liquidity, amountAMin, amountBMin, myAddr, deadline);
 		} else{
 			method =PancakeSwapContract.methods.removeLiquidity(
@@ -1798,8 +1816,8 @@ export default class ETH {
 				}
 			)
 		});
-
 	}
+
 	//增加流动性
 	static async addLiquidity(from, to, setting){
 		let myAddr = await this.getAccount(true);
@@ -1873,8 +1891,8 @@ export default class ETH {
 		let amountBDesired, amountBMin;
 
 		if (to.coinName === 'MEC') {
-			amountBDesired = this.numToHex(BigNumber(to.inputValue));
-			amountBMin = this.numToHex(BigNumber(to.inputValue));
+			amountBDesired = this.numToHex(BigNumber(Math.floor(to.inputValue)));
+			amountBMin = this.numToHex(BigNumber(Math.floor(to.inputValue * (1 - slippage / 100))));
 		} else {
 			amountBDesired = this.numToHex(BigNumber(Common.numFloor(to.inputValue , 1e8)).times(decimals_to));
 			amountBMin = this.numToHex(BigNumber(Common.numFloor(to.inputValue * (1-slippage/100), 1e8)).times(decimals_to));
@@ -1982,12 +2000,19 @@ export default class ETH {
 
 		let deadline = parseInt(new Date().valueOf() / 1000) + (60 *duration);
 		let amountIn = this.numToHex(BigNumber(Common.numFloor(from.inputValue , 1e8)).times(decimals_from));
-		let amountInMax = this.numToHex(BigNumber(Common.numFloor(from.inputValue * (1+slippage/100), 1e8)).times(decimals_from));
 		let amountOut = this.numToHex(BigNumber(Common.numFloor(to.inputValue , 1e8)).times(decimals_to));
-		let amountOutMin = this.numToHex(BigNumber(Common.numFloor(to.inputValue * (1-slippage/100), 1e8)).times(decimals_to));
+		let amountInMax, amountOutMin;
 
 		const PancakeSwapContract  = this.mecSwapContrac;
+		
 
+		if (to.isEstimated && to.coinName === 'MEC') {
+			amountOutMin = this.numToHex(BigNumber(Math.floor(to.inputValue * (1-slippage/100))));
+			amountInMax = this.numToHex(BigNumber(Common.numFloor(from.inputValue * (1+slippage/100), 1e8)).times(decimals_from));
+		} else {
+			amountOutMin = this.numToHex(BigNumber(Common.numFloor(to.inputValue * (1-slippage/100), 1e8)).times(decimals_to));
+			amountInMax = from.coinName === 'MEC' ? this.numToHex(BigNumber(Math.floor(from.inputValue * (1+slippage/100)))) : this.numToHex(BigNumber(Math.floor((from.inputValue * 1e18) * (1+slippage/100))));
+		}
 
 		if(from.coinName == "BNB" || to.coinName == "BNB"){
 			//BNB 兑换 MEC
@@ -2012,12 +2037,14 @@ export default class ETH {
 					method =PancakeSwapContract.methods.swapTokensForExactETH(amountOut,amountInMax, 1, path, myAddr, deadline);
 				}
 			}
-
 		}else{
 			if(to.isEstimated){
+				console.log('swapExactTokensForTokens');
+				console.log(amountIn, amountOutMin, 1, path, myAddr, deadline);
 				method =PancakeSwapContract.methods.swapExactTokensForTokens(amountIn, amountOutMin, 1, path, myAddr, deadline);
 			}
 			if(from.isEstimated){
+				console.log('swapTokensForExactTokens');
 				console.log(amountOut, amountInMax, 1, path, myAddr, deadline);
 				method =PancakeSwapContract.methods.swapTokensForExactTokens(amountOut, amountInMax, 1, path, myAddr, deadline);
 			}
@@ -2037,10 +2064,8 @@ export default class ETH {
 
 	// mec兑换 - 获取in值
 	static async getMecSwapAmountsIn(amountOut, path) {
-		console.log(amountOut, path);
 		amountOut = this.numToHex(BigNumber(amountOut));
 		const data = await this.mecSwapContrac.methods.getAmountsIn(1, amountOut, path).call();
-		console.log(data);
 		return data[0];
 	}
 
@@ -2048,7 +2073,7 @@ export default class ETH {
 	static async getMecSwapAmountsOut(amountIn, path) {
 		amountIn = this.numToHex(BigNumber(amountIn));
 		const data = await this.mecSwapContrac.methods.getAmountsOut(1, amountIn, path).call();
-		return data[1];
+		return data[data.length - 1];
 	}
 
 	//获取兑换价格

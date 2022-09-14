@@ -1,5 +1,5 @@
 <template>
-	<div id="market-content" style="padding:10px 0px ">
+	<div id="market-content" style="padding:10px 0px">
 		<div class="center-content">
 			<section id="market-type" class="type-select">
 				<span class="type-select-notice" style="right:5px">&gt;</span>
@@ -65,7 +65,7 @@
 						</div>
 					</div>
 					<div style="padding:0px 10px">
-						<MarketGemAll v-show="marketTabPos == 0" />
+						<MarketGemAll v-show="marketTabPos == 0" :isShowSwapMec="marketTypePos === 5" />
 						<MarketGemMy v-show="marketTabPos == 1" />
 						<MarketGemMySell v-show="marketTabPos == 2" />
 						<MarketGemStatistics v-if="marketTabPos == 3" />

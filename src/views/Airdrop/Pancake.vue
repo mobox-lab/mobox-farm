@@ -2,7 +2,7 @@
 	<div>
 		<Dialog id="pancake-dialog" :top="100" :width="600" >
 			<!-- 头部 -->
-			<div class="head" @click="showTip">
+			<div class="head" @click="toMboxMecSwap">
 				<img :src="require('@/assets/swap-head-bg.png')" alt="">
 			</div>
 			<!-- TabMenu -->
@@ -112,6 +112,12 @@ export default {
 		}
 	},
 	methods: {
+		// 打开mbox-mec swap
+		toMboxMecSwap() {
+			const pancake = this.$refs.pancakeSwap;
+			pancake.from.coinName = 'MBOX';
+			pancake.to.coinName = 'MEC';
+		},
 		showTip() {
 			this.$store.commit("globalState/addNotify", {
 				msg: this.$t("Common_05"),
@@ -155,6 +161,8 @@ export default {
 
 <style lang="less" scoped>
 	.head {
+		cursor: pointer;
+
 		img {
 			width: 100%;
 			display: block;

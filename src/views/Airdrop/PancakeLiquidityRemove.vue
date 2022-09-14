@@ -16,8 +16,15 @@
 		<div class="tab-content" >
 			<div class="kk-div">
 				<div class="mgt-10 por">
-					<div class="ly-input-pre-icon" :class="oprData.isLP ? 'double-img':'' " v-if="oprData.coinName != ''" style="zoom: 0.75" @click="showSelect">
+					<!-- <div class="ly-input-pre-icon" :class="oprData.isLP ? 'double-img':'' " v-if="oprData.coinName != ''" style="zoom: 0.75" @click="showSelect">
 						<img v-for="(name, key) in pair" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="40" alt="" />
+						<img class="down-icon" src="@/assets/icon/down.png" />
+					</div> -->
+					<div class="ly-input-pre-icon coin-icon" @click="showSelect">
+						<div class="icon-box">
+							<img v-for="(name, key) in pair" :class="name" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="40" alt="" />
+						</div>
+						<img class="down-icon" src="@/assets/icon/down.png" />
 					</div>
 					<input type="text" class="ly-input tac" style="width:100%;padding: 0px 50px" v-model="inputValue"  readonly="readonly" >
 				</div>
@@ -138,8 +145,8 @@ export default {
 				reserve1 = Number(this.$parent.to.reserve);
 				_totalSupply = Number(this.$parent.totalSupply);
 			} else {
-				reserve0 = Number(this.$parent.mecReserveData.reserveA);
-				reserve1 = Number(this.$parent.mecReserveData.reserveB);
+				reserve0 = Number(this.$parent.mecReserveData.reserveA / 1e18);
+				reserve1 = Number(this.$parent.mecReserveData.reserveB / 1e18);
 				_totalSupply = Number(this.$parent.mecTotalSupply / 1e18);
 			}
 
@@ -247,8 +254,55 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.coin-icon {
+	height: 40px;
+	margin-top: 5px;
+	box-sizing: border-box;
+	background: #000;
+	padding: 5px 10px;
+	border-radius: 20px;
+	display: flex;
+
+	.down-icon {
+		width: 10px;
+		margin-left: 10px;
+		height: auto !important;
+	}
+
+	.icon-box {
+		width: 40px;
+		height: 40px;
+		position: relative;
+
+		.MEC {
+			left: 20px !important;
+		}
+
+		img {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			transform: translateY(-50%);
+			max-width: 100%;
+
+			&:first-child {
+				z-index: 9;
+			}
+
+			&:last-child {
+				left: 10px;
+			}
+		}
+	}
+}
+
 .kk-div{
-	border:1px solid #4e5e86;padding:10px;border-radius:10px;
+	border: 2px solid #4e5e86;padding:10px;border-radius:10px;
+}
+
+
+.ly-input {
+	height: 50px !important;
 }
 
 .ly-input-pre-icon {
@@ -256,6 +310,14 @@ export default {
 
 	&:hover {
 		opacity: 0.6;
+	}
+}
+
+.aveage-box {
+	p span {
+		font-size: 16px;
+		font-weight: 800;
+		padding-left: 4px;
 	}
 }
 </style>

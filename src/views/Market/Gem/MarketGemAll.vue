@@ -2,6 +2,11 @@
 	<div>
 		<div class="tal search vertical-children por mgt-20">
 			<div id="market-pet-fitter">
+				<!-- mec -->
+				<div v-if="isShowSwapMec" class="cur-point dib por mgl-10 mbox-mec-swap" @click="openMboxMecSwap">
+					<img src="@/assets/icon/mec-swap-icon.png" alt="" height="40">
+					<span>Swap</span>
+				</div>
 				<!-- 购物车 -->
 				<div class="cur-point dib por mgl-10" @click="toggleShowBulkBuying">
 					<span v-if="bulkBuyings.length" class="shop-car-num">{{bulkBuyings.length}}</span>
@@ -136,6 +141,9 @@ import { Http, Wallet } from '@/utils';
 
 let timer = null;
 export default {
+	props: {
+		isShowSwapMec: Boolean,
+	},
 	mixins: [CommonMethod],
 	components: {
 		Page,
@@ -192,6 +200,17 @@ export default {
 		if(timer) clearInterval(timer);
 	},
 	methods: {
+		// 打开mbox-mec swap
+		openMboxMecSwap() {
+			const pancake = this.$root.$children[0].$refs.pancake;
+			pancake.setOprData({coinKey: 'MBOX-MEC', pancakeVType: 2});
+
+			this.$nextTick(() => {
+				pancake.$refs.pancakeSwap.from.coinName = 'MBOX';
+				pancake.$refs.pancakeSwap.to.coinName = 'MEC';
+				pancake.show('swap');
+			});
+		},
 		// 切换购物车显示状态
 		toggleShowBulkBuying() {
 			this.isShowBulkBuying = !this.isShowBulkBuying;
@@ -307,6 +326,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
+	.mbox-mec-swap {
+		span {
+			position: absolute;
+			left: 0;
+			right: 0;
+			line-height: 1;
+			bottom: -1px;
+			font-size: 12px;
+			font-weight: bold;
+			text-align: center;		
+		}
+	}
+
 	.search-box{
 	}
 	.search-preview{

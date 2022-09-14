@@ -11,7 +11,7 @@
 				</div>
 				<div class="mgt-10" >
 					<button class="btn-primary  mgt-10" @click="showAddLiquidityPanel =  true" >{{$t("Air-drop_57")}}</button>&nbsp;
-					<button class="btn-primary mgt-10" v-if="oprData.balance > 0" @click="showRemoveLiquidityPanel =  true"  style="background: #384A7C">{{$t("Air-drop_95")}}</button>
+					<button v-if="oprData.balance > 0 || mecLP > 0" class="btn-primary mgt-10" @click="showRemoveLiquidityPanel =  true"  style="background: #384A7C">{{$t("Air-drop_95")}}</button>
 				</div>
 			</div>
 			<div class="content" v-if="oprData.isLP">
@@ -49,14 +49,14 @@
 				<div class="mgt-10 cur-point lp-amount-item close" @click="toggleClass($event)">
 					<div class="aveage-box vertical-children por aveage-head" >
 						<div class="dib">
-							<div class="dib por double-img" style="zoom: 0.75">
+							<div class="dib por double-img mbox-mec-swap-icon" style="zoom: 0.75">
 								<img src="@/assets/coin/MBOX.png" height="40" alt="" />
-								<img src="@/assets/coin/MEC.png" height="40" alt="" />
+								<img src="@/assets/coin/MEC.png" class="mec-coin-icon" height="40" alt="" />
 							</div>
 							<span> MBOX-MEC</span>
 						</div>
 						<p class="dib tar">
-							<span class="mgl-10" v-if="mecLP != '-' ">{{mecLP}}</span>
+							<span class="mgl-10" v-if="mecLP != '-' ">{{mecLP.toFixed(4) === '0.0000' ? '0' : mecLP.toFixed(4)}}</span>
 							<Loading v-else />
 							<svg viewBox="0 0 24 24" class="mgl-5 rotate-arrow"  height="20px" ><path fill="#838689" d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg>
 						</p>
@@ -67,7 +67,7 @@
 								<span> {{name}}</span>
 							</div>
 							<p class="dib tar" >
-								<span class="mgl-10" v-if="mecLPPrice[key] != '-' ">{{mecLPPrice[key]}}</span>
+								<span class="mgl-10" v-if="mecLPPrice[key] != '-' ">{{(mecLPPrice[key] / 1e18).toFixed(4) === '0.0000' ? '0' : (mecLPPrice[key] / 1e18).toFixed(4)}}</span>
 								<Loading v-else />
 								<img class="mgl-5" :src="require(`../../assets/coin/${name}.png`)" height="20" alt="" />
 							</p>
@@ -148,6 +148,18 @@
 						</p>
 					</div>
 				</div>
+				<!-- 提示 -->
+				<div class="mec-tip" v-if="to.coinName === 'MEC'">
+					<div class="title">
+						<span>{{$t('Air-drop_274')}}</span>
+						<div class="icon">
+							<svg class="opa-6" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path style="fill:none" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+							<div class="tip-content">{{$t('Air-drop_275')}}</div>
+						</div>
+						<div class="flex-1"></div>
+						<div class="apy">{{apy}}%</div>
+					</div>
+				</div>
 				<!-- Des -->
 				<div class="mgt-20 tac" :class="(fromNeedApprove || toNeedApprove)?' btn-group':'' " style="margin-bottom:10px">
 					<div v-if="fromNeedApprove">
@@ -166,6 +178,7 @@
 						<StatuButton :data-step="toNeedApprove && fromNeedApprove ? 3: 2" style="width:80%" :onClick="goSupply.bind(this)" :isDisable="!canSupply" :isLoading="coinArr[oprData.coinKey].isAddLiqiditing">{{$t("Air-drop_57")}}</StatuButton>
 					</div>
 				</div>
+				<p class="mec-describe" v-if="to.coinName === 'MEC'">{{$t('Air-drop_276')}}</p>
 			</div>
 		
 		</div>
@@ -177,7 +190,7 @@
 				<p class="small ">{{$t("Air-drop_118")}}</p>
 				<div class="tac">
 					<div class="double-img mgt-20 por dib" >
-						<img v-for="(name, key) in oprData.coinName.split('-')" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="40" alt="" />
+						<img v-for="(name, key) in [from.coinName, to.coinName]" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="40" alt="" />
 					</div>
 				</div>
 				<div class="mgt-10 tac  vertical-children" style="font-size:25px">
@@ -226,6 +239,7 @@ export default {
 	components: {Loading, Dialog, PancakeLiquidityRemove, StatuButton},
 	data(){
 		return({
+			apy: '-',
 			showAddLiquidityPanel: false,
 			showRemoveLiquidityPanel: false,
 
@@ -347,6 +361,7 @@ export default {
 		}
 	},
 	created(){
+		this.apy = (110 + Math.random() * 20).toFixed(1);
 		clearInterval(timerInterval);
 		this.getMecSwapInfo();
 		timerInterval = setInterval(() => {
@@ -360,13 +375,13 @@ export default {
 		EventBus.$off(EventConfig.AddLiquiditySuccess, this.updateBalance);
 	},
 	methods:{
-		//查询宝石合约是被授权
+		// 查询宝石合约是被授权
 		async viewMECApproved() {
 			return await Wallet.ETH.isApprovedForAll(PancakeConfig.SelectCoin.MEC.addr, PancakeConfig.MecSwap);
 		},
 		async approveMEC(){
 			return await Wallet.ETH.approvedForAll(PancakeConfig.SelectCoin.MEC.addr, PancakeConfig.MecSwap, () => {
-				this.viewMECApproved();
+				this.setCoinAllowance('MEC');
 			});
 		},
 		maxInput(type){
@@ -485,7 +500,8 @@ export default {
 				...reserves,
 				reserveA: reserves.reserveA / 1e18,
 			};
-			this.mecTotalSupply = pair.totalSupply;
+
+			this.mecTotalSupply = pair.totalSupply / 1e18;
 		},
 		// 添加流动性
 		goSupply(){
@@ -538,7 +554,8 @@ export default {
 			}
 
 			if (hash) {
-				this.coinArr[coinKey].isApproving = true;
+				this.coinArr[coinKey].isApproving = false;
+				this.setCoinAllowance(coinKey);
 			}
 		},
 		inputValueChange(type){
@@ -570,6 +587,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+	.mbox-mec-swap-icon {
+		padding-left: 26px;
+	}
+
 	.rotate-arrow{
 		transform: rotate(-180deg);
 		transition: all 0.2s linear;
@@ -608,6 +629,86 @@ export default {
 		background: rgba(255, 255, 255, 0.1);
 	}
 
+	.mec-describe {
+		font-size: 14px;
+		text-align: left;
+		margin-top: 20px;
+	}
+
+	.mec-tip {
+		padding-top: 20px;
+		padding-bottom: 20px;
+
+		.title {
+			display: flex;
+			align-items: center;
+		}
+
+		.flex-1 {
+			flex: 1;
+		}
+
+		.icon {
+			margin-left: 6px;
+			width: 20px;
+			height: 20px;
+			cursor: pointer;
+			position: relative;
+
+			&:hover {
+				.tip-content {
+					display: block;
+				}
+			}
+
+			.tip-content {
+				display: block;
+				position: absolute;
+				min-width: 240px;
+				background: #000000;
+				border-radius: 5px;
+				padding: 10px;
+				text-align: left;
+				line-height: 150%;
+				z-index: 99999;
+				display: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				border: 1px solid #333333;
+				transform: translate(-50%, 0);
+				top: 100%;
+				left: 50%;
+				margin-top: 10px;
+
+				&::after {
+					content: "";
+					width: 10px;
+					height: 10px;
+					background: #000000;
+					position: absolute;
+					border-left:1px solid #333333;
+					border-top:1px solid #333333;
+					top: 0;
+					left: 50%;
+					margin-top: -3px;
+					transform: rotate(45deg) translate(-50%);
+				}
+			}
+
+			svg {
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		.apy {
+			font-size: 16px;
+			color: #12dae7;
+			font-weight: bold;
+		}
+	}
 
 	@media (max-width: 768px) {
 		.tab-body {

@@ -419,10 +419,7 @@ export default {
 }
 </script>
 
-<style scoped>
-	
-	
-
+<style lang="less" scoped>
 	#market-pet-fitter {
 		position: absolute;
 		right: 0px;

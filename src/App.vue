@@ -10,21 +10,30 @@
 		<div id="mobile-nav" class="hide">
 			<img src="./assets/logo.png" height="30" alt="" />
 			<div class="dib vertical-children" style="position:absolute;top:0px;right:15px;zoom:0.8" >
-				<div class="vertical-children dib">
+				<div class="vertical-children dib ">
+					<img src="./assets/coin/MBOX.png"  width="25px" />
+					<span @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
+						$<span v-if="ourPrice['MBOX'] != '-' ">{{ numFloor(ourPrice["MBOX"], 1e2)}}</span>
+						<Loading v-else />
+					</span>
+				</div>
+				<!-- mec -->
+				<div class="vertical-children dib mgl-10" @click="openMboxMecSwap">
+					<img src="./assets/coin/MEC.png" class="head-mec-icon" />
+					<router-link to="/market?tab=4">
+						<span > $<span v-if="ourPrice['MEC'] != '-' ">{{ numFloor(ourPrice["MEC"], 1e2)}}</span>
+							<Loading v-else />
+						</span>
+					</router-link>
+				</div>
+				<!-- <div class="vertical-children dib">
 					<img src="./assets/icon/box_icon.png" width="30" alt=""/>
 					<router-link to="/market?tab=4">
 						<span > $<span v-if="ourPrice['BOX'] != '-' ">{{ numFloor(ourPrice["BOX"], 1e2)}}</span>
 							<Loading v-else />
 						</span>
 					</router-link>
-				</div>
-				<div class="vertical-children  dib mgl-10 ">
-					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<span @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
-						$<span v-if="ourPrice['MBOX'] != '-' ">{{ numFloor(ourPrice["MBOX"], 1e2)}}</span>
-						<Loading v-else />
-					</span>
-				</div>
+				</div> -->
 				<div class="dib " style="margin-left:30px">
 					<img src="@/assets/icon/wallet_icon.png" alt="" height="45" @click="oprDialog('mobile-wallet-dialog', 'block')">
 					<span class="text-btn por mgl-10" @click="showNotice">
@@ -122,8 +131,16 @@
 				</div>
 			</div>
 			<div id="our-parice-pc">
-
-				<div class="vertical-children dib point-block">
+				<!-- mbox -->
+				<div class="vertical-children point-block ">
+					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
+					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
+						$<span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
+						<Loading v-else />
+					</span>
+				</div>
+				<!-- box -->
+				<div class="vertical-children dib point-block mgt-10">
 					<img src="./assets/icon/box_icon.png" width="30" alt=""/>
 					<router-link to="/market?tab=4">
 						<span class="mgl-5 bold show-point-block tal">
@@ -132,10 +149,13 @@
 						</span>
 					</router-link>
 				</div>
-				<div class="vertical-children mgt-10 point-block ">
-					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
+				<!-- mec -->
+				<div class="vertical-children mgt-10 point-block" @click="openMboxMecSwap">
+					<div class="mec-icon">
+						<img src="./assets/coin/MEC.png" height="25" alt=""/>
+					</div>
 					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
-						$<span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
+						$<span v-if="ourPrice['MEC'] != '-' ">{{ourPrice["MEC"]}}</span>
 						<Loading v-else />
 					</span>
 				</div>
@@ -386,6 +406,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div class="mgt-20">
+						<h3 class="tac">{{$t("Notice_80")}}</h3>
+						<span v-html="$t('Notice_81')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_78")}}</h3>
 						<span v-html="$t('Notice_79')" ></span>
 					</div>
@@ -604,7 +628,8 @@ export default {
 			ourPrice: {
 				"MBOX": "-",
 				"KEY": "-",
-				"BOX": "-"
+				"BOX": "-",
+				"MEC": "-"
 			},
 			powerAddConfig: {
 				v4: [
@@ -679,7 +704,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "2022-9-7",
+			noticeVersion: "2022-9-13",
 			version: "2.1.1"
 		};
 	},
@@ -881,16 +906,17 @@ export default {
 			if(count % 10 == 0){
 				await this.setOurPrice("BOX");
 				await this.setOurPrice("MBOX");
+				await this.setOurPrice("MEC");
 				await this.getTotalStakeUSDTAndAirdropKEY();
 			}
 		},1000);
 
 		await this.setOurPrice("BOX");
 		await this.setOurPrice("MBOX");
+		await this.setOurPrice("MEC");
 		await this.getTotalStakeUSDTAndAirdropKEY();
 
 	},
-
 	mounted(){
 		let hasReadFAQ = Common.getStorageItem("hasReadFAQ");
 		if(!hasReadFAQ){
@@ -915,6 +941,14 @@ export default {
 		clearInterval(timer);
 	},
 	methods: {
+		// 打开mbox-mec swap
+		openMboxMecSwap() {
+			const pancake = this.$root.$children[0].$refs.pancake;
+			pancake.$refs.pancakeSwap.from.coinName = 'MBOX';
+			pancake.$refs.pancakeSwap.to.coinName = 'MEC';
+			pancake.setOprData({coinKey: 'MBOX-MEC', pancakeVType: 2});
+			pancake.show('swap');
+		},
 		agreeNotice(){
 			if(this.showRiskCb != null){
 				this.oprDialog("risk-notice-dialog", "none");
@@ -991,14 +1025,31 @@ export default {
 
 		//
 		async setOurPrice(coinName){
-			if(coinName == "BOX"){
-				let {data} = await Http.get(`/gem_auction/search/BNB?page=1&limit=1&type=&level=&sort=price&filter=2`);
-				if(data.list[0]){
-					let {price, amounts} = data.list[0];
-					this.ourPrice[coinName] = this.numFloor(price / amounts[0] /1e9, 100).toFixed(2);
+			if (['BOX', 'MEC'].indexOf(coinName) != -1) {
+				let data;
+
+				if(coinName == "BOX"){
+					const res = await Http.get(`/gem_auction/search/BNB?page=1&limit=1&type=&level=&sort=price&filter=2`);
+
+					data = res.data;
+
+					if(data.list[0]){
+						let {price, amounts} = data.list[0];
+						this.ourPrice[coinName] = this.numFloor(price / amounts[0] /1e9, 100).toFixed(2);
+						return;
+					}
+				} else if (coinName === 'MEC') {
+					const res = await Http.get(`/gem_auction/search/BNB?page=1&limit=1&type=&level=&sort=price&filter=4`);
+					data = res.data;
+
+					if(data.list[0]){
+						let {price, amounts} = data.list[0];
+						this.ourPrice[coinName] = (price / amounts[0] / 1e9).toFixed(4);
+						return;
+					}
 				}
-				return;
 			}
+
 			let wBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
 			let res = await Wallet.ETH.getAmountsOut(1e18, [PancakeConfig.SelectCoin[coinName].addr, wBNB, PancakeConfig.SelectCoin["USDT"].addr]);
 			this.ourPrice[coinName] = this.numFloor(res[2]/1e18, 1e4);
@@ -1044,6 +1095,18 @@ export default {
 </script>
 
 <style scoped>
+.mec-icon {
+	width: 25px;
+	display: inline-block;
+	text-align: center;
+}
+
+/* 手机端头部水晶图标 */
+.head-mec-icon {
+	width: auto;
+	height: 25px;
+}
+
 #version{
 	position: absolute;
 	bottom: 15px;
@@ -1072,6 +1135,11 @@ export default {
 	top: 10px;
 	right: 30px;
 }
+
+#mec-swap {
+	cursor: pointer;
+}
+
 #showNotice-dialog a{
 	text-decoration: underline !important;
 }

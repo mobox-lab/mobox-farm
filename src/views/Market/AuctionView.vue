@@ -13,12 +13,14 @@
 						<span>LV {{ this.getNowPetItem.level }}</span>
 					</div>
 					<div id="upgrade-power" class="vertical-children">
+						<img src="@/assets/icon/warning-icon.png" class="tip-icon" v-if="!isMeetStandards && getNowPetItem.level <= 1" @click="standardsHashrateTip" />
 						<img src="@/assets/icon/airdrop.png" alt="" height="30" />&nbsp;
 						<span class="mgl-5" :class="getHashrateColor( this.getNowPetItem)">
 							{{ this.getNowPetItem.lvHashrate }}
 						</span>
 					</div>
 					<div id="upgrade-power-lv1" class="vertical-children" v-if="this.getNowPetItem.level > 1">
+						<img src="@/assets/icon/warning-icon.png" class="tip-icon" v-if="!isMeetStandards" @click="standardsHashrateTip" />
 						Lv. 1
 						<img src="@/assets/icon/airdrop.png" alt="" height="15" />&nbsp;
 						<span :class="getHashrateColor( this.getNowPetItem)">
@@ -100,7 +102,7 @@
 										<StatuButton data-step="1" style="width:150px" :isLoading="coinArr['BUSD'].isApproving" :onClick="approve">{{$t("Air-drop_16")}} BUSD</StatuButton>
 									</div>
 									<div class="mgt-10">
-										<StatuButton style="width:150px"  data-step="2" :isLoading="lockBtn.buyMomoLock > 0" :isDisable="needApprove || (nowTs - this.getNowPetItem.uptime) <= 120" :onClick="()=>oprDialog('confirm-buy-dialog','block')">
+										<StatuButton style="width:150px" data-step="2" :isLoading="lockBtn.buyMomoLock > 0" :isDisable="needApprove || (nowTs - this.getNowPetItem.uptime) <= 120" :onClick="()=>oprDialog('confirm-buy-dialog','block')">
 											<template v-if="nowTs - this.getNowPetItem.uptime <= 120">
 												<img src="@/assets/icon/lock.png" alt="" height="20" style="position:absolute;left:10px;top:6px">
 												<span>{{getLeftTime(Number(this.getNowPetItem.uptime) + 120 - nowTs)}}</span>
@@ -178,7 +180,7 @@
 		</Dialog>
 
 		<Dialog id="confirm-buy-dialog"  :top="200" :width="350">
-			<h4 class="mgt-30" v-html="$t('Market_59').replace('#0#', `<span style='color: #49c773' class='money'>${numFloor(nowPrice/ 1e9, 1e2).toLocaleString()} BUSD</span>` )"></h4>
+			<h4 class="mgt-30" v-html="message"></h4>
 			<div class="mgt-50">
 				<button class="btn-primary" @click="oprDialog('confirm-buy-dialog', 'none');">{{$t("Common_04")}}</button>
 				<button class="btn-primary mgl-5" @click="oprDialog('confirm-buy-dialog', 'none');buyPet()">{{$t("Common_03")}}</button>
@@ -219,6 +221,7 @@ export default {
 	},
 	computed: {
 		...mapState({
+			hashrateInfo: (state) => state.globalState.hashrateInfo,
 			tempMarketCancelTx: (state) => state.marketState.data.tempMarketCancelTx,
 			coinArr: (state) => state.bnbState.data.coinArr,
 			lockBtn: (state) => state.globalState.data.lockBtn,
@@ -227,9 +230,41 @@ export default {
 			shopCar: (state) => state.marketState.data.shopCar,
 			nowTs: (state) => state.globalState.data.nowTs
 		}),
+		// 提示语
+		message() {
+			const nowPrice = this.nowPrice;
+
+			if (this.isMeetStandards) {
+				return this.$t('Market_59').replace('#0#', `<span style='color: #49c773' class='money'>${this.numFloor(nowPrice/ 1e9, 1e2).toLocaleString()} BUSD</span>`);
+			}
+
+			return this.$t('Market_102')
+				.replace('#0#', `<span style='color: #49c773' class='money'>${this.standardsHashrate}</span>` )
+				.replace('#1#', `<span style='color: #49c773' class='money'>${this.numFloor(nowPrice/ 1e9, 1e2).toLocaleString()} BUSD</span>`)
+		},
 		//是否符合加入购物车条件
 		isMatchShopCar(){
 			return this.getNowPetItem.tokenId != 0 || (this.getShowList.length == 1 && Number(this.getShowList[0].num) <= 1)
+		},
+		// 是否不满足标准算力
+		isMeetStandards() {
+			const { lvHashrate, hashrate, level, prototype } = this.getNowPetItem;
+			const vType = parseInt(prototype / 1e4);
+
+			if (vType < 4) {
+				return true;
+			}
+
+			if (level > 1) {
+				return hashrate >= this.standardsHashrate;
+			}
+
+			return lvHashrate >= this.standardsHashrate;
+		},
+		// 标砖算力
+		standardsHashrate() {
+			const { vType } = this.getNowPetItem;
+			return this.hashrateInfo[`v${vType}StandardHashrate`];
 		},
 		getNowPetItem(){
 			let petObj;
@@ -309,6 +344,10 @@ export default {
 		EventBus.$off(EventConfig.ChangePriceSuccess, this.setPetInfo);
 	},
 	methods: {
+		// 标准算力提示
+		standardsHashrateTip() {
+			this.getConfirmDialog().show(`${this.$t('MOMO_98').replace('#0#', this.standardsHashrate).replace('#0#', this.standardsHashrate)}`);
+		},
 		async addToShopCar(){
 			
 			let data = await this.getPetInfo();
@@ -514,7 +553,7 @@ export default {
 	},
 };
 </script>
-<style scoped>
+<style lang="less" scoped>
 .shop-car-item {
 	width: 100%;
 	height: 100px;
@@ -638,6 +677,15 @@ export default {
 	top: 20px;
 	font-size: 20px;
 }
+
+.tip-icon {
+	width: 25px;
+	cursor: pointer;
+	margin-right: 5px;
+	position: relative;
+	z-index: 999;
+}
+
 #upgrade-power-lv1 {
 	position: absolute;
 	right: 20px;

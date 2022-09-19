@@ -203,7 +203,7 @@ export default {
 		// 打开mbox-mec swap
 		openMboxMecSwap() {
 			const pancake = this.$root.$children[0].$refs.pancake;
-			pancake.setOprData({coinKey: 'MBOX-MEC', pancakeVType: 2});
+			pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2});
 
 			this.$nextTick(() => {
 				pancake.$refs.pancakeSwap.from.coinName = 'MBOX';

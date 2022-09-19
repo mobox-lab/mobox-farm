@@ -1,5 +1,5 @@
 <template>
-	<div class="pet-add-item por" @click="addNum()"  :class="{'opa-6': data.isLock}">
+	<div class="pet-add-item por" @click="addNum"  :class="{'opa-6': data.isLock}">
 		<div :class="isSelect || data.num <= 0?'opa-4':''">
 			<div :class="'skew-box v' + data.vType"></div>
 			<img v-if="getSelectNum > 0 && data.vType < 4" class="reduce-btn" src="../assets/icon/reduce_pet.png" alt="" @click="reduceNum($event)" />
@@ -14,6 +14,7 @@
 			</div>
 			
 			<div class="pet-add-show-img">
+				<img class="tip-icon" v-if="showTipIcon && !isStandard" src="@/assets/icon/warning-icon.png" @click="iconClick" />
 				<img :src="require(`../assets/pet/${data.prototype}.png`)" alt="" width="90%" />
 			</div>
 			<div class="pet-add-type vertical-children">
@@ -45,14 +46,39 @@
 	</div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import { CommonMethod } from "@/mixin";
 import {Common} from "@/utils";
 
 export default {
 	mixins: [CommonMethod],
-	props: ["data", "onSelectChange", "selectProtoTypes"],
+	props: {
+		data: Object,
+		selectProtoTypes: Object,
+		// 是否显示标砖算力提示图标
+		showTipIcon: {
+			type: Boolean,
+			default: false,
+		},
+		// 是否显示标砖算力提示图标
+		verificationHashrate: {
+			type: Boolean,
+			default: false,
+		},
+		onSelectChange: Function,
+	},
 
 	computed: {
+		...mapState({
+			hashrateInfo: (state) => state.globalState.hashrateInfo,
+		}),
+		isStandard() {
+			// 标砖算力
+			const item = this.data;
+			const vType = parseInt(item.prototype / 1e4);
+			const standardsHashrate = this.hashrateInfo[`v${vType}StandardHashrate`];
+			return item.level > 1 ? item.hashrate >= standardsHashrate : item.lvHashrate >= standardsHashrate;
+		},
 		//计算1155选中的数量
 		getSelectNum() {
 			if (!this.selectProtoTypes) return 0;
@@ -100,8 +126,20 @@ export default {
 		
 	},
 	methods: {
+		// 跳转升级
+		iconClick() {
+			this.$emit('iconClick');
+		},
 		addNum() {
 			let { tokenId, prototype, num, vType, isLock } = this.data;
+
+			if (this.verificationHashrate && !this.isStandard) {
+				const lvType = parseInt(prototype / 1e4);
+				const standardsHashrate = this.hashrateInfo[`v${lvType}StandardHashrate`];
+				this.getConfirmDialog().show(`${this.$t('MOMO_98').replace('#0#', standardsHashrate).replace('#0#', standardsHashrate)}`);
+				return;
+			}
+
 			//超过自己数量没法再选择
 			if (this.getSelectNum >= num) {
 				Common.app.$refs.quickBuy.show(prototype);
@@ -123,7 +161,7 @@ export default {
 	},
 };
 </script>
-<style  scoped>
+<style lang="less" scoped>
 .pet-item-lv{
 	position: absolute;
 	bottom: 0px;
@@ -140,8 +178,8 @@ export default {
 }
 .rent{
 	position: absolute;
-	right: 0px;
-	top: 0px;
+	left: 0px;
+	bottom: 0px;
 }
 .has-gem{
 	position: absolute;
@@ -179,6 +217,15 @@ export default {
 	left: 0px;
 	bottom: 0px;
 	text-align: center;
+
+	.tip-icon {
+		width: 25px;
+		height: 25px;
+		position: absolute;
+		top: 0;
+		right: 0;
+		transform: translate(50%, -20%);
+	}
 }
 .pet-add-show-img  img{
 	width: 80%;

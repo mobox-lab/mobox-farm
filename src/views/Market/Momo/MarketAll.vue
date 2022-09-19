@@ -90,7 +90,7 @@
 				<p class="opa-6 mgt-10">No items to display</p>
 			</div>
 			<a @click="$router.push({ path: `/auctionView/${item.tx}` })"  v-for="item in marketPets.list" :key="item.tx + item.index">
-				<PetItem  v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market por" v-if="item.tokenId != 0 " >
+				<PetItem  v-bind:data="{item: item}" :class="{'opa-6': nowTs -item.uptime <=  120}" class="market por" v-if="item.tokenId != 0 " :isShowHashrateIcon="true">
 					<div class="vertical-children mgt-10" style="font-size: 18px">
 						<img src="@/assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
 						<span class="money">{{numFloor(item.nowPrice/1e9, 100).toLocaleString()}} <sub class="small">BUSD</sub></span>

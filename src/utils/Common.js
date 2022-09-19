@@ -3,6 +3,18 @@ export default class Common {
 	static store = null;
 	static walletConnectConnector = null;
 
+	// 获取阶段标准算力
+	static getHashrateByStep(lv, step) {
+		switch(lv) {
+			case 4:
+				return ((((step - 8) / 2) * 10) + (((step - 2) * 10) + 80)) / 2;
+			case 5:
+				return ((((step - 8) / 2) * 10) + (((step - 2) * 10) + 150)) / 2;
+			case 6:
+				return ((step - 1) * 10) + 90;
+		}
+	}
+
 	static debounce (fun, waitTime = 500) {
 		let timeout = null;
 		return function () {

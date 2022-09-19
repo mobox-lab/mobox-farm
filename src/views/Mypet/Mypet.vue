@@ -91,7 +91,7 @@
 			<div :class="{'tal': getShowPetArr.length < 4 }"  class="momo-content">
 				<router-link :to="(item.location=='auction'?'/auctionView/': '/upgrade/') + item.prototype + '-' + item.tokenId+'-'+item.location " v-for="item in getShowPetArr"
 					:key=" item.prototype.toString() + item.tokenId + item.num " >
-					<PetItem v-bind:data="{ item: item }" class="no-search" />
+					<PetItem v-bind:data="{ item: item }" class="no-search" :isShowHashrateIcon="true" />
 				</router-link>
 			</div>
 			<div class="no-show" v-if="getShowPetArr.length == 0">
@@ -128,7 +128,13 @@
 					</div>
 					<div style="padding:10px" >
 						<p class="small opa-6 tac" >{{$t("Fetters_16")}}</p>
-						<input type="text" readonly class="ly-input mgt-10 tac" :value="numFloor($root.$children[0].getTotalPercent.maxAdd * 100, 100)+'%'" />
+						<div class="ly-input mgt-10">
+							<span class="mark">
+								{{numFloor($root.$children[0].getTotalPercent.maxAdd * 100, 100)+'%'}}
+								<img v-if="getCurrentBonus != getActualBonus" class="tip-icon" src="@/assets/icon/warning-icon.png" @click="oprDialog('standard-hashrate', 'block')" />
+							</span>
+						</div>
+						<!-- <input type="text" readonly class="ly-input mgt-10 tac" :value="numFloor($root.$children[0].getTotalPercent.maxAdd * 100, 100)+'%'" /> -->
 					</div>
 				</div>
 			</section>
@@ -146,25 +152,25 @@
 					<div style="padding:10px">
 						<p class="small opa-6 tac" >{{$t("MOMO_77")}}</p>
 						<div class="ly-input mgt-10 tac vertical-children2">
-							<span>[10, {{momoSetting.v4_max_upgrade}}]</span>
+							<span>[{{hashrateInfo.v4MinHashrate}}, {{hashrateInfo.v4StandardHashrate}}, {{hashrateInfo.v4MaxHashrate}}]</span>
 							<img class="mgl-5" src="@/assets/icon/upgradejt.png" alt="" height="12">
-							<span class="mgl-5">[<span :style="{color: v4MinHashrate > 10 ? 'rgb(133, 243, 74)' : ''}">{{v4MinHashrate}}</span>, <span style="color:rgb(133, 243, 74)">{{getNextHash.v4}}</span>]</span>
+							<span class="mgl-5">[<span :style="{color: hashrateInfo.v4MinHashrate != nextStepHashrateInfo.v4.min ? 'rgb(133, 243, 74)' : ''}">{{nextStepHashrateInfo.v4.min}}</span>, <span class="color-yellow">{{nextStepHashrateInfo.v4.standard}}</span>, <span style="color:rgb(133, 243, 74)">{{nextStepHashrateInfo.v4.max}}</span>]</span>
 						</div>
 					</div>
 					<div style="padding:10px">
 						<p class="small opa-6 tac" >{{$t("MOMO_78")}}</p>
 						<div class="ly-input mgt-10 tac vertical-children2">
-							<span>[50, {{momoSetting.v5_max_upgrade}}]</span>
+							<span>[{{hashrateInfo.v5MinHashrate}}, {{hashrateInfo.v5StandardHashrate}}, {{hashrateInfo.v5MaxHashrate}}]</span>
 							<img class="mgl-5" src="@/assets/icon/upgradejt.png" alt="" height="12">
-							<span class="mgl-5">[<span :style="{color: v5MinHashrate > 50 ? 'rgb(133, 243, 74)' : ''}">{{v5MinHashrate}}</span>, <span style="color:rgb(133, 243, 74)">{{getNextHash.v5}}</span>]</span>
+							<span class="mgl-5">[<span :style="{color: hashrateInfo.v5MinHashrate != nextStepHashrateInfo.v5.min ? 'rgb(133, 243, 74)' : ''}">{{nextStepHashrateInfo.v5.min}}</span>, <span class="color-yellow">{{nextStepHashrateInfo.v5.standard}}</span>, <span style="color:rgb(133, 243, 74)">{{nextStepHashrateInfo.v5.max}}</span>]</span>
 						</div>
 					</div>
 					<div style="padding:10px" >
 						<p class="small opa-6 tac" >{{$t("MOMO_79")}}</p>
 						<div class="ly-input mgt-10 tac vertical-children2">
-							<span>{{Number(momoSetting.v5_max_upgrade) + 30}}</span>
+							[{{hashrateInfo.v6StandardHashrate}}, <span>{{Number(momoSetting.v5_max_upgrade) + 30}}</span>]
 							<img class="mgl-5" src="@/assets/icon/upgradejt.png" alt="" height="12">
-							<span class="mgl-5" style="color:rgb(133, 243, 74)">{{getNextHash.v5 + 30}}</span>
+							[<span class="color-yellow">{{nextStepHashrateInfo.v6.standard}}</span>, <span class="mgl-5" style="color:rgb(133, 243, 74)">{{nextStepHashrateInfo.v6.max}}</span>]
 						</div>
 					</div>
 				</div>
@@ -251,6 +257,9 @@ import { PetItem, Dropdown, Page, Tab, BookItem } from "@/components";
 import { mapState } from "vuex";
 import { CommonMethod } from "@/mixin";
 import { BaseConfig } from "@/config";
+import powerAddConfig from "@/config/PowerAddConfig";
+
+const types = ['v4', 'v5', 'v6'];
 
 export default {
 	mixins: [CommonMethod],
@@ -309,6 +318,7 @@ export default {
 	},
 	computed: {
 		...mapState({
+			hashrateInfo: (state) => state.globalState.hashrateInfo,
 			v4MinHashrate: (state) => state.globalState.v4MinHashrate,
 			v5MinHashrate: (state) => state.globalState.v5MinHashrate,
 			myNFT_wallet: (state) => state.ethState.data.myNFT_wallet,
@@ -321,6 +331,74 @@ export default {
 			momoSetting: (state) => state.globalState.data.momoSetting,
 			nowTs: (state) => state.globalState.data.nowTs,
 		}),
+		getNftVInfo() {
+			const retObj = {
+				v4: [],
+				v5: [],
+				v6: [],
+			};
+			this.myNFT_stake.map((item) => {
+				let vType = parseInt(item.prototype / 1e4);
+				const key = "v" + vType;
+
+				if (retObj[key]) {
+					retObj[key].push(item);
+				}
+			});
+			return retObj;
+		},
+		// 获取当前应有算力加成
+		getCurrentBonus() {
+			let bonus = 0;
+
+			for (let i = 0; i < types.length; i++) {
+				const type = types[i];
+				const config = powerAddConfig[type];
+				const momoCount = this.getNftVInfo[type].length;
+				let count = 0;
+
+				for (let eq = 0; eq < config.length; eq++) {
+					const item = config[eq];
+
+					if (momoCount >= item.num) {
+						count = item.p;
+					} else {
+						break;
+					}
+				}
+
+				bonus += count;
+			}
+
+			return this.numFloor(bonus * 100, 100);
+		},
+		// 获取实际算力加成
+		getActualBonus() {
+			let total = 0;
+
+			for (let item in types) {
+				const type = types[item];
+				const config = powerAddConfig[type];
+				// 获取当前类型达标数量
+				const count = this.getStandardCount(type);
+
+				// 获取达标数量符合的下标
+				let index;
+
+				// 超出最大值
+				if (count >= config[config.length - 1].num) {
+					index = config.length - 1;
+				} else {
+					index = config.findIndex(item => item.num > count) - 1;
+				}
+
+				if (index >= 0) {
+					total += config[index].p;
+				}
+			}
+
+			return this.numFloor(total * 100, 100);
+		},
 		getLangMap(){
 			let langToName = {};
 			let nftConfig = BaseConfig.NftCfg;
@@ -547,9 +625,44 @@ export default {
 			retData.v4 += retData.v4 < 80? 20: 10;
 			retData.v5 +=  20;
 			return retData;
+		},
+		nextStepHashrateInfo() {
+				const step = this.hashrateInfo.currentStep + 1;
+
+				return {
+					v4: {
+							min: Math.floor((step - 8) / 2) * 10 + 10,
+							standard: Math.floor(((Math.floor((step - 8) / 2) * 10 + 10) +((step - 2) * 10 + 80)) / 2),
+							max: ((step - 2) * 10) + 80,
+					},
+					v5: {
+							min: Math.floor((step - 8) / 2) * 20 + 50,
+							standard: Math.floor(((Math.floor((step - 8) / 2) * 20 + 50) +((step - 1) * 20 + 150)) / 2),
+							max: ((step - 1) * 20) + 150,
+					},
+					v6: {
+							min: 180,
+							standard: Math.floor(((step - 1) * 10) + 90),
+							max: ((step - 1) * 20) + 180,
+					},
+				};
 		}
 	},
 	methods: {
+		// 根据类型获取算力达标数量
+		getStandardCount(type) {
+			const standardHashrate = this.hashrateInfo[`${type}StandardHashrate`];
+
+			return this.getNftVInfo[type].reduce((data, item) => {
+				const hashrate = item.level > 1 ? item.hashrate : item.lvHashrate;
+
+				if (hashrate >= standardHashrate) {
+					return data + 1;
+				}
+
+				return data;
+			}, 0);
+		},
 		setSearchItme(item){
 			if(item.prototype == 0) return;
 			this.searchWord = item.realName + ":"+item.prototype;
@@ -630,6 +743,21 @@ export default {
 <style lang="less" scoped>
 .momo-content{
 	margin: 0px -20px !important;
+}
+
+.mark {
+	line-height: 40px;
+	position: relative;
+	vertical-align: middle;
+	cursor: pointer;
+
+	.tip-icon {
+		position: absolute;
+		top: 0;
+		right: 0;
+		transform: translate(100%, -50%);
+		width: 22px;
+	}
 }
 
 .pop-notice{

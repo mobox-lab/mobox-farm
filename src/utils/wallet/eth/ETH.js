@@ -109,7 +109,8 @@ export default class ETH {
 			Contract.getMomosStake,
 			Contract.getMomosAuction,
 			Contract.getMomoNames,
-			Contract.getUserFarmInfos
+			Contract.getUserFarmInfos,
+			Contract.userStakerShow,
 		], WalletConfig.ETH.moMoHelper);
 		this.momoStakeContract = new this.web3.eth.Contract([
 			Contract.stake,

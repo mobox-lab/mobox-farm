@@ -38,7 +38,7 @@ export default {
 	computed: {
 		...mapState({
 			momoGemsObjs: (state) => state.marketState.data.momoGemsObjs,
-		})
+		}),
 	},
 	async created(){
 		let tokenId = this.petData.tokenId;
@@ -74,6 +74,7 @@ export default {
 	left: 50%;
 	transform: translateX(-50%);
 }
+
 @media (max-width: 768px){
 	.pet_item{
 		width:350px !important;

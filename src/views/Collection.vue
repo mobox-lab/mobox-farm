@@ -36,12 +36,15 @@
 					<StatuButton style="zoom: 0.8" v-if="needShowAdd &&  getStaticAdd > 0" class="btn-small mgl-10" :isLoading="lockBtn.joinStakeLock > 0" :onClick="joinStake">{{$t('Mine_15')}}</StatuButton>
 				</p>
 				<div class="por dib mgt-10" style="width:100%">
-					<p class="por bold" style="height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">
+					<div class="por bold" style="height:40px;line-height:38px;padding-left:15px;color:#86a5ff;font-size:18px;background: rgba(27,84,245,0.10);border: 2px solid #1b54f5;border-radius:10px">
 						<span v-if="eth_myHashrate != '-' ">{{eth_myHashrate}}</span>
 						<Loading v-else />
 						<span v-if="eth_getAddHashrate > 0" class="small" style="color: #75fd49" >({{ eth_getAddHashrate }})</span>
-						<img src="../assets/icon/powerup.png" id="powerup-btn" alt="" @click="oprDialog('showPetPowerUp-dialog', 'block')"  />
-					</p>
+						<div class="icon-layout" @click="oprDialog('showPetPowerUp-dialog', 'block')">
+							<img src="../assets/icon/powerup.png"  />
+							<img v-if="getCurrentBonus != getActualBonus" class="tip-icon" src="@/assets/icon/warning-icon.png" />
+						</div>
+					</div>
 				</div>
 			</div>
 			<p class="small opa-6 mgt-20">{{$t("Air-drop_210")}}</p>
@@ -117,28 +120,59 @@ import { mapState } from "vuex";
 import { Common, Wallet } from "@/utils";
 import { CommonMethod } from "@/mixin";
 import { JumpPet, Loading, StatuButton } from '@/components';
+import powerAddConfig from "@/config/PowerAddConfig";
+
+const types = ['v4', 'v5', 'v6'];
 
 export default {
 	components: { JumpPet,  Loading, StatuButton},
 	mixins: [CommonMethod],
 	data() {
-		return { 
+		return {
+			interval: null,
 			inputBox: 1,
 			needShowAdd: false,
+			// 全网算力
+			eth_totalHashrate: '-',
+			// 我的算力
+			eth_myHashrate: '-',
+			// 当前可领取的mbox
+			eth_earnedMbox: '-',
+			// 24小时空投mbox数量
+			totalAirdropMbox: '-',
 		};
 	},
 	computed: {
 		...mapState({
+			hashrateInfo: (state) => state.globalState.hashrateInfo,
+			myNFT_wallet: (state) => state.ethState.data.myNFT_wallet,
+			myNFT_verse: (state) => state.ethState.data.myNFT_verse,
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,
-			eth_myHashrate: (state) => state.ethState.data.myHashrate,
-			eth_totalHashrate: (state) => state.ethState.data.totalHashrate,
-			eth_earnedMbox: (state) => state.ethState.data.earnedMbox,
+			// eth_myHashrate: (state) => state.ethState.data.myHashrate,
+			// eth_totalHashrate: (state) => state.ethState.data.totalHashrate,
+			// eth_earnedMbox: (state) => state.ethState.data.earnedMbox,
+			// totalAirdropMbox: (state) => state.ethState.data.totalAirdropMbox,
 			eth_mbox: (state) => state.ethState.data.mbox,
 			canOpenBox: (state) => state.ethState.data.canOpenBox,
-			totalAirdropMbox: (state) => state.ethState.data.totalAirdropMbox,
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			balancePool: (state) => state.bnbState.data.balancePool,
 		}),
+		getNftVInfo() {
+			const retObj = {
+				v4: [],
+				v5: [],
+				v6: [],
+			};
+			this.myNFT_stake.map((item) => {
+				let vType = parseInt(item.prototype / 1e4);
+				const key = "v" + vType;
+
+				if (retObj[key]) {
+					retObj[key].push(item);
+				}
+			});
+			return retObj;
+		},
 		canBuyBox() {
 			return (
 				this.inputBox != "" &&
@@ -157,26 +191,103 @@ export default {
 		},
 		//获取加成
 		eth_getAddHashrate() {
-			let staticAddHashrate = this.getStaticAdd;
-			let myHashrate = this.eth_myHashrate | 0;
-			let addP = this.getTotalPercent;
-			return this.numFloor(myHashrate - (myHashrate / (1 + addP) - staticAddHashrate),1);
+			const value = [...this.myNFT_wallet,...this.myNFT_verse,...this.myNFT_stake].filter((item) => {
+				return item.location === 'stake';
+			}).reduce((data, item) => {
+				return data + (item.lvHashrate * item.num);
+			}, 0);
+
+			return this.eth_myHashrate - value;
 		},
 		getBalanceArr(){
 			let arr = [];
+
 			for (const key in this.balancePool) {
 				if(key != "ts"){
 					arr.push(this.balancePool[key]);
 				}
 			}
+
 			return arr;
+		},
+		// 获取当前应有算力加成
+		getCurrentBonus() {
+			let bonus = 0;
+
+			for (let i = 0; i < types.length; i++) {
+				const type = types[i];
+				const config = powerAddConfig[type];
+				const momoCount = this.getNftVInfo[type].length;
+				let count = 0;
+
+				for (let eq = 0; eq < config.length; eq++) {
+					const item = config[eq];
+
+					if (momoCount >= item.num) {
+						count = item.p;
+					} else {
+						break;
+					}
+				}
+
+				bonus += count;
+			}
+
+			return this.numFloor(bonus * 100, 100);
+		},
+		// 获取实际算力加成
+		getActualBonus() {
+			let total = 0;
+
+			for (let item in types) {
+				const type = types[item];
+				const config = powerAddConfig[type];
+				// 获取当前类型达标数量
+				const count = this.getStandardCount(type);
+
+				// 获取达标数量符合的下标
+				let index;
+
+				// 超出最大值
+				if (count >= config[config.length - 1].num) {
+					index = config.length - 1;
+				} else {
+					index = config.findIndex(item => item.num > count) - 1;
+				}
+
+				if (index >= 0) {
+					total += config[index].p;
+				}
+			}
+
+			return this.numFloor(total * 100, 100);
 		}
+
 	},
 	async created(){
 		await Wallet.ETH.getAccount();
 		Common.app.getPoolsEarns();
+		this.getUserStakerShow();
+		this.interval = setInterval(this.getUserStakerShow.bind(this), 5000);
+	},
+	destroyed() {
+		clearInterval(this.interval);
 	},
 	methods: {
+		// 根据类型获取算力达标数量
+		getStandardCount(type) {
+			const standardHashrate = this.hashrateInfo[`${type}StandardHashrate`];
+
+			return this.getNftVInfo[type].reduce((data, item) => {
+				const hashrate = item.level > 1 ? item.hashrate : item.lvHashrate;
+
+				if (hashrate >= standardHashrate) {
+					return data + 1;
+				}
+
+				return data;
+			}, 0);
+		},
 		async joinStake(){
 			let hash = await Wallet.ETH.joinStake();
 			if(hash){
@@ -218,17 +329,50 @@ export default {
 		getPositonY() {
 			return Common.getRandomNum(400, 500);
 		},
-		
+		async getUserStakerShow() {
+			const address = await Wallet.ETH.getAccount();
+			const res = await Wallet.ETH.momoHelperContract.methods.userStakerShow(address).call();
+
+			this.eth_totalHashrate = res.totalHashrate;
+			this.eth_myHashrate = res.hrChecked;
+			this.eth_earnedMbox = Common.numFloor(res.earned / 1e18, 1000);
+			this.totalAirdropMbox = Math.ceil((Number(res.rewardRate) / 1e18) * 86400);
+		}
 	},
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .rank{
 	position: absolute;
 	top: -30px;
 	right: 0px;
 }
+
+.icon-layout {
+	cursor: pointer;
+	position: absolute;
+	right: 5px;
+	top: 4px;
+	width: 30px;
+	height: 30px;
+
+	img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	.tip-icon {
+		z-index: 99;
+		width: 20px;
+		position: absolute;
+		top: -10px;
+		right: -10px;
+	}
+}
+
+
 .momo_show_anime{
 	width: 200px;
 	height: 200px;
@@ -325,13 +469,7 @@ export default {
 	padding: 20px;
 	padding-top: 10px;
 }
-#powerup-btn {
-	cursor: pointer;
-	position: absolute;
-	right: 5px;
-	top: 4px;
-	height: 30px;
-}
+
 .collection-num-item {
 	background: #1C222C;
 	border-radius: 100px;

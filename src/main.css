@@ -166,6 +166,10 @@ svg {
 	font-weight: bold;
 }
 
+.color-yellow {
+	color: #FFFF0B;
+}
+
 .pet_hover_lv1 {
 	background: #474747;
 	border-radius: 15px !important;

@@ -19,6 +19,18 @@ function getMinHashrate(lv, step) {
 const state = () => ({
 	v4MinHashrate: '',
 	v5MinHashrate: '',
+	hashrateInfo: {
+		// v4 - 最小，标准，最大算力
+		v4MinHashrate: null, v4StandardHashrate: null, v4MaxHashrate: null,
+		// v5 - 最小，标准，最大算力
+		v5MinHashrate: null, v5StandardHashrate: null, v5MaxHashrate: null,
+		// v6 - 最小，标准，最大算力
+		v6MinHashrate: null, v6StandardHashrate: null, v6MaxHashrate: null,
+		// 下一期Step时间戳
+		nextStepTime: null,
+		// 当前Step
+		currentStep: null,
+	},
 	data: {
 		connectWalletAddr: "",
 		chainNetwork: 0,
@@ -173,6 +185,10 @@ const mutations = {
 	setStep(state, value) {
 		state.v4MinHashrate = getMinHashrate(4, +value + 1);
 		state.v5MinHashrate = getMinHashrate(5, +value + 1);
+	},
+	// 设置算力信息
+	setHashrateInfo(state, value) {
+		state.hashrateInfo = value;
 	}
 };
 

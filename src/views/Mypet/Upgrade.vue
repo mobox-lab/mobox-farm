@@ -13,6 +13,7 @@
 					</div>
 					<img v-if="isLock" class="upgrade-lock" src="@/assets/icon/lock.png" alt="">
 					<div id="upgrade-power" class="vertical-children">
+						<img src="@/assets/icon/warning-icon.png" class="tip-icon" v-if="!isMeetStandards && getNowPetItem.level <= 1" @click="standardsHashrateTip" />
 						<div class="gka-harmer por  dib" style="top: -8px;right:-10px" :class="this.getNowPetItem.location == 'wallet'?'': 'animation-harmer'">
 							<img src="@/assets/anime/sleep.gif" class="sleep-harmer" v-if="this.getNowPetItem.location == 'wallet'" alt="" />
 						</div>
@@ -21,6 +22,7 @@
 						</span>
 					</div>
 					<div id="upgrade-power-lv1" class="vertical-children" v-if="this.getNowPetItem.level > 1">
+						<img src="@/assets/icon/warning-icon.png" class="tip-icon" v-if="!isMeetStandards" @click="standardsHashrateTip" />
 						Lv. 1
 						<img src="@/assets/icon/airdrop.png" alt="" height="15" />&nbsp;
 						<span :class="getHashrateColor( this.getNowPetItem)">
@@ -243,6 +245,7 @@ export default {
 	},
 	computed: {
 		...mapState({
+			hashrateInfo: (state) => state.globalState.hashrateInfo,
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,
 			myNFT_wallet: (state) => state.ethState.data.myNFT_wallet,
 			myNFT_verse: (state) => state.ethState.data.myNFT_verse,
@@ -253,6 +256,25 @@ export default {
 			allowance_721_to_stake: (state) =>state.ethState.data.allowance_721_to_stake,
 			upgradeLocks: (state) =>state.ethState.data.upgradeLocks,
 		}),
+		// 是否不满足标准算力
+		isMeetStandards() {
+			const { vType, lvHashrate, hashrate, level } = this.getNowPetItem;
+
+			if (vType < 4) {
+				return true;
+			}
+
+			if (level > 1) {
+				return hashrate >= this.standardsHashrate;
+			}
+
+			return lvHashrate >= this.standardsHashrate;
+		},
+		// 标砖算力
+		standardsHashrate() {
+			const { vType } = this.getNowPetItem;
+			return this.hashrateInfo[`v${vType}StandardHashrate`];
+		},
 		// 获取momo的生产力
 		getSCL(){
 			let {lvHashrate, hashrate, gems} = this.getNowPetItem;
@@ -619,6 +641,10 @@ export default {
 		EventBus.$off(EventConfig.LevelUpConfirm,this.levelUpConfirm);
 	},
 	methods: {
+		// 标准算力提示
+		standardsHashrateTip() {
+			this.getConfirmDialog().show(`${this.$t('MOMO_98').replace('#0#', this.standardsHashrate).replace('#0#', this.standardsHashrate)}`);
+		},
 		levelUpConfirm({tokenId}){
 			if(tokenId == this.getNowPetItem.tokenId){
 				this.lockUpgradeTime = 0;
@@ -963,6 +989,15 @@ export default {
 	top: 20px;
 	font-size: 20px;
 }
+
+.tip-icon {
+	width: 25px;
+	cursor: pointer;
+	margin-right: 5px;
+	position: relative;
+	z-index: 999;
+}
+
 #upgrade-power-lv1 {
 	position: absolute;
 	right: 20px;

@@ -30,17 +30,20 @@
 		</div>
 		<!-- LV.1 -->
 		<div class="mgt-10 tar vertical-children lv1" style="font-size: 12px" v-if="(data.item.vType >= 4 && data.item.level > 1) || data.item.location=='verse' ">
+			<img v-if="!isMeetStandards && isShowHashrateIcon" src="@/assets/icon/warning-icon.png" class="tip-icon" @click.stop="standardsHashrateTip" />&nbsp;
 			<span>Lv. 1</span>&nbsp;
 			<img src="../assets/icon/airdrop.png" alt="" height="15">&nbsp;
 			<span :class="getHashrateColor(data.item)"  class="bold">{{ data.item.hashrate }}</span>
 		</div>
 
 		<div class="pet-power vertical-children mgt-20">
+			<img v-if="!isMeetStandards && !(data.item.level > 1) && isShowHashrateIcon" src="@/assets/icon/warning-icon.png" class="tip-icon" @click.stop="standardsHashrateTip" />
 			<div  class="gka-harmer por" ref="anime" style="margin-top: -12px;right:-10px" :style="{animationDelay: delay+'s'}" :class="{'animation-harmer': data.item.location == 'stake'}">
 				<img src="../assets/anime/sleep.gif" class="sleep-harmer" v-if="data.item.location == 'wallet'" alt="" />
 			</div>
 			<span :class="getHashrateColor(data.item)" style="font-size: 25px" class="bold" >{{ data.item.lvHashrate }}</span>
 			<div class="mgt-10 tar vertical-children show-only-market hide " style="font-size: 12px" v-if="data.item.vType >= 4 && data.item.level > 1">
+				<img v-if="!isMeetStandards && isShowHashrateIcon" src="@/assets/icon/warning-icon.png" class="tip-icon" @click.stop="standardsHashrateTip" />&nbsp;
 				<span>Lv. 1</span>&nbsp;
 				<img src="../assets/icon/airdrop.png" alt="" height="15">&nbsp;
 				<span :class="getHashrateColor(data.item)"  class="bold">{{ data.item.hashrate }}</span>
@@ -64,7 +67,7 @@ import { BaseConfig } from '@/config';
 
 export default {
 	mixins: [CommonMethod],
-	props: ["data"],
+	props: ["data", "isShowHashrateIcon"],
 	data(){
 		return{
 			delay: Common.getRandomNum(200, 1000) / 100
@@ -72,6 +75,7 @@ export default {
 	},
 	computed: {
 		...mapState({
+			hashrateInfo: (state) => state.globalState.hashrateInfo,
 			globalState: (state) => state.globalState.data,
 		}),
 		//是否设置过名字
@@ -90,17 +94,48 @@ export default {
 			})
 			return hashrate * 10 + lvHashrate + gemAdd;
 		},
+		// 是否不满足标准算力
+		isMeetStandards() {
+			const { vType, lvHashrate, hashrate } = this.data.item;
+
+			if (vType < 4) {
+				return true;
+			}
+
+			if (this.data.item.level > 1) {
+				return hashrate >= this.standardsHashrate;
+			}
+
+			return lvHashrate >= this.standardsHashrate;
+		},
+		// 标砖算力
+		standardsHashrate() {
+			const { vType } = this.data.item;
+			return this.hashrateInfo[`v${vType}StandardHashrate`];
+		},
+	},
+	methods: {
+		// 标准算力提示
+		standardsHashrateTip() {
+			this.getConfirmDialog().show(`${this.$t('MOMO_98').replace('#0#', this.standardsHashrate).replace('#0#', this.standardsHashrate)}`);
+		},
 	},
 };
 </script>
 
-<style  scoped>
+<style lang="less" scoped>
 .market .show-only-market{
 	display: block;
 }
 .market .lv1{
 	display: none !important;
 }
+
+.tip-icon {
+	width: 25px;
+	cursor: pointer;
+}
+
 .lv1{
 	position: absolute;
 	top: 0px;

@@ -27,8 +27,6 @@ const InitEth = {
 		}),
 	},
 	async created() {
-		// this.eth_init();
-		
 		EventBus.$off();
 		if (this.timer) clearInterval(this.timer);
 
@@ -146,10 +144,26 @@ const InitEth = {
 				await this.eth_setLockList();
 			}
 		},
+		async getMaxHashrateV3() {
+			const [
+				v4MinHashrate, v4StandardHashrate, v4MaxHashrate,
+				v5MinHashrate, v5StandardHashrate, v5MaxHashrate,
+				v6MinHashrate, v6StandardHashrate, v6MaxHashrate,
+				nextStepTime, currentStep
+			] = await Wallet.ETH.Group.MoMoSetting.getMaxHashrateV3();
+
+			this.$store.commit("globalState/setHashrateInfo", {
+				v4MinHashrate, v4StandardHashrate, v4MaxHashrate,
+				v5MinHashrate, v5StandardHashrate, v5MaxHashrate,
+				v6MinHashrate, v6StandardHashrate, v6MaxHashrate,
+				nextStepTime, currentStep: +currentStep
+			});
+		},
 		//需要定时去取的数据
 		async needUpdate() {
 			//产销MOMO升级设置
 			await this.getMoMoSetting();
+			await this.getMaxHashrateV3();
 			//查询我质押的和key的收益
 			await this.getStakeValueAndEarndKey();
 			//获取veMBOX相关

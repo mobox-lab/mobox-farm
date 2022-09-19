@@ -1112,4 +1112,61 @@ export default class Contract {
 		],
 	}
 
+	static userStakerShow = {
+		name: 'userStakerShow',
+		type: "function",
+		inputs: [
+			{
+				type: "address",
+				name: "user"
+			}
+		],
+		outputs: [
+			// uint256 hrReal,         // 真实挖矿算力
+      //       uint256 hrChecked,      // 校准后的算力
+      //       uint256 hrFixed,        // 基础固定值算力
+      //       uint256 earned,         // 待领取的MBOX
+      //       uint256 amountV4,       // 达标的V4数量
+      //       uint256 ,       // 达标的V5数量
+      //       uint256 ,       // 达标的V6数量
+      //       uint256 ,     // 全网挖矿速率
+      //       uint256    // 全网总算力
+			{
+				type: "uint256",
+				name: "hrReal",
+			},
+			{
+				type: "uint256",
+				name: "hrChecked",
+			},
+			{
+				type: "uint256",
+				name: "hrFixed",
+			},
+			{
+				type: "uint256",
+				name: "earned",
+			},
+			{
+				type: "uint256",
+				name: "amountV4",
+			},
+			{
+				type: "uint256",
+				name: "amountV5",
+			},
+			{
+				type: "uint256",
+				name: "amountV6",
+			},
+			{
+				type: "uint256",
+				name: "rewardRate",
+			},
+			{
+				type: "uint256",
+				name: "totalHashrate",
+			},
+		]
+	}
 }

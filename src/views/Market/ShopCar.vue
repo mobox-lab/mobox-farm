@@ -11,7 +11,8 @@
 			</p>
 		</div>
 		<div class="dialog-content mgt-10" id="shop-car-content" style="padding-bottom:15px">
-			<div v-for="item in shopCar" :key="item.prototype+''+item.index" :class="'pet_hover_lv' +item.vType" class="shop-car-item  vertical-children por mgt-10 por">
+			<div v-for="item in shopList" :key="item.prototype+''+item.index" :class="'pet_hover_lv' +item.vType" class="shop-car-item  vertical-children por mgt-10 por">
+				<img class="tip-icon" v-if="!item.isStandard" src="@/assets/icon/warning-icon.png" />
 				<div class="dib por">
 					<img  :src="require(`@/assets/pet/${item.prototype}.png`)" alt="" width="100" height="100" />
 					<p style="position:absolute;bottom:5px;width:100%;text-align:center" v-if="item.tokenId == 0">
@@ -115,7 +116,29 @@ export default {
 		...mapState({
 			shopCar: (state) => state.marketState.data.shopCar,
 			coinArr: (state) => state.bnbState.data.coinArr,
+			hashrateInfo: (state) => state.globalState.hashrateInfo,
 		}),
+		shopList() {
+			const data = this.shopCar.map((item) => {
+				const { lvHashrate, hashrate, level, prototype } = item;
+				const vType = parseInt(prototype / 1e4);
+				const standardsHashrate = this.hashrateInfo[`v${vType}StandardHashrate`];
+				let isStandard;
+
+				if (vType < 4) {
+					isStandard = true;
+				} else {
+					isStandard = level > 1 ? hashrate >= standardsHashrate : lvHashrate >= standardsHashrate;
+				}
+
+				return {
+					...item,
+					isStandard,
+				};
+			});
+
+			return data;
+		},
 		getShopCarTotalPrice(){
 			let price = 0;
 			this.shopCar.map(item=>{
@@ -132,16 +155,25 @@ export default {
 	},
 	methods:{
 		confirmBuyShopCar(){
-			console.log(this.shopCar);
+			// 全部合格
+			const isAllStandard = this.shopList.every(item => item.isStandard);
+
 			if(this.shopCar.length == 0) return;
-			let msg = this.$t('Market_59').replace('#0#', `<span style='color: #49c773'>${this.getShopCarTotalPrice} BUSD</span>` )
+
+			let msg;
+
+			if (isAllStandard) {
+				msg = this.$t('Market_59').replace('#0#', `<span style='color: #49c773'>${this.getShopCarTotalPrice} BUSD</span>` );
+			} else {
+				msg = this.$t('Market_104').replace('#0#', `<span style='color: #49c773'>${this.getShopCarTotalPrice} BUSD</span>` );
+			}
+			
 			if(this.ignoreSold == false){
 				msg += `<br/><br/><span class='small' style='color:orange'>${this.$t('Market_72')}</span>`
 			}
+
 			this.getConfirmDialog().show(msg, async ()=>{
 				let coinKey = "BUSD";
-
-				
 
 				let auctors = [];
 				let indexs = [];
@@ -153,8 +185,6 @@ export default {
 					startTimes.push(item.uptime);
 					prices.push(item.nowPrice)
 				});
-
-				console.log(auctors, indexs, prices, startTimes);
 
 				if(this.getShopCarTotalPrice > Number(this.coinArr[coinKey].balance)){
 					this.showNotify(this.$t("Market_34"), "error");
@@ -171,7 +201,6 @@ export default {
 		},
 		show(){
 			this.oprDialog("shopcar-dialog", "block");
-			console.log(this.shopCar);
 		},
 		deleteItem(item){
 			this.getConfirmDialog().show(this.$t("Market_74"), ()=>this.$store.commit("marketState/addToShopCar", item));
@@ -192,13 +221,22 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .shop-car-item {
 	width: 100%;
 	height: 100px;
 	border-radius: 20px;
 	text-align: left;
+
+	.tip-icon {
+		width: 22px;
+		position: absolute;
+		left: 0;
+		top: 0;
+		transform: translate(-50%, -50%);
+	}
 }
+
 .shop-car-item .pet-img {
 	width: 100px;
 	height: 100px;

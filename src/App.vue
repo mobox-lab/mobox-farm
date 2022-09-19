@@ -21,7 +21,7 @@
 				<div class="vertical-children dib mgl-10" @click="openMboxMecSwap">
 					<img src="./assets/coin/MEC.png" class="head-mec-icon" />
 					<router-link to="/market?tab=4">
-						<span > $<span v-if="ourPrice['MEC'] != '-' ">{{ numFloor(ourPrice["MEC"], 1e2)}}</span>
+						<span > $<span v-if="ourPrice['MEC'] != '-' ">{{ourPrice["MEC"]}}</span>
 							<Loading v-else />
 						</span>
 					</router-link>
@@ -302,17 +302,25 @@
 					</table>
 					<div class="tab-body" style="max-height: 180px;overflow-y: auto;" >
 						<table class="power-table tal small" id="need-scoller-table" >
-							<tr v-for="(item, index) in powerAddConfig[powerTab]" :key="item.num" :class="getTotalPercent[powerTab] == index ? 'active' : ''" >
-								<td style="width: 40%">{{ item.num }}<span style="color:#aaf45a" v-if="getTotalPercent[powerTab] == index">({{getNftVInfo[powerTab].length}})</span>
+							<tr v-for="(item, index) in powerAddConfig[powerTab]" :key="item.num" :class="standardIndex == index ? 'active' : ''" >
+								<td style="width: 40%">
+									{{ item.num }}&nbsp;<div v-if="standardIndex == index" style="display: inline-block">
+										<span class="color-yellow">({{standardCount}}/{{getNftVInfo[powerTab].length}})</span>
+									</div>
 								</td>
 								<td style="width: 60%">{{ numFloor((item.p * 100), 1000) }}%</td>
 							</tr>
 						</table>
 					</div>
 				</div>
-				<p class="small tal small mgt-10"> 
-					{{ $t("Fetters_11") }}:
-					<span style="color: #aaf45a" >{{ numFloor(getTotalPercent.maxAdd * 100, 100) }}%</span>
+				<p class="small tal small mgt-20 proportion">
+					{{ $t("Fetters_11") }}:&nbsp;
+					<span class="color-yellow">{{numFloor(currentTotalAddition * 100, 100)}}%</span>&nbsp;
+					<img src="@/assets/icon/warning-icon.png" class="tip-icon" v-if="currentTotalAddition != getTotalPercent.maxAdd" @click="showMomos" />
+				</p>
+				<p class="small tal small mgt-10 proportion" v-if="currentTotalAddition != getTotalPercent.maxAdd">
+					{{$t('MOMO_99')}}:&nbsp;
+					<span style="color: #aaf45a">{{ numFloor(getTotalPercent.maxAdd * 100, 100) }}%</span>
 				</p>
 			</div>
 		</Dialog>
@@ -331,6 +339,7 @@
 		
 		<div id="fly-dot"></div>
 		<Transfer />
+		<StandardHashrate :currentTotalAddition="numFloor(currentTotalAddition * 100, 100)" :totalAddition="numFloor(getTotalPercent.maxAdd * 100, 100)" />
 		<VMbox ref="vmbox" />
 		<Pancake ref="pancake" />
 		<QuickBuy ref="quickBuy" />
@@ -405,6 +414,10 @@
 			<h2>{{$t("Notice_03")}}</h2>
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
+					<div class="mgt-20">
+						<h3 class="tac">{{$t("Notice_82")}}</h3>
+						<span v-html="$t('Notice_83')" ></span>
+					</div>
 					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_80")}}</h3>
 						<span v-html="$t('Notice_81')" ></span>
@@ -610,16 +623,19 @@ import { InitEth, InitTron, CommonMethod } from "@/mixin";
 import { mapState } from "vuex";
 import { Common, Http, Wallet } from "@/utils";
 import { PancakeConfig } from "@/config";
+import powerAddConfig from "@/config/PowerAddConfig";
 
 import Transfer from '@/views/Mypet/Transfer'
+import StandardHashrate from '@/views/Mypet/StandardHashrate'
 
 let timer = null;
 export default {
 	name: "App",
 	mixins: [InitEth, InitTron, CommonMethod],
-	components: {StatuButton, Transfer,RuleDialog, BoxBag,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
+	components: {StatuButton, Transfer, StandardHashrate, RuleDialog, BoxBag,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
 	data() {
 		return {
+			powerAddConfig,
 			langArr: ["English", "中文"],
 			langPosToName: ["en", "zh-CN"],
 			showPowerPet: false,
@@ -631,80 +647,10 @@ export default {
 				"BOX": "-",
 				"MEC": "-"
 			},
-			powerAddConfig: {
-				v4: [
-				{ num: 3, p: 0.06 },
-				{ num: 5, p: 0.11 },
-				{ num: 7, p: 0.15 },
-				{ num: 10, p: 0.175 },
-				{ num: 15, p: 0.19 },
-				{ num: 20, p: 0.2 },
-				{ num: 25, p: 0.205 },
-				{ num: 30, p: 0.21 },
-				{ num: 35, p: 0.215 },
-				{ num: 40, p: 0.22 },
-				{ num: 45, p: 0.225 },
-				{ num: 50, p: 0.23 },
-				{ num: 60, p: 0.235},
-				{ num: 70, p: 0.24 },
-				{ num: 80, p: 0.245 },
-				{ num: 90, p: 0.2475 },
-				{ num: 100, p: 0.25 },
-				{ num: 125, p: 0.2525 },
-				{ num: 150, p: 0.255 },
-				{ num: 175, p: 0.2575 },
-				{ num: 200, p: 0.26 },
-				{ num: 250, p: 0.2625 },
-				{ num: 300, p: 0.265 },
-				{ num: 350, p: 0.2675 },
-				{ num: 400, p: 0.27 },
-				],
-				v5: [
-				{ num: 1, p: 0.08 },
-				{ num: 2, p: 0.16 },
-				{ num: 4, p: 0.24},
-				{ num: 6, p: 0.32 },
-				{ num: 9, p: 0.335 },
-				{ num: 12, p: 0.35 },
-				{ num: 15, p: 0.365 },
-				{ num: 18, p: 0.38 },
-				{ num: 21, p: 0.395 },
-				{ num: 24, p: 0.41 },
-				{ num:27, p: 0.425 },
-				{ num: 30, p: 0.435 },
-				{ num: 36, p: 0.445 },
-				{ num: 42, p: 0.455 },
-				{ num: 48, p: 0.465 },
-				{ num: 54, p: 0.475 },
-				{ num: 60, p: 0.485 },
-				{ num: 75, p: 0.495 },
-				{ num: 90, p: 0.505 },
-				{ num: 105, p: 0.515 },
-				{ num: 120, p: 0.525 },
-				],
-				v6: [
-				{ num: 2, p: 0.06 },
-				{ num: 3, p: 0.09 },
-				{ num: 4, p: 0.12 },
-				{ num: 5, p: 0.15 },
-				{ num: 6, p: 0.18 },
-				{ num: 7, p: 0.21 },
-				{ num: 8, p: 0.24 },
-				{ num: 9, p: 0.27 },
-				{ num: 10, p: 0.3 },
-				{ num: 12, p: 0.33 },
-				{ num: 14, p: 0.36 },
-				{ num: 16, p: 0.39 },
-				{ num: 18, p: 0.42 },
-				{ num: 20, p: 0.45 },
-				{ num: 25, p: 0.48 },
-				{ num: 30, p: 0.51 },
-				],
-			},
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "2022-9-13",
+			noticeVersion: "2022-9-19",
 			version: "2.1.1"
 		};
 	},
@@ -720,6 +666,7 @@ export default {
 	},
 	computed: {
 		...mapState({
+			hashrateInfo: (state) => state.globalState.hashrateInfo,
 			globalState: (state) => state.globalState.data,
 			ethBalance: (state) => state.ethState.data.balance,
 			myNFT_stake: (state) => state.ethState.data.myNFT_stake,
@@ -740,6 +687,49 @@ export default {
 			connectWalletAddr: (state) => state.globalState.data.connectWalletAddr,
 			chainNetwork: (state) => state.globalState.data.chainNetwork,
 		}),
+		// 算力达标数量
+		standardCount() {
+			return this.getStandardCount(this.powerTab);
+		},
+		standardIndex() {
+			for (let index = 0; index < powerAddConfig[this.powerTab].length; index++) {
+				const item = powerAddConfig[this.powerTab][index];
+
+				if (item.num > this.standardCount) {
+					return index - 1;
+				}
+			}
+
+			return null;
+		},
+		// 当前算力总加成
+		currentTotalAddition() {
+			const list = ["v4", "v5", "v6"];
+			let total = 0;
+
+			for (let item in list) {
+				const type = list[item];
+				const config = powerAddConfig[type];
+				// 获取当前类型达标数量
+				const count = this.getStandardCount(type);
+
+				// 获取达标数量符合的下标
+				let index;
+
+				// 超出最大值
+				if (count >= config[config.length - 1].num) {
+					index = config.length - 1;
+				} else {
+					index = config.findIndex(item => item.num > count) - 1;
+				}
+
+				if (index >= 0) {
+					total += config[index].p;
+				}
+			}
+
+			return total;
+		},
 		isMoboxWallet(){
 			return window.SHOW_APP_BAR != undefined;
 		},
@@ -794,7 +784,7 @@ export default {
 			["v4", "v5", "v6"].map((type) => {
 				let targetNum = nftInfo[type].length;
 				let nowMax = 0;
-				this.powerAddConfig[type].map((item, pos) => {
+				powerAddConfig[type].map((item, pos) => {
 					if (targetNum >= item.num) {
 						obj[type] = pos;
 						nowMax = item.p;
@@ -941,12 +931,30 @@ export default {
 		clearInterval(timer);
 	},
 	methods: {
+		// 显示momo列表
+		showMomos() {
+			this.oprDialog('standard-hashrate', 'block');
+		},
+		// 根据类型获取算力达标数量
+		getStandardCount(type) {
+			const standardHashrate = this.hashrateInfo[`${type}StandardHashrate`];
+
+			return this.getNftVInfo[type].reduce((data, item) => {
+				const hashrate = item.level > 1 ? item.hashrate : item.lvHashrate;
+
+				if (hashrate >= standardHashrate) {
+					return data + 1;
+				}
+
+				return data;
+			}, 0);
+		},
 		// 打开mbox-mec swap
 		openMboxMecSwap() {
 			const pancake = this.$root.$children[0].$refs.pancake;
 			pancake.$refs.pancakeSwap.from.coinName = 'MBOX';
 			pancake.$refs.pancakeSwap.to.coinName = 'MEC';
-			pancake.setOprData({coinKey: 'MBOX-MEC', pancakeVType: 2});
+			pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2});
 			pancake.show('swap');
 		},
 		agreeNotice(){
@@ -1056,7 +1064,7 @@ export default {
 		},
 		//滚动到激活的位置
 		scorllToTargetPos() {
-			let pos = this.getTotalPercent[this.powerTab];
+			let pos = this.standardIndex;
 			if (pos == -1) pos = 0;
 			let dom = document.getElementById("need-scoller-table");
 			dom.parentNode.scrollTop = 0;
@@ -1094,7 +1102,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .mec-icon {
 	width: 25px;
 	display: inline-block;
@@ -1105,6 +1113,18 @@ export default {
 .head-mec-icon {
 	width: auto;
 	height: 25px;
+}
+
+// 固定算力加成弹窗 - 算力比例
+.proportion {
+	> * {
+		vertical-align: middle;
+	}
+}
+
+.tip-icon {
+	width: 18px;
+	cursor: pointer;
 }
 
 #version{

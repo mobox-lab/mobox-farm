@@ -130,14 +130,11 @@ export default {
 		iconClick() {
 			this.$emit('iconClick');
 		},
-		addNum() {
+		async addNum() {
 			let { tokenId, prototype, num, vType, isLock } = this.data;
 
 			if (this.verificationHashrate && !this.isStandard) {
-				const lvType = parseInt(prototype / 1e4);
-				const standardsHashrate = this.hashrateInfo[`v${lvType}StandardHashrate`];
-				this.getConfirmDialog().show(`${this.$t('MOMO_98').replace('#0#', standardsHashrate).replace('#0#', standardsHashrate)}`);
-				return;
+				await this.showTip();
 			}
 
 			//超过自己数量没法再选择
@@ -149,6 +146,14 @@ export default {
 			if (typeof this.onSelectChange == "function") {
 				this.onSelectChange({ tokenId, prototype, vType, num: 1 });
 			}
+		},
+		async showTip() {
+			return new Promise((resolve) => {
+				const { prototype } = this.data;
+				const lvType = parseInt(prototype / 1e4);
+				const standardsHashrate = this.hashrateInfo[`v${lvType}StandardHashrate`];
+				this.getConfirmDialog().show(`${this.$t('MOMO_100').replace('#0#', standardsHashrate)}`, resolve);
+			});
 		},
 		reduceNum(e) {
 			e.stopPropagation();

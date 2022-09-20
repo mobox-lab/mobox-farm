@@ -2,14 +2,14 @@
 	<div>
 		<div v-if="!showAddLiquidityPanel && !showRemoveLiquidityPanel" class="tab-body tal" style="padding-bottom:10px">
 			<div v-if="oprData.isLP">
-				<div v-if="oprData.isLP" >
+				<div v-if="oprData.isLP">
 					<h2>
 						<span v-if="setting.pancakeVType==1">{{$t("Air-drop_145")}}</span>
 						<span v-else>{{$t("Air-drop_147")}}</span>
 					</h2>
 					<p class="small opa-6">{{$t("Air-drop_58")}}</p>
 				</div>
-				<div class="mgt-10" >
+				<div class="mgt-10">
 					<button class="btn-primary  mgt-10" @click="showAddLiquidityPanel =  true" >{{$t("Air-drop_57")}}</button>&nbsp;
 					<button v-if="oprData.balance > 0 || mecLP > 0" class="btn-primary mgt-10" @click="showRemoveLiquidityPanel =  true"  style="background: #384A7C">{{$t("Air-drop_95")}}</button>
 				</div>
@@ -361,7 +361,7 @@ export default {
 		}
 	},
 	created(){
-		this.apy = (110 + Math.random() * 20).toFixed(1);
+		this.apy = (400 + Math.random() * 200).toFixed(1);
 		clearInterval(timerInterval);
 		this.getMecSwapInfo();
 		timerInterval = setInterval(() => {

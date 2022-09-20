@@ -106,7 +106,7 @@ export default {
 	watch: {
 		dialog_tab_pos: function(newValue, oldValue){
 			if(oldValue != newValue) {
-				this.$refs.pancakeLiquidity.showAddLiquidityPanel = false;
+				this.$refs.pancakeLiquidity.showAddLiquidityPanel = true;
 				this.$refs.pancakeLiquidity.showRemoveLiquidityPanel = false;
 			}
 		}
@@ -129,7 +129,7 @@ export default {
 			this.dialog_tab_pos = type == "swap"?0:1;
 			//初始化swap相关功能
 			this.$refs.pancakeLiquidity.showRemoveLiquidityPanel = false;
-			this.$refs.pancakeLiquidity.showAddLiquidityPanel = false;
+			this.$refs.pancakeLiquidity.showAddLiquidityPanel = true;
 
 			if(!this.hasGetCoinValue){
 				this.hasGetCoinValue = true;

@@ -130,11 +130,10 @@
 						<p class="small opa-6 tac" >{{$t("Fetters_16")}}</p>
 						<div class="ly-input mgt-10">
 							<span class="mark">
-								{{numFloor($root.$children[0].getTotalPercent.maxAdd * 100, 100)+'%'}}
+								{{currentTotalAddition}}%
 								<img v-if="getCurrentBonus != getActualBonus" class="tip-icon" src="@/assets/icon/warning-icon.png" @click="oprDialog('standard-hashrate', 'block')" />
 							</span>
 						</div>
-						<!-- <input type="text" readonly class="ly-input mgt-10 tac" :value="numFloor($root.$children[0].getTotalPercent.maxAdd * 100, 100)+'%'" /> -->
 					</div>
 				</div>
 			</section>
@@ -331,6 +330,9 @@ export default {
 			momoSetting: (state) => state.globalState.data.momoSetting,
 			nowTs: (state) => state.globalState.data.nowTs,
 		}),
+		currentTotalAddition() {
+			return this.numFloor(this.$root.$children[0].currentTotalAddition * 100, 100);
+		},
 		getNftVInfo() {
 			const retObj = {
 				v4: [],

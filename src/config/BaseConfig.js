@@ -3670,6 +3670,10 @@ static NftCfg = {
 	"24045":{prototype:24045,tokenName:"Name_502",quality:2,category:4,mmNum:0,cnName:"小黄毛"},
 	"34045":{prototype:34045,tokenName:"Name_502",quality:3,category:4,mmNum:0,cnName:"小黄毛"},
 	"44045":{prototype:44045,tokenName:"Name_503",quality:4,category:4,mmNum:600,cnName:"黄毛怪兽"},
+	"14046":{prototype:14046,tokenName:"Name_520",quality:1,category:4,mmNum:0,cnName:"Coino"},
+	"24046":{prototype:24046,tokenName:"Name_520",quality:2,category:4,mmNum:0,cnName:"Coino"},
+	"34046":{prototype:34046,tokenName:"Name_520",quality:3,category:4,mmNum:0,cnName:"Coino"},
+	"44046":{prototype:44046,tokenName:"Name_521",quality:4,category:4,mmNum:600,cnName:"Coiningo-B-Walleto"},
 	"50001":{prototype:50001,tokenName:"Name_161",quality:5,category:5,mmNum:50,cnName:"灌篮高手"},
 	"50002":{prototype:50002,tokenName:"Name_162",quality:5,category:5,mmNum:50,cnName:"足球先生"},
 	"50003":{prototype:50003,tokenName:"Name_163",quality:5,category:5,mmNum:50,cnName:"四分卫"},
@@ -3827,5 +3831,6 @@ static NftCfg = {
 	"60006":{prototype:60006,tokenName:"Name_246",quality:6,category:5,mmNum:5,cnName:"Bino Binancian Bot"},
 	"60007":{prototype:60007,tokenName:"Name_347",quality:6,category:5,mmNum:5,cnName:"Maxine Dexie Trunk"},
 	"60008":{prototype:60008,tokenName:"Name_463",quality:6,category:5,mmNum:5,cnName:"Gallerzord"},
+	"60009":{prototype:60009,tokenName:"Name_522",quality:6,category:5,mmNum:5,cnName:"Coinorino Mechanica"},
 }
 }

@@ -66,6 +66,7 @@
 	</div>
 </template>
 <script>
+import { mapState } from 'vuex'
 import { Dialog } from '@/components';
 import {CommonMethod} from '@/mixin';
 import SelectCoin from '@/views/Airdrop/SelectCoin';
@@ -74,8 +75,8 @@ import PancakeSwap from '@/views/Airdrop/PancakeSwap';
 import PancakeLiquidity from '@/views/Airdrop/PancakeLiquidity';
 import QuickSwap from '@/views/Airdrop/QuickSwap'
 import Setting from '@/views/Airdrop/Setting';
-import { mapState } from 'vuex'
 import {PancakeConfig} from "@/config";
+import { Common, Wallet } from "@/utils/";
 
 export default {
 	name: "Pancake",
@@ -97,6 +98,7 @@ export default {
 	},
 	data() {
 		return {
+			mecLP: 0,
 			dialog_tab_pos: 1,
 			hasGetCoinValue: false,
 			oprCoinKey: "",
@@ -124,20 +126,28 @@ export default {
 				type: "error",
 			});
 		},
-		show(type){
+		show(type) {
 			this.oprDialog("pancake-dialog","block");
-			this.dialog_tab_pos = type == "swap"?0:1;
+
+			if (type === "swap") {
+				this.dialog_tab_pos = 0;
+				this.$refs.pancakeLiquidity.showAddLiquidityPanel = false;
+			} else {
+				this.dialog_tab_pos = 1;
+				this.$refs.pancakeLiquidity.showAddLiquidityPanel = this.mecLP <= 0;
+			}
+
 			//初始化swap相关功能
 			this.$refs.pancakeLiquidity.showRemoveLiquidityPanel = false;
-			this.$refs.pancakeLiquidity.showAddLiquidityPanel = true;
 
-			if(!this.hasGetCoinValue){
+			if (!this.hasGetCoinValue) {
 				this.hasGetCoinValue = true;
 				this.$refs.selectCoin.getCoinValue();
 			}
+
 			return this;
 		},
-		showAddLiquidityPanel(){
+		showAddLiquidityPanel() {
 			this.$refs.pancakeLiquidity.showAddLiquidityPanel = true;
 			return this;
 		},
@@ -156,6 +166,10 @@ export default {
 			return this;
 		},
 	},
+	async created() {
+		const res = await Wallet.ETH.getErc20BalanceByTokenAddr(PancakeConfig.MecSwapPair, false);
+		this.mecLP = Common.numFloor(Number(res) / 1e18, 1e18);
+	}
 };
 </script>
 

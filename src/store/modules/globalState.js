@@ -17,6 +17,7 @@ function getMinHashrate(lv, step) {
 }
 
 const state = () => ({
+	mecApy: (300 + Math.random() * 200).toFixed(1),
 	v4MinHashrate: '',
 	v5MinHashrate: '',
 	hashrateInfo: {

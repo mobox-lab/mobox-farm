@@ -65,7 +65,8 @@
 						</div>
 					</div>
 					<div style="padding:0px 10px">
-						<MarketGemAll v-show="marketTabPos == 0" :isShowSwapMec="marketTypePos === 5" />
+						<Swap v-show="marketTabPos == 0 && marketTypePos == 5 && !isShowMecMarket" />
+						<MarketGemAll v-show="marketTabPos == 0 && (marketTypePos == 5 ? isShowMecMarket : true)" :isShowSwapMec="marketTypePos === 5" />
 						<MarketGemMy v-show="marketTabPos == 1" />
 						<MarketGemMySell v-show="marketTabPos == 2" />
 						<MarketGemStatistics v-if="marketTabPos == 3" />
@@ -102,6 +103,7 @@ import RentMy from './Rent/RentMy.vue'
 import RentMySell from './Rent/RentMySell.vue'
 import RentDeal from './Rent/RentDeal.vue'
 import RentStatistics from './Rent/RentStatistics.vue'
+import Swap from './Swap.vue';
 
 import { mapState } from "vuex";
 import { PancakeConfig } from '@/config';
@@ -114,11 +116,13 @@ export default {
 		Tab , Loading, Dropdown,
 		MoMo,
 		MomoHistory,
+		Swap,
 		MarketGemAll,MarketGemMy,MarketGemMySell, MarketGemStatistics,GemHistory,
 		RentAll,RentMy,RentMySell, RentDeal, RentStatistics
 	},
 	data() {
 		return {
+			isShowMecMarket: false,
 			gemMarketKey: "gem",
 			tabList: [this.$t('Market_01'), this.$t("Market_02"), this.$t("Market_03"), this.$t("Market_53")],
 			rentTabList:[this.$t('Market_01'), this.$t("Hire_02"),this.$t("Hire_03"),this.$t("Market_53")],
@@ -202,7 +206,6 @@ export default {
 			return num;
 		}
 	},
-
 	async mounted(){
 		let marketTypePos = this.$route.query.tab || this.marketTypePos;
 		this.$refs["menu"+marketTypePos].click();

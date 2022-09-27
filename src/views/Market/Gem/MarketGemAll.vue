@@ -202,14 +202,7 @@ export default {
 	methods: {
 		// 打开mbox-mec swap
 		openMboxMecSwap() {
-			const pancake = this.$root.$children[0].$refs.pancake;
-			pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2});
-
-			this.$nextTick(() => {
-				pancake.$refs.pancakeSwap.from.coinName = 'MBOX';
-				pancake.$refs.pancakeSwap.to.coinName = 'MEC';
-				pancake.show('swap');
-			});
+			this.$parent.isShowMecMarket = false;
 		},
 		// 切换购物车显示状态
 		toggleShowBulkBuying() {

@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js";
 
 export default class Rpc {
 	// static apiNode = "https://data-seed-prebsc-1-s1.binance.org:8545/";
-	static apiNode = "https://bsc-dataseed2.binance.org/";
+	static apiNode = "https://bsc-dataseed.binance.org/";
 	// static apiNodeMainNet = "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161";
 	static apiNodeMainNet = "https://bsc-dataseed2.binance.org/";
 

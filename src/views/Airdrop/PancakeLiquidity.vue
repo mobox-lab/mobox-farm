@@ -157,7 +157,7 @@
 							<div class="tip-content">{{$t('Air-drop_275')}}</div>
 						</div>
 						<div class="flex-1"></div>
-						<div class="apy">{{apy}}%</div>
+						<div class="apy">{{mecApy}}%</div>
 					</div>
 				</div>
 				<!-- Des -->
@@ -237,9 +237,8 @@ export default {
 	mixins: [CommonMethod],
 	props: ["oprData"],
 	components: {Loading, Dialog, PancakeLiquidityRemove, StatuButton},
-	data(){
+	data() {
 		return({
-			apy: '-',
 			showAddLiquidityPanel: false,
 			showRemoveLiquidityPanel: false,
 
@@ -267,6 +266,7 @@ export default {
 	},
 	computed: {
 		...mapState({
+			mecApy: (state) => state.globalState.mecApy,
 			coinArr: (state) => state.bnbState.data.coinArr,
 			setting: (state) => state.bnbState.data.setting,
 		}),
@@ -360,8 +360,7 @@ export default {
 			this.to.inputValue = "";
 		}
 	},
-	created(){
-		this.apy = (400 + Math.random() * 200).toFixed(1);
+	created() {
 		clearInterval(timerInterval);
 		this.getMecSwapInfo();
 		timerInterval = setInterval(() => {

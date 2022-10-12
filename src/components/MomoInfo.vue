@@ -386,7 +386,6 @@ export default {
 			let data = await Http.getEnhanceLog(this.getNowPetItem.tokenId);
 			this.loading.upgrade = false;
 			if (data) {
-				console.log(data, "getEnhanceLog");
 				this.enhanceHistory = data.list;
 			}
 		},

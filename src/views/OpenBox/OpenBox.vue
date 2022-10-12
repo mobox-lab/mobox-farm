@@ -642,13 +642,13 @@ export default {
 		
 		renderBoxSpine(){
 			this.boxSpine = new window.spine.SpineWidget(this.$refs.boxSpine, {
-				json: "./animation/boxV3/kejixiangzi2.json",
-				atlas: "./animation/boxV3/kejixiangzi2.atlas",
+				json: "./animation/box-shake/kjxz437.json",
+				atlas: "./animation/box-shake/kjxz437.atlas",
 				backgroundColor: "#00000000",
-				animation: "jingzhen",
+				animation: "open",
 				loop: true,
 				fitToCanvas: false,
-				scale:0.4,
+				scale: 0.6,
 				x: 280,
 				y: 50,
 				// x: 300,

@@ -17,7 +17,11 @@ function getMinHashrate(lv, step) {
 }
 
 const state = () => ({
-	mecApy: (300 + Math.random() * 200).toFixed(1),
+	mecApy: (200 + Math.random() * 200).toFixed(1),
+	// 批量净化列表
+	batchEnhancement: [],
+	// 是否显示批量进化按钮
+	isShowBatchEnhancement: false,
 	v4MinHashrate: '',
 	v5MinHashrate: '',
 	hashrateInfo: {
@@ -190,6 +194,23 @@ const mutations = {
 	// 设置算力信息
 	setHashrateInfo(state, value) {
 		state.hashrateInfo = value;
+	},
+	// 添加批量净化
+	addBatchEnhancement(state, item) {
+		state.batchEnhancement.push(item);
+	},
+	// 移除批量净化
+	removeBatchEnhancement(state, data) {
+		const index = state.batchEnhancement.findIndex(item => item.tokenId === data.tokenId);
+		state.batchEnhancement.splice(index, 1);
+	},
+	// 清空批量净化
+	clearBatchEnhancement(state) {
+		state.batchEnhancement = [];
+	},
+	// 切换批量进化显示按钮
+	toggleShowBatchEnhancement(state) {
+		state.isShowBatchEnhancement = !state.isShowBatchEnhancement;
 	}
 };
 

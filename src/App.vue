@@ -324,7 +324,7 @@
 				</p>
 			</div>
 		</Dialog>
-		
+
 		<Dialog id="momo-des-dialog" :top="100" :width="390">
 			<div class="tab-body tal" style="max-height:500px;overflow-x:auto">
 				<div class="tab-panel">
@@ -339,6 +339,8 @@
 		
 		<div id="fly-dot"></div>
 		<Transfer />
+		<!-- 批量进化 -->
+		<BatchEnhancement />
 		<StandardHashrate :currentTotalAddition="numFloor(currentTotalAddition * 100, 100)" :totalAddition="numFloor(getTotalPercent.maxAdd * 100, 100)" />
 		<VMbox ref="vmbox" />
 		<Pancake ref="pancake" />
@@ -610,6 +612,7 @@
 	</div>
 </template>
 <script>
+import BatchEnhancement from "@/components/BatchEnhancement";
 import Pancake from "./views/Airdrop/Pancake";
 import QuickBuy from "./views/Market/Momo/QuickBuy";
 import ShopCar from './views/Market/ShopCar.vue'
@@ -632,7 +635,7 @@ let timer = null;
 export default {
 	name: "App",
 	mixins: [InitEth, InitTron, CommonMethod],
-	components: {StatuButton, Transfer, StandardHashrate, RuleDialog, BoxBag,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox },
+	components: {StatuButton, Transfer, StandardHashrate, RuleDialog, BoxBag,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox, BatchEnhancement },
 	data() {
 		return {
 			powerAddConfig,

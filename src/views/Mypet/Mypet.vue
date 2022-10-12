@@ -12,7 +12,7 @@
 				</div>
 
 				<div class="dib filter-show-group" >
-					<div class="filter-show-item" v-if="myPetFilter.location != 0" >
+					<div class="filter-show-item" v-if="myPetFilter.location != 0">
 						<span class="filter-close" @click="setFilter('location',0)">&times;</span>
 						<span class="mgl-10">{{locationSelect[myPetFilter.location]}}</span>
 					</div>
@@ -30,9 +30,18 @@
 					</div>
 				</div>
 			</div>
-			
-			<div id="my-pet-fitter" v-if="tab_pos == 0">
 
+			<div id="my-pet-fitter" v-if="tab_pos == 0">
+				<!-- 批量升级列表 -->
+				<div class="cur-point dib por mgl-10" @click="showBatchEnhancement" v-if="isShowBatchEnhancement">
+					<span v-if="batchEnhancement.length" class="shop-car-num">{{batchEnhancement.length}}</span>
+					<img src="@/assets/icon/batch-list-icon.png" alt="" height="40">
+				</div>
+				<!-- 显示隐藏按钮 -->
+				<div class="cur-point dib por mgl-10" @click="toggleShowBatchEnhancement">
+					<img v-if="isShowBatchEnhancement" src="@/assets/icon/batch-show-icon.png" alt="" height="40">
+					<img v-else src="@/assets/icon/batch-icon.png" alt="" height="40">
+				</div>
 				<div class="dib por mgl-10 por cur-point"  @click="oprDialog('transfer-dialog', 'block')" >
 					<img src="@/assets/icon/momoverse_icon.png" alt="" height="40" />
 				</div>
@@ -83,7 +92,6 @@
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 		<!--我的momo-->
@@ -91,7 +99,12 @@
 			<div :class="{'tal': getShowPetArr.length < 4 }"  class="momo-content">
 				<router-link :to="(item.location=='auction'?'/auctionView/': '/upgrade/') + item.prototype + '-' + item.tokenId+'-'+item.location " v-for="item in getShowPetArr"
 					:key=" item.prototype.toString() + item.tokenId + item.num " >
-					<PetItem v-bind:data="{ item: item }" class="no-search" :isShowHashrateIcon="true" />
+					<PetItem v-bind:data="{ item: item }" class="no-search" :isShowHashrateIcon="true">
+						<div class="batch" @click="toggleBatch($event, item)" v-if="item.vType >= 4 && isShowBatchEnhancement">
+							<img v-if="batchEnhancementIds.indexOf(item.tokenId) == -1" src="@/assets/icon/batch-icon.png" />
+							<img v-else src="@/assets/icon/batch-check-icon.png" />
+						</div>
+					</PetItem>
 				</router-link>
 			</div>
 			<div class="no-show" v-if="getShowPetArr.length == 0">
@@ -317,6 +330,9 @@ export default {
 	},
 	computed: {
 		...mapState({
+			batchEnhancementIds: (state) => state.globalState.batchEnhancement.map(item => item.tokenId),
+			batchEnhancement: (state) => state.globalState.batchEnhancement,
+			isShowBatchEnhancement: (state) => state.globalState.isShowBatchEnhancement,
 			hashrateInfo: (state) => state.globalState.hashrateInfo,
 			v4MinHashrate: (state) => state.globalState.v4MinHashrate,
 			v5MinHashrate: (state) => state.globalState.v5MinHashrate,
@@ -651,6 +667,38 @@ export default {
 		}
 	},
 	methods: {
+		// 切换显示批量进化
+		toggleShowBatchEnhancement() {
+			this.$store.commit('globalState/toggleShowBatchEnhancement');
+		},
+		// 显示批量进化弹窗
+		showBatchEnhancement() {
+			this.oprDialog('batch-enhancement', 'block');
+		},
+		// 批量进化切换
+		toggleBatch(event, item) {
+			event.preventDefault();
+
+			if (this.batchEnhancementIds.indexOf(item.tokenId) == -1) {
+				const first = this.batchEnhancement[0];
+
+				// 数量限制
+				if (this.batchEnhancement.length >= 20) {
+					this.showNotify(this.$t('MOMO_105'), "error");
+					return;
+				}
+
+				// 类型限制
+				if (first && item.location != first.location) {
+					this.showNotify(this.$t('MOMO_106'), "error");
+					return;
+				}
+
+				this.$store.commit('globalState/addBatchEnhancement', item);
+			} else {
+				this.$store.commit('globalState/removeBatchEnhancement', item);
+			}
+		},
 		// 根据类型获取算力达标数量
 		getStandardCount(type) {
 			const standardHashrate = this.hashrateInfo[`${type}StandardHashrate`];
@@ -772,6 +820,7 @@ export default {
 	padding: 5px 10px;
 	margin-left: 10px;
 }
+
 .pop-notice::after{
 	content: "";
 	background: #1B222C;
@@ -887,6 +936,19 @@ export default {
 		display: block;
 		width: auto;
 		height: 100%;
+	}
+}
+
+// 批量按钮
+.batch {
+	position: absolute;
+	right: 10px;
+	bottom: 0;
+	width: 40px;
+
+	img {
+		width: 100%;
+		height: auto;
 	}
 }
 

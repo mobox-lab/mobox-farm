@@ -17,7 +17,7 @@
 						<div class="gka-harmer por  dib" style="top: -8px;right:-10px" :class="this.getNowPetItem.location == 'wallet'?'': 'animation-harmer'">
 							<img src="@/assets/anime/sleep.gif" class="sleep-harmer" v-if="this.getNowPetItem.location == 'wallet'" alt="" />
 						</div>
-						<span  :class="getHashrateColor( this.getNowPetItem)">
+						<span :class="getHashrateColor( this.getNowPetItem)">
 							{{ this.getNowPetItem.lvHashrate }}
 						</span>
 					</div>
@@ -362,7 +362,6 @@ export default {
 			return retObj;
 		},
 		hasSelectPetPrototype() {
-			console.log(this.selectProtoTypes, "hasSelectPetPrototype");
 			let prototype = 0;
 			["v1","v2","v3","v4"].map(item=>{
 				if (this.selectProtoTypes[item].length != 0) {
@@ -449,9 +448,6 @@ export default {
 				})
 			}
 
-			console.log(lvUpgradeConfig, 'lvUpgradeConfig');
-
-			console.log(arr, "getUpgradeInfo");
 			//处理需要自己的材料
 			let selfNum = lvUpgradeConfig["self"];
 			if (selfNum > 0) {
@@ -522,7 +518,6 @@ export default {
 		},
 		//是否设置过名字
 		hasSetName() {
-			console.log(this.getNowPetItem, "--------");
 			return this.getNowPetItem.tokenName.indexOf("Name_") == -1;
 		},
 		//获取锁定type

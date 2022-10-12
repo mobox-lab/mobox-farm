@@ -320,4 +320,40 @@ export default class Enhancer {
 			)
 		});
 	}
+
+	// 批量进化
+	static async batchEnhance(tokenIds, hrUps, crystals, isVerse) {
+		const address = await ETH.getAccount(true);
+
+		if (address) {
+			const contract = new ETH.web3.eth.Contract([{
+				"name": "enhance",
+				"type": "function",
+				"inputs": [
+					{"name": "tokenIds_","type": "uint256[]"},
+					{"name": "hrUps_","type": "uint256[]"},
+					{"name": "crystals_","type": "uint256[]"},
+				],
+			}], isVerse ? WalletConfig.ETH.momoVerse : WalletConfig.ETH.moMoStake);
+
+			return new Promise((resolve) => {
+				ETH.sendMethod(
+					contract.methods.enhance(tokenIds, hrUps, crystals), {from: address},
+					resolve,
+					() => {
+						setTimeout(async () => {
+							if(isMoMoVerse){
+								await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
+							} else {
+								await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+								await Common.app.eth_setMyHashrate();
+							}
+
+							await Common.app.getCrystalNum();
+						}, 2000);
+					}
+				);
+			});
+		}
+	}
 }

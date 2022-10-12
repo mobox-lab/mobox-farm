@@ -14,9 +14,7 @@
 						</template>
 
 						<div style="height:250px" id="gem-apply-type">
-							<p style="padding-top:30px">
-								<img src="@/assets/icon/box_view.png" height="180" alt="">
-							</p>
+							<div class="animation-box" ref="animation-box"></div>
 						</div>
 						
 					</div>
@@ -340,6 +338,20 @@ export default {
 		clearInterval(timer);
 	},
 	methods: {
+		// 初始化动画
+		initAnimation() {
+			new window.spine.SpineWidget(this.$refs['animation-box'], {
+				json: "./animation/box-shake/kjxz437.json",
+				atlas: "./animation/box-shake/kjxz437.atlas",
+				backgroundColor: "#00000000",
+				animation: "open",
+				scale: 10,
+				fitToCanvas: false,
+				scale: 0.5,
+				y: 50,
+				x: 125,
+			});
+		},
 		jumpVeMBOX(){
 			if(this.hasStake){
 				let key = "MBOX-BNB-V2";
@@ -401,7 +413,10 @@ export default {
 				this.lockBtnMethod("takeBoxLock");
 			}
 		},
-	}
+	},
+	mounted() {
+		this.$nextTick(this.initAnimation);
+	},
 }
 </script>
 
@@ -415,6 +430,13 @@ export default {
 		zoom: 0.8;
 		padding: 5px 20px !important;
 	}
+
+}
+
+.animation-box {
+	width: 250px;
+	height: 100%;
+	margin: 0 auto;
 
 }
 </style>

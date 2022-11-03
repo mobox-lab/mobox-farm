@@ -7,7 +7,7 @@
 			</div>
 			<!-- TabMenu -->
 			<div class="tal mgt-10 menu-box">
-				<div @click="dialog_tab_pos =  0"  :class="dialog_tab_pos == 0?'active':''" class="menu-item" >{{$t("Air-drop_29")}}</div>
+				<!-- <div @click="dialog_tab_pos =  0"  :class="dialog_tab_pos == 0?'active':''" class="menu-item" >{{$t("Air-drop_29")}}</div> -->
 				<!-- <div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''" class="menu-item" v-if="oprData.isLP">闪兑</div> -->
 				<div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''"  class="menu-item"  v-if="oprData.isLP">{{$t("Air-drop_30")}}</div>
 				<div @click="dialog_tab_pos =  1"  :class="dialog_tab_pos == 1?'active':''"  class="menu-item"  v-if="!oprData.isLP">{{$t("Air-drop_07")}}</div>

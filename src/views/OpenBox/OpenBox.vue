@@ -20,7 +20,8 @@
 					<div class="por box"  style="height:287px; margin:0px auto; ">
 						<img src="@/assets/icon/box_rate.png" alt="" id="show-rate" @click="oprDialog('show-rate-dialog', 'block')">
 						<div class="box-show" >
-							<div id="box-spine" ref="boxSpine"></div>
+							<div class="box-spine" ref="boxSpine" v-show="showOpenAnimation"></div>
+							<div class="box-spine" ref="boxAnimation" v-show="!showOpenAnimation"></div>
 						</div>
 					</div>
 
@@ -286,6 +287,8 @@ export default {
 	components: { Dialog, PetItemSmall, StatuButton, Loading, OpenPetItem },
 	data() {
 		return {
+			// 显示开箱动画
+			showOpenAnimation: false,
 			openPos: 0,
 			showHistoryArr: [],
 			openBox: "",
@@ -641,7 +644,26 @@ export default {
 		},
 		
 		renderBoxSpine(){
+			// 开箱动画
 			this.boxSpine = new window.spine.SpineWidget(this.$refs.boxSpine, {
+				json: "./animation/boxV3/kejixiangzi2.json",
+				atlas: "./animation/boxV3/kejixiangzi2.atlas",
+				backgroundColor: "#00000000",
+				animation: "jingzhen",
+				loop: true,
+				fitToCanvas: false,
+				scale:0.4,
+				x: 280,
+				y: 50,
+				// x: 300,
+				// y: 100,
+				success: ()=>{
+					this.boxSpine.state.timeScale = 1.8;
+				}
+			});
+
+			// 箱子静置动画
+			new window.spine.SpineWidget(this.$refs.boxAnimation, {
 				json: "./animation/box-shake/kjxz437.json",
 				atlas: "./animation/box-shake/kjxz437.atlas",
 				backgroundColor: "#00000000",
@@ -651,11 +673,6 @@ export default {
 				scale: 0.6,
 				x: 280,
 				y: 50,
-				// x: 300,
-				// y: 100,
-				success: ()=>{
-					this.boxSpine.state.timeScale = 1.8;
-				}
 			});
 		},
 		
@@ -759,6 +776,7 @@ export default {
 				return;
 			}
 			if (this.canOpenBox >= num) {
+				this.showOpenAnimation = true;
 				let hash;
 				if(stake){
 					hash = await Wallet.ETH.openBoxAndStake(num);
@@ -1047,12 +1065,12 @@ export default {
 	background: rgba(0,0,0,0.8);
 	left: 0px;
 }
-.box-show-open #box-spine{
+.box-show-open .box-spine{
 	
 	top: calc(50vh - 150px);
 	position: relative;
 }
-#box-spine{
+.box-spine{
 	margin: 0px auto;
 	width: 634px;
 	height: 300px;
@@ -1068,7 +1086,7 @@ export default {
 	border: 1px solid red; */
 	zoom: 1;
 }
-#box-spine canvas{
+.box-spine canvas{
 	width: 100% !important;
 	height: 100% !important;
 	/* background: red; */
@@ -1300,7 +1318,7 @@ export default {
 	.table-his td{
 		padding: 5px;
 	}
-	#box-spine{
+	.box-spine{
 		width: 606px;
 		transform: translateX(-50%);
 		left: 50%;
@@ -1314,13 +1332,13 @@ export default {
 		zoom:0.5;
 		
 	}
-	/* #box-spine{
+	/* .box-spine{
 		zoom: 0.8 !important;
 		height: 200vh !important;
 		padding-bottom: calc(100vh - 100px) !important;
 		transform: translate(-50%, -50%);
 	} */
-	/* .box-show-open #box-spine{
+	/* .box-show-open .box-spine{
 		width: 150%;
 		transform: translate(-50%, -50%);
 	} */

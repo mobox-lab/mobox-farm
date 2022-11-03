@@ -12,10 +12,11 @@
 			<div class="dib vertical-children" style="position:absolute;top:0px;right:15px;zoom:0.8" >
 				<div class="vertical-children dib ">
 					<img src="./assets/coin/MBOX.png"  width="25px" />
-					<span @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
+					<!-- <a @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')"> -->
+					<a href="https://pancakeswap.finance/swap?outputCurrency=0x3203c9e46ca618c8c1ce5dc67e7e9d75f5da2377" target="_blank">
 						$<span v-if="ourPrice['MBOX'] != '-' ">{{ numFloor(ourPrice["MBOX"], 1e2)}}</span>
 						<Loading v-else />
-					</span>
+					</a>
 				</div>
 				<!-- mec -->
 				<div class="vertical-children dib mgl-10" @click="openMboxMecSwap">
@@ -54,7 +55,7 @@
 		<!-- PC左边导航 -->
 		<div id="nav" class="por" @click="navOpr('hide')">
 			<span id="version">v{{version}}</span>
-			<div class="mgt-20 tac vertical-children">
+			<div class="tac vertical-children">
 				<!-- <WalletConnectBtn /> -->
 				<button class="btn-line" @click="connectWalletAddr == ''?$refs.wbtn.buttonClick():oprDialog('mobile-wallet-dialog', 'block')" style="padding:0px 10px;font-size: 15px">
 					<span v-if="connectWalletAddr == '' ">Connect Wallet</span>
@@ -134,10 +135,11 @@
 				<!-- mbox -->
 				<div class="vertical-children point-block ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
-					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
+					<!-- <a class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')"> -->
+					<div class="mgl-10 bold show-point-block" href="https://pancakeswap.finance/swap?outputCurrency=0x3203c9e46ca618c8c1ce5dc67e7e9d75f5da2377" target="_blank">
 						$<span v-if="ourPrice['MBOX'] != '-' ">{{ourPrice["MBOX"]}}</span>
 						<Loading v-else />
-					</span>
+					</div>
 				</div>
 				<!-- box -->
 				<div class="vertical-children dib point-block mgt-10">
@@ -154,7 +156,7 @@
 					<div class="mec-icon">
 						<img src="./assets/coin/MEC.png" height="25" alt=""/>
 					</div>
-					<span class="mgl-10 bold show-point-block" @click="$refs.pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2}).show('swap')">
+					<span class="mgl-10 bold show-point-block">
 						$<span v-if="ourPrice['MEC'] != '-' ">{{ourPrice["MEC"]}}</span>
 						<Loading v-else />
 					</span>
@@ -954,11 +956,12 @@ export default {
 		},
 		// 打开mbox-mec swap
 		openMboxMecSwap() {
-			const pancake = this.$root.$children[0].$refs.pancake;
-			pancake.$refs.pancakeSwap.from.coinName = 'MBOX';
-			pancake.$refs.pancakeSwap.to.coinName = 'MEC';
-			pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2});
-			pancake.show('swap');
+			this.$router.push('/market?tab=5');
+			// const pancake = this.$root.$children[0].$refs.pancake;
+			// pancake.$refs.pancakeSwap.from.coinName = 'MBOX';
+			// pancake.$refs.pancakeSwap.to.coinName = 'MEC';
+			// pancake.setOprData({coinKey: 'MBOX-BNB-V2', pancakeVType: 2});
+			// pancake.show('swap');
 		},
 		agreeNotice(){
 			if(this.showRiskCb != null){
@@ -1443,6 +1446,7 @@ export default {
 #nav {
 	user-select: none;
 	width: 260px;
+	padding-top: 40px;
 	position: fixed;
 	top: 0px;
 	bottom: 0px;

@@ -1,5 +1,5 @@
 <template>
-	<div id="market-content" style="padding:10px 0px">
+	<div id="market-content" style="padding:40px 0px 10px 0px">
 		<div class="center-content">
 			<section id="market-type" class="type-select">
 				<span class="type-select-notice" style="right:5px">&gt;</span>
@@ -258,9 +258,7 @@ export default {
 
 #market-content {
 	text-align: center;
-	padding: 20px;
 	position: relative;
-	margin-top: 20px;
 	padding-bottom: 50px !important ;
 }
 #market-pet-fitter {

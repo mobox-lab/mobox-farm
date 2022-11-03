@@ -1,5 +1,5 @@
 <template>
-	<div id="mypet" style="max-width:1460px;margin:20px auto" >
+	<div id="mypet" style="max-width:1460px;margin:40px auto 20px auto" >
 		<Tab class="mgt-10" :list="tab" :defaultSelectPos="tab_pos" :onChange="onTabChange" :notice="[]" />
 
 		<div class="tal search vertical-children por mgt-10" v-if="tab_pos != 2">

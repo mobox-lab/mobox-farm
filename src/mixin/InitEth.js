@@ -289,6 +289,7 @@ const InitEth = {
 		//获取新箱子的数量
 		async getNewBoxNum(){
 			let  boxNum =  await Wallet.ETH.get1155Num(WalletConfig.ETH.newBoxToken, [1,2]);
+			console.log(boxNum, '132312');
 			this.$store.commit("gemState/setData", {boxNum: boxNum[1]});
 			this.$store.commit("userState/setData", {mecBoxNum: boxNum[2]});
 		},

@@ -1,6 +1,6 @@
 <template>
-	<div class="center-box" style="padding:10px">
-		<section style="padding:10px;padding-bottom:0px" id="activity-type">
+	<div class="center-box" style="padding: 40px 10px 10px 10px">
+		<section id="activity-type">
 			<div class="type-select">
 				<div class="type-select-item vertical-children " v-for="item in tabArr" :key="item.key" :class="{active: tabKey == item.key}" @click="tabKey = item.key">
 					<img :src="item.icon" alt="" width="30">

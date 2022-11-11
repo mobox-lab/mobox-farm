@@ -15,7 +15,10 @@ let app = new Vue({
   store,
   router,
   i18n,
-  render: h => h(App)
+  render: h => h(App),
+	mounted() {
+		document.querySelector('#loading').remove();
+	}
 }).$mount('#app')
 
 Common.app = app.$children[0];

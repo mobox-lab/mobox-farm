@@ -287,16 +287,35 @@ const InitEth = {
 			this.$store.commit("globalState/setData", {refundData});
 		},
 		//获取新箱子的数量
-		async getNewBoxNum(){
-			let  boxNum =  await Wallet.ETH.get1155Num(WalletConfig.ETH.newBoxToken, [1,2]);
-			console.log(boxNum, '132312');
-			this.$store.commit("gemState/setData", {boxNum: boxNum[1]});
-			this.$store.commit("userState/setData", {mecBoxNum: boxNum[2]});
+		async getNewBoxNum() {
+			const res =  await Wallet.ETH.get1155Num(WalletConfig.ETH.newBoxToken, [1,2]);
+			let boxNum = +res[1];
+			let mecBoxNum = +res[2];
+
+			// if (boxNum == 0 || mecBoxNum == 0) {
+			// 	const address = await Wallet.ETH.getAccount();
+			// 	const res = await Http.getBalances(address);
+
+			// 	boxNum = boxNum || res.box;
+			// 	mecBoxNum = mecBoxNum || res.mec_box;
+			// }
+
+			this.$store.commit("gemState/setData", { boxNum });
+			this.$store.commit("userState/setData", { mecBoxNum });
 		},
 		//获取水晶的数量
-		async getCrystalNum(){
-			let  crystalNum =  await Wallet.ETH.get1155Num(WalletConfig.ETH.crystalToken, [1]);
-			this.$store.commit("userState/setData", {crystalNum: crystalNum[1]});
+		async getCrystalNum() {
+			const res =  await Wallet.ETH.get1155Num(WalletConfig.ETH.crystalToken, [1]);
+			let crystalNum = +res[1];
+
+			// if (crystalNum != 0) {
+			// 	const address = await Wallet.ETH.getAccount();
+			// 	const res = await Http.getBalances(address);
+
+			// 	crystalNum = res.mec;
+			// }
+
+			this.$store.commit("userState/setData", { crystalNum });
 		},
 		async setNowBlockNumber(){
 			let  res =  await Wallet.ETH.getBlockNumber();

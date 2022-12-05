@@ -136,6 +136,8 @@ export default class ETH {
 			Contract.levelUpStake,
 			Contract.setMomoName,
 			Contract.addMomoStory,
+			Contract.tokensOfOwner,
+			Contract.recallAll,
 		], WalletConfig.ETH.momoVerse);
 
 		this.pancakeSwapContract = new this.web3.eth.Contract([
@@ -321,7 +323,7 @@ export default class ETH {
 			if(saveHash){
 				this.onReciptNotice(saveHash, method, "error");
 			}
-			
+
 			// Common.app.showNotifyTrans(Common.app.$t("Common_19"), saveHash, "error");
 			Common.store.commit("globalState/setwalletStatus", {status:2});
 
@@ -501,8 +503,6 @@ export default class ETH {
 			msg = `${action} ${fromValue} ${fromName} and ${toValue} ${toName}`;
 			needSave = true;
 		}
-
-		console.log('===',needSave);
 		
 		Common.app.showNotifyTrans(msg, hash, type);
 		if(needSave){
@@ -2097,6 +2097,7 @@ export default class ETH {
 		let contract = new this.web3.eth.Contract([
 			Contract.balanceOfOneBatch,
 		], tokenAddr);
+
 		return new Promise(resolve => {
 			contract.methods.balanceOfOneBatch(myAddr, ids).call().then(data => {
 				let retObj = {};
@@ -3090,7 +3091,6 @@ export default class ETH {
 				resolve(data);
 			})
 		});
-
 	}
 
 	//获取多个池子的质押的veMbox的倍率

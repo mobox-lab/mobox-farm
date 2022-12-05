@@ -20,7 +20,7 @@ const CommonMethod = {
 			locationSelect: [
 				"All",
 				this.$t("MOMO_95"),
-				this.$t("MOMO_94"),
+				// this.$t("MOMO_94"),
 				"Wallet",
 			],
 			categorySelect: [

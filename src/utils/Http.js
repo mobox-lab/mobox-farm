@@ -323,4 +323,8 @@ export default class HTTP {
 		return data;
 	}
 
+	static async getBalances(address) {
+		const { data } = await this.get(`/balance/${address}`);
+		return data;
+	}
 }

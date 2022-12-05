@@ -21,7 +21,7 @@
 				</div>
 				<div class="connect-wallet-item aveage-box mgt-10" @click="connectWallet('coinbase')">
 					<div class="tal">
-						<span>Coinbase Wallet</span>	
+						<span>Coinbase Wallet</span>
 					</div>
 					<div class="tar">
 						<img style="margin-top:5px" src="../assets/icon/coinbase.png" height="30" alt="">

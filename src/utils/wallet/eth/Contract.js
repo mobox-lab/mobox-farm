@@ -1112,6 +1112,34 @@ export default class Contract {
 		],
 	}
 
+	static tokensOfOwner = {
+		name: 'tokensOfOwner',
+		type: "function",
+		inputs: [{
+			type: 'address',
+			name: '_owner'
+		}],
+		outputs: [{
+			type: "uint256[]",
+			name: "tokenIds"
+		}],
+	};
+
+	static recallAll = {
+		name: 'recallAll',
+		type: "function",
+		inputs: [
+			{
+				type: 'uint256[]',
+				name: 'ids_'
+			},
+			{
+				type: 'uint256[]',
+				name: 'amounts_'
+			}
+		],
+	};
+
 	static userStakerShow = {
 		name: 'userStakerShow',
 		type: "function",

@@ -66,6 +66,7 @@ export default {
 			default: false,
 		},
 		onSelectChange: Function,
+		isSelected: Boolean,
 	},
 
 	computed: {
@@ -100,7 +101,7 @@ export default {
 		},
 		//是否对勾选中。721
 		isSelect() {
-			return this.getSelectNum > 0 && this.data.vType >= 4;
+			return this.isSelected || (this.getSelectNum > 0 && this.data.vType >= 4);
 		},
 
 		isRent(){

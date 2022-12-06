@@ -292,13 +292,13 @@ const InitEth = {
 			let boxNum = +res[1];
 			let mecBoxNum = +res[2];
 
-			// if (boxNum == 0 || mecBoxNum == 0) {
-			// 	const address = await Wallet.ETH.getAccount();
-			// 	const res = await Http.getBalances(address);
+			if (boxNum == 0 || mecBoxNum == 0) {
+				const address = await Wallet.ETH.getAccount();
+				const res = await Http.getBalances(address);
 
-			// 	boxNum = boxNum || res.box;
-			// 	mecBoxNum = mecBoxNum || res.mec_box;
-			// }
+				boxNum = boxNum || res.box;
+				mecBoxNum = mecBoxNum || res.mec_box;
+			}
 
 			this.$store.commit("gemState/setData", { boxNum });
 			this.$store.commit("userState/setData", { mecBoxNum });
@@ -308,12 +308,12 @@ const InitEth = {
 			const res =  await Wallet.ETH.get1155Num(WalletConfig.ETH.crystalToken, [1]);
 			let crystalNum = +res[1];
 
-			// if (crystalNum != 0) {
-			// 	const address = await Wallet.ETH.getAccount();
-			// 	const res = await Http.getBalances(address);
+			if (crystalNum != 0) {
+				const address = await Wallet.ETH.getAccount();
+				const res = await Http.getBalances(address);
 
-			// 	crystalNum = res.mec;
-			// }
+				crystalNum = res.mec;
+			}
 
 			this.$store.commit("userState/setData", { crystalNum });
 		},

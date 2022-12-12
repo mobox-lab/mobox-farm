@@ -179,6 +179,7 @@ export default {
 		pair: {
 			handler() {
 				this.inputValue = this.isNotMec ? this.oprData.balance : this.$parent.mecLP;
+				this.inputValue = this.inputValue < 0.0000001 ? 0 : this.inputValue;
 				this.setCoinAllowance();
 			},
 		},
@@ -232,7 +233,6 @@ export default {
 
 			if(coinKey != "") {
 				let allowance = await Wallet.ETH.viewErcAllowanceToTarget(stakeLp[coinKey].addr, routerAddr, false);
-				console.log(allowance, '===allowance===');
 				coinArr[coinKey].allowanceToSwap = Number(allowance);
 				coinArr["ts"] = new Date().valueOf();
 			}

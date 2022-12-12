@@ -214,16 +214,8 @@ const mutations = {
 	}
 };
 
-const actions = {
-	async getHashrateStep(context) {
-		const res = await MoMoSetting.getHashrateStep();
-		context.commit('setStep', res);
-	}
-};
-
 export default {
 	namespaced: true,
 	state,
 	mutations,
-	actions,
 };

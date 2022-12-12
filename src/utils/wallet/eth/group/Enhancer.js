@@ -342,14 +342,10 @@ export default class Enhancer {
 					resolve,
 					() => {
 						setTimeout(async () => {
-							if(isMoMoVerse){
-								await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
-							} else {
-								await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
-								await Common.app.eth_setMyHashrate();
-							}
-
-							await Common.app.getCrystalNum();
+							await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
+							await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
+							await Common.app.eth_setMyHashrate();
+							await Common.app.getCoinValue();
 						}, 2000);
 					}
 				);

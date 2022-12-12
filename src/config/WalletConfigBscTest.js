@@ -3,7 +3,6 @@ export default class WalletConfig {
 		bidBatch: "0x819e97C7Da2C784403B790121304DB9E6a038dE9", // 批量购买
 		boxToken: "0x2072fe4E74c6ECcFe3f86071E255E0D5568c58B9", //箱子ERC20合约 // keyToken
 		moMoToken: "0x9350b1872F3f30FC71EB42Ed5662b1990E680dc9", //ERC721合约
-		
 		moMoMToken: "0x8442FB6545Ec5B7D8490C324699620B3aCa2dBC0", //ERC1155合约
 		moMoMinter: "0xeCf8c1E91B929D3EeA4940ec8AAF27f60bAd9F80", // 开箱子合约
 		moMoHelper: "0x7049b1Ba0A28ea66395bb046F8b1158a8d373CFb", //工具合约
@@ -44,6 +43,7 @@ export default class WalletConfig {
 		moMoSetting: "0xFDaA6B01F2a5Fe76F408A7464688c228BB12Accb", //MoMoSetting
 		bigSell: "0x2B61f7e13156BFA381a9E37AA6a4987E60fD3E09", //大宗交易
 		momoVerse: "0x2Afa465aA698702bd642B8783b035B57f1b693CC", //momoverse划转
+		bitsUtil: '0x9c7cbAfDc4ec09b25D3A0464fC4590A34a9026a7',
 
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",

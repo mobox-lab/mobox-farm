@@ -349,7 +349,6 @@
 		<QuickBuy ref="quickBuy" />
 		<ShopCar ref="momoShopCar" />
 		<GemBag ref="gemBag" />
-		<BoxBag ref="boxBag" />
 		<ConfirmDialog ref=confirmDialog />
 		<RuleDialog ref=ruleDialog />
 		<WalletOprStatus />
@@ -624,7 +623,6 @@ import QuickBuy from "./views/Market/Momo/QuickBuy";
 import ShopCar from './views/Market/ShopCar.vue'
 
 import GemBag from "./views/Activity/Gem/GemBag";
-import BoxBag from "./views/Activity/BoxBag.vue";
 import VMbox from "./views/VMBOX/VMbox";
 
 import { Notification, NotificationTrans, Dialog, ConfirmDialog, RuleDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading, StatuButton } from '@/components';
@@ -641,7 +639,7 @@ let timer = null;
 export default {
 	name: "App",
 	mixins: [InitEth, InitTron, CommonMethod],
-	components: {StatuButton, Transfer, StandardHashrate, RuleDialog, BoxBag,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox, BatchEnhancement },
+	components: {StatuButton, Transfer, StandardHashrate, RuleDialog,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox, BatchEnhancement },
 	data() {
 		return {
 			powerAddConfig,
@@ -933,8 +931,6 @@ export default {
 				this.showNotice();
 			}, 1000)
 		}
-
-		this.$store.dispatch('globalState/getHashrateStep');
 	},
 	beforeDestroy(){
 		clearInterval(timer);

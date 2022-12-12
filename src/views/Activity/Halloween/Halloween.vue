@@ -477,7 +477,6 @@ export default {
 			if(this.cntDown > 0) this.cntDown--;
 
 			if(ts % 10 == 0){
-				await this.getMyData();
 				await this.getOvData();
 			}
 		}
@@ -485,7 +484,6 @@ export default {
 	async created(){
 		this.setSuteSelect(this.sutePos)
 		this.myAddr = await Wallet.ETH.getAccount();
-		await this.getMyData();
 		await this.getOvData();
 		await this.getOprLogs();
 	},
@@ -601,7 +599,6 @@ export default {
 			if(res.data.code == 200){
 				this.getConfirmDialog().show(this.$t("Festival_36"), null, true);
 
-				this.getMyData();
 				this.getOprLogs();
 			}
 		},
@@ -649,12 +646,6 @@ export default {
 					item.isSelect = false;
 				});
 				item.isSelect = true
-			}
-		},
-		async getMyData(){
-			let res = await axios.post(HttpConfig.Halloween.Bags, {addr: this.myAddr});
-			if(res.status == 200){
-				this.setBagsData(res.data.data);
 			}
 		},
 		setBagsData(data){

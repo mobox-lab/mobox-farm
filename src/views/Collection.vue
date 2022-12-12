@@ -1,10 +1,21 @@
 <template>
-	<div id="aridorp" class="tac adv-panel " >
+	<div id="aridorp" class="tac adv-panel">
 		<router-link to="/rank">
 			<div class="link rank vertical-children"><span>{{ $t("Rank_05") }}</span><img class="mgl-5" src="@/assets/icon/more.png" alt="" height="16"></div>
 		</router-link>
 		<!-- 算力展示 -->
 		<section id="airdrop-cont" class="hide-xs">
+			<!-- 双挖提示 -->
+			<div class="double-excavation" v-if="eth_myHashrate != '-'" @click="openMomoverse">
+				<img src="@/assets/double-excavation.png" />
+				<div class="right">
+					<div class="value">
+						<span :class="eth_myHashrate > 0 ? 'existent' : ''">Boosted</span>
+						<img :src="(eth_myHashrate > 0) ? require('@/assets/icon/check.png') : require('@/assets/icon/close-2.png')" />
+					</div>
+					<img class="airdrop" src="@/assets/icon/airdrop.png" />
+				</div>
+			</div>
 			<div class="row "  id="collection-view">
 				<div class="mining-pet" v-for="item in myNFT_stake.slice(0, 20)" :key="item.prototype.toString() + item.tokenId + item.num" >
 					<JumpPet :prototype="item.prototype" />
@@ -274,6 +285,14 @@ export default {
 		clearInterval(this.interval);
 	},
 	methods: {
+		// 打开momoverse
+		openMomoverse() {
+			window.parent.postMessage({
+				from: 'mbox',
+				action: 'open-game',
+				value: 'momoverse',
+			}, '*');
+		},
 		// 根据类型获取算力达标数量
 		getStandardCount(type) {
 			const standardHashrate = this.hashrateInfo[`${type}StandardHashrate`];
@@ -333,10 +352,19 @@ export default {
 			const address = await Wallet.ETH.getAccount();
 			const res = await Wallet.ETH.momoHelperContract.methods.userStakerShow(address).call();
 
+			this.$store.commit("ethState/setData", {
+				myHashrate: res.hrChecked,
+			});
+
+			this.$store.commit("ethState/setData", {
+				totalHashrate: res.totalHashrate,
+			});
+
 			this.eth_totalHashrate = res.totalHashrate;
 			this.eth_myHashrate = res.hrChecked;
 			this.eth_earnedMbox = Common.numFloor(res.earned / 1e18, 1000);
 			this.totalAirdropMbox = Math.ceil((Number(res.rewardRate) / 1e18) * 86400);
+			this.$store.commit("ethState/setData", { totalAirdropMbox: this.totalAirdropMbox });
 		}
 	},
 };
@@ -631,6 +659,7 @@ export default {
 #airdrop-cont {
 	border-radius: 10px;
 	width: 100%;
+	position: relative;
 }
 #claim-panel{
 	position: absolute;
@@ -643,7 +672,63 @@ export default {
 #aridorp{
 	max-width: 1460px;
 	margin:0px auto;
+	position: relative;
 }
+
+.double-excavation {
+	position: absolute;
+	top: 25px;
+	left: 23px;
+	z-index: 99;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	background: #09142a;
+	border-radius: 31px;
+	overflow: hidden;
+	cursor: pointer;
+
+	img {
+		max-height: 100%;
+	}
+
+	.right,
+	.value {
+		display: flex;
+		align-items: center;
+	}
+
+	.value {
+		span {
+			font-weight: 900;
+			font-size: 16px;
+			margin-right: 5px;
+			color: #D73039;
+		}
+
+		.existent {
+			color: #1AFA29;
+		}
+
+		img {
+			height: 15px;
+		}
+	}
+
+	.right {
+		padding: 0 15px;
+		margin-left: 15px;
+		height: 100%;
+		background: #11264f;
+		border-radius: 0px 31px 31px 0px;
+
+		.airdrop {
+			height: 25px;
+			margin-left: 10px;
+		}
+	}
+}
+
 #aridorp .menu-btn {
 	user-select: none;
 	width: 180px;

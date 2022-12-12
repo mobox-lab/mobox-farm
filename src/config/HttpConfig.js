@@ -14,7 +14,7 @@ export default class HttpConfig {
 		Trank: this.SN.Activity +"/event/trank",
 		Drank: this.SN.Activity +"/event/drank",
 		Logs: this.SN.Activity +"/event/logs",
-		Bags: this.SN.Activity +"/event/bags",
+		Bags: this.SN.Activity + "/event/bags",
 		Claim: this.SN.Activity +"/event/claim",
 		Ovdata: this.SN.Activity +"/event/ovdata",
 	}

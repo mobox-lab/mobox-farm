@@ -190,6 +190,49 @@ export default class ETH {
 		this.mecSwapPairContrac = new this.web3.eth.Contract([
 			MecSwap.getPairInfo,
 		], PancakeConfig.MecSwapPair);
+
+		// bitsUtil
+		this.bitsUtil = new this.web3.eth.Contract([
+			{
+				"name": "balanceOfExt",
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					},
+					{
+						"internalType": "address[]",
+						"name": "erc20s",
+						"type": "address[]"
+					},
+					{
+						"internalType": "address[]",
+						"name": "erc1155s",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "erc1155Ids",
+						"type": "uint256[]"
+					}
+				],
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "erc20Amounts",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "erc1155Amounts",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+		], WalletConfig.ETH.bitsUtil);
 	}
 
 	//调起钱包
@@ -804,7 +847,6 @@ export default class ETH {
 				resolve(BigNumber(res));
 			});
 		});
-
 	}
 
 	//查询合约中一个币种的余额
@@ -1988,7 +2030,6 @@ export default class ETH {
 
 	// 兑换mec
 	static async swapMec(from, to, path, setting) {
-		console.log(from, to, path, setting);
 		let myAddr = await this.getAccount(true);
 		if (!myAddr) return;
 

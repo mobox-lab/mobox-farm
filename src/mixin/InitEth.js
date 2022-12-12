@@ -3,6 +3,7 @@ import {EventConfig,StorageConfig,WalletConfig, ConstantConfig, PancakeConfig, H
 import {mapState} from "vuex";
 import BigNumber from "bignumber.js";
 import axios from 'axios';
+import ETH from "../utils/wallet/eth/ETH";
 
 const InitEth = {
 	data() {
@@ -84,7 +85,10 @@ const InitEth = {
 		});
 
 		//兑换成功
-		EventBus.$on(EventConfig.SwapSuccess, this.setBalance);
+		EventBus.$on(EventConfig.SwapSuccess, () => {
+			this.getCoinValue();
+			this.setBalance();
+		});
 
 		setInterval(() => {
 			this.getCrystalNum();
@@ -108,7 +112,7 @@ const InitEth = {
 					this.$store.commit("bnbState/setData", {pancakeHistory: histoyJSON});
 				}
 
-				this.getRefund();
+				// this.getRefund();
 				this.setBalance();
 				this.needUpdate();
 				this.setOrder();
@@ -117,11 +121,12 @@ const InitEth = {
 				this.timer = setInterval(() => {
 					t++;
 					if(t%30 == 0){
-						if(Wallet.ETH.myAddr != ""){
+						if (Wallet.ETH.myAddr != "") {
 							this.needUpdate();
 						}
 					}
-					if(t%5){
+
+					if(t % 5 == 0){
 						this.setOrder();
 					}
 				}, 1000);
@@ -129,9 +134,6 @@ const InitEth = {
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
 				await this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
-
-				await this.getNewBoxNum();
-				await this.getCrystalNum();
 
 				await this.eth_set1155IsApprovedForStake();
 				await this.eth_set721IsApprovedForStake();
@@ -152,6 +154,7 @@ const InitEth = {
 				nextStepTime, currentStep
 			] = await Wallet.ETH.Group.MoMoSetting.getMaxHashrateV3();
 
+			this.$store.commit('globalState/setStep', currentStep);
 			this.$store.commit("globalState/setHashrateInfo", {
 				v4MinHashrate, v4StandardHashrate, v4MaxHashrate,
 				v5MinHashrate, v5StandardHashrate, v5MaxHashrate,
@@ -172,9 +175,6 @@ const InitEth = {
 			await this.getTotalStakeMbox();
 			//获取veMBOX相关
 			await this.getVeMboxStakeInfo();
-
-			//质押挖矿相关
-			await this.eth_setTotalDropMbox();
 
 			await this.getCoinValue();
 
@@ -198,9 +198,8 @@ const InitEth = {
 
 			//获取总打开箱子数
 			await this.setTotalOpenBox();
-
-			//获取活动箱子数量
-			await this.getActivityData();
+			await this.getNewBoxNum();
+			await this.getCrystalNum();
 		},
 		//我的大宗交易
 		async getBigAuctionPetsMy(needLoading = false){
@@ -240,26 +239,6 @@ const InitEth = {
 				this.$store.commit("momoMarketState/setData", {bigSellMy});
 			}
 		},
-		async getActivityData(){
-			let myAddr = await Wallet.ETH.getAccount();
-			let {data, status} = await axios.post(HttpConfig.Christmas.Bags, {addr: myAddr});
-			if(status == 200){
-				let {box,  balances} = data.data;
-				let christmasData ={
-					box: box,
-					balances: {
-						mbox: 0,
-						mec: 0,
-						box_v: 0,
-						box_r: 0 //实体箱子
-					}
-				}
-				balances.map(item=>{
-					christmasData.balances[item.symbol] = parseInt(item.balance);
-				});
-				this.$store.commit("userState/setData", {christmasData});
-			}
-		},
 
 		async getMoMoSetting(){
 			let [v4_max_upgrade, v5_max_upgrade, v6_max_upgrade,
@@ -288,34 +267,34 @@ const InitEth = {
 		},
 		//获取新箱子的数量
 		async getNewBoxNum() {
-			const res =  await Wallet.ETH.get1155Num(WalletConfig.ETH.newBoxToken, [1,2]);
-			let boxNum = +res[1];
-			let mecBoxNum = +res[2];
+			// const res =  await Wallet.ETH.get1155Num(WalletConfig.ETH.newBoxToken, [1, 2]);
+			// let boxNum = +res[1];
+			// let mecBoxNum = +res[2];
 
-			if (boxNum == 0 || mecBoxNum == 0) {
-				const address = await Wallet.ETH.getAccount();
-				const res = await Http.getBalances(address);
+			// if (boxNum == 0 || mecBoxNum == 0) {
+			// 	const address = await Wallet.ETH.getAccount();
+			// 	const res = await Http.getBalances(address);
 
-				boxNum = boxNum || res.box;
-				mecBoxNum = mecBoxNum || res.mec_box;
-			}
+			// 	boxNum = boxNum || res.box;
+			// 	mecBoxNum = mecBoxNum || res.mec_box;
+			// }
 
-			this.$store.commit("gemState/setData", { boxNum });
-			this.$store.commit("userState/setData", { mecBoxNum });
+			// this.$store.commit("gemState/setData", { boxNum });
+			// this.$store.commit("userState/setData", { mecBoxNum });
 		},
 		//获取水晶的数量
 		async getCrystalNum() {
-			const res =  await Wallet.ETH.get1155Num(WalletConfig.ETH.crystalToken, [1]);
-			let crystalNum = +res[1];
+			// const res =  await Wallet.ETH.get1155Num(WalletConfig.ETH.crystalToken, [1]);
+			// let crystalNum = +res[1];
 
-			if (crystalNum != 0) {
-				const address = await Wallet.ETH.getAccount();
-				const res = await Http.getBalances(address);
+			// if (crystalNum != 0) {
+			// 	const address = await Wallet.ETH.getAccount();
+			// 	const res = await Http.getBalances(address);
 
-				crystalNum = res.mec;
-			}
+			// 	crystalNum = res.mec;
+			// }
 
-			this.$store.commit("userState/setData", { crystalNum });
+			// this.$store.commit("userState/setData", { crystalNum });
 		},
 		async setNowBlockNumber(){
 			let  res =  await Wallet.ETH.getBlockNumber();
@@ -433,30 +412,48 @@ const InitEth = {
 				this.$store.commit("gemState/setData", {gemBag});
 			}
 		},
-		async getCoinValue(){
-			let balance = await Wallet.ETH.getBalance();
-			this.coinArr["BNB"].balance = balance;
-			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+		async getCoinValue() {
+			const address = await Wallet.ETH.getAccount();
+			const list20 = [
+				'0x0000000000000000000000000000000000000000',
+			];
+			const list1155 = [
+				WalletConfig.ETH.crystalToken,
+				WalletConfig.ETH.newBoxToken,
+				WalletConfig.ETH.newBoxToken,
+			];
+			const id1155 = [1, 1, 2];
 
-			for (let key in PancakeConfig.SelectCoin) {
-				let {addr, decimals, omit} = PancakeConfig.SelectCoin[key];
+			Object.keys(PancakeConfig.SelectCoin).forEach((key) => {
+				const item = PancakeConfig.SelectCoin[key];
 
-				if(addr != "") {
-					let value;
+				if (key !== 'MEC' && !!item.addr.length) {
+					list20.push(item.addr);
+				}
+			});
 
-					if (key === "MEC") {
-						const data = await Wallet.ETH.get1155Num(WalletConfig.ETH.crystalToken, [1]);
-						value = data['1'];
-					} else {
-						const data = await Wallet.ETH.getErc20BalanceByTokenAddr(addr, false);
-						value = Common.numFloor((Number(data) / decimals), omit);
-					}
+			const res = await Wallet.ETH.bitsUtil.methods.balanceOfExt(address, list20, list1155, id1155).call();
+			const erc1155Amounts = res.erc1155Amounts;
+			const erc20Amounts = res.erc20Amounts;
+			const keys = Object.keys(PancakeConfig.SelectCoin);
+			const bnbConfig = PancakeConfig.SelectCoin.BNB;
+			
+			this.coinArr["BNB"].balance = Common.numFloor((Number(erc20Amounts[0]) / bnbConfig.decimals), bnbConfig.omit);
 
-					this.coinArr[key].balance = value;
-					this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
-					await Common.sleep(500);
+			for (let index = 0; index < keys.length; index++) {
+				const key = keys[index];
+				const { decimals, omit } = PancakeConfig.SelectCoin[key];
+				const item = PancakeConfig.SelectCoin[key];
+
+				if (key !== 'MEC' && !!item.addr.length) {
+					this.coinArr[key].balance = Common.numFloor((Number(erc20Amounts[index]) / decimals), omit);
 				}
 			}
+			this.coinArr.MEC.balance = erc1155Amounts[0];
+			this.$store.commit("bnbState/setData", { coinArr: this.coinArr });
+			this.$store.commit("userState/setData", { crystalNum: erc1155Amounts[0] });
+			this.$store.commit("gemState/setData", { boxNum: erc1155Amounts[1] });
+			this.$store.commit("userState/setData", { mecBoxNum: erc1155Amounts[2] });
 		},
 
 		async getBuyBack(){
@@ -601,20 +598,46 @@ const InitEth = {
 			}
 		},
 		//获取bnb的余额
-		async setBalance(){
-			let balance = await Wallet.ETH.getBalance();
-			this.coinArr["BNB"].balance = balance;
-			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
+		async setBalance() {
+			const address = await Wallet.ETH.getAccount();
+			const list = [
+				'0x0000000000000000000000000000000000000000',
+				PancakeConfig.SelectCoin.MBOX.addr,
+			];
 
-			//设置MBOX的余额
-			await this.setCoinValueByName("MBOX");
+			Object.keys(PancakeConfig.StakeLP).forEach((key) => {
+				const item = PancakeConfig.StakeLP[key];
 
-			//获取lp余额
-			for (let coinKey in PancakeConfig.StakeLP) {
-				await this.setCoinValueByName(coinKey);
-				await Common.sleep(500);
+				if (!!item.addr.length) {
+					list.push(item.addr);
+				}
+			});
+			
+			const res = await Wallet.ETH.bitsUtil.methods.balanceOfExt(address, list, [], []).call();
+			const erc20Amounts = res.erc20Amounts;
+			const keys = Object.keys(PancakeConfig.StakeLP);
+
+			this.setCoinBalance('BNB', erc20Amounts[0]);
+			this.setCoinBalance('MBOX', erc20Amounts[1]);
+
+			for (let index = 0; index < keys.length; index++) {
+				const key = keys[index];
+				const item = PancakeConfig.StakeLP[key];
+
+				if (!!item.addr.length) {
+					this.setCoinBalance(key, erc20Amounts[index + 2]);
+				}
 			}
+		},
+		setCoinBalance(coinKey, value) {
+			const { decimals, omit } = coinKey.indexOf("-") != -1? PancakeConfig.StakeLP[coinKey]: PancakeConfig.SelectCoin[coinKey];
 
+			this.coinArr[coinKey].balance =  Common.numFloor((Number(value) / decimals), omit);
+			this.coinArr[coinKey].isApproving = false;
+			this.coinArr[coinKey].isDeposing = false;
+			this.coinArr[coinKey].isWithdrawing = false;
+			this.coinArr["ts"] = new Date().valueOf();
+			this.$store.commit("bnbState/setData", {coinArr: this.coinArr});
 		},
 		//设置币的余额
 		async setCoinValueByName(coinKey){
@@ -637,13 +660,6 @@ const InitEth = {
 			if(lockList){
 				this.$store.commit("ethState/setData", { lockList:  lockList.list});
 			}
-		},
-
-		//获取24小时空投数量MBOX
-		async eth_setTotalDropMbox() {
-			let totalAirdropMbox = await Wallet.ETH.viewTotalAirdrop(WalletConfig.ETH.moMoStake);
-			totalAirdropMbox = Math.ceil((Number(totalAirdropMbox) / 1e18) * 86400);
-			this.$store.commit("ethState/setData", {totalAirdropMbox});
 		},
 
 		//获开过的盒子统计
@@ -911,6 +927,7 @@ const InitEth = {
 					needGetNameArr.push(tokenId);
 				}
 			});
+
 			let names = await Wallet.ETH.getMomoNamesByTokenIds(
 				needGetNameArr
 			);

@@ -167,6 +167,7 @@ export default {
 		},
 	},
 	async created() {
+		console.log('Erc20Balance', 5);
 		const res = await Wallet.ETH.getErc20BalanceByTokenAddr(PancakeConfig.MecSwapPair, false);
 		this.mecLP = Common.numFloor(Number(res) / 1e18, 1e18);
 	}

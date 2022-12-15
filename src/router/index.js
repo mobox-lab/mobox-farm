@@ -18,6 +18,7 @@ import BlindBox from "../views/Activity/BlindBox/BlindBox.vue"
 import Anniversary from "../views/Activity/Anniversary/Anniversary.vue"
 import BinanceNFT from "../views/BNFT/BinanceNFT.vue"
 import Statistics from "../views/Statistics/Index.vue"
+import Furnace from "../views/Furnace/index.vue"
 
 Vue.use(VueRouter)
 
@@ -143,6 +144,11 @@ const routes = [
 		name: "Statistics",
 		component: Statistics
 	},
+	{
+		path: "/furnace",
+		name: 'Furnace',
+		component: Furnace,
+	}
 ]
 
 const router = new VueRouter({

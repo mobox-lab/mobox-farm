@@ -16,9 +16,13 @@
 								<img src="@/assets/binaceActivity.png" alt="" width="100%" />
 							</router-link>
 						</div> -->
-						<div id="halloween-entry"  class="swiper-slide tac" style="width: 100%;margin:0 auto">
+						<div id="halloween-entry"  class="swiper-slide tac" style="width: 100%;margin:0 auto" v-if="myNFT_verse.length">
 							<img src="@/assets/transMoMo.png" @click="oprDialog('transfer-dialog', 'block')" alt="" width="60%" />
 						</div>
+						<router-link to="/furnace" id="halloween-entry"  class="swiper-slide tac" style="width: 100%;margin:0 auto" v-if="isShowFurnace">
+							<img src="@/assets/furnace/banner-zh.png" width="60%" v-if="$i18n.locale.indexOf('zh') == 0" />
+							<img src="@/assets/furnace/banner-en.png" width="60%" v-else />
+						</router-link>
 					</div>
 					<div ref="pagination" class="swiper-pagination"></div>
 				</div>
@@ -31,7 +35,7 @@
 				</div>
 				<div class="row  ovh mgt-10" style="padding:4px">
 					<div class="aveage-box vertical-children" style="align-items: flex-end;">
-						<p class="tal">
+						<p class="tal" v-if="isShowOld">
 							<router-link to="/old">{{$t("Air-drop_258")}} >></router-link>
 						</p>
 						<p class="tar">
@@ -562,6 +566,7 @@ export default {
 	},
 	computed: {
 		...mapState({
+			myNFT_verse: (state) => state.ethState.data.myNFT_verse,
 			lockBtn: (state) => state.globalState.data.lockBtn,
 			coinArr: (state) => state.bnbState.data.coinArr,
 			totalAirdropKey: (state) => state.bnbState.data.totalAirdropKey,
@@ -581,6 +586,29 @@ export default {
 			eth_totalHashrate: (state) => state.ethState.data.totalHashrate,
 			totalAirdropMbox: (state) => state.ethState.data.totalAirdropMbox,
 		}),
+
+		isShowFurnace() {
+			return Date.now() <= 1674187200000;
+		},
+
+		isShowOld() {
+			let arr = [];
+			let stakeLP = PancakeConfig.StakeLP;
+			let coinArr =  this.coinArr;
+			for (let key in stakeLP) {
+				let {pIndex, isFinish} = stakeLP[key];
+				if(pIndex != -1 && (this.coinArr[key].wantAmount > 0 || false)){
+					if(this.pledgeType == "v1" && isFinish){
+						arr.push({coinKey: key, ...stakeLP[key], ...coinArr[key]});
+					}
+					if(this.pledgeType == "v2" && !isFinish){
+						arr.push({coinKey: key, ...stakeLP[key], ...coinArr[key]});
+					}
+				}
+			}
+
+			return !!arr.length;
+		},
 
 		isMoboxWallet(){
 			return window.SHOW_APP_BAR != undefined;

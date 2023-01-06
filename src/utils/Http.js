@@ -4,7 +4,7 @@ import {EventConfig} from '@/config';
 export default class HTTP {
 	// static serverNode = "https://nfttestapi.mobox.io"; //测试
 	static serverNode = "https://nftapi.mobox.io"; // 新合约的 （公测版）
-	// static serverNode = "http://192.168.5.211:3000"; // 测试
+	// static serverNode = "https://nft-api-test.soulchainz.com"; // 测试
 
 	static async post(url, sendData) {
 		try {
@@ -326,5 +326,14 @@ export default class HTTP {
 	static async getBalances(address) {
 		const { data } = await this.get(`/balance/${address}`);
 		return data;
+	}
+
+	static async getWholeNetworkOpenBoxHistory() {
+		try {
+			const { data } = await this.get('/box/last');
+			return data.list;
+		} catch(_) {
+			return [];
+		}
 	}
 }

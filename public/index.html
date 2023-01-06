@@ -28,6 +28,11 @@
 			src: url(./font/Poppins-Black.otf);
 		}
 
+		@font-face {
+			font-family: 'you-she';
+			src: url(./font/MSYHBD.TTC);
+		}
+
 		#loading {
 			position: fixed;
 			top: 0;
@@ -149,7 +154,7 @@
 		var windowWidth = $(window).width();
 		var windowHeigh = $(window).height();
 		var documentWidth = 1920;
-		if (windowWidth < 1920) {
+		if (windowWidth < 1920 && window.location.hash != '#/furnace') {
 			if (windowWidth <= 1200) {
 				windowWidth = 1920;
 			}

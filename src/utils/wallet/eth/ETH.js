@@ -14,6 +14,8 @@ import BinaceNFT from './group/BinaceNFT'
 import MoMoSetting from './group/MoMoSetting'
 import BigSell from './group/BigSell'
 import Transfer from './group/Transfer';
+import Furnace from './Furnace';
+import AvatarHelper from './Avatar';
 
 export default class ETH {
 	static web3;
@@ -34,6 +36,9 @@ export default class ETH {
 	static pancakeSwapContracV2;
 	static mecSwapContrac;
 	static mecSwapPairContrac;
+	static avatarHelper;
+	// 融合
+	static furnace;
 
 	static myAddr = "";
 
@@ -97,6 +102,7 @@ export default class ETH {
 			Contract.addMomoStory,
 			Contract.isApprovedForAll,
 			Contract.setApprovalForAll,
+			Contract.getMomoByTokenId,
 		], WalletConfig.ETH.moMoToken);
 		this.moMoMTokenContract = new this.web3.eth.Contract([
 			Contract.balanceOfOneBatch,
@@ -233,6 +239,22 @@ export default class ETH {
 				"type": "function"
 			},
 		], WalletConfig.ETH.bitsUtil);
+
+		// 融合
+		this.furnace = new this.web3.eth.Contract([
+			Furnace.testMerge,
+			Furnace.getOrder,
+			Furnace.beginMerge,
+			Furnace.endMerge,
+		], '0x935E8f512c262e4f98e2e5f3538970D43CD44320');
+
+		// 头像
+		this.avatarHelper = new this.web3.eth.Contract(
+			[
+				AvatarHelper.getFirstAvatar,
+			],
+			WalletConfig.ETH.avatarHelper
+		);
 	}
 
 	//调起钱包

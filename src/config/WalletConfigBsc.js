@@ -45,7 +45,7 @@ export default class WalletConfig {
 		bigSell: "0x1d4D9706B057a945FCE86EE53B8894BD17FFa0dE", //大宗交易
 		momoVerse: "0x2625621A924CfA74c660a5061dAa91a65441aE7D", //momoverse划转 - MomoVerseStaker
 		bitsUtil: '0x9c7cbAfDc4ec09b25D3A0464fC4590A34a9026a7',
-
+		avatarHelper: '0x527e9cA8a10477a9D3bcb5C401Dc823Cd3c796a3',
 		defaultFromAddr: "0x0000000000000000000000000000000000000000",
 		network: "56",
 		view_tx_url: "https://bscscan.com/tx/",

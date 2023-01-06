@@ -888,6 +888,7 @@ const InitEth = {
 				}
 			});
 			let res = await Wallet.ETH.Group.Rent.getRentInfoSimple(tokenIds);
+
 			nftArr.map((item) => {
 				let tokenPos = tokenIds.indexOf(item.tokenId);
 				if (tokenPos != -1) {

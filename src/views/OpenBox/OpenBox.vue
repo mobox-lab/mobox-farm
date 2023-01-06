@@ -128,9 +128,65 @@
 			</section>
 		</div>
 
-		<!-- 记录 -->
-		<div class="col-md-12" style="padding:10px">
-			<section class="mgt-10" style="padding:10px 15px;background:#13181F;border-radius:20px">
+		<div class="tab">
+			<ul>
+				<li :class="recordsTabIndex === 0 ? 'active' : null" @click="toggleRecordsTab(0)">{{$t('BOX_44')}}</li>
+				<li :class="recordsTabIndex === 1 ? 'active' : null" @click="toggleRecordsTab(1)">{{$t('BOX_45')}}</li>
+			</ul>
+		</div>
+		<!-- 全网开箱记录 -->
+		<div class="col-md-12 whole-records" style="padding: 0 10px 10px 10px" v-if="recordsTabIndex === 0">
+			<section style="padding:10px 15px;background:#13181F;border-radius:20px">
+				<table class="small  new-table" border="0" frame="void" rules="none" >
+					<tr>
+						<th class="address">{{$t('BOX_46')}}</th>
+						<th class="event">{{$t('BOX_13')}}</th>
+						<th class="result">{{$t('BOX_47')}}</th>
+						<th class="time">{{$t('BOX_12')}}</th>
+					</tr>
+					<tr v-for="(item, index) in wholeNetworkOpenBoxHistory" :key="index">
+						<td class="avatar address">
+							<div :class="['image', avatar[item.address] ? 'hover' : null]" @click="showAvatar(item.address)">
+								<img :src="avatar[item.address] || 'https://img.momoworld.io/mini_avatar_ori_0.png'" />
+							</div>
+							<!-- <span>{{getShortAddr(item.address)}}</span> -->
+						</td>
+						<td class="event">
+							<img src="@/assets/icon/box.png" width="35" />
+							<span>x{{ item.momos.length }}</span>
+						</td>
+						<td class="result">
+							<div :class="['momo', `momo-type${item.momos[index].vType}`]" v-for="(_, index) in Math.min(5, item.momos.length)" :key="index">
+								<img :src="require(`@/assets/pet/${item.momos[index].prototype}.png`)" alt="" width="90%" />
+								<div class="type">
+									<img :src=" require(`@/assets/icon/${ category_img[item.momos[index].category] }.png`) " alt="" width="15" height="15" />
+								</div>
+								<div class="preview-info">
+									<PetItem :data="{item: item.momos[index]}" :class="item.momos[index].vType >= 4 && !item.momos[index].noPrice?'market':'' " class="no-search">
+										<!-- <div class="vertical-children mgt-10" style="font-size: 18px" v-if="petData.vType >= 4 && !petData.noPrice">&nbsp;
+											<img v-if="petData.isRent" :src="require(`@/assets/coin/${Number(petData.orderId) >= 5e4?'BUSD':'MBOX'}.png`)" alt="" height="20"/>
+											<img v-else src="../assets/coin/BUSD.png" alt="" height="20"/>
+											<span>{{numFloor(petData.bidPrice/1e9, 10000)}}</span>
+										</div> -->
+									</PetItem>
+								</div>
+							</div>
+							<img @click="showWholeNetworkOpenBoxHistory(item)" height="25" src="@/assets/icon/view.png" alt="" class="cur-point" />
+						</td>
+						<td class="time">
+							<span>{{ getTimeFtt(item.time) }}</span>
+						</td>
+					</tr>
+				</table>
+				<div class="no-show" v-if="wholeNetworkOpenBoxHistory.length == 0">
+					<img src="@/assets/no_items.png" alt="">
+					<p class="opa-6 mgt-10">No items to display</p>
+				</div>
+			</section>
+		</div>
+		<!-- 我的记录 -->
+		<div class="col-md-12" style="padding: 0 10px 10px 10px" v-else>
+			<section style="padding:10px 15px;background:#13181F;border-radius:20px">
 				<table class="small  new-table" border="0" frame="void" rules="none" >
 					<tr>
 						<th width="30%" class="tal">{{ $t("BOX_12") }}</th>
@@ -172,6 +228,11 @@
 		<Dialog id="open-box-history-dialog" :top="120" :width="660">
 			<div class="dialog-content tal" style="height: 500px">
 				<PetItemSmall v-for="item in showHistoryArr" :key="item.prototype.toString() + item.tokenId + item.num" :data="item" />
+			</div>
+		</Dialog>
+		<Dialog id="avatar-preview" top="50%">
+			<div class="dialog-content tal" style="width:660px; height: 660px">
+				<img style="width: 100%;" :src="avatarPreview" v-if="avatarPreview" />
 			</div>
 		</Dialog>
 		<Dialog id="get-box-dialog" :top="200" :width="400">
@@ -275,8 +336,8 @@
 
 <script>
 import { mapState } from "vuex";
-import { Wallet, Common, EventBus } from "@/utils";
-import { Dialog, PetItemSmall, StatuButton, Loading, OpenPetItem } from '@/components';
+import { Wallet, Common, EventBus, Http } from "@/utils";
+import { Dialog, PetItem, PetItemSmall, StatuButton, Loading, OpenPetItem } from '@/components';
 import CommonMethod from "@/mixin/CommonMethod";
 import { BaseConfig, WalletConfig, EventConfig } from "@/config";
 const $ = window.$;
@@ -284,9 +345,18 @@ const $ = window.$;
 let timer = null;
 export default {
 	mixins: [CommonMethod],
-	components: { Dialog, PetItemSmall, StatuButton, Loading, OpenPetItem },
+	components: { Dialog, PetItem, PetItemSmall, StatuButton, Loading, OpenPetItem },
 	data() {
 		return {
+			// 头像预览
+			avatarPreview: null,
+			// 开箱计时器
+			openBoxHistoryTimer: null,
+			// 开箱记录头像
+			avatar: {},
+			// 全网开箱记录
+			wholeNetworkOpenBoxHistory: [],
+			recordsTabIndex: 0,
 			// 显示开箱动画
 			showOpenAnimation: false,
 			openPos: 0,
@@ -535,8 +605,8 @@ export default {
 			return this.petDataArr.length;
 		}
 	},
-
 	mounted() {
+		this.getWholeNetworkOpenBoxHistory();
 		this.isApprove();
 		EventBus.$emit(EventConfig.OpenBoxHistory, { chain: "eth" });
 
@@ -555,9 +625,9 @@ export default {
 
 	},
 	beforeDestroy() {
+		clearTimeout(this.openBoxHistoryTimer);
 		if (timer != null) clearInterval(timer);
 	},
-
 	watch:{
 		openAllNeedSleep: async function(val){
 			if(val != 0){
@@ -567,9 +637,100 @@ export default {
 			}
 		}
 	},
-	
 	methods: {
-		async  cardClick(e){
+		// 预览头像
+		showAvatar(address) {
+			const avatar = this.avatar[address];
+
+			if (avatar) {
+				this.avatarPreview = avatar;
+				this.oprDialog("avatar-preview", "flex");
+			}
+		},
+		// 根据地址获取头像
+		async getAvatarByAddress(addresss) {
+			const res = await Wallet.ETH.avatarHelper.methods.getFirstAvatar(addresss).call();
+
+			addresss.forEach((item, index) => {
+				const id = res[index];
+
+				if (id !== '0') {
+					this.$set(this.avatar, item, `https://img.momoworld.io/mini_avatar_ori_${id}.png`);
+				}
+			});
+		},
+		// 显示开箱记录
+		showWholeNetworkOpenBoxHistory(item) {
+			this.showHistoryArr = item.momos;
+			this.oprDialog("open-box-history-dialog", "block");
+		},
+		// 获取全网开箱记录
+		async getWholeNetworkOpenBoxHistory() {
+			try {
+				const res = await Http.getWholeNetworkOpenBoxHistory();
+				const addresss = [];
+
+				this.wholeNetworkOpenBoxHistory = res.map((item) => {
+					const { tokenIds, ids, amounts, tokens } = item;
+					// 生成721数据
+					const token721 = item.tokenIds.map((item, key) => {
+						const { category,hashrate,prototype,quality,specialty } = tokens[key];
+
+						return {
+							prototype,
+							quality,
+							category,
+							level: 1,
+							specialty,
+							hashrate,
+							lvHashrate: hashrate,
+							vType: parseInt(prototype / 1e4),
+							num: 1,
+							tokenId: item,
+							tokenName: '',
+						};
+					});
+					// 生成1155数据
+					const token11555 = item.ids.map((item, key) => {
+						const { quality, category } = BaseConfig.NftCfg[item];
+
+						return {
+							prototype: item,
+							quality,
+							category,
+							level: 1,
+							specialty: 0,
+							hashrate: quality,
+							lvHashrate: quality,
+							vType: parseInt(item / 1e4),
+							num: Number(amounts[key]),
+							tokenId: 0,
+							tokenName: '',
+						};
+					});
+
+					if (addresss.indexOf(item.address) === -1) {
+						addresss.push(item.address);
+					}
+
+					return {
+						address: item.address,
+						tx: item.tx,
+						time: item.crtime,
+						momos: [...token721, ...token11555],
+					};
+				});
+
+				await this.getAvatarByAddress(addresss);
+			} catch(_) {
+			}
+
+			this.openBoxHistoryTimer = setTimeout(this.getWholeNetworkOpenBoxHistory.bind(this), 10000);
+		},
+		toggleRecordsTab(value) {
+			this.recordsTabIndex = value;
+		},
+		async cardClick(e){
 			if(!this.isOpenAll && !this.openOne || $(e.target).hasClass("play")) return;
 
 			this.isFinishOpen = false;
@@ -888,12 +1049,16 @@ export default {
 				}
 			})
 		}
-		
 	},
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+
+.hover {
+	cursor: pointer;
+}
+
 .momo-show-momo{
 	position: absolute;
 	width: 100%;
@@ -1295,8 +1460,6 @@ export default {
 		display: inline-block;
 		margin: 0px auto;
 	}
-
-
 }
 
 @media (max-width: 768px) {
@@ -1347,6 +1510,84 @@ export default {
 		zoom: 0.4;
 	}
 
+}
+
+@media(min-width: 1000px) {
+	.tab {
+		ul {
+			padding: 0 50px;
+		}
+	}
+
+	.whole-records {
+		.address {
+			width: 15%;
+			text-align: left;
+		}
+
+		.event {
+			width: 15%;
+			text-align: left;
+		}
+
+		.result {
+			text-align: left;
+		}
+
+		.time {
+			width: 30%;
+			text-align: right;
+		}
+	}
+}
+
+@media(max-width: 1000px) {
+	.tab {
+		ul {
+			justify-content: center;
+		}
+	}
+
+	.whole-records {
+		.address {
+			width: 30%;
+			text-align: left;
+		}
+
+		.event {
+			width: 20%;
+			text-align: left;
+		}
+
+		.result {
+			text-align: right;
+
+			.momo {
+				display: none !important;
+
+				&:first-child {
+					display: inline-block !important;
+				}
+
+				.preview-info {
+					left: auto;
+					right: 50%;
+					width: 350px !important;
+				}
+			}
+		}
+
+		.time {
+			display: none;
+		}
+	}
+
+	#avatar-preview {
+		/deep/ .dialog-content {
+			width: 100% !important;
+			height: auto !important;
+		}
+	}
 }
 
 .animation-box {
@@ -1407,5 +1648,180 @@ export default {
 }
 .adv-panel:before{
 	background: linear-gradient(145deg,#066EFF 0%, #000  100%);
+}
+
+.tab {
+	margin-top: 30px;
+	padding: 0 10px;
+
+	ul {
+		display: flex;
+		align-items: center;
+		list-style: none;
+
+		li {
+			padding: 8px;
+			position: relative;
+			font-weight: bold;
+			margin: 0 26px;
+			font-size: 15px;
+			cursor: pointer;
+			color: rgba(255, 255, 255, 0.5);
+			transition: color .5s;
+
+			&.active,
+			&:hover {
+				color: #ffffff;
+			}
+
+			&.active {
+				&::after {
+					content: '';
+					display: block;
+					position: absolute;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					height: 2px;
+					background: #1751f6;
+					border-radius: 11px;
+				}
+			}
+		}
+	}
+}
+
+.whole-records {
+	img, span, .image {
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.avatar {
+		.image {
+			width: 45px;
+			height: 45px;
+			overflow: hidden;
+			border-radius: 10px;
+			margin-right: 10px;
+
+			img {
+				width: 100%;
+				height: auto;
+			}
+		}
+	}
+
+	.event {
+		img {
+			margin-right: 10px;
+		}
+	}
+
+	.time {
+		span, a {
+			display: inline-block;
+			line-height: 1;
+			vertical-align: middle;
+		}
+
+		span {
+			margin-right: 10px;
+		}
+	}
+
+	.result {
+		.momo {
+			width: 45px;
+			height: 45px;
+			box-sizing: border-box;
+			padding-bottom: 5px;
+			border-radius: 100%;
+			vertical-align: middle;
+			margin-right: 10px;
+			position: relative;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+
+			&:hover {
+				.preview-info {
+					display: inline-block;
+				}
+			}
+
+			.type {
+				position: absolute;
+				bottom: 0;
+				left: 50%;
+				transform: translate(-50%, 50%);
+				height: 20px;
+				width: 20px;
+				background: #1a2c50;
+				border: 1px solid #315184;
+				border-radius: 100%;
+				padding: 5px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				img {
+					width: 100%;
+					height: auto;
+				}
+			}
+		}
+
+		.preview-info {
+			display: none;
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			z-index: 9;
+
+			/deep/ .pet_item {
+				margin: 0 !important;
+			}
+		}
+
+		.cur-point {
+			margin-left: 20px;
+		}
+	}
+
+	.momo-type1 {
+		box-shadow: inset 0px 0px 10px 0 #8b8b8bb4;
+		border: 3px solid #8b8b8bb4;
+	}
+
+	.momo-type2 {
+		box-shadow: inset 0px 0px 10px 0 #5b7e2bb4;
+		border: 3px solid #5b7e2bb4;
+	}
+
+	.momo-type3 {
+		box-shadow: inset 0px 0px 10px 0 #3955a0b4;
+		border: 3px solid #3955a0b4;
+	}
+
+	.momo-type4 {
+		box-shadow: inset 0px 0px 10px 0 #793ea8b4;
+		border: 3px solid #793ea8b4;
+	}
+
+	.momo-type5 {
+		box-shadow: inset 0px 0px 10px 0 #97812fb4;
+		border: 3px solid #97812fb4;
+	}
+
+	.momo-type6 {
+		box-shadow: inset 0px 0px 10px 0 #8f3433;
+		border: 3px solid #8f3433;
+	}
+}
+
+#avatar-preview {
+	align-items: center;
+	justify-content: center;
 }
 </style>

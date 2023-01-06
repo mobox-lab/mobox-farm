@@ -127,9 +127,13 @@
 						<img src="@/assets/binaceActivity.png" alt="" height="85" />
 					</router-link>
 				</div> -->
-				<div id="halloween-entry" class="por mgt-10" @click="oprDialog('transfer-dialog', 'block')">
-						<img src="@/assets/transMoMo.png" alt="" height="85" />
+				<div id="halloween-entry" class="por mgt-10" @click="oprDialog('transfer-dialog', 'block')" v-if="myNFT_verse.length">
+					<img src="@/assets/transMoMo.png" width="210" />
 				</div>
+				<router-link to="/furnace" class="por mgt-10" style="display: block;" v-if="$route.path != '/furnace' && isShowFurnace">
+					<img src="@/assets/furnace/banner-zh.png" width="210" v-if="$i18n.locale.indexOf('zh') == 0" />
+					<img src="@/assets/furnace/banner-en.png" width="210" v-else />
+				</router-link>
 			</div>
 			<div id="our-parice-pc">
 				<!-- mbox -->
@@ -349,6 +353,7 @@
 		<QuickBuy ref="quickBuy" />
 		<ShopCar ref="momoShopCar" />
 		<GemBag ref="gemBag" />
+		<BoxBag ref="boxBag" />
 		<ConfirmDialog ref=confirmDialog />
 		<RuleDialog ref=ruleDialog />
 		<WalletOprStatus />
@@ -417,6 +422,10 @@
 			<h2>{{$t("Notice_03")}}</h2>
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
+					<div class="mgt-20">
+						<h3 class="tac">{{$t("Notice_86")}}</h3>
+						<span v-html="$t('Notice_87')" ></span>
+					</div>
 					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_84")}}</h3>
 						<span v-html="$t('Notice_85')" ></span>
@@ -613,7 +622,6 @@
 				</div>
 			</div>
 		</Dialog>
-		
 	</div>
 </template>
 <script>
@@ -623,6 +631,7 @@ import QuickBuy from "./views/Market/Momo/QuickBuy";
 import ShopCar from './views/Market/ShopCar.vue'
 
 import GemBag from "./views/Activity/Gem/GemBag";
+import BoxBag from "./views/Activity/BoxBag.vue";
 import VMbox from "./views/VMBOX/VMbox";
 
 import { Notification, NotificationTrans, Dialog, ConfirmDialog, RuleDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Loading, StatuButton } from '@/components';
@@ -639,7 +648,7 @@ let timer = null;
 export default {
 	name: "App",
 	mixins: [InitEth, InitTron, CommonMethod],
-	components: {StatuButton, Transfer, StandardHashrate, RuleDialog,GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox, BatchEnhancement },
+	components: {StatuButton, Transfer, StandardHashrate, RuleDialog, BoxBag, GemBag, QuickBuy, ShopCar, Notification, NotificationTrans, Dialog, ConfirmDialog, PetItemSmall, WalletOprStatus, WalletConnectBtn, WalletConnectDialog, Pancake, Loading, VMbox, BatchEnhancement },
 	data() {
 		return {
 			powerAddConfig,
@@ -657,7 +666,7 @@ export default {
 			powerTab: "v4",
 			hasReadNotice: false,
 			showMoreMenu: false,
-			noticeVersion: "2022-12-5",
+			noticeVersion: "2022-12-21",
 			version: "2.1.1"
 		};
 	},
@@ -694,6 +703,9 @@ export default {
 			connectWalletAddr: (state) => state.globalState.data.connectWalletAddr,
 			chainNetwork: (state) => state.globalState.data.chainNetwork,
 		}),
+		isShowFurnace() {
+			return Date.now() <= 1674187200000;
+		},
 		// 算力达标数量
 		standardCount() {
 			return this.getStandardCount(this.powerTab);

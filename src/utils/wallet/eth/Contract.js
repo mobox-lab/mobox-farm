@@ -536,6 +536,24 @@ export default class Contract {
 			name: '_approved'
 		}],
 	}
+	// 根据id获取momo信息
+	static getMomoByTokenId = {
+		name: 'getMomoByTokenId',
+		type: "function",
+		inputs: [
+			{
+				type: 'uint256',
+				name: 'tokenId'
+			}
+		],
+		outputs: [
+			{
+				type: 'uint256[]',
+				name: 'attrs'
+			},
+		],
+	};
+
 	//升级--MomoToken
 	static levelUp = {
 		name: 'levelUp',

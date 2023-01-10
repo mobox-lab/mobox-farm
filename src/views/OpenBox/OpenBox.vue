@@ -153,7 +153,7 @@
 						</td>
 						<td class="event">
 							<img src="@/assets/icon/box.png" width="35" />
-							<span>x{{ item.momos.length }}</span>
+							<span>x{{ item.amount }}</span>
 						</td>
 						<td class="result">
 							<div :class="['momo', `momo-type${item.momos[index].vType}`]" v-for="(_, index) in Math.min(5, item.momos.length)" :key="index">
@@ -717,6 +717,7 @@ export default {
 						address: item.address,
 						tx: item.tx,
 						time: item.crtime,
+						amount: item.amount,
 						momos: [...token721, ...token11555],
 					};
 				});
@@ -1493,7 +1494,6 @@ export default {
 	}
 	.box{
 		zoom:0.5;
-		
 	}
 	/* .box-spine{
 		zoom: 0.8 !important;
@@ -1509,7 +1509,6 @@ export default {
 	.show-card-item{
 		zoom: 0.4;
 	}
-
 }
 
 @media(min-width: 1000px) {
@@ -1526,7 +1525,7 @@ export default {
 		}
 
 		.event {
-			width: 15%;
+			width: 18%;
 			text-align: left;
 		}
 
@@ -1555,8 +1554,12 @@ export default {
 		}
 
 		.event {
-			width: 20%;
+			width: 25%;
 			text-align: left;
+
+			img {
+				width: 30px;
+			}
 		}
 
 		.result {

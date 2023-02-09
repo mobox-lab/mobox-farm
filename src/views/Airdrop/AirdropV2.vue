@@ -19,10 +19,10 @@
 						<div id="halloween-entry"  class="swiper-slide tac" style="width: 100%;margin:0 auto" v-if="myNFT_verse.length">
 							<img src="@/assets/transMoMo.png" @click="oprDialog('transfer-dialog', 'block')" alt="" width="60%" />
 						</div>
-						<router-link to="/furnace" id="halloween-entry"  class="swiper-slide tac" style="width: 100%;margin:0 auto" v-if="isShowFurnace">
+						<!-- <router-link to="/furnace" id="halloween-entry"  class="swiper-slide tac" style="width: 100%;margin:0 auto" v-if="isShowFurnace">
 							<img src="@/assets/furnace/banner-zh.png" width="60%" v-if="$i18n.locale.indexOf('zh') == 0" />
 							<img src="@/assets/furnace/banner-en.png" width="60%" v-else />
-						</router-link>
+						</router-link> -->
 					</div>
 					<div ref="pagination" class="swiper-pagination"></div>
 				</div>
@@ -82,7 +82,7 @@
 															<p class="dib">MBOX</p>
 															<p class="dib tar" >
 																<span v-if="item.myApy.key != '-'" class="vertical-children">
-																	<span v-if="item.wantAmount > 0 ">
+																	<span v-if="item.wantAmount > 0">
 																		{{numFloor(item.myApy.key*100, 100)}}%
 																	</span>
 																	<span v-else>
@@ -586,11 +586,6 @@ export default {
 			eth_totalHashrate: (state) => state.ethState.data.totalHashrate,
 			totalAirdropMbox: (state) => state.ethState.data.totalAirdropMbox,
 		}),
-
-		isShowFurnace() {
-			return Date.now() <= 1674187200000;
-		},
-
 		isShowOld() {
 			let arr = [];
 			let stakeLP = PancakeConfig.StakeLP;

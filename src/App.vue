@@ -130,10 +130,10 @@
 				<div id="halloween-entry" class="por mgt-10" @click="oprDialog('transfer-dialog', 'block')" v-if="myNFT_verse.length">
 					<img src="@/assets/transMoMo.png" width="210" />
 				</div>
-				<router-link to="/furnace" class="por mgt-10" style="display: block;" v-if="$route.path != '/furnace' && isShowFurnace">
+				<!-- <router-link to="/furnace" class="por mgt-10" style="display: block;" v-if="$route.path != '/furnace' && isShowFurnace">
 					<img src="@/assets/furnace/banner-zh.png" width="210" v-if="$i18n.locale.indexOf('zh') == 0" />
 					<img src="@/assets/furnace/banner-en.png" width="210" v-else />
-				</router-link>
+				</router-link> -->
 			</div>
 			<div id="our-parice-pc">
 				<!-- mbox -->
@@ -703,9 +703,6 @@ export default {
 			connectWalletAddr: (state) => state.globalState.data.connectWalletAddr,
 			chainNetwork: (state) => state.globalState.data.chainNetwork,
 		}),
-		isShowFurnace() {
-			return Date.now() <= 1674187200000;
-		},
 		// 算力达标数量
 		standardCount() {
 			return this.getStandardCount(this.powerTab);

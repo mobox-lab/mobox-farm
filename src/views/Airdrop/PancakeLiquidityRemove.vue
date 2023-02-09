@@ -14,7 +14,7 @@
 		</div>
 		<div class="tab-split"></div>
 		<div class="tab-content" >
-			<div class="kk-div">
+			<div class="kk-div lp-from">
 				<div class="mgt-10 por">
 					<!-- <div class="ly-input-pre-icon" :class="oprData.isLP ? 'double-img':'' " v-if="oprData.coinName != ''" style="zoom: 0.75" @click="showSelect">
 						<img v-for="(name, key) in pair" :key="name+key" :src=" require(`../../assets/coin/${name}.png`) " height="40" alt="" />
@@ -318,6 +318,15 @@ export default {
 		font-size: 16px;
 		font-weight: 800;
 		padding-left: 4px;
+	}
+}
+
+@media(max-width: 1000px) {
+	.lp-from {
+		input {
+			padding: 0 0 0 100px!important;
+			text-align: left;
+		}
 	}
 }
 </style>

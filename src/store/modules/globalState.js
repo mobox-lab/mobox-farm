@@ -17,7 +17,7 @@ function getMinHashrate(lv, step) {
 }
 
 const state = () => ({
-	mecApy: (200 + (Math.random() * 100)).toFixed(1),
+	mecApy: (100 + (Math.random() * 100)).toFixed(1),
 	// 批量净化列表
 	batchEnhancement: [],
 	// 是否显示批量进化按钮

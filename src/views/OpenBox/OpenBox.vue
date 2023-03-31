@@ -135,7 +135,7 @@
 			</ul>
 		</div>
 		<!-- 全网开箱记录 -->
-		<div class="col-md-12 whole-records" style="padding: 0 10px 10px 10px" v-if="recordsTabIndex === 0">
+		<div class="col-md-12 whole-records" style="padding: 0 10px 10px 10px" v-show="recordsTabIndex === 0">
 			<section style="padding:10px 15px;background:#13181F;border-radius:20px">
 				<table class="small  new-table" border="0" frame="void" rules="none" >
 					<tr>
@@ -185,7 +185,7 @@
 			</section>
 		</div>
 		<!-- 我的记录 -->
-		<div class="col-md-12" style="padding: 0 10px 10px 10px" v-else>
+		<div class="col-md-12" style="padding: 0 10px 10px 10px"  v-show="recordsTabIndex !== 0">
 			<section style="padding:10px 15px;background:#13181F;border-radius:20px">
 				<table class="small  new-table" border="0" frame="void" rules="none" >
 					<tr>

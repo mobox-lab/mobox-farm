@@ -556,10 +556,10 @@ export default {
 				{min: 0.75, max:1, mul: 8},
 			],
 			mboxDropConfig: [
-				{min: 0, max: 0.5, num: 5e4},
-				{min: 0.5, max: 1, num: 7.5e4},
-				{min: 1, max: 2, num: 10e4},
-				{min: 2, max: -1, num: 12.5e4},
+				{min: 0, max: 0.5, num: 4e4},
+				{min: 0.5, max: 1, num: 6e4},
+				{min: 1, max: 2, num: 8e4},
+				{min: 2, max: -1, num: 10.e4},
 			],
 			burnTypeList: [this.$t('Air-drop_49'), this.$t('Air-drop_132'), this.$t('Air-drop_133')]
 		});

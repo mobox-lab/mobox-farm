@@ -166,7 +166,7 @@ export default {
 			let coinArr = this.coinArr;
 			
 			let allowanceToSwap = Number(coinArr[coinKey].allowanceToSwap);
-			return coinName != ''  && allowanceToSwap >= 0 && allowanceToSwap <  1e8
+			return coinName != ''  && allowanceToSwap >= 0 && allowanceToSwap < (this.$parent.mecLP * 1e18)
 		},
 		coinKey() {
 			return this.isNotMec ? this.oprData.coinKey : this.pair.join('-');

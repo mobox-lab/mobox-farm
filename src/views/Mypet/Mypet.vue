@@ -196,7 +196,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-1 col-sm-2 col-xs-4" v-for="(item, key) in getBookArr.advanced" :key="key" >
-						<BookItem :data="item" />
+						<BookItem :data="item" v-if="isShow(item)" />
 					</div>
 				</div>
 			</div>
@@ -667,6 +667,10 @@ export default {
 		}
 	},
 	methods: {
+		// 是否显示
+		isShow(item) {
+			return item.some(item => item.prototype != '60012');
+		},
 		// 切换显示批量进化
 		toggleShowBatchEnhancement() {
 			this.$store.commit('globalState/toggleShowBatchEnhancement');

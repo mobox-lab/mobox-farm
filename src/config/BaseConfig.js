@@ -4979,6 +4979,8 @@ static NftCfg = {
 	"50164":{prototype:50164,tokenName:"Name_575",quality:5,category:5,mmNum:150,cnName:"赛车手"},
 	"50165":{prototype:50165,tokenName:"Name_576",quality:5,category:5,mmNum:150,cnName:"歌剧演员"},
 	"50166":{prototype:50166,tokenName:"Name_577",quality:5,category:5,mmNum:150,cnName:"露营旅友"},
+	"50167":{prototype:50167,tokenName:"Name_578",quality:5,category:5,mmNum:150,cnName:"维多利亚"},
+	"50168":{prototype:50168,tokenName:"Name_579",quality:5,category:5,mmNum:150,cnName:"迦迪"},
 	"60001":{prototype:60001,tokenName:"Name_241",quality:6,category:5,mmNum:5,cnName:"Bobo Banana-Bot"},
 	"60002":{prototype:60002,tokenName:"Name_242",quality:6,category:5,mmNum:5,cnName:"Danny Dapporovsky"},
 	"60003":{prototype:60003,tokenName:"Name_243",quality:6,category:5,mmNum:5,cnName:"CoinMarketCap Robot"},
@@ -4988,5 +4990,8 @@ static NftCfg = {
 	"60007":{prototype:60007,tokenName:"Name_347",quality:6,category:5,mmNum:5,cnName:"Maxine Dexie Trunk"},
 	"60008":{prototype:60008,tokenName:"Name_463",quality:6,category:5,mmNum:5,cnName:"Gallerzord"},
 	"60009":{prototype:60009,tokenName:"Name_522",quality:6,category:5,mmNum:5,cnName:"Coinorino Mechanica"},
+	"60010":{prototype:60010,tokenName:"Name_582",quality:6,category:5,mmNum:5,cnName:"薄饼机器人"},
+	"60011":{prototype:60011,tokenName:"Name_580",quality:6,category:5,mmNum:5,cnName:"暴走狂徒"},
+	"60012":{prototype:60012,tokenName:"Name_581",quality:6,category:5,mmNum:5,cnName:"苍白女士"},
 }
 }

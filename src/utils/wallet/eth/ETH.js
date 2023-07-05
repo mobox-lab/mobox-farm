@@ -1839,13 +1839,13 @@ export default class ETH {
 		let tokenB =  selectCoinB.addr;
 		liquidity = this.numToHex(BigNumber(liquidity).times(1e18));
 
-		let amountAMin = this.numToHex(BigNumber(Common.numFloor(targetLPPrice[0] * (1-slippage/100), 1e8)).times(selectCoinA.decimals));
+		let amountAMin = this.numToHex(BigNumber(Common.numFloor(targetLPPrice[0] * (1-slippage/100), 1e8)).times(isMec ? 1 : 0.97).times(selectCoinA.decimals));
 		let amountBMin = targetLPPrice[1] * (1-slippage/100);
 
 		if (isMec) {
 			amountBMin = this.numToHex(BigNumber(Math.floor(amountBMin)));
 		} else {
-			amountBMin = this.numToHex(BigNumber(Common.numFloor(amountBMin, 1e8)).times(selectCoinB.decimals));
+			amountBMin = this.numToHex(BigNumber(Common.numFloor(amountBMin, 1e8)).times(0.97).times(selectCoinB.decimals));
 		}
 
 		let deadline = parseInt(new Date().valueOf() / 1000) + (60 *duration);

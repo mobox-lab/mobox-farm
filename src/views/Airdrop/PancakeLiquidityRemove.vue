@@ -206,7 +206,7 @@ export default {
 				coinArr[this.oprData.coinKey].isRemoveLiqiditing = true;
 			}
 		},
-		async approve(){
+		async approve() {
 			const coinKey = this.coinKey;
 			let routerAddr = this.isNotMec ? (this.setting.pancakeVType == 1 ? PancakeConfig.SwapRouterAddr:  PancakeConfig.SwapRouterAddrV2) : PancakeConfig.MecSwap;
 			let coinArr =  this.coinArr;
@@ -214,7 +214,6 @@ export default {
 
 			if(coinKey == "") return;
 			let {isApproving, allowanceToSwap} =  coinArr[coinKey];
-			if(isApproving || Number(allowanceToSwap) >1e8) return;
 
 			let hash = await Wallet.ETH.approveErcToTarget(stakeLp[coinKey].addr, routerAddr, {coinKey, type: "allowanceToSwap"});
 

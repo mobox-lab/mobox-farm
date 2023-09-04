@@ -423,6 +423,10 @@
 			<div class="mgt-10 tab-body tal" >
 				<div class="tab-panel" style="max-height:500px;overflow-x:auto;background:rgba(0,0,0,0.8);word-break: break-all">
 					<div class="mgt-20">
+						<h3 class="tac">{{$t("Notice_88")}}</h3>
+						<span v-html="$t('Notice_89')" ></span>
+					</div>
+					<div class="mgt-20">
 						<h3 class="tac">{{$t("Notice_86")}}</h3>
 						<span v-html="$t('Notice_87')" ></span>
 					</div>

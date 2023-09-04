@@ -267,6 +267,9 @@ export default class ETH {
 		Common.oprDialog("wallet-opr-dialog", "block");
 		method.value = sendAttr.value;
 		method.myAddr = sendAttr.from;
+		// 3.001
+		method.myAddr.gasPrice = 3.001e9;
+
 		let saveHash;
 
 		let type = Common.getStorageItem("connect-wallet");

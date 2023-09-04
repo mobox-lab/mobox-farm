@@ -11,6 +11,14 @@
 						<img style="margin-top:5px" src="../assets/icon/mboxWallet.png" height="30" alt="">
 					</div>
 				</div>
+				<div class="connect-wallet-item aveage-box mgt-10" @click="connectWallet('bitget')">
+					<div class="tal">
+						<span>Bitget Wallet</span>	
+					</div>
+					<div class="tar">
+						<img style="margin-top:5px" src="../assets/icon/bitget.png" height="30" alt="">
+					</div>
+				</div>
 				<div class="connect-wallet-item aveage-box mgt-10" @click="connectWallet('TrustWallet')">
 					<div class="tal">
 						<span>TrustWallet</span>	
@@ -231,6 +239,30 @@ export default {
 							}
 							//获取当前provider
 							provider = mp;
+						}
+					break;
+				case "bitget":
+						const _provider = window.bitkeep.ethereum;
+
+						if (typeof _provider !== 'undefined') {
+							try {
+								//获取账户
+								let accounts = await _provider.request({ method: 'eth_requestAccounts' });
+								account =  accounts[0];
+							} catch (error) {
+								this.showNotify(this.$t("Air-drop_101"), "error");
+							}
+							//获取当前Network
+							let network = await _provider.request({method: 'net_version'});
+							chainNetwork = network;
+							if(chainNetwork != 56){
+								_provider.request({
+									method: 'wallet_switchEthereumChain',
+									params: [{ chainId: '0x38' }], // chainId must be in hexadecimal numbers
+								});
+							}
+							//获取当前provider
+							provider = _provider;
 						}
 					break;
 				case "TrustWallet":

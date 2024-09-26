@@ -1,0 +1,36 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,maximum-scale=1">
+    <script name='gkaRibbon'>document.addEventListener('DOMContentLoaded',function(){var d=document.createElement('div');d.innerHTML='<div style="position: fixed; bottom: 10px;">Powered By <a target="_blank" href="https://github.com/gkajs/gka">gka 2.8.6</a></div>';document.body.appendChild(d)});</script>
+    <title>gka-preview</title>
+<link href="./gka.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+    <div class="gka-wrap">
+        <div id="gka"></div>
+    </div>
+    <script>
+    function preloadImage(names, cb, prefix){
+        window.gkaCache = window.gkaCache || [];
+        var n = 0,img,imgs = {};
+        names.forEach(function(name) {
+            img = new Image();
+            window.gkaCache.push(img);
+            img.onload = (function(name, img) {
+                return function() {
+                    imgs[name] = img;
+                    (++n === names.length) && cb && cb(imgs);
+                }
+            })(name, img);
+            img.src = (prefix || '') + name;
+        });
+    }
+
+    preloadImage(["red_00000.png","red_00001.png","red_00002.png","red_00003.png","red_00004.png","red_00005.png","red_00006.png","red_00007.png","red_00008.png","red_00009.png","red_00010.png","red_00011.png","red_00012.png","red_00013.png","red_00014.png","red_00015.png","red_00016.png","red_00017.png","red_00018.png","red_00019.png","red_00020.png","red_00021.png","red_00022.png","red_00023.png","red_00024.png","red_00025.png","red_00026.png","red_00027.png","red_00028.png","red_00029.png"], function() {
+        document.getElementById('gka').className += " animation"
+    }, "img/")
+    </script>
+</body>
+</html>

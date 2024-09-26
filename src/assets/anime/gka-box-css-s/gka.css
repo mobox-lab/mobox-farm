@@ -1,0 +1,56 @@
+.gka-wrap {
+    width: 256px;
+    height: 256px;
+}
+
+.animation {
+    width: 256px;
+    height: 256px;
+    background-image: url("./img/sprites.png");
+    background-size: 2048px 256px;
+    background-repeat: no-repeat;
+    animation-name: keyframes-box;
+    animation-duration: 0.32s;
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-timing-function: steps(1);
+}
+
+@keyframes keyframes-box {
+    0% {
+        width: 256px;
+        height: 256px;
+        background-image: url("./img/sprites.png");
+        background-size: 2048px 256px;
+    }
+
+    12.50% {
+        background-position: -256px 0px;
+    }
+
+    25.00% {
+        background-position: -512px 0px;
+    }
+
+    37.50% {
+        background-position: -768px 0px;
+    }
+
+    50.00% {
+        background-position: -1024px 0px;
+    }
+
+    62.50% {
+        background-position: -1280px 0px;
+    }
+
+    75.00% {
+        background-position: -1536px 0px;
+    }
+
+    87.50%,
+    100% {
+        background-position: -1792px 0px;
+    }
+}

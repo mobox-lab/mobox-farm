@@ -1,0 +1,211 @@
+{
+"skeleton": { "hash": "+xx3SfERRowTvd41ntWAnryhpIE", "spine": "3.6.53", "width": 0, "height": 0, "images": "./images/" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "TX", "parent": "root", "color": "ff0000ff" },
+	{ "name": "bsk", "parent": "TX", "color": "ff0000ff" },
+	{ "name": "dnn", "parent": "TX", "color": "ff0000ff" },
+	{ "name": "gs", "parent": "TX", "color": "ff0000ff" },
+	{ "name": "lizi", "parent": "TX", "color": "ff0000ff" },
+	{ "name": "lizi2", "parent": "TX", "color": "ff0000ff" },
+	{ "name": "yw", "parent": "TX", "color": "ff0000ff" }
+],
+"slots": [
+	{ "name": "dnn", "bone": "dnn" },
+	{ "name": "lizi", "bone": "lizi", "blend": "additive" },
+	{ "name": "gs_00", "bone": "gs", "blend": "additive" },
+	{ "name": "bsk_00", "bone": "bsk", "blend": "additive" },
+	{ "name": "yw", "bone": "yw", "blend": "additive" },
+	{ "name": "lizi2", "bone": "lizi2", "blend": "additive" }
+],
+"skins": {
+	"default": {
+		"bsk_00": {
+			"bsk_00": { "width": 220, "height": 178 }
+		},
+		"dnn": {
+			"dnn_00": { "width": 202, "height": 133 },
+			"dnn_02": { "width": 202, "height": 133 },
+			"dnn_04": { "width": 202, "height": 133 },
+			"dnn_06": { "width": 202, "height": 133 },
+			"dnn_08": { "width": 202, "height": 133 },
+			"dnn_10": { "width": 202, "height": 133 },
+			"dnn_12": { "width": 202, "height": 133 },
+			"dnn_14": { "width": 202, "height": 133 },
+			"dnn_16": { "width": 202, "height": 133 },
+			"dnn_18": { "width": 202, "height": 133 },
+			"dnn_20": { "width": 202, "height": 133 },
+			"dnn_22": { "width": 202, "height": 133 },
+			"dnn_24": { "width": 202, "height": 133 },
+			"dnn_26": { "width": 202, "height": 133 },
+			"dnn_28": { "width": 202, "height": 133 },
+			"dnn_30": { "width": 202, "height": 133 },
+			"dnn_32": { "width": 202, "height": 133 }
+		},
+		"gs_00": {
+			"gs_00": { "width": 590, "height": 424 }
+		},
+		"lizi": {
+			"lizi_26": { "width": 291, "height": 232 },
+			"lizi_28": { "width": 291, "height": 232 },
+			"lizi_30": { "width": 291, "height": 232 },
+			"lizi_32": { "width": 291, "height": 232 },
+			"lizi_34": { "width": 291, "height": 232 },
+			"lizi_36": { "width": 291, "height": 232 },
+			"lizi_38": { "width": 291, "height": 232 },
+			"lizi_40": { "width": 291, "height": 232 },
+			"lizi_42": { "width": 291, "height": 232 },
+			"lizi_44": { "width": 291, "height": 232 },
+			"lizi_46": { "width": 291, "height": 232 },
+			"lizi_48": { "width": 291, "height": 232 },
+			"lizi_50": { "width": 291, "height": 232 }
+		},
+		"lizi2": {
+			"lizi_26": { "width": 291, "height": 232 },
+			"lizi_28": { "width": 291, "height": 232 },
+			"lizi_30": { "width": 291, "height": 232 },
+			"lizi_32": { "width": 291, "height": 232 },
+			"lizi_34": { "width": 291, "height": 232 },
+			"lizi_36": { "width": 291, "height": 232 },
+			"lizi_38": { "width": 291, "height": 232 },
+			"lizi_40": { "width": 291, "height": 232 },
+			"lizi_42": { "width": 291, "height": 232 },
+			"lizi_44": { "width": 291, "height": 232 },
+			"lizi_46": { "width": 291, "height": 232 },
+			"lizi_48": { "width": 291, "height": 232 },
+			"lizi_50": { "width": 291, "height": 232 }
+		},
+		"yw": {
+			"jsyw_00": { "width": 208, "height": 186 },
+			"jsyw_02": { "width": 208, "height": 186 },
+			"jsyw_04": { "width": 208, "height": 186 },
+			"jsyw_06": { "width": 208, "height": 186 },
+			"jsyw_08": { "width": 208, "height": 186 },
+			"jsyw_10": { "width": 208, "height": 186 },
+			"jsyw_12": { "width": 208, "height": 186 },
+			"jsyw_14": { "width": 208, "height": 186 },
+			"jsyw_16": { "width": 208, "height": 186 },
+			"jsyw_18": { "width": 208, "height": 186 },
+			"jsyw_20": { "width": 208, "height": 186 },
+			"jsyw_22": { "width": 208, "height": 186 },
+			"jsyw_24": { "width": 208, "height": 186 },
+			"jsyw_26": { "width": 208, "height": 186 },
+			"jsyw_28": { "width": 208, "height": 186 },
+			"jsyw_30": { "width": 208, "height": 186 },
+			"jsyw_32": { "width": 208, "height": 186 },
+			"jsyw_34": { "width": 208, "height": 186 },
+			"jsyw_36": { "width": 208, "height": 186 },
+			"jsyw_38": { "width": 208, "height": 186 },
+			"jsyw_40": { "width": 208, "height": 186 },
+			"jsyw_42": { "width": 208, "height": 186 },
+			"jsyw_44": { "width": 208, "height": 186 }
+		}
+	}
+},
+"animations": {
+	"jieshu": {
+		"slots": {
+			"bsk_00": {
+				"color": [
+					{ "time": 0, "color": "ffffff0a" },
+					{ "time": 0.0333, "color": "ffffff00" }
+				]
+			},
+			"gs_00": {
+				"color": [
+					{ "time": 0, "color": "ffffff0c" },
+					{ "time": 0.0667, "color": "ffffff00" }
+				]
+			},
+			"lizi2": {
+				"attachment": [
+					{ "time": 0, "name": "lizi_40" },
+					{ "time": 0.0667, "name": "lizi_42" },
+					{ "time": 0.1333, "name": "lizi_44" },
+					{ "time": 0.2, "name": "lizi_46" },
+					{ "time": 0.2667, "name": "lizi_48" },
+					{ "time": 0.3333, "name": "lizi_50" },
+					{ "time": 0.4, "name": null }
+				]
+			},
+			"yw": {
+				"attachment": [
+					{ "time": 0, "name": "jsyw_22" },
+					{ "time": 0.0667, "name": "jsyw_24" },
+					{ "time": 0.1333, "name": "jsyw_26" },
+					{ "time": 0.2, "name": "jsyw_28" },
+					{ "time": 0.2667, "name": "jsyw_30" },
+					{ "time": 0.3333, "name": "jsyw_32" },
+					{ "time": 0.4, "name": "jsyw_34" },
+					{ "time": 0.4667, "name": "jsyw_36" },
+					{ "time": 0.5333, "name": "jsyw_38" },
+					{ "time": 0.6, "name": "jsyw_40" },
+					{ "time": 0.6667, "name": "jsyw_42" },
+					{ "time": 0.7333, "name": "jsyw_44" },
+					{ "time": 0.8, "name": null }
+				]
+			}
+		},
+		"bones": {
+			"yw": {
+				"translate": [
+					{ "time": 0, "x": -23.87, "y": 416.02 }
+				],
+				"scale": [
+					{ "time": 0, "x": 6.8, "y": 6.8 }
+				]
+			},
+			"dnn": {
+				"translate": [
+					{ "time": 0, "x": 300.08, "y": 463.76 }
+				],
+				"scale": [
+					{ "time": 0, "x": 6.681, "y": 6.681 }
+				]
+			},
+			"lizi": {
+				"translate": [
+					{ "time": 0, "x": 13.64, "y": 443.3 }
+				],
+				"scale": [
+					{ "time": 0, "x": 5.161, "y": 5.161 }
+				]
+			},
+			"bsk": {
+				"translate": [
+					{ "time": 0, "x": 3.41, "y": 433.07 }
+				],
+				"scale": [
+					{ "time": 0, "x": 5.641, "y": 6.084 },
+					{ "time": 0.0333, "x": 6.049, "y": 6.162 }
+				]
+			},
+			"gs": {
+				"translate": [
+					{ "time": 0, "x": -3.41, "y": 395.56 }
+				],
+				"scale": [
+					{ "time": 0, "x": 3.354, "y": 3.928 },
+					{ "time": 0.0667, "x": 3.928, "y": 3.928 }
+				]
+			},
+			"lizi2": {
+				"translate": [
+					{ "time": 0, "x": 13.64, "y": 443.3 }
+				],
+				"scale": [
+					{ "time": 0, "x": 3.691, "y": 3.691 }
+				]
+			}
+		},
+		"drawOrder": [
+			{
+				"time": 0,
+				"offsets": [
+					{ "slot": "yw", "offset": 1 }
+				]
+			}
+		]
+	}
+}
+}

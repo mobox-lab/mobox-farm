@@ -1,0 +1,220 @@
+.loading{
+	position: absolute !important;
+	width: 100%;
+	height: 100%;
+	z-index: 99 !important;
+}
+.loading svg{
+	margin-top: 100px;
+}
+#binance{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	left: 0px;
+	top: 0px;
+	padding-left: 260px;
+	color: #EA8000;
+	text-align: center;
+}
+
+#be-content{
+	display: flex;
+	position: relative;
+	flex: 1;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-image: url('../../assets/bnft/bg.jpg');
+	overflow: auto;
+	padding-bottom: 50px;
+}
+
+#title{
+	display: inline-flex;
+	display: -webkit-inline-flex;
+	position: relative;
+	text-align: center;
+	justify-content: center;
+}
+#title h1{
+	font-size: 25px;
+	font-weight: bold;
+	position: absolute;
+	width: 100%;
+	height: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.bpanel{
+	max-width: 1000px;
+	margin: 0px auto;
+	border-radius: 20px;
+	position: relative;
+	z-index: 2;
+	box-shadow: 0px 4px 23px 0px rgba(234,128,0,0.49); 
+}
+.bpanel *{
+	position: relative;
+	z-index: 10;
+}
+
+.bpanel::before{
+	content: "";
+	background: linear-gradient(180deg, #ffffff, #f7a124 100%) ;
+	position: absolute;
+	top: -4px;left: -4px;bottom: -4px;right: -4px;
+	border-radius: 20px;
+	z-index: -1;
+}
+.bpanel::after{
+	content: "";
+	background: #FDE4C3;
+	position: absolute;
+	top: 0px;left: 0px;bottom: 0px;right: 0px;
+	border-radius: 20px;
+	z-index: 1;
+}
+.bpanel.whitebg::after{
+	background: #fff;
+}
+.bbtn{
+	background: none;
+	background-image: url('../../assets/bnft/connectbtn.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	height: 65px;
+	width: 270px;
+	border: none;
+	font-size: 24px;
+	font-weight: bold;
+	color: #EA8000;
+	cursor: pointer;
+}
+.babtn{
+	background: none;
+	background-image: url('../../assets/bnft/bcbtn.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	height: 60px;
+	width: 180px;
+	border: none;
+	font-size: 24px;
+	font-weight: bold;
+	color: #EA8000;
+	cursor: pointer;
+}
+.bcbtn{
+	background: none;
+	background-image: url('../../assets/bnft/claim.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	height: 60px;
+	width: 180px;
+	border: none;
+	font-size: 24px;
+	font-weight: bold;
+	color: #06B283;
+	cursor: pointer;
+}
+.bvbtn{
+	background: none;
+	background-image: url('../../assets/bnft/bvbtn.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	height: 60px;
+	width: 180px;
+	border: none;
+	font-size: 24px;
+	font-weight: bold;
+	color: #CBCBCB;
+	cursor: pointer;
+}
+.bmomo{
+	width: 150px;
+	margin: 20px;
+	margin-top: 0px;
+	display: inline-block;
+	
+}
+.bmomo .vtype{
+	height: 20px;
+	width: 20px;
+	border-radius: 18px;
+	border: 3px solid #fff;
+	display: inline-block;
+	position: absolute;
+	left: 10px;
+	top: 147px;
+}
+.bmomo .bmomo-momo{
+	position: absolute;
+	left: 0px;
+	top: 10px;
+}
+.bmomo .mname{
+	position: absolute;
+	top: 166px;
+	width: 70%;
+	text-align: center;
+	left: 15%;
+	line-height: 1.1;
+	color: #fff;
+	font-size: 10px;
+	font-weight: bold;
+}
+#success-claim{
+	position: absolute;
+	background: rgba(54,72,87,0.40);
+	backdrop-filter: blur(5px);
+	height: 100%;
+	width: 100%;
+	z-index: 998;
+	left: 0px;
+	top: 0px;
+	display: flex;
+	align-items: center;
+	overflow: auto;
+}
+.faq-content{
+	background: #fff6ea;
+	border: 2px solid #ffffff;
+	border-radius: 15px;
+	padding: 20px;
+}
+.faq-content p{
+	color: #363635;
+}
+@media (max-width:1200px) {
+	#binance{
+		padding-left: 0px !important;
+		padding-top: 50px;
+		padding-bottom: 50px;
+	}
+
+	 #binance .mgt-30{
+		 margin-top: 10px !important;
+	 }
+
+	.bpanel{
+		zoom: 0.7;
+		width: 80% !important;
+	}
+
+	.bmomo{
+		zoom: 0.66;
+	}
+
+	#mlogo, #title{
+		zoom: 0.7;
+	}
+
+	 #vcontent{
+		 /* height: 300px !important; */
+	 }
+
+}

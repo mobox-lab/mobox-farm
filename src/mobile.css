@@ -1,0 +1,250 @@
+@media (max-width:992px) {
+	.col-md-4:nth-child(3n+1){
+		clear:none;
+	   }
+}
+@media (max-width:1200px) {
+
+	.notification {
+		padding-left: 0px !important;
+	}
+	#nav {
+		left: auto !important;
+		right: -260px !important;
+	}
+	#logo {
+		display: none;
+	}
+	#app {
+		padding-left: 0px !important;
+	}
+	#top-res {
+		padding-left: 10px !important;
+	}
+	#top-res {
+		font-size: 12px !important;
+		position: relative !important;
+		height: auto !important;
+		border: none !important;
+	}
+
+	#mobile-nav {
+		display: block !important;
+	}
+	#buy-back{
+		padding: 0px;
+		width: 100% !important;
+	}
+    
+ }
+
+@media (max-width: 768px) {
+	.small-xs{
+		font-size: 10px;
+	}
+	h2{
+		font-size: 16px;
+	}
+	.block-xs{
+		display: block;
+	}
+	.shop-car-btn{
+		zoom: 0.8;
+	}
+	.search {
+		font-size: 16px;
+		line-height: 30px;
+	}
+	#market-type{
+		zoom: 0.8;
+	}
+	.small-table th{
+		zoom :0.8
+	}
+	.gemBag{
+		zoom: 0.7;
+	}
+	#aridorp .menu-btn{
+		padding: 0px!important;
+		padding-top: 10px!important;
+	}
+
+	.yf-tab li{
+		padding: 0px 20px!important;
+	}
+	.btn-primary{
+		padding: 0px 10px!important;
+	}
+
+
+	#buy-back{
+		padding: 0px;
+		width: 100% !important;
+	}
+	#buy-back .aveage-box{
+		display: block;
+	}
+	.statistics .list-item .addr{
+		padding-top: 25px;
+	}
+	.statistics-top-tab li{
+		font-size: 12px;
+		padding: 5px !important;
+		padding-top: 0px !important;
+		min-width: auto!important;
+	}
+	#shop-history-dialog .addr{
+		margin-top: 10px;
+	}
+	.shop-history-pet{
+		position: absolute;
+		top: -8px;
+	}
+	.list-item-momo-mobile{
+		display: block !important;
+	}
+	.list-item {
+		font-size: 12px !important;
+	}
+	.list-item td:nth-child(2){
+		border-top-left-radius: 20px;
+		border-bottom-left-radius: 20px;
+	}
+	.list-item-momo{
+		display: none;
+	}
+	.statistics-top .aveage-box img{
+		height: 30px;
+	}
+	.statistics-top .aveage-box{
+		padding: 15px !important;
+		font-size: 12px;
+	}
+	.statistics-value{
+		display: block;
+		margin-left: 0px;	
+		margin-top: 5px;
+	}
+	#airdrop-cont .col-md-4{
+		padding: 0px !important;
+	}
+	#airdrop-cont-info{
+		display: block;
+	}
+	.tab-content{
+		padding: 10px;
+	}
+	.yf-dialog-bg{
+		padding: 10px !important;
+	}
+
+	.tab-menu{
+		padding: 5px 20px;
+		margin-right:2px;
+	}
+	#open-his {
+		font-size: 12px !important;
+	}
+	.hide-xs {
+		display: none !important;
+	}
+
+	.visiable-xs {
+		display: block;
+	}
+	.pet-view {
+		height: auto !important;
+	}
+	.pet-view-show {
+		bottom: 60px !important;
+	}
+	#show-pet-view {
+		margin-top: 40px !important;
+	}
+	h1 {
+		font-size: 1.2em !important;
+	}
+	
+	#app {
+		padding-left: 0px !important;
+		padding: 50px 0px !important;
+	}
+	#mobile-nav {
+		display: block !important;
+	}
+	#top-res {
+		font-size: 12px !important;
+		position: relative !important;
+		height: auto !important;
+		border: none !important;
+		background: none !important;
+		line-height: 30px !important;
+	}
+	#top-res p {
+		margin-right: 10px !important;
+	}
+	#top-res img {
+		height: 20px !important;
+	}
+	#aridorp,#mypet,#upgrade {
+		padding: 5px !important;
+	}
+	#airdrop-cont {
+		padding: 20px 10px !important;
+	}
+	#aridorp .menu-btn {
+		width: 80px !important;
+		padding-bottom: 20px !important;
+		margin: 5px !important;
+	}
+	#aridorp .menu-btn img {
+		height: 30px !important;
+	}
+	#aridorp .menu-btn h3,#aridorp .menu-btn p {
+		display: none;
+	}
+
+	.rule-table {
+		min-width: auto !important;
+		width: 100%;
+	}
+	.tac-xs {
+		text-align: center !important;
+		padding: 0px  !important;
+	}
+	.tal-xs {
+		text-align: left !important;
+	}
+	.tac-xs * {
+		margin: 0px !important;
+		padding: 0px  !important;
+		text-align: center !important;
+	}
+	.tar-xs {
+		text-align: right !important;
+	}
+	.tar-xs * {
+		margin: 0px !important;
+		padding: 0px  !important;
+		text-align: right !important;
+	}
+	.pet_item {
+		width: 48% !important;
+		zoom: 0.5;
+		margin: 1%!important;
+	}
+	/* .pet_item_new {
+		width: 48% !important;
+		height: auto !important;
+		min-height: 200px;
+		zoom: 0.9;
+		margin: 1%!important;
+	} */
+	.scroll-item{
+		padding: 6px !important;
+	}
+	.adv-panel{
+		background: #090909;
+	}
+}
+

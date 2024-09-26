@@ -1,0 +1,76 @@
+
+kjxz437.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+glow1
+  rotate: false
+  xy: 630, 761
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+glow2
+  rotate: false
+  xy: 236, 236
+  size: 232, 232
+  orig: 232, 232
+  offset: 0, 0
+  index: -1
+glow3
+  rotate: false
+  xy: 888, 889
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+guangshu1
+  rotate: false
+  xy: 2, 4
+  size: 232, 464
+  orig: 232, 464
+  offset: 0, 0
+  index: -1
+guangshu_02
+  rotate: false
+  xy: 236, 2
+  size: 232, 232
+  orig: 232, 232
+  offset: 0, 0
+  index: -1
+quan
+  rotate: false
+  xy: 470, 185
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+shanghe
+  rotate: false
+  xy: 2, 755
+  size: 626, 262
+  orig: 626, 262
+  offset: 0, 0
+  index: -1
+xiahe
+  rotate: false
+  xy: 2, 470
+  size: 586, 283
+  orig: 586, 283
+  offset: 0, 0
+  index: -1
+yuan1
+  rotate: true
+  xy: 470, 315
+  size: 153, 144
+  orig: 153, 144
+  offset: 0, 0
+  index: -1
+yuan2
+  rotate: false
+  xy: 888, 789
+  size: 101, 98
+  orig: 101, 98
+  offset: 0, 0
+  index: -1

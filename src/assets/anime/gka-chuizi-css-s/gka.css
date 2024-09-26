@@ -1,0 +1,80 @@
+.gka-wrap {
+    width: 51px;
+    height: 47px;
+}
+
+.animation {
+    width: 51px;
+    height: 47px;
+    background-image: url("./img/sprites.png");
+    background-size: 714px 47px;
+    background-repeat: no-repeat;
+    animation-name: keyframes-chuizi;
+    animation-duration: 0.56s;
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-timing-function: steps(1);
+}
+
+@keyframes keyframes-chuizi {
+    0% {
+        width: 51px;
+        height: 47px;
+        background-image: url("./img/sprites.png");
+        background-size: 714px 47px;
+    }
+
+    7.14% {
+        background-position: -51px 0px;
+    }
+
+    14.29% {
+        background-position: -102px 0px;
+    }
+
+    21.43% {
+        background-position: -153px 0px;
+    }
+
+    28.57% {
+        background-position: -204px 0px;
+    }
+
+    35.71% {
+        background-position: -255px 0px;
+    }
+
+    42.86% {
+        background-position: -306px 0px;
+    }
+
+    50.00% {
+        background-position: -357px 0px;
+    }
+
+    57.14% {
+        background-position: -408px 0px;
+    }
+
+    64.29% {
+        background-position: -459px 0px;
+    }
+
+    71.43% {
+        background-position: -510px 0px;
+    }
+
+    78.57% {
+        background-position: -561px 0px;
+    }
+
+    85.71% {
+        background-position: -612px 0px;
+    }
+
+    92.86%,
+    100% {
+        background-position: -663px 0px;
+    }
+}

@@ -1,0 +1,76 @@
+
+kejixiangzi2.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+glow1
+  rotate: false
+  xy: 317, 341
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+glow2
+  rotate: false
+  xy: 236, 76
+  size: 116, 116
+  orig: 116, 116
+  offset: 0, 0
+  index: -1
+glow3
+  rotate: false
+  xy: 81, 10
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+guangshu1
+  rotate: true
+  xy: 2, 76
+  size: 116, 232
+  orig: 116, 232
+  offset: 0, 0
+  index: -1
+guangshu_02
+  rotate: false
+  xy: 297, 220
+  size: 116, 116
+  orig: 116, 116
+  offset: 0, 0
+  index: -1
+quan
+  rotate: false
+  xy: 147, 10
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+shanghe
+  rotate: false
+  xy: 2, 338
+  size: 313, 131
+  orig: 313, 131
+  offset: 0, 0
+  index: -1
+xiahe
+  rotate: false
+  xy: 2, 194
+  size: 293, 142
+  orig: 293, 142
+  offset: 0, 0
+  index: -1
+yuan1
+  rotate: false
+  xy: 2, 2
+  size: 77, 72
+  orig: 77, 72
+  offset: 0, 0
+  index: -1
+yuan2
+  rotate: false
+  xy: 447, 420
+  size: 51, 49
+  orig: 51, 49
+  offset: 0, 0
+  index: -1

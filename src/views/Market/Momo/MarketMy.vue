@@ -154,7 +154,7 @@
 					<div class="absolute-r tar" style="right: 20px; top: 5px">
 						<span class="small">{{$t("Market_39")}}</span>
 						<p class="vertical-children mgt-5">
-							<img src="@/assets/coin/BUSD.png" height="25" alt="" />
+							<img src="@/assets/coin/USDT.png" height="25" alt="" />
 							<span style="font-size: 16px" class="color-w mgl-5" >{{ item.sellPrice }}</span >&nbsp;
 							<img @click="edit1155Price(item)" class="mgl-5 cur-point" src="@/assets/icon/edit.png" height="24" alt="" />
 						</p>
@@ -173,8 +173,8 @@
 				<div class="dib tal" style="margin-left: 12px">
 					<span class="small opa-6">{{$t("Market_18")}}</span>
 					<p class="vertical-children mgt-5">
-						<img src="@/assets/coin/BUSD.png" height="25" alt="" />
-						<span style="font-size: 20px" class="color-w mgl-5">{{ getShopCarTotalPrice }} <small style="font-size:12px">BUSD</small></span>
+						<img src="@/assets/coin/USDT.png" height="25" alt="" />
+						<span style="font-size: 20px" class="color-w mgl-5">{{ getShopCarTotalPrice }} <small style="font-size:12px">USDT</small></span>
 					</p>
 					<button @click="confirmSellShopCar" :class="`btn-primary  ${ shopCar.length == 0 ? 'disable-btn' : '' }`" style="position: absolute; right: 0px; top: 10px" >
 						{{$t("Market_19")}}
@@ -189,7 +189,7 @@
 					<p class="small tal opa-6">{{$t("Market_39")}}</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="@/assets/coin/BUSD.png" alt="" />
+							<img  src="@/assets/coin/USDT.png" alt="" />
 						</div>
 						<input v-model="inputPrice" class="ly-input" type="text"
 							style=" background: #0f172a; text-align: center; width: 100%; "
@@ -211,20 +211,20 @@
 			<div class="mgt-10">
 				<Tab :list="[$t('Market_36'),$t('Market_37')]" style="zoom:0.8"  :defaultSelectPos="priceTypePos" :onChange="onTabChange"  ref="priceTypeTab" :notice="[]"/>
 				<div class="ly-input-content mgt-10">
-					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} (BUSD)</p>
+					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} (USDT)</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="@/assets/coin/BUSD.png" alt="" />
+							<img  src="@/assets/coin/USDT.png" alt="" />
 						</div>
 						<input v-model="sellObj.startPrice"   class="ly-input sell-input" type="text" :placeholder="priceTypePos == 1?$t('Market_11'):$t('Market_17')" v-number  data-max="100000000"/>
 					</div>
 				</div>
 				<div v-if="priceTypePos == 1">
 					<div class="ly-input-content mgt-10">
-						<p class="small tal opa-6">{{$t("Market_12")}} (BUSD)</p>
+						<p class="small tal opa-6">{{$t("Market_12")}} (USDT)</p>
 						<div class="por mgt-5">
 							<div class="ly-input-pre-icon">
-								<img  src="@/assets/coin/BUSD.png" alt="" />
+								<img  src="@/assets/coin/USDT.png" alt="" />
 							</div>
 							<input v-model="sellObj.endPrice" class="ly-input sell-input" type="text" :placeholder="$t('Market_12')" v-number data-max="100000000"/>
 						</div>
@@ -246,12 +246,12 @@
 			<span style="zoom: 0.7">
 				<PetItem style="margin:10px 0px"  v-bind:data="{item: sellObj.sellData}" v-if="sellObj.sellData && sellObj.sellType == '721' " class="market" >
 					<div class="vertical-children mgt-10" style="font-size: 18px">
-						<img src="@/assets/coin/BUSD.png" alt="" height="20"/>&nbsp;
-						<span>{{sellObj.startPrice}} <sub class="small">BUSD</sub></span>
+						<img src="@/assets/coin/USDT.png" alt="" height="20"/>&nbsp;
+						<span>{{sellObj.startPrice}} <sub class="small">USDT</sub></span>
 					</div>
 				</PetItem>
 			</span>
-			<h4 class="mgt-10" v-html="$t('Market_58').replace('#0#', `<span style='color: #49c773'>${sellObj.startPrice} BUSD</span>` )"></h4>
+			<h4 class="mgt-10" v-html="$t('Market_58').replace('#0#', `<span style='color: #49c773'>${sellObj.startPrice} USDT</span>` )"></h4>
 			<div class="mgt-30">
 				<button class="btn-primary" @click="oprDialog('confirm-submit-dialog', 'none');">{{$t("Common_04")}}</button>
 				<button class="btn-primary mgl-5" @click="oprDialog('confirm-submit-dialog', 'none');confirmSell()">{{$t("Common_03")}}</button>

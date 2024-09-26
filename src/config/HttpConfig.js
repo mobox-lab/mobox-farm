@@ -1,10 +1,7 @@
 export default class HttpConfig {
 	static SN = {
-		// Activity: "http://192.168.5.190:9093", // 测试
-		Activity: "https://eventapi.mobox.io", 
-		// 周年活动
-		Anniversary: "https://eventapi.mobox.io", 
-		// Anniversary: "http://192.168.5.98:9093/",
+		Activity: "https://eventapi.mobox.io",
+		// Activity: "http://192.168.5.211:3000",
 	}
 
 	static Halloween = {

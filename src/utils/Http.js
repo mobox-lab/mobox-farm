@@ -130,14 +130,14 @@ export default class HTTP {
 		if(params.pType == 0) params.pType = "";
 		if(params.sort != undefined) params.sort = this.sortPosToName[params.sort];
 		
-		let { data } = await this.get(`/auction/search/${chain}?page=${page}&limit=${limit}`, params);
+		let { data } = await this.get(`/auction/search_v2/${chain}?page=${page}&limit=${limit}`, params);
 		return data;
 	}
 	//获取大宗交易市场上的NFT
 	static async getBigAuctionList(page = 1, limit = 15, search = {}) {
 		let params = {...search};
 		if(params.sort != undefined) params.sort = this.sortPosToName[params.sort];
-		let { data } = await this.get(`/auction_group/list?page=${page}&limit=${limit}`, params);
+		let { data } = await this.get(`/auction_group/list_v2?page=${page}&limit=${limit}`, params);
 		return data;
 	}
 	static async getAuctionListGem(chain, page = 1, limit = 15, search = {}){
@@ -146,7 +146,7 @@ export default class HTTP {
 		if(params.type == 0) params.type = "";
 		if(params.level == 0) params.level = "";
 		if(params.sort != undefined) params.sort = this.sortPosToName[params.sort];
-		let { data } = await this.get(`/gem_auction/search/${chain}?page=${page}&limit=${limit}`, params);
+		let { data } = await this.get(`/gem_auction/search_v2/${chain}?page=${page}&limit=${limit}`, params);
 		return data;
 	}
 	static async getRentList(chain, page = 1, limit = 15, search = {}){
@@ -157,7 +157,7 @@ export default class HTTP {
 		if(params.rentDays == 0) params.rentDays = "";
 
 		if(params.sort != undefined) params.sort = this.sortPosToName[params.sort];
-		let { data } = await this.get(`/momo_renter/search/${chain}?page=${page}&limit=${limit}`, params);
+		let { data } = await this.get(`/momo_renter/search_v2/${chain}?page=${page}&limit=${limit}`, params);
 		return data;
 	}
 	//获取交易市场上我的Gem
@@ -172,7 +172,7 @@ export default class HTTP {
 	}
 	//获取大宗交易市场上我的NFT
 	static async getMyBigAuctionList(address) {
-		let { data } = await this.get(`/auction_group/list/${address}?sort=-time&page=1&limit=128`);
+		let { data } = await this.get(`/auction_group/list_v2/${address}?sort=-time&page=1&limit=128`);
 		return data;
 	}
 	//获取交易历史记录

@@ -340,7 +340,7 @@ export default {
 			return num;
 		},
 		sellCoin(){
-			return "BUSD"
+			return "USDT"
 		}
 	},
 
@@ -505,7 +505,7 @@ export default {
 			}else{
 				let { startPrice } = this.sellObj;
 				if(Number(startPrice) < 10) return;
-				this.getConfirmDialog().show(this.$t('Market_58').replace('#0#', `<span style='color: #49c773'>${startPrice} BUSD</span>`), ()=>this.confirmSell())
+				this.getConfirmDialog().show(this.$t('Market_58').replace('#0#', `<span style='color: #49c773'>${startPrice} USDT</span>`), ()=>this.confirmSell())
 			}
 		},
 		async confirmSell() {

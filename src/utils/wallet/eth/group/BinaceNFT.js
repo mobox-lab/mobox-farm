@@ -4,6 +4,9 @@ import {Common} from '@/utils/'
 
 export default class BinaceNFT {
 	static BinaceNFTToken = "0x4e781783C1B22E2a571F6F9A5DCD1798646C5EeB"
+	static BinaceNFTToken2 = "0x9cB16D1189cBF9Eb9D17c6740e8b02CCE5bda3Fa"
+	static async approveForAll(recipt, isNew = false){
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([
 			{
@@ -14,6 +17,7 @@ export default class BinaceNFT {
 					{"name": "approved_","type": "bool"},
 				]
 			}
+		],isNew?this.BinaceNFTToken2: this.BinaceNFTToken);
 
 		return new Promise(resolve => {
 			ETH.sendMethod(
@@ -27,6 +31,7 @@ export default class BinaceNFT {
 			)
 		});
 	}
+	static async isApprovedForAll(isNew = false){
 		let myAddr = await ETH.getAccount();
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([
@@ -41,6 +46,7 @@ export default class BinaceNFT {
 					{"name": "_isApproved","type": "bool"},
 				]
 			}
+		], isNew?this.BinaceNFTToken2:this.BinaceNFTToken);
 		return new Promise(resolve => {
 			contract.methods.isApprovedForAll(myAddr, WalletConfig.ETH.binanceNFT).call().then(isApproved => {
 				resolve(isApproved);
@@ -91,6 +97,7 @@ export default class BinaceNFT {
 	}
 
 	static async claim(bnNFTTokenId, recipt){
+		let myAddr = await ETH.getAccount(true);
 		if (!myAddr) return;
 		let contract = new ETH.web3.eth.Contract([
 			{

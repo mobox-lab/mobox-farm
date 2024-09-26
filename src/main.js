@@ -9,6 +9,13 @@ import getNewStore from './store/getNewStore';
 
 Vue.config.productionTip = false;
 
+// 迁移时间
+window.MigrationTime = 1695106800;
+
+Vue.prototype.getMarketCoin = (time) => {
+	return time > MigrationTime ? 'USDT' : 'BUSD';
+}
+
 Vue.use(directive);
 
 let app = new Vue({

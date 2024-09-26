@@ -5,6 +5,10 @@
 				<section class=" por airdrop-cont" style="z-index: 10">
 				<!-- <div class="swiper-container hide" ref="swiper_container" style="padding: 0px 10px;padding-bottom: 15px;"> -->
 				<div class="swiper-container hide" ref="swiper_container" style="padding: 0px;padding-bottom: 15px;">
+					<!-- <router-link to="/furnace" class="banner">
+						<img src="@/assets/furnace/banner-zh.png" width="50%" v-if="$i18n.locale.indexOf('zh') == 0" />
+						<img src="@/assets/furnace/banner-en.png" width="50%" v-else />
+					</router-link> -->
 					<div class="swiper-wrapper tac">
 						<!-- <div id="halloween-entry" class="swiper-slide tac" style="width: 60%;margin:0 auto">
 							<router-link to="/anniversary">
@@ -29,7 +33,7 @@
 				<div class=" tal vertical-children tac-xs">
 					<img class="mgt-30 hide-xs" src="@/assets/airdrop_icon.png" width="200" alt="">
 					<div class="dib mgl-10 block-xs">
-						<h1 style="font-size:40px">{{$t("Menu_01")}}</h1>
+						<h1 style="font-size:40px">Staking</h1>
 						<p class="small-xs">{{$t("Air-drop_224")}}</p>
 					</div>
 				</div>
@@ -172,9 +176,9 @@
 										<div class="tal ">
 											<p class="opa-6 small vertical-children" >
 												<span style="vertical-align:top">{{ $t("Air-drop_152") }}</span>
-												<span class="mgl-5 cur-point dib" style="margin-top:-5px" @click="oprDialog('mbox-take-des-dialog','block')">
+												<!-- <span class="mgl-5 cur-point dib" style="margin-top:-5px" @click="oprDialog('mbox-take-des-dialog','block')">
 													<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path style="fill:none" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-												</span>
+												</span> -->
 											</p>
 											<h3 style="margin-top:7px" class="new-text" v-if="coinArr[item.coinKey].veMbox.orderIndexs[0].veMboxNum != '-' ">
 												{{ numFloor( 
@@ -293,20 +297,6 @@
 						</div>
 					</div>
 				</div>
-
-				<template v-if="!isMoboxWallet">
-					<div class="tal mgt-30" >
-						<div class="vertical-children">
-							<h2 class="dib">{{$t("Air-drop_245")}}</h2>
-						</div>
-						<div class="aveage-box block-xs">
-							<p class="small-xs opa-6">{{$t("Air-drop_246")}}</p>
-						</div>
-					</div>
-					<div class="mgt-20 sexy" style="overflow: auto">
-						<GamesView />
-					</div>
-				</template>
 
 				<!-- 统计分析 先隐藏 -->
 				<section class="hide">
@@ -526,12 +516,11 @@ import Withdraw from './Withdraw';
 import Deposit from './Deposit';
 import { Dialog, Loading, Dropdown } from '@/components';
 import Activity from "../Activity/Activity.vue"
-import GamesView from "./GamesView.vue"
 import Collection from "../Collection.vue"
 
 export default {
 	mixins: [CommonMethod],
-	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, Dropdown, Activity, GamesView, Collection},
+	components: { KeyOpr, Withdraw, Deposit, Dialog, Loading, Dropdown, Activity, Collection},
 	data(){
 		return({
 			howToPlayPos: 0,
@@ -556,10 +545,10 @@ export default {
 				{min: 0.75, max:1, mul: 8},
 			],
 			mboxDropConfig: [
-				{min: 0, max: 0.5, num: 4e4},
-				{min: 0.5, max: 1, num: 6e4},
-				{min: 1, max: 2, num: 8e4},
-				{min: 2, max: -1, num: 10.e4},
+				{min: 0, max: 0.5, num: 2e4},
+				{min: 0.5, max: 1, num: 3e4},
+				{min: 1, max: 2, num: 4e4},
+				{min: 2, max: -1, num: 5e4},
 			],
 			burnTypeList: [this.$t('Air-drop_49'), this.$t('Air-drop_132'), this.$t('Air-drop_133')]
 		});

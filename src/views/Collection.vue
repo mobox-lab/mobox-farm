@@ -362,6 +362,7 @@ export default {
 
 			this.eth_totalHashrate = res.totalHashrate;
 			this.eth_myHashrate = res.hrChecked;
+			console.log('earned: ', res.earned);
 			this.eth_earnedMbox = Common.numFloor(res.earned / 1e18, 1000);
 			this.totalAirdropMbox = Math.ceil((Number(res.rewardRate) / 1e18) * 86400);
 			this.$store.commit("ethState/setData", { totalAirdropMbox: this.totalAirdropMbox });

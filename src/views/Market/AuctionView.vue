@@ -70,7 +70,7 @@
 						<h3 >{{$t("Market_17")}}</h3>
 						<div class="tac">
 							<div id="price" class="vertical-children">
-								<img src="@/assets/coin/BUSD.png" height="25" alt="">&nbsp;
+								<img src="@/assets/coin/USDT.png" height="25" alt="">&nbsp;
 								<span class="money">{{numFloor( this.nowPrice/ 1e9, 1e2).toLocaleString()}}</span>
 							</div>
 							<div v-if="this.getNowPetItem.startPrice != this.getNowPetItem.endPrice">
@@ -82,24 +82,24 @@
 									</p>
 									<span class="jdt-bar" :class="this.getWidth == '100%'?'active':''" style="left:auto;right:-5px" ></span>
 									<span class="jdt-startPrice vertical-children">
-										<img src="@/assets/coin/BUSD.png" height="18" alt="">&nbsp;
+										<img src="@/assets/coin/USDT.png" height="18" alt="">&nbsp;
 										<span>{{numFloor( this.getNowPetItem.startPrice/ 1e9, 1e4)}}</span>
 									</span>
 									<span class="jdt-endPrice vertical-children">
-										<img src="@/assets/coin/BUSD.png" height="18" alt="">&nbsp;
+										<img src="@/assets/coin/USDT.png" height="18" alt="">&nbsp;
 										<span>{{numFloor( this.getNowPetItem.endPrice/ 1e9, 1e4)}}</span>
 									</span>
 								</div>
 								<p class="small vertical-children por" style="top: -15px" v-if="this.nowPrice != this.getNowPetItem.endPrice">
 									<span>{{$t('Market_32').replace('#0#', countdown)}}:</span>&nbsp;
-									<img src="@/assets/coin/BUSD.png" height="16" alt="">&nbsp;
+									<img src="@/assets/coin/USDT.png" height="16" alt="">&nbsp;
 									<span>{{numFloor( nextDayPrice/ 1e9, 1e4)}}</span>
 								</p>
 							</div>
 							<div v-if="!isMyPet" class="mgt-30">
 								<div :class="{'btn-group': needApprove}" class="dib">
 									<div v-if="needApprove">
-										<StatuButton data-step="1" style="width:150px" :isLoading="coinArr['BUSD'].isApproving" :onClick="approve">{{$t("Air-drop_16")}} BUSD</StatuButton>
+										<StatuButton data-step="1" style="width:150px" :isLoading="coinArr['USDT'].isApproving" :onClick="approve">{{$t("Air-drop_16")}} USDT</StatuButton>
 									</div>
 									<div class="mgt-10">
 										<StatuButton style="width:150px" data-step="2" :isLoading="lockBtn.buyMomoLock > 0" :isDisable="needApprove || (nowTs - this.getNowPetItem.uptime) <= 120" :onClick="()=>oprDialog('confirm-buy-dialog','block')">
@@ -147,20 +147,20 @@
 			<div class="mgt-20">
 				<Tab :list="[$t('Market_36'),$t('Market_37')]" style="zoom:0.8"  :defaultSelectPos="priceTypePos" :onChange="onTabChange"  ref="priceTypeTab" :notice="[]"/>
 				<div class="ly-input-content mgt-10">
-					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} (BUSD)</p>
+					<p class="small tal opa-6">{{priceTypePos == 1?$t("Market_11"):$t("Market_17")}} (USDT)</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="@/assets/coin/BUSD.png" alt="" />
+							<img  src="@/assets/coin/USDT.png" alt="" />
 						</div>
 						<input v-model="sellObj.startPrice"   class="ly-input sell-input" type="text" :placeholder="priceTypePos == 1?$t('Market_11'):$t('Market_17')" v-number  data-max="100000000"/>
 					</div>
 				</div>
 				<div v-if="priceTypePos == 1">
 					<div class="ly-input-content mgt-10">
-						<p class="small tal opa-6">{{$t("Market_12")}} (BUSD)</p>
+						<p class="small tal opa-6">{{$t("Market_12")}} (USDT)</p>
 						<div class="por mgt-5">
 							<div class="ly-input-pre-icon">
-								<img  src="@/assets/coin/BUSD.png" alt="" />
+								<img  src="@/assets/coin/USDT.png" alt="" />
 							</div>
 							<input v-model="sellObj.endPrice" class="ly-input sell-input" type="text" :placeholder="$t('Market_12')" v-number data-max="100000000"/>
 						</div>
@@ -235,12 +235,12 @@ export default {
 			const nowPrice = this.nowPrice;
 
 			if (this.isMeetStandards) {
-				return this.$t('Market_59').replace('#0#', `<span style='color: #49c773' class='money'>${this.numFloor(nowPrice/ 1e9, 1e2).toLocaleString()} BUSD</span>`);
+				return this.$t('Market_59').replace('#0#', `<span style='color: #49c773' class='money'>${this.numFloor(nowPrice/ 1e9, 1e2).toLocaleString()} USDT</span>`);
 			}
 
 			return this.$t('Market_102')
 				.replace('#0#', `<span style='color: #49c773' class='money'>${this.standardsHashrate}</span>` )
-				.replace('#1#', `<span style='color: #49c773' class='money'>${this.numFloor(nowPrice/ 1e9, 1e2).toLocaleString()} BUSD</span>`)
+				.replace('#1#', `<span style='color: #49c773' class='money'>${this.numFloor(nowPrice/ 1e9, 1e2).toLocaleString()} USDT</span>`)
 		},
 		//是否符合加入购物车条件
 		isMatchShopCar(){
@@ -319,7 +319,7 @@ export default {
 		},
 		//是否需要授权, 授权额度不足支付
 		needApprove(){
-			return this.coinArr['BUSD'].allowanceToAuction / 1e18 < Number(this.nowPrice/ 1e9) && this.coinArr['BUSD'].allowanceToAuction !=-1;
+			return this.coinArr['USDT'].allowanceToAuction / 1e18 < Number(this.nowPrice/ 1e9) && this.coinArr['USDT'].allowanceToAuction !=-1;
 		}
 	},
 	async created() {
@@ -331,7 +331,7 @@ export default {
 		//查询授权情况
 		await this.viewAllowance();
 		//查询余额
-		let coinKey = "BUSD";
+		let coinKey = "USDT";
 		if(this.coinArr[coinKey].balance == "-"){
 			this.$root.$children[0].setCoinValueByName(coinKey);
 		}
@@ -447,9 +447,9 @@ export default {
 			}
 
 		},
-		//获取BUSD的授权情况
+		//获取USDT的授权情况
 		async viewAllowance(){
-			let coinKey = "BUSD";
+			let coinKey = "USDT";
 			if(this.coinArr[coinKey].allowanceToAuction > 0) return;
 
 			let allowanceToAuction = await Wallet.ETH.viewErcAllowanceToTarget(PancakeConfig.SelectCoin[coinKey].addr, WalletConfig.ETH.moMoStakeAuction, false);
@@ -461,11 +461,11 @@ export default {
 		},
 		//授权
 		async approve(){
-			let coinKey = "BUSD";
+			let coinKey = "USDT";
 			let {isApproving} = this.coinArr[coinKey];
 			if(isApproving) return;
 
-			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin["BUSD"].addr,
+			let hash = await Wallet.ETH.approveErcToTarget(PancakeConfig.SelectCoin["USDT"].addr,
 			WalletConfig.ETH.moMoStakeAuction, {coinKey, type: "allowanceToAuction"});
 			if (hash) {
 				this.coinArr[coinKey].isApproving = true;
@@ -475,7 +475,7 @@ export default {
 		//购买
 		async buyPet(){
 			await Wallet.ETH.getAccount(true);
-			let coinKey = "BUSD"
+			let coinKey = "USDT"
 			if(this.coinArr[coinKey].allowanceToAuction <= 0 || this.lockBtn.buyMomoLock > 0) return
 			if(this.nowPrice/1e9 > Number(this.coinArr[coinKey].balance)){
 				this.showNotify(this.$t("Market_34"), "error");

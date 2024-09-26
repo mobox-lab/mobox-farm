@@ -159,7 +159,7 @@ const InitEth = {
 				v4MinHashrate, v4StandardHashrate, v4MaxHashrate,
 				v5MinHashrate, v5StandardHashrate, v5MaxHashrate,
 				v6MinHashrate, v6StandardHashrate, v6MaxHashrate,
-				nextStepTime, currentStep: +currentStep
+				nextStepTime, currentStep: + currentStep
 			});
 		},
 		//需要定时去取的数据
@@ -206,13 +206,11 @@ const InitEth = {
 			let account = await Wallet.ETH.getAccount();
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
 			let data = await Wallet.ETH.Group.BigSell.getMyBigSell();
-			console.log(data, "big sell");
 			this.$store.commit("marketState/setData", {marketLoading: false});
 			let bigSellMy = {total: data.length, list: []};
 			if(data.length > 0){
 				data.map(async index=>{
 					let sellData = await Wallet.ETH.Group.BigSell.getOrder({auctor_: account, index_: Number(index)});
-					console.log({sellData});
 					let momoData = await Http.getMoMoDetail(sellData.tokenIds);
 					sellData.tokens = momoData.list;
 					sellData.price = sellData.price / 1e9;
@@ -726,11 +724,6 @@ const InitEth = {
 		},
 		//721升级
 		async eth_levelUpConfirm({chain,tokenId,gotoLv}) {
-			console.log("levelUpConfirm", {
-				chain,
-				tokenId,
-				gotoLv
-			});
 			if (chain == "eth") {
 				for (let key in this.myNFT_stake) {
 					if (this.myNFT_stake[key].tokenId == tokenId) {
@@ -766,7 +759,6 @@ const InitEth = {
 		},
 		//开箱子合约确认
 		async eth_openBoxConfirm({chain, hash}) {
-			console.log("openBoxConfirm");
 			if (chain == "eth") {
 				this.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
 				//更新箱子数量

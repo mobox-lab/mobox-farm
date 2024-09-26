@@ -11,7 +11,7 @@
 				<h2 style="position: absolute;  top: 15px; right: 20px;" class="bold2">x{{ item.num }}</h2>
 				<h2 class="pet-lv bold2" v-if="Number(item.imgName) > 100">Lv. {{ item.level }}</h2>
 
-				<div style="position: absolute;  top: 15px; left: 20px;" v-if="item.erc1155_ != 1 && item.currency == 2">
+				<div style="position: absolute;  top: 15px; left: 20px;" v-if="item.erc1155_ != 1 && item.currency == 3">
 					<div class="vertical-children pet_num small bold2"  >
 						<span>{{$t('Market_39')}}: {{ numFloor(item.price / item.num /1e9, 1e6) }} <span class="opa-6">{{getCurrencyName(item.currency)}}</span></span>
 					</div>

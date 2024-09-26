@@ -172,7 +172,7 @@ export default {
 			coinArr: (state) => state.bnbState.data.coinArr,
 		}),
 		showCoin(){
-			return "BUSD"
+			return "USDT"
 		},
 		// 批量购买总价
 		bulkBuyingTotalPrice() {
@@ -238,6 +238,7 @@ export default {
 			if(needLoading) this.$store.commit("marketState/setData", {marketLoading: true});
 			let data = await Http.getAuctionListGem("BNB", page, this.onePageCount, this.marketGemSearch);
 			data.list.map(item=>{
+				item.currency = 3;
 				item.erc1155_ = item.type;
 			});
 			this.$store.commit("marketState/setData", {marketLoading: false});

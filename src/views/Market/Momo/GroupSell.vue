@@ -42,7 +42,7 @@
 					</div>
 					<div class="absolute-r tar" style="right: 10px; top:auto; bottom:20px;">
 						<p class="vertical-children dib" style="background: rgba(0,0,0,0.3);border-radius: 50px;padding:3px 15px">
-							<img src="@/assets/coin/BUSD.png" height="20" alt="" />
+							<img src="@/assets/coin/USDT.png" height="20" alt="" />
 							<span style="font-size: 16px" class="color-w mgl-5" >{{ item.groupSellPrice }}</span >&nbsp;
 						</p>
 						<img @click="editPrice(item, true)" class="mgl-5 cur-point" src="@/assets/icon/edit.png" height="24" alt="" />
@@ -69,7 +69,7 @@
 					<p class="small tal opa-6">{{$t("Market_17")}}</p>
 					<div class="por mgt-5">
 						<div class="ly-input-pre-icon">
-							<img  src="@/assets/coin/BUSD.png" alt="" />
+							<img  src="@/assets/coin/USDT.png" alt="" />
 						</div>
 						<input v-model="inputPrice" class="ly-input" type="text"
 							style=" background: #0f172a; text-align: center; width: 100%; "

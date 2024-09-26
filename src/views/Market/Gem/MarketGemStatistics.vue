@@ -154,7 +154,7 @@ export default {
 			marketGemFilter: (state) => state.marketState.data.marketGemFilter,
 		}),
 		showCoin(){
-			return "BUSD"
+			return "USDT"
 		}
 	},
 	watch:{
@@ -238,6 +238,7 @@ export default {
 			if(data){
 				data.list.map(item=>{
 					item.isBuy =  item.bidder.toLocaleLowerCase() == myAccount.toLocaleLowerCase();
+					item.currency = item.crtime > MigrationTime ? 3 : item.currency;
 					item.erc1155_ = item.type;
 				});
 				this.tableData.myHistory = data.list;
@@ -253,6 +254,7 @@ export default {
 		async setData(res,type){
 			let arr = res.list;
 			arr.map(item=>{
+				item.currency = item.crtime > MigrationTime ? 3 : item.currency;
 				item.erc1155_ = item.type;
 			})
 			this.tableData[type] = arr;

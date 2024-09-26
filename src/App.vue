@@ -37,10 +37,6 @@
 				</div> -->
 				<div class="dib " style="margin-left:30px">
 					<img src="@/assets/icon/wallet_icon.png" alt="" height="45" @click="oprDialog('mobile-wallet-dialog', 'block')">
-					<span class="text-btn por mgl-10" @click="showNotice">
-						<span class="notice" v-if="!hasReadNotice"></span>
-						<img src="./assets/icon/notice_icon.png" alt="" height="40"/>
-					</span>
 				</div>
 			</div>
 			<!-- <div id="mobile-chain" style="position:absolute;right:10px;top:0px;zoom:0.7" class="hide">
@@ -65,10 +61,6 @@
 						<img class="mgl-10" src="@/assets/icon/pc_wallet.png" alt="" height="18"/>
 					</p>
 				</button>
-				<span class="text-btn por mgl-5" @click="showNotice">
-					<span class="notice" v-if="!hasReadNotice"></span>
-					<img src="./assets/icon/notice_icon.png" alt="" height="26"/>
-				</span>
 			</div>
 			<ul id="nav-list" >
 				<router-link to="/">
@@ -114,6 +106,15 @@
 						<span>{{ $t("Network_1") }}</span>
 					</li>
 				</router-link>
+				
+				<!-- <router-link to="/anniversary">
+					<li :class="this.$route.path == '/anniversary' ? 'active' : ''">
+						<span class="per-icon vertical-children">
+							<img src="@/assets/anniversary/menu.svg" alt="" width="25" />
+						</span>
+						<span>Anniversary</span>
+					</li>
+				</router-link> -->
 
 			</ul>
 			<div class="tac mgt-30">
@@ -130,12 +131,12 @@
 				<div id="halloween-entry" class="por mgt-10" @click="oprDialog('transfer-dialog', 'block')" v-if="myNFT_verse.length">
 					<img src="@/assets/transMoMo.png" width="210" />
 				</div>
-				<!-- <router-link to="/furnace" class="por mgt-10" style="display: block;" v-if="$route.path != '/furnace' && isShowFurnace">
+				<!-- <router-link to="/furnace" class="por mgt-10" style="display: block;">
 					<img src="@/assets/furnace/banner-zh.png" width="210" v-if="$i18n.locale.indexOf('zh') == 0" />
 					<img src="@/assets/furnace/banner-en.png" width="210" v-else />
 				</router-link> -->
 			</div>
-			<div id="our-parice-pc">
+			<div id="our-parice-pc" v-if="false">
 				<!-- mbox -->
 				<div class="vertical-children point-block ">
 					<img src="./assets/coin/MBOX.png" height="25" alt=""/>
@@ -243,6 +244,14 @@
 					</li>
 				</router-link>
 
+				<!-- <router-link to="/anniversary">
+					<li :class="this.$route.path == '/anniversary' ? 'active' : ''">
+						<p class="per-icon vertical-children">
+							<img src="@/assets/anniversary/menu.svg" alt="" height="30" style="transform: scale(0.75);" />
+						</p>
+						<span>Anniversary</span>
+					</li>
+				</router-link> -->
 				<!-- <a href="javascript:void(0)"> 
 					<li @click="showMoreMenu = !showMoreMenu">
 						<svg t="1620618592541" style="fill: #fff"  class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9809" width="30" height="30"><path d="M506 531.42c-11.27 0-22.53-2.02-33.25-6.05l-1.24-0.47-361.09-174.95c-14.36-6.11-23.71-19.92-23.97-35.65-0.26-15.68 8.57-29.77 22.65-36.38L468.49 85.65l1.31-0.54c23-9.55 49.39-9.55 72.39 0l1.31 0.54 1.25 0.67 358.14 191.6c14.08 6.61 22.91 20.7 22.65 36.38-0.26 15.73-9.61 29.54-23.97 35.65L540.49 524.91l-1.24 0.47a94.446 94.446 0 0 1-33.25 6.04z m-11.76-59.95c7.63 2.6 15.89 2.6 23.52 0l327.43-158.65-326.36-174.59c-8.22-3.09-17.45-3.09-25.67 0l-326.35 174.6 327.43 158.64z" p-id="9810"></path>
@@ -406,6 +415,13 @@
 						<span class="mgl-10">BNB</span>
 					</div>
 					<div class="tar bold2">{{ Number(coinArr["BNB"].balance) || 0 }}</div>
+				</div>
+				<div class="aveage-box">
+					<div class="vertical-children tal">
+						<img src="@/assets/coin/USDT.png" alt="" width="30"/>
+						<span class="mgl-10">USDT</span>
+					</div>
+					<div class="tar bold2">{{ Number(coinArr["USDT"].balance) || 0 }}</div>
 				</div>
 				<div class="aveage-box">
 					<div class="vertical-children tal">
@@ -938,12 +954,12 @@ export default {
 		}
 
 		//自动弹出提示
-		if(!this.hasReadNotice){
-			let t = setTimeout(()=>{
-				clearTimeout(t);
-				this.showNotice();
-			}, 1000)
-		}
+		// if(!this.hasReadNotice){
+		// 	let t = setTimeout(()=>{
+		// 		clearTimeout(t);
+		// 		this.showNotice();
+		// 	}, 1000)
+		// }
 	},
 	beforeDestroy(){
 		clearInterval(timer);
@@ -1056,7 +1072,7 @@ export default {
 				let data;
 
 				if(coinName == "BOX"){
-					const res = await Http.get(`/gem_auction/search/BNB?page=1&limit=1&type=&level=&sort=price&filter=2`);
+					const res = await Http.get(`/gem_auction/search_v2/BNB?page=1&limit=1&type=&level=&sort=price&filter=2`);
 
 					data = res.data;
 
@@ -1066,7 +1082,7 @@ export default {
 						return;
 					}
 				} else if (coinName === 'MEC') {
-					const res = await Http.get(`/gem_auction/search/BNB?page=1&limit=1&type=&level=&sort=price&filter=4`);
+					const res = await Http.get(`/gem_auction/search_v2/BNB?page=1&limit=1&type=&level=&sort=price&filter=4`);
 					data = res.data;
 
 					if(data.list[0]){

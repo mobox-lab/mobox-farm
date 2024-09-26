@@ -14,7 +14,7 @@
 					<img class="mgl-10 cur-point" @click="oprDialog('gem-rule-dialog','block')" src="@/assets/icon/help.png" alt="" height="25">
 				</h1>
 				<div class="tac mgt-10">
-					<span v-if="gemApplyEndCountDown <=0">{{$t("Festival_37")}}</span>
+					<span v-if="gemApplyEndCountDown <=0"></span>
 					<template v-else>
 						<span v-if="getCountDown  > 8640000 ">
 							{{$t("Gemstone_53")}}: {{getLeftTime(1630987200 - nowTs)}}

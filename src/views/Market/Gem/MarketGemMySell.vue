@@ -93,6 +93,7 @@ export default {
 	},
 	computed: {
 		...mapState({
+			marketTabPos: (state) => state.marketState.data.marketTabPos,
 			marketGemMy: (state) => state.marketState.data.marketGemMy,
 			myGemMarketSellFilter: (state) => state.marketState.data.myGemMarketSellFilter,
 			marketGemFilter: (state) => state.marketState.data.marketGemFilter,
@@ -154,12 +155,12 @@ export default {
 				if(this.myAccount == "") return;
 				this.getAuctionPetsMy();
 			}
-		}
+		},
 	},
 
 	methods: {
 		getShowCoin(item){
-			return item.currency == 1?"MBOX": "BUSD";
+			return item.currency == 1?"MBOX": "USDT";
 		},
 		//获取市场上的宠物
 		async getAuctionPetsMy(needLoading = false){

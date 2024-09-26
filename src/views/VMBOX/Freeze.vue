@@ -231,7 +231,6 @@ export default {
 				lockTime_: this.freezeConf[this.selectDay].timeIndex, 
 				orderIndex_,
 			}
-			console.log(obj);
 			let hash = await Wallet.ETH.stakeMbox(obj, this.coinArr[coinKey]);
 			if(hash){
 				this.inputNum = "";

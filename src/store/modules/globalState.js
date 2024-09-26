@@ -103,7 +103,7 @@ const state = () => ({
 		airdropCountDown: 0,
 		gemApplyEndCountDown: 0,
 		nowTs: parseInt(new Date().valueOf()/1000),
-		buyBackType: 0,
+		buyBackType: 1,
 		getNowBlock: "-",
 		momoNumObj: {},
 		mboxAllownceToBoxApply: -1, //mbox是否授权给Box申购合约

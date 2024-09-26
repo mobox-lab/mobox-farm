@@ -15,5 +15,5 @@ export {
 	StorageConfig,
 	ConstantConfig,
 	PancakeConfig,
-	HttpConfig
+	HttpConfig,
 }

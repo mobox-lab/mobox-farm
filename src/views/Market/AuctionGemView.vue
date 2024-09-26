@@ -201,7 +201,7 @@ export default {
 			return arr;
 		},
 		oprCoin(){
-			return ConstantConfig.CurrencyTypeName[this.getNowPetItem.currency]
+			return "USDT";
 		},
 		isGem(){
 			return this.getNowPetItem.erc1155_ == 1;
@@ -263,7 +263,7 @@ export default {
 			}
 
 		},
-		//获取BUSD的授权情况
+		//获取USDT的授权情况
 		async viewAllowance(){
 			let coinKey = this.oprCoin;
 			if(this.coinArr[coinKey].allowanceToGemAuction > 0) return;

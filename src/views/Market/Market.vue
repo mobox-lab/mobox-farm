@@ -104,10 +104,11 @@ import RentMySell from './Rent/RentMySell.vue'
 import RentDeal from './Rent/RentDeal.vue'
 import RentStatistics from './Rent/RentStatistics.vue'
 import Swap from './Swap.vue';
+import axios from 'axios';
 
 import { mapState } from "vuex";
 import { PancakeConfig } from '@/config';
-import { Wallet, Common} from "@/utils";
+import { Wallet, Common, Http} from "@/utils";
 import { CommonMethod } from "@/mixin";
 
 export default {
@@ -118,7 +119,7 @@ export default {
 		MomoHistory,
 		Swap,
 		MarketGemAll,MarketGemMy,MarketGemMySell, MarketGemStatistics,GemHistory,
-		RentAll,RentMy,RentMySell, RentDeal, RentStatistics
+		RentAll,RentMy,RentMySell, RentDeal, RentStatistics,
 	},
 	data() {
 		return {
@@ -154,7 +155,17 @@ export default {
 				"3": 26201,
 				"4": 26201,
 				"5": 26201,
-			}
+			},
+			marketTypePosToMigrateType: {
+				0: 0,
+				2: 1,
+				4: 2,
+				3: 3,
+				5: 4,
+				1: 5,
+			},
+			// 已迁移
+			migrated: [],
 		};
 	},
 	watch: {
@@ -189,7 +200,7 @@ export default {
 		getSelectCoinArr(){
 			let arr = [];
 			Object.keys(PancakeConfig.SelectCoin).map(coinKey=>{
-				if(coinKey == "BUSD"){
+				if(coinKey == "USDT"){
 					arr.push(coinKey + ": " + this.numFloor(this.coinArr[coinKey].balance, 1e2));
 				}
 			})
@@ -225,8 +236,9 @@ export default {
 		},
 		menuClick(){
 
-		}
+		},
 	},
+
 };
 </script>
 

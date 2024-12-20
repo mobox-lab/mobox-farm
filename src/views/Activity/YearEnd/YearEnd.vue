@@ -75,7 +75,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-item">
+                <div class="card-item" v-else>
                     <div class="box tasks-box">
                         <img
                             src="@/assets/yearEnd/top-left-corner.webp"
@@ -133,7 +133,18 @@
                 </div>
 
                 <div class="card-item raffle-item">
-                    <div class="box claim" v-if="lotteryResults.types">
+                    <!--  -->
+                    <div class="box claim complete" v-if="lotteryResults.types">
+                        <img
+                            src="@/assets/yearEnd/bottom-left-corner.webp"
+                            alt=""
+                            class="corner bottom-left"
+                        />
+                        <img
+                            src="@/assets/yearEnd/bottom-right-corner.webp"
+                            alt=""
+                            class="corner bottom-right"
+                        />
                         <h5 class="title">Raffle</h5>
                         <div class="image">
                             <img
@@ -164,7 +175,18 @@
                             </button>
                         </div>
                     </div>
+                    <!--  -->
                     <div class="box" v-else-if="complete">
+                        <img
+                            src="@/assets/yearEnd/bottom-left-corner.webp"
+                            alt=""
+                            class="corner bottom-left"
+                        />
+                        <img
+                            src="@/assets/yearEnd/bottom-right-corner.webp"
+                            alt=""
+                            class="corner bottom-right"
+                        />
                         <h5 class="title">Raffle</h5>
                         <div class="not-prize">
                             <div class="image">
@@ -174,6 +196,16 @@
                         </div>
                     </div>
                     <div class="box raffle" v-else>
+                        <img
+                            src="@/assets/yearEnd/bottom-left-corner.webp"
+                            alt=""
+                            class="corner bottom-left"
+                        />
+                        <img
+                            src="@/assets/yearEnd/bottom-right-corner.webp"
+                            alt=""
+                            class="corner bottom-right"
+                        />
                         <h5 class="title">Raffle</h5>
                         <p class="tip">
                             MOMO Canes can be converted to MOMO Wreaths in a
@@ -186,314 +218,15 @@
                             Wreaths to be eligible for raffle (Max wreath = 3)
                         </p>
                         <h5 class="rewards-title">Rewards Pool</h5>
-                        <ul class="list-1">
-                            <li>
-                                <p>Legendary</p>
-                                <div class="icon">
-                                    <img
-                                        src="@/assets/anniversary/momo-7.png"
-                                    />
-                                    <span>x1</span>
-                                </div>
-                            </li>
-                            <li>
-                                <p>Legendary</p>
-                                <div class="icon">
-                                    <img
-                                        src="@/assets/anniversary/momo-8.png"
-                                    />
-                                    <span>x1</span>
-                                </div>
-                            </li>
-                            <li>
-                                <p>Legendary</p>
-                                <div class="icon">
-                                    <img
-                                        src="@/assets/anniversary/momo-9.png"
-                                    />
-                                    <span>x1</span>
-                                </div>
-                            </li>
-                        </ul>
                         <ul class="list-2">
                             <li v-for="(item, index) in rewards" :key="index">
                                 <div class="icon">
                                     <img :src="item.icon" />
-                                    <span>X1</span>
+                                    <span>X{{ item.per }}</span>
                                 </div>
                                 <p>Total {{ item.count }}</p>
                             </li>
                         </ul>
-                        <ul class="list-2">
-                            <li>
-                                <div class="icon">
-                                    <img src="@/assets/icon/box.png" />
-                                    <span>X1</span>
-                                </div>
-                                <p>Total 500</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 任务 -->
-
-            <!-- points -->
-            <div class="tab-view">
-                <div class="tab-view-item">
-                    <div
-                        class="box complete"
-                        v-if="tab === 'task' && lotteryResults.types"
-                    >
-                        <h5 class="title">Task</h5>
-                        <div class="info">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="58"
-                                height="58"
-                                viewBox="0 0 58 58"
-                                fill="none"
-                            >
-                                <circle cx="29" cy="29" r="29" fill="#1EDB8C" />
-                                <path
-                                    d="M44.1651 20.4725L26.0693 38.5684L15.2118 27.7108"
-                                    stroke="black"
-                                    stroke-width="6"
-                                />
-                            </svg>
-                            <h6>You are now eligible for the Raffle!</h6>
-                            <p>Raffle result will be revealed soon..</p>
-                        </div>
-                    </div>
-                    <!-- 任务 -->
-                    <div class="box tasks-box" v-else-if="tab === 'task'">
-                        <h5 class="title">Task</h5>
-                        <ul class="tasks">
-                            <li v-for="item in events" :key="item.id">
-                                <div class="info">
-                                    <h6>
-                                        {{ item.title }}
-                                        {{
-                                            item.id == 0
-                                                ? ""
-                                                : ` (${item.complete}/${item.count})`
-                                        }}
-                                    </h6>
-                                    <p>
-                                        <img src="@/assets/anniversary/1.svg" />
-                                        <span>x{{ item.point }} Points</span>
-                                    </p>
-                                </div>
-                                <button
-                                    v-if="item.id == 0 && !item.complete"
-                                    disabled
-                                >
-                                    Claimed
-                                </button>
-                                <button
-                                    v-else
-                                    @click="claimPoint(item.id)"
-                                    :disabled="item.complete < item.count"
-                                >
-                                    Claim
-                                </button>
-                            </li>
-                        </ul>
-                        <p class="describe">
-                            Daily Check-ins will reset everyday
-                        </p>
-                    </div>
-                    <!-- 繁荣度 -->
-                    <div v-else-if="tab === 'prosperity'" class="box">
-                        <h5 class="title">My MOHome</h5>
-                        <div class="prosperity">
-                            <img src="@/assets/anniversary/prosperity.png" />
-                            <h6>My MOHome Prosperity</h6>
-                            <p>
-                                <img src="@/assets/anniversary/4.svg" />
-                                <span>{{
-                                    airdropInfo.prosp
-                                        ? airdropInfo.prosp.toLocaleString()
-                                        : 0
-                                }}</span>
-                            </p>
-                        </div>
-                    </div>
-                    <!-- momo算力 -->
-                    <div v-else class="box momos">
-                        <h5 class="title">My MOMO Hash Power</h5>
-                        <ul>
-                            <li v-for="(item, index) in momoList" :key="index">
-                                <div class="momo">
-                                    <img class="bg" :src="item.icon" />
-                                    <img class="icon" :src="item.momo" />
-                                </div>
-                                <span>{{ item.title }}</span>
-                                <p>x{{ momos[index + 1] || 0 }}</p>
-                            </li>
-                        </ul>
-                        <p class="footer">
-                            <span>Total Hash Power:</span>
-                            <img src="@/assets/anniversary/5.svg" />
-                            <span>{{
-                                airdropInfo.hash
-                                    ? airdropInfo.hash.toLocaleString()
-                                    : 0
-                            }}</span>
-                        </p>
-                    </div>
-                </div>
-                <!-- 任务 -->
-                <div class="tab-view-item" v-if="tab == 'task'">
-                    <div class="box claim" v-if="lotteryResults.types">
-                        <h5 class="title">Raffle</h5>
-                        <div class="image">
-                            <img
-                                :src="lotteryPrizes[lotteryResults.types].icon"
-                            />
-                        </div>
-                        <div class="tip">You can claim</div>
-                        <h5 class="name">
-                            {{ lotteryPrizes[lotteryResults.types].title }}
-                        </h5>
-                        <div class="footer">
-                            <p
-                                v-if="
-                                    [999, 998, 997].includes(
-                                        lotteryResults.types
-                                    )
-                                "
-                            >
-                                The Legendary MOMO will be transfered manually.
-                                Please stay tuned.
-                            </p>
-                            <button
-                                v-else
-                                :disabled="isClaimedLottery"
-                                @click="claimPrizes"
-                            >
-                                {{ isClaimedLottery ? "Claimed" : "Claim" }}
-                            </button>
-                        </div>
-                    </div>
-                    <div class="box" v-else-if="complete">
-                        <h5 class="title">Raffle</h5>
-                        <div class="not-prize">
-                            <div class="image">
-                                <img src="@/assets/anniversary/not-prize.svg" />
-                            </div>
-                            <p>Better luck next time</p>
-                        </div>
-                    </div>
-                    <div class="box raffle" v-else>
-                        <h5 class="title">Raffle</h5>
-                        <p class="tip">
-                            <img src="@/assets/anniversary/1.svg" />x10 points=
-                            <img src="@/assets/anniversary/chest.png" />x1 MOMO
-                            Star<br />
-                            <img src="@/assets/anniversary/chest.png" /> x3 MOMO
-                            Stars = Raffle Ticket<br />
-                            Each address can raffle for only once
-                        </p>
-                        <h5 class="rewards-title">Raffle Rewards</h5>
-                        <ul class="list-1">
-                            <li>
-                                <p>Legendary</p>
-                                <div class="icon">
-                                    <img
-                                        src="@/assets/anniversary/momo-7.png"
-                                    />
-                                    <span>x1</span>
-                                </div>
-                            </li>
-                            <li>
-                                <p>Legendary</p>
-                                <div class="icon">
-                                    <img
-                                        src="@/assets/anniversary/momo-8.png"
-                                    />
-                                    <span>x1</span>
-                                </div>
-                            </li>
-                            <li>
-                                <p>Legendary</p>
-                                <div class="icon">
-                                    <img
-                                        src="@/assets/anniversary/momo-9.png"
-                                    />
-                                    <span>x1</span>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="list-2">
-                            <li v-for="(item, index) in rewards" :key="index">
-                                <div class="icon">
-                                    <img :src="item.icon" />
-                                    <span>X1</span>
-                                </div>
-                                <p>Total {{ item.count }}</p>
-                            </li>
-                        </ul>
-                        <ul class="list-2">
-                            <li>
-                                <div class="icon">
-                                    <img src="@/assets/icon/box.png" />
-                                    <span>X1</span>
-                                </div>
-                                <p>Total 500</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- 繁荣度 -->
-                <div class="tab-view-item" v-else-if="tab == 'prosperity'">
-                    <div class="box prize-box">
-                        <h5 class="title">Prize Pool</h5>
-                        <div class="prize">
-                            <img src="@/assets/anniversary/5.png" />
-                            <span>You can claim</span>
-                            <h6>
-                                {{
-                                    airdropInfo.homeProof
-                                        ? airdropInfo.homeProof.amountText
-                                        : 0
-                                }}
-                                $MBOX
-                            </h6>
-                            <p>Total 500,000 $MBOX</p>
-                        </div>
-                        <button
-                            :disabled="!prosperityClaimStatus"
-                            @click="claim(airdropInfo.homeProof)"
-                        >
-                            Claim
-                        </button>
-                    </div>
-                </div>
-                <!-- momo算力 -->
-                <div class="tab-view-item" v-else>
-                    <div class="box prize-box">
-                        <h5 class="title">Prize Pool</h5>
-                        <div class="prize">
-                            <img src="@/assets/anniversary/5.png" />
-                            <span>You can claim</span>
-                            <h6>
-                                {{
-                                    airdropInfo.hashProof
-                                        ? airdropInfo.hashProof.amountText
-                                        : 0
-                                }}
-                                $MBOX
-                            </h6>
-                            <p>Total 500,000 $MBOX</p>
-                        </div>
-                        <button
-                            :disabled="!hashClaimStatus"
-                            @click="claim(airdropInfo.hashProof)"
-                        >
-                            Claim
-                        </button>
                     </div>
                 </div>
             </div>
@@ -569,54 +302,51 @@ export default {
             // 奖励
             rewards: [
                 {
-                    icon: require("@/assets/icon/green_icon.png"),
-                    count: 25,
+                    icon: require("@/assets/yearEnd/reward-1.webp"),
+                    per: 1,
+                    count: 500,
                 },
                 {
-                    icon: require("@/assets/icon/blue_icon.png"),
-                    count: 25,
+                    icon: require("@/assets/yearEnd/reward-2.webp"),
+                    per: 30,
+                    count: 100,
                 },
                 {
-                    icon: require("@/assets/icon/yellow_icon.png"),
-                    count: 25,
+                    icon: require("@/assets/yearEnd/reward-2.webp"),
+                    per: 50,
+                    count: 60,
                 },
                 {
-                    icon: require("@/assets/icon/red_icon.png"),
-                    count: 25,
+                    icon: require("@/assets/yearEnd/reward-2.webp"),
+                    per: 100,
+                    count: 40,
+                },
+                {
+                    icon: require("@/assets/yearEnd/momo-box.webp"),
+                    per: 1,
+                    count: 1,
                 },
             ],
             // 抽奖奖品
             lotteryPrizes: {
                 1: {
-                    icon: require("@/assets/icon/box.png"),
+                    icon: require("@/assets/yearEnd/reward-1.webp"),
                     title: "1 BOX",
                 },
                 101: {
-                    icon: require("@/assets/icon/red_icon.png"),
-                    title: "1 Ruby",
+                    icon: require("@/assets/yearEnd/reward-2.webp"),
+                    title: "30 MBOX",
                 },
                 201: {
-                    icon: require("@/assets/icon/green_icon.png"),
-                    title: "1 Emerald",
+                    icon: require("@/assets/yearEnd/reward-2.webp"),
+                    title: "50 MBOX",
                 },
                 301: {
-                    icon: require("@/assets/icon/blue_icon.png"),
-                    title: "1 Sapphire",
-                },
-                401: {
-                    icon: require("@/assets/icon/yellow_icon.png"),
-                    title: "1 Topaz",
+                    icon: require("@/assets/yearEnd/reward-2.webp"),
+                    title: "100 MBOX",
                 },
                 997: {
-                    icon: require("@/assets/anniversary/momo-7.png"),
-                    title: "1 Legendary MOMO",
-                },
-                998: {
-                    icon: require("@/assets/anniversary/momo-8.png"),
-                    title: "1 Legendary MOMO",
-                },
-                999: {
-                    icon: require("@/assets/anniversary/momo-9.png"),
+                    icon: require("@/assets/yearEnd/momo-box.webp"),
                     title: "1 Legendary MOMO",
                 },
             },
@@ -750,7 +480,6 @@ export default {
         async getLotteryResults() {
             const result = await getLotteryResults();
             this.lotteryResults = result;
-
             if (result.index) {
                 const isClaimed =
                     await Wallet.ETH.anniversaryClaimPrizes.methods
@@ -994,6 +723,30 @@ export default {
         border: 4px solid #2e1e1e;
         border-radius: 10px;
         box-shadow: 0px 0px 30px 0px rgba(255, 255, 255, 0.25) inset;
+        position: relative;
+        .corner {
+            position: absolute;
+        }
+        .top-left {
+            top: -10px;
+            left: -12px;
+            width: 56px;
+        }
+        .top-right {
+            top: -10px;
+            right: -12px;
+            width: 63px;
+        }
+        .bottom-left {
+            bottom: -10px;
+            left: -12px;
+            width: 135px;
+        }
+        .bottom-right {
+            bottom: -10px;
+            right: -12px;
+            width: 135px;
+        }
 
         .box {
             border: 1px solid #683838;
@@ -1003,19 +756,6 @@ export default {
             flex-direction: column;
 
             position: relative;
-            .corner {
-                position: absolute;
-            }
-            .top-left {
-                top: -10px;
-                left: -12px;
-                width: 56px;
-            }
-            .top-right {
-                top: -10px;
-                right: -12px;
-                width: 63px;
-            }
         }
 
         .describe {
@@ -1210,7 +950,6 @@ export default {
     flex: 1;
 
     .image {
-        width: 35%;
         margin-bottom: 10px;
     }
 
@@ -1275,9 +1014,8 @@ export default {
         justify-content: center;
 
         li {
-            flex: 1;
             display: flex;
-            flex-direction: column;
+            // flex-direction: column;
             align-items: center;
         }
 
@@ -1293,6 +1031,8 @@ export default {
                 -webkit-text-stroke-width: 2;
                 -webkit-text-stroke-color: #000;
                 transform: translate(50%, 20%);
+                text-shadow: -1px -1px 0 #000, /* 左上 */ 1px -1px 0 #000,
+                    /* 右上 */ -1px 1px 0 #000, /* 左下 */ 1px 1px 0 #000; /* 右下 */
             }
         }
 

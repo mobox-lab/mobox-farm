@@ -592,9 +592,7 @@ export default {
 
         .sub-title {
             display: flex;
-            img {
-                width: 48px;
-            }
+            align-items: center;
         }
 
         a {

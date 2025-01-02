@@ -244,7 +244,7 @@ import {
     getAirdrop,
     claimPoint,
     getLotteryResults,
-} from "@/utils/anniversaryService";
+} from "@/utils/yearEndService";
 
 export default {
     mixins: [CommonMethod],

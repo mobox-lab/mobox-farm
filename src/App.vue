@@ -107,14 +107,14 @@
 					</li>
 				</router-link>
 				
-				<!-- <router-link to="/anniversary">
-					<li :class="this.$route.path == '/anniversary' ? 'active' : ''">
+				<router-link to="/yearend">
+					<li :class="this.$route.path == '/yearend' ? 'active' : ''">
 						<span class="per-icon vertical-children">
 							<img src="@/assets/anniversary/menu.svg" alt="" width="25" />
 						</span>
 						<span>Anniversary</span>
 					</li>
-				</router-link> -->
+				</router-link>
 
 			</ul>
 			<div class="tac mgt-30">

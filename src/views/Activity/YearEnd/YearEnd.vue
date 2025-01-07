@@ -13,7 +13,7 @@
                     </div>
 
                     <a
-                        href="https://mbox.medium.com/happy-3rd-anniversary-moboxers-4b53be6dcb34"
+                        href="https://mbox.medium.com/momo-year-end-carnival-power-up-your-momos-1dc24c8e7d26"
                         target="_blank"
                     >
                         <img src="@/assets/anniversary/rule.svg" />
@@ -41,7 +41,7 @@
             <div class="task-content">
                 <div
                     class="card-item complete-item"
-                    v-if="lotteryResults.types"
+                    v-if="complete"
                 >
                     <div class="box complete">
                         <img
@@ -125,8 +125,10 @@
                             <p>
                                 Daily Check-in resets everyday. Every 10 canes
                                 unlocks 1 wreath towards raffle eligibility.
+                                <br />
                                 Note: maximum 3 wreaths required, additional
-                                wreaths ≠ higher chance to win.
+                                wreaths <span class="not-equal">≠</span> higher
+                                chance to win.
                             </p>
                         </div>
                     </div>
@@ -134,7 +136,7 @@
 
                 <div class="card-item raffle-item">
                     <!--  -->
-                    <div class="box claim complete" v-if="lotteryResults.types">
+                    <!-- <div class="box claim complete" v-if="lotteryResults.types">
                         <img
                             src="@/assets/yearEnd/bottom-left-corner.webp"
                             alt=""
@@ -174,9 +176,9 @@
                                 {{ isClaimedLottery ? "Claimed" : "Claim" }}
                             </button>
                         </div>
-                    </div>
+                    </div> -->
                     <!--  -->
-                    <div class="box" v-else-if="complete">
+                    <div class="box" v-if="complete">
                         <img
                             src="@/assets/yearEnd/bottom-left-corner.webp"
                             alt=""
@@ -187,12 +189,16 @@
                             alt=""
                             class="corner bottom-right"
                         />
-                        <h5 class="title">Raffle</h5>
+                        <h5 class="title">Stay tuned</h5>
                         <div class="not-prize">
                             <div class="image">
-                                <img src="@/assets/anniversary/not-prize.svg" />
+                                <img src="@/assets/yearEnd/gift.webp" />
                             </div>
-                            <p>Better luck next time</p>
+                            <p>
+                                Winners will be announced post-event via
+                                official announcement, all rewards will be sent
+                                directly to winning addresses.
+                            </p>
                         </div>
                     </div>
                     <div class="box raffle" v-else>
@@ -953,6 +959,7 @@ export default {
 
     p {
         color: #a5a6ab;
+        text-align: center;
     }
 }
 

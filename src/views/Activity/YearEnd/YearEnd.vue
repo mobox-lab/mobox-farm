@@ -219,9 +219,10 @@
 
                             <img src="@/assets/yearEnd/canes.webp" /> x10 Canes
                             = <img src="@/assets/yearEnd/chest.webp" /> x1
-                            wreaths Get 3 *
+                            wreaths 
+                            <!-- Get 3 *
                             <img src="@/assets/yearEnd/momo-box.webp" />MOMO
-                            Wreaths to be eligible for raffle (Max wreath = 3)
+                            Wreaths to be eligible for raffle (Max wreath = 3) -->
                         </p>
                         <h5 class="rewards-title">Rewards Pool</h5>
                         <ul class="list-2">

@@ -112,7 +112,7 @@
 						<span class="per-icon vertical-children">
 							<img src="@/assets/anniversary/menu.svg" alt="" width="25" />
 						</span>
-						<span>Anniversary</span>
+						<span>Year-end Carnival</span>
 					</li>
 				</router-link>
 

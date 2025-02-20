@@ -20,6 +20,7 @@ import YearEnd from "../views/Activity/YearEnd/YearEnd.vue";
 import BinanceNFT from "../views/BNFT/BinanceNFT.vue";
 import Statistics from "../views/Statistics/Index.vue";
 import Furnace from "../views/Furnace/index.vue";
+import FurnaceFour from "../views/FurnaceFour/index.vue";
 
 Vue.use(VueRouter);
 
@@ -154,6 +155,11 @@ const routes = [
         path: "/furnace",
         name: "Furnace",
         component: Furnace,
+    },
+    {
+        path: "/furnaceFour",
+        name: "FurnaceFour",
+        component: FurnaceFour,
     },
     {
         path: "*",

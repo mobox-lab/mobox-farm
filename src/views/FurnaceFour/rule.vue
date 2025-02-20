@@ -33,6 +33,8 @@ export default {
     }
     p {
         line-height: 30px;
+        color: #A5A6AB;
+        font-size: 12px;
     }
 }
 

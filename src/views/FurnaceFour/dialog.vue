@@ -105,7 +105,7 @@ export default {
 @media (max-width: 960px) {
     .dialog {
         .close {
-            width: 80rem;
+            width: 18px;
         }
     }
 }

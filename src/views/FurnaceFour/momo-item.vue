@@ -205,10 +205,9 @@ export default {
     }
 
     .lv {
-        right: 0;
-        bottom: 10rem;
-        padding: 0 10rem;
-        font-size: 16rem;
+        left: 12px;
+        top: 6px;
+        font-size: 12px;
     }
 
     .category {
@@ -223,6 +222,7 @@ export default {
         padding: 2rem 22rem;
         height: 70rem;
         font-size: 35rem;
+        border-radius: 0px 6px 0px 8px!important;
 
         img {
             margin-right: 20rem;
@@ -230,10 +230,9 @@ export default {
     }
 
     .lv {
-        right: 0;
-        bottom: 10rem;
-        padding: 0 20rem;
-        font-size: 36rem;
+        left: 12px;
+        top: 6px;
+        font-size: 12px;
     }
 
     .category {

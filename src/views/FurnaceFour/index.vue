@@ -136,7 +136,12 @@
                     </div>
                     <div class="divider"></div>
                     <div class="action">
-                        <div class="title merge-record">Merge Record</div>
+                        <div
+                            class="title merge-record"
+                            @click="toggleShowRecord"
+                        >
+                            {{ $t("MOMOMerge_15") }}
+                        </div>
                         <div class="btns">
                             <button
                                 class="btn"
@@ -174,6 +179,9 @@
         <Dialog v-model="isShowRule">
             <Rule />
         </Dialog>
+        <Dialog v-model="isShowRecord">
+            <Record />
+        </Dialog>
     </div>
 </template>
 
@@ -187,7 +195,7 @@ import Dialog from "./dialog";
 import Rule from "./rule";
 import SelectMomo from "./select-momo";
 import Item from "./momo-item";
-// import Record from "./record";
+import Record from "./record";
 
 export default {
     mixins: [CommonMethod],
@@ -197,7 +205,7 @@ export default {
         Dialog,
         Rule,
         Item,
-        // Record,
+        Record,
     },
     data() {
         return {
@@ -681,6 +689,9 @@ export default {
             .merge-record {
                 cursor: pointer;
             }
+            .merge-record:hover {
+                color: #2956ed;
+            }
         }
 
         .momo-division {
@@ -809,9 +820,212 @@ export default {
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1200px) and (min-width: 769px) {
+    .four-content {
+        margin-top: 360px;
+
+        .countdown {
+            span {
+                font-size: 32px;
+            }
+            .division {
+                font-size: 16px;
+                margin: 0 10px;
+            }
+        }
+
+        .card {
+            margin-top: 20px;
+            border-radius: 12px;
+            width: 571px;
+            padding: 20px;
+
+            .rule {
+                top: 0;
+                right: -110px;
+                width: 90px;
+                height: 90px;
+            }
+
+            .hash {
+                margin-top: 20px;
+                gap: 20px;
+
+                .hash-item {
+                    .value {
+                        gap: 8px;
+                        font-size: 16px;
+                        .airdrop {
+                            width: 16px;
+                            height: 16px;
+                            top: 4px;
+                        }
+                        .upgrade {
+                            // margin: 0 8px;
+                        }
+                    }
+                }
+            }
+
+            .hash-title {
+                font-size: 14px;
+            }
+
+            .hash-value {
+                margin-top: 4px;
+                font-size: 20px;
+            }
+        }
+
+        .momo-division {
+            width: 1px;
+            height: 152px;
+            margin: 0 20px;
+        }
+        .momo-title {
+            margin-bottom: 16px;
+        }
+
+        .add {
+            width: 160px;
+            height: 160px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+            }
+        }
+
+        .material-momo2 {
+            margin-left: 8px;
+        }
+
+        .title {
+            font-size: 16px;
+        }
+        .action {
+            .btns {
+                .btn {
+                    width: 144px;
+                    height: 40px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                }
+                .merge-btn {
+                    margin-left: 8px;
+                }
+            }
+        }
+        .divider {
+            margin: 20px 0;
+        }
+    }
+}
+
+@media (max-width: 769px) {
     .page-background {
         left: 0;
+    }
+    .four-content {
+        margin-top: 100px;
+
+        .countdown {
+            span {
+                font-size: 32px;
+            }
+            .division {
+                font-size: 16px;
+                margin: 0 10px;
+            }
+        }
+
+        .card {
+            margin-top: 20px;
+            border-radius: 12px;
+            width: 375px;
+            padding: 20px;
+
+            .rule {
+                top: -60px;
+                right: 0px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .hash {
+                margin-top: 20px;
+                gap: 20px;
+
+                .hash-item {
+                    .value {
+                        gap: 8px;
+                        font-size: 16px;
+                        .airdrop {
+                            width: 16px;
+                            height: 16px;
+                            top: 4px;
+                        }
+                        .upgrade {
+                            // margin: 0 8px;
+                        }
+                    }
+                }
+            }
+
+            .hash-title {
+                font-size: 14px;
+            }
+
+            .hash-value {
+                margin-top: 4px;
+                font-size: 20px;
+            }
+        }
+
+        .momo-division {
+            width: 1px;
+            height: 95px;
+            margin: 0 20px;
+        }
+        .momo-title {
+            margin-bottom: 16px;
+        }
+
+        .add {
+            width: 94px;
+            height: 94px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+            }
+        }
+
+        .material-momo2 {
+            margin-left: 8px;
+        }
+
+        .title {
+            font-size: 16px;
+        }
+        .action {
+            .btns {
+                .btn {
+                    width: 100px;
+                    height: 40px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                }
+                .merge-btn {
+                    margin-left: 8px;
+                }
+            }
+        }
+        .divider {
+            margin: 20px 0;
+        }
     }
 }
 </style>

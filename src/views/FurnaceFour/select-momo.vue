@@ -229,18 +229,15 @@ export default {
         padding: 13rem 24rem 28rem 24rem;
 
         .title {
-            width: 500rem;
-            height: 66rem;
-
             span {
-                font-size: 35rem;
+                font-size: 16px;
             }
         }
 
         .sub-title {
-            font-size: 20rem;
-            margin-top: 10rem;
-            margin-bottom: 12rem;
+            font-size: 12px;
+            margin-top: 4px;
+            margin-bottom: 20px;
         }
 
         .list {
@@ -258,8 +255,10 @@ export default {
         }
 
         .button {
-            font-size: 26rem;
-            line-height: 50px;
+            width: 144px;
+            height: 40px;
+            border-radius: 8px;
+            font-size: 14px;
         }
     }
 }
@@ -270,12 +269,15 @@ export default {
         padding: 33rem 50rem 50rem 50rem;
 
         .title {
-            width: 800rem;
-            height: 76rem;
-
             span {
-                font-size: 55rem;
+                font-size: 16px;
             }
+        }
+
+        .sub-title {
+            font-size: 12px;
+            margin-top: 4px;
+            margin-bottom: 20px;
         }
 
         .sub-title {
@@ -299,9 +301,10 @@ export default {
         }
 
         .button {
-            line-height: 147rem;
-            width: 400rem;
-            font-size: 50rem;
+            width: 144px;
+            height: 40px;
+            border-radius: 8px;
+            font-size: 14px;
         }
     }
 }

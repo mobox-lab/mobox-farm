@@ -171,9 +171,9 @@ export default {
 
 @media (min-width: 1200px) {
     .hashrate {
-        padding: 0 3rem;
-        height: 13rem;
-        font-size: 8rem;
+        padding: 0 6rem;
+        height: 20rem;
+        font-size: 16rem;
 
         img {
             margin-right: 2rem;
@@ -181,15 +181,15 @@ export default {
     }
 
     .lv {
-        left: 12px;
-        top: 6px;
-        font-size: 12px;
+        left: 12rem;
+        top: 6rem;
+        font-size: 16rem;
     }
 
     .category {
-        width: 20px;
-        height: 20px;
-        padding: 2px;
+        width: 20rem;
+        height: 20rem;
+        padding: 2rem;
     }
 }
 
@@ -221,7 +221,7 @@ export default {
     .hashrate {
         padding: 2rem 22rem;
         height: 70rem;
-        font-size: 35rem;
+        font-size: 28rem;
         border-radius: 0px 6px 0px 8px!important;
 
         img {
@@ -230,9 +230,9 @@ export default {
     }
 
     .lv {
-        left: 12px;
-        top: 6px;
-        font-size: 12px;
+        left: 16rem;
+        top: 10rem;
+        font-size: 28rem;
     }
 
     .category {

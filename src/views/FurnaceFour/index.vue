@@ -163,6 +163,26 @@
                     </div>
                 </div>
             </div>
+            <div class="prize">
+                <div class="card prize-content">
+                    <div>
+                        <div class="token">MBOX</div>
+                        <div class="count">
+                            <img
+                                src="@/assets/yearEnd/reward-2.webp"
+                                alt="MBOX"
+                            />
+                            <div>500,000</div>
+                        </div>
+                    </div>
+                    <div class="prize-info">
+                        <div class="prize-rule" @click="prizeRule">
+                            View rule
+                        </div>
+                        <div class="prize-count">Prizes <span>1,000</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- 选择momo -->
@@ -554,6 +574,9 @@ export default {
                 }
             );
         },
+        prizeRule() {
+            window.open("", "__blank");
+        },
     },
     async mounted() {
         window.addEventListener("resize", this.setSize);
@@ -701,6 +724,56 @@ export default {
             font-weight: 600;
         }
     }
+    .prize {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(30px);
+            position: relative;
+        }
+        .prize-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .token {
+            text-align: center;
+        }
+        .count {
+            display: flex;
+            align-items: center;
+            color: #ffcc0a;
+        }
+
+        .prize-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .prize-rule {
+                background: rgba(41, 86, 237, 0.2);
+                color: #1b5af5;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                &:hover {
+                    opacity: 0.7;
+                }
+            }
+
+            .prize-count {
+                color: rgba(255, 255, 255, 0.5);
+                span {
+                    color: #fff;
+                }
+            }
+        }
+    }
 }
 
 .content {
@@ -728,6 +801,38 @@ export default {
             .division {
                 font-size: 16px;
                 margin: 0 10px;
+            }
+        }
+
+        .token {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .count {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 12px;
+
+            img {
+                width: 40px;
+                height: 40px;
+                margin-right: 4px;
+            }
+        }
+
+        .prize-info {
+            .prize-rule {
+                width: 144px;
+                height: 40px;
+                border-radius: 8px;
+            }
+            .prize-count {
+                margin-top: 8px;
+                font-size: 14px;
+                span {
+                    font-weight: 700;
+                }
             }
         }
 
@@ -834,6 +939,38 @@ export default {
             }
         }
 
+        .token {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .count {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 12px;
+
+            img {
+                width: 40px;
+                height: 40px;
+                margin-right: 4px;
+            }
+        }
+
+        .prize-info {
+            .prize-rule {
+                width: 144px;
+                height: 40px;
+                border-radius: 8px;
+            }
+            .prize-count {
+                margin-top: 8px;
+                font-size: 14px;
+                span {
+                    font-weight: 700;
+                }
+            }
+        }
+
         .card {
             margin-top: 20px;
             border-radius: 12px;
@@ -937,6 +1074,38 @@ export default {
             .division {
                 font-size: 16px;
                 margin: 0 10px;
+            }
+        }
+
+        .token {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .count {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 12px;
+
+            img {
+                width: 40px;
+                height: 40px;
+                margin-right: 4px;
+            }
+        }
+
+        .prize-info {
+            .prize-rule {
+                width: 144px;
+                height: 40px;
+                border-radius: 8px;
+            }
+            .prize-count {
+                margin-top: 8px;
+                font-size: 14px;
+                span {
+                    font-weight: 700;
+                }
             }
         }
 

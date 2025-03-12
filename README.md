@@ -2,6 +2,18 @@
 
 A Vue.js based decentralized application (dApp) for MOBOX farming and management.
 
+![MOBOX Logo](src/assets/logo.png)
+
+## 🎮 Game Features
+
+![Block War](src/assets/games/blockwar.jpg)
+![Gold Master](src/assets/games/goldmaster.jpg)
+
+## 📦 NFT Collections
+
+![MEC Box](src/assets/box/mecbox.png)
+![MDX Box](src/assets/box/mdxbox.png)
+
 ## 🚀 Features
 
 - Web3 Integration with Wallet Connect support

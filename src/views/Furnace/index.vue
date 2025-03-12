@@ -5,31 +5,31 @@
     </div>
     <div :class="['content', isShowFurnace ? 'furnace-scene' : null]">
       <div class="title">
-        <span>{{$t('MOMOMerge_01')}}</span>
+        <span>{{ $t("MOMOMerge_01") }}</span>
       </div>
       <!-- 首页 -->
       <div class="home-box" v-if="!isShowFurnace">
         <div class="time">
-          <div class="label">{{$t('Festival_49')}}</div>
-          <span>{{day}}</span>
+          <div class="label">{{ $t("Festival_49") }}</div>
+          <span>{{ day }}</span>
           <div class="division">:</div>
-          <span>{{hour}}</span>
+          <span>{{ hour }}</span>
           <div class="division">:</div>
-          <span>{{minute}}</span>
+          <span>{{ minute }}</span>
           <div class="division">:</div>
-          <span>{{second}}</span>
+          <span>{{ second }}</span>
         </div>
         <img class="momo" src="@/assets/furnace/momo.png" />
         <!-- 按钮 -->
-        <div class="button" @click="showFurnace">{{$t('MOMOMerge_02')}}</div>
+        <div class="button" @click="showFurnace">{{ $t("MOMOMerge_02") }}</div>
       </div>
       <!-- 融合 -->
       <div class="furnace-container" v-else>
         <!-- 选择材料 -->
         <div class="select">
           <ul class="header">
-            <li class="main">{{ $t('MOMOMerge_05') }}</li>
-            <li>{{ $t('MOMOMerge_06') }}</li>
+            <li class="main">{{ $t("MOMOMerge_05") }}</li>
+            <li>{{ $t("MOMOMerge_06") }}</li>
           </ul>
           <ul class="menu">
             <li class="main" @click="showSelected('main')">
@@ -68,33 +68,37 @@
         <div class="update-info">
           <ul>
             <li>
-              <div class="label">{{$t('MOMO_49')}}</div>
+              <div class="label">{{ $t("MOMO_49") }}</div>
               <div class="value" v-if="main">
                 <img class="airdrop" src="@/assets/icon/airdrop.png" />
-                <span class="before">{{main.hashrate}}</span>
+                <span class="before">{{ main.hashrate }}</span>
                 <img class="upgrade" src="@/assets/icon/upgradejt.png" />
                 <img class="airdrop" src="@/assets/icon/airdrop.png" />
-                <span class="after" v-if="consumeMec">[{{initialHashrate[0]}}, {{initialHashrate[1]}}]</span>
+                <span class="after" v-if="consumeMec"
+                  >[{{ initialHashrate[0] }}, {{ initialHashrate[1] }}]</span
+                >
                 <Loading v-if="infoLoading" />
               </div>
             </li>
             <li>
-              <div class="label">{{$t('MOMO_50')}}</div>
+              <div class="label">{{ $t("MOMO_50") }}</div>
               <div class="value" v-if="main">
-                <span class="before">Lv {{main.level}}</span>
+                <span class="before">Lv {{ main.level }}</span>
                 <div class="upgrade">→</div>
-                <span v-if="momo1 || momo2">Lv {{furnaceLv}}</span>
+                <span v-if="momo1 || momo2">Lv {{ furnaceLv }}</span>
                 <Loading v-if="infoLoading" />
               </div>
             </li>
             <li>
-              <div class="label">{{$t('MOMO_51')}}</div>
+              <div class="label">{{ $t("MOMO_51") }}</div>
               <div class="value" v-if="main">
                 <img class="airdrop" src="@/assets/icon/airdrop.png" />
-                <span class="before">{{main.lvHashrate}}</span>
+                <span class="before">{{ main.lvHashrate }}</span>
                 <img class="upgrade" src="@/assets/icon/upgradejt.png" />
                 <img class="airdrop" src="@/assets/icon/airdrop.png" />
-                <span class="after" v-if="consumeMec">[{{lvHashrate[0]}}, {{lvHashrate[1]}}]</span>
+                <span class="after" v-if="consumeMec"
+                  >[{{ lvHashrate[0] }}, {{ lvHashrate[1] }}]</span
+                >
                 <Loading v-if="infoLoading" />
               </div>
             </li>
@@ -104,11 +108,11 @@
         <div class="button-container">
           <button class="button" :disabled="disabledLock" @click="morge">
             <Loading v-if="lockLoading" />
-            <span v-else>{{$t('MOMOMerge_08')}}</span>
+            <span v-else>{{ $t("MOMOMerge_08") }}</span>
           </button>
           <button class="button" :disabled="disabledMorge" @click="endMerge">
             <Loading v-if="morgeLoading" />
-            <span v-else>{{$t('MOMOMerge_09')}}</span>
+            <span v-else>{{ $t("MOMOMerge_09") }}</span>
           </button>
           <!-- <button class="button" :disabled="disabled || loading || status == 2">
             <Loading />
@@ -126,13 +130,19 @@
       </div>
       <!-- 规则 -->
       <div class="rule">
-        <div class="rule-title">{{$t('MOMOMerge_03')}}</div>
+        <div class="rule-title">{{ $t("MOMOMerge_03") }}</div>
         <p v-html="$t('MOMOMerge_04')"></p>
       </div>
     </div>
     <!-- 选择momo -->
     <Dialog v-model="isShowSelect">
-      <SelectMomo :isShowTip="selectType != 'main'" :current="current" :type="selectType === 'main' ? null : mainType" :selected="selected" @onSelect="onSelect" />
+      <SelectMomo
+        :isShowTip="selectType != 'main'"
+        :current="current"
+        :type="selectType === 'main' ? null : mainType"
+        :selected="selected"
+        @onSelect="onSelect"
+      />
     </Dialog>
     <!-- 记录 -->
     <Dialog v-model="isShowRecord">
@@ -143,14 +153,14 @@
 
 <script>
 import { mapState } from "vuex";
-import { BaseConfig, ConstantConfig } from '@/config';
+import { BaseConfig, ConstantConfig } from "@/config";
 import { CommonMethod } from "@/mixin";
-import { Common, Wallet } from '@/utils/';
-import { Loading } from '@/components';
-import Dialog from './dialog';
-import SelectMomo from './select-momo';
-import Item from './momo-item';
-import Record from './record';
+import { Common, Wallet } from "@/utils/";
+import { Loading } from "@/components";
+import Dialog from "./dialog";
+import SelectMomo from "./select-momo";
+import Item from "./momo-item";
+import Record from "./record";
 
 export default {
   mixins: [CommonMethod],
@@ -164,7 +174,7 @@ export default {
   data() {
     return {
       loading: false,
-      // 0空闲/融合结束, 1等待融合, 2开始融合
+      //
       status: null,
       consumeMec: null,
       isShowFurnace: false,
@@ -177,10 +187,10 @@ export default {
       countDownTimer: null,
       isShowRecord: false,
       endTime: 1705734000000,
-      day: '00',
-      hour: '00',
-      minute: '00',
-      second: '00',
+      day: "00",
+      hour: "00",
+      minute: "00",
+      second: "00",
       infoLoading: false,
       lockLoading: false,
       morgeLoading: false,
@@ -189,7 +199,7 @@ export default {
   computed: {
     ...mapState({
       myNFT_stake: (state) => state.ethState.data.myNFT_stake,
-			hashrateInfo: (state) => state.globalState.hashrateInfo,
+      hashrateInfo: (state) => state.globalState.hashrateInfo,
     }),
     disabledLock() {
       return this.status != 0 || !this.consumeMec || this.lockLoading;
@@ -205,19 +215,21 @@ export default {
       return parseInt(this.main.prototype / 1e4);
     },
     standardsHashrate() {
-			const vType = this.mainType;
-			return this.hashrateInfo[`v${vType}StandardHashrate`];
+      const vType = this.mainType;
+      return this.hashrateInfo[`v${vType}StandardHashrate`];
     },
-    // 选中的momo
+    //
     selected() {
-      return [this.main, this.momo1, this.momo2].filter(item => item && item != this[this.selectType]).map(item => item.tokenId);
+      return [this.main, this.momo1, this.momo2]
+        .filter((item) => item && item != this[this.selectType])
+        .map((item) => item.tokenId);
     },
     current() {
       return this[this.selectType];
     },
-    // 融合等级
+    //
     furnaceLv() {
-			const vType = this.mainType;
+      const vType = this.mainType;
       const lvConfig = BaseConfig[`MomoLv${vType}Cfg`];
       const value = [this.main, this.momo1, this.momo2].reduce((data, item) => {
         if (item) {
@@ -227,19 +239,27 @@ export default {
         return data;
       }, 0);
 
-      if (value >= lvConfig['40'].lvValue) {
+      if (value >= lvConfig["40"].lvValue) {
         return 40;
       }
 
-      return this.findConfig(value, 'lvValue', lvConfig, false).lv;
+      return this.findConfig(value, "lvValue", lvConfig, false).lv;
     },
-    // 初始算力升级信息
+    //
     initialHashrate() {
       if (this.consumeMec) {
         const vType = this.mainType;
         const lvConfig = BaseConfig[`MomoEnhanceV${vType}Cfg`];
-        const min = this.findConfig(this.consumeMec * 0.75, 'totalMec', lvConfig);
-        const max = this.findConfig(this.consumeMec * 1.25, 'totalMec', lvConfig);
+        const min = this.findConfig(
+          this.consumeMec * 0.75,
+          "totalMec",
+          lvConfig
+        );
+        const max = this.findConfig(
+          this.consumeMec * 1.25,
+          "totalMec",
+          lvConfig
+        );
         return [min.hashrate, max.hashrate];
       }
 
@@ -259,31 +279,41 @@ export default {
           staticPercent = 0.3;
         }
 
-        return parseInt(hashRate + parseInt(staticPower * (level - 1) /100) + parseInt(((parseInt(level / 5) * (1 + parseInt(level / 5)))) * staticPower * staticPercent / 200));
+        return parseInt(
+          hashRate +
+            parseInt((staticPower * (level - 1)) / 100) +
+            parseInt(
+              (parseInt(level / 5) *
+                (1 + parseInt(level / 5)) *
+                staticPower *
+                staticPercent) /
+                200
+            )
+        );
       });
-    }
+    },
   },
   methods: {
-    // 移除
+    //
     remove(type, event) {
       event.preventDefault();
       event.stopPropagation();
 
-      if (type == 'main') {
+      if (type == "main") {
         this.main = this.momo1 = this.momo2 = null;
       } else {
         this[type] = null;
       }
     },
-    // 倒计时
+    //
     countDown() {
       const time = this.endTime - Date.now();
 
-      if (time >= 0) {  
-        const day = Math.floor(time / 1000 / 60 / 60 / 24);  
-        const hour = Math.floor(time / 1000 / 60 / 60 % 24);  
-        const minute = Math.floor(time / 1000 / 60 % 60);  
-        const second = Math.floor(time / 1000 % 60);
+      if (time >= 0) {
+        const day = Math.floor(time / 1000 / 60 / 60 / 24);
+        const hour = Math.floor((time / 1000 / 60 / 60) % 24);
+        const minute = Math.floor((time / 1000 / 60) % 60);
+        const second = Math.floor((time / 1000) % 60);
 
         this.day = this.checkTime(day);
         this.hour = this.checkTime(hour);
@@ -291,15 +321,15 @@ export default {
         this.second = this.checkTime(second);
         this.countDownTimer = setTimeout(this.countDown, 1000);
       } else {
-        this.day = '00';
-        this.hour = '00';
-        this.minute = '00';
-        this.second = '00';
+        this.day = "00";
+        this.hour = "00";
+        this.minute = "00";
+        this.second = "00";
       }
     },
-    checkTime(value){
+    checkTime(value) {
       if (value < 10) {
-        return '0' + value;
+        return "0" + value;
       }
 
       return value;
@@ -317,26 +347,26 @@ export default {
         return;
       }
 
-      if (type != 'main' && !this.main) {
-        this.showNotify(this.$t("MOMOMerge_13") ,"error");
+      if (type != "main" && !this.main) {
+        this.showNotify(this.$t("MOMOMerge_13"), "error");
         return;
       }
 
       this.selectType = type;
       this.toggleShowSelect();
     },
-    // 切换显示选择momo
+    //
     toggleShowSelect() {
       this.isShowSelect = !this.isShowSelect;
     },
-    // 切换显示记录
+    //
     toggleShowRecord() {
       this.isShowRecord = !this.isShowRecord;
     },
     onSelect(data) {
       this[this.selectType] = data;
 
-      if (this.selectType === 'main') {
+      if (this.selectType === "main") {
         this.momo2 = this.momo1 = this.consumeMec = null;
       } else {
         this.getMomoInfo();
@@ -345,7 +375,7 @@ export default {
       this.selectType = null;
       this.toggleShowSelect();
     },
-    // 获取momo融合信息
+    //
     async getMomoInfo() {
       const ids = [this.main.tokenId];
 
@@ -362,8 +392,7 @@ export default {
       try {
         const res = await Wallet.ETH.furnace.methods.testMerge(ids).call();
         this.consumeMec = res.mec;
-      } catch(_) {
-      }
+      } catch (_) {}
 
       this.infoLoading = false;
     },
@@ -383,7 +412,7 @@ export default {
         }
       }
     },
-    // 获取订单状态
+    //
     async getOrderStatus() {
       try {
         const address = await Wallet.ETH.getAccount();
@@ -401,16 +430,17 @@ export default {
         } else if (this.status == 2) {
           this.timer = setTimeout(this.getOrderStatus, 5000);
         }
-      } catch(error) {
-      }
+      } catch (error) {}
     },
-    // 获取momo
+    //
     async getMomoByTokenId(tokenId) {
-      if (!tokenId || tokenId == '0') {
+      if (!tokenId || tokenId == "0") {
         return null;
       }
 
-      const res = await Wallet.ETH.moMoTokenContract.methods.getMomoByTokenId(tokenId).call();
+      const res = await Wallet.ETH.moMoTokenContract.methods
+        .getMomoByTokenId(tokenId)
+        .call();
 
       return {
         tokenId,
@@ -441,7 +471,7 @@ export default {
 
       Wallet.ETH.sendMethod(
         contract,
-        {from: address, gasLimit: this.momo2 ? 900000 : 600000},
+        { from: address, gasLimit: this.momo2 ? 900000 : 600000 },
         (hash) => {},
         (data) => {
           this.status = 1;
@@ -461,7 +491,7 @@ export default {
 
       Wallet.ETH.sendMethod(
         contract,
-        {from: address, gasLimit: this.momo2 ? 900000 : 600000},
+        { from: address, gasLimit: this.momo2 ? 900000 : 600000 },
         (hash) => {},
         (data) => {
           self.morgeLoading = false;
@@ -476,574 +506,577 @@ export default {
     },
   },
   async mounted() {
-    window.addEventListener('resize', this.setSize);
+    window.addEventListener("resize", this.setSize);
     this.setSize();
     this.countDown();
     this.infoLoading = true;
     try {
       await this.getOrderStatus();
-    } catch(_) {}
+    } catch (_) {}
     this.infoLoading = false;
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.setSize);
+    window.removeEventListener("resize", this.setSize);
     clearTimeout(this.timer);
     clearTimeout(this.countDownTimer);
-    document.documentElement.style.fontSize = '';
+    document.documentElement.style.fontSize = "";
   },
 };
 </script>
 
 <style lang="less" scoped>
-  .page-container {
-    font-family: 'you-she';
+.page-container {
+  font-family: "you-she";
+}
+
+.page-background {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  font-size: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  span {
+    font-weight: 400;
+    color: #1a486e;
+    text-align: center;
+  }
+}
+
+.time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .label {
+    font-weight: 400;
+    color: #041731;
+    line-height: 1;
   }
 
-  .page-background {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    height: 100%;
-    font-size: 0;
+  span {
+    font-weight: 400;
+    color: #c9f1f8;
+    line-height: 1;
+    background: #14385d;
+    text-align: center;
+  }
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
+  .division {
+    font-weight: 400;
+    color: #041731;
+  }
+}
+
+.home-box {
+  .button {
+    background: url(../../assets/furnace/button.png) no-repeat;
+    background-size: 100% 100%;
+    text-align: center;
+    font-weight: 400;
+    color: #643d03;
+    cursor: pointer;
+  }
+}
+
+.furnace-scene {
+  backdrop-filter: blur(4px);
+}
+
+.rule {
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: rgba(12, 32, 61, 0.8);
+  display: flex;
+  flex-direction: column;
+
+  .rule-title {
+    font-weight: 400;
+    color: #96c8e2;
+    text-align: center;
+  }
+
+  p {
+    flex: 1;
+    font-weight: 400;
+    color: #96c8e2;
+    overflow-y: scroll;
+  }
+}
+
+.furnace-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+  }
+
+  .header {
+    li {
+      font-weight: 400;
+      color: #ffffff;
     }
   }
 
-  .content {
-    position: relative;
-    z-index: 9;
+  .main {
+    text-align: center;
+  }
+
+  .select .menu {
+    .item {
+      background: url(../../assets/furnace/select-background.png) no-repeat;
+      background-size: 100% 100%;
+      margin: 0 auto;
+      cursor: pointer;
+    }
+
+    /*deep*/
+    .momo-container {
+      position: relative;
+    }
+
+    .info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+  }
+
+  .update-info {
+    ul {
+      display: flex;
+      flex-direction: column;
+
+      li {
+        background: rgba(12, 32, 61, 0.5);
+        display: flex;
+        align-items: center;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+
+    .value {
+      display: flex;
+      align-items: center;
+      font-family: Poppins;
+      font-weight: 400;
+    }
+  }
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+
+  button {
+    border: none;
+    outline: none;
+    height: 100%;
+    background: url(../../assets/furnace/button.png) no-repeat;
+    background-size: 100% 100%;
+    cursor: pointer;
+    font-weight: 400;
+    color: #643d03;
+
+    svg {
+      width: 45%;
+      height: 45%;
+    }
+
+    &[disabled] {
+      cursor: no-drop;
+      filter: grayscale(100%);
+      filter: gray;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  .record {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    background: url(../../assets/furnace/bg.png) no-repeat;
+    background-size: 100% 100%;
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 1200px) {
+  .page-background {
+    left: 260px;
   }
 
   .title {
+    padding-top: 47rem;
+    margin-bottom: 44rem;
+
     span {
-      font-weight: 400;
-      color: #1A486E;
-      text-align: center;
+      font-size: 40rem;
+      line-height: 45rem;
     }
   }
 
   .time {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-bottom: 46rem;
 
     .label {
-      font-weight: 400;
-      color: #041731;
-      line-height: 1;
+      font-size: 18rem;
+      margin-right: 20rem;
     }
 
     span {
-      font-weight: 400;
-      color: #C9F1F8;
-      line-height: 1;
-      background: #14385D;
-      text-align: center;
+      padding: 0 11rem;
+      font-size: 18rem;
+      height: 26rem;
+      border-radius: 6rem;
+      line-height: 26rem;
     }
 
     .division {
-      font-weight: 400;
-      color: #041731;
+      font-size: 20rem;
+      margin: 0 10rem;
     }
   }
 
   .home-box {
-    .button {
-      background: url(../../assets/furnace/button.png) no-repeat;
-      background-size: 100% 100%;
-      text-align: center;
-      font-weight: 400;
-      color: #643D03;
-      cursor: pointer;
-    }
-  }
+    margin-bottom: 42rem;
 
-  .furnace-scene {
-    backdrop-filter: blur(4px)
+    .momo {
+      width: 378rem;
+    }
+
+    .button {
+      width: 226rem;
+      height: 53rem;
+      line-height: 46rem;
+      font-size: 25px;
+      margin: 21rem auto 0 auto;
+    }
   }
 
   .rule {
-    margin: 0 auto;
-    box-sizing: border-box;
-    background: rgba(12, 32, 61, 0.8);
-    display: flex;
-    flex-direction: column;
+    width: 772rem;
+    height: 130rem;
+    padding: 16rem;
+    border-radius: 10rem;
 
     .rule-title {
-      font-weight: 400;
-      color: #96C8E2;
-      text-align: center;
-    }
+      font-size: 19rem;
+      line-height: 23rem;
+      margin-bottom: 14rem;
 
-    p {
-      flex: 1;
-      font-weight: 400;
-      color: #96C8E2;
-      overflow-y: scroll;
+      p {
+        font-size: 10rem;
+        line-height: 12rem;
+      }
     }
   }
 
   .furnace-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    ul {
-      display: flex;
-      align-items: center;
-      list-style: none;
-    }
-
     .header {
+      margin-bottom: 8rem;
+
       li {
-        font-weight: 400;
-        color: #FFFFFF;
+        font-size: 16rem;
+        line-height: 31rem;
       }
     }
 
     .main {
-      text-align: center;
+      width: 129rem;
+      margin-right: 37rem;
     }
 
     .select .menu {
       .item {
-        background: url(../../assets/furnace/select-background.png) no-repeat;
-        background-size: 100% 100%;
-        margin: 0 auto;
-        cursor: pointer;
+        width: 85rem;
+        height: 62rem;
       }
+    }
 
-      /*deep*/.momo-container {
-        position: relative;
-      }
+    /*deep*/
+    .momo-container {
+      transform: scale(0.7);
+      top: -10rem;
+    }
 
-      .info {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        cursor: pointer;
+    .info {
+      img {
+        width: 26rem;
       }
     }
 
     .update-info {
-      ul {
-        display: flex;
-        flex-direction: column;
+      margin-top: 33rem;
+      margin-bottom: 43rem;
+      font-size: 14rem;
 
-        li {
-          background: rgba(12, 32, 61, 0.5);
-          display: flex;
-          align-items: center;
+      li {
+        width: 357rem;
+        height: 28rem;
+        border-radius: 6rem;
+        margin-top: 7rem;
+        padding-left: 18rem;
+      }
 
-          &:first-child {
-            margin-top: 0;
-          }
-        }
+      .label {
+        margin-right: 20rem;
+      }
+
+      .airdrop {
+        width: 17rem;
       }
 
       .value {
-        display: flex;
-        align-items: center;
-        font-family: Poppins;
-        font-weight: 400;
+        font-size: 16rem;
+      }
+
+      .before {
+        margin-left: 10rem;
+      }
+
+      .upgrade {
+        margin-left: 10rem;
+        margin-right: 10rem;
+      }
+
+      .after {
+        margin-left: 10rem;
       }
     }
-  }
 
-  .button-container {
-    display: flex;
-    align-items: center;
+    .button-container {
+      height: 53rem;
+      margin-bottom: 52rem;
 
-    button {
-      border: none;
-      outline: none;
-      height: 100%;
-      background: url(../../assets/furnace/button.png) no-repeat;
-      background-size: 100% 100%;
-      cursor: pointer;
-      font-weight: 400;
-      color: #643D03;
-
-      svg {
-        width: 45%;
-        height: 45%;
-      }
-
-      &[disabled] {
-        cursor: no-drop;
-        filter: grayscale(100%);
-        filter: gray;
-
-        &:hover {
-          opacity: 1;
-        }
-      }
-
-      &:hover {
-        opacity: 0.7;
+      button {
+        width: 226rem;
+        font-size: 25rem;
+        line-height: 31rem;
+        margin-right: 10rem;
       }
     }
 
     .record {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: url(../../assets/furnace/bg.png) no-repeat;
-      background-size: 100% 100%;
-      cursor: pointer;
+      width: 48rem;
+      height: 53rem;
+
+      img {
+        width: 28rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .page-background {
+    left: 0;
+  }
+
+  .title {
+    padding-top: 269rem;
+    margin-bottom: 73rem;
+
+    span {
+      font-size: 100rem;
     }
   }
 
-  @media (min-width: 1200px) {
-    .page-background {
-      left: 260px;
+  .time {
+    margin-bottom: 209rem;
+
+    .label {
+      font-size: 65rem;
+      margin-right: 50rem;
     }
 
-    .title {
-      padding-top: 47rem;
-      margin-bottom: 44rem;
-
-      span {
-        font-size: 40rem;
-        line-height: 45rem;
-      }
+    span {
+      padding: 0 23rem;
+      font-size: 65rem;
+      height: 90rem;
+      line-height: 90rem;
+      border-radius: 13rem;
     }
 
-    .time {
-      margin-bottom: 46rem;
+    .division {
+      font-size: 50rem;
+      margin: 0 20rem;
+    }
+  }
 
-      .label {
-        font-size: 18rem;
-        margin-right: 20rem;
-      }
+  .home-box {
+    margin-bottom: 154rem;
 
-      span {
-        padding: 0 11rem;
-        font-size: 18rem;
-        height: 26rem;
-        border-radius: 6rem;
-        line-height: 26rem;
-      }
-
-      .division {
-        font-size: 20rem;
-        margin: 0 10rem;
-      }
+    .momo {
+      width: 1158rem;
     }
 
-    .home-box {
-      margin-bottom: 42rem;
-
-      .momo {
-        width: 378rem;
-      }
-
-      .button {
-        width: 226rem;
-        height: 53rem;
-        line-height: 46rem;
-        font-size: 25px;
-        margin: 21rem auto 0 auto;
-      }
+    .button {
+      width: 749rem;
+      height: 158rem;
+      line-height: 148rem;
+      font-size: 85rem;
+      margin: 150rem auto 0 auto;
     }
+  }
 
-    .rule {
-      width: 772rem;
-      height: 130rem;
-      padding: 16rem;
-      border-radius: 10rem;
+  .rule {
+    width: 1105rem;
+    height: 807rem;
+    padding: 83rem;
+    border-radius: 23rem;
+    margin-bottom: 120rem;
 
-      .rule-title {
-        font-size: 19rem;
-        line-height: 23rem;
-        margin-bottom: 14rem;
+    .rule-title {
+      font-size: 83rem;
+      line-height: 100rem;
+      margin-bottom: 61rem;
 
-        p {
-          font-size: 10rem;
-          line-height: 12rem;
-        }
-      }
-    }
-
-    .furnace-container {
-      .header {
-        margin-bottom: 8rem;
-
-        li {
-          font-size: 16rem;
-          line-height: 31rem;
-        }
-      }
-
-      .main {
-        width: 129rem;
-        margin-right: 37rem;
-      }
-
-      .select .menu {
-        .item {
-          width: 85rem;
-          height: 62rem;
-        }
-      }
-
-      /*deep*/.momo-container {
-        transform: scale(0.7);
-        top: -10rem;
-      }
-
-      .info {
-        img {
-          width: 26rem;
-        }
-      }
-
-      .update-info {
-        margin-top: 33rem;
-        margin-bottom: 43rem;
-        font-size: 14rem;
-
-        li {
-          width: 357rem;
-          height: 28rem;
-          border-radius: 6rem;
-          margin-top: 7rem;
-          padding-left: 18rem;
-        }
-
-        .label {
-          margin-right: 20rem;
-        }
-
-        .airdrop {
-          width: 17rem;
-        }
-
-        .value {
-          font-size: 16rem;
-        }
-
-        .before {
-          margin-left: 10rem;
-        }
-
-        .upgrade {
-          margin-left: 10rem;
-          margin-right: 10rem;
-        }
-
-        .after {
-          margin-left: 10rem;
-        }
-      }
-
-      .button-container {
-        height: 53rem;
-        margin-bottom: 52rem;
-
-        button {
-          width: 226rem;
-          font-size: 25rem;
-          line-height: 31rem;
-          margin-right: 10rem;
-        }
-      }
-
-      .record {
-        width: 48rem;
-        height: 53rem;
-
-        img {
-          width: 28rem;
-        }
+      p {
+        font-size: 41rem;
+        line-height: 50rem;
       }
     }
   }
 
-  @media (max-width: 1200px) {
-    .page-background {
-      left: 0;
-    }
+  .furnace-container {
+    .header {
+      margin-bottom: 34rem;
 
-    .title {
-      padding-top: 269rem;
-      margin-bottom: 73rem;
-
-      span {
-        font-size: 100rem;
+      li {
+        font-size: 58rem;
+        line-height: 104rem;
       }
     }
 
-    .time {
-      margin-bottom: 209rem;
+    .select {
+      width: 100vw;
+      padding: 0 84rem;
+      box-sizing: border-box;
+    }
 
-      .label {
-        font-size: 65rem;
-        margin-right: 50rem;
-      }
+    .main {
+      width: 435rem;
+      margin-right: 124rem;
+    }
 
-      span {
-        padding: 0 23rem;
-        font-size: 65rem;
-        height: 90rem;
-        line-height: 90rem;
-        border-radius: 13rem;
-      }
-
-      .division {
-        font-size: 50rem;
-        margin: 0 20rem;
+    .select .menu {
+      .item {
+        width: 271rem;
+        height: 210rem;
       }
     }
 
-    .home-box {
-      margin-bottom: 154rem;
+    /*deep*/
+    .momo-container {
+      transform: scale(0.7);
+      top: -22rem;
+    }
 
-      .momo {
-        width: 1158rem;
-      }
-
-      .button {
-        width: 749rem;
-        height: 158rem;
-        line-height: 148rem;
-        font-size: 85rem;
-        margin: 150rem auto 0 auto;
+    .info {
+      img {
+        width: 84rem;
       }
     }
 
-    .rule {
-      width: 1105rem;
-      height: 807rem;
-      padding: 83rem;
-      border-radius: 23rem;
-      margin-bottom: 120rem;
+    .update-info {
+      width: 100%;
+      padding: 0 74rem;
+      margin-top: 90rem;
+      margin-bottom: 116rem;
+      font-size: 40rem;
+      box-sizing: border-box;
 
-      .rule-title {
-        font-size: 83rem;
-        line-height: 100rem;
-        margin-bottom: 61rem;
-
-        p {
-          font-size: 41rem;
-          line-height: 50rem;
-        }
-      }
-    }
-
-    .furnace-container {
-      .header {
-        margin-bottom: 34rem;
-
-        li {
-          font-size: 58rem;
-          line-height: 104rem;
-        }
-      }
-
-      .select {
-        width: 100vw;
-        padding: 0 84rem;
-        box-sizing: border-box;
-      }
-
-      .main {
-        width: 435rem;
-        margin-right: 124rem;
-      }
-
-      .select .menu {
-        .item {
-          width: 271rem;
-          height: 210rem;
-        }
-      }
-
-      /*deep*/.momo-container {
-        transform: scale(0.7);
-        top: -22rem;
-      }
-
-      .info {
-        img {
-          width: 84rem;
-        }
-      }
-
-      .update-info {
+      li {
         width: 100%;
-        padding: 0 74rem;
-        margin-top: 90rem;
-        margin-bottom: 116rem;
-        font-size: 40rem;
-        box-sizing: border-box;
-
-        li {
-          width: 100%;
-          height: 93rem;
-          border-radius: 14rem;
-          margin-top: 23rem;
-          padding-left: 63rem;
-        }
-
-        .label {
-          margin-right: 40rem;
-        }
-
-        .airdrop {
-          width: 50rem;
-        }
-
-        .value {
-          font-size: 54rem;
-        }
-
-        .before {
-          margin-left: 40rem;
-        }
-
-        .upgrade {
-          margin-left: 40rem;
-          margin-right: 40rem;
-        }
-
-        .after {
-          margin-left: 40rem;
-        }
+        height: 93rem;
+        border-radius: 14rem;
+        margin-top: 23rem;
+        padding-left: 63rem;
       }
 
-      .button-container {
-        height: 130rem;
-        margin-bottom: 60rem;
-
-        button {
-          width: 380rem;
-          font-size: 45rem;
-          line-height: 120rem;
-          margin-right: 30rem;
-          font-weight: bold;
-        }
+      .label {
+        margin-right: 40rem;
       }
 
-      .record {
-        width: 130rem;
-        height: 130rem;
+      .airdrop {
+        width: 50rem;
+      }
 
-        img {
-          width: 65rem;
-        }
+      .value {
+        font-size: 54rem;
+      }
+
+      .before {
+        margin-left: 40rem;
+      }
+
+      .upgrade {
+        margin-left: 40rem;
+        margin-right: 40rem;
+      }
+
+      .after {
+        margin-left: 40rem;
+      }
+    }
+
+    .button-container {
+      height: 130rem;
+      margin-bottom: 60rem;
+
+      button {
+        width: 380rem;
+        font-size: 45rem;
+        line-height: 120rem;
+        margin-right: 30rem;
+        font-weight: bold;
+      }
+    }
+
+    .record {
+      width: 130rem;
+      height: 130rem;
+
+      img {
+        width: 65rem;
       }
     }
   }
+}
 </style>

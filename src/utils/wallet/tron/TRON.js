@@ -1,8 +1,8 @@
 // import TronWeb from 'tronweb'
 export default class TRON {
-	static init() {
-		console.log("init tron")
-	}
+  static init() {
+    console.log("init tron");
+  }
 }
 // const TronUtils = {
 // 	// viewTransaction,
@@ -20,7 +20,7 @@ export default class TRON {
 // 	clearInterval(tmpTimer1);
 // 	tronWeb = window.tronWeb;
 // 	if (tmpTimer2) clearInterval(tmpTimer2);
-// 	//1s检测钱包是否登录
+//
 // 	tmpTimer2 = setInterval(() => {
 // 		if (tronWeb.defaultAddress.base58 == false) return
 // 		clearInterval(tmpTimer2);
@@ -32,7 +32,7 @@ export default class TRON {
 // }, 1000);
 // }
 
-//需要玩家的地址查询
+//
 // async function viewTransaction(contractAddr, functionSelector, callVal, pamarmArray, cb) {
 // 	tronWeb.transactionBuilder.triggerSmartContract(contractAddr, functionSelector, 1000000, callVal, pamarmArray, async (err, transaction) => {
 // 		if (err) {
@@ -44,7 +44,7 @@ export default class TRON {
 // 	});
 // }
 
-//调起钱包
+//
 // async function commitTransaction(contractAddr, functionSelector, callVal, pamarmArray, feeLimit, cb) {
 // 	tronWeb.transactionBuilder.triggerSmartContract(contractAddr, functionSelector, feeLimit || 100000000, callVal, pamarmArray, async (err, transaction) => {
 // 		if (err) {

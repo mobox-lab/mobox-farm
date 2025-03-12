@@ -1,27 +1,27 @@
-import Web3 from 'web3';
-import Rpc from './Rpc';
-import Contract from './Contract';
-import PancakSwapContract from './PancakSwapContract';
-import { EventBus, Common, Http } from '@/utils';
+import Web3 from "web3";
+import Rpc from "./Rpc";
+import Contract from "./Contract";
+import PancakSwapContract from "./PancakSwapContract";
+import { EventBus, Common, Http } from "@/utils";
 import {
   EventConfig,
   WalletConfig,
   BaseConfig,
   ConstantConfig,
   PancakeConfig,
-} from '@/config';
-import MecSwap from './MecSwap';
-import BigNumber from 'bignumber.js';
-import Gem from './group/Gem';
-import MdxBox from './group/MdxBox';
-import Enhancer from './group/Enhancer';
-import Rent from './group/Rent';
-import BinaceNFT from './group/BinaceNFT';
-import MoMoSetting from './group/MoMoSetting';
-import BigSell from './group/BigSell';
-import Transfer from './group/Transfer';
-import Furnace from './Furnace';
-import AvatarHelper from './Avatar';
+} from "@/config";
+import MecSwap from "./MecSwap";
+import BigNumber from "bignumber.js";
+import Gem from "./group/Gem";
+import MdxBox from "./group/MdxBox";
+import Enhancer from "./group/Enhancer";
+import Rent from "./group/Rent";
+import BinaceNFT from "./group/BinaceNFT";
+import MoMoSetting from "./group/MoMoSetting";
+import BigSell from "./group/BigSell";
+import Transfer from "./group/Transfer";
+import Furnace from "./Furnace";
+import AvatarHelper from "./Avatar";
 
 export default class ETH {
   static web3;
@@ -38,7 +38,7 @@ export default class ETH {
     Transfer,
   };
 
-  //合约相关
+  //
   static boxTokenContract;
   static moMoMinterContract;
   static moMoTokenContract;
@@ -53,10 +53,10 @@ export default class ETH {
   static anniversaryHomeland;
   static anniversaryHashrate;
   static anniversaryClaimPrizes;
-  // 融合
+  //
   static furnace;
 
-  static myAddr = '';
+  static myAddr = "";
 
   static async init() {
     this.web3 = new Web3(new Web3.providers.HttpProvider(Rpc.apiNode));
@@ -67,7 +67,7 @@ export default class ETH {
   }
 
   static logoutWallet() {
-    //赋值默认的provide
+    //
     if (this.web3)
       this.web3.setProvider(new Web3.providers.HttpProvider(Rpc.apiNode));
   }
@@ -77,7 +77,7 @@ export default class ETH {
   }
 
   static async getNetwork() {
-    let res = await window.ethereum.send('net_version');
+    let res = await window.ethereum.send("net_version");
     if (res) {
       return res.result;
     }
@@ -90,7 +90,7 @@ export default class ETH {
     let res = await this.web3.eth.getBlock(blockNumber);
     return res;
   }
-  //根据ABI解析事件
+  //
   static parseEvent(data, topic, eventAbi) {
     let targetRaw;
     Object.values(data.events).map((item) => {
@@ -104,7 +104,7 @@ export default class ETH {
       targetRaw.topics.slice(1)
     );
   }
-  //初始化合约
+  //
   static initContract() {
     this.boxTokenContract = new this.web3.eth.Contract(
       [Contract.approve, Contract.allowance],
@@ -223,7 +223,7 @@ export default class ETH {
       PancakeConfig.SwapRouterAddrV2
     );
 
-    // MEC兑换合约
+    //
     this.mecSwapContrac = new this.web3.eth.Contract(
       [
         MecSwap.approve,
@@ -252,49 +252,49 @@ export default class ETH {
     this.bitsUtil = new this.web3.eth.Contract(
       [
         {
-          name: 'balanceOfExt',
+          name: "balanceOfExt",
           inputs: [
             {
-              internalType: 'address',
-              name: 'account',
-              type: 'address',
+              internalType: "address",
+              name: "account",
+              type: "address",
             },
             {
-              internalType: 'address[]',
-              name: 'erc20s',
-              type: 'address[]',
+              internalType: "address[]",
+              name: "erc20s",
+              type: "address[]",
             },
             {
-              internalType: 'address[]',
-              name: 'erc1155s',
-              type: 'address[]',
+              internalType: "address[]",
+              name: "erc1155s",
+              type: "address[]",
             },
             {
-              internalType: 'uint256[]',
-              name: 'erc1155Ids',
-              type: 'uint256[]',
+              internalType: "uint256[]",
+              name: "erc1155Ids",
+              type: "uint256[]",
             },
           ],
           outputs: [
             {
-              internalType: 'uint256[]',
-              name: 'erc20Amounts',
-              type: 'uint256[]',
+              internalType: "uint256[]",
+              name: "erc20Amounts",
+              type: "uint256[]",
             },
             {
-              internalType: 'uint256[]',
-              name: 'erc1155Amounts',
-              type: 'uint256[]',
+              internalType: "uint256[]",
+              name: "erc1155Amounts",
+              type: "uint256[]",
             },
           ],
-          stateMutability: 'view',
-          type: 'function',
+          stateMutability: "view",
+          type: "function",
         },
       ],
       WalletConfig.ETH.bitsUtil
     );
 
-    // 融合
+    //
     this.furnace = new this.web3.eth.Contract(
       [
         Furnace.testMerge,
@@ -302,63 +302,63 @@ export default class ETH {
         Furnace.beginMerge,
         Furnace.endMerge,
       ],
-      '0x935E8f512c262e4f98e2e5f3538970D43CD44320'
+      "0x935E8f512c262e4f98e2e5f3538970D43CD44320"
     );
 
-    // 头像
+    //
     this.avatarHelper = new this.web3.eth.Contract(
       [AvatarHelper.getFirstAvatar],
       WalletConfig.ETH.avatarHelper
     );
 
-    // 减产 - 家园
+    //
     this.anniversaryHomeland = new this.web3.eth.Contract(
       [Contract.claimAirdrop, Contract.isClaimedAirdrop],
-      '0xB8B487AEB3D10A36dE04079Af304ABce410D71A2'
+      "0xB8B487AEB3D10A36dE04079Af304ABce410D71A2"
     );
 
-    // 减产 - 算力
+    //
     this.anniversaryHashrate = new this.web3.eth.Contract(
       [Contract.claimAirdrop, Contract.isClaimedAirdrop],
-      '0x2438b25157ba0e87DF77c0A0ffb0FeB884B14192'
+      "0x2438b25157ba0e87DF77c0A0ffb0FeB884B14192"
     );
 
-    // 减产 - 领取奖品
+    //
     this.anniversaryClaimPrizes = new this.web3.eth.Contract(
       [Contract.claimAirdrop, Contract.isClaimedAirdrop],
-      '0x4D62D743affEDA8499e19BAE058D8255E30B845e'
+      "0x4D62D743affEDA8499e19BAE058D8255E30B845e"
     );
   }
 
-  //调起钱包
+  //
   static sendMethod(method, sendAttr, onHash, onRecipt, onError = () => {}) {
     if (Common.store.state.globalState.data.chainNetwork != 56) {
-      Common.app.showNotify(Common.app.$t('Common_23'), 'error');
+      Common.app.showNotify(Common.app.$t("Common_23"), "error");
       return;
     }
-    Common.store.commit('globalState/setwalletStatus', { status: 1 });
-    Common.oprDialog('wallet-opr-dialog', 'block');
+    Common.store.commit("globalState/setwalletStatus", { status: 1 });
+    Common.oprDialog("wallet-opr-dialog", "block");
     method.value = sendAttr.value;
     method.myAddr = sendAttr.from;
     sendAttr.gasPrice = 3.001e9;
 
     let saveHash;
 
-    let type = Common.getStorageItem('connect-wallet');
-    //walletConnect 相关
-    if (type == 'walletConnect' && Common.walletConnectConnector) {
+    let type = Common.getStorageItem("connect-wallet");
+    //
+    if (type == "walletConnect" && Common.walletConnectConnector) {
       let tx = {
         from: sendAttr.from,
         to: method._parent._address,
         data: method.encodeABI(),
-        value: sendAttr.value || '0x0',
+        value: sendAttr.value || "0x0",
       };
       Common.walletConnectConnector
         .sendTransaction(tx)
         .then((hash) => {
           onHash(hash);
           saveHash = hash;
-          Common.store.commit('globalState/setwalletStatus', {
+          Common.store.commit("globalState/setwalletStatus", {
             status: 3,
             hash,
           });
@@ -370,12 +370,12 @@ export default class ETH {
                 if (!data) return;
                 if (data.status) {
                   onRecipt(data);
-                  this.onReciptNotice(hash, method, 'success');
+                  this.onReciptNotice(hash, method, "success");
                 } else {
-                  Common.store.commit('globalState/setwalletStatus', {
+                  Common.store.commit("globalState/setwalletStatus", {
                     status: 2,
                   });
-                  this.onReciptNotice(hash, method, 'error');
+                  this.onReciptNotice(hash, method, "error");
                 }
                 clearInterval(timer);
               });
@@ -385,108 +385,108 @@ export default class ETH {
           }, 2000);
         })
         .catch((err) => {
-          console.log('err:', err);
+          console.log("err:", err);
           // Error returned when rejected
           onError();
 
-          let type = Common.getStorageItem('connect-wallet');
-          if (type == 'mboxWallet') {
-            Common.store.commit('globalState/setwalletStatus', { status: 2 });
+          let type = Common.getStorageItem("connect-wallet");
+          if (type == "mboxWallet") {
+            Common.store.commit("globalState/setwalletStatus", { status: 2 });
           }
-          //清空coin的各种loading状态
-          Common.store.commit('bnbState/clearLoading');
+          //
+          Common.store.commit("bnbState/clearLoading");
 
-          //交易失败了，暂时判断包含 reverted 字段
-          if (err.message && err.message.indexOf('-32603') != -1) {
+          //
+          if (err.message && err.message.indexOf("-32603") != -1) {
             return;
           }
 
-          //追踪不到订单信息 不用处理
-          if (err.toString().indexOf('eth_getTransactionReceipt') != -1) {
+          //
+          if (err.toString().indexOf("eth_getTransactionReceipt") != -1) {
             return;
           }
 
-          //拒绝交易
+          //
           if (err.code == 4001) {
-            Common.store.commit('globalState/setwalletStatus', { status: 2 });
+            Common.store.commit("globalState/setwalletStatus", { status: 2 });
             return;
           }
-          //gas费用太低
+          //
           if (err.code == -32603) {
-            Common.app.showNotify('intrinsic gas too low', 'error');
-            Common.store.commit('globalState/setwalletStatus', { status: 2 });
+            Common.app.showNotify("intrinsic gas too low", "error");
+            Common.store.commit("globalState/setwalletStatus", { status: 2 });
             return;
           }
 
           if (saveHash) {
-            this.onReciptNotice(saveHash, method, 'error');
+            this.onReciptNotice(saveHash, method, "error");
           }
 
-          Common.store.commit('globalState/setwalletStatus', { status: 2 });
+          Common.store.commit("globalState/setwalletStatus", { status: 2 });
         });
       return;
     }
 
     method
       .send(sendAttr)
-      .on('transactionHash', (hash) => {
+      .on("transactionHash", (hash) => {
         onHash(hash);
         saveHash = hash;
-        Common.store.commit('globalState/setwalletStatus', { status: 3, hash });
+        Common.store.commit("globalState/setwalletStatus", { status: 3, hash });
         // Common.app.showNotify(Common.app.$t("BOX_20"), "success");
       })
-      .on('error', (err) => {
-        console.info('error: ', err);
+      .on("error", (err) => {
+        console.info("error: ", err);
         onError();
 
-        let type = Common.getStorageItem('connect-wallet');
-        if (type == 'mboxWallet') {
-          Common.store.commit('globalState/setwalletStatus', { status: 2 });
+        let type = Common.getStorageItem("connect-wallet");
+        if (type == "mboxWallet") {
+          Common.store.commit("globalState/setwalletStatus", { status: 2 });
         }
-        //清空coin的各种loading状态
-        Common.store.commit('bnbState/clearLoading');
+        //
+        Common.store.commit("bnbState/clearLoading");
 
-        //交易失败了，暂时判断包含 reverted 字段
-        if (err.message && err.message.indexOf('-32603') != -1) {
+        //
+        if (err.message && err.message.indexOf("-32603") != -1) {
           return;
         }
 
-        //追踪不到订单信息 不用处理
-        if (err.toString().indexOf('eth_getTransactionReceipt') != -1) {
+        //
+        if (err.toString().indexOf("eth_getTransactionReceipt") != -1) {
           return;
         }
 
-        //拒绝交易
+        //
         if (err.code == 4001) {
-          Common.store.commit('globalState/setwalletStatus', { status: 2 });
+          Common.store.commit("globalState/setwalletStatus", { status: 2 });
           return;
         }
-        //gas费用太低
+        //
         if (err.code == -32603) {
-          Common.app.showNotify('intrinsic gas too low', 'error');
-          Common.store.commit('globalState/setwalletStatus', { status: 2 });
+          Common.app.showNotify("intrinsic gas too low", "error");
+          Common.store.commit("globalState/setwalletStatus", { status: 2 });
           return;
         }
 
         if (saveHash) {
-          this.onReciptNotice(saveHash, method, 'error');
+          this.onReciptNotice(saveHash, method, "error");
         }
 
         // Common.app.showNotifyTrans(Common.app.$t("Common_19"), saveHash, "error");
-        Common.store.commit('globalState/setwalletStatus', { status: 2 });
+        Common.store.commit("globalState/setwalletStatus", { status: 2 });
       })
-      .on('receipt', (data) => {
+      .on("receipt", (data) => {
         onRecipt(data);
-        this.onReciptNotice(saveHash, method, 'success');
+        this.onReciptNotice(saveHash, method, "success");
       });
   }
 
   static async signStr(dataToSign) {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
-    let walletType = Common.getStorageItem('connect-wallet');
+    let walletType = Common.getStorageItem("connect-wallet");
 
-    if (walletType == 'walletConnect') {
+    if (walletType == "walletConnect") {
       let res = await Common.walletConnectConnector.signMessage([
         myAddr,
         dataToSign,
@@ -494,7 +494,7 @@ export default class ETH {
       return res;
     }
 
-    if (walletType == 'metamask') {
+    if (walletType == "metamask") {
       return new Promise((resolve) => {
         try {
           window.web3.personal.sign(dataToSign, myAddr, async (err, res) => {
@@ -505,7 +505,7 @@ export default class ETH {
         } catch (error) {
           window.ethereum
             .request({
-              method: 'personal_sign',
+              method: "personal_sign",
               params: [myAddr, dataToSign],
             })
             .then((res) => {
@@ -515,16 +515,16 @@ export default class ETH {
       });
     }
 
-    if (walletType == 'binanceChain') {
+    if (walletType == "binanceChain") {
       let res = await window.BinanceChain.request({
-        jsonrpc: '2.0',
-        method: 'eth_sign',
+        jsonrpc: "2.0",
+        method: "eth_sign",
         params: [myAddr, dataToSign],
       });
       return res;
     }
 
-    if (walletType == 'mboxWallet') {
+    if (walletType == "mboxWallet") {
       return new Promise((resolve) => {
         window.mbox.bscWeb3.personal.sign(
           dataToSign,
@@ -541,23 +541,23 @@ export default class ETH {
 
   static onReciptNotice(hash, method, type) {
     console.log(hash, method, type);
-    //当前只记录swap和流动性相关的记录
+    //
     let methodName = method._method.name;
     let _arguments = method.arguments;
     let myAddr = method.myAddr;
     let msg =
-      type == 'success'
-        ? Common.app.$t('Air-drop_111')
-        : Common.app.$t('Common_19');
+      type == "success"
+        ? Common.app.$t("Air-drop_111")
+        : Common.app.$t("Common_19");
     let needSave = false;
 
     //Swap BNB to Token
     if (
-      ['swapExactETHForTokens', 'swapETHForExactTokens'].indexOf(methodName) !=
+      ["swapExactETHForTokens", "swapETHForExactTokens"].indexOf(methodName) !=
       -1
     ) {
-      let fromName = 'BNB';
-      let toName = '';
+      let fromName = "BNB";
+      let toName = "";
       let fromValue = BigNumber(method.value);
       let toValue = BigNumber(_arguments[0]);
 
@@ -583,17 +583,17 @@ export default class ETH {
     }
     //Swap Token to BNB
     if (
-      ['swapExactTokensForETH', 'swapTokensForExactETH'].indexOf(methodName) !=
+      ["swapExactTokensForETH", "swapTokensForExactETH"].indexOf(methodName) !=
       -1
     ) {
-      let fromName = '';
-      let toName = 'BNB';
+      let fromName = "";
+      let toName = "BNB";
       let fromValue =
-        methodName == 'swapTokensForExactETH'
+        methodName == "swapTokensForExactETH"
           ? BigNumber(_arguments[1])
           : BigNumber(_arguments[0]);
       let toValue =
-        methodName == 'swapTokensForExactETH'
+        methodName == "swapTokensForExactETH"
           ? BigNumber(_arguments[0])
           : BigNumber(_arguments[1]);
 
@@ -618,21 +618,21 @@ export default class ETH {
       needSave = true;
     }
     //Swap Token to token
-    console.log('-----', methodName);
+    console.log("-----", methodName);
     if (
-      ['swapExactTokensForTokens', 'swapTokensForExactTokens'].indexOf(
+      ["swapExactTokensForTokens", "swapTokensForExactTokens"].indexOf(
         methodName
       ) != -1
     ) {
-      console.log('=============');
-      let fromName = '';
-      let toName = '';
+      console.log("=============");
+      let fromName = "";
+      let toName = "";
       let fromValue =
-        methodName == 'swapTokensForExactTokens'
+        methodName == "swapTokensForExactTokens"
           ? BigNumber(_arguments[1])
           : BigNumber(_arguments[0]);
       let toValue =
-        methodName == 'swapTokensForExactTokens'
+        methodName == "swapTokensForExactTokens"
           ? BigNumber(_arguments[0])
           : BigNumber(_arguments[1]);
 
@@ -652,13 +652,13 @@ export default class ETH {
         }
       }
 
-      if (fromName === 'MEC') {
+      if (fromName === "MEC") {
         fromValue = Number(fromValue);
         toValue = Common.numFloor(
           BigNumber(toValue).dividedBy(BigNumber(1e18)),
           1e8
         );
-      } else if (toName === 'MEC') {
+      } else if (toName === "MEC") {
         fromValue = Common.numFloor(
           BigNumber(fromValue).dividedBy(BigNumber(1e18)),
           1e8
@@ -678,9 +678,9 @@ export default class ETH {
       needSave = true;
     }
     //Add Token & BNB || Remove Token & Token
-    if (['addLiquidityETH', 'removeLiquidityETH'].indexOf(methodName) != -1) {
-      let fromName = '';
-      let toName = 'BNB';
+    if (["addLiquidityETH", "removeLiquidityETH"].indexOf(methodName) != -1) {
+      let fromName = "";
+      let toName = "BNB";
       let fromValue = BigNumber(_arguments[2]);
       let toValue = BigNumber(_arguments[3]);
 
@@ -700,14 +700,14 @@ export default class ETH {
         BigNumber(toValue).dividedBy(BigNumber(1e18)),
         1e8
       );
-      let action = methodName == 'addLiquidityETH' ? 'Add' : 'Remove';
+      let action = methodName == "addLiquidityETH" ? "Add" : "Remove";
       msg = `${action} ${fromValue} ${fromName} and ${toValue} ${toName}`;
       needSave = true;
     }
     //Add Token & Token || Remove Token & Token
-    if (['addLiquidity', 'removeLiquidity'].indexOf(methodName) != -1) {
-      let fromName = 'MBOX';
-      let toName = 'MEC';
+    if (["addLiquidity", "removeLiquidity"].indexOf(methodName) != -1) {
+      let fromName = "MBOX";
+      let toName = "MEC";
       let fromValue, action;
       let toValue = Number(_arguments[5]);
 
@@ -719,12 +719,12 @@ export default class ETH {
       // 		toValue = key;
       // 	}
       // }
-      if (methodName == 'addLiquidity') {
+      if (methodName == "addLiquidity") {
         fromValue = BigNumber(_arguments[5]);
-        action = 'Add';
+        action = "Add";
       } else {
         fromValue = BigNumber(_arguments[4]);
-        action = 'Remove';
+        action = "Remove";
       }
       fromValue = Common.numFloor(
         BigNumber(fromValue).dividedBy(BigNumber(1e18)),
@@ -736,39 +736,39 @@ export default class ETH {
 
     Common.app.showNotifyTrans(msg, hash, type);
     if (needSave) {
-      let history = Common.getStorageItem('pancake-history-' + myAddr);
+      let history = Common.getStorageItem("pancake-history-" + myAddr);
       let histoyJSON = [];
       if (history != undefined) {
         histoyJSON = JSON.parse(history);
       }
       histoyJSON.push({ msg, hash, type });
       Common.setStorageItem(
-        'pancake-history-' + myAddr,
+        "pancake-history-" + myAddr,
         JSON.stringify(histoyJSON)
       );
-      //设置store
-      Common.store.commit('bnbState/setData', { pancakeHistory: histoyJSON });
+      //
+      Common.store.commit("bnbState/setData", { pancakeHistory: histoyJSON });
     }
   }
 
-  //获取当前账户
+  //
   static async getAccount(needShowConnect = false) {
-    if (this.myAddr != '') return this.myAddr;
+    if (this.myAddr != "") return this.myAddr;
     return new Promise((resolve) => {
       if (Common.app) {
         if (needShowConnect) {
-          Common.app.oprDialog('connect-wallet-dialog', 'block');
+          Common.app.oprDialog("connect-wallet-dialog", "block");
         }
       }
       let t = setInterval(() => {
-        if (this.myAddr != '') {
+        if (this.myAddr != "") {
           resolve(this.myAddr);
           clearInterval(t);
         }
       }, 1000);
     });
   }
-  //授权
+  //
   static async approveBoxToMinter() {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -777,18 +777,18 @@ export default class ETH {
       this.sendMethod(
         this.boxTokenContract.methods.approve(
           WalletConfig.ETH.moMoMinter,
-          '0x' + Common.repeat('f', 64)
+          "0x" + Common.repeat("f", 64)
         ),
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
           await Common.app.eth_setBoxAllowance();
-          Common.store.commit('globalState/unLockBtn', 'approveLock');
+          Common.store.commit("globalState/unLockBtn", "approveLock");
         }
       );
     });
   }
-  //查询授权
+  //
   static async boxAllowanceToMinter() {
     let myAddr = await this.getAccount();
     if (!myAddr) return -1;
@@ -803,7 +803,7 @@ export default class ETH {
     });
   }
 
-  //领取Key到钱包
+  //
   static async getRewardKey(pIndexArr) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return null;
@@ -821,15 +821,15 @@ export default class ETH {
         { from: myAddr },
         resolve,
         () => {
-          console.log('getRewardKey success');
+          console.log("getRewardKey success");
           Common.app.getStakeValueAndEarndKey();
-          Common.app.setCoinValueByName('MBOX');
-          Common.app.unLockBtn('getKeyLock');
+          Common.app.setCoinValueByName("MBOX");
+          Common.app.unLockBtn("getKeyLock");
         }
       );
     });
   }
-  //查询质押和Key的收益
+  //
   static async getStakeValueAndEarndKey(pIndexArr) {
     let myAddr = await this.getAccount();
     if (!myAddr) return null;
@@ -843,7 +843,7 @@ export default class ETH {
         });
     });
   }
-  //查询我钱包里面的erc20币授权情况
+  //
   static async viewErcAllowanceToTarget(
     fromAddr,
     targetAddr,
@@ -872,11 +872,11 @@ export default class ETH {
         });
     });
   }
-  //授权Erc20给矿池
+  //
   static async approveErcToTarget(
     fromAddr,
     targetAddr,
-    approveInfo = { coinKey: '', type: '' }
+    approveInfo = { coinKey: "", type: "" }
   ) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -888,14 +888,14 @@ export default class ETH {
     return new Promise((resolve) => {
       Common.app.showRiskNotice(() => {
         this.sendMethod(
-          contract.methods.approve(targetAddr, '0x' + Common.repeat('f', 64)),
+          contract.methods.approve(targetAddr, "0x" + Common.repeat("f", 64)),
           { from: myAddr },
           (hash) => resolve(hash),
           () => {
             let { coinKey, type } = approveInfo;
-            console.log('recipt', approveInfo);
-            if (coinKey != '') {
-              Common.store.commit('bnbState/setCoinAllowance', {
+            console.log("recipt", approveInfo);
+            if (coinKey != "") {
+              Common.store.commit("bnbState/setCoinAllowance", {
                 coinKey,
                 allowance: 1.157920892373162e77,
                 type,
@@ -906,7 +906,7 @@ export default class ETH {
       });
     });
   }
-  //授权Erc20给矿池带返回
+  //
   static async approveErcToTargetOnRecipt(fromAddr, targetAddr, recipt) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -917,7 +917,7 @@ export default class ETH {
     return new Promise((resolve) => {
       Common.app.showRiskNotice(() => {
         this.sendMethod(
-          contract.methods.approve(targetAddr, '0x' + Common.repeat('f', 64)),
+          contract.methods.approve(targetAddr, "0x" + Common.repeat("f", 64)),
           { from: myAddr },
           (hash) => resolve(hash),
           () => {
@@ -927,7 +927,7 @@ export default class ETH {
       });
     });
   }
-  //查询合约里面币我的币
+  //
   static async balanceOfToTarget(targetAddr) {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -946,7 +946,7 @@ export default class ETH {
         });
     });
   }
-  //查询对应合约里面对应的币
+  //
   static async balanceOfToTargetFromAddr(targetAddr, fromAddr) {
     let contract = new this.web3MainNet.eth.Contract(
       [Contract.balanceOf],
@@ -962,7 +962,7 @@ export default class ETH {
         });
     });
   }
-  //查询LP对应币价
+  //
   static async getPricePerFullShare(targetAddr) {
     return new Promise((resolve, reject) => {
       try {
@@ -981,7 +981,7 @@ export default class ETH {
       }
     });
   }
-  //查询质押收入
+  //
   static async viewEarned(targetAddr) {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -997,7 +997,7 @@ export default class ETH {
         });
     });
   }
-  //查询24小时空投数量
+  //
   static async viewTotalAirdrop(targetAddr) {
     let contract = new this.web3.eth.Contract(
       [Contract.rewardRate],
@@ -1013,7 +1013,7 @@ export default class ETH {
         });
     });
   }
-  //查询全网总质押
+  //
   static async viewTotalSupply(targetAddr) {
     let contract = new this.web3MainNet.eth.Contract(
       [Contract.totalSupply],
@@ -1029,7 +1029,7 @@ export default class ETH {
         });
     });
   }
-  // 领取key到开箱子合约并兑换箱子
+  //
   static async getChestBox(pIndexArr, amount) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -1045,23 +1045,23 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          console.log('getChestBox success');
+          console.log("getChestBox success");
           Common.app.getStakeValueAndEarndKey();
           Common.app.setOrder();
-          Common.app.unLockBtn('getKeyLock');
+          Common.app.unLockBtn("getKeyLock");
         }
       );
     });
   }
 
-  //获取余额
+  //
   static async getMyBalance() {
     let myAddr = await this.getAccount();
     if (!myAddr) return 0;
     let balance = await Rpc.getEthBalance(myAddr);
     return Common.numFloor(parseInt(balance) / 1e18, 10000);
   }
-  //获取余额
+  //
   static async getBalance() {
     let myAddr = await this.getAccount();
     if (!myAddr) return 0;
@@ -1092,7 +1092,7 @@ export default class ETH {
     });
   }
 
-  //查询合约中一个币种的余额
+  //
   static async getTargetBalancefromTokenAddr(targetAddr, tokenAddr) {
     let contract = new this.web3.eth.Contract([Contract.balanceOf], tokenAddr);
     return new Promise((resolve) => {
@@ -1105,7 +1105,7 @@ export default class ETH {
     });
   }
 
-  //添加box
+  //
   static async addMysteryBox(amount) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -1122,7 +1122,7 @@ export default class ETH {
       );
     });
   }
-  //添加box
+  //
   static async addBox(amount) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -1136,12 +1136,12 @@ export default class ETH {
       );
     });
   }
-  //开箱子
+  //
   static async openBox(amount) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
     if (!this.moMoMinterContract) return;
-    let transactionHash = '';
+    let transactionHash = "";
 
     return new Promise((resolve) => {
       this.sendMethod(
@@ -1153,25 +1153,25 @@ export default class ETH {
         },
         (receiptData) => {
           EventBus.$emit(EventConfig.OpenBoxConfirm, {
-            chain: 'eth',
+            chain: "eth",
             hash: receiptData.transactionHash,
           });
         },
         () => {
           EventBus.$emit(EventConfig.OpenBoxFail, {
-            chain: 'eth',
+            chain: "eth",
             hash: transactionHash,
           });
         }
       );
     });
   }
-  //开箱子并质押
+  //
   static async openBoxAndStake(amount) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
     if (!this.momoStakeContract) return;
-    let transactionHash = '';
+    let transactionHash = "";
     return new Promise((resolve) => {
       this.sendMethod(
         this.momoStakeContract.methods.mintAndStake(amount),
@@ -1182,13 +1182,13 @@ export default class ETH {
         },
         (receiptData) => {
           EventBus.$emit(EventConfig.OpenBoxConfirm, {
-            chain: 'eth',
+            chain: "eth",
             hash: receiptData.transactionHash,
           });
         },
         () => {
           EventBus.$emit(EventConfig.OpenBoxFail, {
-            chain: 'eth',
+            chain: "eth",
             hash: transactionHash,
           });
         }
@@ -1196,7 +1196,7 @@ export default class ETH {
     });
   }
 
-  //查询是否有可以开的箱子
+  //
   static async getOrder() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -1212,7 +1212,7 @@ export default class ETH {
         });
     });
   }
-  //查询1155是否授权给对应合约
+  //
   static async isApprovedForAllByTokenAddr_1155(tokenAddr) {
     let myAddr = await this.getAccount();
     if (!myAddr) return null;
@@ -1227,7 +1227,7 @@ export default class ETH {
     });
   }
 
-  //授权1155给对应合约
+  //
   static async approve1155ToTargetToken(tokenAddr) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return null;
@@ -1239,12 +1239,12 @@ export default class ETH {
         (hash) => resolve(hash),
         () => {
           Common.app.eth_set1155IsApprovedForStake();
-          Common.app.unLockBtn('approveLock');
+          Common.app.unLockBtn("approveLock");
         }
       );
     });
   }
-  //查询721是否授权给对应合约
+  //
   static async isApprovedForAllByTokenAddr_721(tokenAddr) {
     let myAddr = await this.getAccount();
     if (!myAddr) return null;
@@ -1258,7 +1258,7 @@ export default class ETH {
         });
     });
   }
-  //授权721给对应合约
+  //
   static async approve721ToTargetToken(tokenAddr) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return null;
@@ -1270,13 +1270,13 @@ export default class ETH {
         (hash) => resolve(hash),
         () => {
           Common.app.eth_set721IsApprovedForStake();
-          Common.app.unLockBtn('approveLock');
+          Common.app.unLockBtn("approveLock");
         }
       );
     });
   }
 
-  //是否授权给对应的合约，针对我们自己的token处理
+  //
   static async isApprovedForAll(fromToken, toToken) {
     let myAddr = await this.getAccount();
     if (!myAddr) return null;
@@ -1294,7 +1294,7 @@ export default class ETH {
         });
     });
   }
-  //授权给目标合约
+  //
   static async approvedForAll(fromToken, toToken, recipet) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return null;
@@ -1310,7 +1310,7 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          Common.app.unLockBtn('approveLock');
+          Common.app.unLockBtn("approveLock");
           recipet();
         }
       );
@@ -1331,15 +1331,15 @@ export default class ETH {
     });
   }
 
-  //查询721产出情况
+  //
   static async getAll721Status() {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'getLimits',
-          type: 'function',
-          inputs: [{ name: 'protoIdArray_', type: 'uint256[]' }],
-          outputs: [{ name: 'limits', type: 'uint256[]' }],
+          name: "getLimits",
+          type: "function",
+          inputs: [{ name: "protoIdArray_", type: "uint256[]" }],
+          outputs: [{ name: "limits", type: "uint256[]" }],
         },
       ],
       WalletConfig.ETH.moMoHelper3
@@ -1371,12 +1371,12 @@ export default class ETH {
     });
   }
 
-  //获取我的NFT
+  //
   static async getMomosByType(type) {
     let myAddr = await this.getAccount();
     if (!myAddr) return null;
     if (!this.momoHelperContract) return null;
-    //所有1155的prototype
+    //
     let prototype_1155_arr = [];
     for (let key in BaseConfig.NftCfg) {
       let { prototype, quality } = BaseConfig.NftCfg[key];
@@ -1416,7 +1416,7 @@ export default class ETH {
             .call()
             .then((momosObj) => {
               console.log(
-                'AUCTION',
+                "AUCTION",
                 this.generateNftObj(
                   momosObj,
                   ConstantConfig.NFT_LOCATION.AUCTION
@@ -1441,17 +1441,17 @@ export default class ETH {
             });
           break;
         default:
-          console.log('error type...');
+          console.log("error type...");
           break;
       }
     });
   }
 
-  //生成NFT数据
+  //
   static generateNftObj({ _ids, _amounts, _tokenIds, _attrs }, location) {
     let erc1155Obj = [];
     let erc721Obj = [];
-    //生成1155数据
+    //
     _ids.map((item, key) => {
       let { tokenName, quality, category } = BaseConfig.NftCfg[item];
       erc1155Obj.push({
@@ -1465,17 +1465,17 @@ export default class ETH {
         quality,
         hashrate: quality,
         lvHashrate: quality,
-        chain: 'bnb',
+        chain: "bnb",
         location,
         gems: [0, 0, 0, 0],
         inGroupSellCar: false,
-        groupSellPrice: '',
+        groupSellPrice: "",
       });
     });
 
-    //按照种类排序
+    //
     erc1155Obj.sort((a, b) => b.prototype - a.prototype);
-    //生成721的数据
+    //
     _tokenIds.map((item, key) => {
       let itemAttr = _attrs.slice(key * 7, (key + 1) * 7);
       erc721Obj.push({
@@ -1489,25 +1489,25 @@ export default class ETH {
         hashrate: Number(itemAttr[5]),
         lvHashrate: Number(itemAttr[6]),
         num: 1,
-        chain: 'bnb',
+        chain: "bnb",
         tokenName: BaseConfig.NftCfg[itemAttr[0]]
-          ? BaseConfig.NftCfg[itemAttr[0]]['tokenName']
-          : '',
+          ? BaseConfig.NftCfg[itemAttr[0]]["tokenName"]
+          : "",
         location,
         gems: [0, 0, 0, 0],
         inGroupSellCar: false,
-        groupSellPrice: '',
+        groupSellPrice: "",
         rent: {
-          orderId: '-',
-          status: '-',
-          rentTime: '-',
-          currentRentDays: '-',
-          state: -2, //-2：未请求状态，-1：未上架，0：挂单中，1：出租中
+          orderId: "-",
+          status: "-",
+          rentTime: "-",
+          currentRentDays: "-",
+          state: -2, //
         },
       });
     });
 
-    //按照战力排序
+    //
     // erc721Obj.sort((a, b) =>
     // 	b.lvHashrate - a.lvHashrate
     // );
@@ -1515,9 +1515,9 @@ export default class ETH {
     return [...erc721Obj, ...erc1155Obj];
   }
 
-  //批量获取名字
+  //
   static async getMomoNamesByTokenIds(tokenIds) {
-    if (!this.momoHelperContract) return '';
+    if (!this.momoHelperContract) return "";
     return new Promise((resolve) => {
       this.momoHelperContract.methods
         .getMomoNames(tokenIds)
@@ -1530,24 +1530,24 @@ export default class ETH {
     });
   }
 
-  //获取momo的名字
+  //
   static async getMomoNameByTokenId(tokenId) {
-    if (!this.moMoTokenContract) return '';
+    if (!this.moMoTokenContract) return "";
     return new Promise((resolve) => {
       this.moMoTokenContract.methods
         .getMomoName(tokenId)
         .call()
         .then((name) => {
-          name = name || '';
-          if (name == '') {
-            resolve('');
+          name = name || "";
+          if (name == "") {
+            resolve("");
           } else {
-            resolve(this.web3.utils.hexToUtf8(name) || '');
+            resolve(this.web3.utils.hexToUtf8(name) || "");
           }
         });
     });
   }
-  //取名
+  //
   static async setMomoNameByTokenId(tokenId, name, isFirst) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -1562,7 +1562,7 @@ export default class ETH {
         { from: myAddr, value: isFirst ? 0 : 0.05e18 },
         (hash) => resolve(hash),
         () => {
-          Common.app.eth_setNameConfirm({ chain: 'eth', tokenId, name });
+          Common.app.eth_setNameConfirm({ chain: "eth", tokenId, name });
         }
       );
     });
@@ -1570,7 +1570,7 @@ export default class ETH {
   static getStrLen(str) {
     return (this.web3.utils.utf8ToHex(str).length - 2) / 2;
   }
-  //写故事
+  //
   static async setMomoStoryByTokenId(tokenId, story, isFirst) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -1589,7 +1589,7 @@ export default class ETH {
       );
     });
   }
-  //获取momo的名字
+  //
   static async getMomoStoryByTokenId(tokenId) {
     if (!this.moMoTokenContract) return [];
     return new Promise((resolve) => {
@@ -1602,7 +1602,7 @@ export default class ETH {
         });
     });
   }
-  //升级721
+  //
   static async upgrade(
     gotoLv,
     tokenId,
@@ -1614,7 +1614,7 @@ export default class ETH {
     if (!myAddr) return;
     if (!this.moMoTokenContract) return;
     return new Promise((resolve) => {
-      //将字符串转换为Number
+      //
       protosV1V2V3.map((item, index) => (protosV1V2V3[index] = Number(item)));
       tokensV4V5.map((item, index) => (tokensV4V5[index] = Number(item)));
 
@@ -1628,7 +1628,7 @@ export default class ETH {
         (hash) => resolve(hash),
         () => {
           EventBus.$emit(EventConfig.LevelUpConfirm, {
-            chain: 'eth',
+            chain: "eth",
             gotoLv,
             tokenId,
           });
@@ -1636,7 +1636,7 @@ export default class ETH {
       );
     });
   }
-  //升级质押的721
+  //
   static async upgradeStake(
     gotoLv,
     tokenId,
@@ -1652,7 +1652,7 @@ export default class ETH {
       : this.momoStakeContract;
     if (!constract) return;
     return new Promise((resolve) => {
-      //将字符串转换为Number
+      //
       protosV1V2V3.map((item, index) => (protosV1V2V3[index] = Number(item)));
       tokensV4V5.map((item, index) => (tokensV4V5[index] = Number(item)));
 
@@ -1664,7 +1664,7 @@ export default class ETH {
         (hash) => resolve(hash),
         () => {
           EventBus.$emit(EventConfig.LevelUpConfirm, {
-            chain: 'eth',
+            chain: "eth",
             gotoLv,
             tokenId,
           });
@@ -1676,7 +1676,7 @@ export default class ETH {
     });
   }
 
-  //质押NFT
+  //
   static async stakeNft(erc1155ids, erc1155Num, erc721TokenIds) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -1693,16 +1693,16 @@ export default class ETH {
           resolve(hash);
         },
         async () => {
-          console.log('stake success!!!!!');
+          console.log("stake success!!!!!");
           await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
           await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
           await Common.app.eth_setMyHashrate();
-          Common.app.unLockBtn('stakeLock');
+          Common.app.unLockBtn("stakeLock");
         }
       );
     });
   }
-  //解冻质押
+  //
   static async unStakeNft(erc1155ids, erc1155Num, erc721TokenIds) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -1719,16 +1719,16 @@ export default class ETH {
           resolve(hash);
         },
         async () => {
-          console.log('unStakeNft success!!!!!');
+          console.log("unStakeNft success!!!!!");
           await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
           await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
           await Common.app.eth_setMyHashrate();
-          Common.app.unLockBtn('unStekeLock');
+          Common.app.unLockBtn("unStekeLock");
         }
       );
     });
   }
-  //查询自己质押的NFT总算力
+  //
   static async getMyHashrate() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -1742,7 +1742,7 @@ export default class ETH {
         });
     });
   }
-  //查询全链质押的NFT的总算力
+  //
   static async getTotalHashrate() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -1756,7 +1756,7 @@ export default class ETH {
         });
     });
   }
-  //查询待领取的MBOX
+  //
   static async getEarnedMobx() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -1770,7 +1770,7 @@ export default class ETH {
         });
     });
   }
-  //领取MBOX
+  //
   static async takeEarnedMbox() {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -1781,17 +1781,17 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          console.log('getReward success!!!!!');
-          await Common.app.setCoinValueByName('MBOX');
+          console.log("getReward success!!!!!");
+          await Common.app.setCoinValueByName("MBOX");
           await Common.app.eth_setEarnedMbox();
           await Common.app.getPoolsEarns();
-          Common.app.unLockBtn('getMboxLock');
+          Common.app.unLockBtn("getMboxLock");
         }
       );
     });
   }
 
-  //查询可上架位置
+  //
   static async getSuggestIndex() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -1810,7 +1810,7 @@ export default class ETH {
         });
     });
   }
-  //上架
+  //
   static async createAuction({
     _startPrice,
     _endPrice,
@@ -1858,7 +1858,7 @@ export default class ETH {
         },
         () => {
           EventBus.$emit(EventConfig.CreateAuctionError, {
-            chain: 'eth',
+            chain: "eth",
             hash: saveHash,
           });
         }
@@ -1866,7 +1866,7 @@ export default class ETH {
     });
   }
 
-  //批量创建订单
+  //
   static async createAuctionBatch({
     suggestIndex_,
     tokenIds_,
@@ -1880,14 +1880,14 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'createAuctionBatch',
-          type: 'function',
+          name: "createAuctionBatch",
+          type: "function",
           inputs: [
-            { name: 'suggestIndex_', type: 'uint256' },
-            { name: 'tokenIds_', type: 'uint256[]' },
-            { name: 'prices721_', type: 'uint256[]' },
-            { name: 'ids_', type: 'uint256[]' },
-            { name: 'prices1155_', type: 'uint256[]' },
+            { name: "suggestIndex_", type: "uint256" },
+            { name: "tokenIds_", type: "uint256[]" },
+            { name: "prices721_", type: "uint256[]" },
+            { name: "ids_", type: "uint256[]" },
+            { name: "prices1155_", type: "uint256[]" },
           ],
           outputs: [],
         },
@@ -1928,7 +1928,7 @@ export default class ETH {
         },
         () => {
           EventBus.$emit(EventConfig.CreateAuctionError, {
-            chain: 'eth',
+            chain: "eth",
             hash: saveHash,
           });
         }
@@ -1937,10 +1937,10 @@ export default class ETH {
   }
 
   static numToHex(num) {
-    return '0x' + BigNumber(num).toString(16);
+    return "0x" + BigNumber(num).toString(16);
   }
 
-  //购买市场上的物品
+  //
   static async buyMarketPet(_auctor, _index, coinKey, _startTime, _price) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -1963,17 +1963,17 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          console.log('buyMarketPet success!!!!!');
-          EventBus.$emit(EventConfig.BidPetSuccess, { chain: 'eth', coinKey });
+          console.log("buyMarketPet success!!!!!");
+          EventBus.$emit(EventConfig.BidPetSuccess, { chain: "eth", coinKey });
           await Common.app.setCoinValueByName(coinKey);
           await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
-          Common.app.unLockBtn('buyMomoLock');
+          Common.app.unLockBtn("buyMomoLock");
         }
       );
     });
   }
 
-  //批量购买
+  //
   static async buyMarketPets(
     _auctors,
     _indexs,
@@ -1988,14 +1988,14 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'bid',
-          type: 'function',
+          name: "bid",
+          type: "function",
           inputs: [
-            { name: 'auctors_', type: 'address[]' },
-            { name: 'indexs_', type: 'uint256[]' },
-            { name: 'startTimes_', type: 'uint256[]' },
-            { name: 'prices_', type: 'uint256[]' },
-            { name: 'ignoreSold', type: 'bool' },
+            { name: "auctors_", type: "address[]" },
+            { name: "indexs_", type: "uint256[]" },
+            { name: "startTimes_", type: "uint256[]" },
+            { name: "prices_", type: "uint256[]" },
+            { name: "ignoreSold", type: "bool" },
           ],
           outputs: [],
         },
@@ -2023,7 +2023,7 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          console.log('buyMarketPets success!!!!!');
+          console.log("buyMarketPets success!!!!!");
           await Common.app.setCoinValueByName(coinKey);
           await Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
         }
@@ -2031,7 +2031,7 @@ export default class ETH {
     });
   }
 
-  // 批量购买
+  //
   static async bidBatch(auctors, orderIds, amounts, skipSoldOrder) {
     const address = await this.getAccount(true);
 
@@ -2045,30 +2045,30 @@ export default class ETH {
         {
           inputs: [
             {
-              internalType: 'address[]',
-              name: 'auctors_',
-              type: 'address[]',
+              internalType: "address[]",
+              name: "auctors_",
+              type: "address[]",
             },
             {
-              internalType: 'uint256[]',
-              name: 'orderIds_',
-              type: 'uint256[]',
+              internalType: "uint256[]",
+              name: "orderIds_",
+              type: "uint256[]",
             },
             {
-              internalType: 'uint256[]',
-              name: 'amounts_',
-              type: 'uint256[]',
+              internalType: "uint256[]",
+              name: "amounts_",
+              type: "uint256[]",
             },
             {
-              internalType: 'bool',
-              name: 'skipSoldOrder_',
-              type: 'bool',
+              internalType: "bool",
+              name: "skipSoldOrder_",
+              type: "bool",
             },
           ],
-          name: 'bidBatch',
+          name: "bidBatch",
           outputs: [],
-          stateMutability: 'nonpayable',
-          type: 'function',
+          stateMutability: "nonpayable",
+          type: "function",
         },
       ],
       WalletConfig.ETH.bidBatch
@@ -2084,7 +2084,7 @@ export default class ETH {
     });
   }
 
-  //取消上架
+  //
   static async cancelAuction(_index) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -2105,12 +2105,12 @@ export default class ETH {
           resolve(hash);
         },
         () => {
-          console.log('cancelAuction success!!!!!');
+          console.log("cancelAuction success!!!!!");
           Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
         },
         () => {
           EventBus.$emit(EventConfig.CancelAuctionError, {
-            chain: 'eth',
+            chain: "eth",
             hash: saveHash,
           });
         }
@@ -2118,7 +2118,7 @@ export default class ETH {
     });
   }
 
-  //修改价格
+  //
   static async changePrice({ index, startPrice, endPrice, durationDays }) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -2144,15 +2144,15 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          console.log('changePrice success!!!!!');
-          EventBus.$emit(EventConfig.ChangePriceSuccess, { chain: 'eth' });
-          Common.app.unLockBtn('changePriceLock');
+          console.log("changePrice success!!!!!");
+          EventBus.$emit(EventConfig.ChangePriceSuccess, { chain: "eth" });
+          Common.app.unLockBtn("changePriceLock");
         }
       );
     });
   }
 
-  //获取市场上的订单信息
+  //
   static async getMarketOrder(auctor, index) {
     let contract = new this.web3.eth.Contract(
       [Contract.getMarketOrder],
@@ -2169,19 +2169,19 @@ export default class ETH {
     });
   }
 
-  //获取开箱子记录
+  //
   static async getStakeHistory() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
-    let data = await Http.getStakeHistory('BNB', myAddr);
+    let data = await Http.getStakeHistory("BNB", myAddr);
     return data.list;
   }
 
-  //获取开箱子记录
+  //
   static async getOpenBoxHistory() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
-    let data = await Http.getOpenBoxHistory('BNB', myAddr);
+    let data = await Http.getOpenBoxHistory("BNB", myAddr);
     return data.list;
   }
 
@@ -2206,7 +2206,7 @@ export default class ETH {
     return new Promise((resolve) => {
       let method = contract.methods.deposit(pIndex, amountHex);
       let value = this.numToHex(0);
-      if (coinKey == 'BNB') {
+      if (coinKey == "BNB") {
         method = contract.methods.deposit(pIndex);
         value = amountHex;
       }
@@ -2215,9 +2215,9 @@ export default class ETH {
         { from: myAddr, value },
         (hash) => resolve(hash),
         () => {
-          console.log('deposit success!!!!!');
+          console.log("deposit success!!!!!");
           EventBus.$emit(EventConfig.DepositOrWithdrawConfirm, {
-            chain: 'eth',
+            chain: "eth",
           });
           Common.app.getStakeValueAndEarndKey();
         }
@@ -2225,11 +2225,11 @@ export default class ETH {
     });
   }
 
-  //提币
+  //
   static async withdraw(coinKey, amount) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
-    //创建合约对象
+    //
     let contract = new this.web3.eth.Contract(
       [Contract.withdrawCoin],
       WalletConfig.ETH.momoFarm
@@ -2248,7 +2248,7 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          console.log('withdraw success!!!!!');
+          console.log("withdraw success!!!!!");
           Common.app.getStakeValueAndEarndKey();
           Common.app.setCoinValueByName(coinKey);
         }
@@ -2256,9 +2256,9 @@ export default class ETH {
     });
   }
 
-  //购买box
+  //
   static async buyBox(amount) {
-    console.log('buyBox', amount);
+    console.log("buyBox", amount);
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
     if (!this.moMoMinterContract) return;
@@ -2269,22 +2269,22 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          console.log('buyBox success!!!!!');
+          console.log("buyBox success!!!!!");
         }
       );
     });
   }
 
-  //pancake相关
-  //移除流动性
+  //
+  //
   static async removeLiquidity(coinItemObj, liquidity, targetLPPrice, setting) {
     console.log(coinItemObj, liquidity, targetLPPrice, setting);
     let { coinName, coinKey } = coinItemObj;
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
 
-    let coinObj = coinName.split('-');
-    const isMec = coinName.indexOf('MEC') != -1;
+    let coinObj = coinName.split("-");
+    const isMec = coinName.indexOf("MEC") != -1;
     let selectCoinA = PancakeConfig.SelectCoin[coinObj[0]];
     let selectCoinB = PancakeConfig.SelectCoin[coinObj[1]];
     let LPObj = PancakeConfig.StakeLP[coinKey];
@@ -2320,11 +2320,11 @@ export default class ETH {
         ? this.pancakeSwapContract
         : this.pancakeSwapContracV2;
 
-    //包含BNB
-    if (coinName.indexOf('BNB') != -1) {
-      let token = coinObj[0] == 'BNB' ? tokenB : tokenA;
-      let amountTokenMin = coinObj[0] == 'BNB' ? amountBMin : amountAMin;
-      let amountETHMin = coinObj[0] == 'BNB' ? amountAMin : amountBMin;
+    //
+    if (coinName.indexOf("BNB") != -1) {
+      let token = coinObj[0] == "BNB" ? tokenB : tokenA;
+      let amountTokenMin = coinObj[0] == "BNB" ? amountBMin : amountAMin;
+      let amountETHMin = coinObj[0] == "BNB" ? amountAMin : amountBMin;
 
       method = PancakeSwapContract.methods.removeLiquidityETH(
         token,
@@ -2373,8 +2373,8 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          console.log('removeLiquidity success!!!!!');
-          Common.store.commit('bnbState/clearLoading');
+          console.log("removeLiquidity success!!!!!");
+          Common.store.commit("bnbState/clearLoading");
           EventBus.$emit(EventConfig.AddLiquiditySuccess);
           EventBus.$emit(EventConfig.SwapSuccess);
         }
@@ -2382,7 +2382,7 @@ export default class ETH {
     });
   }
 
-  //增加流动性
+  //
   static async addLiquidity(from, to, setting) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -2421,7 +2421,7 @@ export default class ETH {
         ? this.pancakeSwapContract
         : this.pancakeSwapContracV2;
 
-    if (from.coinName != 'BNB' && to.coinName != 'BNB') {
+    if (from.coinName != "BNB" && to.coinName != "BNB") {
       method = PancakeSwapContract.methods.addLiquidity(
         tokenA,
         tokenB,
@@ -2433,11 +2433,11 @@ export default class ETH {
         deadline
       );
     } else {
-      let token = from.coinName == 'BNB' ? tokenB : tokenA;
+      let token = from.coinName == "BNB" ? tokenB : tokenA;
       let amountTokenDesired =
-        from.coinName == 'BNB' ? amountBDesired : amountADesired;
-      let amountTokenMin = from.coinName == 'BNB' ? amountBMin : amountAMin;
-      let amountETHMin = from.coinName == 'BNB' ? amountAMin : amountBMin;
+        from.coinName == "BNB" ? amountBDesired : amountADesired;
+      let amountTokenMin = from.coinName == "BNB" ? amountBMin : amountAMin;
+      let amountETHMin = from.coinName == "BNB" ? amountAMin : amountBMin;
       method = PancakeSwapContract.methods.addLiquidityETH(
         token,
         amountTokenDesired,
@@ -2446,7 +2446,7 @@ export default class ETH {
         myAddr,
         deadline
       );
-      callValue = from.coinName == 'BNB' ? amountADesired : amountBDesired;
+      callValue = from.coinName == "BNB" ? amountADesired : amountBDesired;
     }
 
     return new Promise((resolve) => {
@@ -2455,8 +2455,8 @@ export default class ETH {
         { from: myAddr, value: callValue },
         (hash) => resolve(hash),
         () => {
-          console.log('addLiquidity success!!!!!');
-          Common.store.commit('bnbState/clearLoading');
+          console.log("addLiquidity success!!!!!");
+          Common.store.commit("bnbState/clearLoading");
           EventBus.$emit(EventConfig.AddLiquiditySuccess);
           EventBus.$emit(EventConfig.SwapSuccess);
         }
@@ -2464,7 +2464,7 @@ export default class ETH {
     });
   }
 
-  // 增加MBOX - MEC流动性
+  //
   static async addMecLiquidity(from, to, setting) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -2490,7 +2490,7 @@ export default class ETH {
     );
     let amountBDesired, amountBMin;
 
-    if (to.coinName === 'MEC') {
+    if (to.coinName === "MEC") {
       amountBDesired = this.numToHex(BigNumber(Math.floor(to.inputValue)));
       amountBMin = this.numToHex(
         BigNumber(Math.floor(to.inputValue * (1 - slippage / 100)))
@@ -2536,8 +2536,8 @@ export default class ETH {
         { from: myAddr, value: callValue },
         (hash) => resolve(hash),
         () => {
-          console.log('addLiquidity success!!!!!');
-          Common.store.commit('bnbState/clearLoading');
+          console.log("addLiquidity success!!!!!");
+          Common.store.commit("bnbState/clearLoading");
           EventBus.$emit(EventConfig.AddLiquiditySuccess);
           EventBus.$emit(EventConfig.SwapSuccess);
         }
@@ -2545,7 +2545,7 @@ export default class ETH {
     });
   }
 
-  //兑换
+  //
   static async goSwap(from, to, path, setting) {
     console.log({ from });
     console.log({ to });
@@ -2586,9 +2586,9 @@ export default class ETH {
         ? this.pancakeSwapContract
         : this.pancakeSwapContracV2;
 
-    if (from.coinName == 'BNB' || to.coinName == 'BNB') {
-      //BNB 兑换其他币
-      if (from.coinName == 'BNB') {
+    if (from.coinName == "BNB" || to.coinName == "BNB") {
+      //
+      if (from.coinName == "BNB") {
         if (to.isEstimated) {
           method = PancakeSwapContract.methods.swapExactETHForTokens(
             amountOutMin,
@@ -2610,8 +2610,8 @@ export default class ETH {
         }
       }
 
-      //其他币兑换成BNB
-      if (to.coinName == 'BNB') {
+      //
+      if (to.coinName == "BNB") {
         if (to.isEstimated) {
           method = PancakeSwapContract.methods.swapExactTokensForETH(
             amountIn,
@@ -2658,15 +2658,15 @@ export default class ETH {
         { from: myAddr, value: callValue },
         (hash) => resolve(hash),
         () => {
-          console.log('swap success!!!!!');
-          Common.store.commit('bnbState/clearLoading');
+          console.log("swap success!!!!!");
+          Common.store.commit("bnbState/clearLoading");
           EventBus.$emit(EventConfig.SwapSuccess);
         }
       );
     });
   }
 
-  // 兑换mec
+  //
   static async swapMec(from, to, path, setting) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -2691,7 +2691,7 @@ export default class ETH {
 
     const PancakeSwapContract = this.mecSwapContrac;
 
-    if (to.isEstimated && to.coinName === 'MEC') {
+    if (to.isEstimated && to.coinName === "MEC") {
       amountOutMin = this.numToHex(
         BigNumber(Math.floor(to.inputValue * (1 - slippage / 100)))
       );
@@ -2707,7 +2707,7 @@ export default class ETH {
         ).times(decimals_to)
       );
       amountInMax =
-        from.coinName === 'MEC'
+        from.coinName === "MEC"
           ? this.numToHex(
               BigNumber(Math.floor(from.inputValue * (1 + slippage / 100)))
             )
@@ -2718,9 +2718,9 @@ export default class ETH {
             );
     }
 
-    if (from.coinName == 'BNB' || to.coinName == 'BNB') {
-      //BNB 兑换 MEC
-      if (from.coinName == 'BNB') {
+    if (from.coinName == "BNB" || to.coinName == "BNB") {
+      //
+      if (from.coinName == "BNB") {
         if (to.isEstimated) {
           method = PancakeSwapContract.methods.swapExactETHForTokens(
             amountOutMin,
@@ -2744,8 +2744,8 @@ export default class ETH {
         }
       }
 
-      //其他币兑换成BNB
-      if (to.coinName == 'BNB') {
+      //
+      if (to.coinName == "BNB") {
         if (to.isEstimated) {
           method = PancakeSwapContract.methods.swapExactTokensForETH(
             amountIn,
@@ -2769,7 +2769,7 @@ export default class ETH {
       }
     } else {
       if (to.isEstimated) {
-        console.log('swapExactTokensForTokens');
+        console.log("swapExactTokensForTokens");
         console.log(amountIn, amountOutMin, 1, path, myAddr, deadline);
         method = PancakeSwapContract.methods.swapExactTokensForTokens(
           amountIn,
@@ -2781,7 +2781,7 @@ export default class ETH {
         );
       }
       if (from.isEstimated) {
-        console.log('swapTokensForExactTokens');
+        console.log("swapTokensForExactTokens");
         console.log(amountOut, amountInMax, 1, path, myAddr, deadline);
         method = PancakeSwapContract.methods.swapTokensForExactTokens(
           amountOut,
@@ -2800,15 +2800,15 @@ export default class ETH {
         { from: myAddr, value: callValue },
         (hash) => resolve(hash),
         () => {
-          console.log('swap success!!!!!');
-          Common.store.commit('bnbState/clearLoading');
+          console.log("swap success!!!!!");
+          Common.store.commit("bnbState/clearLoading");
           EventBus.$emit(EventConfig.SwapSuccess);
         }
       );
     });
   }
 
-  // mec兑换 - 获取in值
+  //
   static async getMecSwapAmountsIn(amountOut, path) {
     amountOut = this.numToHex(BigNumber(amountOut));
     const data = await this.mecSwapContrac.methods
@@ -2817,7 +2817,7 @@ export default class ETH {
     return data[0];
   }
 
-  // mec兑换 - 获取out值
+  //
   static async getMecSwapAmountsOut(amountIn, path) {
     amountIn = this.numToHex(BigNumber(amountIn));
     const data = await this.mecSwapContrac.methods
@@ -2826,7 +2826,7 @@ export default class ETH {
     return data[data.length - 1];
   }
 
-  //获取兑换价格
+  //
   static async getAmountsOut(amountIn, path) {
     amountIn = this.numToHex(BigNumber(amountIn));
     let contract = new this.web3.eth.Contract(
@@ -2843,7 +2843,7 @@ export default class ETH {
     });
   }
 
-  //获取1155的数量
+  //
   static async get1155Num(tokenAddr, ids) {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -2866,8 +2866,8 @@ export default class ETH {
     });
   }
 
-  //宝石相关
-  //获取背包宝石数量
+  //
+  //
   static async getMyGemNum() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -2895,7 +2895,7 @@ export default class ETH {
     });
   }
 
-  //宝石升级
+  //
   static async gemLevelUp(gemId, amount) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -2913,15 +2913,15 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          console.log('gemLevelUp success!!!!!');
+          console.log("gemLevelUp success!!!!!");
           Common.app.getGemBag();
-          Common.app.unLockBtn('compGemLock');
+          Common.app.unLockBtn("compGemLock");
         }
       );
     });
   }
 
-  //查询申购状态
+  //
   static async getGemApplyState() {
     let contract = new this.web3.eth.Contract(
       [Contract.getRoundInfo],
@@ -2937,7 +2937,7 @@ export default class ETH {
     });
   }
 
-  //查询申购状态
+  //
   static async getBoxApplyState() {
     let contract = new this.web3.eth.Contract(
       [Contract.getRoundInfo],
@@ -2953,7 +2953,7 @@ export default class ETH {
     });
   }
 
-  //查询我的申购信息
+  //
   static async getMyBoxApplyInfo() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -2971,7 +2971,7 @@ export default class ETH {
     });
   }
 
-  //查询我的申购信息
+  //
   static async getMyApplyInfo() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -2989,7 +2989,7 @@ export default class ETH {
     });
   }
 
-  //查询是否参与高级申购
+  //
   static async hasHighApply() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -3007,7 +3007,7 @@ export default class ETH {
     });
   }
 
-  //申购宝石
+  //
   static async applyForGem(type, applyNum_, recipt) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3018,7 +3018,7 @@ export default class ETH {
 
     return new Promise((resolve) => {
       let method;
-      if (type == 'normal') {
+      if (type == "normal") {
         method = contract.methods.nApplyForGem(applyNum_);
       } else {
         method = contract.methods.hApplyForGem(applyNum_);
@@ -3028,30 +3028,30 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          Common.app.unLockBtn('applyGemLock');
-          Common.app.setCoinValueByName('MBOX');
+          Common.app.unLockBtn("applyGemLock");
+          Common.app.setCoinValueByName("MBOX");
           recipt();
         }
       );
     });
   }
 
-  //申购BOX
+  //
   static async applyForBox(type, applyNum_, recipt) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
     let contract = new this.web3.eth.Contract(
       [
         {
-          type: 'function',
-          name: 'nApplyForBox',
-          inputs: [{ type: 'uint256', name: 'applyNum_' }],
+          type: "function",
+          name: "nApplyForBox",
+          inputs: [{ type: "uint256", name: "applyNum_" }],
           outputs: [],
         },
         {
-          type: 'function',
-          name: 'hApplyForBox',
-          inputs: [{ type: 'uint256', name: 'applyNum_' }],
+          type: "function",
+          name: "hApplyForBox",
+          inputs: [{ type: "uint256", name: "applyNum_" }],
           outputs: [],
         },
       ],
@@ -3060,7 +3060,7 @@ export default class ETH {
 
     return new Promise((resolve) => {
       let method;
-      if (type == 'normal') {
+      if (type == "normal") {
         method = contract.methods.nApplyForBox(applyNum_);
       } else {
         method = contract.methods.hApplyForBox(applyNum_);
@@ -3070,14 +3070,14 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          Common.app.unLockBtn('applyBoxLock');
-          Common.app.setCoinValueByName('MBOX');
+          Common.app.unLockBtn("applyBoxLock");
+          Common.app.setCoinValueByName("MBOX");
           recipt();
         }
       );
     });
   }
-  //领取宝石
+  //
   static async takeGem(recipt) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3093,14 +3093,14 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          Common.app.unLockBtn('takeGemLock');
+          Common.app.unLockBtn("takeGemLock");
           Common.app.getGemBag();
           recipt();
         }
       );
     });
   }
-  //领取BOX
+  //
   static async takeBox(recipt) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3108,11 +3108,11 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          type: 'function',
-          name: 'claimfrozenBox',
+          type: "function",
+          name: "claimfrozenBox",
           inputs: [],
           outputs: [],
-          stateMutability: 'nonpayable',
+          stateMutability: "nonpayable",
         },
       ],
       WalletConfig.ETH.boxApply
@@ -3124,14 +3124,14 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          Common.app.unLockBtn('takeBoxLock');
+          Common.app.unLockBtn("takeBoxLock");
           Common.app.getNewBoxNum();
           recipt();
         }
       );
     });
   }
-  //领取申购BOX多余的MBOX
+  //
   static async takeMbox_box(recipt) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3147,15 +3147,15 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          Common.app.unLockBtn('takeMboxLock');
-          Common.app.setCoinValueByName('MBOX');
+          Common.app.unLockBtn("takeMboxLock");
+          Common.app.setCoinValueByName("MBOX");
           recipt();
         }
       );
     });
   }
 
-  //领取申购宝石多余的MBOX
+  //
   static async takeMbox(recipt) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3171,15 +3171,15 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          Common.app.unLockBtn('takeMboxLock');
-          Common.app.setCoinValueByName('MBOX');
+          Common.app.unLockBtn("takeMboxLock");
+          Common.app.setCoinValueByName("MBOX");
           recipt();
         }
       );
     });
   }
 
-  //穿戴宝石
+  //
   static async wearGem({ momoId_, gemId_, pos_ }) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3197,7 +3197,7 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          Common.app.unLockBtn('wearGemLock');
+          Common.app.unLockBtn("wearGemLock");
           await Common.app.setMyNftByType(
             ConstantConfig.NFT_LOCATION.STAKE,
             false
@@ -3208,7 +3208,7 @@ export default class ETH {
     });
   }
 
-  //查看momo宝石穿戴情况
+  //
   static async getInlayInfo(momoId_) {
     let contract = new this.web3.eth.Contract(
       [Contract.getInlayInfo],
@@ -3224,7 +3224,7 @@ export default class ETH {
     });
   }
 
-  //查看多个momo宝石穿戴情况
+  //
   static async getBatchInlayInfo(momoIds_) {
     let contract = new this.web3.eth.Contract(
       [Contract.getInlayInfoBatch],
@@ -3241,7 +3241,7 @@ export default class ETH {
     });
   }
 
-  //脱下宝石
+  //
   static async takeOffGem({ momoId_, pos_ }) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3251,7 +3251,7 @@ export default class ETH {
       WalletConfig.ETH.momoGemOpr
     );
 
-    console.log('takeOffGem', { momoId_, pos_ });
+    console.log("takeOffGem", { momoId_, pos_ });
 
     return new Promise((resolve) => {
       this.sendMethod(
@@ -3259,7 +3259,7 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          Common.app.unLockBtn('takeOffGemLock');
+          Common.app.unLockBtn("takeOffGemLock");
           Common.app.removeStakeGem(momoId_, pos_);
           await Common.app.setMyNftByType(
             ConstantConfig.NFT_LOCATION.STAKE,
@@ -3271,7 +3271,7 @@ export default class ETH {
     });
   }
 
-  //快速升级
+  //
   static async inlayQuickLvUp({ momoId_, pos_ }) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3281,7 +3281,7 @@ export default class ETH {
       WalletConfig.ETH.momoGemOpr
     );
 
-    console.log('takeOffGem', { momoId_, pos_ });
+    console.log("takeOffGem", { momoId_, pos_ });
 
     return new Promise((resolve) => {
       this.sendMethod(
@@ -3289,7 +3289,7 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          Common.app.unLockBtn('upgradeGemWearLock');
+          Common.app.unLockBtn("upgradeGemWearLock");
           await Common.app.setMyNftByType(
             ConstantConfig.NFT_LOCATION.STAKE,
             false
@@ -3300,7 +3300,7 @@ export default class ETH {
     });
   }
 
-  //查询1155可上架位置
+  //
   static async getGemSuggestIndex() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -3334,15 +3334,15 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          type: 'function',
-          name: 'createAuction',
+          type: "function",
+          name: "createAuction",
           inputs: [
-            { type: 'uint256', name: 'price_' },
-            { type: 'uint256', name: 'suggestIndex_' },
-            { type: 'uint256', name: 'currency_' },
-            { type: 'uint256', name: 'erc1155_' },
-            { type: 'uint256[]', name: 'ids_' },
-            { type: 'uint256[]', name: 'amounts_' },
+            { type: "uint256", name: "price_" },
+            { type: "uint256", name: "suggestIndex_" },
+            { type: "uint256", name: "currency_" },
+            { type: "uint256", name: "erc1155_" },
+            { type: "uint256[]", name: "ids_" },
+            { type: "uint256[]", name: "amounts_" },
           ],
           outputs: [],
         },
@@ -3371,14 +3371,14 @@ export default class ETH {
           saveHash = hash;
         },
         async () => {
-          console.log('gemCreateAuction success');
+          console.log("gemCreateAuction success");
           await Common.app.getGemBag();
           await Common.app.getNewBoxNum();
           await Common.app.getCrystalNum();
         },
         () => {
           EventBus.$emit(EventConfig.CreateAuctionError, {
-            chain: 'eth',
+            chain: "eth",
             hash: saveHash,
           });
         }
@@ -3386,7 +3386,7 @@ export default class ETH {
     });
   }
 
-  //获取 宝石市场上的订单信息
+  //
   static async getGemMarketOrder(orderId_) {
     let contract = new this.web3.eth.Contract(
       [Contract.getGemMarketOrder],
@@ -3403,7 +3403,7 @@ export default class ETH {
     });
   }
 
-  //取消上架
+  //
   static async cancelGemAuction(orderId_) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3413,15 +3413,15 @@ export default class ETH {
         {
           inputs: [
             {
-              internalType: 'uint256',
-              name: 'orderId_',
-              type: 'uint256',
+              internalType: "uint256",
+              name: "orderId_",
+              type: "uint256",
             },
           ],
-          name: 'cancelAuction',
+          name: "cancelAuction",
           outputs: [],
-          stateMutability: 'nonpayable',
-          type: 'function',
+          stateMutability: "nonpayable",
+          type: "function",
         },
       ],
       WalletConfig.ETH.common1155Auction
@@ -3438,7 +3438,7 @@ export default class ETH {
           resolve(hash);
         },
         async () => {
-          console.log('cancelAuction success!!!!!');
+          console.log("cancelAuction success!!!!!");
           await Common.app.getGemBag();
           await Common.app.getNewBoxNum();
           await Common.app.getCrystalNum();
@@ -3446,7 +3446,7 @@ export default class ETH {
         () => {
           console.log(saveHash);
           EventBus.$emit(EventConfig.CancelAuctionError, {
-            chain: 'eth',
+            chain: "eth",
             hash: saveHash,
           });
         }
@@ -3454,7 +3454,7 @@ export default class ETH {
     });
   }
 
-  //修改价格
+  //
   static async changeGemPrice({ orderId_, price_ }, recipt) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3464,20 +3464,20 @@ export default class ETH {
         {
           inputs: [
             {
-              internalType: 'uint256',
-              name: 'orderId_',
-              type: 'uint256',
+              internalType: "uint256",
+              name: "orderId_",
+              type: "uint256",
             },
             {
-              internalType: 'uint256',
-              name: 'price_',
-              type: 'uint256',
+              internalType: "uint256",
+              name: "price_",
+              type: "uint256",
             },
           ],
-          name: 'changePrice',
+          name: "changePrice",
           outputs: [],
-          stateMutability: 'nonpayable',
-          type: 'function',
+          stateMutability: "nonpayable",
+          type: "function",
         },
       ],
       WalletConfig.ETH.common1155Auction
@@ -3491,15 +3491,15 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          console.log('changePrice success!!!!!');
-          Common.app.unLockBtn('changePriceLock');
+          console.log("changePrice success!!!!!");
+          Common.app.unLockBtn("changePriceLock");
           recipt();
         }
       );
     });
   }
 
-  //购买市场上的物品
+  //
   static async buyGemMarketPet({ auctor_, orderId_, coinKey, amount_ }) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3507,12 +3507,12 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'bid',
-          type: 'function',
+          name: "bid",
+          type: "function",
           inputs: [
-            { name: 'auctor_', type: 'address' },
-            { name: 'orderId_', type: 'uint256' },
-            { name: 'amount_', type: 'uint256' },
+            { name: "auctor_", type: "address" },
+            { name: "orderId_", type: "uint256" },
+            { name: "amount_", type: "uint256" },
           ],
           outputs: [],
         },
@@ -3526,7 +3526,7 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          console.log('buyGemMarketPet success!!!!!');
+          console.log("buyGemMarketPet success!!!!!");
           await Common.app.setCoinValueByName(coinKey);
           await Common.app.getGemBag();
           await Common.app.getNewBoxNum();
@@ -3536,7 +3536,7 @@ export default class ETH {
     });
   }
 
-  //momo出租相关
+  //
   static async createRent(
     { tokenId_, curRentDays_, curRentRound_, curRentPrice_ },
     recipet
@@ -3547,13 +3547,13 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'createRent',
-          type: 'function',
+          name: "createRent",
+          type: "function",
           inputs: [
-            { name: 'tokenId_', type: 'uint256' },
-            { name: 'curRentDays_', type: 'uint256' },
-            { name: 'curRentRound_', type: 'uint256' },
-            { name: 'curRentPrice_', type: 'uint256' },
+            { name: "tokenId_", type: "uint256" },
+            { name: "curRentDays_", type: "uint256" },
+            { name: "curRentRound_", type: "uint256" },
+            { name: "curRentPrice_", type: "uint256" },
           ],
           outputs: [],
         },
@@ -3578,8 +3578,8 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          console.log('createRent success!!!!!');
-          Common.app.unLockBtn('putRentLock');
+          console.log("createRent success!!!!!");
+          Common.app.unLockBtn("putRentLock");
           Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
           Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
           recipet();
@@ -3588,7 +3588,7 @@ export default class ETH {
     });
   }
 
-  //增加续租合同
+  //
   static async addRentRenewal(
     { tokenId_, orderId_, nextRentDays_, nextRentRound_, nextRentPrice_ },
     recipt
@@ -3599,14 +3599,14 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'addRentRenewal',
-          type: 'function',
+          name: "addRentRenewal",
+          type: "function",
           inputs: [
-            { name: 'tokenId_', type: 'uint256' },
-            { name: 'orderId_', type: 'uint256' },
-            { name: 'nextRentDays_', type: 'uint256' },
-            { name: 'nextRentRound_', type: 'uint256' },
-            { name: 'nextRentPrice_', type: 'uint256' },
+            { name: "tokenId_", type: "uint256" },
+            { name: "orderId_", type: "uint256" },
+            { name: "nextRentDays_", type: "uint256" },
+            { name: "nextRentRound_", type: "uint256" },
+            { name: "nextRentPrice_", type: "uint256" },
           ],
           outputs: [],
         },
@@ -3630,36 +3630,36 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          console.log('addRentRenewal success!!!!!');
-          Common.app.unLockBtn('putRentLock');
+          console.log("addRentRenewal success!!!!!");
+          Common.app.unLockBtn("putRentLock");
           recipt();
         }
       );
     });
   }
 
-  //获取momo出租详情
+  //
   static async getMomoRentInfo(tokenId) {
-    console.log('getPetInfo', tokenId);
+    console.log("getPetInfo", tokenId);
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'getRentInfo',
-          type: 'function',
-          inputs: [{ name: 'tokenId_', type: 'uint256' }],
+          name: "getRentInfo",
+          type: "function",
+          inputs: [{ name: "tokenId_", type: "uint256" }],
           outputs: [
-            { name: 'orderId', type: 'uint256' },
-            { name: 'status', type: 'uint256' },
-            { name: 'rentTime', type: 'uint256' },
-            { name: 'owner', type: 'address' },
-            { name: 'renter', type: 'address' },
-            { name: 'currentRentDays', type: 'uint256' },
-            { name: 'currentRentRound', type: 'uint256' },
-            { name: 'currentRentPrice', type: 'uint256' },
-            { name: 'nextRentDays', type: 'uint256' },
-            { name: 'nextRentRound', type: 'uint256' },
-            { name: 'nextRentPrice', type: 'uint256' },
-            { name: 'gameId', type: 'uint256' },
+            { name: "orderId", type: "uint256" },
+            { name: "status", type: "uint256" },
+            { name: "rentTime", type: "uint256" },
+            { name: "owner", type: "address" },
+            { name: "renter", type: "address" },
+            { name: "currentRentDays", type: "uint256" },
+            { name: "currentRentRound", type: "uint256" },
+            { name: "currentRentPrice", type: "uint256" },
+            { name: "nextRentDays", type: "uint256" },
+            { name: "nextRentRound", type: "uint256" },
+            { name: "nextRentPrice", type: "uint256" },
+            { name: "gameId", type: "uint256" },
           ],
         },
       ],
@@ -3676,30 +3676,30 @@ export default class ETH {
     });
   }
 
-  //获取momo出租详情
+  //
   static async getMomoRentInfoExt(tokenId) {
-    console.log('getMomoRentInfoExt', tokenId);
+    console.log("getMomoRentInfoExt", tokenId);
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'getRentInfoExt',
-          type: 'function',
-          inputs: [{ name: 'tokenId_', type: 'uint256' }],
+          name: "getRentInfoExt",
+          type: "function",
+          inputs: [{ name: "tokenId_", type: "uint256" }],
           outputs: [
-            { name: 'owner', type: 'address' },
-            { name: 'renter', type: 'address' },
+            { name: "owner", type: "address" },
+            { name: "renter", type: "address" },
 
-            { name: 'orderId', type: 'uint256' },
-            { name: 'status', type: 'uint256' },
-            { name: 'rentTime', type: 'uint256' },
-            { name: 'currentRentDays', type: 'uint256' },
-            { name: 'currentRentRound', type: 'uint256' },
-            { name: 'currentRentPrice', type: 'uint256' },
-            { name: 'nextRentDays', type: 'uint256' },
-            { name: 'nextRentRound', type: 'uint256' },
-            { name: 'nextRentPrice', type: 'uint256' },
-            { name: 'gameId', type: 'uint256' },
-            { name: 'startTime', type: 'uint256' },
+            { name: "orderId", type: "uint256" },
+            { name: "status", type: "uint256" },
+            { name: "rentTime", type: "uint256" },
+            { name: "currentRentDays", type: "uint256" },
+            { name: "currentRentRound", type: "uint256" },
+            { name: "currentRentPrice", type: "uint256" },
+            { name: "nextRentDays", type: "uint256" },
+            { name: "nextRentRound", type: "uint256" },
+            { name: "nextRentPrice", type: "uint256" },
+            { name: "gameId", type: "uint256" },
+            { name: "startTime", type: "uint256" },
           ],
         },
       ],
@@ -3716,19 +3716,19 @@ export default class ETH {
     });
   }
 
-  //获取多个momo出租详情
+  //
   static async getRentInfoSimple(tokenIds) {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'getRentInfoSimple',
-          type: 'function',
-          inputs: [{ name: 'tokenIds_', type: 'uint256[]' }],
+          name: "getRentInfoSimple",
+          type: "function",
+          inputs: [{ name: "tokenIds_", type: "uint256[]" }],
           outputs: [
-            { name: 'orderIdArray', type: 'uint256[]' },
-            { name: 'statusArray', type: 'uint256[]' },
-            { name: 'rentTimeArray', type: 'uint256[]' },
-            { name: 'currentRentDaysArray', type: 'uint256[]' },
+            { name: "orderIdArray", type: "uint256[]" },
+            { name: "statusArray", type: "uint256[]" },
+            { name: "rentTimeArray", type: "uint256[]" },
+            { name: "currentRentDaysArray", type: "uint256[]" },
           ],
         },
       ],
@@ -3745,7 +3745,7 @@ export default class ETH {
     });
   }
 
-  //取消上架的租赁
+  //
   static async cancelPutRent({ tokenId_, orderId_ }, recipet) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3755,11 +3755,11 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'cancelRent',
-          type: 'function',
+          name: "cancelRent",
+          type: "function",
           inputs: [
-            { name: 'tokenId_', type: 'uint256' },
-            { name: 'orderId_', type: 'uint256' },
+            { name: "tokenId_", type: "uint256" },
+            { name: "orderId_", type: "uint256" },
           ],
           outputs: [],
         },
@@ -3773,8 +3773,8 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          console.log('cancelPutRent success!!!!!');
-          Common.app.unLockBtn('cancelRentLock');
+          console.log("cancelPutRent success!!!!!");
+          Common.app.unLockBtn("cancelRentLock");
           Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.STAKE);
           Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.VERSE);
           recipet();
@@ -3783,7 +3783,7 @@ export default class ETH {
     });
   }
 
-  //租赁momo
+  //
   static async rentMomo({ tokenId_, orderId_, gameId_, price_ }) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3791,13 +3791,13 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'rent',
-          type: 'function',
+          name: "rent",
+          type: "function",
           inputs: [
-            { name: 'tokenId_', type: 'uint256' },
-            { name: 'orderId_', type: 'uint256' },
-            { name: 'gameId_', type: 'uint256' },
-            { name: 'price_', type: 'uint256' },
+            { name: "tokenId_", type: "uint256" },
+            { name: "orderId_", type: "uint256" },
+            { name: "gameId_", type: "uint256" },
+            { name: "price_", type: "uint256" },
           ],
           outputs: [],
         },
@@ -3818,14 +3818,14 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          console.log('rentMomo success!!!!!');
-          Common.app.unLockBtn('rentLock');
+          console.log("rentMomo success!!!!!");
+          Common.app.unLockBtn("rentLock");
         }
       );
     });
   }
 
-  //续租
+  //
   static async reRent({ tokenId_, orderId_, price_ }, recipt) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -3833,12 +3833,12 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'renewRent',
-          type: 'function',
+          name: "renewRent",
+          type: "function",
           inputs: [
-            { name: 'tokenId_', type: 'uint256' },
-            { name: 'orderId_', type: 'uint256' },
-            { name: 'price_', type: 'uint256' },
+            { name: "tokenId_", type: "uint256" },
+            { name: "orderId_", type: "uint256" },
+            { name: "price_", type: "uint256" },
           ],
           outputs: [],
         },
@@ -3852,15 +3852,15 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         () => {
-          console.log('reRent success!!!!!');
-          Common.app.unLockBtn('rentLock');
+          console.log("reRent success!!!!!");
+          Common.app.unLockBtn("rentLock");
           recipt();
         }
       );
     });
   }
 
-  ///veMBOX相关
+  //
   static async stakeMbox(
     { poolIndex_, amount_, lockTime_, orderIndex_ },
     coinItem
@@ -3871,13 +3871,13 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'stake',
-          type: 'function',
+          name: "stake",
+          type: "function",
           inputs: [
-            { name: 'poolIndex_', type: 'uint256' },
-            { name: 'amount_', type: 'uint256' },
-            { name: 'lockTime_', type: 'uint256' },
-            { name: 'orderIndex_', type: 'uint256' },
+            { name: "poolIndex_", type: "uint256" },
+            { name: "amount_", type: "uint256" },
+            { name: "lockTime_", type: "uint256" },
+            { name: "orderIndex_", type: "uint256" },
           ],
           outputs: [],
         },
@@ -3893,27 +3893,27 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          console.log('stakeMbox success!!!!!');
-          Common.app.unLockBtn('freezeMboxLock');
-          //更新钱包余额
-          await Common.app.setCoinValueByName('MBOX');
-          //更新质押余额
+          console.log("stakeMbox success!!!!!");
+          Common.app.unLockBtn("freezeMboxLock");
+          //
+          await Common.app.setCoinValueByName("MBOX");
+          //
           await Common.app.getVeMboxStakeInfo();
 
-          //更新apy相关
+          //
           await Common.app.getApyObj(coinItem);
         }
       );
     });
   }
 
-  ///取回质押的MBOX
+  //
   static async unstakeMbox({ poolIndex_, orderIndex_ }) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
-    const wallet = Common.getStorageItem('connect-wallet');
+    const wallet = Common.getStorageItem("connect-wallet");
     const web3 = new Web3(
-      window.isMoboxApp || wallet === 'mboxWallet'
+      window.isMoboxApp || wallet === "mboxWallet"
         ? window.mbox.bscWeb3.currentProvider
         : this.web3.givenProvider
     );
@@ -3921,11 +3921,11 @@ export default class ETH {
     let contract = new web3.eth.Contract(
       [
         {
-          name: 'unstake',
-          type: 'function',
+          name: "unstake",
+          type: "function",
           inputs: [
-            { name: 'poolIndex_', type: 'uint256' },
-            { name: 'orderIndex_', type: 'uint256' },
+            { name: "poolIndex_", type: "uint256" },
+            { name: "orderIndex_", type: "uint256" },
           ],
           outputs: [],
         },
@@ -3939,17 +3939,17 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          Common.app.unLockBtn('unStakeMboxLock');
-          //更新质押余额
+          Common.app.unLockBtn("unStakeMboxLock");
+          //
           await Common.app.getVeMboxStakeInfo();
-          //更新钱包余额
-          await Common.app.setCoinValueByName('MBOX');
+          //
+          await Common.app.setCoinValueByName("MBOX");
         }
       );
     });
   }
 
-  //获取多个池子的质押的veMbox的信息
+  //
   static async getVeMboxStakeInfo(poolIndexs_) {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -3957,18 +3957,18 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'getStakeInfo',
-          type: 'function',
+          name: "getStakeInfo",
+          type: "function",
           inputs: [
-            { name: 'user_', type: 'address' },
-            { name: 'poolIndexArray_', type: 'uint256[]' },
+            { name: "user_", type: "address" },
+            { name: "poolIndexArray_", type: "uint256[]" },
           ],
           outputs: [
-            { name: 'poolIndexs', type: 'uint256[]' },
-            { name: 'orderIndexs', type: 'uint256[]' },
-            { name: 'moboxs', type: 'uint256[]' },
-            { name: 'veMoboxs', type: 'uint256[]' },
-            { name: 'lockTimeValues', type: 'uint256[]' },
+            { name: "poolIndexs", type: "uint256[]" },
+            { name: "orderIndexs", type: "uint256[]" },
+            { name: "moboxs", type: "uint256[]" },
+            { name: "veMoboxs", type: "uint256[]" },
+            { name: "lockTimeValues", type: "uint256[]" },
           ],
         },
       ],
@@ -3985,7 +3985,7 @@ export default class ETH {
     });
   }
 
-  //获取多个池子的质押的veMbox的倍率
+  //
   static async getBoosterInfo(poolIndexs_) {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -3993,13 +3993,13 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'getBoosterInfo',
-          type: 'function',
+          name: "getBoosterInfo",
+          type: "function",
           inputs: [
-            { name: 'user_', type: 'address' },
-            { name: 'poolIndexArray_', type: 'uint256[]' },
+            { name: "user_", type: "address" },
+            { name: "poolIndexArray_", type: "uint256[]" },
           ],
-          outputs: [{ name: 'boosters', type: 'uint256[]' }],
+          outputs: [{ name: "boosters", type: "uint256[]" }],
         },
       ],
       WalletConfig.ETH.momoVeMbox
@@ -4015,17 +4015,17 @@ export default class ETH {
     });
   }
 
-  //获取多个池子的质押的veMbox的倍率
+  //
   static async getPoolVeMobox(poolIndex_) {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'getPoolVeMobox',
-          type: 'function',
-          inputs: [{ name: 'poolIndex_', type: 'uint256' }],
+          name: "getPoolVeMobox",
+          type: "function",
+          inputs: [{ name: "poolIndex_", type: "uint256" }],
           outputs: [
-            { name: 'veMoboxSupply', type: 'uint256' },
-            { name: 'shareTotal', type: 'uint256' },
+            { name: "veMoboxSupply", type: "uint256" },
+            { name: "shareTotal", type: "uint256" },
           ],
         },
       ],
@@ -4042,7 +4042,7 @@ export default class ETH {
     });
   }
 
-  //获取多个池子的质押的veMbox的倍率
+  //
   static async getUserPoolsApyParam(poolIndexs_) {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
@@ -4050,18 +4050,18 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'getUserPoolsApyParam',
-          type: 'function',
+          name: "getUserPoolsApyParam",
+          type: "function",
           inputs: [
-            { name: 'user_', type: 'address' },
-            { name: 'poolIndexs_', type: 'uint256[]' },
+            { name: "user_", type: "address" },
+            { name: "poolIndexs_", type: "uint256[]" },
           ],
           outputs: [
-            { name: 'keyPerDays', type: 'uint256[]' },
-            { name: 'wantShares', type: 'uint256[]' },
-            { name: 'workingBalances', type: 'uint256[]' },
-            { name: 'workingSupply', type: 'uint256[]' },
-            { name: 'totalShares', type: 'uint256[]' },
+            { name: "keyPerDays", type: "uint256[]" },
+            { name: "wantShares", type: "uint256[]" },
+            { name: "workingBalances", type: "uint256[]" },
+            { name: "workingSupply", type: "uint256[]" },
+            { name: "totalShares", type: "uint256[]" },
           ],
         },
       ],
@@ -4078,7 +4078,7 @@ export default class ETH {
     });
   }
 
-  //划转veMbox
+  //
   static async moveStake({ moveVeMobox_, fromPool_, toPool_, orderIndex_ }) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -4086,13 +4086,13 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'moveStake',
-          type: 'function',
+          name: "moveStake",
+          type: "function",
           inputs: [
-            { name: 'moveVeMobox_', type: 'uint256' },
-            { name: 'fromPool_', type: 'uint256' },
-            { name: 'toPool_', type: 'uint256' },
-            { name: 'orderIndex_', type: 'uint256' },
+            { name: "moveVeMobox_", type: "uint256" },
+            { name: "fromPool_", type: "uint256" },
+            { name: "toPool_", type: "uint256" },
+            { name: "orderIndex_", type: "uint256" },
           ],
           outputs: [],
         },
@@ -4114,26 +4114,26 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          Common.app.unLockBtn('moveVeMboxLock');
-          //更新质押余额
+          Common.app.unLockBtn("moveVeMboxLock");
+          //
           await Common.app.getVeMboxStakeInfo();
         }
       );
     });
   }
 
-  //获取多个池子的质押的veMbox的倍率
+  //
   static async getPools(poolIndexs_) {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'getPools',
-          type: 'function',
-          inputs: [{ name: 'poolIndexs_', type: 'uint256[]' }],
+          name: "getPools",
+          type: "function",
+          inputs: [{ name: "poolIndexs_", type: "uint256[]" }],
           outputs: [
-            { name: 'veMboxTotal', type: 'uint256' },
-            { name: 'poolVeMboxSupplys', type: 'uint256[]' },
-            { name: 'poolAllocPoints', type: 'uint256[]' },
+            { name: "veMboxTotal", type: "uint256" },
+            { name: "poolVeMboxSupplys", type: "uint256[]" },
+            { name: "poolAllocPoints", type: "uint256[]" },
           ],
         },
       ],
@@ -4150,20 +4150,20 @@ export default class ETH {
     });
   }
 
-  //获取用户可以领取的信息(包括已经结束的, 但是未领取的)
+  //
   static async getPoolsEarns() {
     let myAddr = await this.getAccount();
     if (!myAddr) return;
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'earns',
-          type: 'function',
-          inputs: [{ name: 'user_', type: 'address' }],
+          name: "earns",
+          type: "function",
+          inputs: [{ name: "user_", type: "address" }],
           outputs: [
-            { name: 'tokens', type: 'address[]' },
-            { name: 'versions', type: 'uint256[]' },
-            { name: 'amounts', type: 'uint256[]' },
+            { name: "tokens", type: "address[]" },
+            { name: "versions", type: "uint256[]" },
+            { name: "amounts", type: "uint256[]" },
           ],
         },
       ],
@@ -4180,7 +4180,7 @@ export default class ETH {
     });
   }
 
-  //参与挖矿
+  //
   static async joinStake(recipt) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -4188,8 +4188,8 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'updateReward',
-          type: 'function',
+          name: "updateReward",
+          type: "function",
           inputs: [],
           outputs: [],
         },
@@ -4203,7 +4203,7 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          Common.app.unLockBtn('joinStakeLock');
+          Common.app.unLockBtn("joinStakeLock");
           recipt();
           await Common.app.eth_setMyHashrate();
           await Common.app.getPoolsEarns();
@@ -4212,15 +4212,15 @@ export default class ETH {
     });
   }
 
-  //获取当前竞拍期数
+  //
   static async getBidRound() {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'round',
-          type: 'function',
+          name: "round",
+          type: "function",
           inputs: [],
-          outputs: [{ name: 'round', type: 'uint256' }],
+          outputs: [{ name: "round", type: "uint256" }],
         },
       ],
       WalletConfig.ETH.momoBid
@@ -4235,23 +4235,23 @@ export default class ETH {
         });
     });
   }
-  //获取用户可以领取的信息(包括已经结束的, 但是未领取的)
+  //
   static async getBidInfo(address) {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'getBidInfo',
-          type: 'function',
-          inputs: [{ name: 'bider', type: 'address' }],
+          name: "getBidInfo",
+          type: "function",
+          inputs: [{ name: "bider", type: "address" }],
           outputs: [
-            { name: 'currBidder', type: 'address' },
-            { name: 'bidTs', type: 'uint256' },
-            { name: 'tokenId', type: 'uint256' },
-            { name: 'state', type: 'uint256' },
-            { name: 'currPrice', type: 'uint256' },
-            { name: 'bidStartTime', type: 'uint256' },
-            { name: 'bidEndTime', type: 'uint256' },
-            { name: 'toClaimTokenId', type: 'uint256' },
+            { name: "currBidder", type: "address" },
+            { name: "bidTs", type: "uint256" },
+            { name: "tokenId", type: "uint256" },
+            { name: "state", type: "uint256" },
+            { name: "currPrice", type: "uint256" },
+            { name: "bidStartTime", type: "uint256" },
+            { name: "bidEndTime", type: "uint256" },
+            { name: "toClaimTokenId", type: "uint256" },
           ],
         },
       ],
@@ -4275,11 +4275,11 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'bid',
-          type: 'function',
+          name: "bid",
+          type: "function",
           inputs: [
-            { name: 'amount', type: 'uint256' },
-            { name: 'tokenId', type: 'uint256' },
+            { name: "amount", type: "uint256" },
+            { name: "tokenId", type: "uint256" },
           ],
           outputs: [],
         },
@@ -4295,14 +4295,14 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          console.log('bidMomo success!!!!!');
-          Common.app.unLockBtn('bidLock');
+          console.log("bidMomo success!!!!!");
+          Common.app.unLockBtn("bidLock");
           recipt();
         }
       );
     });
   }
-  //领取MOMO
+  //
   static async withdraw721(recipt) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -4310,8 +4310,8 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'withdraw721',
-          type: 'function',
+          name: "withdraw721",
+          type: "function",
           inputs: [],
           outputs: [],
         },
@@ -4325,8 +4325,8 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          console.log('withdraw721 success!!!!!');
-          Common.app.unLockBtn('bidLock');
+          console.log("withdraw721 success!!!!!");
+          Common.app.unLockBtn("bidLock");
           Common.app.setMyNftByType(ConstantConfig.NFT_LOCATION.WALLET);
           recipt();
         }
@@ -4341,10 +4341,10 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'getGroupV4',
-          type: 'function',
-          inputs: [{ name: 'user', type: 'address' }],
-          outputs: [{ name: 'num', type: 'uint256' }],
+          name: "getGroupV4",
+          type: "function",
+          inputs: [{ name: "user", type: "address" }],
+          outputs: [{ name: "num", type: "uint256" }],
         },
       ],
       WalletConfig.ETH.moMoStake
@@ -4367,14 +4367,14 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'getRefund',
-          type: 'function',
-          inputs: [{ name: 'user', type: 'address' }],
+          name: "getRefund",
+          type: "function",
+          inputs: [{ name: "user", type: "address" }],
           outputs: [
-            { name: 'short', type: 'uint256' },
-            { name: 'middle', type: 'uint256' },
-            { name: 'long', type: 'uint256' },
-            { name: 'refunded', type: 'bool' },
+            { name: "short", type: "uint256" },
+            { name: "middle", type: "uint256" },
+            { name: "long", type: "uint256" },
+            { name: "refunded", type: "bool" },
           ],
         },
       ],
@@ -4398,8 +4398,8 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'refund',
-          type: 'function',
+          name: "refund",
+          type: "function",
           inputs: [],
           outputs: [],
         },
@@ -4413,15 +4413,15 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          Common.app.unLockBtn('refundMboxLock');
+          Common.app.unLockBtn("refundMboxLock");
           await Common.app.getRefund();
-          await Common.app.setCoinValueByName('MBOX');
+          await Common.app.setCoinValueByName("MBOX");
         }
       );
     });
   }
 
-  //订单部相关功能
+  //
   static async orderBookOpr(param, type) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -4430,19 +4430,19 @@ export default class ETH {
       [
         {
           name: type,
-          type: 'function',
+          type: "function",
           inputs: [
             {
-              type: 'tuple',
-              name: 'param',
+              type: "tuple",
+              name: "param",
               components: [
-                { name: 'price_', type: 'uint256' },
-                { name: 'storeIndex_', type: 'uint256' },
-                { name: 'currency_', type: 'uint256' },
-                { name: 'erc1155_', type: 'uint256' },
-                { name: 'tokenId_', type: 'uint256' },
-                { name: 'count_', type: 'uint256' },
-                { name: 'indexes_', type: 'uint256[]' },
+                { name: "price_", type: "uint256" },
+                { name: "storeIndex_", type: "uint256" },
+                { name: "currency_", type: "uint256" },
+                { name: "erc1155_", type: "uint256" },
+                { name: "tokenId_", type: "uint256" },
+                { name: "count_", type: "uint256" },
+                { name: "indexes_", type: "uint256[]" },
               ],
             },
           ],
@@ -4460,16 +4460,16 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          Common.app.unLockBtn(type + 'Lock');
-          //更新box数量和BUSD数量
+          Common.app.unLockBtn(type + "Lock");
+          //
           await Common.app.getNewBoxNum();
-          await Common.app.setCoinValueByName('BUSD');
+          await Common.app.setCoinValueByName("BUSD");
         }
       );
     });
   }
 
-  //订单部相关功能
+  //
   static async cancelOrderBook({ erc1155_, index_, orderId_ }) {
     let myAddr = await this.getAccount(true);
     if (!myAddr) return;
@@ -4477,12 +4477,12 @@ export default class ETH {
     let contract = new this.web3.eth.Contract(
       [
         {
-          name: 'cancelOrder',
-          type: 'function',
+          name: "cancelOrder",
+          type: "function",
           inputs: [
-            { name: 'erc1155_', type: 'uint256' },
-            { name: 'index_', type: 'uint256' },
-            { name: 'orderId_', type: 'uint256' },
+            { name: "erc1155_", type: "uint256" },
+            { name: "index_", type: "uint256" },
+            { name: "orderId_", type: "uint256" },
           ],
           outputs: [],
         },
@@ -4496,7 +4496,7 @@ export default class ETH {
         { from: myAddr },
         (hash) => resolve(hash),
         async () => {
-          console.log(' cancelOrder success!!!!!');
+          console.log(" cancelOrder success!!!!!");
         }
       );
     });

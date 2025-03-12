@@ -84,7 +84,7 @@
                   <h6>
                     {{ item.title }}
                     {{
-                      item.id == 0 ? '' : ` (${item.complete}/${item.count})`
+                      item.id == 0 ? "" : ` (${item.complete}/${item.count})`
                     }}
                   </h6>
                   <p>
@@ -159,7 +159,7 @@
                 tuned.
               </p>
               <button v-else :disabled="isClaimedLottery" @click="claimPrizes">
-                {{ isClaimedLottery ? 'Claimed' : 'Claim' }}
+                {{ isClaimedLottery ? "Claimed" : "Claim" }}
               </button>
             </div>
           </div>
@@ -277,16 +277,16 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { Wallet, Common } from '@/utils';
-import { CommonMethod } from '@/mixin';
+import { mapState } from "vuex";
+import { Wallet, Common } from "@/utils";
+import { CommonMethod } from "@/mixin";
 import {
   getScore,
   getTaskStatus,
   getAirdrop,
   claimPoint,
   getLotteryResults,
-} from '@/utils/anniversaryService';
+} from "@/utils/anniversaryService";
 
 export default {
   mixins: [CommonMethod],
@@ -294,153 +294,153 @@ export default {
     return {
       tabs: [
         {
-          symbol: 'task',
-          icon: require('@/assets/anniversary/1.svg'),
-          name: 'MOMO Points',
+          symbol: "task",
+          icon: require("@/assets/anniversary/1.svg"),
+          name: "MOMO Points",
         },
         {
-          symbol: 'prosperity',
-          icon: require('@/assets/anniversary/2.svg'),
-          name: 'MOMOVerse',
+          symbol: "prosperity",
+          icon: require("@/assets/anniversary/2.svg"),
+          name: "MOMOVerse",
         },
         {
-          symbol: 'hash',
-          icon: require('@/assets/anniversary/3.svg'),
-          name: 'MOMO',
+          symbol: "hash",
+          icon: require("@/assets/anniversary/3.svg"),
+          name: "MOMO",
         },
       ],
       events: [
         {
           id: 0,
-          title: 'Check-in Anniversary Event',
+          title: "Check-in Anniversary Event",
           point: 5,
           complete: 1,
           count: 1,
         },
         {
           id: 1,
-          title: 'Open 1 Box/Chest',
+          title: "Open 1 Box/Chest",
           point: 10,
           complete: 0,
           count: 1,
         },
         {
           id: 2,
-          title: 'Consume 1 MOMO to Upgrade',
+          title: "Consume 1 MOMO to Upgrade",
           point: 5,
           complete: 0,
           count: 1,
         },
         {
           id: 3,
-          title: 'Consume 300 MEC to Enhance',
+          title: "Consume 300 MEC to Enhance",
           point: 5,
           complete: 0,
           count: 300,
         },
       ],
-      // 当前tab
-      tab: 'task',
-      // 奖励
+      //
+      tab: "task",
+      //
       rewards: [
         {
-          icon: require('@/assets/icon/green_icon.png'),
+          icon: require("@/assets/icon/green_icon.png"),
           count: 25,
         },
         {
-          icon: require('@/assets/icon/blue_icon.png'),
+          icon: require("@/assets/icon/blue_icon.png"),
           count: 25,
         },
         {
-          icon: require('@/assets/icon/yellow_icon.png'),
+          icon: require("@/assets/icon/yellow_icon.png"),
           count: 25,
         },
         {
-          icon: require('@/assets/icon/red_icon.png'),
+          icon: require("@/assets/icon/red_icon.png"),
           count: 25,
         },
       ],
-      // 抽奖奖品
+      //
       lotteryPrizes: {
         1: {
-          icon: require('@/assets/icon/box.png'),
-          title: '1 BOX',
+          icon: require("@/assets/icon/box.png"),
+          title: "1 BOX",
         },
         101: {
-          icon: require('@/assets/icon/red_icon.png'),
-          title: '1 Ruby',
+          icon: require("@/assets/icon/red_icon.png"),
+          title: "1 Ruby",
         },
         201: {
-          icon: require('@/assets/icon/green_icon.png'),
-          title: '1 Emerald',
+          icon: require("@/assets/icon/green_icon.png"),
+          title: "1 Emerald",
         },
         301: {
-          icon: require('@/assets/icon/blue_icon.png'),
-          title: '1 Sapphire',
+          icon: require("@/assets/icon/blue_icon.png"),
+          title: "1 Sapphire",
         },
         401: {
-          icon: require('@/assets/icon/yellow_icon.png'),
-          title: '1 Topaz',
+          icon: require("@/assets/icon/yellow_icon.png"),
+          title: "1 Topaz",
         },
         997: {
-          icon: require('@/assets/anniversary/momo-7.png'),
-          title: '1 Legendary MOMO',
+          icon: require("@/assets/anniversary/momo-7.png"),
+          title: "1 Legendary MOMO",
         },
         998: {
-          icon: require('@/assets/anniversary/momo-8.png'),
-          title: '1 Legendary MOMO',
+          icon: require("@/assets/anniversary/momo-8.png"),
+          title: "1 Legendary MOMO",
         },
         999: {
-          icon: require('@/assets/anniversary/momo-9.png'),
-          title: '1 Legendary MOMO',
+          icon: require("@/assets/anniversary/momo-9.png"),
+          title: "1 Legendary MOMO",
         },
       },
-      // momo列表
+      //
       momoList: [
         {
-          icon: require('@/assets/anniversary/type-1.svg'),
-          momo: require('@/assets/anniversary/momo-1.png'),
-          title: 'Common MOMO',
+          icon: require("@/assets/anniversary/type-1.svg"),
+          momo: require("@/assets/anniversary/momo-1.png"),
+          title: "Common MOMO",
         },
         {
-          icon: require('@/assets/anniversary/type-2.svg'),
-          momo: require('@/assets/anniversary/momo-2.png'),
-          title: 'Uncommon MOMO',
+          icon: require("@/assets/anniversary/type-2.svg"),
+          momo: require("@/assets/anniversary/momo-2.png"),
+          title: "Uncommon MOMO",
         },
         {
-          icon: require('@/assets/anniversary/type-3.svg'),
-          momo: require('@/assets/anniversary/momo-3.png'),
-          title: 'Unique MOMO',
+          icon: require("@/assets/anniversary/type-3.svg"),
+          momo: require("@/assets/anniversary/momo-3.png"),
+          title: "Unique MOMO",
         },
         {
-          icon: require('@/assets/anniversary/type-4.svg'),
-          momo: require('@/assets/anniversary/momo-4.png'),
-          title: 'Rare MOMO',
+          icon: require("@/assets/anniversary/type-4.svg"),
+          momo: require("@/assets/anniversary/momo-4.png"),
+          title: "Rare MOMO",
         },
         {
-          icon: require('@/assets/anniversary/type-5.svg'),
-          momo: require('@/assets/anniversary/momo-5.png'),
-          title: 'Epic MOMO',
+          icon: require("@/assets/anniversary/type-5.svg"),
+          momo: require("@/assets/anniversary/momo-5.png"),
+          title: "Epic MOMO",
         },
         {
-          icon: require('@/assets/anniversary/type-6.svg'),
-          momo: require('@/assets/anniversary/momo-6.png'),
-          title: 'Legendary MOMO',
+          icon: require("@/assets/anniversary/type-6.svg"),
+          momo: require("@/assets/anniversary/momo-6.png"),
+          title: "Legendary MOMO",
         },
       ],
-      // 积分
+      //
       score: 0,
-      // 完成状态
+      //
       complete: false,
-      // 空投信息
+      //
       airdropInfo: {},
-      // 繁荣度领取状态
+      //
       prosperityClaimStatus: false,
-      // 算力领取状态
+      //
       hashClaimStatus: false,
-      // 抽奖结果
+      //
       lotteryResults: {},
-      // 是否领取抽奖
+      //
       isClaimedLottery: true,
     };
   },
@@ -450,7 +450,7 @@ export default {
       this.score = Math.min(score, 30);
       this.complete = complete;
     },
-    // 获取任务状态
+    //
     async getTaskStatus() {
       const result = await getTaskStatus();
       const map = result.reduce((data, item) => {
@@ -462,11 +462,11 @@ export default {
         item.complete = map[item.id]?.count || 0;
       });
     },
-    // 获取空投空投
+    //
     async getAirdrop() {
-      // 获取空投信息
+      //
       const airdropInfo = await getAirdrop();
-      // 金额格式化
+      //
       airdropInfo.homeProof.amountText = this.numFloor(
         airdropInfo.homeProof.amount / 1e18
       ).toLocaleString();
@@ -485,11 +485,11 @@ export default {
           .isClaimed(airdropInfo.hashProof.index)
           .call());
     },
-    // 领取空投
+    //
     async claim(query) {
       const address = await Wallet.ETH.getAccount();
       const methods =
-        this.tab === 'prosperity'
+        this.tab === "prosperity"
           ? Wallet.ETH.anniversaryHomeland.methods
           : Wallet.ETH.anniversaryHashrate.methods;
       const contract = methods.claim(
@@ -509,10 +509,10 @@ export default {
         () => {}
       );
     },
-    // 领取积分
+    //
     async claimPoint(id) {
       if (!Wallet.ETH.myAddr) {
-        Common.app.oprDialog('connect-wallet-dialog', 'block');
+        Common.app.oprDialog("connect-wallet-dialog", "block");
         this.init();
         return;
       }
@@ -521,19 +521,19 @@ export default {
       this.getScore();
       this.getTaskStatus();
     },
-    // 获取抽奖结果
+    //
     async getLotteryResults() {
       const result = await getLotteryResults();
       this.lotteryResults = result;
 
       if (result.index) {
         const isClaimed = await Wallet.ETH.anniversaryClaimPrizes.methods
-        .isClaimed(result.index)
-        .call();
+          .isClaimed(result.index)
+          .call();
         this.isClaimedLottery = isClaimed;
       }
     },
-    // 领取奖品
+    //
     async claimPrizes() {
       const address = await Wallet.ETH.getAccount();
       const contract = Wallet.ETH.anniversaryClaimPrizes.methods.claim(
@@ -554,7 +554,7 @@ export default {
         () => {}
       );
     },
-    // 初始化
+    //
     init() {
       this.getLotteryResults();
       this.getScore();
@@ -630,7 +630,7 @@ export default {
     align-items: center;
     justify-content: center;
     color: #ffcc0a;
-    font-family: 'poppins-black';
+    font-family: "poppins-black";
     font-style: normal;
     font-weight: 700;
     position: relative;
@@ -783,7 +783,7 @@ export default {
       align-items: flex-end;
       color: #a5a6ab;
       vertical-align: bottom;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
   }
 
@@ -857,7 +857,7 @@ export default {
     align-items: center;
 
     p {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
   }
 }
@@ -940,7 +940,7 @@ export default {
   }
 
   p {
-    color: #A5A6AB;
+    color: #a5a6ab;
   }
 }
 

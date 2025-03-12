@@ -8,12 +8,18 @@
           <img src="../assets/icon/close.png" />
         </div>
         <div class="head">
-          <div class="title">{{$t("Market_15")}}</div>
+          <div class="title">{{ $t("Market_15") }}</div>
           <div class="clear" @click="clear">
-            <span> {{$t("Market_16")}} </span>
+            <span> {{ $t("Market_16") }} </span>
             <svg viewBox="0 0 1024 1024" width="20" height="20">
-              <path fill="#838689" d="M519.68 0C415.232 0 330.24 82.944 326.656 186.88H82.944c-27.136 0-49.152 22.016-49.152 49.152s22.016 49.152 49.152 49.152h54.272v550.912C137.216 939.52 207.36 1024 293.888 1024h441.344c86.528 0 156.672-83.968 156.672-187.904v-550.4h49.152c27.136 0 49.152-22.016 49.152-49.152s-22.016-49.152-49.152-49.152H712.192C709.12 82.944 624.128 0 519.68 0zM418.816 186.88c3.584-53.248 47.104-94.72 100.864-94.72s97.28 41.472 100.352 94.72H418.816zM293.888 931.84c-30.72 0-64.512-39.424-64.512-95.744v-550.4h570.368v550.912c0 56.32-33.792 95.744-64.512 95.744H293.888v-0.512z"></path>
-              <path fill="#838689" d="M359.936 813.568c22.528 0 40.96-22.528 40.96-50.688V473.6c0-28.16-18.432-50.688-40.96-50.688s-40.96 22.528-40.96 50.688v289.28c0 28.16 17.92 50.688 40.96 50.688z m148.48 0c22.528 0 40.96-22.528 40.96-50.688V473.6c0-28.16-18.432-50.688-40.96-50.688s-40.96 22.528-40.96 50.688v289.28c0 28.16 18.432 50.688 40.96 50.688z m156.16 0c22.528 0 40.96-22.528 40.96-50.688V473.6c0-28.16-18.432-50.688-40.96-50.688s-40.96 22.528-40.96 50.688v289.28c0 28.16 17.92 50.688 40.96 50.688z"></path>
+              <path
+                fill="#838689"
+                d="M519.68 0C415.232 0 330.24 82.944 326.656 186.88H82.944c-27.136 0-49.152 22.016-49.152 49.152s22.016 49.152 49.152 49.152h54.272v550.912C137.216 939.52 207.36 1024 293.888 1024h441.344c86.528 0 156.672-83.968 156.672-187.904v-550.4h49.152c27.136 0 49.152-22.016 49.152-49.152s-22.016-49.152-49.152-49.152H712.192C709.12 82.944 624.128 0 519.68 0zM418.816 186.88c3.584-53.248 47.104-94.72 100.864-94.72s97.28 41.472 100.352 94.72H418.816zM293.888 931.84c-30.72 0-64.512-39.424-64.512-95.744v-550.4h570.368v550.912c0 56.32-33.792 95.744-64.512 95.744H293.888v-0.512z"
+              ></path>
+              <path
+                fill="#838689"
+                d="M359.936 813.568c22.528 0 40.96-22.528 40.96-50.688V473.6c0-28.16-18.432-50.688-40.96-50.688s-40.96 22.528-40.96 50.688v289.28c0 28.16 17.92 50.688 40.96 50.688z m148.48 0c22.528 0 40.96-22.528 40.96-50.688V473.6c0-28.16-18.432-50.688-40.96-50.688s-40.96 22.528-40.96 50.688v289.28c0 28.16 18.432 50.688 40.96 50.688z m156.16 0c22.528 0 40.96-22.528 40.96-50.688V473.6c0-28.16-18.432-50.688-40.96-50.688s-40.96 22.528-40.96 50.688v289.28c0 28.16 17.92 50.688 40.96 50.688z"
+              ></path>
             </svg>
           </div>
         </div>
@@ -24,32 +30,56 @@
         <!-- 操作按钮 -->
         <div class="operation">
           <div class="icon">
-            <span>{{count}}</span>
-  					<img src="@/assets/icon/shopcar.png" />
+            <span>{{ count }}</span>
+            <img src="@/assets/icon/shopcar.png" />
           </div>
           <!-- 价格 -->
           <div class="price">
-            <div class="label">{{$t("Market_18")}}</div>
+            <div class="label">{{ $t("Market_18") }}</div>
             <div class="amount-layout">
               <img src="@/assets/coin/USDT.png" />
               <div class="amount">
-                <span>{{totalPrice}}</span>
+                <span>{{ totalPrice }}</span>
                 <small>USDT</small>
               </div>
             </div>
           </div>
           <!-- 按钮 -->
           <div :class="['buttons', isApproveUSDT ? null : 'btn-group']">
-  					<StatuButton v-if="!isApproveUSDT" data-step="1" :onClick="approve" :isLoading="coinArr['USDT'].isApproving">{{$t("Air-drop_16")}} USDT</StatuButton>
-            <StatuButton data-step="2" :isDisable="count == 0 || !isApproveUSDT" :onClick="pay">{{$t("Market_22")}}</StatuButton>
+            <StatuButton
+              v-if="!isApproveUSDT"
+              data-step="1"
+              :onClick="approve"
+              :isLoading="coinArr['USDT'].isApproving"
+              >{{ $t("Air-drop_16") }} USDT</StatuButton
+            >
+            <StatuButton
+              data-step="2"
+              :isDisable="count == 0 || !isApproveUSDT"
+              :onClick="pay"
+              >{{ $t("Market_22") }}</StatuButton
+            >
           </div>
         </div>
         <!-- 提示 -->
         <div class="footer">
-          <div :class="['icon', ignoreChange ? 'active' : null]" @click="toggleIgnoreChange">
-            <svg v-if="ignoreChange" viewBox="0 0 1024 1024" width="20" height="20"><path fill="#92FFDA" d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z" ></path></svg>
+          <div
+            :class="['icon', ignoreChange ? 'active' : null]"
+            @click="toggleIgnoreChange"
+          >
+            <svg
+              v-if="ignoreChange"
+              viewBox="0 0 1024 1024"
+              width="20"
+              height="20"
+            >
+              <path
+                fill="#92FFDA"
+                d="M60.217477 633.910561c0 0 250.197342 104.557334 374.563838 330.628186 149.378146-279.762705 436.109566-540.713972 521.05012-560.013527 0-115.776863 0-163.394371 0-341.442486-342.237595 226.070852-506.576477 642.342604-506.576477 642.342604l-180.049702-191.614086L60.217477 633.910561z"
+              ></path>
+            </svg>
           </div>
-          <p>{{$t("Market_71")}}</p>
+          <p>{{ $t("Market_71") }}</p>
         </div>
       </div>
     </div>
@@ -57,26 +87,26 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import {  Wallet } from '@/utils';
+import { mapState } from "vuex";
+import { Wallet } from "@/utils";
 import { CommonMethod } from "@/mixin";
 import StatuButton from "@/components/StatuButton";
 import { PancakeConfig, WalletConfig } from "@/config";
 
 export default {
-	mixins: [CommonMethod],
+  mixins: [CommonMethod],
   props: {
-    // 显示状态
+    //
     value: {
       type: Boolean,
       default: false,
     },
-    // 数量
+    //
     count: {
       type: Number,
       required: true,
     },
-    // 总价格
+    //
     totalPrice: {
       type: String,
       required: true,
@@ -87,57 +117,58 @@ export default {
   },
   data() {
     return {
-      // 忽略价格变化
+      //
       ignoreChange: false,
     };
   },
   computed: {
-		...mapState({
-			coinArr: (state) => state.bnbState.data.coinArr,
-		}),
-    // usdt授权状态
-		isApproveUSDT() {
-			return this.coinArr['USDT'].allowanceToAuction > 0;
-		},
+    ...mapState({
+      coinArr: (state) => state.bnbState.data.coinArr,
+    }),
+    //
+    isApproveUSDT() {
+      return this.coinArr["USDT"].allowanceToAuction > 0;
+    },
   },
   methods: {
-    // 关闭
+    //
     close() {
       this.$emit("input", false);
     },
-    // 修改价格忽略状态
+    //
     toggleIgnoreChange() {
       this.ignoreChange = !this.ignoreChange;
     },
-		//授权
-		async approve(){
+    //
+    async approve() {
       let coinKey = "USDT";
-      let { isApproving} = this.coinArr[coinKey];
+      let { isApproving } = this.coinArr[coinKey];
 
-      if(isApproving) return;
+      if (isApproving) return;
 
       let hash = await Wallet.ETH.approveErcToTarget(
         PancakeConfig.SelectCoin["USDT"].addr,
-        WalletConfig.ETH.moMoStakeAuction, {coinKey, type: "allowanceToAuction"}
+        WalletConfig.ETH.moMoStakeAuction,
+        { coinKey, type: "allowanceToAuction" }
       );
 
       if (hash) {
         this.coinArr[coinKey].isApproving = true;
       }
-		},
-    // 清除
-    clear() {
-      this.$emit('clear');
     },
-    // 支付
+    //
+    clear() {
+      this.$emit("clear");
+    },
+    //
     pay() {
-			if(Number(this.totalPrice) > Number(this.coinArr.USDT.balance)){
-				this.showNotify(this.$t("Market_34"), "error");
-				return ;
-			}
+      if (Number(this.totalPrice) > Number(this.coinArr.USDT.balance)) {
+        this.showNotify(this.$t("Market_34"), "error");
+        return;
+      }
 
-      this.$emit('pay', this.ignoreChange);
-    }
+      this.$emit("pay", this.ignoreChange);
+    },
   },
 };
 </script>
@@ -179,7 +210,7 @@ export default {
   border-radius: 10px;
 }
 
-// 关闭按钮
+//
 .close {
   width: 25px;
   height: 25px;
@@ -188,7 +219,7 @@ export default {
   right: 0;
   top: 0;
   transform: translate(50%, -50%);
-  border: 1px solid #36383A;
+  border: 1px solid #36383a;
   border-radius: 50%;
 
   img {
@@ -197,7 +228,7 @@ export default {
   }
 }
 
-// 头部
+//
 .head {
   display: flex;
   align-content: center;
@@ -209,7 +240,7 @@ export default {
     flex: 1;
   }
 
-  // 标题
+  //
   .clear {
     cursor: pointer;
 
@@ -229,7 +260,7 @@ export default {
   }
 }
 
-// 列表
+//
 .list {
   margin-top: 10px;
   max-height: 690px;
@@ -240,13 +271,13 @@ export default {
   overflow-y: scroll;
 }
 
-// 操作
+//
 .operation {
   display: flex;
   align-items: center;
   margin-top: 20px;
 
-  // 数量图标
+  //
   .icon {
     width: 40px;
     position: relative;
@@ -267,7 +298,7 @@ export default {
     }
   }
 
-  // 价格
+  //
   .price {
     flex: 1;
     margin-left: 12px;
@@ -309,7 +340,7 @@ export default {
     }
   }
 
-  // 按钮
+  //
   .buttons {
     display: flex;
     flex-direction: column;
@@ -321,7 +352,7 @@ export default {
   }
 }
 
-// 底部提示
+//
 .footer {
   display: flex;
   margin-top: 20px;
@@ -357,7 +388,7 @@ export default {
   }
 }
 
-// 过度动画
+//
 .bounce-enter-active,
 .bounce-leave-active {
   transition: opacity 0.3s;

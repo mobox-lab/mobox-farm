@@ -25,159 +25,159 @@ import FurnaceFour from "../views/FurnaceFour/index.vue";
 Vue.use(VueRouter);
 
 const routes = [
-    {
-        path: "/",
-        name: "Airdrop",
-        component: AirdropV2,
-        meta: {
-            keepAlive: true, // 需要被缓存
-            actionId: 21000,
-        },
+  {
+    path: "/",
+    name: "Airdrop",
+    component: AirdropV2,
+    meta: {
+      keepAlive: true, //
+      actionId: 21000,
     },
-    {
-        path: "/old",
-        name: "AirdropOld",
-        component: Airdrop,
-        meta: {
-            actionId: 21000,
-        },
+  },
+  {
+    path: "/old",
+    name: "AirdropOld",
+    component: Airdrop,
+    meta: {
+      actionId: 21000,
     },
-    {
-        path: "/openbox",
-        name: "OpenBox",
-        component: OpenBox,
-        meta: {
-            keepAlive: true, // 需要被缓存
-            actionId: 23000,
-        },
+  },
+  {
+    path: "/openbox",
+    name: "OpenBox",
+    component: OpenBox,
+    meta: {
+      keepAlive: true, //
+      actionId: 23000,
     },
-    {
-        path: "/collection",
-        name: "Collection",
-        component: Collection,
-        meta: {
-            actionId: 25000,
-        },
+  },
+  {
+    path: "/collection",
+    name: "Collection",
+    component: Collection,
+    meta: {
+      actionId: 25000,
     },
-    {
-        path: "/market",
-        name: "Market",
-        component: Market,
-        meta: {
-            actionId: 26000,
-        },
+  },
+  {
+    path: "/market",
+    name: "Market",
+    component: Market,
+    meta: {
+      actionId: 26000,
     },
-    {
-        path: "/mypet/:tabPos?",
-        name: "Mypet",
-        component: Mypet,
-        meta: {
-            actionId: 24000,
-        },
+  },
+  {
+    path: "/mypet/:tabPos?",
+    name: "Mypet",
+    component: Mypet,
+    meta: {
+      actionId: 24000,
     },
-    {
-        path: "/upgrade/:petId",
-        name: "Upgrade",
-        component: Upgrade,
+  },
+  {
+    path: "/upgrade/:petId",
+    name: "Upgrade",
+    component: Upgrade,
+  },
+  {
+    path: "/rank/",
+    name: "Rank",
+    component: Rank,
+    meta: {
+      actionId: 27000,
     },
-    {
-        path: "/rank/",
-        name: "Rank",
-        component: Rank,
-        meta: {
-            actionId: 27000,
-        },
+  },
+  {
+    path: "/activity/",
+    name: "Activity",
+    component: Activity,
+    meta: {
+      actionId: 22000,
     },
-    {
-        path: "/activity/",
-        name: "Activity",
-        component: Activity,
-        meta: {
-            actionId: 22000,
-        },
-    },
-    {
-        path: "/activity-mdx",
-        name: "ActivityMdx",
-        component: () => import("../views/Activity/Mdx/Mdx.vue"),
-    },
-    {
-        path: "/auctionView/:petInfo",
-        name: "AuctionView",
-        component: AuctionView,
-    },
-    {
-        path: "/bigSellView/:tx",
-        name: "BigSellView",
-        component: BigSellView,
-    },
-    {
-        path: "/auctionGemView/:petInfo",
-        name: "AuctionGemView",
-        component: AuctionGemView,
-    },
-    {
-        path: "/rentView/:tokenId",
-        name: "RentView",
-        component: RentView,
-    },
-    {
-        path: "/binanceNFT",
-        name: "BinanceNFT",
-        component: BinanceNFT,
-    },
-    {
-        path: "/christmas",
-        name: "Christmas",
-        component: Christmas,
-    },
-    // {
-    // 	path: "/anniversary",
-    // 	name: "Anniversary",
-    // 	component: Anniversary
-    // },
-    {
-        path: "/yearend",
-        name: "YearEnd",
-        component: YearEnd,
-    },
-    {
-        path: "/blindBox",
-        name: "BlindBox",
-        component: BlindBox,
-    },
-    {
-        path: "/network",
-        name: "Statistics",
-        component: Statistics,
-    },
-    {
-        path: "/furnace",
-        name: "Furnace",
-        component: Furnace,
-    },
-    {
-        path: "/furnaceFour",
-        name: "FurnaceFour",
-        component: FurnaceFour,
-    },
-    {
-        path: "*",
-        redirect: "/",
-    },
+  },
+  {
+    path: "/activity-mdx",
+    name: "ActivityMdx",
+    component: () => import("../views/Activity/Mdx/Mdx.vue"),
+  },
+  {
+    path: "/auctionView/:petInfo",
+    name: "AuctionView",
+    component: AuctionView,
+  },
+  {
+    path: "/bigSellView/:tx",
+    name: "BigSellView",
+    component: BigSellView,
+  },
+  {
+    path: "/auctionGemView/:petInfo",
+    name: "AuctionGemView",
+    component: AuctionGemView,
+  },
+  {
+    path: "/rentView/:tokenId",
+    name: "RentView",
+    component: RentView,
+  },
+  {
+    path: "/binanceNFT",
+    name: "BinanceNFT",
+    component: BinanceNFT,
+  },
+  {
+    path: "/christmas",
+    name: "Christmas",
+    component: Christmas,
+  },
+  // {
+  // 	path: "/anniversary",
+  // 	name: "Anniversary",
+  // 	component: Anniversary
+  // },
+  {
+    path: "/yearend",
+    name: "YearEnd",
+    component: YearEnd,
+  },
+  {
+    path: "/blindBox",
+    name: "BlindBox",
+    component: BlindBox,
+  },
+  {
+    path: "/network",
+    name: "Statistics",
+    component: Statistics,
+  },
+  {
+    path: "/furnace",
+    name: "Furnace",
+    component: Furnace,
+  },
+  {
+    path: "/furnaceFour",
+    name: "FurnaceFour",
+    component: FurnaceFour,
+  },
+  {
+    path: "*",
+    redirect: "/",
+  },
 ];
 
 const router = new VueRouter({
-    scrollBehavior(to, from, savedPosition) {
-        if (savedPosition) {
-            return savedPosition;
-        } else {
-            return { x: 0, y: 0 };
-        }
-    },
-    mode: "hash",
-    base: process.env.BASE_URL,
-    routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { x: 0, y: 0 };
+    }
+  },
+  mode: "hash",
+  base: process.env.BASE_URL,
+  routes,
 });
 
 export default router;

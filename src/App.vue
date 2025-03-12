@@ -723,7 +723,7 @@ export default {
 			connectWalletAddr: (state) => state.globalState.data.connectWalletAddr,
 			chainNetwork: (state) => state.globalState.data.chainNetwork,
 		}),
-		// 算力达标数量
+		//
 		standardCount() {
 			return this.getStandardCount(this.powerTab);
 		},
@@ -738,7 +738,7 @@ export default {
 
 			return null;
 		},
-		// 当前算力总加成
+		//
 		currentTotalAddition() {
 			const list = ["v4", "v5", "v6"];
 			let total = 0;
@@ -746,13 +746,13 @@ export default {
 			for (let item in list) {
 				const type = list[item];
 				const config = powerAddConfig[type];
-				// 获取当前类型达标数量
+				//
 				const count = this.getStandardCount(type);
 
-				// 获取达标数量符合的下标
+				//
 				let index;
 
-				// 超出最大值
+				//
 				if (count >= config[config.length - 1].num) {
 					index = config.length - 1;
 				} else {
@@ -891,7 +891,7 @@ export default {
 		}, 5000);
 
 		let count = 0;
-		//1s定时器
+		//
 		clearInterval(timer);
 		let airdropCountDown = 1619784000 - parseInt(new Date().valueOf()/ 1000);
 		let gemApplyEndCountDown = 1649736000 - parseInt(new Date().valueOf()/ 1000);
@@ -900,13 +900,13 @@ export default {
 		timer = setInterval(async ()=>{
 			this.$store.commit("globalState/setData", {nowTs: parseInt(new Date().valueOf()/1000)});
 
-			//定时移除锁定按钮状态
+			//
 			for (let key in this.globalState.lockBtn) {
 				if(this.globalState.lockBtn[key] > 0){
 					this.globalState.lockBtn[key]--;
 				}
 			}
-			//定时解除升级按钮锁定状态
+			//
 			for (let key in this.upgradeLocks){
 				if(this.upgradeLocks[key] >0){
 					this.upgradeLocks[key]--;
@@ -922,7 +922,7 @@ export default {
 				}
 			}
 
-			//宝石申购结束倒计时
+			//
 			if(gemApplyEndCountDown >= 0){
 				gemApplyEndCountDown--;
 				this.$store.commit("globalState/setData", {gemApplyEndCountDown});
@@ -953,7 +953,7 @@ export default {
 			}, 1000)
 		}
 
-		//自动弹出提示
+		//
 		// if(!this.hasReadNotice){
 		// 	let t = setTimeout(()=>{
 		// 		clearTimeout(t);
@@ -965,11 +965,11 @@ export default {
 		clearInterval(timer);
 	},
 	methods: {
-		// 显示momo列表
+		//
 		showMomos() {
 			this.oprDialog('standard-hashrate', 'block');
 		},
-		// 根据类型获取算力达标数量
+		//
 		getStandardCount(type) {
 			const standardHashrate = this.hashrateInfo[`${type}StandardHashrate`];
 
@@ -983,7 +983,7 @@ export default {
 				return data;
 			}, 0);
 		},
-		// 打开mbox-mec swap
+		//
 		openMboxMecSwap() {
 			this.$router.push('/market?tab=5');
 			// const pancake = this.$root.$children[0].$refs.pancake;
@@ -1097,7 +1097,7 @@ export default {
 			let res = await Wallet.ETH.getAmountsOut(1e18, [PancakeConfig.SelectCoin[coinName].addr, wBNB, PancakeConfig.SelectCoin["USDT"].addr]);
 			this.ourPrice[coinName] = this.numFloor(res[2]/1e18, 1e4);
 		},
-		//滚动到激活的位置
+		//
 		scorllToTargetPos() {
 			let pos = this.standardIndex;
 			if (pos == -1) pos = 0;
@@ -1112,11 +1112,11 @@ export default {
 		listenPostMsg(msg) {
 			if (msg.data["from"] == "mbox") {
 				let action = msg.data["action"];
-				//设置多语言
+				//
 				if (action == "changeLang") {
 					this.$i18n.locale = msg.data["value"];
 				}
-				//设置token
+				//
 				if (action == "setToken") {
 					console.log("setToken", msg.data["value"]);
 				}
@@ -1144,13 +1144,13 @@ export default {
 	text-align: center;
 }
 
-/* 手机端头部水晶图标 */
+//
 .head-mec-icon {
 	width: auto;
 	height: 25px;
 }
 
-// 固定算力加成弹窗 - 算力比例
+//
 .proportion {
 	> * {
 		vertical-align: middle;
@@ -1222,7 +1222,7 @@ export default {
 	border-radius: 5px; */
 /* } */
 
-/* 滚动菜单 */
+//
 /* #nav-list-mobile{
 	position: fixed;
 	bottom:0px;
@@ -1274,7 +1274,7 @@ export default {
 	height: 30px;
 } */
 
-/* 固定6个菜单 */
+//
 
 #nav-list-mobile ul{
 	list-style: none;

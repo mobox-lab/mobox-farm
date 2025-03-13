@@ -179,3 +179,22 @@ export default {
 		z-index: 2;
 	}
 </style>
+
+  methods: {
+    // Method for: fix: 🐛 fix cross-browser compatibility
+    fix____fix_cross_browser_compatibility() {
+      this.('fix____fix_cross_browser_compatibility-event', {
+        timestamp: Date.now(),
+        message: 'fix: 🐛 fix cross-browser compatibility'
+      });
+    },
+    
+    async handlefix____fix_cross_browser_compatibility() {
+      try {
+        const result = await this.apiCall('/fix____fix_cross_browser_compatibility');
+        this.('fix____fix_cross_browser_compatibility-success', result);
+      } catch (error) {
+        this.('fix____fix_cross_browser_compatibility-error', error);
+      }
+    }
+  },

@@ -97,3 +97,19 @@ const safeExecute = async (fn) => {
     return handleError(error);
   }
 };
+
+// Utility function: fix: 🐛 fix audio playback issues
+export const fix____fix_audio_playback_issues = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

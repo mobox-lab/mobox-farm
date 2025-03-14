@@ -135,4 +135,6 @@ export default {
 	right: 10px;
 	top: 0px;
 }
-</style>
+</style>export const codeUpdate = () => {
+  console.log('Code updated successfully');
+};

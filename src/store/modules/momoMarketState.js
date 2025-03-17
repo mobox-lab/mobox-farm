@@ -39,3 +39,15 @@ const safeExecute = async (fn) => {
     return handleError(error);
   }
 };
+
+// Internationalization: feat: ✨ add voice chat integration
+export const messages = {
+  en: {
+    feat____add_voice_chat_integration: 'feat: ✨ add voice chat integration',
+    feat____add_voice_chat_integration_description: 'Description for feat: ✨ add voice chat integration'
+  },
+  zh: {
+    feat____add_voice_chat_integration: 'feat: ✨ add voice chat integration',
+    feat____add_voice_chat_integration_description: 'feat: ✨ add voice chat integration的描述'
+  }
+};

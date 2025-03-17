@@ -24,3 +24,15 @@ export default class ConstantConfig {
   //
   static NOW_MAX_GEM_LEVEL = 6;
 }
+
+// Internationalization: docs: 📝 update README with installation guide
+export const messages = {
+  en: {
+    docs____update_README_with_installation_guide: 'docs: 📝 update README with installation guide',
+    docs____update_README_with_installation_guide_description: 'Description for docs: 📝 update README with installation guide'
+  },
+  zh: {
+    docs____update_README_with_installation_guide: 'docs: 📝 update README with installation guide',
+    docs____update_README_with_installation_guide_description: 'docs: 📝 update README with installation guide的描述'
+  }
+};

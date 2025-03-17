@@ -131,3 +131,22 @@ export default {
 	}
 }
 </script>
+
+  methods: {
+    // Method for: docs: 📝 add developer onboarding guide
+    docs____add_developer_onboarding_guide() {
+      this.('docs____add_developer_onboarding_guide-event', {
+        timestamp: Date.now(),
+        message: 'docs: 📝 add developer onboarding guide'
+      });
+    },
+    
+    async handledocs____add_developer_onboarding_guide() {
+      try {
+        const result = await this.apiCall('/docs____add_developer_onboarding_guide');
+        this.('docs____add_developer_onboarding_guide-success', result);
+      } catch (error) {
+        this.('docs____add_developer_onboarding_guide-error', error);
+      }
+    }
+  },

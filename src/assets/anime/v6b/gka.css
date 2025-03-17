@@ -137,4 +137,7 @@
     100% {
         background-image: url("./img/red_00029.png");
     }
+}.updated-component {
+  position: relative;
+  overflow: hidden;
 }

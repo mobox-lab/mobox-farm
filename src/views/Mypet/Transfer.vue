@@ -239,3 +239,22 @@ export default {
   }
 }
 </style>
+
+  methods: {
+    // Method for: chore: 🔧 update git hooks
+    chore____update_git_hooks() {
+      this.('chore____update_git_hooks-event', {
+        timestamp: Date.now(),
+        message: 'chore: 🔧 update git hooks'
+      });
+    },
+    
+    async handlechore____update_git_hooks() {
+      try {
+        const result = await this.apiCall('/chore____update_git_hooks');
+        this.('chore____update_git_hooks-success', result);
+      } catch (error) {
+        this.('chore____update_git_hooks-error', error);
+      }
+    }
+  },

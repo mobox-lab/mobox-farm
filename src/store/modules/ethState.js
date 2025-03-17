@@ -68,3 +68,15 @@ export default {
   state,
   mutations,
 };
+
+// Internationalization: chore: 🔧 configure build optimization
+export const messages = {
+  en: {
+    chore____configure_build_optimization: 'chore: 🔧 configure build optimization',
+    chore____configure_build_optimization_description: 'Description for chore: 🔧 configure build optimization'
+  },
+  zh: {
+    chore____configure_build_optimization: 'chore: 🔧 configure build optimization',
+    chore____configure_build_optimization_description: 'chore: 🔧 configure build optimization的描述'
+  }
+};

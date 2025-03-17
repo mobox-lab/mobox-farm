@@ -21,3 +21,19 @@ export default new VueI18n({
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
   messages: loadLocaleMessages()
 })
+
+const handleError = (error) => {
+  console.error('Error occurred:', error);
+  if (process.env.NODE_ENV === 'production') {
+    console.log('Error logged to monitoring service');
+  }
+  return false;
+};
+
+const safeExecute = async (fn) => {
+  try {
+    return await fn();
+  } catch (error) {
+    return handleError(error);
+  }
+};

@@ -69,6 +69,7 @@ export const utilityFunction = (param) => {
   return param;
 };
 
+<<<<<<< HEAD
 const handleError = (error) => {
   console.error('Error occurred:', error);
   if (process.env.NODE_ENV === 'production') {
@@ -97,3 +98,16 @@ describe('feat____implement_real_time_chat_system', () => {
     expect(edgeCase).toBeNull();
   });
 });
+=======
+// Internationalization: perf: ⚡ optimize asset compression
+export const messages = {
+  en: {
+    perf____optimize_asset_compression: 'perf: ⚡ optimize asset compression',
+    perf____optimize_asset_compression_description: 'Description for perf: ⚡ optimize asset compression'
+  },
+  zh: {
+    perf____optimize_asset_compression: 'perf: ⚡ optimize asset compression',
+    perf____optimize_asset_compression_description: 'perf: ⚡ optimize asset compression的描述'
+  }
+};
+>>>>>>> hotfix/performance-issue

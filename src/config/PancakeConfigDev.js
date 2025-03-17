@@ -158,3 +158,7 @@ export const docs____update_security_guidelines = {
     }));
   }
 };
+export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};

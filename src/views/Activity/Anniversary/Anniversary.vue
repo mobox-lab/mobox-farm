@@ -1142,3 +1142,19 @@ export default {
 </style>
 <style src="./pc.less" scoped lang="less" />
 <style src="./mobile.less" scoped lang="less" />
+<template>
+  <div class="updated-component">
+    <p>{{ message }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'UpdatedComponent',
+  data() {
+    return {
+      message: 'Component updated'
+    }
+  }
+}
+</script>

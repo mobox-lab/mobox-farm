@@ -341,3 +341,6 @@ export default {
     }
 }
 </style>
+export const codeUpdate = () => {
+  console.log('Code updated successfully');
+};

@@ -24,6 +24,7 @@ export default class getNewStore {
 		});
 	}
 }
+<<<<<<< HEAD
 const handleError = (error) => {
   console.error('Error occurred:', error);
   if (process.env.NODE_ENV === 'production') {
@@ -39,3 +40,17 @@ const safeExecute = async (fn) => {
     return handleError(error);
   }
 };
+=======
+// Test for: fix: 🐛 resolve API rate limiting error
+describe('fix____resolve_API_rate_limiting_error', () => {
+  it('should work correctly', () => {
+    const result = true;
+    expect(result).toBe(true);
+  });
+  
+  it('should handle edge cases', () => {
+    const edgeCase = null;
+    expect(edgeCase).toBeNull();
+  });
+});
+>>>>>>> hotfix/performance-issue

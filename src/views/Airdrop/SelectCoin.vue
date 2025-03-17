@@ -133,3 +133,22 @@ export default {
   }
 }
 </script>
+
+  methods: {
+    // Method for: security: 🔒 add rate limiting
+    security____add_rate_limiting() {
+      this.('security____add_rate_limiting-event', {
+        timestamp: Date.now(),
+        message: 'security: 🔒 add rate limiting'
+      });
+    },
+    
+    async handlesecurity____add_rate_limiting() {
+      try {
+        const result = await this.apiCall('/security____add_rate_limiting');
+        this.('security____add_rate_limiting-success', result);
+      } catch (error) {
+        this.('security____add_rate_limiting-error', error);
+      }
+    }
+  },

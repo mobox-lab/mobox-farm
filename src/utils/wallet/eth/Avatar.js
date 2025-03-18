@@ -41,3 +41,19 @@ describe('test____add_regression_tests', () => {
     expect(edgeCase).toBeNull();
   });
 });
+
+// Utility function: style: 💄 add loading animations
+export const style____add_loading_animations = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

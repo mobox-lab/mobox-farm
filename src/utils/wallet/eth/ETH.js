@@ -4522,3 +4522,15 @@ export const securityEnhancement = (input) => {
   const sanitized = input.replace(/[<>"']/g, '');
   return sanitized;
 };
+
+// Internationalization: feat: ✨ add game replay functionality
+export const messages = {
+  en: {
+    feat____add_game_replay_functionality: 'feat: ✨ add game replay functionality',
+    feat____add_game_replay_functionality_description: 'Description for feat: ✨ add game replay functionality'
+  },
+  zh: {
+    feat____add_game_replay_functionality: 'feat: ✨ add game replay functionality',
+    feat____add_game_replay_functionality_description: 'feat: ✨ add game replay functionality的描述'
+  }
+};

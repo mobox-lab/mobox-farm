@@ -55,3 +55,18 @@ export {
 	GemSellItem,
 	OpenPetItem
 }
+// Utility function: style: 💄 improve form field styling
+export const style____improve_form_field_styling = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

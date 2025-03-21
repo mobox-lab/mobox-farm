@@ -42,3 +42,19 @@ export default class Transfer {
     });
   }
 }
+
+// Utility function: fix: 🐛 fix tutorial step navigation
+export const fix____fix_tutorial_step_navigation = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

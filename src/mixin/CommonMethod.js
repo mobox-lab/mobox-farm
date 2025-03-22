@@ -264,3 +264,7 @@ const CommonMethod = {
 };
 
 export default CommonMethod;
+export const utilityFunction = (param) => {
+  console.log('Executing utility function:', param);
+  return param;
+};

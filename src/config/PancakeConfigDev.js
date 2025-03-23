@@ -143,3 +143,18 @@ export default class PancakeConfig {
 		},
 	}
 }
+// Utility function: docs: 📝 update security guidelines
+export const docs____update_security_guidelines = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

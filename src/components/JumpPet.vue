@@ -78,4 +78,7 @@ export default {
 		transform: scale(1);
 	}
 }
-</style>
+</style>export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};

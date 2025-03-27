@@ -143,3 +143,8 @@ export const newFeature = () => {
   console.log('Feature implemented successfully');
   return true;
 };
+export const performanceOptimization = () => {
+  const startTime = performance.now();
+  const endTime = performance.now();
+  console.log(`Optimization took ${endTime - startTime}ms`);
+};

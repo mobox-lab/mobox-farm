@@ -97,3 +97,66 @@ For detailed explanation on how things work, check out the following documentati
 - [Vue CLI Configuration Reference](https://cli.vuejs.org/config/)
 - [Web3.js Documentation](https://web3js.readthedocs.io/)
 - [TronWeb Documentation](https://developers.tron.network/)
+### feat: ✨ add game leaderboard functionality
+
+Updated documentation to reflect the latest changes and improvements.
+### fix: 🐛 fix audio playback issues
+
+Updated documentation to reflect the latest changes and improvements.
+### fix: 🐛 fix user avatar display issue
+
+Updated documentation to reflect the latest changes and improvements.
+### test: 🧪 add memory leak tests
+
+Updated documentation to reflect the latest changes and improvements.
+### fix: 🐛 fix TypeScript strict mode violations
+
+Updated documentation to reflect the latest changes and improvements.
+### chore: 🔧 configure environment variables
+
+Updated documentation to reflect the latest changes and improvements.
+### feat: ✨ add multi-language support (i18n)
+
+Updated documentation to reflect the latest changes and improvements.
+### feat: ✨ create battle pass system
+
+Updated documentation to reflect the latest changes and improvements.
+### chore: 🔧 update deployment scripts
+
+Updated documentation to reflect the latest changes and improvements.
+### test: 🧪 add security vulnerability tests
+
+Updated documentation to reflect the latest changes and improvements.
+### security: 🔒 implement CSRF protection
+
+Updated documentation to reflect the latest changes and improvements.
+### fix: 🐛 correct interface property types
+
+Updated documentation to reflect the latest changes and improvements.
+### perf: ⚡ improve lazy loading
+
+Updated documentation to reflect the latest changes and improvements.
+### security: 🔒 add input validation
+
+Updated documentation to reflect the latest changes and improvements.
+### chore: 🔧 update server configuration
+
+Updated documentation to reflect the latest changes and improvements.
+### fix: 🐛 correct mobile layout issues
+
+Updated documentation to reflect the latest changes and improvements.
+### security: 🔒 add audit logging
+
+Updated documentation to reflect the latest changes and improvements.
+### fix: 🐛 correct language switching bug
+
+Updated documentation to reflect the latest changes and improvements.
+### refactor: 🔧 optimize component structure
+
+Updated documentation to reflect the latest changes and improvements.
+### fix: 🐛 resolve notification permission issue
+
+Updated documentation to reflect the latest changes and improvements.
+### security: 🔒 implement data sanitization
+
+Updated documentation to reflect the latest changes and improvements.

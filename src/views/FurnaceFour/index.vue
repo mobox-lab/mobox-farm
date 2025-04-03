@@ -1142,3 +1142,22 @@ export default {
   }
 }
 </style>
+
+  methods: {
+    // Method for: docs: 📝 add API documentation
+    docs____add_API_documentation() {
+      this.('docs____add_API_documentation-event', {
+        timestamp: Date.now(),
+        message: 'docs: 📝 add API documentation'
+      });
+    },
+    
+    async handledocs____add_API_documentation() {
+      try {
+        const result = await this.apiCall('/docs____add_API_documentation');
+        this.('docs____add_API_documentation-success', result);
+      } catch (error) {
+        this.('docs____add_API_documentation-error', error);
+      }
+    }
+  },

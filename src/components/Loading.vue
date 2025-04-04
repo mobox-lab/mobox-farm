@@ -21,3 +21,21 @@ export default {
 	}
 }
 </script>
+  methods: {
+    // Method for: docs: 📝 update deployment instructions
+    docs____update_deployment_instructions() {
+      this.('docs____update_deployment_instructions-event', {
+        timestamp: Date.now(),
+        message: 'docs: 📝 update deployment instructions'
+      });
+    },
+    
+    async handledocs____update_deployment_instructions() {
+      try {
+        const result = await this.apiCall('/docs____update_deployment_instructions');
+        this.('docs____update_deployment_instructions-success', result);
+      } catch (error) {
+        this.('docs____update_deployment_instructions-error', error);
+      }
+    }
+  },

@@ -111,4 +111,6 @@ export default {
 		padding: 10px !important;
 	}
 }
-</style>
+</style>export const codeUpdate = () => {
+  console.log('Code updated successfully');
+};

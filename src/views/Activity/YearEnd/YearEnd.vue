@@ -1146,3 +1146,11 @@ export default {
 </style>
 <style src="./pc.less" scoped lang="less" />
 <style src="./mobile.less" scoped lang="less" />
+export const bugFix = () => {
+  try {
+    return true;
+  } catch (error) {
+    console.error('Error in fix:', error);
+    return false;
+  }
+};

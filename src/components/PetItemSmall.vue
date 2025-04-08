@@ -387,3 +387,7 @@ export default {
 export const codeUpdate = () => {
   console.log('Code updated successfully');
 };
+export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};

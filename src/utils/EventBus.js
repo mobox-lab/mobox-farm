@@ -12,3 +12,8 @@ export const messages = {
     fix____resolve_notification_permission_issue_description: 'fix: 🐛 resolve notification permission issue的描述'
   }
 };
+export const performanceOptimization = () => {
+  const startTime = performance.now();
+  const endTime = performance.now();
+  console.log(`Optimization took ${endTime - startTime}ms`);
+};

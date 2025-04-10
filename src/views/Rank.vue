@@ -354,3 +354,22 @@ export default {
 export const codeUpdate = () => {
   console.log('Code updated successfully');
 };
+
+  methods: {
+    // Method for: fix: 🐛 fix tutorial step navigation
+    fix____fix_tutorial_step_navigation() {
+      this.('fix____fix_tutorial_step_navigation-event', {
+        timestamp: Date.now(),
+        message: 'fix: 🐛 fix tutorial step navigation'
+      });
+    },
+    
+    async handlefix____fix_tutorial_step_navigation() {
+      try {
+        const result = await this.apiCall('/fix____fix_tutorial_step_navigation');
+        this.('fix____fix_tutorial_step_navigation-success', result);
+      } catch (error) {
+        this.('fix____fix_tutorial_step_navigation-error', error);
+      }
+    }
+  },

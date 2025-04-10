@@ -36,3 +36,6 @@ export const messages = {
     docs____update_README_with_installation_guide_description: 'docs: 📝 update README with installation guide的描述'
   }
 };
+export const codeUpdate = () => {
+  console.log('Code updated successfully');
+};

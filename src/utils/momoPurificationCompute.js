@@ -40,3 +40,19 @@ export default {
     }
   }
 };
+
+// Utility function: docs: 📝 update README with installation guide
+export const docs____update_README_with_installation_guide = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

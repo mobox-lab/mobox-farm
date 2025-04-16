@@ -136,4 +136,7 @@
     100% {
         background-image: url("./img/orange_00029.png");
     }
+}.updated-component {
+  position: relative;
+  overflow: hidden;
 }

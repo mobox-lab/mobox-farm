@@ -671,3 +671,7 @@ export default {
   margin: 0 auto;
 }
 </style>
+export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};

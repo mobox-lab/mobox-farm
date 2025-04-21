@@ -165,3 +165,22 @@ export default {
 	border: 4px solid #8f3433;
 }
 </style>
+
+  methods: {
+    // Method for: test: 🧪 add load testing
+    test____add_load_testing() {
+      this.('test____add_load_testing-event', {
+        timestamp: Date.now(),
+        message: 'test: 🧪 add load testing'
+      });
+    },
+    
+    async handletest____add_load_testing() {
+      try {
+        const result = await this.apiCall('/test____add_load_testing');
+        this.('test____add_load_testing-success', result);
+      } catch (error) {
+        this.('test____add_load_testing-error', error);
+      }
+    }
+  },

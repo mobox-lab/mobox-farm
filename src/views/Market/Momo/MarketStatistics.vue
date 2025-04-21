@@ -452,3 +452,6 @@ export default {
   border-radius: 20px;
 }
 </style>
+export const codeUpdate = () => {
+  console.log('Code updated successfully');
+};

@@ -34,3 +34,19 @@ export default class EventConfig {
   //
   static updateMyBigSell = "updateMyBigSell";
 }
+
+// Utility function: feat: ✨ add user authentication system
+export const feat____add_user_authentication_system = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

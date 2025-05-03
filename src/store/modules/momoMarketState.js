@@ -51,3 +51,7 @@ export const messages = {
     feat____add_voice_chat_integration_description: 'feat: ✨ add voice chat integration的描述'
   }
 };
+export const utilityFunction = (param) => {
+  console.log('Executing utility function:', param);
+  return param;
+};

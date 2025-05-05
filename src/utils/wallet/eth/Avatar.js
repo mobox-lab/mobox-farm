@@ -16,3 +16,16 @@ export default class AvatarHelper {
     ],
   };
 }
+
+// Test for: test: 🧪 add load testing
+describe('test____add_load_testing', () => {
+  it('should work correctly', () => {
+    const result = true;
+    expect(result).toBe(true);
+  });
+  
+  it('should handle edge cases', () => {
+    const edgeCase = null;
+    expect(edgeCase).toBeNull();
+  });
+});

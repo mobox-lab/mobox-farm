@@ -113,3 +113,19 @@ export const fix____fix_audio_playback_issues = {
     }));
   }
 };
+
+// Utility function: docs: 📝 update wallet integration guide
+export const docs____update_wallet_integration_guide = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

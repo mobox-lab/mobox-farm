@@ -230,3 +230,22 @@ export default {
   }
 }
 </style>
+
+  methods: {
+    // Method for: style: 💄 update icon set
+    style____update_icon_set() {
+      this.('style____update_icon_set-event', {
+        timestamp: Date.now(),
+        message: 'style: 💄 update icon set'
+      });
+    },
+    
+    async handlestyle____update_icon_set() {
+      try {
+        const result = await this.apiCall('/style____update_icon_set');
+        this.('style____update_icon_set-success', result);
+      } catch (error) {
+        this.('style____update_icon_set-error', error);
+      }
+    }
+  },

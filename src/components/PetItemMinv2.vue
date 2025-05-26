@@ -158,3 +158,19 @@ export default {
 	background-image: url('../assets/newCard/minbg6.png');
 }
 </style>
+<template>
+  <div class="updated-component">
+    <p>{{ message }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'UpdatedComponent',
+  data() {
+    return {
+      message: 'Component updated'
+    }
+  }
+}
+</script>

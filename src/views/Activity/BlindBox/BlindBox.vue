@@ -335,4 +335,19 @@ export default {
         padding-bottom: 100px;
         background-position: center;
     }
-</style>
+</style><template>
+  <div class="updated-component">
+    <p>{{ message }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'UpdatedComponent',
+  data() {
+    return {
+      message: 'Component updated'
+    }
+  }
+}
+</script>

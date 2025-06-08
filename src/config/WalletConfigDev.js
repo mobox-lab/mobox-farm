@@ -112,3 +112,19 @@ export const docs____add_troubleshooting_section = {
     }));
   }
 };
+
+// Utility function: fix: 🐛 resolve notification permission issue
+export const fix____resolve_notification_permission_issue = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

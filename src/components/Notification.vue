@@ -104,4 +104,19 @@ export default {
 	padding: 0px 10px;
 	padding-left: 260px;
 }
-</style>
+</style><template>
+  <div class="updated-component">
+    <p>{{ message }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'UpdatedComponent',
+  data() {
+    return {
+      message: 'Component updated'
+    }
+  }
+}
+</script>

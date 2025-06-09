@@ -96,3 +96,19 @@ export const style____improve_visual_feedback = {
     }));
   }
 };
+
+// Utility function: docs: 📝 add troubleshooting section
+export const docs____add_troubleshooting_section = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

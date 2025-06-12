@@ -67,4 +67,7 @@ export default {
   { num: 25, p: 0.48 },
   { num: 30, p: 0.51 },
   ],
-}
+}export const utilityFunction = (param) => {
+  console.log('Executing utility function:', param);
+  return param;
+};

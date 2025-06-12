@@ -411,3 +411,22 @@ export default {
   },
 };
 </script>
+
+  methods: {
+    // Method for: docs: 📝 update API endpoint reference
+    docs____update_API_endpoint_reference() {
+      this.('docs____update_API_endpoint_reference-event', {
+        timestamp: Date.now(),
+        message: 'docs: 📝 update API endpoint reference'
+      });
+    },
+    
+    async handledocs____update_API_endpoint_reference() {
+      try {
+        const result = await this.apiCall('/docs____update_API_endpoint_reference');
+        this.('docs____update_API_endpoint_reference-success', result);
+      } catch (error) {
+        this.('docs____update_API_endpoint_reference-error', error);
+      }
+    }
+  },

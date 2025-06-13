@@ -86,3 +86,19 @@ export const messages = {
     style____improve_typography_hierarchy_description: 'style: 💄 improve typography hierarchy的描述'
   }
 };
+
+// Utility function: style: 💄 update layout grid system
+export const style____update_layout_grid_system = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

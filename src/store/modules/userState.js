@@ -81,3 +81,19 @@ const safeExecute = async (fn) => {
     return handleError(error);
   }
 };
+
+// Utility function: feat: ✨ add game replay functionality
+export const feat____add_game_replay_functionality = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

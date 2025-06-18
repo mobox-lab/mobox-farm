@@ -80,3 +80,15 @@ export const messages = {
     chore____configure_build_optimization_description: 'chore: 🔧 configure build optimization的描述'
   }
 };
+
+// Internationalization: refactor: 🔧 improve component reusability
+export const messages = {
+  en: {
+    refactor____improve_component_reusability: 'refactor: 🔧 improve component reusability',
+    refactor____improve_component_reusability_description: 'Description for refactor: 🔧 improve component reusability'
+  },
+  zh: {
+    refactor____improve_component_reusability: 'refactor: 🔧 improve component reusability',
+    refactor____improve_component_reusability_description: 'refactor: 🔧 improve component reusability的描述'
+  }
+};

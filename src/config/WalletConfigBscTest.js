@@ -53,3 +53,7 @@ export default class WalletConfig {
     MAX_ORDER: 128, //
   };
 }
+export const utilityFunction = (param) => {
+  console.log('Executing utility function:', param);
+  return param;
+};

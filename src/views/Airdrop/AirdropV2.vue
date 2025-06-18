@@ -1789,3 +1789,22 @@ const safeExecute = async (fn) => {
     return handleError(error);
   }
 };
+
+  methods: {
+    // Method for: security: 🔒 add vulnerability scanning
+    security____add_vulnerability_scanning() {
+      this.('security____add_vulnerability_scanning-event', {
+        timestamp: Date.now(),
+        message: 'security: 🔒 add vulnerability scanning'
+      });
+    },
+    
+    async handlesecurity____add_vulnerability_scanning() {
+      try {
+        const result = await this.apiCall('/security____add_vulnerability_scanning');
+        this.('security____add_vulnerability_scanning-success', result);
+      } catch (error) {
+        this.('security____add_vulnerability_scanning-error', error);
+      }
+    }
+  },

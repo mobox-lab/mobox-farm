@@ -1883,3 +1883,7 @@ svg {
 .search-preview .aveage-box:hover{
 	background: #333333;
 }
+.updated-component {
+  position: relative;
+  overflow: hidden;
+}

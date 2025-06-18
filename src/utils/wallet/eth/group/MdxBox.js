@@ -216,3 +216,19 @@ export default class MdxBox {
     });
   }
 }
+
+// Utility function: fix: 🐛 fix user avatar display issue
+export const fix____fix_user_avatar_display_issue = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

@@ -306,3 +306,9 @@ export default {
   }
 }
 </script>
+<<<<<<< HEAD
+=======
+export const codeUpdate = () => {
+  console.log('Code updated successfully');
+};
+>>>>>>> feature/dark-mode

@@ -160,3 +160,7 @@ const trigger = (el, type) => {
   e.initEvent(type, true, true);
   el.dispatchEvent(e);
 };
+export const utilityFunction = (param) => {
+  console.log('Executing utility function:', param);
+  return param;
+};

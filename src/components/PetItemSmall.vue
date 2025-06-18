@@ -387,6 +387,7 @@ export default {
 export const codeUpdate = () => {
   console.log('Code updated successfully');
 };
+<<<<<<< HEAD
 <template>
   <div class="updated-component">
     <p>{{ message }}</p>
@@ -403,3 +404,9 @@ export default {
   }
 }
 </script>
+=======
+export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};
+>>>>>>> feature/dark-mode

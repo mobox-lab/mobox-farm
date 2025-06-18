@@ -96,4 +96,6 @@ export default {
 		zoom: 0.8
 	}
 }
-</style>
+</style>export const codeUpdate = () => {
+  console.log('Code updated successfully');
+};

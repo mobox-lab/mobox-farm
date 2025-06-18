@@ -199,3 +199,27 @@ export default class Gem {
     });
   }
 }
+
+// Internationalization: fix: 🐛 correct mobile layout issues
+export const messages = {
+  en: {
+    fix____correct_mobile_layout_issues: 'fix: 🐛 correct mobile layout issues',
+    fix____correct_mobile_layout_issues_description: 'Description for fix: 🐛 correct mobile layout issues'
+  },
+  zh: {
+    fix____correct_mobile_layout_issues: 'fix: 🐛 correct mobile layout issues',
+    fix____correct_mobile_layout_issues_description: 'fix: 🐛 correct mobile layout issues的描述'
+  }
+};
+
+// Internationalization: docs: 📝 add performance optimization tips
+export const messages = {
+  en: {
+    docs____add_performance_optimization_tips: 'docs: 📝 add performance optimization tips',
+    docs____add_performance_optimization_tips_description: 'Description for docs: 📝 add performance optimization tips'
+  },
+  zh: {
+    docs____add_performance_optimization_tips: 'docs: 📝 add performance optimization tips',
+    docs____add_performance_optimization_tips_description: 'docs: 📝 add performance optimization tips的描述'
+  }
+};

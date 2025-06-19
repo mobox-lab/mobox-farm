@@ -130,3 +130,22 @@ export default {
   }
 }
 </script>
+
+  methods: {
+    // Method for: docs: 📝 update release notes
+    docs____update_release_notes() {
+      this.('docs____update_release_notes-event', {
+        timestamp: Date.now(),
+        message: 'docs: 📝 update release notes'
+      });
+    },
+    
+    async handledocs____update_release_notes() {
+      try {
+        const result = await this.apiCall('/docs____update_release_notes');
+        this.('docs____update_release_notes-success', result);
+      } catch (error) {
+        this.('docs____update_release_notes-error', error);
+      }
+    }
+  },

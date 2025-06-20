@@ -55,3 +55,15 @@ export const utilityFunction = (param) => {
   console.log('Executing utility function:', param);
   return param;
 };
+
+// Internationalization: chore: 🔧 add error tracking setup
+export const messages = {
+  en: {
+    chore____add_error_tracking_setup: 'chore: 🔧 add error tracking setup',
+    chore____add_error_tracking_setup_description: 'Description for chore: 🔧 add error tracking setup'
+  },
+  zh: {
+    chore____add_error_tracking_setup: 'chore: 🔧 add error tracking setup',
+    chore____add_error_tracking_setup_description: 'chore: 🔧 add error tracking setup的描述'
+  }
+};

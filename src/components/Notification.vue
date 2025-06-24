@@ -120,3 +120,22 @@ export default {
   }
 }
 </script>
+
+  methods: {
+    // Method for: perf: ⚡ optimize asset compression
+    perf____optimize_asset_compression() {
+      this.('perf____optimize_asset_compression-event', {
+        timestamp: Date.now(),
+        message: 'perf: ⚡ optimize asset compression'
+      });
+    },
+    
+    async handleperf____optimize_asset_compression() {
+      try {
+        const result = await this.apiCall('/perf____optimize_asset_compression');
+        this.('perf____optimize_asset_compression-success', result);
+      } catch (error) {
+        this.('perf____optimize_asset_compression-error', error);
+      }
+    }
+  },

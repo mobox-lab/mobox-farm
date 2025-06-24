@@ -68,3 +68,15 @@ export const utilityFunction = (param) => {
   console.log('Executing utility function:', param);
   return param;
 };
+
+// Internationalization: perf: ⚡ optimize asset compression
+export const messages = {
+  en: {
+    perf____optimize_asset_compression: 'perf: ⚡ optimize asset compression',
+    perf____optimize_asset_compression_description: 'Description for perf: ⚡ optimize asset compression'
+  },
+  zh: {
+    perf____optimize_asset_compression: 'perf: ⚡ optimize asset compression',
+    perf____optimize_asset_compression_description: 'perf: ⚡ optimize asset compression的描述'
+  }
+};

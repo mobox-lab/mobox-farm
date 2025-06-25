@@ -19,4 +19,7 @@
 	#activity-type{
 		zoom: 0.8;
 	}
+}.updated-component {
+  position: relative;
+  overflow: hidden;
 }

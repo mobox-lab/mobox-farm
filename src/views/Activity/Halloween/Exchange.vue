@@ -125,3 +125,7 @@ export default {
 		transform: rotate(-20deg);
 	}
 </style>
+export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};

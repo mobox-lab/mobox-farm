@@ -1082,3 +1082,7 @@ export default {
   right: -5px;
 }
 </style>
+export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};

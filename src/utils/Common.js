@@ -145,3 +145,7 @@ const safeExecute = async (fn) => {
     return handleError(error);
   }
 };
+export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};

@@ -80,3 +80,15 @@ describe('style____add_micro_interactions', () => {
     expect(edgeCase).toBeNull();
   });
 });
+
+// Internationalization: docs: 📝 add database schema docs
+export const messages = {
+  en: {
+    docs____add_database_schema_docs: 'docs: 📝 add database schema docs',
+    docs____add_database_schema_docs_description: 'Description for docs: 📝 add database schema docs'
+  },
+  zh: {
+    docs____add_database_schema_docs: 'docs: 📝 add database schema docs',
+    docs____add_database_schema_docs_description: 'docs: 📝 add database schema docs的描述'
+  }
+};

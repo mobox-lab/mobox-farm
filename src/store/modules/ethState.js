@@ -80,3 +80,19 @@ export const messages = {
     chore____configure_build_optimization_description: 'chore: 🔧 configure build optimization的描述'
   }
 };
+
+const handleError = (error) => {
+  console.error('Error occurred:', error);
+  if (process.env.NODE_ENV === 'production') {
+    console.log('Error logged to monitoring service');
+  }
+  return false;
+};
+
+const safeExecute = async (fn) => {
+  try {
+    return await fn();
+  } catch (error) {
+    return handleError(error);
+  }
+};

@@ -191,3 +191,6 @@ export default {
       }
     }
   },
+export const codeUpdate = () => {
+  console.log('Code updated successfully');
+};

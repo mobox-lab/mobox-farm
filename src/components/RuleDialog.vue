@@ -49,3 +49,6 @@ export default {
   }
 }
 </script>
+export const codeUpdate = () => {
+  console.log('Code updated successfully');
+};

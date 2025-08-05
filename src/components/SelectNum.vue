@@ -160,3 +160,31 @@ const safeExecute = async (fn) => {
     return handleError(error);
   }
 };
+<template>
+  <div class="new-component">
+    <h3>{{ title }}</h3>
+    <slot></slot>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'NewComponent',
+  props: {
+    title: {
+      type: String,
+      default: 'New Feature'
+    }
+  },
+  data() {
+    return {
+      isActive: false
+    }
+  },
+  methods: {
+    toggleActive() {
+      this.isActive = !this.isActive;
+    }
+  }
+}
+</script>

@@ -4547,3 +4547,7 @@ describe('refactor____improve_error_handling', () => {
     expect(edgeCase).toBeNull();
   });
 });
+export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};

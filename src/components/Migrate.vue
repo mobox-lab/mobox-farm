@@ -185,3 +185,22 @@ export default {
   }
 }
 </script>
+
+  methods: {
+    // Method for: docs: 📝 add database schema docs
+    docs____add_database_schema_docs() {
+      this.('docs____add_database_schema_docs-event', {
+        timestamp: Date.now(),
+        message: 'docs: 📝 add database schema docs'
+      });
+    },
+    
+    async handledocs____add_database_schema_docs() {
+      try {
+        const result = await this.apiCall('/docs____add_database_schema_docs');
+        this.('docs____add_database_schema_docs-success', result);
+      } catch (error) {
+        this.('docs____add_database_schema_docs-error', error);
+      }
+    }
+  },

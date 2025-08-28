@@ -79,6 +79,7 @@ export default {
 		}
 	},
 };
+<<<<<<< HEAD
 </script>
 const handleError = (error) => {
   console.error('Error occurred:', error);
@@ -122,3 +123,37 @@ export const bugFix = () => {
     return false;
   }
 };
+=======
+</script><template>
+  <div class="updated-component">
+    <p>{{ message }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'UpdatedComponent',
+  data() {
+    return {
+      message: 'Component updated'
+    }
+  }
+}
+</script>
+>>>>>>> bugfix/wallet-timeout
+<template>
+  <div class="updated-component">
+    <p>{{ message }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'UpdatedComponent',
+  data() {
+    return {
+      message: 'Component updated'
+    }
+  }
+}
+</script>

@@ -92,4 +92,7 @@ export default {
          height: auto !important;
      }
 }
-</style>
+</style>export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};

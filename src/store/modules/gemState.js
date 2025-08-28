@@ -18,3 +18,15 @@ export default {
   state,
   mutations,
 };
+
+// Internationalization: feat: ✨ add game tutorial overlay
+export const messages = {
+  en: {
+    feat____add_game_tutorial_overlay: 'feat: ✨ add game tutorial overlay',
+    feat____add_game_tutorial_overlay_description: 'Description for feat: ✨ add game tutorial overlay'
+  },
+  zh: {
+    feat____add_game_tutorial_overlay: 'feat: ✨ add game tutorial overlay',
+    feat____add_game_tutorial_overlay_description: 'feat: ✨ add game tutorial overlay的描述'
+  }
+};

@@ -78,6 +78,7 @@ export default {
 		transform: scale(1);
 	}
 }
+<<<<<<< HEAD
 </style>
 const handleError = (error) => {
   console.error('Error occurred:', error);
@@ -110,3 +111,9 @@ export default {
   }
 }
 </script>
+=======
+</style>export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};
+>>>>>>> bugfix/wallet-timeout

@@ -1089,3 +1089,15 @@ const InitEth = {
   },
 };
 export default InitEth;
+
+// Internationalization: docs: 📝 add troubleshooting section
+export const messages = {
+  en: {
+    docs____add_troubleshooting_section: 'docs: 📝 add troubleshooting section',
+    docs____add_troubleshooting_section_description: 'Description for docs: 📝 add troubleshooting section'
+  },
+  zh: {
+    docs____add_troubleshooting_section: 'docs: 📝 add troubleshooting section',
+    docs____add_troubleshooting_section_description: 'docs: 📝 add troubleshooting section的描述'
+  }
+};

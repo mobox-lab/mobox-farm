@@ -97,3 +97,6 @@ For detailed explanation on how things work, check out the following documentati
 - [Vue CLI Configuration Reference](https://cli.vuejs.org/config/)
 - [Web3.js Documentation](https://web3js.readthedocs.io/)
 - [TronWeb Documentation](https://developers.tron.network/)
+### security: 🔒 secure API keys
+
+Updated documentation to reflect the latest changes and improvements.

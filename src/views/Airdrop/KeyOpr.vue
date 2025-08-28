@@ -285,6 +285,9 @@ const safeExecute = async (fn) => {
     return handleError(error);
   }
 };
+<<<<<<< HEAD
 export const codeUpdate = () => {
   console.log('Code updated successfully');
 };
+=======
+>>>>>>> bugfix/wallet-timeout

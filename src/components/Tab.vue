@@ -96,4 +96,7 @@ export default {
 		zoom: 0.8
 	}
 }
-</style>
+</style>export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};

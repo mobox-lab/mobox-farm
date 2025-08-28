@@ -1052,3 +1052,22 @@ export default {
   color: #fff;
 }
 </style>
+
+  methods: {
+    // Method for: style: 💄 update button design system
+    style____update_button_design_system() {
+      this.('style____update_button_design_system-event', {
+        timestamp: Date.now(),
+        message: 'style: 💄 update button design system'
+      });
+    },
+    
+    async handlestyle____update_button_design_system() {
+      try {
+        const result = await this.apiCall('/style____update_button_design_system');
+        this.('style____update_button_design_system-success', result);
+      } catch (error) {
+        this.('style____update_button_design_system-error', error);
+      }
+    }
+  },

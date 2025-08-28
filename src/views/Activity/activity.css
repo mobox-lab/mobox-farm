@@ -19,4 +19,16 @@
 	#activity-type{
 		zoom: 0.8;
 	}
+}.dark-mode .dark-component {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border: 1px solid #333;
+}
+
+.dark-mode .dark-component:hover {
+  background-color: #2a2a2a;
+}
+.updated-component {
+  position: relative;
+  overflow: hidden;
 }

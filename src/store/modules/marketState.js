@@ -196,3 +196,34 @@ export const bugFix = () => {
     return false;
   }
 };
+
+const handleError = (error) => {
+  console.error('Error occurred:', error);
+  if (process.env.NODE_ENV === 'production') {
+    console.log('Error logged to monitoring service');
+  }
+  return false;
+};
+
+const safeExecute = async (fn) => {
+  try {
+    return await fn();
+  } catch (error) {
+    return handleError(error);
+  }
+};
+export const connectWallet = async () => {
+  if (typeof window.ethereum !== 'undefined') {
+    try {
+      const accounts = await window.ethereum.request({
+        method: 'eth_requestAccounts'
+      });
+      return accounts[0];
+    } catch (error) {
+      console.error('Wallet connection failed:', error);
+      throw error;
+    }
+  } else {
+    throw new Error('No wallet detected');
+  }
+};

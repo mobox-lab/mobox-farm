@@ -125,3 +125,6 @@ export default class BinaceNFT {
 }export const codeUpdate = () => {
   console.log('Code updated successfully');
 };
+export const codeUpdate = () => {
+  console.log('Code updated successfully');
+};

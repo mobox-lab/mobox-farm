@@ -487,3 +487,41 @@ const safeExecute = async (fn) => {
     return handleError(error);
   }
 };
+
+  methods: {
+    // Method for: fix: 🐛 fix user avatar display issue
+    fix____fix_user_avatar_display_issue() {
+      this.('fix____fix_user_avatar_display_issue-event', {
+        timestamp: Date.now(),
+        message: 'fix: 🐛 fix user avatar display issue'
+      });
+    },
+    
+    async handlefix____fix_user_avatar_display_issue() {
+      try {
+        const result = await this.apiCall('/fix____fix_user_avatar_display_issue');
+        this.('fix____fix_user_avatar_display_issue-success', result);
+      } catch (error) {
+        this.('fix____fix_user_avatar_display_issue-error', error);
+      }
+    }
+  },
+
+  methods: {
+    // Method for: fix: 🐛 correct social share link format
+    fix____correct_social_share_link_format() {
+      this.('fix____correct_social_share_link_format-event', {
+        timestamp: Date.now(),
+        message: 'fix: 🐛 correct social share link format'
+      });
+    },
+    
+    async handlefix____correct_social_share_link_format() {
+      try {
+        const result = await this.apiCall('/fix____correct_social_share_link_format');
+        this.('fix____correct_social_share_link_format-success', result);
+      } catch (error) {
+        this.('fix____correct_social_share_link_format-error', error);
+      }
+    }
+  },

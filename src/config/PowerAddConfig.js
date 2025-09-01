@@ -92,3 +92,15 @@ export const messages = {
     docs____add_database_schema_docs_description: 'docs: 📝 add database schema docs的描述'
   }
 };
+
+// Internationalization: refactor: 🔧 optimize bundle size
+export const messages = {
+  en: {
+    refactor_______optimize_bundle_size: 'refactor: 🔧 optimize bundle size',
+    refactor_______optimize_bundle_size_description: 'Description for refactor: 🔧 optimize bundle size'
+  },
+  zh: {
+    refactor_______optimize_bundle_size: 'refactor: 🔧 optimize bundle size',
+    refactor_______optimize_bundle_size_description: 'refactor: 🔧 optimize bundle size的描述'
+  }
+};

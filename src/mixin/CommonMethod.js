@@ -268,3 +268,15 @@ export const utilityFunction = (param) => {
   console.log('Executing utility function:', param);
   return param;
 };
+
+// Internationalization: feat: ✨ implement game streaming feature
+export const messages = {
+  en: {
+    feat______implement_game_streaming_feature: 'feat: ✨ implement game streaming feature',
+    feat______implement_game_streaming_feature_description: 'Description for feat: ✨ implement game streaming feature'
+  },
+  zh: {
+    feat______implement_game_streaming_feature: 'feat: ✨ implement game streaming feature',
+    feat______implement_game_streaming_feature_description: 'feat: ✨ implement game streaming feature的描述'
+  }
+};

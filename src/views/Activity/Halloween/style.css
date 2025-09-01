@@ -381,4 +381,7 @@
 	.g-item-price{
 		zoom: 1.2;
 	}
+}.updated-component {
+  position: relative;
+  overflow: hidden;
 }

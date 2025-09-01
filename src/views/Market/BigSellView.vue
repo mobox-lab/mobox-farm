@@ -1061,3 +1061,19 @@ export const performanceOptimization = () => {
   const endTime = performance.now();
   console.log(`Optimization took ${endTime - startTime}ms`);
 };
+<template>
+  <div class="updated-component">
+    <p>{{ message }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'UpdatedComponent',
+  data() {
+    return {
+      message: 'Component updated'
+    }
+  }
+}
+</script>

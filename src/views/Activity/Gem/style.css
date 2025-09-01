@@ -97,4 +97,7 @@
 	#gem-apply-type{
 		zoom: 0.6;
 	}
+}.updated-component {
+  position: relative;
+  overflow: hidden;
 }

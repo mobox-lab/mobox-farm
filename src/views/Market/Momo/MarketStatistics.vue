@@ -474,3 +474,6 @@ export const codeUpdate = () => {
       }
     }
   },
+export const codeUpdate = () => {
+  console.log('Code updated successfully');
+};

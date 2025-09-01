@@ -173,4 +173,7 @@
 	.result-cont{
 		bottom: 30px !important;
 	}
+}.updated-component {
+  position: relative;
+  overflow: hidden;
 }

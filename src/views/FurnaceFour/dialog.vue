@@ -122,3 +122,47 @@ export default {
   transform: translateY(-30px);
 }
 </style>
+<template>
+  <div class="updated-component">
+    <p>{{ message }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'UpdatedComponent',
+  data() {
+    return {
+      message: 'Component updated'
+    }
+  }
+}
+</script>
+<template>
+  <div class="new-component">
+    <h3>{{ title }}</h3>
+    <slot></slot>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'NewComponent',
+  props: {
+    title: {
+      type: String,
+      default: 'New Feature'
+    }
+  },
+  data() {
+    return {
+      isActive: false
+    }
+  },
+  methods: {
+    toggleActive() {
+      this.isActive = !this.isActive;
+    }
+  }
+}
+</script>

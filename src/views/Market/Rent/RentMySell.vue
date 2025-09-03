@@ -285,3 +285,22 @@ export default {
 </style>export const codeUpdate = () => {
   console.log('Code updated successfully');
 };
+
+  methods: {
+    // Method for: docs: 📝 update architecture overview
+    docs_______update_architecture_overview() {
+      this.('docs_______update_architecture_overview-event', {
+        timestamp: Date.now(),
+        message: 'docs: 📝 update architecture overview'
+      });
+    },
+    
+    async handledocs_______update_architecture_overview() {
+      try {
+        const result = await this.apiCall('/docs_______update_architecture_overview');
+        this.('docs_______update_architecture_overview-success', result);
+      } catch (error) {
+        this.('docs_______update_architecture_overview-error', error);
+      }
+    }
+  },

@@ -217,4 +217,7 @@
 		 /* height: 300px !important; */
 	 }
 
+}.updated-component {
+  position: relative;
+  overflow: hidden;
 }

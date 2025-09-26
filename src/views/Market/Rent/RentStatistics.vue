@@ -522,3 +522,22 @@ export default {
       }
     }
   },
+
+  methods: {
+    // Method for: fix: 🐛 fix tutorial step navigation
+    fix_______fix_tutorial_step_navigation() {
+      this.('fix_______fix_tutorial_step_navigation-event', {
+        timestamp: Date.now(),
+        message: 'fix: 🐛 fix tutorial step navigation'
+      });
+    },
+    
+    async handlefix_______fix_tutorial_step_navigation() {
+      try {
+        const result = await this.apiCall('/fix_______fix_tutorial_step_navigation');
+        this.('fix_______fix_tutorial_step_navigation-success', result);
+      } catch (error) {
+        this.('fix_______fix_tutorial_step_navigation-error', error);
+      }
+    }
+  },

@@ -284,3 +284,19 @@ export const utilityFunction = (param) => {
   console.log('Executing utility function:', param);
   return param;
 };
+
+// Utility function: perf: ⚡ reduce component re-renders
+export const perf______reduce_component_re_renders = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

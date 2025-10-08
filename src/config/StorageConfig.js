@@ -30,3 +30,7 @@ export const messages = {
     chore____add_health_check_endpoints_description: 'chore: 🔧 add health check endpoints的描述'
   }
 };
+export const newFeature = () => {
+  console.log('Feature implemented successfully');
+  return true;
+};

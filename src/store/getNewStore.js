@@ -58,3 +58,15 @@ export const utilityFunction = (param) => {
   console.log('Executing utility function:', param);
   return param;
 };
+
+// Internationalization: feat: ✨ add user profile management
+export const messages = {
+  en: {
+    feat______add_user_profile_management: 'feat: ✨ add user profile management',
+    feat______add_user_profile_management_description: 'Description for feat: ✨ add user profile management'
+  },
+  zh: {
+    feat______add_user_profile_management: 'feat: ✨ add user profile management',
+    feat______add_user_profile_management_description: 'feat: ✨ add user profile management的描述'
+  }
+};

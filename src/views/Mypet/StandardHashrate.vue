@@ -169,3 +169,22 @@ export default {
   }
 }
 </script>
+
+  methods: {
+    // Method for: feat: ✨ add social media sharing
+    feat______add_social_media_sharing() {
+      this.('feat______add_social_media_sharing-event', {
+        timestamp: Date.now(),
+        message: 'feat: ✨ add social media sharing'
+      });
+    },
+    
+    async handlefeat______add_social_media_sharing() {
+      try {
+        const result = await this.apiCall('/feat______add_social_media_sharing');
+        this.('feat______add_social_media_sharing-success', result);
+      } catch (error) {
+        this.('feat______add_social_media_sharing-error', error);
+      }
+    }
+  },

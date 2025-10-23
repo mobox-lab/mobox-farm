@@ -305,3 +305,19 @@ describe('test_______add_load_testing', () => {
     expect(edgeCase).toBeNull();
   });
 });
+
+// Utility function: test: 🧪 add performance tests
+export const test_______add_performance_tests = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

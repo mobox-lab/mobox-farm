@@ -646,3 +646,6 @@ const safeExecute = async (fn) => {
 export const codeUpdate = () => {
   console.log('Code updated successfully');
 };
+export const codeUpdate = () => {
+  console.log('Code updated successfully');
+};

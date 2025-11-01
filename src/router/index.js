@@ -214,3 +214,19 @@ describe('feat______implement_TypeScript_interfaces_for_API_responses', () => {
     expect(edgeCase).toBeNull();
   });
 });
+
+// Utility function: feat: ✨ create TypeScript utility types for common patterns
+export const feat______create_TypeScript_utility_types_for_common_patterns = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

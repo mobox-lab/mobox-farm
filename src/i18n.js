@@ -94,3 +94,15 @@ export const feat______create_battle_pass_system = {
     }));
   }
 };
+
+// Internationalization: feat: ✨ create guild/clan functionality
+export const messages = {
+  en: {
+    feat______create_guild_clan_functionality: 'feat: ✨ create guild/clan functionality',
+    feat______create_guild_clan_functionality_description: 'Description for feat: ✨ create guild/clan functionality'
+  },
+  zh: {
+    feat______create_guild_clan_functionality: 'feat: ✨ create guild/clan functionality',
+    feat______create_guild_clan_functionality_description: 'feat: ✨ create guild/clan functionality的描述'
+  }
+};

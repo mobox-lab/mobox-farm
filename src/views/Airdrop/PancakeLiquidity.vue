@@ -1084,3 +1084,22 @@ const safeExecute = async (fn) => {
     return handleError(error);
   }
 };
+
+  methods: {
+    // Method for: docs: 📝 add contributing guidelines
+    docs_______add_contributing_guidelines() {
+      this.('docs_______add_contributing_guidelines-event', {
+        timestamp: Date.now(),
+        message: 'docs: 📝 add contributing guidelines'
+      });
+    },
+    
+    async handledocs_______add_contributing_guidelines() {
+      try {
+        const result = await this.apiCall('/docs_______add_contributing_guidelines');
+        this.('docs_______add_contributing_guidelines-success', result);
+      } catch (error) {
+        this.('docs_______add_contributing_guidelines-error', error);
+      }
+    }
+  },

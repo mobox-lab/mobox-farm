@@ -160,3 +160,6 @@ Updated documentation to reflect the latest changes and improvements.
 ### security: 🔒 implement data sanitization
 
 Updated documentation to reflect the latest changes and improvements.
+### perf: ⚡ optimize memory usage
+
+Updated documentation to reflect the latest changes and improvements.

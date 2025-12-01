@@ -1124,3 +1124,7 @@ export const messages = {
     fix_______resolve_navigation_menu_overlap_description: 'fix: 🐛 resolve navigation menu overlap的描述'
   }
 };
+export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};

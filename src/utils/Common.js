@@ -161,3 +161,15 @@ export const messages = {
     refactor____restructure_API_calls_description: 'refactor: 🔧 restructure API calls的描述'
   }
 };
+
+// Internationalization: test: 🧪 add component testing
+export const messages = {
+  en: {
+    test_______add_component_testing: 'test: 🧪 add component testing',
+    test_______add_component_testing_description: 'Description for test: 🧪 add component testing'
+  },
+  zh: {
+    test_______add_component_testing: 'test: 🧪 add component testing',
+    test_______add_component_testing_description: 'test: 🧪 add component testing的描述'
+  }
+};

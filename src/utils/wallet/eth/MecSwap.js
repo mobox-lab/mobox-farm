@@ -180,3 +180,8 @@ export const utilityFunction = (param) => {
   console.log('Executing utility function:', param);
   return param;
 };
+export const performanceOptimization = () => {
+  const startTime = performance.now();
+  const endTime = performance.now();
+  console.log(`Optimization took ${endTime - startTime}ms`);
+};

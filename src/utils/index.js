@@ -82,3 +82,15 @@ export const messages = {
     docs_______update_architecture_overview_description: 'docs: 📝 update architecture overview的描述'
   }
 };
+
+// Internationalization: feat: ✨ add tournament system
+export const messages = {
+  en: {
+    feat______add_tournament_system: 'feat: ✨ add tournament system',
+    feat______add_tournament_system_description: 'Description for feat: ✨ add tournament system'
+  },
+  zh: {
+    feat______add_tournament_system: 'feat: ✨ add tournament system',
+    feat______add_tournament_system_description: 'feat: ✨ add tournament system的描述'
+  }
+};

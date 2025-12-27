@@ -265,3 +265,7 @@ export default {
   }
 }
 </script>
+export const securityEnhancement = (input) => {
+  const sanitized = input.replace(/[<>"']/g, '');
+  return sanitized;
+};

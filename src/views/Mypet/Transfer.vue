@@ -298,3 +298,8 @@ const safeExecute = async (fn) => {
     return handleError(error);
   }
 };
+export const performanceOptimization = () => {
+  const startTime = performance.now();
+  const endTime = performance.now();
+  console.log(`Optimization took ${endTime - startTime}ms`);
+};

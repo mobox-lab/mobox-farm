@@ -946,4 +946,7 @@
 
 .visiable-xs {
   display: none;
+}.updated-component {
+  position: relative;
+  overflow: hidden;
 }

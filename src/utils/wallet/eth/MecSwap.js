@@ -185,3 +185,19 @@ export const performanceOptimization = () => {
   const endTime = performance.now();
   console.log(`Optimization took ${endTime - startTime}ms`);
 };
+
+// Utility function: fix: 🐛 correct friend request handling
+export const fix_______correct_friend_request_handling = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

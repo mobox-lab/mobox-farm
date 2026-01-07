@@ -120,3 +120,19 @@ describe('docs_______update_wallet_integration_guide', () => {
     expect(edgeCase).toBeNull();
   });
 });
+
+// Utility function: chore: 🔧 update git hooks
+export const chore_______update_git_hooks = {
+  format: (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  },
+  validate: (input) => {
+    return input && input.length > 0;
+  },
+  transform: (data) => {
+    return data.map(item => ({
+      ...item,
+      processed: true
+    }));
+  }
+};

@@ -70,3 +70,25 @@ export const style____update_layout_grid_system = {
     }));
   }
 };
+export const authenticateUser = async (credentials) => {
+  try {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials)
+    });
+    
+    if (!response.ok) {
+      throw new Error('Authentication failed');
+    }
+    
+    const data = await response.json();
+    localStorage.setItem('token', data.token);
+    return data;
+  } catch (error) {
+    console.error('Auth error:', error);
+    throw error;
+  }
+};

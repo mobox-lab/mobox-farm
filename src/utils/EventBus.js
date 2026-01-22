@@ -43,3 +43,15 @@ describe('chore_______configure_monitoring_tools', () => {
     expect(edgeCase).toBeNull();
   });
 });
+
+// Internationalization: style: 💄 add responsive breakpoints
+export const messages = {
+  en: {
+    style_______add_responsive_breakpoints: 'style: 💄 add responsive breakpoints',
+    style_______add_responsive_breakpoints_description: 'Description for style: 💄 add responsive breakpoints'
+  },
+  zh: {
+    style_______add_responsive_breakpoints: 'style: 💄 add responsive breakpoints',
+    style_______add_responsive_breakpoints_description: 'style: 💄 add responsive breakpoints的描述'
+  }
+};

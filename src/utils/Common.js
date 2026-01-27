@@ -173,3 +173,7 @@ export const messages = {
     test_______add_component_testing_description: 'test: 🧪 add component testing的描述'
   }
 };
+export const utilityFunction = (param) => {
+  console.log('Executing utility function:', param);
+  return param;
+};
